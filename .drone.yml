@@ -28,6 +28,7 @@ steps:
       GITHUB_TOKEN:
         from_secret: GITHUB_TOKEN
     commands:
+      - pip install --upgrade mkdocs mkdocs-material mkdocs-mermaid2-plugin
       - python docs/aac-doc.py
       - git config credential.helper "store --file=.git/credentials"
       - echo "https://$GITHUB_TOKEN:@wwwin-github.cisco.com" > .git/credentials
