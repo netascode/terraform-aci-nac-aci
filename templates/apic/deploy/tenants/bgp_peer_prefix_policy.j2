@@ -1,0 +1,31 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for bpp in tenant.policies.bgp_peer_prefix_policies | default([]) %}{{ comma1() }}
+            {% set bgp_peer_prefix_name = bpp.name ~ defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix %}
+            {
+                "bgpPeerPfxPol": {
+                    "attributes": {
+                        "name": "{{ bgp_peer_prefix_name }}",
+                        "descr": "{{ bpp.action | default() }}",
+                        "dn": "uni/tn-{{ tenant.name }}/bgpPfxP-{{ bgp_peer_prefix_name }}",
+                        "action": "{{ bpp.action | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.action) }}",
+                        "maxPfx": "{{ bpp.max_prefixes | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.max_prefixes) }}",
+                        {% if bpp.action | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.action) == "restart" %}
+                        "restartTime": "{{ bpp.restart_time | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.restart_time) }}",
+                        {% endif %}
+                        "thresh": "{{ bpp.threshold | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.threshold) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

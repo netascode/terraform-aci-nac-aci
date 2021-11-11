@@ -1,0 +1,26 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for ap in tenant.application_profiles | default([]) %}{{ comma1() }}
+            {% set ap_name = ap.name ~ defaults.apic.tenants.application_profiles.name_suffix %}
+            {
+                "fvAp": {
+                    "attributes": {
+                        "name": "{{ ap_name }}",
+                        "dn": "uni/tn-{{ tenant.name }}/ap-{{ ap_name }}",
+                        "nameAlias": "{{ ap.alias | default() }}",
+                        "descr": "{{ ap.description | default() }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

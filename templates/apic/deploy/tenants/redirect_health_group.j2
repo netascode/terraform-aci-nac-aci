@@ -1,0 +1,34 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {
+                "vnsSvcCont": {
+                    "attributes": {
+                        "dn": "uni/tn-{{ tenant.name }}/svcCont"
+                    },
+                    "children": [
+                        {%- set comma1 = joiner(",") %}
+                        {%- for health_grp in tenant.services.redirect_health_groups | default([]) %}{{ comma1() }}
+                        {% set health_group_name = health_grp.name ~ defaults.apic.tenants.services.redirect_health_groups.name_suffix %}
+                        {
+                            "vnsRedirectHealthGroup": {
+                                "attributes":{
+                                    "name": "{{ health_group_name }}",                        
+                                    "dn": "uni/tn-{{ tenant.name }}/svcCont/redirectHealthGroup-{{ health_group_name }}",
+                                    "descr": "{{ health_grp.description | default() }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+        ]
+    }
+}

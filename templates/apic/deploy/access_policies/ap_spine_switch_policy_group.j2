@@ -1,0 +1,34 @@
+{
+    "infraFuncP": {
+        "attributes": {
+            "dn": "uni/infra/funcprof"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for pg in apic.access_policies.spine_switch_policy_groups | default([]) %}{{ comma1() }}
+            {% set policy_group_name = pg.name ~ defaults.apic.access_policies.spine_switch_policy_groups.name_suffix %}
+            {
+                "infraSpineAccNodePGrp": {
+                    "attributes": {
+                        "name": "{{ policy_group_name }}",
+                        "dn": "uni/infra/funcprof/spaccnodepgrp-{{ policy_group_name }}"
+                    },
+                    "children": [
+                        {% if pg.lldp_policy is defined %}
+                        {% set lldp_policy_name = pg.lldp_policy ~ defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix %}
+                        {
+                            "infraRsSpinePGrpToLldpIfPol": {
+                                "attributes": {
+                                    "tnLldpIfPolName": "{{ lldp_policy_name }}"
+                                }
+                            }
+                        }
+                        {% endif %}
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

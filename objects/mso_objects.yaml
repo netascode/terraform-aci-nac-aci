@@ -1,0 +1,143 @@
+---
+bootstrap_objects:
+  - name: Bootstrap
+    template: bootstrap
+    folder: bootstrap
+    paths:
+      - mso.bootstrap
+objects:
+  - name: System Config
+    template: system_config
+    api_path: platform/systemConfig
+    object_ids: '{% if mso.system_config is defined %}system_config{% endif %}'
+    method: put
+    delete: false
+    folder: mso
+    test_types:
+      - config
+    paths:
+      - mso.system_config
+  - name: Tacacs Provider
+    template: tacacs_provider
+    api_path: auth/providers/tacacs
+    object_ids: "{{ mso | default() | json_query('tacacs_providers[*].hostname_ip') }}"
+    folder: mso
+    test_types:
+      - config
+    paths:
+      - mso.tacacs_providers
+  - name: Login Domain
+    template: login_domain
+    api_path: auth/domains
+    object_ids: "{{ mso | default() | json_query('login_domains[*].name') }}"
+    delete_ignore:
+      - Local
+    folder: mso
+    test_types:
+      - config
+    paths:
+      - mso.login_domains
+  - name: Remote Location
+    template: remote_location
+    api_path: platform/remote-locations
+    object_ids: "{{ mso | default() | json_query('remote_locations[*].name') }}"
+    folder: mso
+    test_types:
+      - config
+    paths:
+      - mso.remote_locations
+  - name: User
+    template: user
+    api_path: users
+    object_ids: "{{ mso | default() | json_query('users[*].username') }}"
+    delete_ignore:
+      - admin
+      - '{{ mso_username }}'
+      - '{{ mso_test_username | default() }}'
+    folder: mso
+    test_types:
+      - config
+    paths:
+      - mso.users
+  - name: CA Certificate
+    template: ca_certificate
+    api_path: auth/security/certificates
+    object_ids: "{{ mso | default() | json_query('ca_certificates[*].name') }}"
+    folder: mso
+    test_types:
+      - config
+    paths:
+      - mso.ca_certificates
+  - name: Site
+    template: site
+    api_path: sites
+    object_ids: "{{ mso | default() | json_query('sites[*].name') }}"
+    folder: mso
+    test_types:
+      - config
+    paths:
+      - mso.sites.name
+      - mso.sites.apic_urls
+      - mso.sites.username
+      - mso.sites.password
+      - mso.sites.id
+      - mso.sites.location
+  - name: Site Fabric Connectivity
+    template: fabric_connectivity
+    api_path: sites/fabric-connectivity
+    object_ids: '{% if mso.sites is defined %}fabric_connectivity{% endif %}'
+    method: put
+    delete: false
+    folder: mso
+    test_types:
+      - config
+    paths:
+      - mso.sites.multisite
+      - mso.fabric_connectivity
+      - mso.sites.routed_domain
+      - mso.sites.name
+      - mso.sites.id
+      - mso.sites.multicast_tep
+      - mso.sites.bgp
+      - mso.sites.ospf
+      - mso.sites.ospf_policies
+      - mso.sites.pods
+  - name: Tenant
+    template: tenant
+    api_path: tenants
+    object_ids: "{{ mso | default() | json_query('tenants[*].name') }}"
+    delete_ignore:
+      - common
+      - infra
+    folder: mso
+    test_types:
+      - config
+    paths:
+      - mso.tenants
+  - name: Schema
+    template: schema
+    api_path: schemas
+    object_ids: "{{ mso | default() | json_query('schemas[*].name') }}"
+    folder: schema
+    test_types:
+      - config
+    paths:
+      - mso.schemas
+  - name: DHCP Relay Policy
+    template: dhcp_relay
+    api_path: policies/dhcp/relay
+    object_ids: "{{ mso | default() | json_query('policies.dhcp_relays[*].name') }}"
+    folder: mso
+    test_types:
+      - config
+    paths:
+      - mso.policies.dhcp_relays
+  - name: DHCP Option Policy
+    template: dhcp_option
+    api_path: policies/dhcp/option
+    object_ids: "{{ mso | default() | json_query('policies.dhcp_options[*].name') }}"
+    folder: mso
+    test_types:
+      - config
+    paths:
+      - mso.policies.dhcp_options

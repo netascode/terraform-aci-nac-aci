@@ -1,0 +1,35 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for con in tenant.imported_contracts | default([]) %}{{ comma1() }}
+            {% set imported_con_name = con.name ~ defaults.apic.tenants.imported_contracts.name_suffix %}
+            {% set con_name = con.contract ~ defaults.apic.tenants.contracts.name_suffix %}
+            {
+                "vzCPIf": {
+                    "attributes": {
+                        "name": "{{ imported_con_name }}",
+                        "dn": "uni/tn-{{ tenant.name }}/cif-{{ imported_con_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {
+                            "vzRsIf": {
+                                "attributes": {
+                                    "tDn": "uni/tn-{{ con.tenant }}/brc-{{ con_name }}"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

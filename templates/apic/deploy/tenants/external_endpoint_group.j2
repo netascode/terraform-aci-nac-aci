@@ -1,0 +1,113 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for l3out in tenant.l3outs | default([]) %}{{ comma1() }}
+            {% set l3out_name = l3out.name ~ defaults.apic.tenants.l3outs.name_suffix %}
+            {
+                "l3extOut": {
+                    "attributes": {
+                        "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}",
+                        "name": "{{ l3out_name }}"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for epg in l3out.external_endpoint_groups | default([]) %}{{ comma2() }}
+                        {% set eepg_name = epg.name ~ defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix %}
+                        {
+                            "l3extInstP": {
+                                "attributes": {
+                                    "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/instP-{{ eepg_name }}",
+                                    "descr": "{{ epg.description | default() }}",
+                                    "name": "{{ eepg_name }}",
+                                    "nameAlias": "{{ epg.alias | default() }}",
+                                    "prefGrMemb": "{{ epg.preferred_group | default(defaults.apic.tenants.l3outs.external_endpoint_groups.preferred_group) }}",
+                                    "prio": "{{ epg.qos_class | default(defaults.apic.tenants.l3outs.external_endpoint_groups.qos_class) }}",
+                                    "targetDscp": "{{ epg.target_dscp | default(defaults.apic.tenants.l3outs.external_endpoint_groups.target_dscp) }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for subnet in epg.subnets | default([]) %}{{ comma3() }}
+                                    {% set scope = [] %}
+                                    {% if subnet.export_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.export_route_control) == "yes" %}{% set scope = scope + [("export-rtctrl")] %}{% endif %}
+                                    {% if subnet.import_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_route_control) == "yes" %}{% set scope = scope + [("import-rtctrl")] %}{% endif %}
+                                    {% if subnet.import_security | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_security) == "yes" %}{% set scope = scope + [("import-security")] %}{% endif %}
+                                    {% if subnet.shared_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.shared_route_control) == "yes" %}{% set scope = scope + [("shared-rtctrl")] %}{% endif %}
+                                    {% if subnet.shared_security | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.shared_security) == "yes" %}{% set scope = scope + [("shared-security")] %}{% endif %}
+                                    {% set agg = [] %}
+                                    {% if subnet.aggregate_export_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_export_route_control) == "yes" %}{% set agg = agg + [("export-rtctrl")] %}{% endif %}
+                                    {% if subnet.aggregate_import_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_import_route_control) == "yes" %}{% set agg = agg + [("import-rtctrl")] %}{% endif %}
+                                    {% if subnet.aggregate_shared_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_shared_route_control) == "yes" %}{% set agg = agg + [("shared-rtctrl")] %}{% endif %}
+                                    {
+                                        "l3extSubnet": {
+                                            "attributes": {
+                                                "aggregate": "{{ agg | join(',') }}",
+                                                "ip": "{{ subnet.prefix }}",
+                                                "name": "{{ subnet.name | default() }}",
+                                                "scope": "{{ scope | join(',') }}",
+                                                "childAction": "deleteNonPresent"
+                                            },
+                                            "children": [
+                                                {% if subnet.bgp_route_summarization | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.bgp_route_summarization) ==  "yes" %}
+                                                {
+                                                    "l3extRsSubnetToRtSumm": {
+                                                        "attributes": {
+                                                            "tDn": "uni/tn-common/bgprtsum-default"
+                                                        }
+                                                    }
+                                                }
+                                                {% endif %}
+                                            ]
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for contract in epg.contracts.providers | default([]) %}{{ comma3() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
+                                    {
+                                        "fvRsProv": {
+                                            "attributes": {
+                                                "tnVzBrCPName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for contract in epg.contracts.consumers | default([]) %}{{ comma3() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
+                                    {
+                                        "fvRsCons": {
+                                            "attributes": {
+                                                "tnVzBrCPName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for contract in epg.contracts.imported_consumers | default([]) %}{{ comma3() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.imported_contracts.name_suffix %}
+                                    {
+                                        "fvRsConsIf": {
+                                            "attributes": {
+                                                "tnVzCPIfName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

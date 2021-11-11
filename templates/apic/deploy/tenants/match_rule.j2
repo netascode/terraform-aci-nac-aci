@@ -1,0 +1,83 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for rule in tenant.policies.match_rules | default([]) %}{{ comma1() }}
+            {% set rule_name = rule.name ~ defaults.apic.tenants.policies.match_rules.name_suffix %}
+            {
+                "rtctrlSubjP": {
+                    "attributes": {
+                        "name": "{{ rule_name }}",
+                        "dn": "uni/tn-{{ tenant.name }}/subj-{{ rule_name }}",
+                        "descr": "{{ rule.description | default() }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for re_comm_term in rule.regex_community_terms | default([]) %}{{ comma2() }}
+                        {% set re_comm_term_name = re_comm_term.name ~ defaults.apic.tenants.policies.match_rules.regex_community_terms.name_suffix %}
+                        {
+                            "rtctrlMatchCommRegexTerm": {
+                                "attributes": {
+                                    "name": "{{ re_comm_term_name }}",
+                                    "regex": "{{ re_comm_term.regex }}",
+                                    "commType": "{{ re_comm_term.type | default(defaults.apic.tenants.policies.match_rules.regex_community_terms.type)  }}",
+                                    "descr": "{{ re_comm_term.description | default() }}"                                    
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for comm_term in rule.community_terms | default([]) %}{{ comma2() }}
+                        {% set comm_term_name = comm_term.name ~ defaults.apic.tenants.policies.match_rules.community_terms.name_suffix %}
+                        {
+                            "rtctrlMatchCommTerm": {
+                                "attributes": {
+                                    "name": "{{ comm_term_name }}",
+                                    "descr": "{{ comm_term.description | default() }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for factor in comm_term.factors | default([]) %}{{ comma3() }}
+                                    {
+                                        "rtctrlMatchCommFactor": {
+                                            "attributes": {
+                                                "community": "{{ factor.community }}",
+                                                "descr": "{{ factor.description | default() }}",
+                                                "scope": "{{ factor.scope | default(defaults.apic.tenants.policies.match_rules.community_terms.factors.scope) }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for prefix in rule.prefixes | default([]) %}{{ comma2() }}
+                        {
+                            "rtctrlMatchRtDest": {
+                                "attributes": {
+                                    "aggregate": "{{ prefix.aggregate | default(defaults.apic.tenants.policies.match_rules.prefixes.aggregate) }}",
+                                    "descr": "{{ prefix.description | default() }}",
+                                    "fromPfxLen": "{{ prefix.from_length | default(defaults.apic.tenants.policies.match_rules.prefixes.from_length) }}",
+                                    "ip": "{{ prefix.ip }}",
+                                    "toPfxLen": "{{ prefix.to_length | default(defaults.apic.tenants.policies.match_rules.prefixes.to_length) }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

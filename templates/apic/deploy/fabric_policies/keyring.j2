@@ -1,0 +1,34 @@
+{
+    "pkiEp": {
+        "attributes": {
+            "dn": "uni/userext/pkiext"
+        },
+        "children": [  
+            {%- set comma1 = joiner(",") %}
+            {%- for keyring in apic.fabric_policies.aaa.key_rings | default([]) %}{{ comma1() }}
+            {% set keyring_name = keyring.name ~ defaults.apic.fabric_policies.aaa.key_rings.name_suffix %}
+            {
+                "pkiKeyRing":{
+                    "attributes": {
+                        "dn":"uni/userext/pkiext/keyring-{{ keyring_name }}",
+                        "name": "{{ keyring_name }}",
+                        "descr": "{{ keyring.description | default() }}",
+                        "modulus": "{{ keyring.modulus | default(defaults.apic.fabric_policies.aaa.key_rings.modulus) }}"
+                        {%- if keyring.ca_certificate is defined %},
+                        "tp": "{{ keyring.ca_certificate }}"
+                        {%- endif %}
+                        {%- if keyring.certificate is defined %},
+                        "cert": "{{ keyring.certificate | replace('\n', '\\n')}}"
+                        {%- endif %}
+                        {%- if keyring.private_key is defined %},
+                        "key": "{{ keyring.private_key | replace('\n', '\\n')}}"
+                        {%- endif %}
+
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

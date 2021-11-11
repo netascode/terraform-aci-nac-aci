@@ -1,0 +1,57 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-mgmt",
+            "name": "mgmt"
+        },
+        "children": [
+            {
+                "mgmtExtMgmtEntity": {
+                    "attributes": {
+                        "dn": "uni/tn-mgmt/extmgmt-default",
+                        "name": "default"
+                    },
+                    "children": [
+                        {%- set comma1 = joiner(",") %}
+                        {%- for ext in tenant.ext_mgmt_instances | default([]) %}{{ comma1() }}
+                        {% set ext_name = ext.name ~ defaults.apic.tenants.ext_mgmt_instances.name_suffix %}
+                        {
+                            "mgmtInstP": {
+                                "attributes": {
+                                    "dn": "uni/tn-mgmt/extmgmt-default/instp-{{ ext_name }}",
+                                    "name": "{{ ext_name }}"
+                                },
+                                "children": [
+                                    {%- set comma2 = joiner(",") %}
+                                    {%- for subnet in ext.subnets | default([]) %}{{ comma2() }}
+                                    {
+                                        "mgmtSubnet": {
+                                            "attributes": {
+                                                "ip": "{{ subnet }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for contract in ext.oob_contracts.consumers | default([]) %}{{ comma2() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.oob_contracts.name_suffix %}
+                                    {
+                                        "mgmtRsOoBCons": {
+                                            "attributes": {
+                                                "tnVzOOBBrCPName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+                        
+                    ]
+                }
+            }
+        ]
+    }
+}

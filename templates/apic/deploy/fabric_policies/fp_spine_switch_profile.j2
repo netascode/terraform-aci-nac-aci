@@ -1,0 +1,132 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) == "enabled" or apic.auto_generate_fabric_spine_switch_interface_profiles | default(defaults.apic.auto_generate_fabric_spine_switch_interface_profiles) == "enabled" %}
+            {%- for node in apic.node_policies.nodes | default([]) %}
+            {%- if node.role == "spine" %}
+            {%- set spine_switch_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.fabric_policies.spine_switch_profile_name | default(defaults.apic.fabric_policies.spine_switch_profile_name))) %}
+            {%- set spine_interface_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.fabric_policies.spine_interface_profile_name | default(defaults.apic.fabric_policies.spine_interface_profile_name))) %}
+            {%- set spine_switch_selector_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.fabric_policies.spine_switch_selector_name | default(defaults.apic.fabric_policies.spine_switch_selector_name))) %}{{ comma1() }}
+            {
+                "fabricSpineP": {
+                    "attributes": {
+                        "name": "{{ spine_switch_profile_name }}",
+                        "dn": "uni/fabric/spprof-{{ spine_switch_profile_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {
+                            "fabricSpineS": {
+                                "attributes": {
+                                    "name": "{{ spine_switch_selector_name }}",
+                                    "type": "range",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {% if node.fabric_policy_group is defined %}
+                                    {% set policy_group_name = node.fabric_policy_group ~ defaults.apic.fabric_policies.spine_switch_policy_groups.name_suffix %}
+                                    {
+                                        "fabricRsSpNodePGrp": {
+                                            "attributes": {
+                                                "tDn": "uni/fabric/funcprof/spnodepgrp-{{ policy_group_name }}"
+                                            }
+                                        }
+                                    },
+                                    {% endif %}
+                                    {
+                                        "fabricNodeBlk": {
+                                            "attributes": {
+                                                "from_": "{{ node.id }}",
+                                                "name": "{{ node.id }}",
+                                                "to_": "{{ node.id }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "fabricRsSpPortP": {
+                                "attributes": {
+                                    "tDn": "uni/fabric/spportp-{{ spine_interface_profile_name }}"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endif %}
+            {%- endfor %}
+            {%- endif %}
+            {%- for prof in apic.fabric_policies.spine_switch_profiles | default([]) %}{{ comma1() }}
+            {% set spine_switch_profile_name = prof.name ~ defaults.apic.fabric_policies.spine_switch_profiles.name_suffix %}
+            {
+                "fabricSpineP": {
+                    "attributes": {
+                        "name": "{{ spine_switch_profile_name }}",
+                        "dn": "uni/fabric/spprof-{{ spine_switch_profile_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for sel in prof.selectors | default([]) %}{{ comma2() }}
+                        {% set spine_switch_selector_name = sel.name ~ defaults.apic.fabric_policies.spine_switch_profiles.selectors.name_suffix %}
+                        {
+                            "fabricSpineS": {
+                                "attributes": {
+                                    "name": "{{ spine_switch_selector_name }}",
+                                    "type": "range",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {% if sel.policy is defined %}
+                                    {% set policy_group_name = sel.policy ~ defaults.apic.fabric_policies.spine_switch_policy_groups.name_suffix %}
+                                    {
+                                        "fabricRsSpNodePGrp": {
+                                            "attributes": {
+                                                "tDn": "uni/fabric/funcprof/spnodepgrp-{{ policy_group_name }}"
+                                            }
+                                        }
+                                    },
+                                    {% endif %}
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for blk in sel.node_blocks | default([]) %}{{ comma3() }}
+                                    {% set block_name = blk.name ~ defaults.apic.fabric_policies.spine_switch_profiles.selectors.node_blocks.name_suffix %}
+                                    {
+                                        "fabricNodeBlk": {
+                                            "attributes": {
+                                                "from_": "{{ blk.from }}",
+                                                "name": "{{ block_name }}",
+                                                "to_": "{{ blk.to | default(blk.from) }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for intp in prof.interface_profiles | default([]) %}{{ comma2() }}
+                        {% set spine_interface_profile_name = intp ~ defaults.apic.fabric_policies.spine_interface_profiles.name_suffix %}
+                        {
+                            "fabricRsSpPortP": {
+                                "attributes": {
+                                    "tDn": "uni/fabric/spportp-{{ spine_interface_profile_name }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

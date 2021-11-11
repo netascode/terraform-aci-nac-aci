@@ -1,0 +1,42 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for pool in apic.access_policies.vlan_pools | default([]) %}{{ comma1() }}
+            {% set vlan_pool_name = pool.name ~ defaults.apic.access_policies.vlan_pools.name_suffix %}
+            {
+                "fvnsVlanInstP": {
+                    "attributes": {
+                        "allocMode": "{{ pool.allocation | default(defaults.apic.access_policies.vlan_pools.allocation) }}",
+                        "name": "{{ vlan_pool_name }}",
+                        "descr": "{{ pool.description | default() }}",
+                        "dn": "uni/infra/vlanns-[{{ vlan_pool_name }}]-{{ pool.allocation | default(defaults.apic.access_policies.vlan_pools.allocation) }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for range in pool.ranges | default([]) %}{{ comma2() }}
+                        {
+                            "fvnsEncapBlk": {
+                                "attributes": {
+                                    "descr": "{{ range.description | default() }}",
+                                    "allocMode": "{{ range.allocation | default(defaults.apic.access_policies.vlan_pools.ranges.allocation) }}",
+                                    "from": "vlan-{{ range.from }}",
+                                    "to": "vlan-{{ range.to | default(range.from) }}",
+                                    "role": "{{ range.role | default(defaults.apic.access_policies.vlan_pools.ranges.role) }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

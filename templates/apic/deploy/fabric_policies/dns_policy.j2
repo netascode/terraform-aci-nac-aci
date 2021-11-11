@@ -1,0 +1,59 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.fabric_policies.dns_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = policy.name ~ defaults.apic.fabric_policies.dns_policies.name_suffix %}
+            {
+                "dnsProfile": {
+                    "attributes": {
+                        "IPVerPreference": "IPv4",
+                        "dn": "uni/fabric/dnsp-{{ policy_name }}",
+                        "name": "{{ policy_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {
+                            "dnsRsProfileToEpg": {
+                                "attributes": {
+                                    {% set mgmt_epg = policy.mgmt_epg | default(defaults.apic.fabric_policies.dns_policies.mgmt_epg) %}
+                                    {% if mgmt_epg == "oob" %}
+                                    "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"
+                                    {% elif mgmt_epg == "inb" %}
+                                    "tDn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}"
+                                    {% endif %}
+                                }
+                            }
+                        }
+                        {%- for provider in policy.providers | default([]) %},
+                        {
+                            "dnsProv": {
+                                "attributes": {
+                                    "addr": "{{ provider.ip }}",
+                                    "preferred": "{{ provider.preferred | default(defaults.apic.fabric_policies.dns_policies.providers.preferred) }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for domain in policy.domains | default([]) %},
+                        {
+                            "dnsDomain": {
+                                "attributes": {
+                                    "name": "{{ domain.name }}",
+                                    "isDefault": "{{ domain.default | default(defaults.apic.fabric_policies.dns_policies.domains.default) }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

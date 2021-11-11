@@ -1,0 +1,52 @@
+{
+    "fabricProtPol": {
+        "attributes": {
+            "name": "default",
+            "pairT": "{{ apic.node_policies.vpc_groups.mode | default(defaults.apic.node_policies.vpc_groups.mode) }}",
+            "dn": "uni/fabric/protpol"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for group in apic.node_policies.vpc_groups.groups | default([]) %}{{ comma1() }}
+            {% set vpc_group_name = (group.id ~ ":" ~ group.switch_1 ~ ":" ~ group.switch_2) | regex_replace("^(?P<id>.+):(?P<switch1_id>.+):(?P<switch2_id>.+)$", (apic.access_policies.vpc_group_name | default(defaults.apic.access_policies.vpc_group_name))) %}
+            {% set vpc_policy_name = group.policy | default() ~ defaults.apic.access_policies.switch_policies.vpc_policies.name_suffix %}
+            {
+                "fabricExplicitGEp": {
+                    "attributes": {
+                        "id": "{{ group.id }}",
+                        "name": "{{ group.name | default(vpc_group_name) }}",
+                        "dn": "uni/fabric/protpol/expgep-{{ group.name | default(vpc_group_name) }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {% if group.policy is defined %}
+                        {
+                            "fabricRsVpcInstPol": {
+                                "attributes": {
+                                    "tnVpcInstPolName": "{{ vpc_policy_name }}"
+                                }
+                            }
+                        },
+                        {% endif %}
+                        {
+                            "fabricNodePEp": {
+                                "attributes": {
+                                    "id": "{{ group.switch_1 }}"
+                                }
+                            }
+                        },
+                        {
+                            "fabricNodePEp": {
+                                "attributes": {
+                                    "id": "{{ group.switch_2 }}"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "pkiEp": {
+        "attributes": {
+            "dn": "uni/userext/pkiext"
+        },
+        "children": [  
+            {%- set comma1 = joiner(",") %}
+            {%- for ca in apic.fabric_policies.aaa.ca_certificates | default([]) %}{{ comma1() }}
+            {% set ca_name = ca.name ~ defaults.apic.fabric_policies.aaa.ca_certificates.name_suffix %}
+            {
+                "pkiTP":{
+                    "attributes": {
+                        "dn":"uni/userext/pkiext/tp-{{ ca_name }}",
+                        "name": "{{ ca_name }}",
+                        "descr":" {{ ca.description | default() }}",
+                        "certChain": "{{ ca.certificate_chain | replace('\n', '\\n')}}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

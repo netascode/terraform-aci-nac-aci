@@ -1,0 +1,11 @@
+{
+    "epLoopProtectP": {
+        "attributes": {
+            "action": "{{ apic.fabric_policies.ep_loop_protection.action | default(defaults.apic.fabric_policies.ep_loop_protection.action) }}",
+            "adminSt": "{{ apic.fabric_policies.ep_loop_protection.admin_state | default(defaults.apic.fabric_policies.ep_loop_protection.admin_state) }}",
+            "dn": "uni/infra/epLoopProtectP-default",
+            "loopDetectIntvl": "{{ apic.fabric_policies.ep_loop_protection.detection_interval | default(defaults.apic.fabric_policies.ep_loop_protection.detection_interval) }}",
+            "loopDetectMult": "{{ apic.fabric_policies.ep_loop_protection.detection_multiplier | default(defaults.apic.fabric_policies.ep_loop_protection.detection_multiplier) }}"
+        }
+    }
+}

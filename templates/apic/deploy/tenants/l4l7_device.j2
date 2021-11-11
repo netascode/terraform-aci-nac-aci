@@ -1,0 +1,154 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for dev in tenant.services.l4l7_devices | default([]) %}{{ comma1() }}
+            {% set dev_name = dev.name ~ defaults.apic.tenants.services.l4l7_devices.name_suffix %}
+            {
+                "vnsLDevVip": {
+                    "attributes": {
+                        "contextAware": "{{ dev.context_aware | default(defaults.apic.tenants.services.l4l7_devices.context_aware) }}",
+                        "devtype": "{{ dev.type | default(defaults.apic.tenants.services.l4l7_devices.type) }}",
+                        "dn": "uni/tn-{{ tenant.name }}/lDevVip-{{ dev_name }}",
+                        "funcType": "{{ dev.function | default(defaults.apic.tenants.services.l4l7_devices.function) }}",
+                        "isCopy": "{{ dev.copy_device | default(defaults.apic.tenants.services.l4l7_devices.copy_device) }}",
+                        "managed": "{{ dev.managed | default(defaults.apic.tenants.services.l4l7_devices.managed) }}",
+                        "mode": "legacy-Mode",
+                        "name": "{{ dev_name }}",
+                        "nameAlias": "{{ dev.alias | default() }}",
+                        "packageModel": "",
+                        "promMode": "{{ dev.promiscuous_mode | default(defaults.apic.tenants.services.l4l7_devices.promiscuous_mode) }}",
+                        "svcType": "{{ dev.service_type | default(defaults.apic.tenants.services.l4l7_devices.service_type) }}",
+                        "trunking": "{{ dev.trunking | default(defaults.apic.tenants.services.l4l7_devices.trunking) }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {% if dev.physical_domain is defined %}
+                        {% set domain_name = dev.physical_domain ~ defaults.apic.access_policies.physical_domains.name_suffix %}
+                        {
+                            "vnsRsALDevToPhysDomP": {
+                                "attributes": {
+                                    "tDn": "uni/phys-{{ domain_name }}"
+                                }
+                            }
+                        },
+                        {% endif %}
+                        {%- set comma2 = joiner(",") %}
+                        {%- for cd in dev.concrete_devices | default([]) %}{{ comma2() }}
+                        {% set cd_name = cd.name ~ defaults.apic.tenants.services.l4l7_devices.concrete_devices.name_suffix %}
+                        {
+                            "vnsCDev": {
+                                "attributes": {
+                                    "cloneCount": "0",
+                                    "devCtxLbl": "",
+                                    "host": "",
+                                    "isCloneOperation": "no",
+                                    "isTemplate": "no",
+                                    "name": "{{ cd_name }}",
+                                    "nameAlias": "{{ cd.alias | default() }}",
+                                    "vcenterName": "{{ cd.vcenter_name | default() }}",
+                                    "vmName": "{{ cd.vm_name | default() }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for int in cd.interfaces | default([]) %}{{ comma3() }}
+                                    {% set int_name = int.name ~ defaults.apic.tenants.services.l4l7_devices.concrete_devices.interfaces.name_suffix %}
+                                    {
+                                        "vnsCIf": {
+                                            "attributes": {
+                                                "name": "{{ int_name }}",
+                                                "nameAlias": "{{ int.alias | default() }}",
+                                                "vnicName": "{{ int.vnic_name | default() }}",
+                                                "childAction": "deleteNonPresent"
+                                            },
+                                            "children": [
+                                                {
+                                                    "vnsRsCIfPathAtt": {
+                                                        "attributes": {
+                                                            {% if int.node_id is defined and int.channel is not defined %}
+                                                            {% set query = "nodes[?id==`" ~ int.node_id ~ "`].pod" %}
+                                                            {% set pod = int.pod_id | default((apic.node_policies | json_query(query))[0] | default('1')) %}
+                                                            {% if int.fex_id is defined %}
+                                                            "tDn": "topology/pod-{{ pod }}/paths-{{ int.node_id }}/extpaths-{{ int.fex_id }}/pathep-[eth{{ int.module | default(defaults.apic.tenants.services.l4l7_devices.concrete_devices.interfaces.module) }}/{{ int.port }}]"
+                                                            {% else %}
+                                                            "tDn": "topology/pod-{{ pod }}/paths-{{ int.node_id }}/pathep-[eth{{ int.module | default(defaults.apic.tenants.services.l4l7_devices.concrete_devices.interfaces.module) }}/{{ int.port }}]"
+                                                            {% endif %}
+                                                            {% else %}
+                                                            {% set query = "leaf_interface_policy_groups[?name==`" ~ int.channel ~ "`].type" %}
+                                                            {% set type = (apic.access_policies | json_query(query))[0] %}
+                                                            {% if int.node_id is defined %}
+                                                                {% set node = int.node_id %}
+                                                            {% else %}
+                                                                {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
+                                                                {% set node = (apic.interface_policies | default() | json_query(query))[0] %}
+                                                            {% endif %}
+                                                            {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
+                                                            {% set pod = int.pod_id | default((apic.node_policies | json_query(query))[0] | default('1')) %}
+                                                            {% set policy_group_name = int.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
+                                                            {% if type == 'vpc' %}
+                                                            {% if int.node2_id is defined %}
+                                                                {% set node2 = int.node2_id %}
+                                                            {% else %}
+                                                                {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
+                                                                {% set node2 = (apic.interface_policies | default() | json_query(query))[1] %}
+                                                            {% endif %}
+                                                            "tDn": "topology/pod-{{ pod }}/protpaths-{{ node }}-{{ node2 }}/pathep-[{{ policy_group_name }}]"
+                                                            {% else %}
+                                                            "tDn": "topology/pod-{{ pod }}/paths-{{ node }}/pathep-[{{ policy_group_name }}]"
+                                                            {% endif %}
+                                                            {% endif %}
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for int in dev.logical_interfaces | default([]) %}{{ comma2() }}
+                        {% set int_name = int.name ~ defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix %}
+                        {
+                            "vnsLIf": {
+                                "attributes": {
+                                    "encap": "vlan-{{ int.vlan }}",
+                                    "name": "{{ int_name }}",
+                                    "nameAlias": "{{ int.alias | default() }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for ci in int.concrete_interfaces | default([]) %}{{ comma3() }}
+                                    {% set ci_name = ci.interface_name ~ defaults.apic.tenants.services.l4l7_devices.logical_interfaces.concrete_interfaces.name_suffix  %}
+                                    {% set cd_name = ci.device ~ defaults.apic.tenants.services.l4l7_devices.concrete_devices.name_suffix %}
+                                    {
+                                        "vnsRsCIfAttN": {
+                                            "attributes": {
+                                                "tDn": "uni/tn-{{ tenant.name }}/lDevVip-{{ dev_name }}/cDev-{{ cd_name }}/cIf-[{{ ci_name }}]"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

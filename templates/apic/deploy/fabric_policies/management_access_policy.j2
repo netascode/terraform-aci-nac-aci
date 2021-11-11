@@ -1,0 +1,92 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.fabric_policies.pod_policies.management_access_policies | default([]) %}{{ comma1() }}
+            {% set management_access_policy_name = policy.name ~ defaults.apic.fabric_policies.pod_policies.management_access_policies.name_suffix %}
+            {
+                "commPol": {
+                    "attributes": {
+                        "descr": "{{ policy.description | default() }}",
+                        "dn": "uni/fabric/comm-{{ management_access_policy_name }}",
+                        "name": "{{ management_access_policy_name }}"
+                    },
+                    "children": [
+                        {
+                            "commTelnet": {
+                                "attributes": {
+                                    "name": "telnet",
+                                    "adminSt": "{{ policy.telnet.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.telnet.admin_state) }}",
+                                    "port": "{{ policy.telnet.port | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.telnet.port) }}"
+                                }
+                            }
+                        },
+                        {
+                            "commSsh": {
+                                "attributes": {
+                                    "adminSt": "{{ policy.ssh.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.admin_state) }}",
+                                    "name": "ssh",
+                                    "passwordAuth": "{{ policy.ssh.password_auth | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.password_auth) }}",
+                                    "port": "{{ policy.ssh.port | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.port)}}",
+                                    {% set ssl_ciphers = [] %}
+                                    {% if policy.ssh.aes128_ctr | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.aes128_ctr) == "yes" %}{% set ssl_ciphers = ssl_ciphers + [("aes128-ctr")] %}{% endif %}
+                                    {% if policy.ssh.aes128_gcm | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.aes128_gcm) == "yes" %}{% set ssl_ciphers = ssl_ciphers + [("aes128-gcm@openssh.com")] %}{% endif %}
+                                    {% if policy.ssh.aes192_ctr | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.aes192_ctr) == "yes" %}{% set ssl_ciphers = ssl_ciphers + [("aes192-ctr")] %}{% endif %}
+                                    {% if policy.ssh.aes256_ctr | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.aes256_ctr) == "yes" %}{% set ssl_ciphers = ssl_ciphers + [("aes256-ctr")] %}{% endif %}
+                                    {% if policy.ssh.chacha | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.chacha) == "yes" %}{% set ssl_ciphers = ssl_ciphers + [("chacha20-poly1305@openssh.com")] %}{% endif %}
+                                    "sshCiphers": "{{ ssl_ciphers | join(',') }}",
+                                    {% set ssh_macs = [] %}
+                                    {% if policy.ssh.hmac_sha1 | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.hmac_sha1) == "yes" %}{% set ssh_macs = ssh_macs + [("hmac-sha1")] %}{% endif %}
+                                    {% if policy.ssh.hmac_sha2_256 | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.hmac_sha2_256) == "yes" %}{% set ssh_macs = ssh_macs + [("hmac-sha2-256")] %}{% endif %}
+                                    {% if policy.ssh.hmac_sha2_512 | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.hmac_sha2_512) == "yes" %}{% set ssh_macs = ssh_macs + [("hmac-sha2-512")] %}{% endif %}
+                                    "sshMacs": "{{ ssh_macs | join(',') }}"
+                                }
+                            }
+                        },
+                        {
+                            "commHttps": {
+                                "attributes": {
+                                    "adminSt": "{{ policy.https.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.admin_state) }}",
+                                    "clientCertAuthState": "{{ policy.https.client_cert_auth_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.client_cert_auth_state) }}",
+                                    "dhParam": "{{ policy.https.dh | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.dh) }}",
+                                    "name": "https",
+                                    "port": "{{ policy.https.port | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.port) }}",
+                                    {% set ssl_protocols = [] %}
+                                    {% if policy.https.tlsv1 | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.tlsv1) == "yes" %}{% set ssl_protocols = ssl_protocols + [("TLSv1")] %}{% endif %}
+                                    {% if policy.https.tlsv1_1 | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.tlsv1_1) == "yes" %}{% set ssl_protocols = ssl_protocols + [("TLSv1.1")] %}{% endif %}
+                                    {% if policy.https.tlsv1_2 | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.tlsv1_2) == "yes" %}{% set ssl_protocols = ssl_protocols + [("TLSv1.2")] %}{% endif %}
+                                    "sslProtocols": "{{ ssl_protocols | join(',') }}",
+                                    "visoreAccess": "enabled"
+                                },
+                                "children": [
+                                    {
+                                        "commRsKeyRing": {
+                                            "attributes": {
+                                                "tnPkiKeyRingName": "{{ policy.https.key_ring | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.key_ring) }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "commHttp": {
+                                "attributes": {
+                                    "adminSt": "{{ policy.http.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.http.admin_state) }}",
+                                    "name": "http",
+                                    "port": "{{ policy.http.port | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.http.port) }}",
+                                    "visoreAccess": "enabled"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

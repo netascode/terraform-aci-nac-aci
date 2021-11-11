@@ -1,0 +1,72 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) == "enabled" or apic.auto_generate_access_spine_switch_interface_profiles | default(defaults.apic.auto_generate_access_spine_switch_interface_profiles) == "enabled" %}
+            {%- for node in apic.node_policies.nodes | default([]) %}
+            {%- if node.role == "spine" and node.id | string == item[1] %}
+            {%- set spine_interface_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.spine_interface_profile_name | default(defaults.apic.access_policies.spine_interface_profile_name))) %}{{ comma1() }}
+            {
+                "infraSpAccPortP": {
+                    "attributes": {
+                        "name": "{{ spine_interface_profile_name }}",
+                        "dn": "uni/infra/spaccportprof-{{ spine_interface_profile_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- set query = "nodes[?id==`" ~ node.id ~ "`].interfaces[]" %}
+                        {%- if apic.interface_policies is defined %}
+                        {%- for int in (apic.interface_policies | default() | json_query(query) | default([])) %}
+                        {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
+                        {%- set spine_interface_selector_name = (module ~ ":" ~ int.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.spine_interface_selector_name | default(defaults.apic.access_policies.spine_interface_selector_name))) %}{{ comma2() }}
+                        {
+                            "infraSHPortS": {
+                                "attributes": {
+                                    "dn": "uni/infra/spaccportprof-{{ spine_interface_profile_name }}/shports-{{ spine_interface_selector_name }}-typ-range",
+                                    "name": "{{ spine_interface_selector_name }}",
+                                    "type": "range",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {% if int.policy_group is defined %}
+                                    {% set policy_group_name = int.policy_group ~ defaults.apic.access_policies.spine_interface_policy_groups.name_suffix %}
+                                    {
+                                        "infraRsSpAccGrp": {
+                                            "attributes": {
+                                                "tDn": "uni/infra/funcprof/spaccportgrp-{{ policy_group_name }}"
+                                            }
+                                        }
+                                    },
+                                    {% endif %}
+                                    {
+                                        "infraPortBlk": {
+                                            "attributes": {
+                                                "descr": "{{ int.description | default() }}",
+                                                "fromCard": "{{ module }}",
+                                                "fromPort": "{{ int.port }}",
+                                                "name": "{{ module }}-{{ int.port }}",
+                                                "toCard": "{{ module }}",
+                                                "toPort": "{{ int.port }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+                        {%- endif %}
+
+                    ]
+                }
+            }
+            {%- endif %}
+            {%- endfor %}
+            {%- endif %}
+
+        ]
+    }
+}

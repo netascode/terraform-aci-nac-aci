@@ -1,0 +1,35 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {
+                "vnsSvcCont": {
+                    "attributes": {
+                        "dn": "uni/tn-{{ tenant.name }}/svcCont"
+                    },
+                    "children": [
+                        {%- set comma1 = joiner(",") %}
+                        {%- for pol in tenant.services.service_epg_policies | default([]) %}{{ comma1() }}
+                        {% set pol_name = pol.name ~ defaults.apic.tenants.services.service_epg_policies.name_suffix %}
+                        {
+                            "vnsSvcEPgPol": {
+                                "attributes": {
+                                    "dn": "uni/tn-{{ tenant.name }}/svcCont/svcEPgPol-{{ pol_name }}",
+                                    "name": "{{ pol_name }}",
+                                    "descr": "{{ pol.description | default() }}",
+                                    "prefGrMemb": "{{ pol.preferred_group | default(defaults.apic.tenants.services.service_epg_policies.preferred_group) }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        
+                    ]
+                }
+            }
+        ]
+    }
+}

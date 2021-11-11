@@ -1,0 +1,1481 @@
+---
+bootstrap_objects:
+  - name: Bootstrap
+    template: bootstrap
+    folder: bootstrap
+    paths:
+      - apic.bootstrap
+
+objects:
+  - name: Date and Time Format
+    template: date_time_format
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.date_time_format
+  - name: APIC Connectivity Preference
+    template: apic_connectivity_pref
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.apic_conn_pref
+  - name: GUI and CLI Banner
+    template: banner
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.banners
+  - name: EP Loop Protection
+    template: ep_loop_protection
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.ep_loop_protection
+  - name: Rogue EP Control
+    template: rogue_ep_control
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.rogue_ep_control
+  - name: IP Aging
+    template: ip_aging
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.ip_aging
+  - name: System Global GIPo
+    template: system_global_gipo
+    folder: fabric_policies
+    delete: false
+    aci_classes:
+      - fmcastSystemGIPoPol
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.use_infra_gipo
+  - name: Fabric Wide Settings
+    template: fabric_wide_settings
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.global_settings
+  - name: Port Tracking
+    template: port_tracking
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.port_tracking
+  - name: PTP
+    template: ptp
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.ptp_admin_state
+  - name: Fabric ISIS Redistribute Metric
+    template: isis_policy
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.fabric_isis_redistribute_metric
+  - name: Fabric ISIS BFD
+    template: fabric_isis_bfd
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.fabric_isis_bfd
+  - name: DNS Profile Policy
+    template: dns_policy
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.dns_policies
+    diff_paths:
+      - apic.node_policies.oob_endpoint_group
+      - apic.node_policies.inb_endpoint_group
+  - name: Error Disabled Recovery Policy
+    template: err_disabled_recovery
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.err_disabled_recovery
+  - name: COOP Policy Group
+    template: coop_policy
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.coop_group_policy
+  - name: L2 MTU
+    template: l2_mtu
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.l2_port_mtu
+  - name: Infra DSCP Translation Policy
+    template: infra_dscp_translation_policy
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.infra_dscp_translation_policy
+  - name: AAA Settings
+    template: aaa
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.aaa.remote_user_login_policy
+      - apic.fabric_policies.aaa.default_fallback_check
+      - apic.fabric_policies.aaa.default_realm
+      - apic.fabric_policies.aaa.default_login_domain
+      - apic.fabric_policies.aaa.console_realm
+      - apic.fabric_policies.aaa.console_login_domain
+  - name: TACACS Provider
+    template: tacacs
+    folder: fabric_policies
+    test_types:
+      - config
+      - health
+    aci_classes:
+      - aaaTacacsPlusProvider
+    paths:
+      - apic.fabric_policies.aaa.tacacs_providers
+    diff_paths:
+      - apic.node_policies.oob_endpoint_group
+      - apic.node_policies.inb_endpoint_group
+  - name: User
+    template: user
+    folder: fabric_policies
+    idempotent: false
+    test_types:
+      - config
+    aci_classes:
+      - aaaUser
+    delete_ignore:
+      - admin
+      - '{{ apic_username }}'
+      - '{{ apic_test_username | default() }}'
+      - '{{ apic_mso_username | default() }}'
+    paths:
+      - apic.fabric_policies.aaa.users
+  - name: Login Domain
+    template: login_domain
+    folder: fabric_policies
+    test_types:
+      - config
+    aci_classes:
+      - aaaLoginDomain
+      - aaaTacacsPlusProviderGroup
+    delete_ignore: fallback
+    paths:
+      - apic.fabric_policies.aaa.login_domains
+  - name: Remote Location
+    template: remote_location
+    folder: fabric_policies
+    test_types:
+      - config
+      - health
+    aci_classes:
+      - fileRemotePath
+    paths:
+      - apic.fabric_policies.remote_locations
+  - name: Scheduler
+    template: scheduler
+    folder: fabric_policies
+    test_types:
+      - config
+    aci_classes:
+      - trigSchedP
+    delete_ignore:
+      - ConstCatSchedP
+      - ConstSchedP
+      - EveryEightHours
+    paths:
+      - apic.fabric_policies.schedulers
+  - name: Config Exports
+    template: config_export
+    folder: fabric_policies
+    test_types:
+      - config
+      - health
+      - operational
+    aci_classes:
+      - configExportP
+    delete_ignore: DailyAutoBackup
+    paths:
+      - apic.fabric_policies.config_exports
+  - name: SNMP Trap
+    template: snmp_trap
+    folder: fabric_policies
+    test_types:
+      - config
+    aci_classes:
+      - snmpGroup
+    paths:
+      - apic.fabric_policies.monitoring.snmp_traps
+    diff_paths:
+      - apic.node_policies.oob_endpoint_group
+      - apic.node_policies.inb_endpoint_group
+  - name: Syslog
+    template: syslog
+    folder: fabric_policies
+    test_types:
+      - config
+    aci_classes:
+      - syslogGroup
+    paths:
+      - apic.fabric_policies.monitoring.syslogs
+    diff_paths:
+      - apic.node_policies.oob_endpoint_group
+      - apic.node_policies.inb_endpoint_group
+  - name: Monitoring Policy
+    template: monitoring_policy
+    folder: fabric_policies
+    test_types:
+      - config
+    aci_classes:
+      - syslogSrc
+      - snmpSrc
+    paths:
+      - apic.fabric_policies.monitoring.snmp_traps.name
+      - apic.fabric_policies.monitoring.syslogs.name
+  - name: CA Certificate
+    template: ca_cert
+    folder: fabric_policies
+    test_types:
+      - config
+    aci_classes:
+      - pkiTP
+    paths:
+      - apic.fabric_policies.aaa.ca_certificates
+  - name: Keyring
+    template: keyring
+    folder: fabric_policies
+    test_types:
+      - config
+    aci_classes:
+      - pkiKeyRing
+    paths:
+      - apic.fabric_policies.aaa.key_rings
+  - name: Health Score Evaluation
+    template: health_score_evaluation
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    aci_classes:
+      - healthEvalP
+    paths:
+      - apic.fabric_policies.ignore_acked_faults
+  - name: MCP Global Instance
+    template: mcp
+    folder: access_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.mcp
+  - name: QOS Class
+    template: qos
+    folder: access_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.qos
+  - name: Pod Setup
+    template: pod_setup
+    folder: pod_policies
+    aci_classes:
+      - fabricSetupP
+    delete_ignore: 1
+    delete_ignore_attr: podId
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.pod_policies.pods
+  - name: Node Registration
+    template: node_registration
+    folder: node_policies
+    aci_classes:
+      - fabricNodeIdentP
+    test_types:
+      - config
+    paths:
+      - apic.node_policies.nodes.role
+      - apic.node_policies.nodes.serial_number
+      - apic.node_policies.nodes.name
+      - apic.node_policies.nodes.id
+      - apic.node_policies.nodes.pod
+      - apic.node_policies.nodes.type
+  - name: OOB Node Address
+    template: oob_node_address
+    folder: node_policies
+    aci_classes:
+      - mgmtRsOoBStNode
+    test_types:
+      - config
+    paths:
+      - apic.node_policies.nodes.oob_address
+      - apic.node_policies.nodes.oob_gateway
+    diff_paths:
+      - apic.node_policies.oob_endpoint_group
+      - apic.node_policies.nodes.pod
+  - name: INB Node Address
+    template: inb_node_address
+    folder: node_policies
+    aci_classes:
+      - mgmtRsInBStNode
+    test_types:
+      - config
+    paths:
+      - apic.node_policies.nodes.inb_address
+      - apic.node_policies.nodes.inb_gateway
+    diff_paths:
+      - apic.node_policies.inb_endpoint_group
+      - apic.node_policies.nodes.pod
+  - name: Maintenance Group
+    template: maintenance_group
+    folder: node_policies
+    aci_classes:
+      - maintMaintP
+      - maintMaintGrp
+    test_types:
+      - config
+    paths:
+      - apic.node_policies.update_groups
+      - apic.node_policies.nodes.update_group
+    diff_paths:
+      - apic.node_policies.nodes.id
+  - name: Firmware Group
+    template: firmware_group
+    folder: node_policies
+    aci_classes:
+      - firmwareFwP
+      - firmwareFwGrp
+    test_types:
+      - config
+    paths:
+      - apic.node_policies.update_groups
+      - apic.node_policies.nodes.update_group
+    diff_paths:
+      - apic.node_policies.nodes.id
+  - name: VPC Group
+    template: vpc_group
+    folder: node_policies
+    aci_classes:
+      - fabricExplicitGEp
+    test_types:
+      - config
+    paths:
+      - apic.node_policies.vpc_groups
+  - name: Date and Time Policy
+    template: date_time_policy
+    folder: fabric_policies
+    aci_classes:
+      - datetimePol
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.fabric_policies.pod_policies.date_time_policies
+    diff_paths:
+      - apic.node_policies.oob_endpoint_group
+      - apic.node_policies.inb_endpoint_group
+  - name: BGP Policy
+    template: bgp_policy
+    folder: fabric_policies
+    aci_classes:
+      - bgpInstPol
+    test_types:
+      - config
+      - operational
+    paths:
+      - apic.fabric_policies.fabric_bgp_rr
+      - apic.fabric_policies.fabric_bgp_ext_rr
+      - apic.fabric_policies.fabric_bgp_as
+  - name: Fabric Leaf Switch Profile
+    template: fp_leaf_switch_profile
+    folder: fabric_policies
+    aci_classes:
+      - fabricLeafP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.auto_generate_switch_pod_profiles
+      - apic.auto_generate_fabric_leaf_switch_interface_profiles
+      - apic.fabric_policies.leaf_switch_profile_name
+      - apic.fabric_policies.leaf_switch_selector_name
+      - apic.fabric_policies.leaf_interface_profile_name
+      - apic.fabric_policies.leaf_switch_profiles
+      - apic.node_policies.nodes.id
+      - apic.node_policies.nodes.name
+      - apic.node_policies.nodes.fabric_policy_group
+  - name: Fabric Spine Switch Profile
+    template: fp_spine_switch_profile
+    folder: fabric_policies
+    aci_classes:
+      - fabricSpineP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.auto_generate_switch_pod_profiles
+      - apic.auto_generate_fabric_spine_switch_interface_profiles
+      - apic.fabric_policies.spine_switch_profile_name
+      - apic.fabric_policies.spine_switch_selector_name
+      - apic.fabric_policies.spine_interface_profile_name
+      - apic.fabric_policies.spine_switch_profiles
+      - apic.node_policies.nodes.id
+      - apic.node_policies.nodes.name
+      - apic.node_policies.nodes.fabric_policy_group
+  - name: Fabric Leaf Interface Profile
+    template: fp_leaf_interface_profile
+    folder: fabric_policies
+    aci_classes:
+      - fabricLePortP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.auto_generate_switch_pod_profiles
+      - apic.auto_generate_fabric_leaf_switch_interface_profiles
+      - apic.fabric_policies.leaf_interface_profile_name
+      - apic.fabric_policies.leaf_interface_profiles
+      - apic.node_policies.nodes.id
+      - apic.node_policies.nodes.name
+  - name: Fabric Spine Interface Profile
+    template: fp_spine_interface_profile
+    folder: fabric_policies
+    aci_classes:
+      - fabricSpPortP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.auto_generate_switch_pod_profiles
+      - apic.auto_generate_fabric_spine_switch_interface_profiles
+      - apic.fabric_policies.spine_interface_profile_name
+      - apic.fabric_policies.spine_interface_profiles
+      - apic.node_policies.nodes.id
+      - apic.node_policies.nodes.name
+  - name: Pod Profile
+    template: pod_profile
+    folder: fabric_policies
+    aci_classes:
+      - fabricPodP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.auto_generate_switch_pod_profiles
+      - apic.auto_generate_pod_profiles
+      - apic.fabric_policies.pod_profile_name
+      - apic.fabric_policies.pod_profile_pod_selector_name
+      - apic.fabric_policies.pod_profiles
+      - apic.pod_policies.pods.id
+      - apic.pod_policies.pods.policy
+  - name: SNMP Pod Policy
+    template: snmp_policy
+    folder: fabric_policies
+    aci_classes:
+      - snmpPol
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.pod_policies.snmp_policies
+    diff_paths:
+      - apic.node_policies.oob_endpoint_group
+      - apic.node_policies.inb_endpoint_group
+  - name: Management Access Policy
+    template: management_access_policy
+    folder: fabric_policies
+    aci_classes:
+      - commPol
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.pod_policies.management_access_policies
+  - name: PSU Switch Policy
+    template: psu_policy
+    folder: fabric_policies
+    aci_classes:
+      - psuInstPol
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.switch_policies.psu_policies
+  - name: Node Control Switch Policy
+    template: node_control_policy
+    folder: fabric_policies
+    aci_classes:
+      - fabricNodeControl
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.switch_policies.node_control_policies
+  - name: Pod Policy Group
+    template: pod_policy_group
+    folder: fabric_policies
+    aci_classes:
+      - fabricPodPGrp
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.pod_policy_groups
+  - name: Fabric Leaf Switch Policy Group
+    template: fp_leaf_switch_policy_group
+    folder: fabric_policies
+    aci_classes:
+      - fabricLeNodePGrp
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.leaf_switch_policy_groups
+  - name: Fabric Spine Switch Policy Group
+    template: fp_spine_switch_policy_group
+    folder: fabric_policies
+    aci_classes:
+      - fabricSpNodePGrp
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.spine_switch_policy_groups
+  - name: External Connectivity Policy
+    template: ext_conn_policy
+    folder: fabric_policies
+    aci_classes:
+      - fvFabricExtConnP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.fabric_policies.external_connectivity_policy
+      - apic.pod_policies.pods.id
+      - apic.pod_policies.pods.data_plane_tep
+  - name: VMware VMM Domain
+    template: vmw_vmm_domain
+    folder: fabric_policies
+    aci_classes:
+      - vmmDomP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.fabric_policies.vmware_vmm_domains
+    diff_paths:
+      - apic.node_policies.inb_endpoint_group
+  - name: Geolocation Policy
+    template: geolocation
+    folder: fabric_policies
+    aci_classes:
+      - geoSite
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.geolocation
+  - name: Interface Type
+    template: interface_type
+    folder: fabric_policies
+    delete: false
+    aci_classes:
+      - infraRsPortDirection
+    test_types:
+      - config
+    paths:
+      - apic.interface_policies.nodes.interfaces.type
+  - name: Access Leaf Switch Profile
+    template: ap_leaf_switch_profile
+    folder: access_policies
+    aci_classes:
+      - infraNodeP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.auto_generate_switch_pod_profiles
+      - apic.auto_generate_access_leaf_switch_interface_profiles
+      - apic.access_policies.leaf_switch_profile_name
+      - apic.access_policies.leaf_switch_selector_name
+      - apic.access_policies.leaf_interface_profile_name
+      - apic.access_policies.leaf_switch_profiles
+      - apic.node_policies.nodes.id
+      - apic.node_policies.nodes.name
+      - apic.node_policies.nodes.access_policy_group
+  - name: Access Spine Switch Profile
+    template: ap_spine_switch_profile
+    folder: access_policies
+    aci_classes:
+      - infraSpineP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.auto_generate_switch_pod_profiles
+      - apic.auto_generate_access_spine_switch_interface_profiles
+      - apic.access_policies.spine_switch_profile_name
+      - apic.access_policies.spine_switch_selector_name
+      - apic.access_policies.spine_interface_profile_name
+      - apic.access_policies.spine_switch_profiles
+      - apic.node_policies.nodes.id
+      - apic.node_policies.nodes.name
+  - name: Access Leaf Interface Profile
+    template: ap_leaf_interface_profile
+    folder: access_policies
+    aci_classes:
+      - infraAccPortP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.auto_generate_switch_pod_profiles
+      - apic.auto_generate_access_leaf_switch_interface_profiles
+      - apic.access_policies.leaf_interface_profile_name
+      - apic.access_policies.leaf_interface_profiles
+      - apic.node_policies.nodes.id
+      - apic.node_policies.nodes.name
+  - name: Access FEX Interface Profile
+    template: ap_fex_interface_profile
+    folder: access_policies
+    aci_classes:
+      - infraFexP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.auto_generate_switch_pod_profiles
+      - apic.auto_generate_access_leaf_switch_interface_profiles
+      - apic.access_policies.fex_profile_name
+      - apic.access_policies.fex_interface_profiles
+      - apic.interface_policies.nodes.id
+      - apic.interface_policies.nodes.fexes.id
+  - name: Access Spine Interface Profile
+    template: ap_spine_interface_profile
+    folder: access_policies
+    aci_classes:
+      - infraSpAccPortP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.auto_generate_switch_pod_profiles
+      - apic.auto_generate_access_spine_switch_interface_profiles
+      - apic.access_policies.spine_interface_profile_name
+      - apic.access_policies.spine_interface_profiles
+      - apic.node_policies.nodes.id
+      - apic.node_policies.nodes.name
+  - name: Vlan Pool
+    template: vlan_pool
+    folder: access_policies
+    aci_classes:
+      - fvnsVlanInstP
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.vlan_pools
+  - name: Physical Domain
+    template: physical_domain
+    folder: access_policies
+    aci_classes:
+      - physDomP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.access_policies.physical_domains
+    diff_paths:
+      - apic.access_policies.vlan_pools.allocation
+  - name: Routed Domain
+    template: routed_domain
+    folder: access_policies
+    aci_classes:
+      - l3extDomP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.access_policies.routed_domains
+    diff_paths:
+      - apic.access_policies.vlan_pools.allocation
+  - name: AAEP
+    template: aaep
+    folder: access_policies
+    aci_classes:
+      - infraAttEntityP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.access_policies.aaeps
+    diff_paths:
+      - apic.access_policies.infra_vlan
+  - name: CDP Interface Policy
+    template: cdp_policy
+    folder: access_policies
+    aci_classes:
+      - cdpIfPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.interface_policies.cdp_policies
+  - name: LLDP Interface Policy
+    template: lldp_policy
+    folder: access_policies
+    aci_classes:
+      - lldpIfPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.interface_policies.lldp_policies
+  - name: Link Level Interface Policy
+    template: link_level_policy
+    folder: access_policies
+    aci_classes:
+      - fabricHIfPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.interface_policies.link_level_policies
+  - name: Port Channel Interface Policy
+    template: port_channel_policy
+    folder: access_policies
+    aci_classes:
+      - lacpLagPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.interface_policies.port_channel_policies
+  - name: Port Channel Member Interface Policy
+    template: port_channel_member_policy
+    folder: access_policies
+    aci_classes:
+      - lacpIfPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.interface_policies.port_channel_member_policies
+  - name: Spanning Tree Interface Policy
+    template: spanning_tree_policy
+    folder: access_policies
+    aci_classes:
+      - stpIfPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.interface_policies.spanning_tree_policies
+  - name: MCP Interface Policy
+    template: mcp_policy
+    folder: access_policies
+    aci_classes:
+      - mcpIfPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.interface_policies.mcp_policies
+  - name: L2 Interface Policy
+    template: l2_policy
+    folder: access_policies
+    aci_classes:
+      - l2IfPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.interface_policies.l2_policies
+  - name: Storm Control Interface Policy
+    template: storm_control_policy
+    folder: access_policies
+    aci_classes:
+      - stormctrlIfPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.interface_policies.storm_control_policies
+  - name: MST Switch Policy
+    template: mst_policy
+    folder: access_policies
+    aci_classes:
+      - stpMstRegionPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.switch_policies.mst_policies
+  - name: VPC Switch Policy
+    template: vpc_policy
+    folder: access_policies
+    aci_classes:
+      - vpcInstPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.switch_policies.vpc_policies
+  - name: Forwarding Scale Switch Policy
+    template: forwarding_scale_policy
+    folder: access_policies
+    aci_classes:
+      - topoctrlFwdScaleProfilePol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.switch_policies.forwarding_scale_policies
+  - name: Access Spine Switch Policy Group
+    template: ap_spine_switch_policy_group
+    folder: access_policies
+    aci_classes:
+      - infraSpineAccNodePGrp
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.spine_switch_policy_groups
+  - name: Access Leaf Switch Policy Group
+    template: ap_leaf_switch_policy_group
+    folder: access_policies
+    aci_classes:
+      - infraAccNodePGrp
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.leaf_switch_policy_groups
+  - name: Access Spine Interface Policy Group
+    template: ap_spine_interface_policy_group
+    folder: access_policies
+    aci_classes:
+      - infraSpAccPortGrp
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.spine_interface_policy_groups
+  - name: Access Leaf Interface Policy Group
+    template: ap_leaf_interface_policy_group
+    folder: access_policies
+    aci_classes:
+      - infraAccPortGrp
+      - infraAccBndlGrp
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.leaf_interface_policy_groups
+  - name: SPAN Destination Group
+    template: span_destination_groups
+    folder: access_policies
+    aci_classes:
+      - spanDestGrp
+    match_dn: 'uni\/infra.*'
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.access_policies.span.destination_groups
+  - name: SPAN Source Group
+    template: span_source_groups
+    folder: access_policies
+    aci_classes:
+      - spanSrcGrp
+    match_dn: 'uni\/infra.*'
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.access_policies.span.source_groups
+  - name: Tenant
+    template: tenant
+    folder: tenants
+    aci_classes:
+      - fvTenant
+    delete_ignore:
+      - infra
+      - common
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.name
+      - apic.tenants.alias
+      - apic.tenants.description
+
+spine_objects:
+  - name: Access Spine Interface Selector
+    template: spine_interface_selector
+    folder: interface_policies
+    test_types:
+      - config
+    paths:
+      - apic.interface_policies
+
+leaf_objects:
+  - name: Access Leaf Interface Selector
+    template: leaf_interface_selector
+    folder: interface_policies
+    test_types:
+      - config
+    paths:
+      - apic.interface_policies
+  - name: Access FEX Interface Selector
+    template: fex_interface_selector
+    folder: interface_policies
+    test_types:
+      - config
+    paths:
+      - apic.interface_policies
+
+tenant_objects:
+  - name: VRF
+    template: vrf
+    folder: tenants
+    aci_classes:
+      - fvCtx
+    delete_ignore:
+      - copy
+      - inb
+      - oob
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.vrfs
+  - name: Bridge Domain
+    template: bridge_domain
+    folder: tenants
+    aci_classes:
+      - fvBD
+    delete_ignore:
+      - inb
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.bridge_domains
+  - name: L3out
+    template: l3out
+    folder: tenants
+    aci_classes:
+      - l3extOut
+      - l3extLNodeP
+      - ospfExtP
+      - bgpExtP
+      - l3extRsL3DomAtt
+      - l3extRsEctx
+      - rtctrlProfile
+      - l3extRsInterleakPol
+      - l3extDefaultRouteLeakP
+      - l3extRsDampeningPol
+      - l3extRsRedistributePol
+      - pimExtP
+    match_dn: 'uni\/tn-%%TENANT%%\/out-.*'
+    delete_ignore:
+      - uni/tn-common/out-default/rsectx
+    delete_ignore_attr:
+      - dn
+    scope:
+      - user
+      - mgmt
+      - infra
+    test_types:
+      - config
+      - health
+      - operational
+    paths:
+      - apic.tenants.l3outs.name
+      - apic.tenants.l3outs.alias
+      - apic.tenants.l3outs.description
+      - apic.tenants.l3outs.vrf
+      - apic.tenants.l3outs.domain
+      - apic.tenants.l3outs.ospf
+      - apic.tenants.l3outs.bfd_policy
+      - apic.tenants.l3outs.nodes
+      - apic.tenants.l3outs.node_profiles
+      - apic.tenants.l3outs.import_route_map
+      - apic.tenants.l3outs.export_route_map
+      - apic.tenants.l3outs.interleak_route_map
+      - apic.tenants.l3outs.default_route_leak_policy
+      - apic.tenants.l3outs.dampening_ipv4_route_map
+      - apic.tenants.l3outs.dampening_ipv6_route_map
+      - apic.tenants.l3outs.redistribution_route_maps
+      - apic.tenants.l3outs.l3_multicast_ipv4
+      - apic.tenants.l3outs.pim_policy
+      - apic.tenants.l3outs.igmp_interface_policy
+  - name: External Endpoint Group
+    template: external_endpoint_group
+    folder: tenants
+    aci_classes:
+      - l3extInstP
+    scope:
+      - user
+      - mgmt
+      - infra
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.l3outs.external_endpoint_groups
+  - name: Application Profile
+    template: application_profile
+    folder: tenants
+    aci_classes:
+      - fvAp
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.application_profiles.name
+      - apic.tenants.application_profiles.alias
+      - apic.tenants.application_profiles.description
+  - name: Endpoint Group
+    template: endpoint_group
+    folder: tenants
+    aci_classes:
+      - fvAEPg
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.application_profiles.endpoint_groups
+  - name: Contract
+    template: contract
+    folder: tenants
+    aci_classes:
+      - vzBrCP
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.contracts
+  - name: Imported Contract
+    template: imported_contract
+    folder: tenants
+    aci_classes:
+      - vzCPIf
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.imported_contracts
+  - name: Filter
+    template: filter
+    folder: tenants
+    aci_classes:
+      - vzFilter
+    delete_ignore:
+      - arp
+      - est
+      - icmp
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.filters
+  - name: OSPF Interface Policy
+    template: ospf_interface_policy
+    folder: tenants
+    aci_classes:
+      - ospfIfPol
+    scope:
+      - user
+      - mgmt
+      - infra
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.ospf_interface_policies
+  - name: BFD Interface Policy
+    template: bfd_interface_policy
+    folder: tenants
+    aci_classes:
+      - bfdIfPol
+    scope:
+      - user
+      - mgmt
+      - infra
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.bfd_interface_policies
+  - name: DHCP Relay Policy
+    template: dhcp_relay_policy
+    folder: tenants
+    aci_classes:
+      - dhcpRelayP
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.dhcp_relay_policies
+  - name: DHCP Option Policy
+    template: dhcp_option_policy
+    folder: tenants
+    aci_classes:
+      - dhcpOptionPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.dhcp_option_policies
+  - name: Route Control Route Map
+    template: route_control_route_map
+    folder: tenants
+    aci_classes:
+      - rtctrlProfile
+    match_dn: 'uni\/tn-%%TENANT%%\/prof-.*'
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.route_control_route_maps
+  - name: Match Rule
+    template: match_rule
+    folder: tenants
+    aci_classes:
+      - rtctrlSubjP
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.match_rules
+  - name: Multicast Route Map
+    template: multicast_route_map
+    folder: tenants
+    aci_classes:
+      - pimRouteMapPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.policies.multicast_route_maps
+  - name: Set Rule
+    template: set_rule
+    folder: tenants
+    aci_classes:
+      - rtctrlAttrP
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.set_rules
+  - name: BGP Timer Policy
+    template: bgp_timer_policy
+    folder: tenants
+    aci_classes:
+      - bgpCtxPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.bgp_timer_policies
+  - name: BGP Peer Prefix Policy
+    template: bgp_peer_prefix_policy
+    folder: tenants
+    aci_classes:
+      - bgpPeerPfxPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.bgp_peer_prefix_policies
+  - name: BGP Best Path Policy
+    template: bgp_best_path_policy
+    folder: tenants
+    aci_classes:
+      - bgpBestPathCtrlPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.bgp_best_path_policies
+  - name: BGP Address Family Context Policy
+    template: bgp_address_family_context_policy
+    folder: tenants
+    aci_classes:
+      - bgpCtxAfPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.bgp_address_family_context_policies
+  - name: PIM Policy
+    template: pim_policy
+    folder: tenants
+    aci_classes:
+      - pimIfPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.pim_policies
+  - name: IGMP Snooping Policy
+    template: igmp_snooping_policy
+    folder: tenants
+    aci_classes:
+      - igmpSnoopPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.policies.igmp_snooping_policies
+  - name: IGMP Interface Policy
+    template: igmp_interface_policy
+    folder: tenants
+    aci_classes:
+      - igmpIfPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.policies.igmp_interface_policies
+  - name: IP SLA Policy
+    template: ip_sla_policy
+    folder: tenants
+    aci_classes:
+      - fvIPSLAMonitoringPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.policies.ip_sla_policies
+  - name: Tenant SPAN Source Group
+    template: span_source_group
+    folder: tenants
+    aci_classes:
+      - spanSrcGrp
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.policies.span.source_groups
+  - name: Tenant SPAN Destination Group
+    template: span_destination_group
+    folder: tenants
+    aci_classes:
+      - spanDestGrp
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.policies.span.destination_groups
+  - name: Redirect Policy
+    template: redirect_policy
+    folder: tenants
+    aci_classes:
+      - vnsSvcRedirectPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.services.redirect_policies
+  - name: Service EPG Policy
+    template: service_epg_policy
+    folder: tenants
+    aci_classes:
+      - vnsSvcEPgPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.services.service_epg_policies
+  - name: Redirect Health Group
+    template: redirect_health_group
+    folder: tenants
+    aci_classes:
+      - vnsRedirectHealthGroup
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.services.redirect_health_groups
+  - name: L4L7 Device
+    template: l4l7_device
+    folder: tenants
+    aci_classes:
+      - vnsLDevVip
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.services.l4l7_devices
+  - name: Service Graph Template
+    template: service_graph_template
+    folder: tenants
+    aci_classes:
+      - vnsAbsGraph
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.services.service_graph_templates
+    diff_paths:
+      - apic.tenants.services.l4l7_devices.function
+      - apic.tenants.services.l4l7_devices.copy_device
+      - apic.tenants.services.l4l7_devices.managed
+  - name: Device Selection Policy
+    template: device_selection_policy
+    folder: tenants
+    aci_classes:
+      - vnsLDevCtx
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.services.device_selection_policies
+    diff_paths:
+      - apic.tenants.services.service_graph_templates.device.name
+      - apic.tenants.services.service_graph_templates.device.tenant
+  - name: INB Endpoint Group
+    template: inb_endpoint_group
+    folder: tenants
+    aci_classes:
+      - mgmtInB
+      - fvRsProv
+      - fvRsCons
+      - fvRsConsIf
+    match_dn: 'uni\/tn-mgmt\/mgmtp-default\/inb-.*'
+    scope:
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.inb_endpoint_groups
+  - name: OOB Endpoint Group
+    template: oob_endpoint_group
+    folder: tenants
+    aci_classes:
+      - mgmtOoB
+      - mgmtRsOoBProv
+    match_dn: 'uni\/tn-mgmt\/mgmtp-default\/oob-.*'
+    scope:
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.oob_endpoint_groups
+  - name: OOB External Management Instance
+    template: oob_ext_mgmt_instance
+    folder: tenants
+    aci_classes:
+      - mgmtInstP
+    scope:
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.ext_mgmt_instances
+  - name: OOB Contract
+    template: oob_contract
+    folder: tenants
+    aci_classes:
+      - vzOOBBrCP
+    scope:
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.oob_contracts

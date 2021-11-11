@@ -1,0 +1,38 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for oip in tenant.policies.ospf_interface_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = oip.name ~ defaults.apic.tenants.policies.ospf_interface_policies.name_suffix %}
+            {% set ctrl = [] %}
+            {% if oip.advertise_subnet | default(defaults.apic.tenants.policies.ospf_interface_policies.advertise_subnet) == "yes" %}{% set ctrl = ctrl + [("advert-subnet")] %}{% endif %}
+            {% if oip.bfd | default(defaults.apic.tenants.policies.ospf_interface_policies.bfd) == "yes" %}{% set ctrl = ctrl + [("bfd")] %}{% endif %}
+            {% if oip.mtu_ignore | default(defaults.apic.tenants.policies.ospf_interface_policies.mtu_ignore) == "yes" %}{% set ctrl = ctrl + [("mtu-ignore")] %}{% endif %}
+            {% if oip.passive_interface | default(defaults.apic.tenants.policies.ospf_interface_policies.passive_interface) == "yes" %}{% set ctrl = ctrl + [("passive")] %}{% endif %}
+            {
+                "ospfIfPol": {
+                    "attributes": {
+                        "name": "{{ policy_name }}",
+                        "dn": "uni/tn-{{ tenant.name }}/ospfIfPol-{{ policy_name }}",
+                        "descr": "{{ oip.description | default() }}",
+                        "cost": "{{ oip.cost | default(defaults.apic.tenants.policies.ospf_interface_policies.cost) }}",
+                        "ctrl": "{{ ctrl | join(',') }}",
+                        "deadIntvl": "{{ oip.dead_interval | default(defaults.apic.tenants.policies.ospf_interface_policies.dead_interval) }}",
+                        "helloIntvl": "{{ oip.hello_interval | default(defaults.apic.tenants.policies.ospf_interface_policies.hello_interval) }}",
+                        "nwT": "{{ oip.network_type | default(defaults.apic.tenants.policies.ospf_interface_policies.network_type) }}",
+                        "prio": "{{ oip.priority | default(defaults.apic.tenants.policies.ospf_interface_policies.priority) }}",
+                        "rexmitIntvl": "{{ oip.lsa_retransmit_interval | default(defaults.apic.tenants.policies.ospf_interface_policies.lsa_retransmit_interval) }}",
+                        "xmitDelay": "{{ oip.lsa_transmit_delay | default(defaults.apic.tenants.policies.ospf_interface_policies.lsa_transmit_delay) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

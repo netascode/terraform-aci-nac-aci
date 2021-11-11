@@ -1,0 +1,61 @@
+---
+kind: pipeline
+type: docker
+name: Pipeline
+
+concurrency:
+  limit: 1
+
+environment:
+  PY_COLORS: '1'
+  ANSIBLE_FORCE_COLOR: '1'
+
+trigger:
+  branch:
+    - master
+
+clone:
+  disable: true
+
+steps:
+  - name: Clone Repo
+    image: drone/git
+    pull: if-not-exists
+
+  - name: Publish Documentation
+    image: danischm/aac:0.2.0
+    environment:
+      GITHUB_TOKEN:
+        from_secret: GITHUB_TOKEN
+    commands:
+      - python docs/aac-doc.py
+      - git config credential.helper "store --file=.git/credentials"
+      - echo "https://$GITHUB_TOKEN:@wwwin-github.cisco.com" > .git/credentials
+      - mkdocs gh-deploy --force
+    when:
+      branch:
+        - master
+      event:
+        - push
+    depends_on:
+      - Clone Repo
+
+  - name: Notify
+    image: ciscosso/drone-webex-team:v0.0.1
+    settings:
+      pull: true
+      room: 'AAC Builds'
+      room_id: 'Y2lzY29zcGFyazovL3VzL1JPT00vNTFmMGNmODAtYjI0My0xMWU5LTljZjUtNWY0NGQ2ZTlmYWY0'
+      access_token:
+        from_secret: SPARK_ACCESS_TOKEN
+      body: |
+        [**[{{ build.status }}] {{ repo.owner }}/{{ repo.name }} #{{ build.number }}**]({{ build.link }})
+        * Commit: [{{ commit.message }}]({{ commit.link }})
+        * Author: {{ commit.author.name }} {{ commit.author.email }}
+        * Branch: {{ commit.branch }}
+        * Event: {{ build.event }}
+        * Started at: {{ datetime build.created "Mon Jan 2 15:04:05 MST 2006" "Local" }}
+    when:
+      status: [changed, failure, success]
+    depends_on:
+      - Publish Documentation

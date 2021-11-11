@@ -1,0 +1,13 @@
+{
+    "infraSetPol": {
+        "attributes": {
+            "dn": "uni/infra/settings",
+            "domainValidation": "{{ apic.fabric_policies.global_settings.domain_validation | default(defaults.apic.fabric_policies.global_settings.domain_validation) }}",
+            "enforceSubnetCheck": "{{ apic.fabric_policies.global_settings.enforce_subnet_check | default(defaults.apic.fabric_policies.global_settings.enforce_subnet_check) }}",
+            "opflexpAuthenticateClients": "{{ apic.fabric_policies.global_settings.opflex_authentication | default(defaults.apic.fabric_policies.global_settings.opflex_authentication) }}",
+            "unicastXrEpLearnDisable": "{{ apic.fabric_policies.global_settings.disable_remote_endpoint_learn | default(defaults.apic.fabric_policies.global_settings.disable_remote_endpoint_learn) }}",
+            "validateOverlappingVlans": "{{ apic.fabric_policies.global_settings.overlapping_vlan_validation | default(defaults.apic.fabric_policies.global_settings.overlapping_vlan_validation) }}",
+            "enableRemoteLeafDirect": "{{ apic.fabric_policies.global_settings.remote_leaf_direct | default(defaults.apic.fabric_policies.global_settings.remote_leaf_direct) }}"
+        }
+    }
+}

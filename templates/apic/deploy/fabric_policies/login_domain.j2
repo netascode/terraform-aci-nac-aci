@@ -1,0 +1,70 @@
+{
+    "aaaUserEp": {
+        "attributes": {
+            "dn": "uni/userext"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for login_domain in apic.fabric_policies.aaa.login_domains | default([]) %}{{ comma1() }}
+            {
+                "aaaLoginDomain": {
+                    "attributes": {
+                        "descr": "{{ login_domain.description | default() }}",
+                        "dn": "uni/userext/logindomain-{{ login_domain.name }}",
+                        "name": "{{ login_domain.name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {
+                            "aaaDomainAuth": {
+                                "attributes": {
+                                    "dn": "uni/userext/logindomain-{{ login_domain.name }}/domainauth",
+                                    {% if login_domain.realm == 'tacacs' %}
+                                    "providerGroup": "{{ login_domain.name }}",
+                                    {% endif %}
+                                    "realm": "{{ login_domain.realm }}"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- if login_domain.realm == 'tacacs' %},
+            {
+                "aaaTacacsPlusEp": {
+                    "attributes": {
+                        "dn": "uni/userext/tacacsext"
+                    },
+                    "children": [
+                        {
+                            "aaaTacacsPlusProviderGroup": {
+                                "attributes": {
+                                    "dn": "uni/userext/tacacsext/tacacsplusprovidergroup-{{ login_domain.name }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma2 = joiner(",") %}
+                                    {%- for prov in login_domain.tacacs_providers | default([]) %}{{ comma2() }}
+                                    {
+                                        "aaaProviderRef": {
+                                            "attributes": {
+                                                "dn": "uni/userext/tacacsext/tacacsplusprovidergroup-{{ login_domain.name }}/providerref-{{ prov.hostname_ip }}",
+                                                "order": "{{ prov.priority | default(defaults.apic.fabric_policies.aaa.login_domains.tacacs_providers.priority) }}",
+                                                "name": "{{ prov.hostname_ip }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endif %}
+            {%- endfor %}
+
+        ]
+    }
+}

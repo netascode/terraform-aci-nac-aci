@@ -1,0 +1,24 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.access_policies.interface_policies.port_channel_member_policies | default([]) %}{{ comma1() }}
+            {% set port_channel_member_policy_name = policy.name ~ defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix %}
+            {
+                "lacpIfPol": {
+                    "attributes": {
+                        "name": "{{ port_channel_member_policy_name }}",
+                        "dn": "uni/infra/lacpifp-{{ port_channel_member_policy_name }}",
+                        "prio": "{{ policy.priority | default(defaults.apic.access_policies.interface_policies.port_channel_member_policies.priority) }}",
+                        "txRate": "{{ policy.rate | default(defaults.apic.access_policies.interface_policies.port_channel_member_policies.rate) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

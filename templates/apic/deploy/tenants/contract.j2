@@ -1,0 +1,79 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for contract in tenant.contracts | default([]) %}{{ comma1() }}
+            {% set contract_name = contract.name ~ defaults.apic.tenants.contracts.name_suffix %}
+            {
+                "vzBrCP": {
+                    "attributes": {
+                        "descr": "{{ contract.description | default() }}",
+                        "dn": "uni/tn-{{ tenant.name }}/brc-{{ contract_name }}",
+                        "name": "{{ contract_name }}",
+                        "nameAlias": "{{ contract.alias | default() }}",
+                        "scope": "{{ contract.scope | default(defaults.apic.tenants.contracts.scope) }}",
+                        "prio": "{{ contract.qos_class | default(defaults.apic.tenants.contracts.qos_class) }}",
+                        "targetDscp": "{{ contract.target_dscp | default(defaults.apic.tenants.contracts.target_dscp) }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for subject in contract.subjects | default([]) %}{{ comma2() }}
+                        {% set subject_name = subject.name ~ defaults.apic.tenants.contracts.subjects.name_suffix %}
+                        {
+                            "vzSubj": {
+                                "attributes": {
+                                    "name": "{{ subject_name }}",
+                                    "nameAlias": "{{ subject.alias | default() }}",
+                                    "descr": "{{ subject.description | default() }}",
+                                    "revFltPorts": "yes",
+                                    "prio": "{{ subject.qos_class | default(defaults.apic.tenants.contracts.subjects.qos_class) }}",
+                                    "targetDscp": "{{ subject.target_dscp | default(defaults.apic.tenants.contracts.subjects.target_dscp) }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for filter in subject.filters | default([]) %}{{ comma3() }}
+                                    {% set filter_name = filter.filter ~ defaults.apic.tenants.filters.name_suffix %}
+                                    {% set directives = [] %}
+                                    {% if filter.log | default(defaults.apic.tenants.contracts.subjects.filters.log) == "yes" %}{% set directives = directives + [("log")] %}{% endif %}
+                                    {% if filter.no_stats | default(defaults.apic.tenants.contracts.subjects.filters.no_stats) == "yes" %}{% set directives = directives + [("no-stats")] %}{% endif %}
+                                    {
+                                        "vzRsSubjFiltAtt": {
+                                            "attributes": {
+                                                "action": "{{ filter.action | default(defaults.apic.tenants.contracts.subjects.filters.action) }}",
+                                                "tnVzFilterName": "{{ filter_name }}",
+                                                "directives": "{{ directives | join(',') }}",
+                                                "priorityOverride": "{{ filter.priority | default(defaults.apic.tenants.contracts.subjects.filters.priority) }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- if subject.service_graph is defined %}{{ comma3() }}
+                                    {
+                                        "vzRsSubjGraphAtt": {
+                                            "attributes": {
+                                                "tnVnsAbsGraphName": "{{ subject.service_graph }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

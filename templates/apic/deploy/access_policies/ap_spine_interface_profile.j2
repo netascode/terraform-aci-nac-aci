@@ -1,0 +1,84 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) == "enabled" or apic.auto_generate_access_spine_switch_interface_profiles | default(defaults.apic.auto_generate_access_spine_switch_interface_profiles) == "enabled" %}
+            {%- for node in apic.node_policies.nodes | default([]) %}
+            {%- if node.role == "spine" %}
+            {%- set spine_interface_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.spine_interface_profile_name | default(defaults.apic.access_policies.spine_interface_profile_name))) %}{{ comma1() }}
+            {
+                "infraSpAccPortP": {
+                    "attributes": {
+                        "name": "{{ spine_interface_profile_name }}",
+                        "dn": "uni/infra/spaccportprof-{{ spine_interface_profile_name }}"
+                    }
+                }
+            }
+            {%- endif %}           
+            {%- endfor %}
+            {%- endif %}
+            {%- for prof in apic.access_policies.spine_interface_profiles | default([]) %}
+            {%- set spine_interface_profile_name = prof.name ~ defaults.apic.access_policies.spine_interface_profiles.name_suffix %}{{ comma1() }}
+            {
+                "infraSpAccPortP": {
+                    "attributes": {
+                        "name": "{{ spine_interface_profile_name }}",
+                        "dn": "uni/infra/spaccportprof-{{ spine_interface_profile_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for sel in prof.selectors | default([]) %}
+                        {%- set spine_interface_selector_name = sel.name ~ defaults.apic.access_policies.spine_interface_profiles.selectors.name_suffix %}{{ comma2() }}
+                        {
+                            "infraSHPortS": {
+                                "attributes": {
+                                    "dn": "uni/infra/spaccportprof-{{ spine_interface_profile_name }}/shports-{{ spine_interface_selector_name }}-typ-range",
+                                    "name": "{{ spine_interface_selector_name }}",
+                                    "type": "range",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {% set comma3 = joiner(",") %}
+                                    {% if sel.policy_group is defined %}{{ comma3() }}
+                                    {% set policy_group_name = sel.policy_group ~ defaults.apic.access_policies.spine_interface_policy_groups.name_suffix %}
+                                    {
+                                        "infraRsSpAccGrp": {
+                                            "attributes": {
+                                                "tDn": "uni/infra/funcprof/spaccportgrp-{{ policy_group_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+                                    {%- for blk in sel.port_blocks | default([]) %}
+                                    {%- set block_name = blk.name ~ defaults.apic.access_policies.spine_interface_profiles.selectors.port_blocks.name_suffix %}{{ comma3() }}
+                                    {
+                                        "infraPortBlk": {
+                                            "attributes": {
+                                                "descr": "{{ blk.description | default() }}",
+                                                "fromCard": "{{ blk.from_module | default(defaults.apic.access_policies.spine_interface_profiles.selectors.port_blocks.from_module) }}",
+                                                "fromPort": "{{ blk.from_port }}",
+                                                "name": "{{ block_name }}",
+                                                "toCard": "{{ blk.to_module | default(blk.from_module | default(defaults.apic.access_policies.spine_interface_profiles.selectors.port_blocks.from_module)) }}",
+                                                "toPort": "{{ blk.to_port | default(blk.from_port) }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }    
+            {%- endfor %}
+
+        ]
+    }
+}

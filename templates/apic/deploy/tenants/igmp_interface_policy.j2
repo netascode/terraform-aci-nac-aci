@@ -1,0 +1,102 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for igmp_pol in tenant.policies.igmp_interface_policies | default([]) %}{{ comma1() }}
+            {% set igmp_pol_name = igmp_pol.name ~ defaults.apic.tenants.policies.igmp_interface_policies.name_suffix %}
+            {% set ctrl = [] %}
+            {% if igmp_pol.allow_v3_asm | default(defaults.apic.tenants.policies.igmp_interface_policies.allow_v3_asm) == "yes" %}{% set ctrl = ctrl + [("allow-v3-asm")] %}{% endif %}
+            {% if igmp_pol.fast_leave | default(defaults.apic.tenants.policies.igmp_interface_policies.fast_leave) == "yes" %}{% set ctrl = ctrl + [("fast-leave")] %}{% endif %}
+            {% if igmp_pol.report_link_local_groups | default(defaults.apic.tenants.policies.igmp_interface_policies.report_link_local_groups) == "yes" %}{% set ctrl = ctrl + [("rep-ll")] %}{% endif %}
+            {
+                "igmpIfPol": {
+                    "attributes": {
+                        "name": "{{ igmp_pol_name }}",
+                        "descr": "{{ igmp_pol.description | default()}}",
+                        "dn": "uni/tn-{{ tenant.name }}/igmpIfPol-{{ igmp_pol_name }}",
+                        "grpTimeout": "{{ igmp_pol.grp_timeout | default(defaults.apic.tenants.policies.igmp_interface_policies.grp_timeout) }}",
+                        "ifCtrl": "{{ ctrl | join(',') }}",
+                        "lastMbrCnt": "{{ igmp_pol.last_member_count | default(defaults.apic.tenants.policies.igmp_interface_policies.last_member_count) }}",
+                        "lastMbrRespTime": "{{ igmp_pol.last_member_response_time | default(defaults.apic.tenants.policies.igmp_interface_policies.last_member_response_time) }}",
+                        "querierTimeout": "{{ igmp_pol.querier_timeout | default(defaults.apic.tenants.policies.igmp_interface_policies.querier_timeout) }}",
+                        "queryIntvl": "{{ igmp_pol.query_interval | default(defaults.apic.tenants.policies.igmp_interface_policies.query_interval) }}",
+                        "robustFac": "{{ igmp_pol.robustness_variable | default(defaults.apic.tenants.policies.igmp_interface_policies.robustness_variable) }}",
+                        "rspIntvl": "{{ igmp_pol.query_response_interval | default(defaults.apic.tenants.policies.igmp_interface_policies.query_response_interval) }}",
+                        "startQueryCnt": "{{ igmp_pol.startup_query_count | default(defaults.apic.tenants.policies.igmp_interface_policies.startup_query_count) }}",
+                        "startQueryIntvl": "{{ igmp_pol.startup_query_interval | default(defaults.apic.tenants.policies.igmp_interface_policies.startup_query_interval) }}",
+                        "ver": "{{ igmp_pol.version | default(defaults.apic.tenants.policies.igmp_interface_policies.version) }}"
+                    },
+                    "children": [
+                        {% if igmp_pol.report_policy_multicast_route_map is defined %}
+                        {%- set report_policy_rm_name = igmp_pol.report_policy_multicast_route_map ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix %}
+                        {
+                            "igmpStRepPol": {
+                                "attributes": {
+                                    "joinType": "static-group"
+                                },
+                                "children": [
+                                    {
+                                        "rtdmcRsFilterToRtMapPol": {
+                                            "attributes": {
+                                                "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ report_policy_rm_name }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {% endif %}
+                        {% if igmp_pol.static_report_multicast_route_map is defined %}
+                        {%- set static_report_rm_name = igmp_pol.static_report_multicast_route_map ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix %}
+                        {
+                            "igmpRepPol": {
+                                "attributes": {
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {
+                                        "rtdmcRsFilterToRtMapPol": {
+                                            "attributes": {
+                                                "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ static_report_rm_name }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {% endif %}
+                        {
+                            "igmpStateLPol": {
+                                "attributes": {
+                                    "max": "{{ igmp_pol.max_mcast_entries | default(defaults.apic.tenants.policies.igmp_interface_policies.max_mcast_entries) }}",
+                                    "rsvd": "{{ igmp_pol.reserved_mcast_entries | default(defaults.apic.tenants.policies.igmp_interface_policies.reserved_mcast_entries) }}"
+                                },
+                                "children": [
+                                    {
+                                        "rtdmcRsFilterToRtMapPol": {
+                                            "attributes": {
+                                                {% if igmp_pol.state_limit_multicast_route_map is defined %}
+                                                {% set state_limit_rm_name = igmp_pol.state_limit_multicast_route_map ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix %}
+                                                "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ state_limit_rm_name }}"
+                                                {% else%}
+                                                "tDn": ""
+                                                {%  endif %}
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

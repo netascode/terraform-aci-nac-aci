@@ -1,0 +1,77 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for route_map in tenant.policies.route_control_route_maps | default([]) %}{{ comma1() }}
+            {% set route_map_name = route_map.name ~ defaults.apic.tenants.policies.route_control_route_maps.name_suffix %}
+            {
+                "rtctrlProfile": {
+                    "attributes": {
+                        "name": "{{ route_map_name }}",
+                        "dn": "uni/tn-{{ tenant.name }}/prof-{{ route_map_name }}",
+                        "descr": "{{ route_map.description | default() }}",
+                        "type": "combinable",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for context in route_map.contexts | default([]) %}{{ comma2() }}
+                        {% set context_name = context.name ~ defaults.apic.tenants.policies.route_control_route_maps.contexts.name_suffix %}
+                        {
+                            "rtctrlCtxP": {
+                                "attributes": {
+                                    "name": "{{ context_name }}",
+                                    "descr": "{{ context.description | default() }}",
+                                    "action": "{{ context.action | default(defaults.apic.tenants.policies.route_control_route_maps.contexts.action) }}",
+                                    "order": "{{ context.order | default(defaults.apic.tenants.policies.route_control_route_maps.contexts.order) }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {% if context.set_rule is defined %}{{ comma3() }}
+                                    {% set set_rule_name = context.set_rule ~ defaults.apic.tenants.policies.set_rules.name_suffix %}
+                                    {
+                                        "rtctrlScope": {
+                                            "attributes": {
+                                                "childAction": "deleteNonPresent"
+                                            },
+                                            "children": [
+                                                {
+                                                    "rtctrlRsScopeToAttrP": {
+                                                        "attributes": {
+                                                            "tnRtctrlAttrPName": "{{ set_rule_name }}"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                    {% endif %}
+                                    {%- for rule in context.match_rules | default([]) %}{{ comma3() }}
+                                    {% set match_rule_name = rule ~ defaults.apic.tenants.policies.match_rules.name_suffix %}                                    
+                                    {
+                                        "rtctrlRsCtxPToSubjP": {
+                                            "attributes": {
+                                                "tnRtctrlSubjPName": "{{ match_rule_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

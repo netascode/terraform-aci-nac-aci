@@ -1,0 +1,876 @@
+{% set query = "schemas[?name==`" ~ item ~ "`]" %}
+{% set schema = (mso | json_query(query))[0] %}
+{
+    "displayName": "{{ schema.name }}",
+    "templates": [
+        {%- set comma1 = joiner(",") %}
+        {%- for template in schema.templates | default([]) %}{{ comma1() }}
+        {
+            "name": "{{ template.name }}",
+            "displayName": "{{ template.name }}",
+            "tenantId": "%%tenants%{{ template.tenant }}%%",
+            "anps": [
+                {%- set comma2 = joiner(",") %}
+                {%- for ap in template.application_profiles | default([]) %}{{ comma2() }}
+                {% set ap_name = ap.name ~ defaults.mso.schemas.templates.application_profiles.name_suffix %}
+                {
+                    "name": "{{ ap_name }}",
+                    "displayName": "{{ ap_name }}",
+                    "epgs": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for epg in ap.endpoint_groups | default([]) %}{{ comma3() }}
+                        {% set epg_name = epg.name ~ defaults.mso.schemas.templates.application_profiles.endpoint_groups.name_suffix %}
+                        {
+                            "name": "{{ epg_name }}",
+                            "displayName": "{{ epg_name }}",
+                            "contractRelationships": [
+                                {%- set comma4 = joiner(",") %}
+                                {%- for contract in epg.contracts.consumers | default([]) %}{{ comma4() }}
+                                {% set contract_name = contract.name ~ defaults.mso.schemas.templates.contracts.name_suffix %}
+                                {
+                                    "relationshipType": "consumer",
+                                    {% if contract.schema | default(schema.name) == schema.name %}
+                                    "contractRef": "/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}"
+                                    {% else %}
+                                    "contractRef": "/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}"
+                                    {% endif %}
+                                }
+                                {%- endfor %}
+                                {%- for contract in epg.contracts.providers | default([]) %}{{ comma4() }}
+                                {% set contract_name = contract.name ~ defaults.mso.schemas.templates.contracts.name_suffix %}
+                                {
+                                    "relationshipType": "provider",
+                                    {% if contract.schema | default(schema.name) == schema.name %}
+                                    "contractRef": "/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}"
+                                    {% else %}
+                                    "contractRef": "/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}"
+                                    {% endif %}
+                                }
+                                {%- endfor %}
+
+                            ],
+                            "subnets": [
+                                {%- set comma4 = joiner(",") %}
+                                {%- for subnet in epg.subnets | default([]) %}{{ comma4() }}
+                                {
+                                    "ip": "{{ subnet.ip }}",
+                                    "scope": "{{ subnet.scope | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.subnets.scope) }}",
+                                    "shared": {% if subnet.shared | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.subnets.shared) == "enabled" %}true{% else %}false{% endif %},
+                                    "noDefaultGateway": {% if subnet.no_default_gateway | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.subnets.no_default_gateway) == "enabled" %}true{% else %}false{% endif %}
+                                    {%- if mso.version | default(defaults.mso.version) is version('3.1.1h', '>=') %},
+                                    "primary": {% if subnet.primary | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.subnets.primary) == "enabled" %}true{% else %}false{% endif %}
+                                    {%- endif %}
+                                    
+                                }
+                                {%- endfor %}
+
+                            ],
+                            "uSegEpg": {% if epg.useg | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.useg) == "enabled" %}true{% else %}false{% endif %},
+                            "uSegAttrs": [],
+                            "intraEpg": {% if epg.proxy_arp | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.proxy_arp) == "enabled" %}"enforced"{% else %}"unenforced"{% endif %},
+                            "proxyArp": {% if epg.proxy_arp | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.proxy_arp) == "enabled" %}true{% else %}false{% endif %},
+                            "preferredGroup": {% if epg.preferred_group | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.preferred_group) == "enabled" %}true{% else %}false{% endif %},
+                            {% if epg.bridge_domain.name is defined %}
+                            {% set bd_name = epg.bridge_domain.name ~ defaults.mso.schemas.templates.bridge_domains.name_suffix %}
+                            {% if epg.bridge_domain.schema | default(schema.name) == schema.name %}
+                            "bdRef": "/templates/{{ epg.bridge_domain.template | default(template.name) }}/bds/{{ bd_name }}",
+                            {% else %}
+                            "bdRef": "/schemas/%%schemas%{{ epg.bridge_domain.schema | default(schema.name) }}%%/templates/{{ epg.bridge_domain.template | default(template.name) }}/bds/{{ bd_name }}",
+                            {% endif %}
+                            {% endif %}
+                            {% if epg.vrf.name is defined %}
+                            {% set vrf_name = epg.vrf.name ~ defaults.mso.schemas.templates.vrfs.name_suffix %}
+                            {% if epg.vrf.schema | default(schema.name) == schema.name %}
+                            "vrfRef": "/templates/{{ epg.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}",
+                            {% else %}
+                            "vrfRef": "/schemas/%%schemas%{{ epg.vrf.schema | default(schema.name) }}%%/templates/{{ epg.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}",
+                            {% endif %}
+                            {% endif %}
+                            "selectors": []
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+                {%- endfor %}
+
+            ],
+            "vrfs": [
+                {%- set comma2 = joiner(",") %}
+                {%- for vrf in template.vrfs | default([]) %}{{ comma2() }}
+                {% set vrf_name = vrf.name ~ defaults.mso.schemas.templates.vrfs.name_suffix %}
+                {
+                    "name": "{{ vrf_name }}",
+                    "displayName": "{{ vrf_name }}",
+                    "preferredGroup": {% if vrf.preferred_group | default(defaults.mso.schemas.templates.vrfs.preferred_group) == "enabled" %}true{% else %}false{% endif %},
+                    "l3MCast": {% if vrf.l3_multicast | default(defaults.mso.schemas.templates.vrfs.l3_multicast) == "enabled" %}true{% else %}false{% endif %}
+
+                }
+                {%- endfor %}
+
+            ],
+            "bds": [
+                {%- set comma2 = joiner(",") %}
+                {%- for bd in template.bridge_domains | default([]) %}{{ comma2() }}
+                {% set bd_name = bd.name ~ defaults.mso.schemas.templates.bridge_domains.name_suffix %}
+                {
+                    "name": "{{ bd_name }}",
+                    "displayName": "{{ bd_name }}",
+                    "l2UnknownUnicast": "{{ bd.l2_unknown_unicast | default(defaults.mso.schemas.templates.bridge_domains.l2_unknown_unicast)}}",
+                    "intersiteBumTrafficAllow": {% if bd.intersite_bum_traffic | default(defaults.mso.schemas.templates.bridge_domains.intersite_bum_traffic) == "enabled" %}true{% else %}false{% endif %},
+                    "optimizeWanBandwidth": {% if bd.optimize_wan_bandwidth | default(defaults.mso.schemas.templates.bridge_domains.optimize_wan_bandwidth) == "enabled" %}true{% else %}false{% endif %},
+                    "l2Stretch": {% if bd.l2_stretch | default(defaults.mso.schemas.templates.bridge_domains.l2_stretch) == "enabled" %}true{% else %}false{% endif %},
+                    {% if mso.version | default(defaults.mso.version) is version('3.1.1h', '>=') %}
+                    "unicastRouting": {% if bd.unicast_routing | default(defaults.mso.schemas.templates.bridge_domains.unicast_routing) == "enabled" %}true{% else %}false{% endif %},
+                    {% endif %}
+                    {% if mso.version | default(defaults.mso.version) is version('3.1.1g', '>=') %}
+                    "arpFlood": {% if bd.arp_flooding | default(defaults.mso.schemas.templates.bridge_domains.arp_flooding) == "enabled" %}true{% else %}false{% endif %},
+                    {% endif %}
+                    "l3MCast": {% if bd.l3_multicast | default(defaults.mso.schemas.templates.bridge_domains.l3_multicast) == "enabled" %}true{% else %}false{% endif %},
+                    "subnets": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for subnet in bd.subnets | default([]) %}{{ comma3() }}
+                        {
+                            "ip": "{{ subnet.ip }}",
+                            "scope": "{{ subnet.scope | default(defaults.mso.schemas.templates.bridge_domains.subnets.scope) }}",
+                            "shared": {% if subnet.shared | default(defaults.mso.schemas.templates.bridge_domains.subnets.shared) == "enabled" %}true{% else %}false{% endif %},
+                            "querier": {% if subnet.querier | default(defaults.mso.schemas.templates.bridge_domains.subnets.querier) == "enabled" %}true{% else %}false{% endif %}
+                            {%- if mso.version | default(defaults.mso.version) is version('3.1.1h', '>=') %},
+                            "primary": {% if subnet.primary | default(defaults.mso.schemas.templates.bridge_domains.subnets.primary) == "enabled" %}true{% else %}false{% endif %}
+                            {%- endif %}
+
+                        }
+                        {%- endfor %}
+
+                    ]
+                    {%- if bd.dhcp_relay_policy is defined %},
+                    {% set dhcp_relay_policy_name = bd.dhcp_relay_policy ~ defaults.mso.policies.dhcp_relays.name_suffix %}
+                    "dhcpLabel": {
+                        "name": "{{ dhcp_relay_policy_name }}",
+                        "version": 1
+                        {%- if bd.dhcp_option_policy is defined %},
+                        {% set dhcp_option_name = bd.dhcp_option_policy ~ defaults.mso.policies.dhcp_options.name_suffix %}
+                        "dhcpOptionLabel": {
+                            "name": "{{ dhcp_option_name }}",
+                            "version": 1
+                        }
+                        {%- endif %}
+
+                    }
+                    {%- endif %},
+                    {% if bd.dhcp_policies is defined and mso.version | default(defaults.mso.version) is version('3.1.1h', '>=') %}
+                    "dhcpLabels": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for pol in  bd.dhcp_policies | default([]) %}{{ comma3() }}
+                        {% set dhcp_relay_policy_name = pol.dhcp_relay_policy ~ defaults.mso.policies.dhcp_relays.name_suffix %}
+                        {
+                            "name": "{{ dhcp_relay_policy_name }}",
+                            "version": 1
+                            {%- if pol.dhcp_option_policy is defined %},
+                            {% set dhcp_option_name = pol.dhcp_option_policy ~ defaults.mso.policies.dhcp_options.name_suffix %}
+                            "dhcpOptionLabel": {
+                                "name": "{{ dhcp_option_name }}",
+                                "version": 1
+                            }
+                            {%- endif %}
+                            
+                        }
+                        {%- endfor%}
+
+                    ],
+                    {% endif%}
+                    {% set vrf_name = bd.vrf.name ~ defaults.mso.schemas.templates.vrfs.name_suffix %}
+                    {% if bd.vrf.schema | default(schema.name) == schema.name %}
+                    "vrfRef": "/templates/{{ bd.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}"
+                    {% else %}
+                    "vrfRef": "/schemas/%%schemas%{{ bd.vrf.schema | default(schema.name) }}%%/templates/{{ bd.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}"
+                    {% endif %}
+                }
+                {%- endfor %}
+
+            ],
+            "contracts": [
+                {%- set comma2 = joiner(",") %}
+                {%- for contract in template.contracts | default([]) %}{{ comma2() }}
+                {% set contract_name = contract.name ~ defaults.mso.schemas.templates.contracts.name_suffix %}
+                {
+                    "name": "{{ contract_name }}",
+                    "displayName": "{{ contract_name }}",
+                    "filterRelationships": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for filter in contract.filters | default([]) %}{{ comma3() }}
+                        {% set filter_name = filter.name ~ defaults.mso.schemas.templates.filters.name_suffix %}
+                        {
+                            {% if filter.schema | default(schema.name) == schema.name %}
+                            "filterRef": "/templates/{{ filter.template | default(template.name) }}/filters/{{ filter_name }}",
+                            {% else %}
+                            "filterRef": "/schemas/%%schemas%{{ filter.schema | default(schema.name) }}%%/templates/{{ filter.template | default(template.name) }}/filters/{{ filter_name }}",
+                            {% endif %}
+                            "directives": [
+                                {% if filter.log | default(defaults.mso.schemas.templates.contracts.filters.log) == "enabled" %}
+                                "log"
+                                {% else %}
+                                "none"
+                                {% endif %}
+                            ]
+                        }
+                        {%- endfor %}
+
+                    ],
+                    "scope": "{{ contract.scope | default(defaults.mso.schemas.templates.contracts.scope) }}",
+                    "filterType": "{{ contract.type | default(defaults.mso.schemas.templates.contracts.type) }}",
+                    "filterRelationshipsProviderToConsumer": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for filter in contract.provider_to_consumer_filters | default([]) %}{{ comma3() }}
+                        {% set filter_name = filter.name ~ defaults.mso.schemas.templates.filters.name_suffix %}
+                        {
+                            {% if filter.schema | default(schema.name) == schema.name %}
+                            "filterRef": "/templates/{{ filter.template | default(template.name) }}/filters/{{ filter_name }}",
+                            {% else %}
+                            "filterRef": "/schemas/%%schemas%{{ filter.schema | default(schema.name) }}%%/templates/{{ filter.template | default(template.name) }}/filters/{{ filter_name }}",
+                            {% endif %}
+                            "directives": [
+                                {% if filter.log | default(defaults.mso.schemas.templates.contracts.filters.log) == "enabled" %}"log"{% else %}"none"{% endif %}
+
+                            ]
+                        }
+                        {%- endfor %}
+
+                    ],
+                    "filterRelationshipsConsumerToProvider": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for filter in contract.consumer_to_provider_filters | default([]) %}{{ comma3() }}
+                        {% set filter_name = filter.name ~ defaults.mso.schemas.templates.filters.name_suffix %}
+                        {
+                            {% if filter.schema | default(schema.name) == schema.name %}
+                            "filterRef": "/templates/{{ filter.template | default(template.name) }}/filters/{{ filter_name }}",
+                            {% else %}
+                            "filterRef": "/schemas/%%schemas%{{ filter.schema | default(schema.name) }}%%/templates/{{ filter.template | default(template.name) }}/filters/{{ filter_name }}",
+                            {% endif %}
+                            "directives": [
+                                {% if filter.log | default(defaults.mso.schemas.templates.contracts.filters.log) == "enabled" %}"log"{% else %}"none"{% endif %}
+
+                            ]
+                        }
+                        {%- endfor %}
+
+                    ]
+                    {%- if contract.service_graph is defined %},
+                    {% set sg_name = contract.service_graph.name ~ defaults.mso.schemas.templates.service_graphs.name_suffix %}
+                    "serviceGraphRelationship": {
+                        {% if contract.service_graph.schema | default(schema.name) == schema.name %}
+                        "serviceGraphRef": "/templates/{{ contract.service_graph.template | default(template.name) }}/serviceGraphs/{{ sg_name }}",
+                        {% else %}
+                        "serviceGraphRef": "/schemas/%%schemas%{{ contract.service_graph.schema | default(schema.name) }}%%/templates/{{ contract.service_graph.template | default(template.name) }}/serviceGraphs/{{ sg_name }}",
+                        {% endif %}
+                        "serviceNodesRelationship": [
+                            {%- set comma3 = joiner(",") %}
+                            {%- for node in contract.service_graph.nodes | default([]) %}{{ comma3() }}
+                            {
+                                {% if contract.service_graph.schema | default(schema.name) == schema.name %}
+                                "serviceNodeRef": "/templates/{{ contract.service_graph.template | default(template.name) }}/serviceGraphs/{{ sg_name }}/serviceNodes/{{ node.name }}",
+                                {% else %}
+                                "serviceNodeRef": "/schemas/%%schemas%{{ contract.service_graph.schema | default(schema.name) }}%%/templates/{{ contract.service_graph.template | default(template.name) }}/serviceGraphs/{{ sg_name }}/serviceNodes/{{ node.name }}",
+                                {% endif %}
+                                "providerConnector": {
+                                    "connectorType": "general",
+                                    {% set bd_name = node.provider.bridge_domain ~ defaults.mso.schemas.templates.bridge_domains.name_suffix %}
+                                    {% if node.provider.schema | default(schema.name) == schema.name %}
+                                    "bdRef": "/templates/{{ node.provider.template | default(template.name) }}/bds/{{ bd_name }}"
+                                    {% else %}
+                                    "bdRef": "/schemas/%%schemas%{{ node.provider.schema | default(schema.name) }}%%/templates/{{ node.provider.template | default(template.name) }}/bds/{{ bd_name }}",
+                                    {% endif %}
+                                },
+                                "consumerConnector": {
+                                    "connectorType": "general",
+                                    {% set bd_name = node.provider.bridge_domain ~ defaults.mso.schemas.templates.bridge_domains.name_suffix %}
+                                    {% if node.consumer.schema | default(schema.name) == schema.name %}
+                                    "bdRef": "/templates/{{ node.consumer.template | default(template.name) }}/bds/{{ bd_name }}"
+                                    {% else %}
+                                    "bdRef": "/schemas/%%schemas%{{ node.consumer.schema | default(schema.name) }}%%/templates/{{ node.consumer.template | default(template.name) }}/bds/{{ bd_name }}",
+                                    {% endif %}
+                                }
+                            }
+                            {%- endfor %}
+
+                        ]
+                    }
+                    {%- endif %}
+
+                }
+                {%- endfor %}
+
+            ],
+            "filters": [
+                {%- set comma2 = joiner(",") %}
+                {%- for filter in template.filters | default([]) %}{{ comma2() }}
+                {% set filter_name = filter.name ~ defaults.mso.schemas.templates.filters.name_suffix %}
+                {
+                    "name": "{{ filter_name }}",
+                    "displayName": "{{ filter_name }}",
+                    "entries": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for entry in filter.entries | default([]) %}{{ comma3() }}
+                        {% set entry_name = entry.name ~ defaults.mso.schemas.templates.filters.entries.name_suffix %}
+                        {
+                            "name": "{{ entry_name }}",
+                            "displayName": "{{ entry_name }}",
+                            "description": "{{ entry.description | default() }}",
+                            "etherType": "{{ entry.ethertype | default(defaults.mso.schemas.templates.filters.entries.ethertype) }}",
+                            "arpFlag": "unspecified",
+                            {% if entry.ethertype | default(defaults.mso.schemas.templates.filters.entries.ethertype) in ['ip', 'ipv4', 'ipv6'] %}
+                            "ipProtocol": "{{ entry.protocol | default(defaults.mso.schemas.templates.filters.entries.protocol) }}",
+                            {% else %}
+                            "ipProtocol": "unspecified",
+                            {% endif %}
+                            "matchOnlyFragments": false,
+                            "stateful": {% if entry.stateful | default(defaults.mso.schemas.templates.filters.entries.stateful) == "enabled" %}true{% else %}false{% endif %},
+                            "sourceFrom": "{{ entry.source_from_port | default(defaults.mso.schemas.templates.filters.entries.source_from_port) }}",
+                            "sourceTo": "{{ entry.source_to_port | default(entry.source_from_port | default(defaults.mso.schemas.templates.filters.entries.source_from_port)) }}",
+                            "destinationFrom": "{{ entry.destination_from_port | default(defaults.mso.schemas.templates.filters.entries.destination_from_port) }}",
+                            "destinationTo": "{{ entry.destination_to_port | default(entry.destination_from_port | default(defaults.mso.schemas.templates.filters.entries.destination_from_port)) }}",
+                            "tcpSessionRules": [
+                                "unspecified"
+                            ]
+                        }
+                        {%- endfor %}
+
+                    ]
+                } 
+                {%- endfor %}
+
+            ],
+            "externalEpgs": [
+                {%- set comma2 = joiner(",") %}
+                {%- for epg in template.external_endpoint_groups | default([]) %}{{ comma2() }}
+                {% set epg_name = epg.name ~ defaults.mso.schemas.templates.external_endpoint_groups.name_suffix %}
+                {% set vrf_name = epg.vrf.name ~ defaults.mso.schemas.templates.vrfs.name_suffix %}
+                {
+                    "name": "{{ epg_name }}",
+                    "displayName": "{{ epg_name }}",
+                    "extEpgType": "{{ epg.type | default(defaults.mso.schemas.templates.external_endpoint_groups.type) }}",
+                    {% if epg.vrf.schema | default(schema.name) == schema.name %}
+                    "vrfRef": "/templates/{{ epg.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}",
+                    {% else %}
+                    "vrfRef": "/schemas/%%schemas%{{epg.vrf.schema | default(schema.name) }}%%/templates/{{ epg.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}",
+                    {% endif %}
+                    "subnets": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for subnet in epg.subnets | default([]) %}{{ comma3() }}
+                        {% set scope = [] %}
+                        {% if subnet.export_route_control | default(defaults.mso.schemas.templates.external_endpoint_groups.subnets.export_route_control) == "yes" %}{% set scope = scope + [('"export-rtctrl"')] %}{% endif %}
+                        {% if subnet.import_route_control | default(defaults.mso.schemas.templates.external_endpoint_groups.subnets.import_route_control) == "yes" %}{% set scope = scope + [('"import-rtctrl"')] %}{% endif %}
+                        {% if subnet.import_security | default(defaults.mso.schemas.templates.external_endpoint_groups.subnets.import_security) == "yes" %}{% set scope = scope + [('"import-security"')] %}{% endif %}
+                        {% if subnet.shared_route_control | default(defaults.mso.schemas.templates.external_endpoint_groups.subnets.shared_route_control) == "yes" %}{% set scope = scope + [('"shared-rtctrl"')] %}{% endif %}
+                        {% if subnet.shared_security | default(defaults.mso.schemas.templates.external_endpoint_groups.subnets.shared_security) == "yes" %}{% set scope = scope + [('"shared-security"')] %}{% endif %}
+                        {% set aggregate = [] %}
+                        {% if subnet.aggregate_export | default(defaults.mso.schemas.templates.external_endpoint_groups.subnets.aggregate_export) == "yes" %}{% set aggregate = aggregate + [('"export-rtctrl"')] %}{% endif %}
+                        {% if subnet.aggregate_import | default(defaults.mso.schemas.templates.external_endpoint_groups.subnets.aggregate_import) == "yes" %}{% set aggregate = aggregate + [('"import-rtctrl"')] %}{% endif %}
+                        {% if subnet.aggregate_shared | default(defaults.mso.schemas.templates.external_endpoint_groups.subnets.aggregate_shared) == "yes" %}{% set aggregate = aggregate + [('"shared-rtctrl"')] %}{% endif %}
+                        {
+                            "ip": "{{ subnet.prefix }}",
+                            "scope": [
+                                {{ scope | join(',') }}
+                            ],
+                            "aggregate": [
+                                {{ aggregate | join(',') }}
+                            ]
+                        }
+                        {%- endfor %}
+
+                    ],
+                    "contractRelationships": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for contract in epg.contracts.consumers | default([]) %}{{ comma3() }}
+                        {% set contract_name = contract.name ~ defaults.mso.schemas.templates.contracts.name_suffix %}
+                        {
+                            "relationshipType": "consumer",
+                            {% if contract.schema | default(schema.name) == schema.name %}
+                            "contractRef": "/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}"
+                            {% else %}
+                            "contractRef": "/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}"
+                            {% endif %}
+                        }
+                        {%- endfor %}
+                        {%- for contract in epg.contracts.providers | default([]) %}{{ comma3() }}
+                        {% set contract_name = contract.name ~ defaults.mso.schemas.templates.contracts.name_suffix %}
+                        {
+                            "relationshipType": "provider",
+                            {% if contract.schema | default(schema.name) == schema.name %}
+                            "contractRef": "/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}"
+                            {% else %}
+                            "contractRef": "/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}"
+                            {% endif %}
+                        }
+                        {%- endfor %}
+
+                    ],
+                    "preferredGroup": {% if epg.preferred_group | default(defaults.mso.schemas.templates.external_endpoint_groups.preferred_group) == "enabled" %}true{% else %}false{% endif %},
+                    {% if epg.l3out.name is defined %}
+                    {% set l3out_name = epg.l3out.name ~ defaults.mso.schemas.templates.l3outs.name_suffix %}
+                    {% if epg.l3out.schema | default(schema.name) == schema.name %}
+                    "l3outRef": "/templates/{{ epg.l3out.template | default(template.name) }}/l3outs/{{ l3out_name }}",
+                    {% else %}
+                    "l3outRef": "/schemas/%%schemas%{{ epg.l3out.schema | default(schema.name) }}%%/templates/{{ epg.l3out.template | default(template.name) }}/l3outs/{{ l3out_name }}",
+                    {% endif %}
+                    {% else %}
+                    "l3outRef": "",
+                    {% endif %}
+                    {% if epg.application_profile.name is defined %}
+                    {% set ap_name = epg.application_profile.name ~ defaults.mso.schemas.templates.application_profiles.name_suffix %}
+                    {% if epg.application_profile.schema | default(schema.name) == schema.name %}
+                    "anpRef": "/templates/{{ epg.application_profile.template | default(template.name) }}/anps/{{ ap_name }}",
+                    {% else %}
+                    "anpRef": "/schemas/%%schemas%{{ epg.application_profile.schema | default(schema.name) }}%%/templates/{{ epg.application_profile.template | default(template.name) }}/anps/{{ ap_name }}",
+                    {% endif %}
+                    {% else %}
+                    "anpRef": "",
+                    {% endif %}
+                    "selectors": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for selector in epg.selectors | default([]) %}{{ comma3() }}
+                        {
+                            "name": "{{ selector.name }}",
+                            "expressions": [
+                                {%- set comma4 = joiner(",") %}
+                                {%- for ip in selector.ips | default([]) %}{{ comma4() }}
+                                {
+                                    "key": "ipAddress",
+                                    "operator": "equals",
+                                    "value": "{{ ip }}"
+                                }
+                                {%- endfor %}
+
+                            ]
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+                {%- endfor %}
+
+            ],
+            "serviceGraphs": [
+                {%- set comma2 = joiner(",") %}
+                {%- for sg in template.service_graphs | default([]) %}{{ comma2() }}
+                {% set sg_name = sg.name ~ defaults.mso.schemas.templates.service_graphs.name_suffix %}
+                {
+                    "name": "{{ sg_name }}",
+                    "displayName": "{{ sg_name }}",
+                    "description": "{{ sg.description | default() }}",
+                    "serviceNodes": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for node in sg.nodes | default([]) %}{{ comma3() }}
+                        {
+                            "name": "{{ node.name }}",
+                            "serviceNodeTypeId": "0000ffff0000000000000051",
+                            "index": 1
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+                {%- endfor %}
+
+            ],
+            "intersiteL3outs": [
+                {%- set comma2 = joiner(",") %}
+                {%- for l3out in template.l3outs | default([]) %}{{ comma2() }}
+                {% set l3out_name = l3out.name ~ defaults.mso.schemas.templates.l3outs.name_suffix %}
+                {% set vrf_name = l3out.vrf.name ~ defaults.mso.schemas.templates.vrfs.name_suffix %}
+                {
+                    "name": "{{ l3out_name }}",
+                    "displayName": "{{ l3out_name }}",
+                    {% if l3out.vrf.schema | default(schema.name) == schema.name %}
+                    "vrfRef": "/templates/{{ l3out.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}"
+                    {% else %}
+                    "vrfRef": "/schemas/%%schemas%{{l3out.vrf.schema | default(schema.name) }}%%/templates/{{ l3out.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}"
+                    {% endif %}
+                }
+                {%- endfor %}
+
+            ]
+        }
+        {%- endfor %}
+
+    ],
+    "sites": [
+        {%- set comma1 = joiner(",") %}
+        {%- for template in schema.templates | default([]) %}
+        {%- for site in template.sites | default([]) %}
+        {%- set current_site = site %}{{ comma1() }}
+        {
+            "siteId": "%%sites%{{ site }}%%",
+            "templateName": "{{ template.name }}",
+            "anps": [
+                {%- set comma2 = joiner(",") %}
+                {%- for ap in template.application_profiles | default([]) %}{{ comma2() }}
+                 {% set ap_name = ap.name ~ defaults.mso.schemas.templates.application_profiles.name_suffix %}
+                {
+                    "anpRef": "/templates/{{ template.name }}/anps/{{ ap_name }}",
+                    "epgs": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for epg in ap.endpoint_groups | default([]) %}
+                        {%- for site in epg.sites | default([]) %}
+                        {%- if current_site == site.name %}{{ comma3() }}
+                        {% set epg_name = epg.name ~ defaults.mso.schemas.templates.application_profiles.endpoint_groups.name_suffix %}
+                        {
+                            "epgRef": "/templates/{{ template.name }}/anps/{{ ap_name }}/epgs/{{ epg_name }}",
+                            "domainAssociations": [
+                                {%- set comma4 = joiner(",") %}
+                                {%- for pd in site.physical_domains | default([]) %}{{ comma4() }}
+                                {% set pd_name = pd.name ~ defaults.mso.schemas.templates.application_profiles.endpoint_groups.physical_domain_name_suffix %}
+                                {
+                                    "dn": "uni/phys-{{ pd_name }}",
+                                    "domainType": "physicalDomain",
+                                    "deployImmediacy": "{{ pd.deployment_immediacy | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.physical_domains.deployment_immediacy) }}",
+                                    "resolutionImmediacy": "{{ pd.resolution_immediacy | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.physical_domains.resolution_immediacy) }}"
+                                }
+                                {%- endfor %}
+                                {%- for vmm in site.vmware_vmm_domains | default([]) %}{{ comma4() }}
+                                {% set vmm_name = vmm.name ~ defaults.mso.schemas.templates.application_profiles.endpoint_groups.vmm_domain_name_suffix %}
+                                {
+                                    "dn": "uni/vmmp-VMware/dom-{{ vmm_name }}",
+                                    "domainType": "vmmDomain",
+                                    "deployImmediacy": "{{ vmm.deployment_immediacy | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.deployment_immediacy) }}",
+                                    "resolutionImmediacy": "{{ vmm.resolution_immediacy | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.resolution_immediacy) }}",
+                                    "vlanEncapMode": "{{ vmm.vlan_mode | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.vlan_mode) }}",
+                                    {% if vmm.vlan_mode | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.vlan_mode) == "static" %}
+                                    "portEncapVlan": {
+                                        "vlanType": "vlan",
+                                        "vlan": {{ vmm.vlan }}
+                                    },
+                                    {% if vmm.u_segmentation | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.u_segmentation) == "enabled" %}
+                                    "microSegVlan": {
+                                        "vlanType": "vlan",
+                                        "vlan": {{ vmm.useg_vlan }}
+                                    },
+                                    {% endif %}
+                                    {% endif %}
+                                    "allowMicroSegmentation": {% if vmm.u_segmentation | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.u_segmentation) == "enabled" %}true{% else %}false{% endif %},
+                                    "switchType": "default",
+                                    "switchingMode": "native"
+                                }
+                                {%- endfor %}
+
+                            ],
+                            "staticPorts": [
+                                {%- set comma4 = joiner(",") %}
+                                {%- for sp in site.static_ports | default([]) %}{{ comma4() }}
+                                {
+                                    "type": "{{ sp.type | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) }}",
+                                    {% if sp.type | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) == 'port' %}
+                                    {% if sp.fex is defined %}
+                                    "path": "topology/pod-{{ sp.pod | default(1) }}/paths-{{ sp.node }}/extpaths-{{ sp.fex }}/pathep-[eth{{ sp.module | default(1) }}/{{ sp.port }}]",
+                                    {% else %}
+                                    "path": "topology/pod-{{ sp.pod | default(1) }}/paths-{{ sp.node }}/pathep-[eth{{ sp.module | default(1) }}/{{ sp.port }}]",
+                                    {% endif %}
+                                    {% elif sp.type | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) == 'pc' %}
+                                    {% set policy_group_name = sp.channel ~ defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.leaf_interface_policy_group_suffix %}
+                                    "path": "topology/pod-{{ sp.pod | default(1) }}/paths-{{ sp.node }}/pathep-[{{ policy_group_name }}]",
+                                    {% elif sp.type | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) == 'vpc' %}
+                                    {% set policy_group_name = sp.channel ~ defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.leaf_interface_policy_group_suffix %}
+                                    "path": "topology/pod-{{ sp.pod | default(1) }}/protpaths-{{ sp.node_1 }}-{{ sp.node_2 }}/pathep-[{{ policy_group_name }}]",
+                                    {% endif %}
+                                    "portEncapVlan": {{ sp.vlan }},
+                                    {% if sp.useg_vlan is defined %}
+                                    "microSegVlan": {{ sp.useg_vlan }},
+                                    {% endif %}
+                                    "deploymentImmediacy": "{{ sp.deployment_immediacy | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.deployment_immediacy) }}",
+                                    "mode": "{{ sp.mode | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.mode) }}"
+                                }
+                                {%- endfor %}
+
+                            ],
+                            "staticLeafs": [
+                                {%- set comma4 = joiner(",") %}
+                                {%- for sl in site.static_leafs | default([]) %}{{ comma4() }}
+                                {
+                                    "path": "topology/pod-{{ sl.pod | default(1) }}/node-{{ sl.node }}",
+                                    "portEncapVlan": {{ sl.vlan }}
+                                }
+                                {%- endfor %}
+
+                            ],
+                            "uSegAttrs": [],
+                            "subnets": [
+                                {%- set comma4 = joiner(",") %}
+                                {%- for subnet in site.subnets | default([]) %}{{ comma4() }}
+                                {
+                                    "ip": "{{ subnet.ip }}",
+                                    "description": "{{ subnet.description | default() }}",
+                                    "scope": "{{ subnet.scope | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.subnets.scope) }}",
+                                    "shared": {% if subnet.shared | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.subnets.shared) == "enabled" %}true{% else %}false{% endif %},
+                                    "noDefaultGateway": {% if subnet.no_default_gateway | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.subnets.no_default_gateway) == "enabled" %}true{% else %}false{% endif %}
+                                    {%- if mso.version | default(defaults.mso.version) is version('3.1.1h', '>=') %}
+                                    "primary": {% if subnet.primary | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.subnets.primary) == "enabled" %}true{% else %}false{% endif %}
+                                    {%- endif %}
+
+                                }
+                                {%- endfor %}
+
+                            ],
+                            "selectors": [
+                                {%- set comma4 = joiner(",") %}
+                                {%- for selector in site.selectors | default([]) %}{{ comma4() }}
+                                {
+                                    "name": "{{ selector.name }}",
+                                    "expressions": [
+                                        {%- set comma5 = joiner(",") %}
+                                        {%- for expression in selector.expressions | default([]) %}{{ comma5() }}
+                                        {
+                                            "key": "{{ expression.key }}",
+                                            "operator": "{{ expression.operator }}",
+                                            "value": "{{ expression.value }}"
+                                        }
+                                        {%- endfor %}
+
+                                    ]
+                                }
+                                {%- endfor %}
+
+                            ]
+                        }
+                        {%- endif %}
+                        {%- endfor %}
+                        {%- endfor %}
+
+                    ]
+                }
+                {%- endfor %}
+
+            ],
+            "vrfs": [
+                {%- set comma2 = joiner(",") %}
+                {%- for vrf in template.vrfs | default([]) %}
+                {%- for site in vrf.sites | default([]) %}
+                {%- if current_site == site.name %}{{ comma2() }}
+                {
+                    "vrfRef": "/templates/{{ template.name }}/vrfs/{{ vrf.name }}",
+                    "regions": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for region in site.regions | default([]) %}{{ comma3() }}
+                        {
+                            "name": "{{ region.name }}",
+                            "cidrs": [
+                                {%- set comma4 = joiner(",") %}
+                                {%- for cidr in region.cidrs | default([]) %}{{ comma4() }}
+                                {
+                                    "ip": "{{ cidr.ip }}",
+                                    "primary": true,
+                                    "subnets": [
+                                        {%- set comma5 = joiner(",") %}
+                                        {%- for subnet in cidr.subnets | default([]) %}{{ comma5() }}
+                                        {
+                                            "ip": "{{ subnet.ip }}",
+                                            "zone": "{{ subnet.zone | default() }}",
+                                            "name": "{{ subnet.name | default() }}"
+                                        }
+                                        {%- endfor %}
+
+                                    ]
+                                }
+                                {%- endfor %}
+
+                            ],
+                            {% if region.hub_network | default(defaults.mso.schemas.templates.vrfs.sites.regions.hub_network) == "enabled" %}
+                            "cloudRsCtxProfileToGatewayRouterP": {
+                                "name": "{{ region.hub_network_name }}",
+                                "tenantName": "{{ region.hub_network_tenant }}"
+                            },
+                            {% endif %}
+                            "isVpnGatewayRouter": {% if region.vpn_gateway | default(defaults.mso.schemas.templates.vrfs.sites.regions.vpn_gateway) == "enabled" %}true{% else %}false{% endif %},
+                            "isTGWAttachment": {% if region.hub_network | default(defaults.mso.schemas.templates.vrfs.sites.regions.hub_network) == "enabled" %}true{% else %}false{% endif %},
+                            "hubnetworkPeering": false
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+                {%- endif %}
+                {%- endfor %}
+                {%- endfor %}
+
+            ],
+            "bds": [
+                {%- set comma2 = joiner(",") %}
+                {%- for bd in template.bridge_domains | default([]) %}
+                {%- for site in bd.sites | default([]) %}
+                {%- if current_site == site.name %}{{ comma2() }}
+                {% set bd_name = bd.name ~ defaults.mso.schemas.templates.bridge_domains.name_suffix %}
+                {
+                    "bdRef": "/templates/{{ template.name }}/bds/{{ bd_name }}",
+                    "subnets": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for subnet in site.subnets | default([]) %}{{ comma3() }}
+                        {
+                            "ip": "{{ subnet.ip }}",
+                            "scope": "{{ subnet.scope | default(defaults.mso.schemas.templates.bridge_domains.subnets.scope) }}",
+                            "shared": {% if subnet.shared | default(defaults.mso.schemas.templates.bridge_domains.subnets.shared) == "enabled" %}true{% else %}false{% endif %},
+                            "querier": {% if subnet.querier | default(defaults.mso.schemas.templates.bridge_domains.subnets.querier) == "enabled" %}true{% else %}false{% endif %}
+                            {%- if mso.version | default(defaults.mso.version) is version('3.1.1h', '>=') %},
+                            "primary": {% if subnet.primary | default(defaults.mso.schemas.templates.bridge_domains.subnets.primary) == "enabled" %}true{% else %}false{% endif %}
+                            {%- endif %}
+
+                        }
+                        {%- endfor %}
+
+                    ],
+                    "l3Outs": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for l3out in site.l3outs | default([]) %}{{ comma3() }}
+                        {% set l3out_name = l3out ~ defaults.mso.schemas.templates.l3outs.name_suffix %}
+                        "{{ l3out_name }}"
+                        {%- endfor %}
+
+                    ],
+                    "hostBasedRouting": {% if site.advertise_host_routes | default(defaults.mso.schemas.templates.bridge_domains.sites.advertise_host_routes) == "enabled" %}true{% else %}false{% endif %}
+                    {%- if mso.version | default(defaults.mso.version) is version('3.1.1h', '>=') %},
+                    "mac": {{ site.mac | default(defaults.mso.schemas.templates.bridge_domains.sites.mac) }}
+                    {%- endif %}
+                }
+                {%- endif %}
+                {%- endfor %}
+                {%- endfor %}
+
+            ],
+            "contracts": [
+                {%- set comma2 = joiner(",") %}
+                {%- for contract in template.contracts | default([]) %}
+                {%- if contract.service_graph is defined %}{{ comma2() }}
+                {% set contract_name = contract.name ~ defaults.mso.schemas.templates.contracts.name_suffix %}
+                {% set sg_name = contract.service_graph.name ~ defaults.mso.schemas.templates.service_graphs.name_suffix %}
+                {
+                    "contractRef": "/templates/{{ template.name }}/contracts/{{ contract_name }}",
+                    "serviceGraphRelationship": {
+                        {% if contract.service_graph.schema | default(schema.name) == schema.name %}
+                        "serviceGraphRef": "/templates/{{ contract.service_graph.template | default(template.name) }}/serviceGraphs/{{ sg_name }}",
+                        {% else %}
+                        "serviceGraphRef": "/schemas/%%schemas%{{ contract.service_graph.schema | default(schema.name) }}%%/templates/{{ contract.service_graph.template | default(template.name) }}/serviceGraphs/{{ sg_name }}",
+                        {% endif %}
+                        "serviceNodesRelationship": [
+                            {%- set comma3 = joiner(",") %}
+                            {%- for node in contract.service_graph.nodes | default([]) %}{{ comma3() }}
+                            {
+                                {% if contract.service_graph.schema | default(schema.name) == schema.name %}
+                                "serviceNodeRef": "/templates/{{ contract.service_graph.template | default(template.name) }}/serviceGraphs/{{ sg_name }}/serviceNodes/{{ node.name }}",
+                                {% else %}
+                                "serviceNodeRef": "/schemas/%%schemas%{{ contract.service_graph.schema | default(schema.name) }}%%/templates/{{ contract.service_graph.template | default(template.name) }}/serviceGraphs/{{ sg_name }}/serviceNodes/{{ node.name }}",
+                                {% endif %}
+                                "providerConnector": {
+                                    {%- set comma4 = joiner(",") %}
+                                    {%- for site in node.provider.sites | default([]) %}
+                                    {%- if current_site == site.name %}{{ comma4() }}
+                                    {% set device_name = site.device ~ defaults.mso.schemas.templates.service_graphs.device_name_suffix %}
+                                    {% set logical_interface_name = site.logical_interface ~ defaults.mso.schemas.templates.service_graphs.logical_interface_name_suffix %}
+                                    {% set redirect_policy_name = site.redirect_policy ~ defaults.mso.schemas.templates.service_graphs.redirect_policy_name_suffix %}
+                                    "clusterInterface": {
+                                        "dn": "uni/tn-{{ site.tenant | default(template.tenant) }}/lDevVip-{{ device_name }}/lIf-{{ logical_interface_name }}"
+                                    },
+                                    "redirectPolicy": {
+                                        "dn": "uni/tn-{{ site.tenant | default(template.tenant) }}/svcCont/svcRedirectPol-{{ redirect_policy_name }}"
+                                    },
+                                    "subnets": []
+                                    {%- endif %}
+                                    {%- endfor %}
+
+                                },
+                                "consumerConnector": {
+                                    {%- set comma4 = joiner(",") %}
+                                    {%- for site in node.consumer.sites | default([]) %}
+                                    {%- if current_site == site.name %}{{ comma4() }}
+                                    {% set device_name = site.device ~ defaults.mso.schemas.templates.service_graphs.device_name_suffix %}
+                                    {% set logical_interface_name = site.logical_interface ~ defaults.mso.schemas.templates.service_graphs.logical_interface_name_suffix %}
+                                    {% set redirect_policy_name = site.redirect_policy ~ defaults.mso.schemas.templates.service_graphs.redirect_policy_name_suffix %}
+                                    "clusterInterface": {
+                                        "dn": "uni/tn-{{ site.tenant | default(template.tenant) }}/lDevVip-{{ device_name }}/lIf-{{ logical_interface_name }}"
+                                    },
+                                    "redirectPolicy": {
+                                        "dn": "uni/tn-{{ site.tenant | default(template.tenant) }}/svcCont/svcRedirectPol-{{ redirect_policy_name }}"
+                                    },
+                                    "subnets": []
+                                    {%- endif %}
+                                    {%- endfor %}
+
+                                }
+                            }
+                            {%- endfor %}
+
+                        ]
+                    }
+                }
+                {%- endif %}
+                {%- endfor %}
+
+            ],
+            "externalEpgs": [
+                {%- set comma2 = joiner(",") %}
+                {%- for epg in template.external_endpoint_groups | default([]) %}
+                {%- for site in epg.sites | default([]) %}
+                {%- if current_site == site.name %}{{ comma2() }}
+                {% set epg_name = epg.name ~ defaults.mso.schemas.templates.external_endpoint_groups.name_suffix %}
+                {
+                    "externalEpgRef": "/templates/{{ template.name }}/externalEpgs/{{ epg_name }}",
+                    {% if epg.type | default(defaults.mso.schemas.templates.external_endpoint_groups.type) == "on-premise" %}
+                    {% set l3out_name = site.l3out ~ defaults.mso.schemas.templates.l3outs.name_suffix %}
+                    "l3outDn": "uni/tn-{{ site.tenant | default(template.tenant) }}/out-{{ l3out_name }}",
+                    {% else %}
+                    "l3outDn": "",
+                    {% endif %}
+                    "subnets": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for selector in epg.selectors | default([]) %}
+                        {%- for ip in selector.ips | default([]) %}{{ comma3() }}
+                        {
+                            "ip": "{{ ip }}",
+                            "name": "{{ selector.name }}",
+                            "scope": [],
+                            "aggregate": []
+                        }
+                        {%- endfor %}
+                        {%- endfor %}
+
+                    ],
+                    {% if epg.type | default(defaults.mso.schemas.templates.external_endpoint_groups.type) == "on-premise" %}
+                    "routeReachabilityInternetType": "{{ epg.route_reachability | default(defaults.mso.schemas.templates.external_endpoint_groups.sites.route_reachability) }}"
+                    {% endif %}
+                }
+                {%- endif %}
+                {%- endfor %}
+                {%- endfor %}
+
+            ],
+            "serviceGraphs": [
+                {%- set comma2 = joiner(",") %}
+                {%- for sg in template.service_graphs | default([]) %}{{ comma2() }}  
+                {% set sg_name = sg.name ~ defaults.mso.schemas.templates.service_graphs.name_suffix %} 
+                {
+                    "serviceGraphRef": "/templates/{{ template.name }}/serviceGraphs/{{ sg_name }}",
+                    "serviceNodes": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for node in sg.nodes | default([]) %}
+                        {%- for site in node.sites | default([]) %}
+                        {%- if current_site == site.name %}{{ comma3() }}
+                        {% set device_name = site.device ~ defaults.mso.schemas.templates.service_graphs.device_name_suffix %}
+                        {
+                            "serviceNodeRef": "/templates/{{ template.name }}/serviceGraphs/{{ sg_name }}/serviceNodes/{{ node.name }}",
+                            "device": {
+                                "dn": "uni/tn-{{ node.tenant | default(template.tenant) }}/lDevVip-{{ device_name }}"
+                            }
+                        }
+                        {%- endif %}
+                        {%- endfor %}
+                        {%- endfor %}
+
+                    ]
+                }
+                {%- endfor %}
+
+            ],
+            "intersiteL3outs": []
+        }
+        {%- endfor %}
+        {%- endfor %}
+
+    ]
+}

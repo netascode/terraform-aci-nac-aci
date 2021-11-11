@@ -1,0 +1,46 @@
+{
+    "fabricFuncP": {
+        "attributes": {
+            "dn": "uni/fabric/funcprof"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for pg in apic.fabric_policies.leaf_switch_policy_groups | default([]) %}{{ comma1() }}
+            {% set policy_group_name = pg.name ~ defaults.apic.fabric_policies.leaf_switch_policy_groups.name_suffix %}
+            {
+                "fabricLeNodePGrp": {
+                    "attributes": {
+                        "name": "{{ policy_group_name }}",
+                        "dn": "uni/fabric/funcprof/lenodepgrp-{{ policy_group_name }}"
+                    },
+                    "children": [
+                        {% set comma2 = joiner(",") %}
+                        {% if pg.psu_policy is defined %}{{ comma2() }}
+                        {% set psu_policy_name = pg.psu_policy ~ defaults.apic.fabric_policies.switch_policies.psu_policies.name_suffix %}
+                        {
+                            "fabricRsPsuInstPol": {
+                                "attributes": {
+                                    "tnPsuInstPolName": "{{ psu_policy_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if pg.node_control_policy is defined %}{{ comma2() }}
+                        {% set node_control_policy_name = pg.node_control_policy ~ defaults.apic.fabric_policies.switch_policies.node_control_policies.name_suffix %}
+                        {
+                            "fabricRsNodeCtrl": {
+                                "attributes": {
+                                    "tnFabricNodeControlName": "{{ node_control_policy_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

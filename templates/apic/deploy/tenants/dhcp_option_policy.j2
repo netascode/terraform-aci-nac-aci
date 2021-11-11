@@ -1,0 +1,42 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [  
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in tenant.policies.dhcp_option_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = policy.name ~ defaults.apic.tenants.policies.dhcp_option_policies.name_suffix %}
+            {
+                "dhcpOptionPol": {
+                    "attributes": {
+                        "dn": "uni/tn-{{ tenant.name }}/dhcpoptpol-{{ policy_name }}",
+                        "descr": "{{ policy.description | default() }}",
+                        "name": "{{ policy_name }}"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for option in policy.options | default([]) %}{{ comma2() }}
+                        {% set option_name = option.name ~ defaults.apic.tenants.policies.dhcp_option_policies.options.name_suffix %}
+                        {
+                            "dhcpOption": {
+                                "attributes": {
+                                    "id": "{{ option.id | default() }}",
+                                    "data": "{{ option.data | default() }}",
+                                    "dn": "uni/tn-{{ tenant.name }}/dhcpoptpol-{{ policy_name }}/opt-{{ option_name }}",
+                                    "name": "{{ option_name }}"
+                                }
+                            }
+                        }
+                        {%- endfor %} 
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

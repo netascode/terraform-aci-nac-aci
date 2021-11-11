@@ -1,0 +1,155 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for rule in tenant.policies.set_rules | default([]) %}{{ comma1() }}
+            {% set rule_name = rule.name ~ defaults.apic.tenants.policies.set_rules.name_suffix %}
+            {
+                "rtctrlAttrP": {
+                    "attributes": {
+                        "name": "{{ rule_name }}",
+                        "dn": "uni/tn-{{ tenant.name }}/attr-{{ rule_name }}",
+                        "descr": "{{ rule.description | default() }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- if rule.community is defined %}{{ comma2() }}
+                        {
+                            "rtctrlSetComm": {
+                                "attributes": {
+                                    "community": "{{ rule.community }}",
+                                    "setCriteria": "{{ rule.community_mode | default(defaults.apic.tenants.policies.set_rules.community_mode) }}",
+                                    "type": "community"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if rule.tag is defined %}{{ comma2() }}
+                        {
+                            "rtctrlSetTag": {
+                                "attributes": {
+                                    "tag": "{{ rule.tag }}",
+                                    "type": "rt-tag"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if rule.dampening is defined %}{{ comma2() }}
+                        {
+                            "rtctrlSetDamp": {
+                                "attributes": {
+                                    "halfLife": "{{ rule.dampening.half_life | default(defaults.apic.tenants.policies.set_rules.dampening.half_life) }}",
+                                    "maxSuppressTime": "{{ rule.dampening.max_suppress_time | default(defaults.apic.tenants.policies.set_rules.dampening.max_suppress_time) }}",
+                                    "reuse": "{{ rule.dampening.reuse_limit | default(defaults.apic.tenants.policies.set_rules.dampening.reuse_limit) }}",
+                                    "suppress": "{{ rule.dampening.suppress_limit | default(defaults.apic.tenants.policies.set_rules.dampening.suppress_limit) }}",
+                                    "type": "dampening-pol"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if rule.weight is defined %}{{ comma2() }}
+                        {
+                            "rtctrlSetWeight": {
+                                "attributes": {
+                                    "type": "rt-weight",
+                                    "weight": "{{ rule.weight }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if rule.next_hop is defined %}{{ comma2() }}
+                        {
+                            "rtctrlSetNh": {
+                                "attributes": {
+                                    "addr": "{{ rule.next_hop }}",
+                                    "type": "ip-nh"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if rule.preference is defined %}{{ comma2() }}
+                        {
+                            "rtctrlSetPref": {
+                                "attributes": {
+                                    "localPref": "{{ rule.preference }}",
+                                    "type": "local-pref"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if rule.metric is defined %}{{ comma2() }}
+                        {
+                            "rtctrlSetRtMetric": {
+                                "attributes": {
+                                    "metric": "{{ rule.metric }}",
+                                    "type": "metric"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if rule.metric_type is defined %}{{ comma2() }}
+                        {
+                            "rtctrlSetRtMetricType": {
+                                "attributes": {
+                                    "metricType": "{{ rule.metric_type }}",
+                                    "type": "metric"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- for add_comm in rule.additional_communities | default([]) %}{{ comma2() }}
+                        {
+                            "rtctrlSetAddComm": {
+                                "attributes": {
+                                    "community": "{{ add_comm.community }}",
+                                    "descr": "{{ add_comm.description | default() }}",
+                                    "setCriteria": "append",
+                                    "type": "community"
+                                }
+                            }
+                        }                        
+                        {%- endfor %}
+                        {%- if rule.set_as_path is defined %}{{ comma2() }}
+                        {
+                            "rtctrlSetASPath": {
+                                "attributes": {
+                                    "criteria": "{{ rule.set_as_path.criteria | default(defaults.apic.tenants.policies.set_rules.set_as_path.criteria) }}",
+                                    "lastnum": "{{ rule.set_as_path.count | default(defaults.apic.tenants.policies.set_rules.set_as_path.count) }}",
+                                    "type": "as-path"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if rule.next_hop_propagation | default(defaults.apic.tenants.policies.set_rules.next_hop_propagation) == 'enabled' %}{{ comma2() }}
+                        {
+                            "rtctrlSetNhUnchanged": {
+                                "attributes": {
+                                    "type": "nh-unchanged"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if rule.multipath | default(defaults.apic.tenants.policies.set_rules.multipath) == 'enabled' %}{{ comma2() }}
+                        {
+                            "rtctrlSetRedistMultipath": {
+                                "attributes": {
+                                    "type": "redist-multipath"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                    
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

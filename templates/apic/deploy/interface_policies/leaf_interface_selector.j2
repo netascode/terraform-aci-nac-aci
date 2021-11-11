@@ -1,0 +1,88 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) == "enabled" or apic.auto_generate_access_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_access_leaf_switch_interface_profiles) == "enabled" %}
+            {%- for _node in apic.node_policies.nodes | default([]) %}
+            {%- if _node.role == "leaf" and _node.id | string == item[1] %}
+            {%- set leaf_interface_profile_name = (_node.id ~ ":" ~ _node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_interface_profile_name | default(defaults.apic.access_policies.leaf_interface_profile_name))) %}{{ comma1() }}
+            {
+                "infraAccPortP": {
+                    "attributes": {
+                        "name": "{{ leaf_interface_profile_name }}",
+                        "dn": "uni/infra/accportprof-{{ leaf_interface_profile_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- set query = "nodes[?id==`" ~ _node.id ~ "`].interfaces[]" %}
+                        {%- if apic.interface_policies is defined %}
+                        {%- for int in (apic.interface_policies | default() | json_query(query) | default([])) %}
+                        {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
+                        {%- set leaf_interface_selector_name = (module ~ ":" ~ int.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.leaf_interface_selector_name | default(defaults.apic.access_policies.leaf_interface_selector_name))) %}{{ comma2() }}
+                        {
+                            "infraHPortS": {
+                                "attributes": {
+                                    "dn": "uni/infra/accportprof-{{ leaf_interface_profile_name }}/hports-{{ leaf_interface_selector_name }}-typ-range",
+                                    "name": "{{ leaf_interface_selector_name }}",
+                                    "type": "range",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {% if int.fex_id is defined %}
+                                    {% set fex_profile_name = (_node.id ~ ":" ~ _node.name~ ":" ~ int.fex_id) | regex_replace("^(?P<id>.+):(?P<name>.+):(?P<fex>.+)$", (apic.access_policies.fex_profile_name | default(defaults.apic.access_policies.fex_profile_name))) %}
+                                    {
+                                        "infraRsAccBaseGrp": {
+                                            "attributes": {
+                                                "fexId": "{{ int.fex_id }}",
+                                                "tDn": "uni/infra/fexprof-{{ fex_profile_name }}/fexbundle-{{ fex_profile_name }}"
+                                            }
+                                        }
+                                    },
+                                    {% elif int.policy_group is defined %}
+                                    {
+                                        "infraRsAccBaseGrp": {
+                                            "attributes": {
+                                                {% set query = "leaf_interface_policy_groups[?name=='" ~ int.policy_group ~ "'].type[]" %}
+                                                {% set type = (apic.access_policies | json_query(query)) %}
+                                                {% set policy_group_name = int.policy_group ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
+                                                {% if type[0] in ["pc", "vpc"] %}
+                                                "tDn": "uni/infra/funcprof/accbundle-{{ policy_group_name }}"
+                                                {% else %}
+                                                "tDn": "uni/infra/funcprof/accportgrp-{{ policy_group_name }}"
+                                                {% endif %}
+                                            }
+                                        }
+                                    },
+                                    {% endif %}
+                                    {
+                                        "infraPortBlk": {
+                                            "attributes": {
+                                                "descr": "{{ int.description | default() }}",
+                                                "fromCard": "{{ module }}",
+                                                "fromPort": "{{ int.port }}",
+                                                "name": "{{ module }}-{{ int.port }}",
+                                                "toCard": "{{ module }}",
+                                                "toPort": "{{ int.port }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+                        {%- endif %}
+
+                    ]
+                }
+            }
+            {%- endif %}
+            {%- endfor %}
+            {%- endif %}
+
+        ]
+    }
+}

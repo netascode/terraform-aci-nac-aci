@@ -1,0 +1,55 @@
+{
+    "fabricFuncP": {
+        "attributes": {
+            "dn": "uni/fabric/funcprof"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for pg in apic.fabric_policies.pod_policy_groups | default([]) %}{{ comma1() }}
+            {% set pod_policy_group_name = pg.name ~ defaults.apic.fabric_policies.pod_policy_groups.name_suffix %}
+            {
+                "fabricPodPGrp": {
+                    "attributes": {
+                        "name": "{{ pod_policy_group_name }}",
+                        "dn": "uni/fabric/funcprof/podpgrp-{{ pod_policy_group_name }}"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- if pg.snmp_policy is defined %}{{ comma2() }}
+                        {% set snmp_policy_name = pg.snmp_policy ~ defaults.apic.fabric_policies.pod_policies.snmp_policies.name_suffix %}
+                        {
+                            "fabricRsSnmpPol": {
+                                "attributes": {
+                                    "tnSnmpPolName": "{{ snmp_policy_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if pg.date_time_policy is defined %}{{ comma2() }}
+                        {% set date_time_policy_name = pg.date_time_policy ~ defaults.apic.fabric_policies.pod_policies.date_time_policies.name_suffix %}
+                        {
+                            "fabricRsTimePol": {
+                                "attributes": {
+                                    "tnDatetimePolName": "{{ date_time_policy_name }}"
+                                }
+                            }
+                        }
+                        {% endif %}
+                        {%- if pg.management_access_policy is defined %}{{ comma2() }}
+                        {% set management_access_policy_name = pg.management_access_policy ~ defaults.apic.fabric_policies.pod_policies.management_access_policies.name_suffix %}
+                        {
+                            "fabricRsCommPol": {
+                                "attributes": {
+                                    "tnCommPolName": "{{ management_access_policy_name }}"
+                                }
+                            }
+                        }
+                        {% endif %}
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

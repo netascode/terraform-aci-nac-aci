@@ -1,0 +1,9 @@
+{
+    "l2InstPol": {
+        "attributes": {
+            "dn": "uni/fabric/l2pol-default",
+            "name": "default",
+            "fabricMtu": "{{ apic.fabric_policies.l2_port_mtu | default(defaults.apic.fabric_policies.l2_port_mtu) }}"
+        }
+    }
+}

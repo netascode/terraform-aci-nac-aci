@@ -1,0 +1,112 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) == "enabled" or apic.auto_generate_pod_profiles | default(defaults.apic.auto_generate_pod_profiles) == "enabled" %}
+            {%- for pod in apic.pod_policies.pods | default([]) %}
+            {%- set pod_profile_name = (pod.id) | regex_replace("^(?P<id>.+)$", (apic.fabric_policies.pod_profile_name | default(defaults.apic.fabric_policies.pod_profile_name))) %}
+            {%- set pod_profile_pod_selector_name = (pod.id) | regex_replace("^(?P<id>.+)$", (apic.fabric_policies.pod_profile_pod_selector_name | default(defaults.apic.fabric_policies.pod_profile_pod_selector_name))) %}{{ comma1() }}
+            {
+                "fabricPodP": {
+                    "attributes": {
+                        "name": "{{ pod_profile_name }}",
+                        "dn": "uni/fabric/podprof-{{ pod_profile_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {
+                            "fabricPodS": {
+                                "attributes": {
+                                    "name": "{{ pod_profile_pod_selector_name }}",
+                                    "type": "range",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {% if pod.policy is defined %}
+                                    {% set pod_policy_group_name = pod.policy ~ defaults.apic.fabric_policies.pod_policy_groups.name_suffix %}
+                                    {
+                                        "fabricRsPodPGrp": {
+                                            "attributes": {
+                                                "tDn": "uni/fabric/funcprof/podpgrp-{{ pod_policy_group_name }}"
+                                            }
+                                        }
+                                    },
+                                    {% endif %}
+                                    {
+                                        "fabricPodBlk": {
+                                            "attributes": {
+                                                "from_": "{{ pod.id }}",
+                                                "name": "{{ pod.id }}",
+                                                "to_": "{{ pod.id }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+            {%- endif %}
+            {%- for prof in apic.fabric_policies.pod_profiles | default([]) %}
+            {%- set pod_profile_name = prof.name ~ defaults.apic.fabric_policies.pod_profiles.name_suffix %}{{ comma1() }}
+            {
+                "fabricPodP": {
+                    "attributes": {
+                        "name": "{{ pod_profile_name }}",
+                        "dn": "uni/fabric/podprof-{{ pod_profile_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for sel in prof.selectors | default([]) %}
+                        {%- set selector_name = sel.name ~ defaults.apic.fabric_policies.pod_profiles.selectors.name_suffix %}{{ comma2() }}
+                        {
+                            "fabricPodS": {
+                                "attributes": {
+                                    "name": "{{ selector_name }}",
+                                    "type": "{% if sel.type | default(defaults.apic.fabric_policies.pod_profiles.selectors.type) == "all" %}ALL{% else %}range{% endif %}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {% set comma3 = joiner(",") %}
+                                    {% if sel.policy is defined %}
+                                    {% set pod_policy_group_name = sel.policy ~ defaults.apic.fabric_policies.pod_policy_groups.name_suffix %}{{ comma3() }}
+                                    {
+                                        "fabricRsPodPGrp": {
+                                            "attributes": {
+                                                "tDn": "uni/fabric/funcprof/podpgrp-{{ pod_policy_group_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+                                    {%- for blk in sel.pod_blocks | default([]) %}
+                                    {%- set pod_block_name = blk.name ~ defaults.apic.fabric_policies.pod_profiles.selectors.pod_blocks.name_suffix %}{{ comma3() }}
+                                    {
+                                        "fabricPodBlk": {
+                                            "attributes": {
+                                                "from_": "{{ blk.from }}",
+                                                "name": "{{ pod_block_name }}",
+                                                "to_": "{{ blk.to | default(blk.from) }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

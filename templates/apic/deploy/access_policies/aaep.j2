@@ -1,0 +1,123 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for aaep in apic.access_policies.aaeps | default([]) %}{{ comma1() }}
+            {% set aaep_name = aaep.name ~ defaults.apic.access_policies.aaeps.name_suffix %}
+            {
+                "infraAttEntityP": {
+                    "attributes": {
+                        "name": "{{ aaep_name }}",
+                        "dn": "uni/infra/attentp-{{ aaep_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for dom in aaep.physical_domains | default([]) %}{{ comma2() }}
+                        {% set domain_name = dom ~ defaults.apic.access_policies.physical_domains.name_suffix %}
+                        {
+                            "infraRsDomP": {
+                                "attributes": {
+                                    "tDn": "uni/phys-{{ domain_name }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for dom in aaep.routed_domains | default([]) %}{{ comma2() }}
+                        {% set domain_name = dom ~ defaults.apic.access_policies.routed_domains.name_suffix %}
+                        {
+                            "infraRsDomP": {
+                                "attributes": {
+                                    "tDn": "uni/l3dom-{{ domain_name }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for dom in aaep.vmware_vmm_domains | default([]) %}{{ comma2() }}
+                        {% set domain_name = dom ~ defaults.apic.fabric_policies.vmware_vmm_domains.name_suffix %}
+                        {
+                            "infraRsDomP": {
+                                "attributes": {
+                                    "tDn": "uni/vmmp-VMware/dom-{{ domain_name }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        {%- if aaep.infra_vlan | default(defaults.apic.access_policies.aaeps.infra_vlan) == 'enabled' %}{{ comma2() }}
+                        {
+                            "infraProvAcc": {
+                                "attributes": {
+                                    "name": "provacc"
+                                },
+                                "children": [
+                                    {
+                                        "infraRsFuncToEpg": {
+                                            "attributes": {
+                                                "encap": "vlan-{{ apic.access_policies.infra_vlan }}",
+                                                "instrImedcy": "lazy",
+                                                "mode": "regular",
+                                                "primaryEncap": "unknown",
+                                                "tDn": "uni/tn-infra/ap-access/epg-default"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "dhcpInfraProvP": {
+                                            "attributes": {
+                                                "mode": "controller"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        {%- endif %}
+                        {%- if aaep.endpoint_groups is defined %}{{ comma2() }}
+                        {
+                            "infraGeneric": {
+                                "attributes": {
+                                    "name": "default",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for epg in aaep.endpoint_groups | default([]) %}{{ comma3() }}
+                                    {% set ap_name = epg.application_profile ~ defaults.apic.tenants.application_profiles.name_suffix %}
+                                    {% set epg_name = epg.endpoint_group ~ defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix %}
+                                    {
+                                        "infraRsFuncToEpg": {
+                                            "attributes": {
+                                                {% if epg.primary_vlan is defined %}
+                                                "encap": "vlan-{{ epg.secondary_vlan }}",
+                                                {% else %}
+                                                "encap": "vlan-{{ epg.vlan }}",
+                                                {% endif %}
+                                                {% if epg.primary_vlan is defined %}
+                                                "primaryEncap": "vlan-{{ epg.primary_vlan }}",
+                                                {% else %}
+                                                "primaryEncap": "unknown",
+                                                {% endif %}
+                                                "instrImedcy": "{{ epg.deployment_immediacy | default(defaults.apic.access_policies.aaeps.endpoint_groups.deployment_immediacy) }}",
+                                                "mode": "{{ epg.mode | default(defaults.apic.access_policies.aaeps.endpoint_groups.mode) }}",
+                                                "tDn": "uni/tn-{{ epg.tenant }}/ap-{{ ap_name }}/epg-{{ epg_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }   
+                        {%- endif %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

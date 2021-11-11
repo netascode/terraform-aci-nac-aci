@@ -1,0 +1,11 @@
+{% set query = "tacacs_providers[?hostname_ip==`" ~ item ~ "`]" %}
+{% set tacacs = (mso | json_query(query))[0] %}
+{
+    "host": "{{ tacacs.hostname_ip }}",
+    "description": "{{ tacacs.description | default() }}",
+    "sharedSecret": "{{ tacacs.shared_secret | default() }}",
+    "port": {{ tacacs.port | default(defaults.mso.tacacs_providers.port) }},
+    "protocol": "{{ tacacs.protocol | default(defaults.mso.tacacs_providers.protocol) }}",
+    "timeoutInSeconds": {{ tacacs.timeout | default(defaults.mso.tacacs_providers.timeout) }},
+    "retries": {{ tacacs.retries | default(defaults.mso.tacacs_providers.retries) }}
+}

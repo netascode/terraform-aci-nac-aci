@@ -1,0 +1,19 @@
+{% set query = "login_domains[?name==`" ~ item ~ "`]" %}
+{% set domain = (mso | json_query(query))[0] %}
+{
+    "name": "{{ domain.name }}",
+    "description": "{{ domain.description | default() }}",
+    "realm": "{{ domain.realm }}",
+    "status": "{{ domain.status | default(defaults.mso.login_domains.status) }}",
+    "isDefault": {% if domain.default | default(defaults.mso.login_domains.default) == True %}true{% else %}false{% endif %},
+    "providerAssociations": [
+        {%- set comma1 = joiner(",") %}
+        {%- for provider in domain.providers | default([]) %}{{ comma1() }}
+        {
+            "providerId": "%%auth/providers/{{ domain.realm }}%{{ provider.hostname_ip }}%%",
+            "priority": {{ provider.priority | default(defaults.mso.login_domains.providers.priority) }}
+        }
+        {%- endfor %}
+
+    ]
+}

@@ -1,0 +1,47 @@
+*** Settings ***
+Documentation   Verify Tenant Filter
+Suite Setup     Login APIC
+Default Tags    apic   day2   config   tenants
+Resource        ../../../apic_common.resource
+
+*** Test Cases ***
+# apic automatically convert 80 -> http and 443 -> https if it is set by api.
+{% macro get_protocol_from_port(name) -%}
+    {% set ports = {0:"unspecified",20:"ftpData",25:"smtp",53:"dns",110:"pop3",554:"rtsp",80:"http",443:"https"} %}
+    {{ ports[name] | default(name)}}
+{% endmacro %}
+
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% for filter in tenant.filters | default([]) %}
+{% set filter_name = filter.name ~ defaults.apic.tenants.filters.name_suffix %}
+
+Verify Tenant {{ tenant.name }} Filter {{ filter_name }}
+    GET   "/api/mo/uni/tn-{{ tenant.name }}/flt-{{ filter_name }}.json?rsp-subtree=full"
+    String   $..vzFilter.attributes.name   {{ filter_name }}
+    String   $..vzFilter.attributes.nameAlias   {{ filter.alias  | default() }}
+    String   $..vzFilter.attributes.descr   {{ filter.description | default() }}
+
+{% for entry in filter.entries | default([]) %}
+{% set entry_name = entry.name ~ defaults.apic.tenants.filters.entries.name_suffix %}
+
+Verify Tenant {{ tenant.name }} Filter {{ filter.name }} Entry {{ entry_name }}
+    ${filter_entry}=   Set Variable   $..vzFilter.children[?(@.vzEntry.attributes.name=='{{ entry_name }}')].vzEntry
+    String   ${filter_entry}.attributes.name   {{ entry_name }}
+    String   ${filter_entry}.attributes.nameAlias   {{ entry.alias | default() }}
+    String   ${filter_entry}.attributes.etherT   {{ entry.ethertype | default(defaults.apic.tenants.filters.entries.ethertype) }}
+{% if entry.ethertype | default(defaults.apic.tenants.filters.entries.ethertype) in ['ip', 'ipv4', 'ipv6'] %}
+    String   ${filter_entry}.attributes.prot   {{ entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) }}
+{% if entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) in ['tcp', 'udp'] %}
+    String   ${filter_entry}.attributes.sFromPort   {{ get_protocol_from_port(entry.source_from_port | default(defaults.apic.tenants.filters.entries.source_from_port)) }}
+    String   ${filter_entry}.attributes.sToPort   {{ get_protocol_from_port(entry.source_to_port| default(entry.source_from_port | default(defaults.apic.tenants.filters.entries.source_to_port))) }}
+    String   ${filter_entry}.attributes.dFromPort   {{ get_protocol_from_port(entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_from_port)) }}
+    String   ${filter_entry}.attributes.dToPort   {{ get_protocol_from_port(entry.destination_to_port | default(entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_to_port))) }}
+{% if entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) == 'tcp' %}
+    String   ${filter_entry}.attributes.stateful   {{ entry.stateful | default(defaults.apic.tenants.filters.entries.stateful) }}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% endfor %}
+
+{% endfor %}

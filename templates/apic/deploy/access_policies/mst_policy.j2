@@ -1,0 +1,55 @@
+{
+    "stpInstPol": {
+        "attributes": {
+            "dn": "uni/infra/mstpInstPol-default"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.access_policies.switch_policies.mst_policies | default([]) %}{{ comma1() }}
+            {% set mst_policy_name = policy.name ~ defaults.apic.access_policies.switch_policies.mst_policies.name_suffix %}
+            {
+                "stpMstRegionPol": {
+                    "attributes": {
+                        "name": "{{ mst_policy_name }}",
+                        "dn": "uni/infra/mstpInstPol-default/mstpRegionPol-{{ mst_policy_name }}",
+                        "regName": "{{ policy.region }}",
+                        "rev": "{{ policy.revision }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for inst in policy.instances | default([]) %}{{ comma2() }}
+                        {
+                            "stpMstDomPol": {
+                                "attributes": {
+                                    "name": "{{ inst.name }}",
+                                    "id": "{{ inst.id }}"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for range in inst.vlan_ranges | default([]) %}{{ comma3() }}
+                                    {
+                                        "fvnsEncapBlk": {
+                                            "attributes": {
+                                                "allocMode": "inherit",
+                                                "from": "vlan-{{ range.from }}",
+                                                "to": "vlan-{{ range.to | default(range.from) }}",
+                                                "role": "external"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

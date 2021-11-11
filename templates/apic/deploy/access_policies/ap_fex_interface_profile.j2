@@ -1,0 +1,110 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) == "enabled" or apic.auto_generate_access_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_access_leaf_switch_interface_profiles) == "enabled" %}
+            {%- for node in apic.interface_policies.nodes | default([]) %}
+            {%- set query = "nodes[?id==`" ~ node.id ~ "`]" %}
+            {%- set full_node = (apic.node_policies | json_query(query))[0] %}
+            {%- if full_node.role == "leaf" %}
+            {%- for fex in node.fexes | default([]) %}
+            {%- set fex_profile_name = (full_node.id ~ ":" ~ full_node.name~ ":" ~ fex.id) | regex_replace("^(?P<id>.+):(?P<name>.+):(?P<fex>.+)$", (apic.access_policies.fex_profile_name | default(defaults.apic.access_policies.fex_profile_name))) %}{{ comma1() }}
+            {
+                "infraFexP": {
+                    "attributes": {
+                        "name": "{{ fex_profile_name }}",
+                        "dn": "uni/infra/fexprof-{{ fex_profile_name }}"
+                    },
+                    "children": [
+                        {
+                            "infraFexBndlGrp": {
+                                "attributes": {
+                                    "name": "{{ fex_profile_name }}"
+                                }
+                            }
+                        }
+                    ]
+                    
+                }
+            }
+            {%- endfor %}
+            {%- endif %}           
+            {%- endfor %}
+            {%- endif %} 
+            {%- for prof in apic.access_policies.fex_interface_profiles | default([]) %}
+            {%- set fex_profile_name = prof.name ~ defaults.apic.access_policies.fex_interface_profiles.name_suffix %}{{ comma1() }}
+            {
+                "infraFexP": {
+                    "attributes": {
+                        "name": "{{ fex_profile_name }}",
+                        "dn": "uni/infra/fexprof-{{ fex_profile_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for sel in prof.selectors | default([]) %}
+                        {%- set fex_interface_selector_name = sel.name ~ defaults.apic.access_policies.fex_interface_profiles.selectors.name_suffix %}{{ comma2() }}
+                        {
+                            "infraHPortS": {
+                                "attributes": {
+                                    "dn": "uni/infra/fexprof-{{ fex_profile_name }}/hports-{{ fex_interface_selector_name }}-typ-range",
+                                    "name": "{{ fex_interface_selector_name }}",
+                                    "type": "range",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {% set comma3 = joiner(",") %}
+                                    {%- if sel.policy_group is defined %}{{ comma3() }}
+                                    {
+                                        "infraRsAccBaseGrp": {
+                                            "attributes": {
+                                                {% set query = "leaf_interface_policy_groups[?name=='" ~ sel.policy_group ~ "'].type[]" %}
+                                                {% set type = (apic.access_policies | json_query(query)) %}
+                                                {% set policy_group_name = sel.policy_group ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
+                                                {% if type[0] in ["pc", "vpc"] %}
+                                                "tDn": "uni/infra/funcprof/accbundle-{{ policy_group_name }}"
+                                                {% else %}
+                                                "tDn": "uni/infra/funcprof/accportgrp-{{ policy_group_name }}"
+                                                {% endif %}
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+                                    {%- for blk in sel.port_blocks | default([]) %}
+                                    {%- set block_name = blk.name ~ defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.name_suffix %}{{ comma3() }}
+                                    {
+                                        "infraPortBlk": {
+                                            "attributes": {
+                                                "descr": "{{ blk.description | default() }}",
+                                                "fromCard": "{{ blk.from_module | default(defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.from_module) }}",
+                                                "fromPort": "{{ blk.from_port }}",
+                                                "name": "{{ block_name }}",
+                                                "toCard": "{{ blk.to_module | default(blk.from_module | default(defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.from_module)) }}",
+                                                "toPort": "{{ blk.to_port | default(blk.from_port) }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}{{ comma2() }}
+                        {
+                            "infraFexBndlGrp": {
+                                "attributes": {
+                                    "name": "{{ fex_profile_name }}"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }     
+            {%- endfor %}
+
+        ]
+    }
+}

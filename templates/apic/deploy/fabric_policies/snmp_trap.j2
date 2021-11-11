@@ -1,0 +1,56 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for snmp in apic.fabric_policies.monitoring.snmp_traps | default([]) %}{{ comma1() }}
+            {% set policy_name = snmp.name ~ defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix %}
+            {
+                "snmpGroup": {
+                    "attributes": {
+                        "dn": "uni/fabric/snmpgroup-{{ policy_name }}",
+                        "name": "{{ policy_name }}",
+                        "descr": "{{ snmp.description | default() }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for dest in snmp.destinations | default([]) %}{{ comma2() }}
+                        {
+                            "snmpTrapDest": {
+                                "attributes": {
+                                    "host": "{{ dest.hostname_ip }}",
+                                    "port": "{{ dest.port | default(defaults.apic.fabric_policies.monitoring.snmp_traps.destinations.port) }}",
+                                    "secName": "{{ dest.community }}",
+                                    "v3SecLvl": "{{ dest.security | default(defaults.apic.fabric_policies.monitoring.snmp_traps.destinations.security) }}",
+                                    "ver": "{{ dest.version | default(defaults.apic.fabric_policies.monitoring.snmp_traps.destinations.version) }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {
+                                        "fileRsARemoteHostToEpg": {
+                                            "attributes": {
+                                                {% set mgmt_epg = dest.mgmt_epg | default(defaults.apic.fabric_policies.monitoring.snmp_traps.destinations.mgmt_epg) %}
+                                                {% if mgmt_epg == "oob" %}
+                                                "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"
+                                                {% elif mgmt_epg == "inb" %}
+                                                "tDn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}"
+                                                {% endif %}
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

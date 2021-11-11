@@ -1,0 +1,29 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for bpp in tenant.policies.bgp_best_path_policies | default([]) %}{{ comma1() }}
+            {% set bpp_name = bpp.name ~ defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix %}
+            {% set control_type = "" %}
+            {% if bpp.control_type | default(defaults.apic.tenants.policies.bgp_best_path_policies.control_type) == "multi-path-relax" %}{% set control_type = "asPathMultipathRelax" %}{% endif %}
+            {
+
+                "bgpBestPathCtrlPol": {
+                    "attributes": {
+                        "name": "{{ bpp_name }}",
+                        "descr": "{{ bpp.description | default() }}",
+                        "dn": "uni/tn-{{ tenant.name }}/bestpath-{{ bpp_name }}",
+                        "ctrl": "{{ control_type }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

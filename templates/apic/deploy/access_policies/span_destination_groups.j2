@@ -1,0 +1,62 @@
+ {
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children":[
+            {%- set comma1 = joiner(",") %}
+            {%- for span in apic.access_policies.span.destination_groups | default([]) %}{{ comma1() }}
+            {% set span_name = span.name ~ defaults.apic.access_policies.span.destination_groups.name_suffix %}
+            {
+              "spanDestGrp": {
+                "attributes": {
+                  "descr": "{{ span.description | default() }}",
+                  "dn": "uni/infra/destgrp-{{ span_name }}",
+                  "name": "{{ span_name }}",
+                  "nameAlias": "{{ span.alias | default() }}"
+                },
+                "children": [
+                  {
+                    "spanDest": {
+                      "attributes": {
+                        "descr": "",
+                        "name": "{{ span_name }}",
+                        "nameAlias": "{{ span.alias | default() }}"
+                      },
+                      "children": [
+                        {
+                          "spanRsDestPathEp": {
+                            "attributes": {
+                              "mtu": "{{ span.mtu | default(defaults.apic.access_policies.span.destination_groups.mtu) }}",
+                              {% if span.node_id is defined and span.channel is not defined%}
+                              {% set query = "nodes[?id==`" ~ span.node_id ~ "`].pod" %}
+                              {% set pod = span.pod_id | default(((apic.node_policies | default()) | json_query(query))[0] | default('1')) %}
+                              "tDn": "topology/pod-{{ pod }}/paths-{{ span.node_id }}/pathep-[eth{{ span.module | default(defaults.apic.access_policies.span.destination_groups.module) }}/{{ span.port }}]"
+                              {% else %}
+                              {% set policy_group_name = span.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
+                              {% set query = "leaf_interface_policy_groups[?name==`" ~ span.channel ~ "`].type" %}
+                              {% set type = (apic.access_policies | json_query(query))[0] %}
+                              {% if span.node_id is defined %}
+                                  {% set node = span.node_id %}
+                              {% else %}
+                                  {% set query = "nodes[?interfaces[?policy_group==`" ~ span.channel ~ "`]].id" %}
+                                  {% set node = (apic.interface_policies | default() | json_query(query))[0] %}
+                              {% endif %}                              
+                              {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
+                              {% set pod = span.pod_id | default(((apic.node_policies | default()) | json_query(query))[0] | default('1')) %}
+                              "tDn": "topology/pod-{{ pod }}/paths-{{ node }}/pathep-[{{ policy_group_name }}]"
+                              {% endif %}
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }            
+            {%- endfor %}
+            
+        ]
+    }
+}

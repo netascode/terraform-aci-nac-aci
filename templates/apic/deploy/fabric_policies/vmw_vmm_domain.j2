@@ -1,0 +1,139 @@
+{% if apic.fabric_policies.vmware_vmm_domains is not defined %}
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        }
+    }
+}
+{% else %}
+{
+    "vmmProvP": {
+        "attributes": {
+            "dn": "uni/vmmp-VMware"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for vmm in apic.fabric_policies.vmware_vmm_domains | default([]) %}{{ comma1() }}
+            {% set vmm_name = vmm.name ~ defaults.apic.fabric_policies.vmware_vmm_domains.name_suffix %}
+            {
+                "vmmDomP": {
+                    "attributes": {
+                        "name": "{{ vmm_name }}",
+                        "dn": "uni/vmmp-VMware/dom-{{ vmm_name }}",
+                        "accessMode": "{{ vmm.access_mode | default(defaults.apic.fabric_policies.vmware_vmm_domains.access_mode) }}",
+                        "delimiter": "{{ vmm.delimiter | default(defaults.apic.fabric_policies.vmware_vmm_domains.delimiter) }}",
+                        "enableTag": "{{ vmm.tag_collection | default(defaults.apic.fabric_policies.vmware_vmm_domains.tag_collection) }}",
+                        "mode": "default",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {
+                            "vmmVSwitchPolicyCont": {
+                                "attributes": {
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma2 = joiner(",") %}
+                                    {%- if vmm.vswitch.cdp_policy is defined %}{{ comma2() }}
+                                    {% set cdp_policy_name = vmm.vswitch.cdp_policy ~ defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix %}
+                                    {
+                                        "vmmRsVswitchOverrideCdpIfPol": {
+                                            "attributes": {
+                                                "tDn": "uni/infra/cdpIfP-{{ cdp_policy_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+                                    {%- if vmm.vswitch.lldp_policy is defined %}{{ comma2() }}
+                                    {% set lldp_policy_name = vmm.vswitch.lldp_policy ~ defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix %}
+                                    {
+                                        "vmmRsVswitchOverrideLldpIfPol": {
+                                            "attributes": {
+                                                "tDn": "uni/infra/lldpIfP-{{ lldp_policy_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+                                    {%- if vmm.vswitch.port_channel_policy is defined %}{{ comma2() }}
+                                    {% set port_channel_policy_name = vmm.vswitch.port_channel_policy ~ defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix %}
+                                    {
+                                        "vmmRsVswitchOverrideLacpPol": {
+                                            "attributes": {
+                                                "tDn": "uni/infra/lacplagp-{{ port_channel_policy_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+
+                                ]
+                            }
+                        }
+                        {%- for cp in vmm.credential_policies | default([]) %},
+                        {% set policy_name = cp.name ~ defaults.apic.fabric_policies.vmware_vmm_domains.credential_policies.name_suffix %}
+                        {
+                            "vmmUsrAccP": {
+                                "attributes": {
+                                    "name": "{{ policy_name }}",
+                                    "usr": "{{ cp.username }}",
+                                    "pwd": "{{ cp.password }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for vc in vmm.vcenters| default([]) %},
+                        {% set vc_name = vc.name ~ defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.name_suffix %}
+                        {
+                            "vmmCtrlrP": {
+                                "attributes": {
+                                    "dvsVersion": "{{ vc.dvs_version | default(defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.dvs_version) }}",
+                                    "hostOrIp": "{{ vc.hostname_ip }}",
+                                    "inventoryTrigSt": "untriggered",
+                                    "mode": "default",
+                                    "name": "{{ vc_name }}",
+                                    "port": "0",
+                                    "rootContName": "{{ vc.datacenter }}",
+                                    "scope": "vm",
+                                    "statsMode": "{{ vc.statistics | default(defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.statistics) }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {
+                                        "vmmRsAcc": {
+                                            "attributes": {
+                                                {% set vc_policy_name = vc.credential_policy ~ defaults.apic.fabric_policies.vmware_vmm_domains.credential_policies.name_suffix %}
+                                                "tDn": "uni/vmmp-VMware/dom-{{ vmm_name }}/usracc-{{ vc_policy_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- set mgmt_epg = vmm.mgmt_epg | default(defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.mgmt_epg) %}
+                                    {%- if mgmt_epg == "inb" %},
+                                    {
+                                        "vmmRsMgmtEPg": {
+                                            "attributes": {
+                                                "tDn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+                                ]
+                            }
+                        }
+                        {%- endfor %},
+                        {
+                            "infraRsVlanNs": {
+                                "attributes": {
+                                    {% set vlan_pool_name = vmm.vlan_pool ~ defaults.apic.access_policies.vlan_pools.name_suffix %}
+                                    "tDn": "uni/infra/vlanns-[{{ vlan_pool_name }}]-dynamic"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}
+{% endif %}

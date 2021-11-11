@@ -1,0 +1,79 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-mgmt",
+            "name": "mgmt"
+        },
+        "children": [
+            {
+                "mgmtMgmtP": {
+                    "attributes": {
+                        "dn": "uni/tn-mgmt/mgmtp-default",
+                        "name": "default"
+                    },
+                    "children": [
+                        {%- set comma1 = joiner(",") %}
+                        {%- for epg in tenant.inb_endpoint_groups | default([]) %}{{ comma1() }}
+                        {% set epg_name = epg.name ~ defaults.apic.tenants.inb_endpoint_groups.name_suffix %}
+                        {
+                            "mgmtInB": {
+                                "attributes": {
+                                    "dn": "uni/tn-mgmt/mgmtp-default/inb-{{ epg_name }}",
+                                    "name": "{{ epg_name }}",
+                                    "encap": "vlan-{{ epg.vlan }}"
+                                },
+                                "children": [
+                                    {%- set comma2 = joiner(",") %}
+                                    {%- for contract in epg.contracts.providers | default([]) %}{{ comma2() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
+                                    {
+                                        "fvRsProv": {
+                                            "attributes": {
+                                                "dn": "uni/tn-mgmt/mgmtp-default/inb-{{ epg_name }}/rsprov-{{ contract_name }}",
+                                                "tnVzBrCPName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for contract in epg.contracts.consumers | default([]) %}{{ comma2() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
+                                    {
+                                        "fvRsCons": {
+                                            "attributes": {
+                                                "dn": "uni/tn-mgmt/mgmtp-default/inb-{{ epg_name }}/rscons-{{ contract_name }}",
+                                                "tnVzBrCPName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for contract in epg.contracts.imported_consumers | default([]) %}{{ comma2() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.imported_contracts.name_suffix %}
+                                    {
+                                        "fvRsConsIf": {
+                                            "attributes": {
+                                                "dn": "uni/tn-mgmt/mgmtp-default/inb-{{ epg_name }}/rsconsif-{{ contract_name }}",
+                                                "tnVzCPIfName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}{{ comma2() }}
+                                    {% set bd_name = epg.bridge_domain ~ defaults.apic.tenants.bridge_domains.name_suffix %}
+                                    {
+                                        "mgmtRsMgmtBD": {
+                                            "attributes": {
+                                                "tnFvBDName": "{{ bd_name }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+        ]
+    }
+}

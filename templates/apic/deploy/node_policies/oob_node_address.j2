@@ -1,0 +1,46 @@
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-mgmt",
+            "name": "mgmt"
+        },
+        "children": [
+            {
+                "mgmtMgmtP": {
+                    "attributes": {
+                        "dn": "uni/tn-mgmt/mgmtp-default",
+                        "name": "default"
+                    },
+                    "children": [
+                        {
+                            "mgmtOoB": {
+                                "attributes": {
+                                    "dn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}",
+                                    "name": "{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"
+                                },
+                                "children": [
+                                    {%- set comma1 = joiner(",") %}
+                                    {%- for node in apic.node_policies.nodes | default([]) %}
+                                    {%- if node.oob_address is defined %}{{ comma1() }}
+                                    {
+                                        "mgmtRsOoBStNode": {
+                                            "attributes": {
+                                                "dn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}/rsooBStNode-[topology/pod-{{ node.pod | default(defaults.apic.node_policies.nodes.pod) }}/node-{{ node.id }}]",
+                                                "addr": "{{ node.oob_address }}",
+                                                "gw": "{{ node.oob_gateway }}",
+                                                "tDn": "topology/pod-{{ node.pod | default(defaults.apic.node_policies.nodes.pod) }}/node-{{ node.id }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.access_policies.switch_policies.forwarding_scale_policies | default([]) %}{{ comma1() }}
+            {% set forwarding_scale_policy_name = policy.name ~ defaults.apic.access_policies.switch_policies.forwarding_scale_policies.name_suffix %}
+            {
+                "topoctrlFwdScaleProfilePol": {
+                    "attributes": {
+                        "name": "{{ forwarding_scale_policy_name }}",
+                        "dn": "uni/infra/fwdscalepol-{{ forwarding_scale_policy_name }}",
+                        "profType": "{{ policy.profile | default(defaults.apic.access_policies.switch_policies.forwarding_scale_policies.profile) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

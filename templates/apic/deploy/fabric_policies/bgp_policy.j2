@@ -1,0 +1,69 @@
+{
+    "bgpInstPol": {
+        "attributes": {
+            "dn": "uni/fabric/bgpInstP-default",
+            "childAction": "deleteNonPresent"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- if apic.fabric_policies is defined and apic.fabric_policies.fabric_bgp_rr is defined %}{{ comma1() }}
+            {
+                "bgpRRP": {
+                    "attributes": {
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for item in apic.fabric_policies.fabric_bgp_rr | default([]) %}{{ comma2() }}
+                        {% set query = "nodes[?id==`" ~ item ~ "`].pod" %}
+                        {% set pod = (apic.node_policies | json_query(query))[0] | default(defaults.apic.fabric_policies.fabric_bgp_rr.pod_id) %}
+                        {
+                            "bgpRRNodePEp": {
+                                "attributes": {
+                                    "id": "{{ item }}",
+                                    "podId": "{{ pod }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                    ]
+                }
+            }
+            {%- endif %}
+            {%- if apic.fabric_policies is defined and apic.fabric_policies.fabric_bgp_ext_rr is defined %}{{ comma1() }}
+            {
+                "bgpExtRRP": {
+                    "attributes": {
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for item in apic.fabric_policies.fabric_bgp_ext_rr | default([]) %}{{ comma2() }}
+                        {% set query = "nodes[?id==`" ~ item ~ "`].pod" %}
+                        {% set pod = (apic.node_policies | json_query(query))[0] | default(defaults.apic.fabric_policies.fabric_bgp_ext_rr.pod_id) %}
+                        {
+                            "bgpRRNodePEp": {
+                                "attributes": {
+                                    "id": "{{ item }}",
+                                    "podId": "{{ pod }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                    ]
+                }
+            }
+            {%- endif %}
+            {%- if apic.fabric_policies.fabric_bgp_as is defined %}{{ comma1() }}
+            {
+                "bgpAsP": {
+                    "attributes": {
+                        "asn": "{{ apic.fabric_policies.fabric_bgp_as }}"
+                    }
+                }
+            }
+            {%- endif %}
+
+        ]
+    }
+}

@@ -1,0 +1,93 @@
+ {
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for span in apic.access_policies.span.source_groups | default([]) %}{{ comma1() }}
+            {% set span_name = span.name ~ defaults.apic.access_policies.span.source_groups.name_suffix %}
+            {
+              "spanSrcGrp": {
+                "attributes": {
+                  "adminSt": "{{ span.admin_state | default(defaults.apic.access_policies.span.source_groups.admin_state) }}",
+                  "descr": "{{ span.description | default() }}",
+                  "dn": "uni/infra/srcgrp-{{ span_name }}",
+                  "name": "{{ span_name }}",
+                  "nameAlias": "{{ span.alias | default() }}"
+                },
+                "children": [
+                  {%- set comma2 = joiner(",") %}
+                  {%- for source in span.sources | default([]) %}{{ comma2() }}
+                  {% set source_name = source.name ~ defaults.apic.access_policies.span.source_groups.sources.name_suffix %}
+                  {
+                    "spanSrc": {
+                      "attributes": {
+                        "descr": "{{ source.description | default() }}",
+                        "dir": "{{ source.direction }}",
+                        "name": "{{ source_name}}",
+                        "nameAlias": "{{ source.alias |  default()}}",
+                        "spanOnDrop": "{{ source.span_drop | default(defaults.apic.access_policies.span.source_groups.sources.span_drop) }}"
+                      },
+                      "children": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for path in source.access_paths| default([]) %}{{ comma3() }}
+                        {
+                          "spanRsSrcToPathEp": {
+                            "attributes": {
+                              {% if path.node_id is defined and path.channel is not defined%}
+                              {% set query = "nodes[?id==`" ~ path.node_id ~ "`].pod" %}
+                              {% set pod = path.pod_id | default(((apic.node_policies | default()) | json_query(query))[0] | default('1')) %}
+                              "tDn": "topology/pod-{{ pod }}/paths-{{ path.node_id }}/pathep-[eth{{ path.module | default(defaults.apic.access_policies.span.source_groups.sources.access_paths.module) }}/{{ path.port }}]"
+                              {% else %}
+                              {% set policy_group_name = path.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
+                              {% set query = "leaf_interface_policy_groups[?name==`" ~ path.channel ~ "`].type" %}
+                              {% set type = (apic.access_policies | json_query(query))[0] %}
+                              {% if path.node_id is defined %}
+                                  {% set node = path.node_id %}
+                              {% else %}
+                                  {% set query = "nodes[?interfaces[?policy_group==`" ~ path.channel ~ "`]].id" %}
+                                  {% set node = (apic.interface_policies | default() | json_query(query))[0] %}
+                              {% endif %}
+                              {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
+                              {% set pod = path.pod_id | default(((apic.node_policies | default()) | json_query(query))[0] | default('1')) %}
+                              {% if type == 'vpc' %}
+                              {% if path.node2_id is defined %}
+                                  {% set node2 = path.node2_id %}
+                              {% else %}
+                                  {% set query = "nodes[?interfaces[?policy_group==`" ~ path.channel ~ "`]].id" %}
+                                  {% set node2 = (apic.interface_policies | default() | json_query(query))[1] %}
+                              {% endif %}
+                              "tDn": "topology/pod-{{ pod }}/protpaths-{{ node }}-{{ node2 }}/pathep-[{{ policy_group_name }}]"
+                              {% else %}
+                              "tDn": "topology/pod-{{ pod }}/paths-{{ node }}/pathep-[{{ policy_group_name }}]"
+                              {% endif %}
+                              {% endif %}
+                            }
+                          }
+                        }
+                        {%- endfor %}
+                      
+                      ]
+                    }
+                  }
+                  {%- endfor %}{{ comma2() }}
+                  {
+                    "spanSpanLbl": {
+                      "attributes": {
+                         {% set destination_name = span.destination.name ~ defaults.apic.access_policies.span.destination_groups.name_suffix %}
+                        "descr": "{{ span.destination.description | default()}}",
+                        "name": "{{ destination_name }}",
+                        "nameAlias": "{{ span.destination.alias | default() }}",
+                        "tag": "yellow-green"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+            {%- endfor %}
+            
+        ]
+    }
+ }

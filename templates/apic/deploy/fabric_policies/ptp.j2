@@ -1,0 +1,8 @@
+{
+    "latencyPtpMode": {
+        "attributes": {
+            "dn": "uni/fabric/ptpmode",
+            "state": "{{ apic.fabric_policies.ptp_admin_state | default(defaults.apic.fabric_policies.ptp_admin_state) }}"
+        }
+    }
+}

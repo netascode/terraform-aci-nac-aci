@@ -1,0 +1,85 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for syslog in apic.fabric_policies.monitoring.syslogs | default([]) %}{{ comma1() }}
+            {% set policy_name = syslog.name ~ defaults.apic.fabric_policies.monitoring.syslogs.name_suffix %}
+            {
+                "syslogGroup": {
+                    "attributes": {
+                        "dn": "uni/fabric/slgroup-{{ policy_name }}",
+                        "name": "{{ policy_name }}",
+                        "descr": "{{ syslog.description | default() }}",
+                        "format": "{{ syslog.format | default(defaults.apic.fabric_policies.monitoring.syslogs.format) }}",
+                        "includeMilliSeconds": "{% if syslog.show_millisecond | default(defaults.apic.fabric_policies.monitoring.syslogs.show_millisecond) == 'enabled' %}yes{% else %}no{% endif %}",
+                        "includeTimeZone": "no",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for dest in syslog.destinations | default([]) %}{{ comma2() }}
+                        {
+                            "syslogRemoteDest": {
+                                "attributes": {
+                                    "host": "{{ dest.hostname_ip }}",
+                                    "port": "{{ dest.port | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.port) }}",
+                                    "adminState": "{{ dest.admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.admin_state) }}",
+                                    "format": "{{ syslog.format | default(defaults.apic.fabric_policies.monitoring.syslogs.format) }}",
+                                    "forwardingFacility": "{{ dest.facility | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.facility) }}",
+                                    "severity": "{{ dest.severity | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.severity) }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {
+                                        "fileRsARemoteHostToEpg": {
+                                            "attributes": {
+                                                {% set mgmt_epg = dest.mgmt_epg | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.mgmt_epg) %}
+                                                {% if mgmt_epg == "oob" %}
+                                                "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"
+                                                {% elif mgmt_epg == "inb" %}
+                                                "tDn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}"
+                                                {% endif %}
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        {%- endfor %}{{ comma2() }}
+                        {
+                            "syslogProf": {
+                                "attributes": {
+                                    "adminState": "{{ syslog.admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.admin_state) }}",
+                                    "name": "syslog"
+                                }
+                            }
+                        },
+                        {
+                            "syslogFile": {
+                                "attributes": {
+                                    "adminState": "{{ syslog.local_admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.local_admin_state) }}",
+                                    "format": "{{ syslog.format | default(defaults.apic.fabric_policies.monitoring.syslogs.format) }}",
+                                    "severity": "{{ syslog.local_severity | default(defaults.apic.fabric_policies.monitoring.syslogs.local_severity) }}"
+                                }
+                            }
+                        },
+                        {
+                            "syslogConsole": {
+                                "attributes": {
+                                    "adminState": "{{ syslog.console_admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.console_admin_state) }}",
+                                    "format": "{{ syslog.format | default(defaults.apic.fabric_policies.monitoring.syslogs.format) }}",
+                                    "severity": "{{ syslog.console_severity | default(defaults.apic.fabric_policies.monitoring.syslogs.console_severity) }}"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

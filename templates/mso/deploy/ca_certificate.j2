@@ -1,0 +1,7 @@
+{% set query = "ca_certificates[?name==`" ~ item ~ "`]" %}
+{% set cert = (mso | json_query(query))[0] %}
+{
+    "name": "{{ cert.name }}",
+    "description": "{{ cert.description | default() }}",
+    "publicKey": "{{ cert.public_key }}"
+}

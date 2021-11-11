@@ -1,0 +1,17 @@
+{% set query = "remote_locations[?name==`" ~ item ~ "`]" %}
+{% set remote = (mso | json_query(query))[0] %}
+{
+    "name": "{{ remote.name }}",
+    "description": "{{ remote.description | default() }}",
+    "credential": {
+        "hostname": "{{ remote.hostname_ip }}",
+        "port": {{ remote.port | default(defaults.mso.remote_locations.port) }},
+        "username": "{{ remote.username | default() }}",
+        "remotePath": "{{ remote.path | default(defaults.mso.remote_locations.path) }}",
+        "protocolType": "{{ remote.protocol | default(defaults.mso.remote_locations.protocol) }}",
+        "authType": "{{ remote.authentication | default(defaults.mso.remote_locations.authentication) }}",
+        "password": "{{ remote.password | default() }}",
+        "sshKey": "{{ remote.ssh_key | default() }}",
+        "passPhrase": "{{ remote.passphrase | default() }}"
+    }
+}

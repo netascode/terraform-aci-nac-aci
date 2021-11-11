@@ -1,0 +1,53 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-mgmt",
+            "name": "mgmt"
+        },
+        "children": [
+            {
+                "mgmtMgmtP": {
+                    "attributes": {
+                        "dn": "uni/tn-mgmt/mgmtp-default",
+                        "name": "default"
+                    },
+                    "children": [
+                        {%- set comma1 = joiner(",") %}
+                        {%- for epg in tenant.oob_endpoint_groups | default([]) %}{{ comma1() }}
+                        {% if epg.name is not defined %}
+                        {% set epg_name = defaults.apic.tenants.oob_endpoint_groups.name %}
+                        {% else %}
+                        {% set epg_name = epg.name ~ defaults.apic.tenants.oob_endpoint_groups.name_suffix %}
+                        {% endif %}
+                        {
+                            "mgmtOoB": {
+                                "attributes": {
+                                    "dn": "uni/tn-mgmt/mgmtp-default/oob-{{ epg_name }}",
+                                    "name": "{{ epg_name }}"
+                                },
+                                "children": [
+                                    {%- set comma2 = joiner(",") %}
+                                    {%- for oob_contract in epg.oob_contracts.providers | default([]) %}{{ comma2() }}
+                                    {% set oob_contract_name = oob_contract ~ defaults.apic.tenants.oob_contracts.name_suffix %}
+                                    {
+                                        "mgmtRsOoBProv": {
+                                            "attributes": {
+                                                "dn": "uni/tn-mgmt/mgmtp-default/oob-{{ epg_name }}/rsooBProv-{{ oob_contract_name }}",
+                                                "tnVzOOBBrCPName": "{{ oob_contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+        ]
+    }
+}

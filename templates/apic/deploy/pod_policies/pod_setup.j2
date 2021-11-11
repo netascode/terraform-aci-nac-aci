@@ -1,0 +1,34 @@
+{
+    "ctrlrInst": {
+        "attributes": {
+            "dn": "uni/controller"
+        },
+        "children": [
+            {
+                "fabricSetupPol": {
+                    "attributes": {
+                        "dn": "uni/controller/setuppol"
+                    },
+                    "children": [
+                        {%- set comma1 = joiner(",") %}
+                        {%- for pod in apic.pod_policies.pods | default([]) %}{{ comma1() }}
+                        {
+                            "fabricSetupP": {
+                                "attributes": {
+                                    "dn": "uni/controller/setuppol/setupp-{{ pod.id }}",
+                                    "podId": "{{ pod.id }}",
+                                    "podType": "physical"
+                                    {%- if pod.id != 1 %},
+                                    "tepPool": "{{ pod.tep_pool }}"
+                                    {% endif %} 
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+        ]
+    }
+}

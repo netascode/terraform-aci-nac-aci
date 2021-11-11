@@ -1,0 +1,23 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.access_policies.switch_policies.vpc_policies | default([]) %}{{ comma1() }}
+            {% set vpc_policy_name = policy.name ~ defaults.apic.access_policies.switch_policies.vpc_policies.name_suffix %}
+            {
+                "vpcInstPol": {
+                    "attributes": {
+                        "name": "{{ vpc_policy_name }}",
+                        "dn": "uni/fabric/vpcInst-{{ vpc_policy_name }}",
+                        "deadIntvl": "{{ policy.peer_dead_interval | default(defaults.apic.access_policies.switch_policies.vpc_policies.peer_dead_interval) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

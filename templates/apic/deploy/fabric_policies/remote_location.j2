@@ -1,0 +1,52 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for rl in apic.fabric_policies.remote_locations | default([]) %}{{ comma1() }}
+            {% set rl_name = rl.name ~ defaults.apic.fabric_policies.remote_locations.name_suffix %}
+            {
+                "fileRemotePath": {
+                    "attributes": {
+                        "authType": "{% if rl.auth_type | default(defaults.apic.fabric_policies.remote_locations.auth_type) == "ssh_keys" %}useSshKeyContents{% else %}usePassword{% endif %}",
+                        "descr": "{{ rl.description | default() }}",
+                        "dn": "uni/fabric/path-{{ rl_name }}",
+                        "host": "{{ rl.hostname_ip }}",
+                        "name": "{{ rl_name }}",
+                        "protocol": "{{ rl.protocol }}",
+                        "remotePath": "{{ rl.path | default(defaults.apic.fabric_policies.remote_locations.path) }}",
+                        {% if rl.port is defined  %}
+                        "remotePort": "{{ rl.port }}",
+                        {% endif %}
+                        "userName": "{{ rl.username | default() }}",
+                        "userPasswd": "{{ rl.password | default() }}",
+                        {% if rl.auth_type | default(defaults.apic.fabric_policies.remote_locations.auth_type) == "ssh_keys" %}
+                        "identityPrivateKeyContents": "{{ rl.ssh_private_key }}",
+                        "identityPublicKeyContents": "{{ rl.ssh_public_key }}",
+                        "identityPrivateKeyPassphrase": "{{ rl.ssh_passphrase }}",
+                        {% endif %}
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {
+                            "fileRsARemoteHostToEpg": {
+                                "attributes": {
+                                    {% set mgmt_epg = rl.mgmt_epg | default(defaults.apic.fabric_policies.remote_locations.mgmt_epg) %}
+                                    {% if mgmt_epg == "oob" %}
+                                    "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"
+                                    {% elif mgmt_epg == "inb" %}
+                                    "tDn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}"
+                                    {% endif %}
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

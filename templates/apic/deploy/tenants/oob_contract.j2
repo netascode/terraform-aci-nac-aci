@@ -1,0 +1,61 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for contract in tenant.oob_contracts | default([]) %}{{ comma1() }}
+            {% set contract_name = contract.name ~ defaults.apic.tenants.oob_contracts.name_suffix %}
+            {
+                "vzOOBBrCP": {
+                    "attributes": {
+                        "descr": "{{ contract.description | default() }}",
+                        "dn": "uni/tn-{{ tenant.name }}/oobbrc-{{ contract_name }}",
+                        "name": "{{ contract_name }}",
+                        "nameAlias": "{{ contract.alias | default() }}",
+                        "scope": "{{ contract.scope | default(defaults.apic.tenants.oob_contracts.scope) }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for subject in contract.subjects | default([]) %}{{ comma2() }}
+                        {% set subject_name = subject.name ~ defaults.apic.tenants.oob_contracts.subjects.name_suffix %}
+                        {
+                            "vzSubj": {
+                                "attributes": {
+                                    "name": "{{ subject_name }}",
+                                    "nameAlias": "{{ subject.alias | default() }}",
+                                    "descr": "{{ subject.description | default() }}",
+                                    "revFltPorts": "yes",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for filter in subject.filters | default([]) %}{{ comma3() }}
+                                    {% set filter_name = filter.filter ~ defaults.apic.tenants.filters.name_suffix %}
+                                    {
+                                        "vzRsSubjFiltAtt": {
+                                            "attributes": {
+                                                "action": "permit",
+                                                "tnVzFilterName": "{{ filter_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

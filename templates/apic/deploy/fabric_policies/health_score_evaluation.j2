@@ -1,0 +1,26 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {
+                "healthPolCont": {
+                    "attributes": {
+                        "dn": "uni/fabric/hsPols"
+                    },
+                    "children": [
+                        {
+                            "healthEvalP": {
+                                "attributes": {
+                                    "dn": "uni/fabric/hsPols/hseval",
+                                    "ignoreAckedFaults": "{{ apic.fabric_policies.ignore_acked_faults |  default(defaults.apic.fabric_policies.ignore_acked_faults) }}"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

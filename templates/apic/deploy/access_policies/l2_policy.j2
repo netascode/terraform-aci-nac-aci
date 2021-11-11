@@ -1,0 +1,24 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.access_policies.interface_policies.l2_policies | default([]) %}{{ comma1() }}
+            {% set l2_policy_name = policy.name ~ defaults.apic.access_policies.interface_policies.l2_policies.name_suffix %}
+            {
+                "l2IfPol": {
+                    "attributes": {
+                        "name": "{{ l2_policy_name }}",
+                        "dn": "uni/infra/l2IfP-{{ l2_policy_name }}",
+                        "vlanScope": "{{ policy.vlan_scope | default(defaults.apic.access_policies.interface_policies.l2_policies.vlan_scope) }}",
+                        "qinq": "{{ policy.qinq | default(defaults.apic.access_policies.interface_policies.l2_policies.qinq) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

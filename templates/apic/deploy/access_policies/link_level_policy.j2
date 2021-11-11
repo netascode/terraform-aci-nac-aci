@@ -1,0 +1,23 @@
+{
+    "infraInfra": {
+        "attributes": {"dn": "uni/infra"},
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.access_policies.interface_policies.link_level_policies | default([]) %}{{ comma1() }}
+            {% set link_level_policy_name = policy.name ~ defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix %}
+            {
+                "fabricHIfPol": {
+                    "attributes": {
+                        "name": "{{ link_level_policy_name }}",
+                        "dn": "uni/infra/hintfpol-{{ link_level_policy_name }}",
+                        "speed": "{{ policy.speed | default(defaults.apic.access_policies.interface_policies.link_level_policies.speed) }}",
+                        "autoNeg": "{{ policy.auto | default(defaults.apic.access_policies.interface_policies.link_level_policies.auto) }}",
+                        "fecMode": "{{ policy.fec_mode | default(defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

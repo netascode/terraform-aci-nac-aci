@@ -1,0 +1,48 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.fabric_policies.config_exports | default([]) %}{{ comma1() }}
+            {% set policy_name = policy.name ~ defaults.apic.fabric_policies.config_exports.name_suffix %}
+            {
+                "configExportP": {
+                    "attributes": {
+                        "dn": "uni/fabric/configexp-{{ policy_name }}",
+                        "name": "{{ policy_name }}",
+                        "descr": "{{ policy.description | default() }}",
+                        "format": "{{ policy.format | default(defaults.apic.fabric_policies.config_exports.format) }}"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- if policy.remote_location is defined %}{{ comma2() }}
+                        {% set rl_name = policy.remote_location ~ defaults.apic.fabric_policies.remote_locations.name_suffix %}
+                        {
+                            "configRsRemotePath": {
+                                "attributes": {
+                                    "tnFileRemotePathName": "{{ rl_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if policy.scheduler is defined %}{{ comma2() }}
+                        {% set scheduler_name = policy.scheduler ~ defaults.apic.fabric_policies.schedulers.name_suffix %}
+                        {
+                            "configRsExportScheduler": {
+                                "attributes": {
+                                    "tnTrigSchedPName": "{{ scheduler_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

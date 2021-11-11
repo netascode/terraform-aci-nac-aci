@@ -1,0 +1,99 @@
+
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.fabric_policies.pod_policies.snmp_policies | default([]) %}{{ comma1() }}
+            {% set snmp_policy_name = policy.name ~ defaults.apic.fabric_policies.pod_policies.snmp_policies.name_suffix %}
+            {
+                "snmpPol": {
+                    "attributes": {
+                        "name": "{{ snmp_policy_name }}",
+                        "dn": "uni/fabric/snmppol-{{ snmp_policy_name }}",
+                        "adminSt": "{{ policy.admin_state | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.admin_state) }}",
+                        "loc": "{{ policy.location | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.location) }}",
+                        "contact": "{{ policy.contact | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.contact) }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for user in policy.users | default([]) %}{{ comma2() }}
+                        {
+                            "snmpUserP": {
+                                "attributes": {
+                                    "name": "{{ user.name }}",
+                                    "privType": "{{ user.privacy_type | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.users.privacy_type) }}",
+                                    {% if user.privacy_type | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.users.privacy_type) != "none" %}
+                                    "privKey": "{{ user.privacy_key }}",
+                                    {% endif %}
+                                    "authType": "{{ user.authorization_type | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.users.authorization_type) }}",
+                                    "authKey": "{{ user.authorization_key | default() }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for community in policy.communities | default([]) %}{{ comma2() }}
+                        {
+                            "snmpCommunityP": {
+                                "attributes": {
+                                    "name": "{{ community }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for forwarder in policy.trap_forwarders | default([]) %}{{ comma2() }}
+                        {
+                            "snmpTrapFwdServerP": {
+                                "attributes": {
+                                    "addr": "{{ forwarder.ip }}",
+                                    "port": "{{ forwarder.port | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.trap_forwarders.port) }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for client in policy.clients | default([]) %}{{ comma2() }}
+                        {% set snmp_client_name = client.name ~ defaults.apic.fabric_policies.pod_policies.snmp_policies.clients.name_suffix %}
+                        {
+                            "snmpClientGrpP": {
+                                "attributes": {
+                                    "name": "{{ snmp_client_name }}"
+                                },
+                                "children": [
+                                    {
+                                        "snmpRsEpg": {
+                                            "attributes": {
+                                            {% if client.mgmt_epg == "oob" %}
+                                            "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"
+                                            {% elif client.mgmt_epg == "inb" %}
+                                            "tDn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}"
+                                            {% endif %}
+                                            }
+                                        }
+                                    }
+                                    {%- for entry in client.entries | default([]) %},
+                                    {
+                                        "snmpClientP": {
+                                            "attributes": {
+                                                "addr": "{{ entry.ip }}",
+                                                "name": "{{ entry.name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

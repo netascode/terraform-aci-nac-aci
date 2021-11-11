@@ -1,0 +1,39 @@
+{
+    "ctrlrInst": {
+        "attributes": {
+            "dn": "uni/controller"
+        },
+        "children": [
+            {
+                "fabricNodeIdentPol": {
+                    "attributes": {
+                        "dn": "uni/controller/nodeidentpol"
+                    },
+                    "children": [
+                        {%- set comma1 = joiner(",") %}
+                        {%- for node in apic.node_policies.nodes | default([]) %}
+                        {%- if node.role in ["leaf","spine"] and node.serial_number is defined %}{{ comma1() }}
+                        {
+                            "fabricNodeIdentP": {
+                                "attributes": {
+                                    "name": "{{ node.name }}",
+                                    "dn": "uni/controller/nodeidentpol/nodep-{{ node.serial_number }}",
+                                    "nodeId": "{{ node.id }}",
+                                    "podId": "{{ node.pod | default(defaults.apic.node_policies.nodes.pod) }}",
+                                    "serial": "{{ node.serial_number }}"
+                                    {%- if node.role == "leaf" and node.type is defined %},
+                                    "nodeType": "{{ node.type }}"
+                                    {%- endif %}
+
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.access_policies.interface_policies.lldp_policies | default([]) %}{{ comma1() }}
+            {% set lldp_policy_name = policy.name ~ defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix %}
+            {
+                "lldpIfPol": {
+                    "attributes": {
+                        "name": "{{ lldp_policy_name }}",
+                        "dn": "uni/infra/lldpIfP-{{ lldp_policy_name }}",
+                        "adminRxSt": "{{ policy.admin_rx_state }}",
+                        "adminTxSt": "{{ policy.admin_tx_state }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

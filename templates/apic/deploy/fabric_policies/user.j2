@@ -1,0 +1,89 @@
+{
+    "aaaUserEp": {
+        "attributes": {
+            "dn": "uni/userext"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for user in apic.fabric_policies.aaa.users | default([]) %}{{ comma1() }}
+            {
+                "aaaUser": {
+                    "attributes": {
+                        "accountStatus": "{{ user.status | default(defaults.apic.fabric_policies.aaa.users.status) }}",
+                        "certAttribute": "{{ user.certificate_name | default() }}",
+                        "clearPwdHistory": "no",
+                        "descr": "{{ user.description | default() }}",
+                        "dn": "uni/userext/user-{{ user.username }}",
+                        "email": "{{ user.email | default() }}",
+                        "expires": "{{ user.expires | default(defaults.apic.fabric_policies.aaa.users.expires) }}",
+                        {% if user.expires | default(defaults.apic.fabric_policies.aaa.users.expires) == 'yes' %}
+                        "expiration": "{{ user.expire_date | default() }}",
+                        {% endif %}
+                        "firstName": "{{ user.first_name | default() }}",
+                        "lastName": "{{ user.last_name | default() }}",
+                        "name": "{{ user.username }}",
+                        "pwd": "{{ user.password }}",
+                        "phone": "{{ user.phone | default() }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for domain in user.domains | default([]) %}{{ comma2() }}
+                        {
+                            "aaaUserDomain": {
+                                "attributes": {
+                                    "name": "{{ domain.name }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for role in domain.roles | default([]) %}{{ comma3() }}
+                                    {
+                                        "aaaUserRole": {
+                                            "attributes": {
+                                                "name": "{{ role.name }}",
+                                                "privType": "{% if role.privilege_type | default(defaults.apic.fabric_policies.aaa.users.domains.roles.privilege_type) == "write" %}writePriv{% else %}readPriv{% endif %}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for cert in user.certificates | default([]) %}{{ comma2() }}
+                        {
+                            "aaaUserCert": {
+                                "attributes": {
+                                    "name": "{{ cert.name }}",
+                                    "data": "{{ cert.data }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for key in user.ssh_keys | default([]) %}{{ comma2() }}
+                        {
+                            "aaaSshAuth": {
+                                "attributes": {
+                                    "name": "{{ key.name }}",
+                                    "data": "{{ key.data }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}{{ comma1() }}
+            {
+                "aaaPwdProfile": {
+                    "attributes": {
+                        "historyCount": "0"
+                    }
+                }
+            }
+        ]
+    }
+}

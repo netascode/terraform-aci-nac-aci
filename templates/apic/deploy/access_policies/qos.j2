@@ -1,0 +1,78 @@
+{
+    "qosInstPol": {
+        "attributes": {
+            "dn": "uni/infra/qosinst-default",
+            "ctrl": "{% if apic.access_policies.qos.preserve_cos | default(defaults.apic.access_policies.qos.preserve_cos) == "enabled" %}dot1p-preserve{% elif apic.access_policies.qos.preserve_cos | default(defaults.apic.access_policies.qos.preserve_cos) == "disabled" %}none{% endif %}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for level in range(1, 7) %}{{ comma1() }}
+            {% set query = "qos_classes[?level==`" ~ level ~ "`]" %}
+            {% set default_qos_class = (defaults.apic.access_policies.qos | json_query(query))[0] %}
+            {% if apic.access_policies.qos is defined %}
+            {% set qos_class = ((apic.access_policies.qos | json_query(query)) | default([]))[0] %}
+            {% endif %}
+            {
+                "qosClass": {
+                    "attributes": {
+                        "admin": "{{ qos_class.admin_state | default(default_qos_class.admin_state) }}",
+                        "dn": "uni/infra/qosinst-default/class-level{{ qos_class.level | default(default_qos_class.level) }}",
+                        "mtu": "{{ qos_class.mtu | default(default_qos_class.mtu) }}",
+                        "prio": "level{{ qos_class.level | default(default_qos_class.level) }}"
+                    },
+                    "children": [
+                        {
+                            "qosSched": {
+                                "attributes": {
+                                    "bw": "{{ qos_class.bandwidth_percent | default(default_qos_class.bandwidth_percent) }}",
+                                    "meth": "{% if qos_class.scheduling | default(default_qos_class.scheduling) == "wrr" %}wrr{% elif qos_class.scheduling | default(default_qos_class.scheduling) == "strict-priority" %}sp{% endif %}"
+                                }
+                            }
+                        },
+                        {
+                            "qosQueue": {
+                                "attributes": {
+                                    "limit": "1522",
+                                    "meth": "dynamic"
+                                }
+                            }
+                        },
+                        {
+                            "qosPfcPol": {
+                                "attributes": {
+                                    "adminSt": "{% if qos_class.pfc_state | default(default_qos_class.pfc_state) == "enabled" %}yes{% else %}no{% endif %}",
+                                    "name": "default",
+                                    "noDropCos": "{{ qos_class.no_drop_cos | default(default_qos_class.no_drop_cos)  }}",
+                                    "enableScope": "{{ qos_class.pfc_scope | default(default_qos_class.pfc_scope)  }}"
+                                }
+                            }
+                        },
+                        {
+                            "qosCong": {
+                                "attributes": {
+                                    "afdQueueLength": "0",
+                                    "algo": "{{ qos_class.congestion_algorithm | default(default_qos_class.congestion_algorithm) }}",
+                                    "ecn": "{{ qos_class.ecn | default(default_qos_class.ecn) }}",
+                                    "forwardNonEcn": "{{ qos_class.forward_non_ecn | default(default_qos_class.forward_non_ecn) }}",
+                                    "wredMaxThreshold": "{{ qos_class.wred_max_threshold | default(default_qos_class.wred_max_threshold) }}",
+                                    "wredMinThreshold": "{{ qos_class.wred_min_threshold | default(default_qos_class.wred_min_threshold) }}",
+                                    "wredProbability": "{{ qos_class.wred_probability | default(default_qos_class.wred_probability) }}",
+                                    "wredWeight": "{{ qos_class.weight | default(default_qos_class.weight) }}"
+                                }
+                            }
+                        },
+                        {
+                            "qosBuffer": {
+                                "attributes": {
+                                    "min": "{{ qos_class.minimum_buffer | default(default_qos_class.weight)}}"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

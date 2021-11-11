@@ -1,0 +1,35 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for igmp_snoop_pol in tenant.policies.igmp_snooping_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = igmp_snoop_pol.name ~ defaults.apic.tenants.policies.igmp_snooping_policies.name_suffix %}
+            {% set ctrl = [] %}
+            {% if igmp_snoop_pol.fast_leave | default(defaults.apic.tenants.policies.igmp_snooping_policies.fast_leave) == "yes" %}{% set ctrl = ctrl + [("fast-leave")] %}{% endif %}
+            {% if igmp_snoop_pol.querier | default(defaults.apic.tenants.policies.igmp_snooping_policies.querier) == "yes" %}{% set ctrl = ctrl + [("querier")] %}{% endif %}
+            {
+                "igmpSnoopPol": {
+                    "attributes": {
+                        "name": "{{ policy_name }}",
+                        "dn": "uni/tn-{{ tenant.name }}/snPol-{{ policy_name }}",
+                        "descr": "{{ igmp_snoop_pol.description | default() }}",
+                        "adminSt": "{{ igmp_snoop_pol.admin_state | default(defaults.apic.tenants.policies.igmp_snooping_policies.admin_state) }}",
+                        "ctrl": "{{ ctrl | join(',') }}",
+                        "lastMbrIntvl": "{{ igmp_snoop_pol.last_member_query_interval | default(defaults.apic.tenants.policies.igmp_snooping_policies.last_member_query_interval) }}",                        
+                        "queryIntvl": "{{ igmp_snoop_pol.query_interval | default(defaults.apic.tenants.policies.igmp_snooping_policies.query_interval) }}",
+                        "rspIntvl": "{{ igmp_snoop_pol.query_response_interval | default(defaults.apic.tenants.policies.igmp_snooping_policies.query_response_interval) }}",
+                        "startQueryCnt": "{{ igmp_snoop_pol.start_query_count | default(defaults.apic.tenants.policies.igmp_snooping_policies.start_query_count) }}",
+                        "startQueryIntvl": "{{ igmp_snoop_pol.start_query_interval | default(defaults.apic.tenants.policies.igmp_snooping_policies.start_query_interval) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

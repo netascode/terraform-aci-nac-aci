@@ -1,0 +1,20 @@
+{% set query = "sites[?name==`" ~ item ~ "`]" %}
+{% set site = (mso | json_query(query))[0] %}
+{
+    "name": "{{ site.name }}",
+    "urls": [
+        {%- set comma1 = joiner(",") %}
+        {%- for url in site.apic_urls | default([]) %}{{ comma1() }}
+        "{{ url }}"
+        {%- endfor %}
+
+    ],
+    "username": "{{ site.username }}",
+    "password": "{{ site.password }}",
+    "apicSiteId": "{{ site.id }}",
+    "labels": [],
+    "location": {
+        "long": {{ site.location.long | default(defaults.mso.sites.location.long) }},
+        "lat": {{ site.location.lat | default(defaults.mso.sites.location.lat) }}
+    }
+}

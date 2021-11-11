@@ -1,0 +1,78 @@
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-infra"
+        },
+        "children": [
+            {% if apic.fabric_policies is defined and apic.fabric_policies.external_connectivity_policy is defined %}
+            {% set policy_name = apic.fabric_policies.external_connectivity_policy.name ~ defaults.apic.fabric_policies.external_connectivity_policy.name_suffix %}
+            {
+                "fvFabricExtConnP": {
+                    "attributes": {
+                        "dn": "uni/tn-infra/fabricExtConnP-{{ apic.fabric_policies.external_connectivity_policy.fabric_id | default(defaults.apic.fabric_policies.external_connectivity_policy.fabric_id) }}",
+                        "id": "{{ apic.fabric_policies.external_connectivity_policy.fabric_id | default(defaults.apic.fabric_policies.external_connectivity_policy.fabric_id) }}",
+                        "name": "{{ policy_name }}",
+                        "rt": "{{ apic.fabric_policies.external_connectivity_policy.route_target | default(defaults.apic.fabric_policies.external_connectivity_policy.route_target) }}",
+                        "siteId": "{{ apic.fabric_policies.external_connectivity_policy.site_id | default(defaults.apic.fabric_policies.external_connectivity_policy.site_id) }}"
+                    },
+                    "children": [
+                        {
+                            "fvPeeringP": {
+                                "attributes": {
+                                    "type": "automatic_with_full_mesh"
+                                    {%- if apic.fabric_policies.external_connectivity_policy.bgp_password is defined %},
+                                    "password": "{{ apic.fabric_policies.external_connectivity_policy.bgp_password }}"
+                                    {% endif %}
+                                }
+                            }
+                        }
+                        {%- for routing_profile in apic.fabric_policies.external_connectivity_policy.routing_profiles | default([]) %},
+                        {% set routing_profile_name = routing_profile.name ~ defaults.apic.fabric_policies.external_connectivity_policy.routing_profiles.name_suffix %}
+                        {
+                            "l3extFabricExtRoutingP": {
+                                "attributes": {
+                                    "name": "{{ routing_profile_name }}"
+                                },
+                                "children": [
+                                    {%- set comma1 = joiner(",") %}
+                                    {%- for subnet in routing_profile.subnets | default([]) %}{{ comma1() }}
+                                    {
+                                        "l3extSubnet": {
+                                            "attributes": {
+                                                "ip": "{{ subnet }}",
+                                                "scope": "import-security"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for pod in apic.pod_policies.pods | default([]) %},
+                        {
+                            "fvPodConnP": {
+                                "attributes": {
+                                    "id": "{{ pod.id }}"
+                                },
+                                "children": [
+                                    {
+                                        "fvIp": {
+                                            "attributes": {
+                                                "addr": "{{ pod.data_plane_tep }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {% endif %}
+        ]
+    }
+}

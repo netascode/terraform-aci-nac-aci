@@ -1,0 +1,47 @@
+{
+    "aaaTacacsPlusEp": {
+        "attributes": {
+            "dn": "uni/userext/tacacsext"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for prov in apic.fabric_policies.aaa.tacacs_providers | default([]) %}{{ comma1() }}
+            {
+                "aaaTacacsPlusProvider": {
+                    "attributes": {
+                        "authProtocol": "{{ prov.protocol | default(defaults.apic.fabric_policies.aaa.tacacs_providers.protocol) }}",
+                        "descr": "{{ prov.description | default() }}",
+                        "dn": "uni/userext/tacacsext/tacacsplusprovider-{{ prov.hostname_ip }}",
+                        "monitorServer": "{{ prov.monitoring | default(defaults.apic.fabric_policies.aaa.tacacs_providers.monitoring) }}",
+                        {% if prov.monitoring | default(defaults.apic.fabric_policies.aaa.tacacs_providers.monitoring) == "enabled" %}
+                        "monitoringUser": "{{ prov.monitoring_username | default() }}",
+                        "monitoringPassword": "{{ prov.monitoring_password | default() }}",
+                        {% endif %}
+                        "name": "{{ prov.hostname_ip }}",
+                        "key": "{{ prov.key | default() }}",
+                        "port": "{{ prov.port | default(defaults.apic.fabric_policies.aaa.tacacs_providers.port) }}",
+                        "retries": "{{ prov.retries | default(defaults.apic.fabric_policies.aaa.tacacs_providers.retries) }}",
+                        "timeout": "{{ prov.timeout | default(defaults.apic.fabric_policies.aaa.tacacs_providers.timeout) }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {
+                            "aaaRsSecProvToEpg": {
+                                "attributes": {
+                                    {% set mgmt_epg = prov.mgmt_epg | default(defaults.apic.fabric_policies.aaa.tacacs_providers.mgmt_epg) %}
+                                    {% if mgmt_epg == "oob" %}
+                                    "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"
+                                    {% elif mgmt_epg == "inb" %}
+                                    "tDn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}"
+                                    {% endif %}
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

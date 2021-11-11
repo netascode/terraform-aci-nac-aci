@@ -1,0 +1,28 @@
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-infra"
+        },
+        "children": [
+            {
+                "qosDscpTransPol": {
+                    "attributes": {
+                        "dn": "uni/tn-infra/dscptranspol-default",
+                        "name": "default",
+                        "adminSt": "{{ apic.fabric_policies.infra_dscp_translation_policy.admin_state | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.admin_state) }}",
+                        "control": "{{ apic.fabric_policies.infra_dscp_translation_policy.control_plane | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.control_plane) }}",
+                        "level1": "{{ apic.fabric_policies.infra_dscp_translation_policy.level_1 | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.level_1) }}",
+                        "level2": "{{ apic.fabric_policies.infra_dscp_translation_policy.level_2 | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.level_2) }}",
+                        "level3": "{{ apic.fabric_policies.infra_dscp_translation_policy.level_3 | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.level_3) }}",
+                        "level4": "{{ apic.fabric_policies.infra_dscp_translation_policy.level_4 | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.level_4) }}",
+                        "level5": "{{ apic.fabric_policies.infra_dscp_translation_policy.level_5 | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.level_5) }}",
+                        "level6": "{{ apic.fabric_policies.infra_dscp_translation_policy.level_6 | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.level_6) }}",
+                        "policy": "{{ apic.fabric_policies.infra_dscp_translation_policy.policy_plane | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.policy_plane) }}",
+                        "span": "{{ apic.fabric_policies.infra_dscp_translation_policy.span | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.span) }}",
+                        "traceroute": "{{ apic.fabric_policies.infra_dscp_translation_policy.traceroute | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.traceroute) }}"
+                    }
+                }
+            }
+        ]
+    }
+}

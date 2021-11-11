@@ -1,0 +1,133 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) == "enabled" or apic.auto_generate_access_spine_switch_interface_profiles | default(defaults.apic.auto_generate_access_spine_switch_interface_profiles) == "enabled" %}
+            {%- for node in apic.node_policies.nodes | default([]) %}
+            {%- if node.role == "spine" %}
+            {%- set spine_switch_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.spine_switch_profile_name | default(defaults.apic.access_policies.spine_switch_profile_name))) %}
+            {%- set spine_interface_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.spine_interface_profile_name | default(defaults.apic.access_policies.spine_interface_profile_name))) %}
+            {%- set spine_switch_selector_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.spine_switch_selector_name | default(defaults.apic.access_policies.spine_switch_selector_name))) %}{{ comma1() }}
+            {
+                "infraSpineP": {
+                    "attributes": {
+                        "name": "{{ spine_switch_profile_name }}",
+                        "dn": "uni/infra/spprof-{{ spine_switch_profile_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {
+                            "infraSpineS": {
+                                "attributes": {
+                                    "name": "{{ spine_switch_selector_name }}",
+                                    "type": "range",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {% if node.access_policy_group is defined %}
+                                    {% set policy_group_name = node.access_policy_group ~ defaults.apic.access_policies.spine_switch_policy_groups.name_suffix %}
+                                    {
+                                        "infraRsSpineAccNodePGrp": {
+                                            "attributes": {
+                                                "tDn": "uni/infra/funcprof/spaccnodepgrp-{{ policy_group_name }}"
+                                            }
+                                        }
+                                    },
+                                    {% endif %}
+                                    {
+                                        "infraNodeBlk": {
+                                            "attributes": {
+                                                "from_": "{{ node.id }}",
+                                                "name": "{{ node.id }}",
+                                                "to_": "{{ node.id }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "infraRsSpAccPortP": {
+                                "attributes": {
+                                    "tDn": "uni/infra/spaccportprof-{{ spine_interface_profile_name }}"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endif %}
+            {%- endfor %}
+            {%- endif %}
+            {%- for prof in apic.access_policies.spine_switch_profiles | default([]) %}
+            {%- set spine_switch_profile_name = prof.name ~ defaults.apic.access_policies.spine_switch_profiles.name_suffix %}{{ comma1() }}
+            {
+                "infraSpineP": {
+                    "attributes": {
+                        "name": "{{ spine_switch_profile_name }}",
+                        "dn": "uni/infra/spprof-{{ spine_switch_profile_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for sel in prof.selectors | default([]) %}
+                        {%- set spine_switch_selector_name = sel.name ~ defaults.apic.access_policies.spine_switch_profiles.selectors.name_suffix %}{{ comma2() }}
+                        {
+                            "infraSpineS": {
+                                "attributes": {
+                                    "name": "{{ spine_switch_selector_name }}",
+                                    "type": "range",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- if sel.policy is defined %}
+                                    {%- set policy_group_name = sel.policy ~ defaults.apic.access_policies.spine_switch_policy_groups.name_suffix %}{{ comma3() }}
+                                    {
+                                        "infraRsSpineAccNodePGrp": {
+                                            "attributes": {
+                                                "tDn": "uni/infra/funcprof/spaccnodepgrp-{{ policy_group_name }}"
+
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+                                    {%- for blk in sel.node_blocks | default([]) %}
+                                    {%- set block_name = blk.name ~ defaults.apic.access_policies.spine_switch_profiles.selectors.node_blocks.name_suffix %}{{ comma3() }}
+                                    {
+                                        "infraNodeBlk": {
+                                            "attributes": {
+                                                "from_": "{{ blk.from }}",
+                                                "name": "{{ blk.name }}",
+                                                "to_": "{{ blk.to | default(blk.from) }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for intp in prof.interface_profiles | default([]) %}
+                        {%- set spine_interface_profile_name = intp ~ defaults.apic.access_policies.spine_interface_profiles.name_suffix %}{{ comma2() }}
+                        {
+                            "infraRsSpAccPortP": {
+                                "attributes": {
+                                    "tDn": "uni/infra/spaccportprof-{{ spine_interface_profile_name }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }       
+            {%- endfor %}
+
+        ]
+    }
+}

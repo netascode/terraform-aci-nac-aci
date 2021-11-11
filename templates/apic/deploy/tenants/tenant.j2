@@ -1,0 +1,33 @@
+{% if apic.tenants is not defined %}
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        }
+    }
+}
+{% else %}
+{
+    "polUni": {
+        "attributes": {
+            "dn": "uni"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for tenant in apic.tenants | default([]) %}{{ comma1() }}
+            {
+                "fvTenant": {
+                    "attributes": {
+                        "name": "{{ tenant.name }}",
+                        "dn": "uni/tn-{{ tenant.name }}",
+                        "nameAlias": "{{ tenant.alias | default() }}",
+                        "descr": "{{ tenant.description | default() }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}
+{% endif %}

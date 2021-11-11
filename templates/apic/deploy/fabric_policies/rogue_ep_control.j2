@@ -1,0 +1,11 @@
+{
+    "epControlP": {
+        "attributes": {
+            "adminSt": "{{ apic.fabric_policies.rogue_ep_control.admin_state | default(defaults.apic.fabric_policies.rogue_ep_control.admin_state) }}",
+            "dn": "uni/infra/epCtrlP-default",
+            "holdIntvl": "{{ apic.fabric_policies.rogue_ep_control.hold_interval | default(defaults.apic.fabric_policies.rogue_ep_control.hold_interval) }}",
+            "rogueEpDetectIntvl": "{{ apic.fabric_policies.rogue_ep_control.detection_interval | default(defaults.apic.fabric_policies.rogue_ep_control.detection_interval) }}",
+            "rogueEpDetectMult": "{{ apic.fabric_policies.rogue_ep_control.detection_multiplier | default(defaults.apic.fabric_policies.rogue_ep_control.detection_multiplier) }}"
+        }
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "mcpInstPol": {
+        "attributes": {
+            "adminSt": "{{ apic.access_policies.mcp.admin_state | default(defaults.apic.access_policies.mcp.admin_state) }}",
+            "ctrl": "{% if apic.access_policies.mcp.per_vlan | default(defaults.apic.access_policies.mcp.per_vlan) == "enabled" %}pdu-per-vlan{% elif apic.access_policies.mcp.per_vlan | default(defaults.apic.access_policies.mcp.per_vlan) == "disabled" %}{% endif %}",
+            "dn": "uni/infra/mcpInstP-default",
+            "initDelayTime": "{{ apic.access_policies.mcp.initial_delay | default(defaults.apic.access_policies.mcp.initial_delay) }}",
+            "key": "{% if apic.access_policies.mcp.admin_state | default(defaults.apic.access_policies.mcp.admin_state) == "enabled"%}{{ apic.access_policies.mcp.key | default(defaults.apic.access_policies.mcp.key) }}{% elif apic.access_policies.mcp.admin_state | default(defaults.apic.access_policies.mcp.admin_state) == "disabled" %}{% endif %}",
+            "loopDetectMult": "{{ apic.access_policies.mcp.loop_detection | default(defaults.apic.access_policies.mcp.loop_detection) }}",
+            "loopProtectAct": "{% if apic.access_policies.mcp.action | default(defaults.apic.access_policies.mcp.action) == "enabled" %}port-disable{% elif apic.access_policies.mcp.action | default(defaults.apic.access_policies.mcp.action) == "disabled" %}{% endif %}",
+            "name": "default",
+            "txFreq": "{{ apic.access_policies.mcp.frequency_sec | default(defaults.apic.access_policies.mcp.frequency_sec) }}",
+            "txFreqMsec": "{{ apic.access_policies.mcp.frequency_msec | default(defaults.apic.access_policies.mcp.frequency_msec) }}"
+        }
+    }
+}

@@ -1,0 +1,55 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for group in apic.node_policies.update_groups | default([]) %}{{ comma1() }}
+            {% set update_group_name = group.name ~ defaults.apic.node_policies.update_groups.name_suffix %}
+            {
+                "firmwareFwP": {
+                    "attributes": {
+                        "name": "{{ update_group_name }}",
+                        "dn": "uni/fabric/fwpol-{{ update_group_name }}"
+                    }
+                }
+            },
+            {
+                "firmwareFwGrp": {
+                    "attributes": {
+                        "name": "{{ update_group_name }}",
+                        "dn": "uni/fabric/fwgrp-{{ update_group_name }}",
+                        "type": "range",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {
+                            "firmwareRsFwgrpp": {
+                                "attributes": {
+                                    "tnFirmwareFwPName": "{{ update_group_name }}"
+                                }
+                            }
+                        }
+                        {%- for node in apic.node_policies.nodes | default([]) %}
+                        {%- if node.update_group is defined and node.update_group == update_group_name %},
+                        {
+                            "fabricNodeBlk": {
+                                "attributes": {
+                                    "from_": "{{ node.id }}",
+                                    "name": "{{ node.id }}",
+                                    "to_": "{{ node.id }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

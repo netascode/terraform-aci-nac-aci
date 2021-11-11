@@ -1,0 +1,96 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for pim_pol in tenant.policies.pim_policies | default([]) %}{{ comma1() }}
+            {% set pim_policy_name = pim_pol.name ~ defaults.apic.tenants.policies.pim_policies.name_suffix %}
+            {% set ctrl = [] %}     
+            {% if pim_pol.mcast_dom_boundary | default(defaults.apic.tenants.policies.pim_policies.mcast_dom_boundary) == "yes" %}{% set ctrl = ctrl + [("border")] %}{% endif %}
+            {% if pim_pol.passive | default(defaults.apic.tenants.policies.pim_policies.passive) == "yes" %}{% set ctrl = ctrl + [("passive")] %}{% endif %}
+            {% if pim_pol.strict_rfc | default(defaults.apic.tenants.policies.pim_policies.strict_rfc) == "yes" %}{% set ctrl = ctrl + [("strict-rfc-compliant")] %}{% endif %}
+            {
+                "pimIfPol": {
+                    "attributes": {
+                        "name": "{{ pim_policy_name }}",
+                        "dn": "uni/tn-{{ tenant.name }}/pimifpol-{{ pim_policy_name }}",
+                        "authKey": "{{ pim_pol.auth_key | default() }}",
+                        "authT": "{{ pim_pol.auth_type | default(defaults.apic.tenants.policies.pim_policies.auth_type) }}",
+                        "ctrl": "{{ ctrl | join(',') }}",
+                        "drDelay": "{{ pim_pol.designated_router_delay | default(defaults.apic.tenants.policies.pim_policies.designated_router_delay) }}",
+                        "drPrio": "{{ pim_pol.designated_router_priority | default(defaults.apic.tenants.policies.pim_policies.designated_router_priority) }}",
+                        "helloItvl": "{{ pim_pol.hello_interval | default(defaults.apic.tenants.policies.pim_policies.hello_interval) }}",
+                        "jpInterval": "{{ pim_pol.join_prune_interval |  default(defaults.apic.tenants.policies.pim_policies.join_prune_interval) }}"
+                    },
+                    "children": [
+                        {% set comma2 = joiner(",") %} 
+                        {%- if pim_pol.join_prune_filter_policy_in is defined %}{{ comma2() }}
+                        {%- set join_prune_filter_policy_in_name = pim_pol.join_prune_filter_policy_in ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix %}
+                        {
+                            "pimNbrFilterPol": {
+                                "attributes": {
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {
+                                        "rtdmcRsFilterToRtMapPol": {
+                                            "attributes": {
+                                                "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ join_prune_filter_policy_in_name }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        {%- endif %}
+                        {%- if pim_pol.join_prune_filter_policy_out is defined %}{{ comma2() }}
+                        {%- set join_prune_filter_policy_out_name = pim_pol.join_prune_filter_policy_out ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix %}
+                        {
+                            "pimJPOutbFilterPol": {
+                                "attributes": {
+                                        "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {
+                                        "rtdmcRsFilterToRtMapPol": {
+                                            "attributes": {
+                                                "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ join_prune_filter_policy_out_name }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        {%- endif %}
+                        {%- if pim_pol.neighbor_filter_policy is defined %}{{ comma2() }}
+                        {%- set neighbor_filter_policy_name = pim_pol.neighbor_filter_policy ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix %}
+                        {
+                            "pimJPInbFilterPol": {
+                                "attributes": {
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {
+                                        "rtdmcRsFilterToRtMapPol": {
+                                            "attributes": {
+                                                "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ neighbor_filter_policy_name }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        {%- endif %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

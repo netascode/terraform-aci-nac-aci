@@ -1,0 +1,27 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.fabric_policies.switch_policies.psu_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = policy.name ~ defaults.apic.fabric_policies.switch_policies.psu_policies.name_suffix %}
+            {% set admin_state = [] %}
+            {% if policy.admin_state == "combined" %}{% set admin_state = "comb" %}{% endif %}
+            {% if policy.admin_state == "nnred" %}{% set admin_state = "rdn" %}{% endif %}
+            {% if policy.admin_state == "n1red" %}{% set admin_state = "ps-rdn" %}{% endif %}
+            {
+                "psuInstPol": {
+                    "attributes": {
+                        "name": "{{ policy_name }}",
+                        "dn": "uni/fabric/psuInstP-{{ policy_name }}",
+                        "adminRdnM": "{{ admin_state }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

@@ -1,0 +1,55 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for filter in tenant.filters | default([]) %}{{ comma1() }}
+            {% set filter_name = filter.name ~ defaults.apic.tenants.filters.name_suffix %}
+            {
+                "vzFilter": {
+                    "attributes": {
+                        "descr": "{{ filter.description | default() }}",
+                        "dn": "uni/tn-{{ tenant.name }}/flt-{{ filter_name }}",
+                        "name": "{{ filter_name }}",
+                        "nameAlias": "{{ filter.alias | default() }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for entry in filter.entries | default([]) %}{{ comma2() }}
+                        {% set entry_name = entry.name ~ defaults.apic.tenants.filters.entries.name_suffix %}
+                        {
+                            "vzEntry": {
+                                "attributes": {
+                                    "name": "{{ entry_name }}",
+                                    "nameAlias": "{{ entry.alias | default() }}",
+                                    "etherT": "{{ entry.ethertype | default(defaults.apic.tenants.filters.entries.ethertype) }}"
+                                    {%- if entry.ethertype | default(defaults.apic.tenants.filters.entries.ethertype) in ['ip', 'ipv4', 'ipv6'] %},
+                                    "prot": "{{ entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) }}"
+                                    {%- if entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) in ['tcp', 'udp'] %},
+                                    "sFromPort": "{{ entry.source_from_port | default(defaults.apic.tenants.filters.entries.source_from_port) }}",
+                                    "sToPort": "{{ entry.source_to_port | default(entry.source_from_port | default(defaults.apic.tenants.filters.entries.source_to_port)) }}",
+                                    "dFromPort": "{{ entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_from_port) }}",
+                                    "dToPort": "{{ entry.destination_to_port | default(entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_to_port)) }}"
+                                    {%- if entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) == 'tcp' %},
+                                    "stateful": "{{ entry.stateful | default(defaults.apic.tenants.filters.entries.stateful) }}"
+                                    {% endif %}
+                                    {% endif %}
+                                    {% endif %}
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

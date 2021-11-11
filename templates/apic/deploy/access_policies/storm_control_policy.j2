@@ -1,0 +1,44 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.access_policies.interface_policies.storm_control_policies | default([]) %}{{ comma1() }}
+            {% set storm_control_policy_name = policy.name ~ defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix %}
+            {
+                "stormctrlIfPol": {
+                    "attributes": {
+                        "name": "{{ storm_control_policy_name }}",
+                        "nameAlias": "{{ policy.alias | default() }}",
+                        "descr": "{{ policy.description | default() }}",
+                        "dn": "uni/infra/stormctrlifp-{{ storm_control_policy_name }}",
+                        "type": "all",
+                        "isUcMcBcStormPktCfgValid": "Valid",
+                        "burstPps": "unspecified",
+                        "burstRate": "100.000000",
+                        "rate": "100.000000",
+                        "ratePps": "unspecified",
+                        "stormCtrlAction": "{{ policy.action | default(defaults.apic.access_policies.interface_policies.storm_control_policies.action) }}",
+                        "stormCtrlSoakInstCount": "3",
+                        "bcBurstPps": "{{ policy.broadcast_burst_pps | default(defaults.apic.access_policies.interface_policies.storm_control_policies.broadcast_burst_pps) }}",
+                        "bcBurstRate": "{{ policy.broadcast_burst_rate | default(defaults.apic.access_policies.interface_policies.storm_control_policies.broadcast_burst_rate) }}",
+                        "bcRate": "{{ policy.broadcast_rate | default(defaults.apic.access_policies.interface_policies.storm_control_policies.broadcast_rate) }}",
+                        "bcRatePps": "{{ policy.broadcast_pps | default(defaults.apic.access_policies.interface_policies.storm_control_policies.broadcast_pps) }}",
+                        "mcBurstPps": "{{ policy.multicast_burst_pps | default(defaults.apic.access_policies.interface_policies.storm_control_policies.multicast_burst_pps) }}",
+                        "mcBurstRate": "{{ policy.multicast_burst_rate | default(defaults.apic.access_policies.interface_policies.storm_control_policies.multicast_burst_rate) }}",
+                        "mcRate": "{{ policy.multicast_rate | default(defaults.apic.access_policies.interface_policies.storm_control_policies.multicast_rate) }}",
+                        "mcRatePps": "{{ policy.multicast_pps | default(defaults.apic.access_policies.interface_policies.storm_control_policies.multicast_pps) }}",
+                        "uucBurstPps": "{{ policy.unknown_unicast_burst_pps | default(defaults.apic.access_policies.interface_policies.storm_control_policies.unknown_unicast_burst_pps) }}",
+                        "uucBurstRate": "{{ policy.unknown_unicast_burst_rate | default(defaults.apic.access_policies.interface_policies.storm_control_policies.unknown_unicast_burst_rate) }}",
+                        "uucRate": "{{ policy.unknown_unicast_rate | default(defaults.apic.access_policies.interface_policies.storm_control_policies.unknown_unicast_rate) }}",
+                        "uucRatePps": "{{ policy.unknown_unicast_pps | default(defaults.apic.access_policies.interface_policies.storm_control_policies.unknown_unicast_pps) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

@@ -1,0 +1,44 @@
+{% if apic.access_policies.physical_domains is not defined %}
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        }
+    }
+}
+{% else %}
+{
+    "polUni": {
+        "attributes": {
+            "dn": "uni"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for domain in apic.access_policies.physical_domains | default([]) %}{{ comma1() }}
+            {% set domain_name = domain.name ~ defaults.apic.access_policies.physical_domains.name_suffix %}
+            {
+                "physDomP": {
+                    "attributes": {
+                        "name": "{{ domain_name }}",
+                        "dn": "uni/phys-{{ domain_name }}"
+                    },
+                    "children": [
+                        {
+                            "infraRsVlanNs": {
+                                "attributes": {
+                                    {% set vlan_pool_name = domain.vlan_pool ~ defaults.apic.access_policies.vlan_pools.name_suffix %}
+                                    {% set query = "vlan_pools[?name==`" ~ vlan_pool_name ~ "`].allocation[]" %}
+                                    {% set allocation = (apic.access_policies | json_query(query))[0] | default(defaults.apic.access_policies.physical_domains.allocation) %}
+                                    "tDn": "uni/infra/vlanns-[{{ vlan_pool_name }}]-{{ allocation }}"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}
+{% endif %}

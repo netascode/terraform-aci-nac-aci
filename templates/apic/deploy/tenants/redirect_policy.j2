@@ -1,0 +1,95 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {
+                "vnsSvcCont": {
+                    "attributes": {
+                        "dn": "uni/tn-{{ tenant.name }}/svcCont"
+                    },
+                    "children": [
+                        {%- set comma1 = joiner(",") %}
+                        {%- for pol in tenant.services.redirect_policies | default([]) %}{{ comma1() }}
+                        {% set pol_name = pol.name ~ defaults.apic.tenants.services.redirect_policies.name_suffix %}
+                        {
+                            "vnsSvcRedirectPol": {
+                                "attributes": {
+                                    "descr": "{{ pol.description | default() }}",
+                                    "dn": "uni/tn-{{ tenant.name }}/svcCont/svcRedirectPol-{{ pol_name }}",
+                                    "name": "{{ pol_name }}",
+                                    "nameAlias": "{{ pol.alias | default() }}",
+                                    "AnycastEnabled": "{% if pol.anycast | default(defaults.apic.tenants.services.redirect_policies.anycast) == "enabled" %}yes{% else %}no{% endif %}",
+                                    "destType": "{{ pol.type | default(defaults.apic.tenants.services.redirect_policies.type) }}",
+                                    "hashingAlgorithm": "{{ pol.hashing | default(defaults.apic.tenants.services.redirect_policies.hashing) }}",
+                                    "maxThresholdPercent": "{{ pol.max_threshold | default(defaults.apic.tenants.services.redirect_policies.max_threshold) }}",
+                                    "minThresholdPercent": "{{ pol.min_threshold | default(defaults.apic.tenants.services.redirect_policies.min_threshold) }}",
+                                    "programLocalPodOnly": "{% if pol.pod_aware | default(defaults.apic.tenants.services.redirect_policies.pod_aware) == "enabled" %}yes{% else %}no{% endif %}",
+                                    "resilientHashEnabled": "{% if pol.resilient_hashing | default(defaults.apic.tenants.services.redirect_policies.resilient_hashing) == "enabled" %}yes{% else %}no{% endif %}",
+                                    "thresholdDownAction": "{{ pol.threshold_down_action | default(defaults.apic.tenants.services.redirect_policies.threshold_down_action) }}",
+                                    "thresholdEnable": "{% if pol.threshold | default(defaults.apic.tenants.services.redirect_policies.threshold) == "enabled" %}yes{% else %}no{% endif %}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma2 = joiner(",") %}   
+                                    {%- if pol.ip_sla_policy is defined %}{{ comma2() }}
+                                    {%- set ip_sla_name = pol.ip_sla_policy ~ defaults.apic.tenants.policies.ip_sla_policies.name_suffix %} 
+                                    {
+                                        "vnsRsIPSLAMonitoringPol": {
+                                            "attributes": {
+                                                "tDn": "uni/tn-{{ tenant.name }}/ipslaMonitoringPol-{{ ip_sla_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+                                    {%- if pol.resilient_hashing | default(defaults.apic.tenants.services.redirect_policies.resilient_hashing) == "enabled" and pol.redirect_backup_policy is defined %}{{ comma2() }}
+                                    {% set backup_pol_name = pol.redirect_backup_policy ~ defaults.apic.tenants.services.redirect_backup_policies.name_suffix %}
+                                    {
+                                        "vnsRsBackupPol": {
+                                            "attributes": {
+                                                "tDn": "uni/tn-{{ tenant.name }}/svcCont/backupPol-{{ backup_pol_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}          
+                                    {%- for dest in pol.l3_destinations | default([]) %}{{ comma2() }}
+                                    {
+                                        "vnsRedirectDest": {
+                                            "attributes": {
+                                                "descr": "{{ dest.description | default() }}",
+                                                "ip": "{{ dest.ip }}",
+                                                "ip2": "{{ dest.ip_2 | default() }}",
+                                                "mac": "{{ dest.mac }}",
+                                                "podId": "{{ dest.pod | default(defaults.apic.tenants.services.redirect_policies.l3_destinations.pod) }}"
+                                            },
+                                            "children": [
+                                                {% if dest.redirect_health_group is defined %}
+                                                {% set health_group_name = dest.redirect_health_group ~ defaults.apic.tenants.services.redirect_health_groups.name_suffix %}
+                                                {
+                                                    "vnsRsRedirectHealthGroup": {
+                                                        "attributes": {
+                                                            "tDn": "uni/tn-{{ tenant.name }}/svcCont/redirectHealthGroup-{{ health_group_name }}"
+                                                        }
+                                                    }
+                                                }
+                                                {%- endif %}
+
+                                            ]
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+        ]
+    }
+}

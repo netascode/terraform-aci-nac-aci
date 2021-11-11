@@ -1,0 +1,40 @@
+{
+    "aaaUserEp": {
+        "attributes": {
+            "dn": "uni/userext"
+        },
+        "children": [
+            {
+                "aaaAuthRealm": {
+                    "attributes": {
+                        "dn": "uni/userext/authrealm",
+                        "defRolePolicy": "{{ apic.fabric_policies.aaa.remote_user_login_policy | default(defaults.apic.fabric_policies.aaa.remote_user_login_policy) }}"
+                    },
+                    "children": [
+                        {
+                            "aaaDefaultAuth": {
+                                "attributes": {
+                                    "fallbackCheck": "{% if apic.fabric_policies.aaa.default_fallback_check | default(defaults.apic.fabric_policies.aaa.default_fallback_check) == "enabled" %}true{% else %}false{% endif %}",
+                                    {% if apic.fabric_policies.aaa.default_realm | default(defaults.apic.fabric_policies.aaa.default_realm) == "tacacs" %}
+                                    "providerGroup": "{{ apic.fabric_policies.aaa.default_login_domain | default(defaults.apic.fabric_policies.aaa.default_login_domain) }}",
+                                    {% endif %}
+                                    "realm": "{{ apic.fabric_policies.aaa.default_realm | default(defaults.apic.fabric_policies.aaa.default_realm) }}"
+                                }
+                            }
+                        },
+                        {
+                            "aaaConsoleAuth": {
+                                "attributes": {
+                                    {% if apic.fabric_policies.aaa.console_realm | default(defaults.apic.fabric_policies.aaa.console_realm) == "tacacs" %}
+                                    "providerGroup": "{{ apic.fabric_policies.aaa.console_login_domain | default(defaults.apic.fabric_policies.aaa.console_login_domain) }}",
+                                    {% endif %}
+                                    "realm": "{{ apic.fabric_policies.aaa.console_realm | default(defaults.apic.fabric_policies.aaa.console_realm) }}"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}
