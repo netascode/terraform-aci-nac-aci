@@ -1,6 +1,7 @@
 # Schema
 
-Description
+Location in GUI:
+`Application Management` » `Schemas`
 
 {{ aac_doc }}
 ### Examples

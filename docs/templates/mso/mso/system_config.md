@@ -1,6 +1,7 @@
 # System Config
 
-Description
+Location in GUI:
+`Infrastructure` » `System Configuration`
 
 {{ aac_doc }}
 ### Examples

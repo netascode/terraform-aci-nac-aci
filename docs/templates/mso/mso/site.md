@@ -1,6 +1,7 @@
 # Site
 
-Description
+Location in GUI:
+`Infrastructure` » `Sites`
 
 {{ aac_doc }}
 ### Examples

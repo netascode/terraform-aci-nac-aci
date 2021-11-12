@@ -1,6 +1,7 @@
 # Remote Location
 
-Description
+Location in GUI:
+`Operations` » `Remote Locations`
 
 {{ aac_doc }}
 ### Examples

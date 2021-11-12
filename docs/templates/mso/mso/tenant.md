@@ -1,6 +1,7 @@
 # Tenant
 
-Description
+Location in GUI:
+`Application Management` » `Tenants`
 
 {{ aac_doc }}
 ### Examples

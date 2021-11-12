@@ -1,6 +1,7 @@
 # DHCP Relay Policy
 
-Description
+Location in GUI:
+`Application Management` » `Policies`
 
 {{ aac_doc }}
 ### Examples

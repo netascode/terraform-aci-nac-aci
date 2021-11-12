@@ -1,6 +1,7 @@
 # Site Fabric Connectivity
 
-Description
+Location in GUI:
+`Infrastructure` » `Infra Configuration`
 
 {{ aac_doc }}
 ### Examples
