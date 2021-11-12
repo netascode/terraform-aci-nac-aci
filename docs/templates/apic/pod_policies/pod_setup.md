@@ -1,6 +1,11 @@
 # Pod Setup
 
-Description
+Location in GUI:
+`Fabric` » `Inventory` » `Pod Fabric Setup Policy`
+
+### Terraform modules
+
+* [Pod Setup](https://registry.terraform.io/modules/netascode/pod-setup/aci/latest)
 
 {{ aac_doc }}
 ### Examples
