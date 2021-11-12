@@ -1,6 +1,11 @@
 # BGP Timer Policy
 
-Description
+Location in GUI:
+`Tenants` » `XXX` » `Policies` » `Protocol` » `BGP` » `BGP Timers`
+
+### Terraform modules
+
+* [BGP Timer Policy](https://registry.terraform.io/modules/netascode/bgp-timer-policy/aci/latest)
 
 {{ aac_doc }}
 ### Examples

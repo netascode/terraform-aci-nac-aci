@@ -1,6 +1,11 @@
 # DHCP Relay Policy
 
-Description
+Location in GUI:
+`Tenants` » `XXX` » `Policies` » `Protocol` » `DHCP` » `Relay Policies`
+
+### Terraform modules
+
+* [DHCP Relay Policy](https://registry.terraform.io/modules/netascode/dhcp-relay-policy/aci/latest)
 
 {{ aac_doc }}
 ### Examples

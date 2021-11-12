@@ -1,6 +1,11 @@
 # OOB Contract
 
-Description
+Location in GUI:
+`Tenants` » `mgmt` » `Contracts` » `Out-Of-Band Contracts`
+
+### Terraform modules
+
+* [OOB Contract](https://registry.terraform.io/modules/netascode/oob-contract/aci/latest)
 
 {{ aac_doc }}
 ### Examples

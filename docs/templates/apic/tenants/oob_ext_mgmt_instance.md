@@ -1,6 +1,11 @@
 # OOB External Management Instance
 
-Description
+Location in GUI:
+`Tenants` » `mgmt` » `External Management Network Instance Profiles`
+
+### Terraform modules
+
+* [OOB External Management Instance](https://registry.terraform.io/modules/netascode/oob-external-management-instance/aci/latest)
 
 {{ aac_doc }}
 ### Examples

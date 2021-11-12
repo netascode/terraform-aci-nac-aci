@@ -1,6 +1,11 @@
 # Service Graph Template
 
-Description
+Location in GUI:
+`Tenants` » `XXX` » `Services` » `L4-L7` » `Service Graph Templates`
+
+### Terraform modules
+
+* [Service Graph Template](https://registry.terraform.io/modules/netascode/service-graph-template/aci/latest)
 
 {{ aac_doc }}
 ### Examples

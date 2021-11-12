@@ -1,6 +1,7 @@
 # BGP Address Family Context Policy
 
-Description
+Location in GUI:
+`Tenants` » `XXX` » `Policies` » `Protocol` » `BGP` » `BGP Address Family Context`
 
 {{ aac_doc }}
 ### Examples

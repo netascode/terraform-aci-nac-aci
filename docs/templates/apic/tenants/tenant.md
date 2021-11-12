@@ -5,7 +5,7 @@ Location in GUI:
 
 ### Terraform modules
 
-* [Tenant](https://github.com/netascode/terraform-aci-tenant)
+* [Tenant](https://registry.terraform.io/modules/netascode/tenant/aci/latest)
 
 {{ aac_doc }}
 ### Examples

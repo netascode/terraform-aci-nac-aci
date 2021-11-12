@@ -1,6 +1,11 @@
 # Endpoint Group
 
-Description
+Location in GUI:
+`Tenants` » `XXX` » `Application Profiles` » `XXX` » `Application EPGs`
+
+### Terraform modules
+
+* [Endpoint Group](https://registry.terraform.io/modules/netascode/endpoint-group/aci/latest)
 
 {{ aac_doc }}
 ### Examples

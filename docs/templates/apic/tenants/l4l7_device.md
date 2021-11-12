@@ -1,6 +1,11 @@
 # L4L7 Device
 
-Description
+Location in GUI:
+`Tenants` » `XXX` » `Services` » `L4-L7` » `Devices`
+
+### Terraform modules
+
+* [L4L7 Device](https://registry.terraform.io/modules/netascode/l4l7-device/aci/latest)
 
 {{ aac_doc }}
 ### Examples

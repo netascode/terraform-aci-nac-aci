@@ -1,6 +1,11 @@
 # OOB Endpoint Group
 
-Description
+Location in GUI:
+`Tenants` » `mgmt` » `Node Manangement EPGs`
+
+### Terraform modules
+
+* [OOB Endpoint Group](https://registry.terraform.io/modules/netascode/oob-endpoint-group/aci/latest)
 
 {{ aac_doc }}
 ### Examples

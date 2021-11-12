@@ -1,6 +1,7 @@
 # Tenant SPAN Destination Group
 
-Description
+Location in GUI:
+`Tenants` » `XXX` » `Policies` » `Troubleshooting` » `SPAN` » `SPAN Destination Groups`
 
 {{ aac_doc }}
 ### Examples

@@ -1,8 +1,14 @@
 # Filter
 
-Description
+Location in GUI:
+`Tenants` » `XXX` » `Contracts` » `Filters`
+
+### Terraform modules
+
+* [Filter](https://registry.terraform.io/modules/netascode/filter/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml

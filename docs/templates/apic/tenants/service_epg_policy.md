@@ -1,6 +1,7 @@
 # Service EPG Policy
 
-Description
+Location in GUI:
+`Tenants` » `XXX` » `Policies` » `Protocol` » `L4-L7 Service EPG Policy`
 
 {{ aac_doc }}
 ### Examples

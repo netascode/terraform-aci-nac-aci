@@ -1,8 +1,14 @@
 # L3out
 
-Description
+Location in GUI:
+`Tenants` » `XXX` » `Networking` » `L3outs`
+
+### Terraform modules
+
+* [L3out](https://registry.terraform.io/modules/netascode/l3out/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml

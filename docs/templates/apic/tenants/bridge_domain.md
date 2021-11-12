@@ -1,6 +1,11 @@
 # Bridge Domain
 
-Description
+Location in GUI:
+`Tenants` » `XXX` » `Networking` » `Bridge Domains`
+
+### Terraform modules
+
+* [Bridge Domain](https://registry.terraform.io/modules/netascode/bridge-domain/aci/latest)
 
 {{ aac_doc }}
 ### Examples

@@ -1,6 +1,7 @@
 # BGP Best Path Policy
 
-Description
+Location in GUI:
+`Tenants` » `XXX` » `Policies` » `Protocol` » `BGP` » `BGP Best Path Policy`
 
 {{ aac_doc }}
 ### Examples

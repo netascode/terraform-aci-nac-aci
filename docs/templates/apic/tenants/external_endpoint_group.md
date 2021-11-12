@@ -1,6 +1,11 @@
 # External Endpoint Group
 
-Description
+Location in GUI:
+`Tenants` » `XXX` » `Networking` » `L3outs` » `XXX` » `External EPGs`
+
+### Terraform modules
+
+* [External Endpoint Group](https://registry.terraform.io/modules/netascode/external-endpoint-group/aci/latest)
 
 {{ aac_doc }}
 ### Examples
