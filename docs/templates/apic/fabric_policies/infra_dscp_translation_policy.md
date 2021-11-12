@@ -1,6 +1,11 @@
 # Infra DSCP Translation Policy
 
-Description
+Location in GUI:
+`Tenants` » `infra` » `Policies` » `Protocol` » `DSCP class-CoS translation policy for L3 traffic`
+
+### Terraform modules
+
+* [Infra DSCP Translation Policy](https://registry.terraform.io/modules/netascode/infra-dscp-translation-policy/aci/latest)
 
 {{ aac_doc }}
 ### Examples

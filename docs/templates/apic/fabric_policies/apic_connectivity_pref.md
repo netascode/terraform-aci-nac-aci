@@ -1,6 +1,11 @@
 # APIC Connectivity Preference
 
-Description
+Location in GUI:
+`System` » `System Settings` » `APIC Connectivity Preferences`
+
+### Terraform modules
+
+* [APIC Connectivity Preference](https://registry.terraform.io/modules/netascode/apic-connectivity-preference/aci/latest)
 
 {{ aac_doc }}
 ### Examples

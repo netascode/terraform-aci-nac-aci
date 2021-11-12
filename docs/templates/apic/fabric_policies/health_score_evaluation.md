@@ -1,6 +1,7 @@
 # Health Score Evaluation Policy
 
-Description
+Location in GUI:
+`Fabric` » `Fabric Policies` » `Policies` » `Monitoring` » `Common Policy` » `Health Score Evaluation Policies` » `Health Score Evaluation Policy`
 
 {{ aac_doc }}
 ### Examples

@@ -1,6 +1,11 @@
 # Fabric Wide Settings
 
-Description
+Location in GUI:
+`System` » `System Settings` » `Fabric-Wide Settings`
+
+### Terraform modules
+
+* [Fabric Wide Settings](https://registry.terraform.io/modules/netascode/fabric-wide-settings/aci/latest)
 
 {{ aac_doc }}
 ### Examples

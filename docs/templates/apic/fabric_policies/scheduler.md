@@ -1,6 +1,11 @@
 # Scheduler
 
-Description
+Location in GUI:
+`Admin` » `Schedulers` » `Fabric`
+
+### Terraform modules
+
+* [Fabric Scheduler](https://registry.terraform.io/modules/netascode/fabric-scheduler/aci/latest)
 
 {{ aac_doc }}
 ### Examples

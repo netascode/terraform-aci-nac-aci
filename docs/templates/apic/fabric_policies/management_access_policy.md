@@ -1,6 +1,11 @@
 # Management Access Policy
 
-Description
+Location in GUI:
+`Fabric` » `Fabric Policies` » `Policies` » `Pod` » `Management Access`
+
+### Terraform modules
+
+* [Management Access policy](https://registry.terraform.io/modules/netascode/management-access-policy/aci/latest)
 
 {{ aac_doc }}
 ### Examples

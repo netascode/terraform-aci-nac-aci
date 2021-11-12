@@ -1,6 +1,11 @@
 # Fabric Leaf Switch Profile
 
-Description
+Location in GUI:
+`Fabric` » `Fabric Policies` » `Switches` » `Leaf Switches` » `Profiles`
+
+### Terraform modules
+
+* [Fabric Leaf Switch Profile](https://registry.terraform.io/modules/netascode/fabric-leaf-switch-profile/aci/latest)
 
 {{ aac_doc }}
 ### Examples

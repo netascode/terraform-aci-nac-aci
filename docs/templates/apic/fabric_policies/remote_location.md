@@ -1,6 +1,11 @@
 # Remote Location
 
-Description
+Location in GUI:
+`Admin` » `Import/Export` » `Remote Locations`
+
+### Terraform modules
+
+* [Remote Location](https://registry.terraform.io/modules/netascode/remote-location/aci/latest)
 
 {{ aac_doc }}
 ### Examples

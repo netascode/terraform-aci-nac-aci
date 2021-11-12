@@ -1,6 +1,11 @@
 # Fabric Pod Profile
 
-Description
+Location in GUI:
+`Fabric` » `Fabric Policies` » `Pods` » `Profiles`
+
+### Terraform modules
+
+* [Fabric Pod Profile](https://registry.terraform.io/modules/netascode/fabric-pod-profile/aci/latest)
 
 {{ aac_doc }}
 ### Examples

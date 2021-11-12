@@ -1,6 +1,11 @@
 # User
 
-Description
+Location in GUI:
+`Admin` » `AAA` » `Users` » `Local Users`
+
+### Terraform modules
+
+* [User](https://registry.terraform.io/modules/netascode/user/aci/latest)
 
 {{ aac_doc }}
 ### Examples

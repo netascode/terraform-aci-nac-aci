@@ -1,6 +1,11 @@
 # VMware VMM Domain
 
-Description
+Location in GUI:
+`Virtual Networking` » `VMware`
+
+### Terraform modules
+
+* [VMware VMM Domain](https://registry.terraform.io/modules/netascode/vmware-vmm-domain/aci/latest)
 
 {{ aac_doc }}
 ### Examples

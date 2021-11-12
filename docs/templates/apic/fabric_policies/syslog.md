@@ -1,6 +1,11 @@
 # Syslog
 
-Description
+Location in GUI:
+`Admin` » `External Data Collectors` » `Monitoring Destinations` » `Syslog`
+
+### Terraform modules
+
+* [Syslog](https://registry.terraform.io/modules/netascode/syslog/aci/latest)
 
 {{ aac_doc }}
 ### Examples

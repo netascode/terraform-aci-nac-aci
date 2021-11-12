@@ -1,6 +1,11 @@
 # Fabric ISIS Redistribute Metric
 
-Description
+Location in GUI:
+`System` » `System Settings` » `ISIS Policy`
+
+### Terraform modules
+
+* [Fabric ISIS Policy](https://registry.terraform.io/modules/netascode/fabric-isis-policy/aci/latest)
 
 {{ aac_doc }}
 ### Examples

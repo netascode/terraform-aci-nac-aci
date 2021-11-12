@@ -1,6 +1,11 @@
 # TACACS Provider
 
-Description
+Location in GUI:
+`Admin` » `AAA` » `Authentication` » `TACACS`
+
+### Terraform modules
+
+* [TACACS](https://registry.terraform.io/modules/netascode/tacacs/aci/latest)
 
 {{ aac_doc }}
 ### Examples

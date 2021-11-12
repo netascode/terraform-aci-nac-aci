@@ -1,6 +1,11 @@
 # Fabric Spine Interface Profile
 
-Description
+Location in GUI:
+`Fabric` » `Fabric Policies` » `Interfaces` » `Spine Interfaces` » `Profiles`
+
+### Terraform modules
+
+* [Fabric Spine Interface Profile](https://registry.terraform.io/modules/netascode/fabric-spine-interface-profile/aci/latest)
 
 {{ aac_doc }}
 ### Examples
