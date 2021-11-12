@@ -128,8 +128,8 @@ def expand_paths(schema, paths):
 
 
 def parse_schema_type_constraint(element, name=""):
-    result_type = None
-    result_constraint = None
+    result_type = ""
+    result_constraint = ""
     if element.tag == "str":
         args = []
         for arg, value in element.kwargs.items():
