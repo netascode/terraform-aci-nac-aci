@@ -176,7 +176,7 @@ def parse_schema_type_constraint(element, name=""):
         pattern = element.regexes[0].pattern
         pattern = pattern.replace("|", "\|")  # escape pipe in markdown
         result_type = "String"
-        result_constraint = "Regex: {0}".format(pattern)
+        result_constraint = "Regex: `{0}`".format(pattern)
     elif element.tag == "include":
         result_type = "Class"
         result_constraint = name

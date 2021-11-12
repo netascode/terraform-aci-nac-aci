@@ -50,6 +50,9 @@ markdown_extensions:
   - footnotes
   - meta
   - tables
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.highlight
   - pymdownx.superfences:
       custom_fences:
@@ -60,6 +63,8 @@ nav:
   - Home: index.md
   - Data Model:
       - Overview: data_model/overview.md
+      - APIC Support Matrix: data_model/apic_support_matrix.md
+      - MSO Support Matrix: data_model/mso_support_matrix.md
       - APIC:
           - Bootstrap:
               - Bootstrap: data_model/apic/bootstrap/bootstrap.md
