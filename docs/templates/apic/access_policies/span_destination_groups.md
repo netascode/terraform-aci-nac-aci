@@ -1,6 +1,7 @@
-# SPAN Source Groups
+# SPAN Destination Groups
 
-Description
+Location in GUI:
+`Fabric` » `Access Policies` » `Policies` » `Troubleshooting` » `SPAN` » `SPAN Destination Groups`
 
 {{ aac_doc }}
 ### Examples

@@ -3,9 +3,9 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Interfaces` » `Spine Interfaces` » `Profiles`
 
-Terraform modules:
+### Terraform modules
 
-* [Access Spine Interface Profile](https://github.com/netascode/terraform-aci-access-spine-interface-profile)
+* [Access Spine Interface Profile](https://registry.terraform.io/modules/netascode/access-spine-interface-profile/aci/latest)
 
 {{ aac_doc }}
 ### Examples

@@ -1,6 +1,6 @@
 # Bootstrap
 
-Description
+Bootstrap uses the initial admin credentials to provision a configuration passphrase.
 
 {{ aac_doc }}
 ### Examples

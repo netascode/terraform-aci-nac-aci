@@ -3,9 +3,9 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Interfaces` » `Leaf Interfaces` » `Profiles`
 
-Terraform modules:
+### Terraform modules
 
-* [Access Leaf Interface Profile](https://github.com/netascode/terraform-aci-access-leaf-interface-profile)
+* [Access Leaf Interface Profile](https://registry.terraform.io/modules/netascode/access-leaf-interface-profile/aci/latest)
 
 {{ aac_doc }}
 ### Examples

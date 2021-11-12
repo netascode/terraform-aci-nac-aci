@@ -1,6 +1,11 @@
-# VPC Switch Policy
+# vPC Switch Policy
 
-Description
+Location in GUI:
+`Fabric` » `Access Policies` » `Policies` » `Switch` » `VPC Domain`
+
+### Terraform modules
+
+* [vPC Policy](https://registry.terraform.io/modules/netascode/vpc-policy/aci/latest)
 
 {{ aac_doc }}
 ### Examples

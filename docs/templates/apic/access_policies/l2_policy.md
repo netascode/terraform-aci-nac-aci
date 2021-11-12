@@ -3,9 +3,9 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Interface` » `L2 Interface`
 
-Terraform modules:
+### Terraform modules
 
-* [L2 Policy](https://github.com/netascode/terraform-aci-l2-policy)
+* [L2 Policy](https://registry.terraform.io/modules/netascode/l2-policy/aci/latest)
 
 {{ aac_doc }}
 ### Examples

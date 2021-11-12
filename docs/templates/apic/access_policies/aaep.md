@@ -3,9 +3,9 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Global` » `Attachable Access Entity Profiles`
 
-Terraform modules:
+### Terraform modules
 
-* [AAEP](https://github.com/netascode/terraform-aci-aaep)
+* [AAEP](https://registry.terraform.io/modules/netascode/aaep/aci/latest)
 
 {{ aac_doc }}
 ### Examples

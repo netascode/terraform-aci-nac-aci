@@ -1,6 +1,11 @@
 # Routed Domain
 
-Description
+Location in GUI:
+`Fabric` » `Access Policies` » `Physical and External Domains` » `L3 Domains`
+
+### Terraform modules
+
+* [Routed Domain](https://registry.terraform.io/modules/netascode/routed-domain/aci/latest)
 
 {{ aac_doc }}
 ### Examples

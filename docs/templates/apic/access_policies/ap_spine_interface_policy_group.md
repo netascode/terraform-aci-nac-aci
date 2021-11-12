@@ -3,9 +3,9 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Interfaces` » `Spine Interfaces` » `Policy Groups`
 
-Terraform modules:
+### Terraform modules
 
-* [Access Spine Interface Policy Group](https://github.com/netascode/terraform-aci-access-spine-interface-policy-group)
+* [Access Spine Interface Policy Group](https://registry.terraform.io/modules/netascode/access-spine-interface-policy-group/aci/latest)
 
 {{ aac_doc }}
 ### Examples

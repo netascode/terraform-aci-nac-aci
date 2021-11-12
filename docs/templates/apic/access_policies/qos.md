@@ -1,6 +1,11 @@
-# QOS Class
+# QoS Class
 
-Description
+Location in GUI:
+`Fabric` » `Access Policies` » `Policies` » `Global` » `QOS Class`
+
+### Terraform modules
+
+* [QoS](https://registry.terraform.io/modules/netascode/qos/aci/latest)
 
 {{ aac_doc }}
 ### Examples

@@ -1,6 +1,11 @@
 # SPAN Destination Groups
 
-Description
+Location in GUI:
+`Fabric` » `Access Policies` » `Policies` » `Troubleshooting` » `SPAN` » `SPAN Source Groups`
+
+### Terraform modules
+
+* [MST](https://registry.terraform.io/modules/netascode/mst/aci/latest)
 
 {{ aac_doc }}
 ### Examples

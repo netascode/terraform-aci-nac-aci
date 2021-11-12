@@ -3,9 +3,9 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Switches` » `Spine Switches` » `Profiles`
 
-Terraform modules:
+### Terraform modules
 
-* [Access Spine Switch Profile](https://github.com/netascode/terraform-aci-access-spine-switch-profile)
+* [Access Spine Switch Profile](https://registry.terraform.io/modules/netascode/access-spine-switch-profile/aci/latest)
 
 {{ aac_doc }}
 ### Examples

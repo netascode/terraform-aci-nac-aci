@@ -1,6 +1,11 @@
 # Vlan Pool
 
-Description
+Location in GUI:
+`Fabric` » `Access Policies` » `Pools` » `VLAN`
+
+### Terraform modules
+
+* [Vlan Pool](https://registry.terraform.io/modules/netascode/vlan-pool/aci/latest)
 
 {{ aac_doc }}
 ### Examples

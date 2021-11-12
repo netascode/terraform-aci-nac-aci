@@ -3,9 +3,9 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Interface` » `Link Level`
 
-Terraform modules:
+### Terraform modules
 
-* [Link Level Policy](https://github.com/netascode/terraform-aci-link-level-policy)
+* [Link Level Policy](https://registry.terraform.io/modules/netascode/link-level-policy/aci/latest)
 
 {{ aac_doc }}
 ### Examples

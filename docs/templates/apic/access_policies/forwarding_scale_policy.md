@@ -3,9 +3,9 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Switch` » `Forwarding Scale Profiles`
 
-Terraform modules:
+### Terraform modules
 
-* [Forwarding Scale Policy](https://github.com/netascode/terraform-aci-forwarding-scale-policy)
+* [Forwarding Scale Policy](https://registry.terraform.io/modules/netascode/forwarding-scale-policy/aci/latest)
 
 {{ aac_doc }}
 ### Examples
