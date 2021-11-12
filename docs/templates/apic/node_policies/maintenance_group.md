@@ -1,6 +1,11 @@
 # Maintenance Groups
 
-Description
+Location in GUI:
+`Admin` » `Firmware` » `Nodes`
+
+### Terraform modules
+
+* [Maintenance Group](https://registry.terraform.io/modules/netascode/maintenance-group/aci/latest)
 
 {{ aac_doc }}
 ### Examples

@@ -1,6 +1,11 @@
 # VPC Groups
 
-Description
+Location in GUI:
+`Fabric` » `Access Policies` » `Policies` » `Switch` » `Virtual Port Channel default`
+
+### Terraform modules
+
+* [vPC Group](https://registry.terraform.io/modules/netascode/vpc-group/aci/latest)
 
 {{ aac_doc }}
 ### Examples
