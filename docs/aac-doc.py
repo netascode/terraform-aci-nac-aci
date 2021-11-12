@@ -157,7 +157,7 @@ def parse_schema_type_constraint(element, name=""):
         result_constraint = ", ".join(["`{}`".format(e) for e in element.enums])
     elif element.tag == "list":
         if element.validators[0].tag == "include":
-            type = name
+            type = "`[{}]`".format(name)
             constraint = None
         else:
             type, constraint = parse_schema_type_constraint(element.validators[0], name)
@@ -179,7 +179,7 @@ def parse_schema_type_constraint(element, name=""):
         result_constraint = "Regex: `{0}`".format(pattern)
     elif element.tag == "include":
         result_type = "Class"
-        result_constraint = name
+        result_constraint = "`[{}]`".format(name)
     elif element.tag == "any":
         types = []
         for validator in element.validators:
@@ -271,40 +271,40 @@ def render_diagram_path(element, path, mappings={}):
     else:
         parent = ""
     if element.is_required:
-        mandatory = "+"
+        mandatory = "*"
     else:
-        mandatory = "-"
+        mandatory = ""
     if element.tag == "str":
-        result = "{0} : {1}{2} Str\n".format(parent, mandatory, name)
+        result = "{0} : {1}{2} [Str]\n".format(parent, mandatory, name)
     elif element.tag == "int":
-        result = "{0} : {1}{2} Int\n".format(parent, mandatory, name)
+        result = "{0} : {1}{2} [Int]\n".format(parent, mandatory, name)
     elif element.tag == "num":
-        result = "{0} : {1}{2} Num\n".format(parent, mandatory, name)
+        result = "{0} : {1}{2} [Num]\n".format(parent, mandatory, name)
     elif element.tag == "bool":
-        result = "{0} : {1}{2} Bool\n".format(parent, mandatory, name)
+        result = "{0} : {1}{2} [Bool]\n".format(parent, mandatory, name)
     elif element.tag == "null":
-        result = "{0} : {1}{2} Num\n".format(parent, mandatory, name)
+        result = "{0} : {1}{2} [Num]\n".format(parent, mandatory, name)
     elif element.tag == "enum":
-        result = "{0} : {1}{2} Enum\n".format(parent, mandatory, name)
+        result = "{0} : {1}{2} [Enum]\n".format(parent, mandatory, name)
     elif element.tag == "list":
         result = "{0} <-- {1}\n".format(parent, name)
-        result += "{0} : {1}{2} List\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} [List]\n".format(parent, mandatory, name)
     elif element.tag == "map":
         pass
     elif element.tag == "ip":
-        result = "{0} : {1}{2} IP\n".format(parent, mandatory, name)
+        result = "{0} : {1}{2} [IP]\n".format(parent, mandatory, name)
     elif element.tag == "mac":
-        result = "{0} : {1}{2} MAC\n".format(parent, mandatory, name)
+        result = "{0} : {1}{2} [MAC]\n".format(parent, mandatory, name)
     elif element.tag == "regex":
-        result = "{0} : {1}{2} Str\n".format(parent, mandatory, name)
+        result = "{0} : {1}{2} [Str]\n".format(parent, mandatory, name)
     elif element.tag == "include":
         result = "{0} *-- {1}\n".format(parent, name)
-        result += "{0} : {1}{2} Dict\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} [Dict]\n".format(parent, mandatory, name)
     elif element.tag == "any":
         if element.validators[0].tag == "str":
-            result = "{0} : {1}{2} Str\n".format(parent, mandatory, name)
+            result = "{0} : {1}{2} [Str]\n".format(parent, mandatory, name)
         else:
-            result = "{0} : {1}{2} Any\n".format(parent, mandatory, name)
+            result = "{0} : {1}{2} [Any]\n".format(parent, mandatory, name)
     return result
 
 
