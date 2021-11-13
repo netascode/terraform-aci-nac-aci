@@ -1,5 +1,6 @@
 # Copyright: (c) 2021, Daniel Schmidt <danischm@cisco.com>
 
+import copy
 import os
 import re
 
@@ -288,7 +289,7 @@ def render_diagram_path(element, path, mappings={}):
         result = "{0} : {1}{2} [Enum]\n".format(parent, mandatory, name)
     elif element.tag == "list":
         result = "{0} <-- {1}\n".format(parent, name)
-        result += "{0} : {1}{2} [List]\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} (List)\n".format(parent, mandatory, name)
     elif element.tag == "map":
         pass
     elif element.tag == "ip":
@@ -299,7 +300,7 @@ def render_diagram_path(element, path, mappings={}):
         result = "{0} : {1}{2} [Str]\n".format(parent, mandatory, name)
     elif element.tag == "include":
         result = "{0} *-- {1}\n".format(parent, name)
-        result += "{0} : {1}{2} [Dict]\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} (Dict)\n".format(parent, mandatory, name)
     elif element.tag == "any":
         if element.validators[0].tag == "str":
             result = "{0} : {1}{2} [Str]\n".format(parent, mandatory, name)
@@ -324,7 +325,7 @@ def render_diagram_class(schema, defaults, class_path, paths, rendered_paths, ma
                     continue
                 rendered_paths.append(path_string)
                 element, name = read_schema_path(schema, path_string)
-                output += render_diagram_path(element, ".".join(current_path), mappings)
+                output += render_diagram_path(element, path_string, mappings)
     return output
 
 
@@ -353,14 +354,19 @@ def get_rename_mappings(class_paths):
 
 def render_diagram(schema, defaults, class_paths, paths):
     output = "### Diagram\n\n"
-    output += "```mermaid\n%%{init: {'themeVariables': {'nodeBorder': '#009688'}}}%%\nclassDiagram\n"
+    output += "<figure markdown>\n"
+    output += "```mermaid\n%%{init: {'themeVariables': {'nodeBorder': '#009688', 'fontSize': '14px', 'fontFamily': 'Roboto'}}}%%\nclassDiagram\n"
     rendered_paths = []
     mappings = get_rename_mappings(class_paths)
-    for class_path in class_paths:
+    # Move apic element to the end to fix mermaid rendering
+    ordered_class_paths = copy.copy(class_paths)
+    ordered_class_paths.append(ordered_class_paths.pop(0))
+    for class_path in ordered_class_paths:
         output += render_diagram_class(
             schema, defaults, class_path, paths, rendered_paths, mappings
         )
-    output += "```\n\n"
+    output += "```\n"
+    output += "</figure>\n\n"
     return output
 
 
