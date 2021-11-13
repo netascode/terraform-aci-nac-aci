@@ -64,7 +64,7 @@ nav:
   - Data Model:
       - Overview: data_model/overview.md
       - APIC:
-          - Support Matrix: data_model/apic/support_matrix.md
+          - Support Matrix: data_model/apic_support_matrix.md
           - Bootstrap:
               - Bootstrap: data_model/apic/bootstrap/bootstrap.md
           - Fabric Policies:
@@ -190,7 +190,7 @@ nav:
               - OOB External Management Instance: data_model/apic/tenants/oob_ext_mgmt_instance.md
               - OOB Contract: data_model/apic/tenants/oob_contract.md
       - MSO:
-          - Support Matrix: data_model/mso/support_matrix.md
+          - Support Matrix: data_model/mso_support_matrix.md
           - Bootstrap: data_model/mso/bootstrap/bootstrap.md
           - System Config: data_model/mso/mso/system_config.md
           - TACACS Provider: data_model/mso/mso/tacacs_provider.md
