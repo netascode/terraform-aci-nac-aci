@@ -108,22 +108,22 @@ Description | CLI | Ansible | Terraform | Reverse
 
 ### Node Policies
 
-Description | CLI | Ansible | Terraform
----|---|---|---
-[Node Registration](./apic/node_policies/node_registration.md) | :material-check: | :material-check: | :material-check: | :material-check:
-[OOB Node Address](./apic/node_policies/oob_node_address.md) | :material-check: | :material-check: | :material-check: | :material-check:
-[Inband Node Address](./apic/node_policies/inb_node_address.md) | :material-check: | :material-check: | :material-check: | :material-check:
-[Maintenance Group](./apic/node_policies/maintenance_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
-[Firmware Group](./apic/node_policies/firmware_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
-[vPC Group](./apic/node_policies/vpc_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
+Description | CLI | Ansible | Terraform | Reverse
+---|---|---|---|---
+[Node Registration](./apic/node_policies/node_registration.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
+[OOB Node Address](./apic/node_policies/oob_node_address.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
+[Inband Node Address](./apic/node_policies/inb_node_address.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
+[Maintenance Group](./apic/node_policies/maintenance_group.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
+[Firmware Group](./apic/node_policies/firmware_group.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
+[vPC Group](./apic/node_policies/vpc_group.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
 
 ### Interface Policies
 
 Description | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
-[Access Spine Interface Selector](./apic/interface_policies/spine_interface_selector.md) | :material-check: | :material-check: | :material-check: | :material-check:
-[Access Leaf Interface Selector](./apic/interface_policies/leaf_interface_selector.md) | :material-check: | :material-check: | :material-check: | :material-check:
-[Access FEX Interface Selector](./apic/interface_policies/fex_interface_selector.md) | :material-check: | :material-check: | :material-check: | :material-check:
+[Access Spine Interface Selector](./apic/interface_policies/spine_interface_selector.md) | :material-check: | :material-check: | :material-check: |
+[Access Leaf Interface Selector](./apic/interface_policies/leaf_interface_selector.md) | :material-check: | :material-check: | :material-check: |
+[Access FEX Interface Selector](./apic/interface_policies/fex_interface_selector.md) | :material-check: | :material-check: | :material-check: |
 
 ### Tenant
 
