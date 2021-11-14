@@ -191,19 +191,22 @@ nav:
               - OOB Contract: data_model/apic/tenants/oob_contract.md
       - MSO:
           - Support Matrix: data_model/mso_support_matrix.md
-          - Bootstrap: data_model/mso/bootstrap/bootstrap.md
-          - System Config: data_model/mso/mso/system_config.md
-          - TACACS Provider: data_model/mso/mso/tacacs_provider.md
-          - Login Domain: data_model/mso/mso/login_domain.md
-          - Remote Location: data_model/mso/mso/remote_location.md
-          - User: data_model/mso/mso/user.md
-          - CA Certificate: data_model/mso/mso/ca_certificate.md
-          - Site: data_model/mso/mso/site.md
-          - Site Fabric Connectivity: data_model/mso/mso/fabric_connectivity.md
-          - Tenant: data_model/mso/mso/tenant.md
-          - Schema: data_model/mso/schema/schema.md
-          - DHCP Relay Policy: data_model/mso/mso/dhcp_relay.md
-          - DHCP Option Policy: data_model/mso/mso/dhcp_option.md
+          - Bootstrap:
+              - Bootstrap: data_model/mso/bootstrap/bootstrap.md
+          - System:
+              - System Config: data_model/mso/mso/system_config.md
+              - TACACS Provider: data_model/mso/mso/tacacs_provider.md
+              - Login Domain: data_model/mso/mso/login_domain.md
+              - Remote Location: data_model/mso/mso/remote_location.md
+              - User: data_model/mso/mso/user.md
+              - CA Certificate: data_model/mso/mso/ca_certificate.md
+              - Site: data_model/mso/mso/site.md
+              - Site Fabric Connectivity: data_model/mso/mso/fabric_connectivity.md
+              - Tenant: data_model/mso/mso/tenant.md
+              - DHCP Relay Policy: data_model/mso/mso/dhcp_relay.md
+              - DHCP Option Policy: data_model/mso/mso/dhcp_option.md
+          - Schema:
+              - Schema: data_model/mso/schema/schema.md
   - CLI:
       - Overview: cli/overview.md
       - Installation: cli/installation.md
