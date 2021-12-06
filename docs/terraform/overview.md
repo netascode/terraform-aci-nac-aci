@@ -41,7 +41,7 @@ The following Terraform provider is being used together with the *ACI as Code* s
 
 The provider includes a single resource and data source which can be used to manage any ACI object. A simple example of how to use the aci_rest resource can be found below:
 
-```hcl
+```Terraform
 resource "aci_rest" "fvTenant" {
   dn         = "uni/tn-EXAMPLE_TENANT"
   class_name = "fvTenant"
@@ -62,7 +62,7 @@ The modules can be found here: [link](https://registry.terraform.io/search/modul
 
 A simple example of using one of the modules can be found below:
 
-```hcl
+```Terraform
 module "aci_contract" {
   source  = "netascode/contract/aci"
   version = ">= 0.0.1"

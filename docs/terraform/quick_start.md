@@ -22,7 +22,7 @@ $ pip install robotframework robotframework-pabot RESTinstance yamale-aac yamlli
 
 Depending on where the Terraform state should be maintained the backend and provider configuration (in [main.tf](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/main.tf)) should be updated.
 
-```hcl 
+```Terraform
 terraform {
   required_providers {
     aci = {
