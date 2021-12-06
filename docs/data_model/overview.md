@@ -1,6 +1,6 @@
 # Overview
 
-The data model formally defines the format of the data input files. The schema (yamale) is then based on the data model and used to validate the data input files.
+The data model formally defines the format of the data input files. The schema is then based on the data model and used to validate the data input files.
 
 ## Notation
 

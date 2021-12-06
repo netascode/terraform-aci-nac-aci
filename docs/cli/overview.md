@@ -7,12 +7,20 @@ The [aac-tool](https://wwwin-github.cisco.com/aac/aac-tool) CLI application enab
 * Render a set of ROBOT test suites from *ACI as Code* YAML inventory files
 * Convert *ACI as Code* YAML inventory files from or to an Excel workbook
 
+!!! info
+
+    This is only a subset of the available use-cases. A complete list can be found under [Usage](../usage/).
+
 The tool can be consumed in different ways:
 
 * Consumed as a service using [this](https://aide-tools.cisco.com/datacenter/aci/aac--aac-tool) frontend
 * Installed and managed using the *Cisco CX AIDE Toolkit* ([CAT](https://cisco.sharepoint.com/sites/AIDE/SitePages/CX-AIDE-Toolkit.aspx)) application
 * Using a ready-to-use container image
 * Installed locally as a CLI application
+
+!!! warning
+
+    The hosted version does not support every option available in the CLI application.
 
 ```shell
 $ aac-tool -h

@@ -43,6 +43,7 @@ extra_javascript:
   - https://unpkg.com/mermaid/dist/mermaid.min.js
   - extra/refresh_on_toggle_dark_light.js
 markdown_extensions:
+  - md_in_html
   - abbr
   - admonition
   - attr_list
@@ -50,6 +51,7 @@ markdown_extensions:
   - footnotes
   - meta
   - tables
+  - pymdownx.details
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
@@ -248,6 +250,8 @@ nav:
           - Extend Functionality: ansible/development/add_class.md
   - Terraform:
       - Overview: terraform/overview.md
+      - Quick Start: terraform/quick_start.md
+      - Development: terraform/development.md
   - About:
       - Contributors: about/contributors.md
       - Support: about/support.md
