@@ -29,7 +29,7 @@ Each role is then divided into three different stages.
 
 <figure markdown>
 ```mermaid
-%%{init: {'themeVariables': {'nodeBorder': '#009688', 'fontSize': '14px', 'fontFamily': 'Roboto'}}}%%
+%%{init: {'themeVariables': {'nodeBorder': '#009688', 'lineColor': '#009688', 'fontSize': '14px', 'fontFamily': 'Roboto'}}}%%
 graph LR
     Render --> Configure
     Configure --> Delete

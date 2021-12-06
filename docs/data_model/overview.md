@@ -14,7 +14,7 @@ The composition relationship is used for dictionary child elements.
 
 <figure markdown>
 ```mermaid
-%%{init: {'themeVariables': {'nodeBorder': '#009688', 'fontSize': '14px', 'fontFamily': 'Roboto'}}}%%
+%%{init: {'themeVariables': {'nodeBorder': '#009688', 'lineColor': '#009688', 'fontSize': '14px', 'fontFamily': 'Roboto'}}}%%
 classDiagram
 apic *-- pod_policies
 apic : pod_policies (Dict)
@@ -26,7 +26,7 @@ The association relationship is used for list elements (1:n relationship).
 
 <figure markdown>
 ```mermaid
-%%{init: {'themeVariables': {'nodeBorder': '#009688', 'fontSize': '14px', 'fontFamily': 'Roboto'}}}%%
+%%{init: {'themeVariables': {'nodeBorder': '#009688', 'lineColor': '#009688', 'fontSize': '14px', 'fontFamily': 'Roboto'}}}%%
 classDiagram
 node_policies <-- upgrade_groups
 node_policies : upgrade_groups (List)
@@ -38,7 +38,7 @@ The dependency relationship is used for other classes being referenced by one of
 
 <figure markdown>
 ```mermaid
-%%{init: {'themeVariables': {'nodeBorder': '#009688', 'fontSize': '14px', 'fontFamily': 'Roboto'}}}%%
+%%{init: {'themeVariables': {'nodeBorder': '#009688', 'lineColor': '#009688', 'fontSize': '14px', 'fontFamily': 'Roboto'}}}%%
 classDiagram
 pod_policy_group <.. date_time_policy
 pod_policy_group : name [Str]
