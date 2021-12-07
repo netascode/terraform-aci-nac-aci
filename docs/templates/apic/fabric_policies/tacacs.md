@@ -10,6 +10,19 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  fabric_policies:
+    aaa:
+      tacacs_providers:
+        - hostname_ip: 1.1.1.1
+          key: '123'
+```
+
+Full example:
+
 ```yaml
 apic:
   fabric_policies:

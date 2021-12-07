@@ -10,12 +10,27 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
 ```yaml
 apic:
   fabric_policies:
     monitoring:
       snmp_traps:
-        - name: trap1
+        - name: TRAP1
+          destinations:
+            - hostname_ip: 2.2.2.2
+              community: testcommunity
+```
+
+Full example:
+
+```yaml
+apic:
+  fabric_policies:
+    monitoring:
+      snmp_traps:
+        - name: TRAP1
           description: desc1
           destinations:
             - hostname_ip: 2.2.2.2

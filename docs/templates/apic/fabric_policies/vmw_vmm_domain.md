@@ -10,6 +10,27 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  fabric_policies:
+    vmware_vmm_domains:
+      - name: VMM1
+        vlan_pool: VMM1
+        credential_policies:
+          - name: CRED1
+            username: Administrator
+            password: C1sco123
+        vcenters:
+          - name: VC
+            hostname_ip: 10.10.10.10
+            datacenter: DC1
+            credential_policy: CRED1
+```
+
+Full example:
+
 ```yaml
 apic:
   fabric_policies:

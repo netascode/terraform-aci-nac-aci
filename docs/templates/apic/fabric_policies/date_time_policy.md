@@ -10,6 +10,20 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  fabric_policies:
+    pod_policies:
+      date_time_policies:
+        - name: NTP1
+          ntp_servers:
+            - hostname_ip: 1.1.1.13
+```
+
+Full example:
+
 ```yaml
 apic:
   fabric_policies:

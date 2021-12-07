@@ -10,6 +10,19 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  access_policies:
+    aaeps:
+      - name: AAEP1
+        physical_domains:
+          - PHY1
+```
+
+Full example:
+
 ```yaml
 apic:
   access_policies:

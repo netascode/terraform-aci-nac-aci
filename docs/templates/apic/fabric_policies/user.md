@@ -10,6 +10,25 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  fabric_policies:
+    aaa:
+      users:
+        - username: user1
+          password: ciscocisco
+          domains:
+            - name: all
+              roles:
+                - name: admin
+                  privilege_type: write
+            - name: common
+```
+
+Full example:
+
 ```yaml
 apic:
   fabric_policies:

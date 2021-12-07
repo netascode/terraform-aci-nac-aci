@@ -10,6 +10,25 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  fabric_policies:
+    pod_policies:
+      snmp_policies:
+        - name: SNMP1
+          communities:
+            - abcABC123
+          clients:
+            - name: CLIENTS
+              entries:
+                - name: NMS1
+                  ip: 1.1.1.1
+```
+
+Full example:
+
 ```yaml
 apic:
   fabric_policies:

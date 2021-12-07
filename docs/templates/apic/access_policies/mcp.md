@@ -10,9 +10,26 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
 ```yaml
 apic:
   access_policies:
     mcp:
       key: cisco
+```
+
+Full example:
+
+```yaml
+apic:
+  access_policies:
+    mcp:
+      action: disabled
+      admin_state: enabled
+      key: cisco
+      frequency_sec: 5
+      initial_delay: 300
+      loop_detection: 5
+      per_vlan: disabled
 ```

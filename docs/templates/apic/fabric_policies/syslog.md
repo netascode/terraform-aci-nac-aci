@@ -10,6 +10,20 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  fabric_policies:
+    monitoring:
+      syslogs:
+        - name: syslog1
+          destinations:
+            - hostname_ip: 2.2.2.2
+```
+
+Full example:
+
 ```yaml
 apic:
   fabric_policies:

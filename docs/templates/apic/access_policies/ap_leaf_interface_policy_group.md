@@ -10,12 +10,28 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
 ```yaml
 apic:
   access_policies:
     leaf_interface_policy_groups:
-      - name: ACC1
-        description: "Access Policy Group"
+      - name: SERVER1
+        type: access
+        link_level_policy: 10G
+        cdp_policy: CDP-ENABLED
+        lldp_policy: LLDP-ENABLED
+        aaep: AAEP1
+```
+
+Full example:
+
+```yaml
+apic:
+  access_policies:
+    leaf_interface_policy_groups:
+      - name: SERVER1
+        description: "Server1"
         type: access
         link_level_policy: 10G
         cdp_policy: CDP-ENABLED
