@@ -8,7 +8,7 @@ The low-level Terraform provider and the ACI modules are open-sourced and freely
 
 ## Structure
 
-One of the key principles of *ACI as Code* is to provide complete separation of data (*variable definition*) from logic (*infrastructure declaration*). This is achieved by separating the *.yaml files which contain the desired ACI state from the Terraform modules which map the definition of the desired to state to Terraform modules and resources. 
+One of the key principles of *ACI as Code* is to provide complete separation of data (*variable definition*) from logic (*infrastructure declaration*). This is achieved by separating the *.yaml files which contain the desired ACI state from the Terraform modules which map the definition of the desired state to Terraform modules and resources. 
 
 ```shell
 $ tree -L 2

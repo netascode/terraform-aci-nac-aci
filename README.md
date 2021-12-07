@@ -6,4 +6,4 @@ Manage ACI following Infrastructure as Code principles. Codify ACI APIs into dec
 
 ## Documentation
 
-Documentation is available [here](https://wwwin-github.cisco.com/pages/netascode/aac/).
+Documentation is available [here](https://aac.cisco.com).
