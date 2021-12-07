@@ -44,7 +44,7 @@ steps:
         from_secret: HOST_USERNAME
       password:
         from_secret: HOST_PASSWORD
-      target: /www/
+      target: /www/aac/
       source: site/aac/
     when:
       branch:
