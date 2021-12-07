@@ -17,7 +17,7 @@ apic:
       policies:
         dhcp_relay_policies:
           - name: DHCP-RELAY1
-            description: a_description
+            description: "My Description"
             providers:
               - ip: 6.6.6.6
                 type: epg

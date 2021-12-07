@@ -10,6 +10,20 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      policies:
+        ospf_interface_policies:
+          - name: OIP1
+            cost: 40
+```
+
+Full example:
+
 ```yaml
 apic:
   tenants:

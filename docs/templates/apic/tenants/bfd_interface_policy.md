@@ -10,6 +10,20 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      policies:
+        bfd_interface_policies:
+          - name: BFD1
+            subinterface_optimization: enabled
+```
+
+Full example:
+
 ```yaml
 apic:
   tenants:

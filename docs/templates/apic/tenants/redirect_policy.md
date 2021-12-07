@@ -11,6 +11,22 @@ Location in GUI:
 
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      services:
+        redirect_policies:
+          - name: PBR1
+            l3_destinations:
+              - ip: 1.1.1.1
+                mac: 00:00:00:11:22:33
+```
+
+Full example:
+
 ```yaml
 apic:
   tenants:

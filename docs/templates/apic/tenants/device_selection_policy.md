@@ -10,6 +10,32 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      services:
+        device_selection_policies:
+          - contract: CON1
+            service_graph_template: TEMPLATE1
+            consumer:
+              redirect_policy:
+                name: PBR1
+              logical_interface: INT1
+              bridge_domain:
+                name: BD1
+            provider:
+              redirect_policy:
+                name: PBR1
+              logical_interface: INT1
+              bridge_domain:
+                name: BD1
+```
+
+Full example:
+
 ```yaml
 apic:
   tenants:

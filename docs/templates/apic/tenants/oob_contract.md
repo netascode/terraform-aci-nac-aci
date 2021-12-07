@@ -10,6 +10,22 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  tenants:
+    - name: mgmt
+      oob_contracts:
+        - name: OOB-CON1
+          subjects:
+            - name: OOB-SUB
+              filters:
+                - filter: ALL
+```
+
+Full example:
+
 ```yaml
 apic:
   tenants:

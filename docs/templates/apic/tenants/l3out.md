@@ -1,5 +1,7 @@
 # L3out
 
+L3out Node and Interface Profiles can either be auto-generated, one per L3out, or can be defined explicitly.
+
 Location in GUI:
 `Tenants` » `XXX` » `Networking` » `L3outs`
 
@@ -10,6 +12,68 @@ Location in GUI:
 {{ aac_doc }}
 
 ### Examples
+
+Simple example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      l3outs:
+        - name: L3OUT1
+          vrf: VRF1
+          domain: ROUTED1
+          nodes:
+            - node_id: 101
+              router_id: 5.5.5.5
+              static_routes:
+                - prefix: 2.2.2.0/24
+                  description: My Desc
+                  next_hops:
+                    - ip: 6.6.6.6
+              interfaces:
+                - node_id: 101
+                  port: 10
+                  vlan: 301
+                  ip: 14.14.14.1/24
+                  bgp_peers:
+                    - ip: 14.14.14.14
+                      remote_as: 65010
+```
+
+Example with explicit profiles:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      l3outs:
+        - name: L3OUT1
+          vrf: VRF1
+          domain: ROUTED1
+          node_profiles:
+            - name: NODE_101
+              nodes:
+                - node_id: 101
+                  router_id: 5.5.5.5
+                  static_routes:
+                    - prefix: 2.2.2.0/24
+                      description: My Desc
+                      next_hops:
+                        - ip: 6.6.6.6
+                  interface_profiles:
+                    - name: NODE_101
+                      interfaces:
+                        - node_id: 101
+                          port: 10
+                          vlan: 301
+                          ip: 14.14.14.1/24
+                          bgp_peers:
+                            - ip: 14.14.14.14
+                              remote_as: 65010
+```
+
+Full example:
 
 ```yaml
 apic:

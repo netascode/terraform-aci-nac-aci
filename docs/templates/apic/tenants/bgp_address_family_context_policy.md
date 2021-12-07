@@ -13,10 +13,11 @@ apic:
       policies:
         bgp_address_family_context_policies:
           - name: BGP-AFC1
-            ebgp_distance: 201
-            ibgp_distance: 20
-            local_distance: 22
-            ebgp_max_ecmp: 18
-            ibgp_max_ecmp: 19
+            ebgp_distance: 30
+            ibgp_distance: 210
+            local_distance: 230
+            ebgp_max_ecmp: 64
+            ibgp_max_ecmp: 64
+            local_max_ecmp: 16
             enable_host_route_leak: 'yes'
 ```

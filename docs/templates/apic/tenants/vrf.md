@@ -10,6 +10,18 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      vrfs:
+        - name: VRF1
+```
+
+Full example:
+
 ```yaml
 apic:
   tenants:

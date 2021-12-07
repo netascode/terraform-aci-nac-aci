@@ -10,6 +10,32 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      services:
+        l4l7_devices:
+          - name: DEV1
+            physical_domain: PHY1
+            concrete_devices:
+              - name: DEV1
+                interfaces:
+                  - name: INT1
+                    node_id: 101
+                    port: 11
+            logical_interfaces:
+              - name: INT1
+                vlan: 135
+                concrete_interfaces:
+                  - device: DEV1
+                    interface_name: INT1
+```
+
+Full example:
+
 ```yaml
 apic:
   tenants:

@@ -11,6 +11,24 @@ Location in GUI:
 
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      filters:
+        - name: FILTER1
+          entries:
+            - name: HTTP
+              ethertype: ip
+              protocol: tcp
+              destination_from_port: 80
+              stateful: 'yes'
+```
+
+Full example:
+
 ```yaml
 apic:
   tenants:
@@ -20,8 +38,8 @@ apic:
           alias: ABC-FILTER1
           description: My Desc
           entries:
-            - name: HTTP1
-              alias: HTTP1-ALIAS
+            - name: ENTRY1
+              alias: ENTRY1-ALIAS
               ethertype: ip
               protocol: tcp
               source_from_port: 80

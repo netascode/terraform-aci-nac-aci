@@ -2,7 +2,7 @@
 
 A sample repository using [Drone](https://drone.io/) as a CI/CD platform can be found [here](https://wwwin-github.cisco.com/netascode/terraform-aac).
 
-There are two options to run Terraform locally, either using the [ready-to-use container image](#ready-to-use-container) or install Terraform and python requirements [locally](#local-installation).
+There are two options to run Terraform locally, either using the [ready-to-use container image](#ready-to-use-container) or install Terraform and Python requirements [locally](#local-installation).
 
 ## Ready-to-use Container
 
@@ -10,7 +10,7 @@ A dedicated docker image with all the necessary binaries and libraries is availa
 
 ## Local Installation
 
-Alternatively Terraform and the necessary python requirements can be installed locally. Binaries and installation instructions of Terraform can be found [here](https://www.terraform.io/downloads.html). It is recommended to install Python requirements in a new or existing ```virtualenv```, eg. using [pyenv](https://github.com/pyenv/pyenv) and [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv).
+Alternatively Terraform and the necessary Python requirements can be installed locally. Binaries and installation instructions of Terraform can be found [here](https://www.terraform.io/downloads.html). It is recommended to install Python requirements in a new or existing ```virtualenv```, eg. using [pyenv](https://github.com/pyenv/pyenv) and [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv).
 
 ```shell
 $ python -m virtualenv aac          # Create a virtualenv if one does not already exist

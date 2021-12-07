@@ -10,6 +10,21 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      bridge_domains:
+        - name: BD1
+          vrf: VRF1
+          subnets:
+            - ip: 1.1.1.1/24
+```
+
+Full example:
+
 ```yaml
 apic:
   tenants:

@@ -10,6 +10,30 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      application_profiles:
+        - name: AP1
+          endpoint_groups:
+            - name: EPG1
+              bridge_domain: BD1
+              physical_domains:
+                - PHY1
+              static_ports:
+                - node_id: 101
+                  port: 10
+                  vlan: 135
+              contracts:
+                consumers:
+                  - CON1
+```
+
+Full example:
+
 ```yaml
 apic:
   tenants:

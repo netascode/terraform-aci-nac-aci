@@ -17,7 +17,7 @@ apic:
       policies:
         dhcp_option_policies:
           - name: DHCP-OPTION1
-            description: a_description
+            description: "My Description"
             options:
               - name: OPTION1
                 id: 13

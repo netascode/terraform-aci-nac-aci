@@ -10,6 +10,25 @@ Location in GUI:
 {{ aac_doc }}
 ### Examples
 
+Simple example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      l3outs:
+        - name: L3OUT1
+          external_endpoint_groups:
+            - name: EXT-EPG1
+              subnets:
+                - prefix: 0.0.0.0/0
+              contracts:
+                consumers:
+                  - CON1
+```
+
+Full example:
+
 ```yaml
 apic:
   tenants:
