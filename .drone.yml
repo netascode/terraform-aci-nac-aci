@@ -22,17 +22,12 @@ steps:
     image: drone/git
     pull: if-not-exists
 
-  - name: Publish Documentation
+  - name: Build Documentation
     image: danischm/aac:0.2.0
-    environment:
-      GITHUB_TOKEN:
-        from_secret: GITHUB_TOKEN
     commands:
       - pip install --upgrade mkdocs mkdocs-material mkdocs-mermaid2-plugin
       - python docs/aac-doc.py
-      - git config credential.helper "store --file=.git/credentials"
-      - echo "https://$GITHUB_TOKEN:@wwwin-github.cisco.com" > .git/credentials
-      - mkdocs gh-deploy --force
+      - mkdocs build
     when:
       branch:
         - master
@@ -40,6 +35,24 @@ steps:
         - push
     depends_on:
       - Clone Repo
+
+  - name: Deploy Documentation
+    image: appleboy/drone-scp:1.6.3
+    settings:
+      host: aac.cisco.com
+      username:
+        from_secret: HOST_USERNAME
+      password:
+        from_secret: HOST_PASSWORD
+      target: /www/aac/
+      source: site/
+    when:
+      branch:
+        - master
+      event:
+        - push
+    depends_on:
+      - Build Documentation
 
   - name: Notify
     image: ciscosso/drone-webex-team:v0.0.1
@@ -59,4 +72,4 @@ steps:
     when:
       status: [changed, failure, success]
     depends_on:
-      - Publish Documentation
+      - Deploy Documentation
