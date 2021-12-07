@@ -2010,7 +2010,7 @@ ten_ser_device_selection_policies_consumer_provider:
   redirect_policy: include('ten_ser_device_selection_policies_consumer_provider_redirect_policy', required=False) # @flatten()
   bridge_domain: include('ten_ser_device_selection_policies_consumer_provider_bridge_domain', required=False) # @flatten()
   external_endpoint_group: include('ten_ser_device_selection_policies_consumer_provider_external_endpoint_group', required=False) # @flatten()
-  service_epg_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(Service EPG Policy Name)
+  service_epg_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(Service EPG Policy Name)
   custom_qos_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_ser_device_selection_policies_consumer_provider_redirect_policy:
