@@ -121,6 +121,19 @@ $ python ./.ci/nae-pcv.py "My Terraform PCV" ./plan.json
 
 To perform automated testing [aac-tool](../../cli/overview/) can be used to dynamically render the [Robot](https://robotframework.org/) test suites and subsequently [Pabot](https://pabot.org/) to execute the tests.
 
+Test suites can be categorized in three groups:
+
+- *Configuration Tests*: verify if the desired configuration is in place
+- *Health Tests*: leverage the in-built APIC/MSO fault correlation to retrieve faults and health scores and compare them against thresholds
+- *Operation Tests*: verify operational state according to input data, eg. BGP peering state
+
+Furthermore test suites are considered critical or non-critical:
+
+- *Critical Tests*: test cases that solely depend on the ACI environment, e.g., Configuration Tests
+- *Non-critical Tests*: test cases that potentially have dependencies outside of ACI, eg. BGP peering state
+
+A failed non-critical test does not impact the overall test result in contrast to a critical test.
+
 ```shell
 $ export APIC_TEST_HOSTNAME_IP="10.1.1.100"
 $ export APIC_TEST_USERNAME=admin
