@@ -99,7 +99,34 @@ A sample [Drone](https://www.drone.io/) pipeline covering all solution component
 
 ## Pre-Change Validation
 
-To perform syntactic and semantic validation [aac-tool](../../cli/overview/) can be used.
+Syntax validation ensures that the input data is syntactically correct, which is verified by [Yamale](https://github.com/23andMe/Yamale) and a corresponding schema. The [schema](https://wwwin-github.cisco.com/netascode/aac/blob/master/schemas/apic_schema.yaml) specifies the expected structure, input value types (String, Enum, IP, etc.) and additional constraints (eg. value ranges, regexes, etc.).
+
+A sample schema can be found below:
+
+```yaml
+---
+apic: include('apic', required=False)
+---
+apic:
+  tenants: list(include('tenant'), required=False)
+
+tenant:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$’)
+  vrfs: list(include('ten_vrf'), required=False)
+
+ten_vrf:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$’)
+  alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  data_plane_learning: enum('enabled', 'disabled', required=False)
+  enforcement_direction: enum('ingress', 'egress', required=False)
+```
+
+Semantic validation is about verifying specific data model related constraints like referential integrity. It can be implemented using a rule based model like commonly done with linting tools. Examples are:
+
+- Check uniqueness of key values (e.g., Node IDs)
+- Check references/relationships between objects (e.g., Interface Policy Group referencing a CDP Policy)
+
+To perform syntactic and semantic validation, [aac-tool](../../cli/overview/) can be used.
 
 ## NAE/NDI Integration
 
@@ -119,7 +146,7 @@ $ python ./.ci/nae-pcv.py "My Terraform PCV" ./plan.json
 
 ## Automated Testing
 
-To perform automated testing [aac-tool](../../cli/overview/) can be used to dynamically render the [Robot](https://robotframework.org/) test suites and subsequently [Pabot](https://pabot.org/) to execute the tests.
+To perform automated testing, [aac-tool](../../cli/overview/) can be used to dynamically render the [Robot](https://robotframework.org/) test suites and subsequently [Pabot](https://pabot.org/) to execute the tests.
 
 Test suites can be categorized in three groups:
 
@@ -145,6 +172,14 @@ $ robot -o NONE -l NONE -r NONE apic_login.robot
 $ rm apic_login.robot
 $ cd ..
 $ pabot -d tests/ -V tests/apic_token.py --skiponfailure non-critical tests/
+```
+
+After applying  changes with `terraform apply`, a subsequent `terraform plan` (using the same infrastructure code) is expected to return with no changes.
+This test can be integrated into a CI/CD workflow by using the `-detailed-exitcode` flag when executing `terraform plan` which will return a non-zero exit code if changes are detected.
+
+```shell
+$ terraform plan -detailed-exitcode
+No changes. Infrastructure is up-to-date.
 ```
 
 ## ChatOps
