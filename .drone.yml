@@ -27,7 +27,7 @@ steps:
     commands:
       - pip install --upgrade mkdocs mkdocs-material mkdocs-mermaid2-plugin
       - python docs/aac-doc.py
-      - mkdocs build -d site/aac/
+      - mkdocs build
     when:
       branch:
         - master
@@ -45,7 +45,7 @@ steps:
       password:
         from_secret: HOST_PASSWORD
       target: /www/aac/
-      source: site/aac/
+      source: site/
     when:
       branch:
         - master
