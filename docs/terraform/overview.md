@@ -93,6 +93,8 @@ Instead of hardcoding or spreading the definition of default values across diffe
 
 This file is typically customized to reflect the specific customer requirements and reduces the overall size of input files as optional parameters with a default value can be ommited. As some customers prefer to append suffixes to object names, such suffixes can be defined once in `defaults.yaml` and then consistently appended to all objects of a specific type including its references.
 
+The modules are maintained in the following repository: [link](https://wwwin-github.cisco.com/netascode/terraform-aac/tree/master/modules)
+
 ## CI/CD Integration
 
 A sample [Drone](https://www.drone.io/) pipeline covering all solution components can be found here: [link](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/.drone.yml)
@@ -132,7 +134,7 @@ To perform syntactic and semantic validation, [aac-tool](../../cli/overview/) ca
 
 Cisco NAE/NDI offers a feature called *Pre-Change Validation* which allows assessing the impact of a planned change before applying it to the infrastructure.
 
-A Python [script](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/.ci/nae-pcv.py) pushed the rendered JSON configuration of a planned change to NAE and waits until the Pre-Change Validation has been completed. The JSON configuration is rendered from the *Terraform Plan* output.
+A Python [script](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/.ci/nae-pcv.py) pushes the rendered JSON configuration of a planned change to NAE and waits until the Pre-Change Validation has been completed. The JSON configuration is rendered from the *Terraform Plan* output.
 
 ```shell
 $ export NAE_HOSTNAME_IP="10.1.1.101"
