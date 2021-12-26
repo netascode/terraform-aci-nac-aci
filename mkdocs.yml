@@ -37,7 +37,7 @@ plugins:
   - mermaid2:
       arguments:
         theme: |
-          ^(JSON.parse(window.localStorage.getItem(__prefix('__palette'))).index == 1) ? 'dark' : 'neutral'
+          ^(JSON.parse(__md_get("__palette").index == 1)) ? 'dark' : 'neutral'
         securityLevel: 'loose'
 extra_javascript:
   - https://unpkg.com/mermaid/dist/mermaid.min.js
