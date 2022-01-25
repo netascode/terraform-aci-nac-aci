@@ -44,6 +44,11 @@ apic:
           cdp_policy: CDP-ENABLED
           lldp_policy: LLDP-ENABLED
           port_channel_policy: LACP-ACTIVE
+          enhanced_lags:
+            - name: ELAGCUSTOM
+              mode: active
+              lb_mode: src-dst-l4port
+              num_links: 3
         credential_policies:
           - name: CRED1
             username: Administrator
