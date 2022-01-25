@@ -66,6 +66,7 @@ Description | CLI | Ansible | Terraform | Reverse
 [Geolocation Policy](./apic/fabric_policies/geolocation.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Interface type](./apic/fabric_policies/interface_type.md) | :material-check: | :material-check: |
 [Fabric SPAN Source Group](./apic/fabric_policies/fp_span_source_group.md) | :material-check: | :material-check: |
+[Fabric SPAN Destination Group](./apic/fabric_policies/fp_span_destination_group.md) | :material-check: | :material-check: |
 
 ### Access Policies
 

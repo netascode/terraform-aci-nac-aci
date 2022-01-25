@@ -1,4 +1,4 @@
-# Fabric SPAN Source Groups
+# Fabric SPAN Source Group
 
 Location in GUI:
 `Fabric` » `Fabric Policies` » `Policies` » `Troubleshooting` » `SPAN` » `SPAN Source Groups`
