@@ -1,0 +1,66 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {
+                "vnsSvcCont": {
+                    "attributes": {
+                        "dn": "uni/tn-{{ tenant.name }}/svcCont"
+                    },
+                    "children": [
+                        {%- set comma1 = joiner(",") %}
+                        {%- for pol in tenant.services.redirect_backup_policies | default([]) %}{{ comma1() }}
+                        {% set pol_name = pol.name ~ defaults.apic.tenants.services.redirect_backup_policies.name_suffix %}
+                        {
+                            "vnsBackupPol": {
+                                "attributes": {
+                                    "descr": "{{ pol.description | default() }}",
+                                    "name": "{{ pol_name }}",
+                                    "dn": "uni/tn-{{ tenant.name }}/svcCont/backupPol-{{ pol_name }}",
+                                    "childAction": "deleteNonPresent"
+                                }
+                                {%- if pol.l3_destinations is defined %},
+                                "children": [
+                                    {%- set comma2 = joiner(",") %}
+                                    {%- for des in pol.l3_destinations %}{{ comma2() }}
+                                    {
+                                        "vnsRedirectDest": {
+                                            "attributes": {
+                                                "descr": "{{ des.description | default() }}",
+                                                "destName": "{{ des.destination_name | default() }}",
+                                                "ip": "{{ des.ip }}",
+                                                "ip2": "{{ des.ip_2 | default(defaults.apic.tenants.services.redirect_backup_policies.l3_destinations.ip_2) }}",
+                                                "mac": "{{ des.mac }}"
+                                            }
+                                        {%- if des.redirect_health_group is defined %}
+                                        {%- set redirect_health_group_name = des.redirect_health_group ~ defaults.apic.tenants.services.redirect_health_groups.name_suffix %},
+                                            "children": [
+                                                {
+                                                    "vnsRsRedirectHealthGroup": {
+                                                        "attributes": {
+                                                            "tDn": "uni/tn-{{ tenant.name }}/svcCont/redirectHealthGroup-{{ redirect_health_group_name }}"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        {% endif %}
+                                        }
+                                    }                                
+                                    {%- endfor %}
+
+                                ]
+                                {% endif %}
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+        ]
+    }
+}

@@ -5,6 +5,11 @@ Default Tags    apic   day2   config   tenants
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
+{%- macro get_nlb_mode(name) -%}
+    {%- set modes = {"mode-mcast-static":"mode-mcast--static"} -%}
+    {{ modes[name] | default(name)}}
+{%- endmacro -%}
+
 {% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for ap in tenant.application_profiles | default([]) %}
 {% set ap_name = ap.name ~ defaults.apic.tenants.application_profiles.name_suffix %}
@@ -52,7 +57,13 @@ Verify Endpoint Group {{ epg_name }} VMM Domain {{ vmm_name }}
     String   ${conn}.children..vmmSecP.attributes.allowPromiscuous   {{ vmm.allow_promiscuous | default(defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.allow_promiscuous) }}
     String   ${conn}.children..vmmSecP.attributes.forgedTransmits   {{ vmm.forged_transmits | default(defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.forged_transmits) }}
     String   ${conn}.children..vmmSecP.attributes.macChanges   {{ vmm.mac_changes | default(defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.mac_changes) }}
-
+{% if vmm.active_uplinks_order is defined or vmm.standby_uplinks is defined %}
+    String   ${conn}.children..fvUplinkOrderCont.attributes.active   {{ vmm.active_uplinks_order | default() }}
+    String   ${conn}.children..fvUplinkOrderCont.attributes.standby   {{ vmm.standby_uplinks | default() }}
+{% endif %}
+{% if vmm.elag is defined %}
+    String   ${conn}.children..fvAEPgLagPolAtt.children..fvRsVmmVSwitchEnhancedLagPol.attributes.tDn   uni/vmmp-VMware/dom-{{ vmm_name }}/vswitchpolcont/enlacplagp-{{ vmm.elag }}
+{% endif %}
 {% endfor %}
 
 {% for st_ep in epg.static_endpoints | default([]) %}
@@ -157,7 +168,32 @@ Verify Endpoint Group {{ epg_name }} Subnet {{ subnet.ip }}
     String   ${subnet}..fvSubnet.attributes.ctrl   {{ ctrl | join(',') }}
     String   ${subnet}..fvSubnet.attributes.descr   {{ subnet.description | default() }}
     String   ${subnet}..fvSubnet.attributes.preferred   {{ subnet.primary_ip | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.primary_ip) }}
-    String   ${subnet}..fvSubnet.attributes.scope   {{ scope | join(',') }}                   
+    String   ${subnet}..fvSubnet.attributes.scope   {{ scope | join(',') }}
+    String   ${subnet}..fvSubnet.attributes.virtual   {{ subnet.virtual | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.virtual) }}           
+{% if subnet.next_hop_ip is defined %}
+    String   ${subnet}..ipNexthopEpP.attributes.nhAddr   {{ subnet.next_hop_ip }} 
+{% elif subnet.anycast_mac is defined %}
+    String   ${subnet}..fvEpAnycast.attributes.mac   {{ subnet.anycast_mac }} 
+{% elif subnet.nlb_mode is defined %}
+    String   ${subnet}..fvEpNlb.attributes.group   {{ subnet.nlb_group | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.nlb_group) }}
+    String   ${subnet}..fvEpNlb.attributes.mac   {{ subnet.nlb_mac | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.nlb_mac) }}
+    String   ${subnet}..fvEpNlb.attributes.mode   {{ get_nlb_mode(subnet.nlb_mode) }}
+{% endif %}
+
+{% for pool in subnet.ip_pools | default([]) %}
+{% set pool_name = pool.name ~ defaults.apic.tenants.application_profiles.endpoint_groups.subnets.ip_pools.name_suffix %}
+Verify Endpoint Group {{ epg_name }} Subnet {{ subnet.ip }} IP Address Pool {{ pool_name }}
+    ${subnet}=   Set Variable   $..fvAEPg.children[?(@.fvSubnet.attributes.ip=='{{ subnet.ip }}')].fvSubnet
+    ${pool}=   Set Variable   ${subnet}.children[?(@.fvCepNetCfgPol.attributes.name=='{{ pool_name }}')]
+    String   ${pool}..fvCepNetCfgPol.attributes.name   {{ pool_name }}
+    String   ${pool}..fvCepNetCfgPol.attributes.startIp   {{ pool.start_ip | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.ip_pools.start_ip) }}
+    String   ${pool}..fvCepNetCfgPol.attributes.endIp   {{ pool.end_ip | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.ip_pools.end_ip) }}
+    String   ${pool}..fvCepNetCfgPol.attributes.dnsSearchSuffix   {{ pool.dns_search_suffix | default() }}
+    String   ${pool}..fvCepNetCfgPol.attributes.dnsServers   {{ pool.dns_server | default() }}
+    String   ${pool}..fvCepNetCfgPol.attributes.dnsSuffix   {{ pool.dns_suffix | default() }}
+    String   ${pool}..fvCepNetCfgPol.attributes.winsServers   {{ pool.wins_server | default() }}
+
+{% endfor %}
 
 {% endfor %}
 
@@ -197,6 +233,12 @@ Verify Endpoint Group {{ epg_name }} L4-L7 IP Address Pool {{ pool.name }}
 {% endif %}
 
 {% endfor %}  
+
+{% if epg.trust_control_policy is defined %}
+{% set trust_control_policy_name = epg.trust_control_policy ~ defaults.apic.tenants.policies.trust_control_policies.name_suffix %}
+Verify Endpoint Group {{ epg_name }} Trust Control Policy {{ trust_control_policy_name }}
+    String   $..fvRsTrustCtrl.attributes.tnFhsTrustCtrlPolName   {{ trust_control_policy_name }}
+{% endif %}
 
 {% endfor %}
 

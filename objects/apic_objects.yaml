@@ -607,6 +607,28 @@ objects:
       - config
     paths:
       - apic.fabric_policies.geolocation
+  - name: Fabric SPAN Source Group
+    template: span_source_group
+    folder: fabric_policies
+    aci_classes:
+      - spanSrcGrp
+    match_dn: 'uni\/fabric.*'
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.fabric_policies.span_source_groups
+  - name: Fabric SPAN Destination Group
+    template: span_destination_group
+    folder: fabric_policies
+    aci_classes:
+      - spanDestGrp
+    match_dn: 'uni\/fabric.*'
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.fabric_policies.span_destination_groups
   - name: Interface Type
     template: interface_type
     folder: fabric_policies
@@ -888,7 +910,7 @@ objects:
     paths:
       - apic.access_policies.leaf_interface_policy_groups
   - name: SPAN Destination Group
-    template: span_destination_groups
+    template: span_destination_group
     folder: access_policies
     aci_classes:
       - spanDestGrp
@@ -899,7 +921,7 @@ objects:
     paths:
       - apic.access_policies.span.destination_groups
   - name: SPAN Source Group
-    template: span_source_groups
+    template: span_source_group
     folder: access_policies
     aci_classes:
       - spanSrcGrp
@@ -909,6 +931,16 @@ objects:
       - health
     paths:
       - apic.access_policies.span.source_groups
+  - name: SPAN Filter Group
+    template: span_filter_group
+    folder: access_policies
+    aci_classes:
+      - spanFilterGrp
+    match_dn: 'uni\/infra.*'
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.span.filter_groups
   - name: Tenant
     template: tenant
     folder: tenants
@@ -1315,6 +1347,18 @@ tenant_objects:
       - health
     paths:
       - apic.tenants.policies.ip_sla_policies
+  - name: Trust Control Policy
+    template: trust_control_policy
+    folder: tenants
+    aci_classes:
+      - fhsTrustCtrlPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.trust_control_policies
   - name: Tenant SPAN Source Group
     template: span_source_group
     folder: tenants
@@ -1354,6 +1398,31 @@ tenant_objects:
       - health
     paths:
       - apic.tenants.services.redirect_policies
+  - name: Redirect Backup Policy
+    template: redirect_backup_policy
+    folder: tenants
+    aci_classes:
+      - vnsBackupPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.services.redirect_backup_policies
+  - name: QoS Policy
+    template: qos_policy
+    folder: tenants
+    aci_classes:
+      - qosCustomPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.qos
   - name: Service EPG Policy
     template: service_epg_policy
     folder: tenants

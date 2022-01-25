@@ -1,0 +1,58 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for qos_policy in tenant.policies.qos | default([]) %}{{ comma1() }}
+            {% set policy_name = qos_policy.name ~ defaults.apic.tenants.policies.qos_policies.name_suffix %}
+            {
+                "qosCustomPol": {
+                    "attributes": {
+                        "name": "{{ policy_name }}",
+                        "descr": "{{ qos_policy.description | default() }}",
+                        "nameAlias": "{{ qos_policy.alias | default() }}",
+                        "dn": "uni/tn-{{ tenant.name }}/qoscustom-{{ policy_name }}",
+                        "childAction": "deleteNonPresent"
+                    }
+                    ,
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for pm in qos_policy.dscp_priority_maps | default([]) %}{{ comma2() }}
+                        {
+                            "qosDscpClass": {
+                                "attributes": {
+                                    "from": "{{ pm.dscp_from }}",
+                                    "prio": "{{ pm.priority | default(defaults.apic.tenants.policies.qos_policies.dscp_priority_maps.priority) }}",
+                                    "target": "{{ pm.dscp_target | default(defaults.apic.tenants.policies.qos_policies.dscp_priority_maps.dscp_target) }}",
+                                    "targetCos": "{{ pm.cos_target | default(defaults.apic.tenants.policies.qos_policies.dscp_priority_maps.cos_target) }}",
+                                    "to": "{{ pm.dscp_to }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for dot1p in qos_policy.dot1p_classifiers | default([]) %}{{ comma2() }}
+                        {
+                            "qosDot1PClass": {
+                                    "attributes": {
+                                    "from": "{{ dot1p.dot1p_from }}",
+                                    "prio": "{{ dot1p.priority | default(defaults.apic.tenants.policies.qos_policies.dot1p_classifiers.priority) }}",
+                                    "target": "{{ dot1p.dscp_target | default(defaults.apic.tenants.policies.qos_policies.dot1p_classifiers.dscp_target) }}",
+                                    "targetCos": "{{ dot1p.cos_target | default(defaults.apic.tenants.policies.qos_policies.dot1p_classifiers.cos_target) }}",
+                                    "to": "{{ dot1p.dot1p_to }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

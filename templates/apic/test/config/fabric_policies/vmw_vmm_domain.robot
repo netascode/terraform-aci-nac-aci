@@ -26,6 +26,16 @@ Verify VMware VMM Domain {{ vmm_name }}
     String   $..vmmRsVswitchOverrideLacpPol.attributes.tDn   uni/infra/lacplagp-{{ port_channel_policy_name }}
 {% endif %}
 
+{% for elag in vmm.vswitch.enhanced_lags | default([]) %}
+{% set elag_name = elag.name ~ defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.name_suffix %}
+Verify VMware VMM Domain {{ vmm_name }} vSwitch Enhanced Lag Policy {{ elag_name }}                                       
+   ${cp}=   Set Variable   $..vmmVSwitchPolicyCont.children[?(@.lacpEnhancedLagPol.attributes.name=='{{ elag_name }}')]
+    String   ${cp}..lacpEnhancedLagPol.attributes.name   {{ elag_name }}
+    String   ${cp}..lacpEnhancedLagPol.attributes.lbmode   {{ elag.lb_mode | default(defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.lb_mode) }}
+    String   ${cp}..lacpEnhancedLagPol.attributes.numLinks   {{ elag.num_links | default(defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.num_links) }}
+    String   ${cp}..lacpEnhancedLagPol.attributes.mode   {{ elag.mode | default(defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.mode) }}
+{% endfor %}
+
 {% for cp in vmm.credential_policies | default([]) %}
 {% set policy_name = cp.name ~ defaults.apic.fabric_policies.vmware_vmm_domains.credential_policies.name_suffix %}
 
@@ -54,6 +64,18 @@ Verify VMware VMM Domain {{ vmm_name }} vCenter {{ vc_name }}
 {% endif %}
 
 {% endfor %}
+
+{% if vmm.uplinks is defined %}
+Verify VMware VMM Domain {{ vmm_name }} Number of Uplinks
+    ${cp}=   Set Variable   $..vmmDomP.children[?(@.vmmUplinkPCont.attributes.id=='0')]
+    String   ${cp}..vmmUplinkPCont.attributes.numOfUplinks   {{ vmm.uplinks | length }}
+{% for ul in vmm.uplinks | default([]) %}
+Verify VMware VMM Domain {{ vmm_name }} Uplink {{ ul.name }}
+    ${cp}=   Set Variable   $..vmmDomP.children[?(@.vmmUplinkPCont.attributes.id=='0')]..vmmUplinkPCont.children[?(@.vmmUplinkP.attributes.uplinkId=='{{ ul.id }}')]
+    String   ${cp}..vmmUplinkP.attributes.uplinkId   {{ ul.id }}
+    String   ${cp}..vmmUplinkP.attributes.uplinkName   {{ ul.name }}
+{% endfor %}
+{% endif %}
 
 {% endfor %}
 

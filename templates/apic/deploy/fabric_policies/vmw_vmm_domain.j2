@@ -65,6 +65,19 @@
                                         }
                                     }
                                     {%- endif %}
+                                    {%- for elag in vmm.vswitch.enhanced_lags | default([]) %}{{ comma2() }}
+                                        {% set elag_name = elag.name ~ defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.name_suffix %}
+                                        {
+                                            "lacpEnhancedLagPol": {
+                                                "attributes": {
+                                                    "lbmode": "{{ elag.lb_mode | default(defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.lb_mode) }}",
+                                                    "mode": "{{ elag.mode | default(defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.mode) }}",
+                                                    "name": "{{ elag_name }}",
+                                                    "numLinks": "{{ elag.num_links | default(defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.num_links) }}"
+                                                }
+                                            }
+                                        }
+                                    {%- endfor %}
 
                                 ]
                             }
@@ -116,6 +129,7 @@
                                         }
                                     }
                                     {%- endif %}
+
                                 ]
                             }
                         }
@@ -128,6 +142,32 @@
                                 }
                             }
                         }
+                        {%- if vmm.uplinks is defined %}
+                        ,
+                        {
+                            "vmmUplinkPCont": {
+                                "attributes": {
+                                    "numOfUplinks": "{{ vmm.uplinks | length }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma_ul = joiner(",") %}
+                                    {%- for uplink in vmm.uplinks %}{{ comma_ul() }}
+                                    {
+                                        "vmmUplinkP": {
+                                            "attributes": {
+                                                "uplinkId": "{{ uplink.id }}",
+                                                "uplinkName": "{{ uplink.name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endif %}
+
                     ]
                 }
             }

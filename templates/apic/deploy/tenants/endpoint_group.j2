@@ -1,4 +1,8 @@
 {% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{%- macro get_nlb_mode(name) -%}
+    {%- set modes = {"mode-mcast-static":"mode-mcast--static"} -%}
+    {{ modes[name] | default(name)}}
+{%- endmacro -%}
 {
     "fvTenant": {
         "attributes": {
@@ -83,6 +87,34 @@
                                                         }
                                                     }
                                                 }
+                                                {%- if vmm.elag is defined %},
+                                                {
+                                                    "fvAEPgLagPolAtt": {
+                                                        "attributes": {
+                                                            "annotation": ""
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "fvRsVmmVSwitchEnhancedLagPol": {
+                                                                    "attributes": {
+                                                                        "tDn": "uni/vmmp-VMware/dom-{{ vmm_name }}/vswitchpolcont/enlacplagp-{{ vmm.elag }}"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                                {%- endif %}
+                                                {%- if vmm.active_uplinks_order is defined or vmm.standby_uplinks is defined %},
+                                                {
+                                                    "fvUplinkOrderCont": {
+                                                        "attributes": {
+                                                            "active": "{{ vmm.active_uplinks_order | default()  }}",
+                                                            "standby": "{{ vmm.standby_uplinks | default()  }}"
+                                                        }
+                                                    }
+                                                }
+                                                {% endif %}
                                             ]
                                         }
                                     }
@@ -245,8 +277,65 @@
                                                 "ctrl": "{{ ctrl | join(',') }}",
                                                 "descr": "{{ subnet.description | default() }}",
                                                 "ip": "{{ subnet.ip }}",
-                                                "scope": "{{ scope | join(',') }}"
-                                            }
+                                                "scope": "{{ scope | join(',') }}",
+                                                "virtual": "{{ subnet.virtual | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.virtual) }}",
+                                                "childAction": "deleteNonPresent"
+                                            },
+                                            "children": [
+                                                {%- set comma4 = joiner(",") %}
+                                                {%- for pool in subnet.ip_pools | default([]) %}{{ comma4() }}
+                                                {% set pool_name = pool.name ~ defaults.apic.tenants.application_profiles.endpoint_groups.subnets.ip_pools.name_suffix %}
+                                                {
+                                                    "fvCepNetCfgPol": {
+                                                        "attributes": {
+                                                            "name": "{{ pool_name }}",
+                                                            "startIp": "{{ pool.start_ip | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.ip_pools.start_ip) }}",
+                                                            "endIp": "{{ pool.end_ip | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.ip_pools.end_ip) }}",
+                                                            "dnsSearchSuffix": "{{ pool.dns_search_suffix | default() }}",
+                                                            "dnsServers": "{{ pool.dns_server | default() }}",
+                                                            "dnsSuffix": "{{ pool.dns_suffix | default() }}",
+                                                            "winsServers": "{{ pool.wins_server | default() }}"
+                                                        }
+                                                    }
+                                                }
+                                                {%- endfor %}
+                                                {%- if subnet.next_hop_ip is defined %}{{ comma4() }}
+                                                {
+                                                    "fvEpReachability": {
+                                                        "attributes": {
+                                                            "childAction": "deleteNonPresent"
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "ipNexthopEpP": {
+                                                                    "attributes": {
+                                                                        "nhAddr": "{{ subnet.next_hop_ip }}"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                                {% elif subnet.anycast_mac is defined %}{{ comma4() }}
+                                                {
+                                                    "fvEpAnycast": {
+                                                        "attributes": {
+                                                            "mac": "{{ subnet.anycast_mac }}"
+                                                        }
+                                                    }
+                                                }
+                                                {% elif subnet.nlb_mode is defined %}{{ comma4() }}
+                                                {
+                                                    "fvEpNlb": {
+                                                        "attributes": {
+                                                            "group": "{{ subnet.nlb_group | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.nlb_group) }}",
+                                                            "mac": "{{ subnet.nlb_mac | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.nlb_mac) }}",
+                                                            "mode": "{{ get_nlb_mode(subnet.nlb_mode) }}"
+                                                        }
+                                                    }
+                                                }
+                                                {% endif %}
+                                            ]
                                         }
                                     }
                                     {%- endfor %}
@@ -259,6 +348,16 @@
                                         }
                                     }
                                     {%- endfor %}
+                                    {%- if epg.trust_control_policy is defined %}
+                                    {%- set trust_control_policy_name = epg.trust_control_policy ~ defaults.apic.tenants.policies.trust_control_policies.name_suffix %}{{ comma3() }}
+                                    {
+                                        "fvRsTrustCtrl": {
+                                            "attributes": {
+                                                "tnFhsTrustCtrlPolName": "{{ trust_control_policy_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
                                     {%- for vip in epg.l4l7_virtual_ips | default([]) %}{{ comma3() }}
                                     {
                                         "fvVip": {

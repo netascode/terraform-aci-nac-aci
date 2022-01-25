@@ -76,6 +76,7 @@ fabric_policies:
   schedulers: list(include('fp_schedulers'), required=False) # @ref_name(Scheduler)
   config_exports: list(include('fp_config_exports'), required=False) # @ref_name(Config Export)
   monitoring: include('fp_monitoring', required=False)
+  span: include('fp_span', required=False) # @name(Fabric SPAN)
 
 fp_banners:
   apic_gui_alias: str(required=False)
@@ -327,6 +328,7 @@ fp_external_connectivity_policy:
   fabric_id: int(min=0, max=1000, required=False)
   site_id: int(min=0, max=1000, required=False)
   bgp_password: any(str(), null(), required=False)
+  route_target: any(str(), null(), required=False)
   routing_profiles: list(include('fp_external_connectivity_policy_routing_profiles'), required=False) # @name(External Conn Policy Subnets)
 
 fp_external_connectivity_policy_routing_profiles:
@@ -356,11 +358,19 @@ fp_vmware_vmm_domains:
   vswitch: include('fp_vmware_vmm_domains_vswitch', required=False) # @flatten()
   credential_policies: list(include('fp_vmware_vmm_domains_credential_policies'), required=False) # @name(VMware VMM Dom Cred Policies)
   vcenters: list(include('fp_vmware_vmm_domains_vcenters'), required=False) # @name(VMware VMM vCenters)
+  uplinks: list(include('fp_vmware_vmm_domains_uplinks'), required=False) # @name(VMware VMM Uplinks)
 
 fp_vmware_vmm_domains_vswitch:
   cdp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(vSwitch CDP Policy)
   lldp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(vSwitch LLDP Policy)
   port_channel_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(vSwitch Port Channel Policy)
+  enhanced_lags: list(include('fp_vmware_vmm_domains_vswitch_elag'), required=False) # @name(vSwitch eLAGs)
+
+fp_vmware_vmm_domains_vswitch_elag:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  mode: enum('active', 'passive', required=False)
+  lb_mode: enum('dst-ip', 'dst-ip-l4port', 'dst-ip-vlan', 'dst-ip-l4port-vlan', 'dst-mac', 'dst-l4port', 'src-ip', 'src-ip-l4port', 'src-ip-vlan', 'src-ip-l4port-vlan', 'src-mac', 'src-l4port', 'src-dst-ip', 'src-dst-ip-l4port', 'src-dst-ip-vlan', 'src-dst-ip-l4port-vlan', 'src-dst-mac', 'src-dst-l4port', 'src-port-id', 'vlan', required=False)
+  num_links: int(min=2, max=8, required=False)
 
 fp_vmware_vmm_domains_credential_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -375,6 +385,10 @@ fp_vmware_vmm_domains_vcenters:
   statistics: enum('enabled', 'disabled', required=False)
   credential_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   mgmt_epg: enum('inb', 'oob', required=False)
+
+fp_vmware_vmm_domains_uplinks:
+  id: int(min=1, max=32)
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
 
 fp_aaa:
   remote_user_login_policy: enum('assign-default-role', 'no-login', required=False)
@@ -565,6 +579,52 @@ fp_monitoring_syslogs_destinations:
   severity: enum('emergencies', 'alerts', 'critical', 'errors', 'warnings', 'notifications', 'information', 'debugging', required=False)
   mgmt_epg: enum('inb', 'oob', required=False)
 
+fp_span:
+  source_groups: list(include('fp_span_source_groups'), required=False) # @name(Fabric SPAN Source Groups) @ref_name(Fabric SPAN Source Group)
+  destination_groups: list(include('fp_span_destination_groups'), required=False) # @name(Fabric SPAN Destination Groups)
+
+fp_span_source_groups:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  admin_state: enum('enabled', 'disabled', required=False)
+  sources: list(include('fp_span_source_groups_sources'), required=False) # @name(Fabric SPAN SG Sources) @ref_name(Fabric SPAN Source Group Source)
+  destination: include('fp_span_source_groups_destination') # @name(Fabric SPAN SG Destinations)
+
+fp_span_source_groups_destination:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+
+fp_span_source_groups_sources:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  direction: enum('in', 'out', 'both', required=False)
+  span_drop: enum('yes', 'no', required=False)
+  tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  bridge_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  fabric_paths: list(include('fp_span_source_groups_sources_access_paths'), required=False) # @name(Fabric SPAN SG Sources Paths)
+
+fp_span_source_groups_sources_access_paths:
+  node_id: int(min=1, max=4000, required=False)
+  pod_id: int(min=1, max=255, required=False)
+  module: int(min=1, max=9, required=False)
+  port: int(min=1, max=127, required=False)
+
+fp_span_destination_groups:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  ip: ip(required=False)
+  source_prefix: str(required=False)
+  dscp: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63), required=False)
+  flow_id: int(min=1, max=1023, required=False)
+  mtu: int(min=64, max=9216, required=False)
+  ttl: int(min=1, max=255, required=False)
+  version: enum(1, 2, required=False)
+  enforce_version: enum('yes', 'no', required=False)
+  tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
 access_policies:
   leaf_switch_profile_name: str(min=1, max=64, required=False)
   leaf_switch_selector_name: str(min=1, max=64, required=False)
@@ -669,38 +729,54 @@ ap_qos_class:
   weight: int(min=0, max=7, required=False)
 
 ap_span:
-  destination_groups: list(include('ap_span_destination_groups'), required=False)
-  source_groups: list(include('ap_span_source_groups'), required=False)
+  destination_groups: list(include('ap_span_destination_groups'), required=False) # @name(Access SPAN Destination Groups) @ref_name(Destination Group)
+  source_groups: list(include('ap_span_source_groups'), required=False) # @name(Access SPAN Source Groups) @ref_name(Source Group)
+  filter_groups: list(include('ap_span_filter_groups'), required=False) # @name(Access SPAN Filter Groups) @ref_name(Filter Group)
 
 ap_span_destination_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   node_id: int(min=1, max=4000, required=False)
   pod_id: int(min=1, max=255, required=False)
+  sub_port: int(min=1, max=16, required=False)
   module: int(min=1, max=9, required=False)
   port: int(min=1, max=127, required=False)
   channel: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  ip: ip(required=False)
+  source_prefix: str(required=False)
+  dscp: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63), required=False)
+  flow_id: int(min=1, max=1023, required=False)
+  mtu: int(min=64, max=9216, required=False)
+  ttl: int(min=1, max=255, required=False)
+  version: enum(1, 2, required=False)
+  enforce_version: enum('yes', 'no', required=False)
+  tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ap_span_source_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   admin_state: enum('enabled', 'disabled', required=False)
-  sources: list(include('ap_span_source_groups_sources'), required=False)
-  destination: include('ap_span_source_groups_destination')
+  sources: list(include('ap_span_source_groups_sources'), required=False) # @name(Access SPAN SG Sources) @ref_name(Source Group Source)
+  destination: include('ap_span_source_groups_destination') # @flatten()
+  filter_group: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ap_span_source_groups_destination:
-  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(Destination Name)
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Destination Description)
 
 ap_span_source_groups_sources:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  direction: enum('in', 'out', 'both')
+  direction: enum('in', 'out', 'both', required=False)
   span_drop: enum('yes', 'no', required=False)
-  access_paths: list(include('ap_span_source_groups_sources_access_paths'), required=False)
+  tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  l3out: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  vlan: int(min=1, max=4096, required=False)
+  access_paths: list(include('ap_span_source_groups_sources_access_paths'), required=False) # @name(Access SPAN SG Source Paths)
 
 ap_span_source_groups_sources_access_paths:
   node_id: int(min=1, max=4000, required=False)
@@ -708,7 +784,25 @@ ap_span_source_groups_sources_access_paths:
   pod_id: int(min=1, max=255, required=False)
   module: int(min=1, max=9, required=False)
   port: int(min=1, max=127, required=False)
+  fex_id: int(min=101, max=199, required=False)
+  sub_port: int(min=1, max=16, required=False)
   channel: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  type: enum('access', 'vpc', 'pc', required=False)
+
+ap_span_filter_groups:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  entries: list(include('ap_span_filter_groups_entries'), required=False) # @name(Access SPAN FG Entries)
+
+ap_span_filter_groups_entries:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  destination_ip: ip()
+  source_ip: ip()
+  destination_port_from: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp'), required=False)
+  destination_port_to: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp'), required=False)
+  source_port_from: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp'), required=False)
+  source_port_to: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp'), required=False)
+  ip_protocol: any(int(min=0, max=255), enum('unspecified', 'icmp', 'igmp', 'tcp', 'egp', 'igp', 'udp', 'icmpv6', 'eigrp', 'ospfigp', 'pim', 'l2tp'), required=False)
 
 ap_leaf_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1092,6 +1186,8 @@ ten_bridge_domains:
   ip_dataplane_learning: enum('yes', 'no', required=False)
   limit_ip_learn_to_subnets: enum('yes', 'no', required=False)
   mac: mac(required=False)
+  virtual_mac: mac(required=False)
+  ep_move_detection: enum('enabled', 'disabled', required=False)
   l3_multicast: enum('yes', 'no', required=False)
   multi_destination_flooding: enum('bd-flood', 'encap-flood', 'drop', required=False)
   unicast_routing: enum('yes', 'no', required=False)
@@ -1135,11 +1231,12 @@ ten_ap_endpoint_groups:
   vmware_vmm_domains: list(include('ten_ap_endpoint_groups_vmware_vmm_domains'), required=False) # @name(EPG VMware VMM Domains)
   static_ports: list(include('ten_ap_endpoint_groups_static_ports'), required=False) # @name(EPG Static Ports)
   static_endpoints: list(include('ten_ap_endpoint_groups_static_endpoints'), required=False)
-  subnets: list(include('ten_ap_endpoint_groups_subnets'), required=False) # @name(EPG Subnets)
+  subnets: list(include('ten_ap_endpoint_groups_subnets'), required=False) # @name(EPG Subnets) @name(Subnet)
   contracts: include('ten_ap_endpoint_groups_contracts', required=False) # @flatten()
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
   custom_qos_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   tags: list(regex('^[a-zA-Z0-9_.-]{1,64}$'), required=False)
+  trust_control_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   l4l7_virtual_ips: list(include('ten_ap_endpoint_groups_l4l7_virtual_ips'), required=False) # @name(EPG L4L7 VIPs)
   l4l7_address_pools: list(include('ten_ap_endpoint_groups_l4l7_address_pools'), required=False) # @name(EPG L4L7 Address Pools)
 
@@ -1183,6 +1280,9 @@ ten_ap_endpoint_groups_vmware_vmm_domains:
   allow_promiscuous: enum('reject', 'accept', required=False)
   forged_transmits: enum('reject', 'accept', required=False)
   mac_changes: enum('reject', 'accept', required=False)
+  elag: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  active_uplinks_order: regex('^(\d+(,\d+)*)?$', required=False)
+  standby_uplinks: regex('^(\d+(,\d+)*)?$', required=False)
 
 ten_ap_endpoint_groups_subnets:
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -1193,6 +1293,22 @@ ten_ap_endpoint_groups_subnets:
   igmp_querier: enum('yes', 'no', required=False)
   nd_ra_prefix: enum('yes', 'no', required=False)
   no_default_gateway: enum('yes', 'no', required=False)
+  virtual: enum('yes', 'no', required=False)
+  next_hop_ip: ip(required=False)
+  anycast_mac: mac(required=False)
+  nlb_mode: enum('mode-mcast-igmp', 'mode-uc', 'mode-mcast-static', required=False)
+  nlb_group: ip(required=False)
+  nlb_mac: mac(required=False)
+  ip_pools: list(include('ten_ap_endpoint_groups_subnets_ip_address_pools'), required=False) # @name(EPG Subnet IP Pools)
+
+ten_ap_endpoint_groups_subnets_ip_address_pools:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  start_ip: ip(required=False)
+  end_ip: ip(required=False)
+  dns_search_suffix: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  dns_server: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  dns_suffix: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  wins_server: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_ap_endpoint_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Consumers) @ref_name(Contract)
@@ -1639,7 +1755,9 @@ ten_policies:
   igmp_snooping_policies: list(include('ten_igmp_snooping_policies'), required=False)
   igmp_interface_policies: list(include('ten_igmp_interface_policies'), required=False)
   ip_sla_policies: list(include('ten_ip_sla_policies'), required=False)
+  trust_control_policies: list(include('ten_trust_control_policies'), required=False) # @ref_name(Trust Control Policy)
   span: include('ten_span', required=False) # @flatten()
+  qos: list(include('ten_qos_policies'), required=False) # @name(QoS Policies) @ref_name(QoS Policy)
 
 ten_ospf_interface_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1866,6 +1984,37 @@ ten_ip_sla_policies:
   sla_type: enum('icmp', 'tcp', 'l2ping', required=False)
   port: int(min=1, max=65535, required=False)
 
+ten_qos_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  dscp_priority_maps: list(include('ten_qos_policies_dscp_priority_map'), required=False) # @name(QoS Policy DSCP Priority Maps)
+  dot1p_classifiers: list(include('ten_qos_policies_dot1p_classifiers'), required=False) # @name(QoS Policy Dot1p Classifiers)
+
+ten_qos_policies_dscp_priority_map:
+  priority: enum('unspecified', 'level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'level7', required=False)
+  dscp_from: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63), required=True)
+  dscp_to: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63), required=True)
+  dscp_target: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63), required=False)
+  cos_target: any(enum('unspecified'), int(min=0, max=7), required=False)
+
+ten_qos_policies_dot1p_classifiers:
+  priority: enum('unspecified', 'level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'level7', required=False)
+  dot1p_from: any(enum('unspecified'), int(min=0, max=7), required=True)
+  dot1p_to: any(enum('unspecified'), int(min=0, max=7), required=True)
+  dscp_target: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63), required=False)
+  cos_target: any(enum('unspecified'), int(min=0, max=7), required=False)
+
+ten_trust_control_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  dhcp_v4_server: enum('yes', 'no', required=False)
+  dhcp_v6_server: enum('yes', 'no', required=False)
+  ipv6_router: enum('yes', 'no', required=False)
+  arp: enum('yes', 'no', required=False)
+  nd: enum('yes', 'no', required=False)
+  ra: enum('yes', 'no', required=False)
+
 ten_span:
   destination_groups: list(include('ten_span_destination_groups'), required=False) # @name(Tenant SPAN Destination Group)
   source_groups: list(include('ten_span_source_groups'), required=False) # @name(Tenant SPAN Source Group) @ref_name(Source Group)
@@ -1904,6 +2053,7 @@ ten_services:
   redirect_policies: list(include('ten_ser_redirect_policies'), required=False) # @ref_name(Redirect Policy)
   service_epg_policies: list(include('ten_ser_service_epg_policies'), required=False) # @ref_name(Service EPG Policy)
   redirect_health_groups: list(include('ten_ser_redirect_health_groups'), required=False) # @ref_name(Redirect Health Group)
+  redirect_backup_policies: list(include('ten_ser_redirect_backup_policies'), required=False) # @ref_name(Redirect Backup Policy)
   service_graph_templates: list(include('ten_ser_service_graph_templates'), required=False) # @ref_name(Service Graph Template)
   device_selection_policies: list(include('ten_ser_device_selection_policies'), required=False) # @ref_name(Device Selection Policy)
 
@@ -1967,6 +2117,19 @@ ten_ser_redirect_policies:
   threshold_down_action: enum('permit', 'deny', 'bypass', required=False)
   l3_destinations: list(include('ten_ser_redirect_policies_l3_destinations'), required=False) # @name(Redirect Policy Destinations)
   ip_sla_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+ten_ser_redirect_backup_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  l3_destinations: list(include('ten_ser_redirect_backup_policies_l3_destinations'), required=False) # @name(Redirect Backup Policy L3 Dest)
+
+ten_ser_redirect_backup_policies_l3_destinations:
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  ip: ip()
+  ip_2: ip(required=False)
+  destination_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  mac: mac()
+  redirect_health_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_ser_redirect_policies_l3_destinations:
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)

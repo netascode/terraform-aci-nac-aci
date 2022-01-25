@@ -9,6 +9,10 @@
             {%- set comma1 = joiner(",") %}
             {%- for bd in tenant.bridge_domains | default([]) %}{{ comma1() }}
             {%- set bd_name = bd.name ~ defaults.apic.tenants.bridge_domains.name_suffix  %}
+            {%- set bd_move_detection = "" %}
+            {%- if bd.ep_move_detection is defined and bd.ep_move_detection == "enabled" %}
+                {%- set bd_move_detection = "garp" %}
+            {%- endif %}
             {
                 "fvBD": {
                     "attributes": {
@@ -19,6 +23,8 @@
                         "ipLearning": "{{ bd.ip_dataplane_learning | default(defaults.apic.tenants.bridge_domains.ip_dataplane_learning) }}",
                         "limitIpLearnToSubnets": "{{ bd.limit_ip_learn_to_subnets | default(defaults.apic.tenants.bridge_domains.limit_ip_learn_to_subnets) }}",
                         "mac": "{{ bd.mac | default(defaults.apic.tenants.bridge_domains.mac) }}",
+                        "epMoveDetectMode": "{{ bd_move_detection }}",
+                        "vmac": "{{ bd.virtual_mac | default() }}",
                         "mcastAllow": "{{ bd.l3_multicast | default(defaults.apic.tenants.bridge_domains.l3_multicast) }}",
                         "multiDstPktAct": "{{ bd.multi_destination_flooding | default(defaults.apic.tenants.bridge_domains.multi_destination_flooding) }}",
                         "name": "{{ bd_name }}",

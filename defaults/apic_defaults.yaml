@@ -199,6 +199,12 @@ defaults:
         access_mode: read-write
         delimiter: ''
         tag_collection: 'no'
+        vswitch:
+          enhanced_lags:
+            name_suffix: ''
+            mode: active
+            lb_mode: src-dst-ip
+            num_links: 2
         credential_policies:
           name_suffix: ''
         vcenters:
@@ -288,6 +294,30 @@ defaults:
             severity: warnings
             admin_state: enabled
             mgmt_epg: inb
+      span:
+        destination_groups:
+          name_suffix: ''
+          mtu: 1518
+          dscp: unspecified
+          flow_id: 1
+          ttl: 64
+          version: 2
+          enforce_version: 'no'
+        source_groups:
+          name_suffix: ''
+          admin_state: enabled
+          sources:
+            name_suffix: ''
+            direction: both
+            span_drop: 'no'
+            access_paths:
+              module: 1
+          mtu: 1518
+          dscp: unspecified
+          flow_id: 1
+          ttl: 64
+          version: 2
+          enforce_version: 'no'
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
@@ -530,14 +560,29 @@ defaults:
           name_suffix: ''
           mtu: 1518
           module: 1
+          dscp: unspecified
+          flow_id: 1
+          ttl: 64
+          version: 2
+          enforce_version: 'no'
         source_groups:
           name_suffix: ''
           admin_state: enabled
           sources:
             name_suffix: ''
+            direction: 'both'
             span_drop: 'no'
             access_paths:
               module: 1
+        filter_groups:
+          name_suffix: ''
+          entries:
+            name_suffix: ''
+            destination_port_from: unspecified
+            destination_port_to: unspecified
+            source_port_from: unspecified
+            source_port_to: unspecified
+            ip_protocol: unspecified
     node_policies:
       oob_endpoint_group: default
       inb_endpoint_group: default
@@ -797,6 +842,13 @@ defaults:
             igmp_querier: 'no'
             nd_ra_prefix: 'yes'
             no_default_gateway: 'no'
+            virtual: 'no'
+            nlb_group: 0.0.0.0
+            nlb_mac: 00:00:00:00:00:00
+            ip_pools:
+              name_suffix: ''
+              start_ip: 0.0.0.0
+              end_ip: 0.0.0.0
       inb_endpoint_groups:
         name_suffix: ''
       oob_endpoint_groups:
@@ -965,12 +1017,30 @@ defaults:
           version: 'v2'
           max_mcast_entries: 4294967295
           reserved_mcast_entries: 0
+        qos_policies:
+          name_suffix: ''
+          dscp_priority_maps:
+            priority: level3
+            dscp_target: unspecified
+            cos_target: unspecified
+          dot1p_classifiers:
+            priority: level3
+            dscp_target: unspecified
+            cos_target: unspecified
         ip_sla_policies:
           name_suffix: ''
           multiplier: 3
           frequency: 60
           sla_type: icmp
           port: 0
+        trust_control_policies:
+          name_suffix: ''
+          dhcp_v4_server: 'no'
+          dhcp_v6_server: 'no'
+          ipv6_router: 'no'
+          arp: 'no'
+          nd: 'no'
+          ra: 'no'
         span:
           source_groups:
             name_suffix: ''
@@ -1020,6 +1090,8 @@ defaults:
             pod: 1
         redirect_backup_policies:
           name_suffix: ''
+          l3_destinations:
+            ip_2: '0.0.0.0'
         service_epg_policies:
           name_suffix: ''
           preferred_group: exclude

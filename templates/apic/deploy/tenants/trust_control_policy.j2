@@ -1,0 +1,31 @@
+{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in tenant.policies.trust_control_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = policy.name ~ defaults.apic.tenants.policies.trust_control_policies.name_suffix %}
+            {
+                "fhsTrustCtrlPol": {
+                    "attributes": {
+                        "name": "{{ policy_name }}",
+                        "descr": "{{ policy.description | default()}}",
+                        "dn": "uni/tn-{{ tenant.name }}/trustctrlpol-{{ policy_name }}",
+                        "hasDhcpv4Server": "{{ policy.dhcp_v4_server | default(defaults.apic.tenants.policies.trust_control_policies.dhcp_v4_server) }}",
+                        "hasDhcpv6Server": "{{ policy.dhcp_v6_server | default(defaults.apic.tenants.policies.trust_control_policies.dhcp_v6_server) }}",
+                        "hasIpv6Router": "{{ policy.ipv6_router | default(defaults.apic.tenants.policies.trust_control_policies.ipv6_router) }}",
+                        "trustArp": "{{ policy.arp | default(defaults.apic.tenants.policies.trust_control_policies.arp) }}",
+                        "trustNd": "{{ policy.nd | default(defaults.apic.tenants.policies.trust_control_policies.nd) }}",
+                        "trustRa": "{{ policy.ra | default(defaults.apic.tenants.policies.trust_control_policies.ra) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+            
+        ]
+    }
+}
