@@ -65,6 +65,7 @@ Description | CLI | Ansible | Terraform | Reverse
 [Vmware VMM Domain](./apic/fabric_policies/vmw_vmm_domain.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Geolocation Policy](./apic/fabric_policies/geolocation.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Interface type](./apic/fabric_policies/interface_type.md) | :material-check: | :material-check: |
+[Fabric SPAN Source Group](./apic/fabric_policies/fp_span_source_group.md) | :material-check: | :material-check: |
 
 ### Access Policies
 
@@ -96,8 +97,8 @@ Description | CLI | Ansible | Terraform | Reverse
 [Access Spine Switch Policy Group](./apic/access_policies/ap_spine_switch_policy_group.md) | :material-check: | :material-check: |
 [Access Leaf Switch Policy Group](./apic/access_policies/ap_leaf_switch_policy_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Access Spine Interface Policy Group](./apic/access_policies/ap_spine_interface_policy_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
-[Access SPAN Destination Group](./apic/access_policies/span_destination_groups.md) | :material-check: | :material-check: |
-[Access SPAN Source Group](./apic/access_policies/span_source_groups.md) | :material-check: | :material-check: | :material-check: | :material-check:
+[Access SPAN Destination Group](./apic/access_policies/ap_span_destination_group.md) | :material-check: | :material-check: |
+[Access SPAN Source Group](./apic/access_policies/ap_span_source_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Access Leaf Interface Policy Group](./apic/access_policies/ap_leaf_interface_policy_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
 
 ### Pod Policies
@@ -154,8 +155,8 @@ Description | CLI | Ansible | Terraform | Reverse
 [IGMP Snooping Policy](./apic/tenants/igmp_snooping_policy.md) | :material-check: | :material-check: |
 [IGMP Interface Policy](./apic/tenants/igmp_interface_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [IP SLA Policy](./apic/tenants/ip_sla_policy.md) | :material-check: | :material-check: |
-[Tenant SPAN Source Group](./apic/tenants/span_source_group.md) | :material-check: | :material-check: |
-[Tenant SPAN Destination Group](./apic/tenants/span_destination_group.md) | :material-check: | :material-check: |
+[Tenant SPAN Source Group](./apic/tenants/tenant_span_source_group.md) | :material-check: | :material-check: |
+[Tenant SPAN Destination Group](./apic/tenants/tenant_span_destination_group.md) | :material-check: | :material-check: |
 [Redirect Policy](./apic/tenants/redirect_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Service EPG Policy](./apic/tenants/service_epg_policy.md) | :material-check: | :material-check: |
 [Redirect Health Group](./apic/tenants/redirect_health_group.md) | :material-check: | :material-check: |
