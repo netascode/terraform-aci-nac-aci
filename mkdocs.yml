@@ -184,6 +184,7 @@ nav:
               - Tenant SPAN Source Group: data_model/apic/tenants/tenant_span_source_group.md
               - Tenant SPAN Destination Group: data_model/apic/tenants/tenant_span_destination_group.md
               - Trust Control Policy: model/apic/tenants/trust_control_policy.md
+              - QoS Policy: model/apic/tenants/qos_policy.md
               - Redirect Policy: data_model/apic/tenants/redirect_policy.md
               - Service EPG Policy: data_model/apic/tenants/service_epg_policy.md
               - Redirect Health Group: data_model/apic/tenants/redirect_health_group.md

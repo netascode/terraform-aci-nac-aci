@@ -159,6 +159,7 @@ Description | CLI | Ansible | Terraform | Reverse
 [Tenant SPAN Source Group](./apic/tenants/tenant_span_source_group.md) | :material-check: | :material-check: |
 [Tenant SPAN Destination Group](./apic/tenants/tenant_span_destination_group.md) | :material-check: | :material-check: |
 [Trust Control Policy](./apic/tenants/trust_control_policy.md) | :material-check: | :material-check: |
+[QoS Policy](./apic/tenants/qos_policy.md) | :material-check: | :material-check: |
 [Redirect Policy](./apic/tenants/redirect_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Service EPG Policy](./apic/tenants/service_epg_policy.md) | :material-check: | :material-check: |
 [Redirect Health Group](./apic/tenants/redirect_health_group.md) | :material-check: | :material-check: |
