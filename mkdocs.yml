@@ -186,6 +186,7 @@ nav:
               - Trust Control Policy: model/apic/tenants/trust_control_policy.md
               - QoS Policy: model/apic/tenants/qos_policy.md
               - Redirect Policy: data_model/apic/tenants/redirect_policy.md
+              - Redirect Backup Policy: data_model/apic/tenants/redirect_backup_policy.md
               - Service EPG Policy: data_model/apic/tenants/service_epg_policy.md
               - Redirect Health Group: data_model/apic/tenants/redirect_health_group.md
               - L4L7 Device: data_model/apic/tenants/l4l7_device.md

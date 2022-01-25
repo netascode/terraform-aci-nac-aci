@@ -161,6 +161,7 @@ Description | CLI | Ansible | Terraform | Reverse
 [Trust Control Policy](./apic/tenants/trust_control_policy.md) | :material-check: | :material-check: |
 [QoS Policy](./apic/tenants/qos_policy.md) | :material-check: | :material-check: |
 [Redirect Policy](./apic/tenants/redirect_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
+[Redirect Backup Policy](./apic/tenants/redirect_backup_policy.md) | :material-check: | :material-check: |
 [Service EPG Policy](./apic/tenants/service_epg_policy.md) | :material-check: | :material-check: |
 [Redirect Health Group](./apic/tenants/redirect_health_group.md) | :material-check: | :material-check: |
 [L4L7 Device](./apic/tenants/l4l7_device.md) | :material-check: | :material-check: | :material-check: | :material-check:
