@@ -1,4 +1,4 @@
-# SPAN Destination Groups
+# Access SPAN Destination Groups
 
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Troubleshooting` » `SPAN` » `SPAN Destination Groups`
