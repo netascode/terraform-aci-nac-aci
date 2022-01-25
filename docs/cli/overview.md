@@ -1,6 +1,6 @@
 # Overview
 
-The [aac-tool](https://wwwin-github.cisco.com/aac/aac-tool) CLI application enables conversions between various file formats using the *ACI as Code* data model. Some example use-cases are:
+The [aac-tool](https://wwwin-github.cisco.com/netascode/aac-tool) CLI application enables conversions between various file formats using the *ACI as Code* data model. Some example use-cases are:
 
 * Render *ACI as Code* YAML inventory files from an APIC configuration snapshot
 * Render JSON configuration files from *ACI as Code* YAML inventory files that can be directly posted to APIC

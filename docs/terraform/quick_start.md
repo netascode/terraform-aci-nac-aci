@@ -6,7 +6,7 @@ There are two options to run Terraform locally, either using the [ready-to-use c
 
 ## Ready-to-use Container
 
-A dedicated docker image with all the necessary binaries and libraries is available [here](https://hub.docker.com/r/danischm/aac). The image is based on CentOS 8 Linux distribution, it includes Terraform, Python 3, as well as all the necessary dependencies. The Dockerfile to create the image can be found [here](https://wwwin-github.cisco.com/aac/ansible-aac/blob/master/docker/aac/Dockerfile).
+A dedicated docker image with all the necessary binaries and libraries is available [here](https://hub.docker.com/r/danischm/aac). The image is based on CentOS 8 Linux distribution, it includes Terraform, Python 3, as well as all the necessary dependencies. The Dockerfile to create the image can be found [here](https://wwwin-github.cisco.com/netascode/ansible-aac/blob/master/docker/aac/Dockerfile).
 
 ## Local Installation
 

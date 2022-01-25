@@ -6,8 +6,14 @@ import shutil
 import subprocess
 
 DIRS = [
-    {"src": "./ansible-aac/roles/apic_validate/files", "dest": "../schemas",},
-    {"src": "./ansible-aac/roles/mso_validate/files", "dest": "../schemas",},
+    {
+        "src": "./ansible-aac/roles/apic_validate/files",
+        "dest": "../schemas",
+    },
+    {
+        "src": "./ansible-aac/roles/mso_validate/files",
+        "dest": "../schemas",
+    },
     {
         "src": "./ansible-aac/roles/apic_deploy/templates",
         "dest": "../templates/apic/deploy",
@@ -49,7 +55,7 @@ FILES = [
 def update_aac():
     shutil.rmtree("./ansible-aac", ignore_errors=True)
     subprocess.run(
-        ["git", "clone", "https://wwwin-github.cisco.com/aac/ansible-aac.git"]
+        ["git", "clone", "https://wwwin-github.cisco.com/netascode/ansible-aac.git"]
     )
     # copy files and dirs
     for dir in DIRS:

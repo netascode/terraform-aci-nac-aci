@@ -1,12 +1,12 @@
 # Quick Start
 
-A sample inventory including playbooks using [Drone](https://drone.io/) as a CI/CD platform can be found [here](https://wwwin-github.cisco.com/aac/aac-inventory).
+A sample inventory including playbooks using [Drone](https://drone.io/) as a CI/CD platform can be found [here](https://wwwin-github.cisco.com/netascode/aac-inventory).
 
 There are two options to use the Ansible collection locally, either using the [ready-to-use container image](#ready-to-use-container) or install python and ansible requirements [locally](#local-installation).
 
 ## Ready-to-use Container
 
-A dedicated ansible docker image with all the necessary binaries and libraries is available [here](https://hub.docker.com/r/danischm/aac). The image is based on centos:8 linux distribution, it includes python 3, as well as all the necessary python modules, rpms and configuration. The [Dockerfile](https://wwwin-github.cisco.com/aac/ansible-aac/blob/master/docker/aac/Dockerfile) to create the image can be found in ```docker/aac/Dockerfile```.
+A dedicated ansible docker image with all the necessary binaries and libraries is available [here](https://hub.docker.com/r/danischm/aac). The image is based on centos:8 linux distribution, it includes python 3, as well as all the necessary python modules, rpms and configuration. The [Dockerfile](https://wwwin-github.cisco.com/netascode/ansible-aac/blob/master/docker/aac/Dockerfile) to create the image can be found in ```docker/aac/Dockerfile```.
 
 ## Local Installation
 
@@ -24,7 +24,7 @@ In a second step it is necessary to install the ansible collection (and its depe
 ```yaml
 ---
 collections:
-  - name: https://wwwin-github.cisco.com/aac/ansible-aac.git
+  - name: https://wwwin-github.cisco.com/netascode/ansible-aac.git
     type: git
     version: master
 ```
