@@ -1,0 +1,87 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for span in apic.fabric_policies.span.source_groups | default([]) %}{{ comma1() }}
+            {% set span_name = span.name ~ defaults.apic.fabric_policies.span.source_groups.name_suffix %}
+            {
+                "spanSrcGrp": {
+                    "attributes": {
+                        "name": "{{ span_name }}",
+                        "adminSt": "{{ span.admin_state | default(defaults.apic.fabric_policies.span.source_groups.admin_state) }}",
+                        "descr": "{{ span.description | default() }}",
+                        "dn": "uni/fabric/srcgrp-{{ span_name }}",
+                        "childAction": "deleteNonPresent"                        
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for source in span.sources | default([]) %}{{ comma2() }}
+                        {% set source_name = source.name ~ defaults.apic.fabric_policies.span.source_groups.sources.name_suffix %}
+                        {
+                            "spanSrc": {
+                                "attributes": {
+                                    "descr": "{{ source.description | default() }}",
+                                    "dir": "{{ source.direction | default(defaults.apic.fabric_policies.span.source_groups.sources.direction)}}",
+                                    "name": "{{ source_name}}",
+                                    "spanOnDrop": "{{ source.span_drop | default(defaults.apic.fabric_policies.span.source_groups.sources.span_drop) }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                {%- set comma3 = joiner(",") %}
+                                {%- if source.tenant is defined and source.vrf is defined %}{{ comma3() }}
+                                {%- set vrf_name = source.vrf ~ defaults.apic.tenants.vrfs.name_suffix %}      
+                                    {
+                                        "spanRsSrcToCtx":  {
+                                            "attributes": {
+                                                "tDn": "uni/tn-{{ source.tenant }}/ctx-{{ vrf_name }}"
+                                            }
+                                        }
+                                    }                                
+                                {%- endif %}
+                                {%- if source.tenant is defined and source.bridge_domain is defined %}{{ comma3() }}
+                                {%- set bd_name = source.bridge_domain ~ defaults.apic.tenants.bridge_domains.name_suffix %}   
+                                    {
+                                        "spanRsSrcToBD": {
+                                            "attributes": {
+                                                "tDn": "uni/tn-{{ source.tenant }}/BD-{{ bd_name }}"
+                                            }
+                                        }
+                                    }
+                                {%- endif %}
+                                {%- for path in source.fabric_paths| default([]) %}{{ comma3() }}
+                                    {
+                                        "spanRsSrcToPathEp": {
+                                            "attributes": {
+                                                {% set query = "nodes[?id==`" ~ path.node_id ~ "`].pod" %}
+                                                {% set pod = path.pod_id | default(((apic.node_policies | default()) | json_query(query))[0] | default('1')) %}
+                                                "tDn": "topology/pod-{{ pod }}/paths-{{ path.node_id }}/pathep-[eth{{ path.module | default(defaults.apic.fabric_policies.span.source_groups.sources.access_paths.module) }}/{{ path.port }}]"
+                                            }
+                                        }
+                                    }
+                                {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}{{ comma2() }}
+                        {% set destination_name = span.destination.name ~ defaults.apic.fabric_policies.span.destination_groups.name_suffix %}
+                        {
+                            "spanSpanLbl": {
+                                "attributes": {
+                                    "descr": "{{ span.destination.description | default()}}",
+                                    "name": "{{ destination_name }}",
+                                    "tag": "yellow-green"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

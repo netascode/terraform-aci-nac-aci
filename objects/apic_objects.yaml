@@ -608,7 +608,7 @@ objects:
     paths:
       - apic.fabric_policies.geolocation
   - name: Fabric SPAN Source Group
-    template: span_source_group
+    template: fp_span_source_group
     folder: fabric_policies
     aci_classes:
       - spanSrcGrp
@@ -619,7 +619,7 @@ objects:
     paths:
       - apic.fabric_policies.span_source_groups
   - name: Fabric SPAN Destination Group
-    template: span_destination_group
+    template: fp_span_destination_group
     folder: fabric_policies
     aci_classes:
       - spanDestGrp
@@ -909,8 +909,8 @@ objects:
       - config
     paths:
       - apic.access_policies.leaf_interface_policy_groups
-  - name: SPAN Destination Group
-    template: span_destination_group
+  - name: Access SPAN Destination Group
+    template: ap_span_destination_group
     folder: access_policies
     aci_classes:
       - spanDestGrp
@@ -920,8 +920,8 @@ objects:
       - health
     paths:
       - apic.access_policies.span.destination_groups
-  - name: SPAN Source Group
-    template: span_source_group
+  - name: Access SPAN Source Group
+    template: ap_span_source_group
     folder: access_policies
     aci_classes:
       - spanSrcGrp
@@ -931,8 +931,8 @@ objects:
       - health
     paths:
       - apic.access_policies.span.source_groups
-  - name: SPAN Filter Group
-    template: span_filter_group
+  - name: Access SPAN Filter Group
+    template: ap_span_filter_group
     folder: access_policies
     aci_classes:
       - spanFilterGrp
@@ -1360,7 +1360,7 @@ tenant_objects:
     paths:
       - apic.tenants.policies.trust_control_policies
   - name: Tenant SPAN Source Group
-    template: span_source_group
+    template: tenant_span_source_group
     folder: tenants
     aci_classes:
       - spanSrcGrp
@@ -1373,7 +1373,7 @@ tenant_objects:
     paths:
       - apic.tenants.policies.span.source_groups
   - name: Tenant SPAN Destination Group
-    template: span_destination_group
+    template: tenant_span_destination_group
     folder: tenants
     aci_classes:
       - spanDestGrp
