@@ -33,6 +33,8 @@ apic:
         - name: BD1
           alias: ABC_BD1
           mac: 00:22:BD:F8:19:FE
+          virtual_mac: 00:23:BD:F8:19:12
+          ep_move_detection: enabled
           arp_flooding: 'no'
           ip_dataplane_learning: 'no'
           limit_ip_learn_to_subnets: 'no'
