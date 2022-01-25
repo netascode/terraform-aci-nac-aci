@@ -61,6 +61,9 @@ apic:
                   allow_promiscuous: reject
                   forged_transmits: reject
                   mac_changes: reject
+                  elag: ELAGCustom
+                  active_uplinks_order: 1,2
+                  standby_uplinks: 3,4
               static_ports:
                 - node_id: 101
                   port: 10
