@@ -55,4 +55,9 @@ apic:
             dvs_version: unmanaged
             statistics: enabled
             credential_policy: CRED1
+        uplinks:
+          - id: 1
+            name: UPLINK1
+          - id: 2
+            name: UPLINK2
 ```
