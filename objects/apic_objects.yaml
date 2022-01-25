@@ -617,7 +617,7 @@ objects:
       - config
       - health
     paths:
-      - apic.fabric_policies.span_source_groups
+      - apic.fabric_policies.span.source_groups
   - name: Fabric SPAN Destination Group
     template: fp_span_destination_group
     folder: fabric_policies
@@ -628,7 +628,7 @@ objects:
       - config
       - health
     paths:
-      - apic.fabric_policies.span_destination_groups
+      - apic.fabric_policies.span.destination_groups
   - name: Interface Type
     template: interface_type
     folder: fabric_policies
