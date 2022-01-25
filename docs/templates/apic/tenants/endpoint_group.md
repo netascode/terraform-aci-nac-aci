@@ -94,6 +94,17 @@ apic:
                   igmp_querier: 'yes'
                   nd_ra_prefix: 'yes'
                   no_default_gateway: 'no'
+                - ip: 5.50.5.5/32
+                  no_default_gateway: 'yes'
+                  next_hop_ip: 8.8.8.8
+                  ips_pools:
+                    - name: POOL1
+                      start_ip: 172.16.0.1
+                      end_ip: 172.16.0.10
+                      dns_server: dns.cisco.com
+                      dns_search_suffix: cisco
+                      dns_suffix: cisco
+                      wins_server: wins
               tags:
                 - tag1
                 - tag2
