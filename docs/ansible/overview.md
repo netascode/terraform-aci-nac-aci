@@ -2,12 +2,11 @@
 
 The ```ansible-aac``` project provides an Ansible collection for managing and automating your Cisco ACI environment following Infrastructure as Code (IaC) principles. It consists of a set of plugins and roles to support ACI provisioning in a declarative fashion.
 
-*Note: This collection is not compatible with versions of Ansible before v2.10.0.*
+*Note: This collection is not tested with versions of Ansible before v5.0.*
 
 ## Collection layout
 
     common/                 # Common files used for integration testing
-    docker/                 # Dockerfile to build image with all requirements
     docs/                   # Documentation
     meta/                   # Ansible collection meta files
     playbooks/              # Playbooks to create test reports for integration tests

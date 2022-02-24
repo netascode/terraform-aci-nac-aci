@@ -1,0 +1,13 @@
+ansible-core>=2.12
+filelock
+jmespath
+jsonpath_ng
+pyopenssl
+python-dateutil
+requests
+requests-toolbelt
+ruamel.yaml
+RESTinstance
+robotframework>=4.0
+robotframework-pabot
+yamale-aac
