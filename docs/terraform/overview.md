@@ -1,6 +1,6 @@
 # Overview
 
-The low-level Terraform provider and the ACI modules are open-sourced and freely available from the public Terraform registry. The high-level *ACI as Code* modules and various integrations for automated testing, NAE/NDI, etc. are part of a CX developed solution.
+The low-level Terraform ACI modules are open-sourced and freely available from the public Terraform registry. The high-level *ACI as Code* modules and various integrations for automated testing, NAE/NDI, etc. are part of a CX developed solution.
 
 <figure markdown>
   ![Solution Overview](../assets/tf_solution_overview.png){ width="700" }
@@ -8,7 +8,7 @@ The low-level Terraform provider and the ACI modules are open-sourced and freely
 
 ## Structure
 
-One of the key principles of *ACI as Code* is to provide complete separation of data (*variable definition*) from logic (*infrastructure declaration*). This is achieved by separating the *.yaml files which contain the desired ACI state from the Terraform modules which map the definition of the desired state to Terraform modules and resources. 
+One of the key principles of *ACI as Code* is to provide complete separation of data (*variable definition*) from logic (*infrastructure declaration*). This is achieved by separating the *.yaml files which contain the desired ACI state from the Terraform modules which map the definition of the desired state to Terraform modules and resources.
 
 ```shell
 $ tree -L 2
@@ -25,24 +25,17 @@ $ tree -L 2
 │   └── tenant_PROD.yaml
 ├── defaults
 │   └── defaults.yaml
-├── modules
-│   ├── access policies
-│   ├── fabric_policies
-│   ├── interface_policies
-│   ├── node_policies
-│   ├── pod_policies
-│   └── tenant
 └── main.tf
 ```
 
 ## ACI Provider
 
-The following Terraform provider is being used together with the *ACI as Code* solution: [link](https://registry.terraform.io/providers/netascode/aci/latest)
+The following Terraform provider is being used together with the *ACI as Code* solution: [link](https://registry.terraform.io/providers/CiscoDevNet/aci/latest)
 
-The provider includes a single resource and data source which can be used to manage any ACI object. A simple example of how to use the aci_rest resource can be found below:
+The provider includes an `aci_rest_managed` resource which can be used to manage any ACI object. A simple example of how to use the resource can be found below:
 
 ```Terraform
-resource "aci_rest" "fvTenant" {
+resource "aci_rest_managed" "fvTenant" {
   dn         = "uni/tn-EXAMPLE_TENANT"
   class_name = "fvTenant"
   content = {
@@ -52,11 +45,11 @@ resource "aci_rest" "fvTenant" {
 }
 ```
 
-The resource is not only capable of pushing a configuration but also reading its state and reconcile configuration drift.
+The `aci_rest_managed` resource is not only capable of pushing a configuration but also reading its state and reconcile configuration drift.
 
 ## ACI Modules
 
-A Terraform module is a container for multiple resources that are used together. Modules can be used to create lightweight abstractions. While a Terraform resource  represents a single API object (single MO in case of ACI), a Terraform Module consists of multiple resources (a branch of MOs in case of ACI).
+A Terraform module is a container for multiple resources that are used together. Modules can be used to create lightweight abstractions. While a Terraform resource represents a single API object (single MO in case of ACI), a Terraform Module consists of multiple resources (a branch of MOs in case of ACI).
 
 The modules can be found here: [link](https://registry.terraform.io/search/modules?q=netascode)
 
@@ -82,18 +75,16 @@ module "aci_contract" {
 
 The *ACI as Code* Terraform modules are responsible for mapping the data to the corresponding ACI modules. The follwing six main modules are being used:
 
-- Access Policies
-- Fabric Policies
-- Pod Policies
-- Node Policies
-- Interface Policies
-- Tenant
+- [Access Policies](https://wwwin-github.cisco.com/netascode/terraform-aci-access-policies)
+- [Fabric Policies](https://wwwin-github.cisco.com/netascode/terraform-aci-fabric-policies)
+- [Pod Policies](https://wwwin-github.cisco.com/netascode/terraform-aci-pod-policies)
+- [Node Policies](https://wwwin-github.cisco.com/netascode/terraform-aci-node-policies)
+- [Interface Policies](https://wwwin-github.cisco.com/netascode/terraform-aci-interface-policies)
+- [Tenant](https://wwwin-github.cisco.com/netascode/terraform-aci-tenant)
 
 Instead of hardcoding or spreading the definition of default values across different modules, a single file [defaults.yaml](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/defaults/defaults.yaml) is used to define all default values in a central location.
 
 This file is typically customized to reflect the specific customer requirements and reduces the overall size of input files as optional parameters with a default value can be ommited. As some customers prefer to append suffixes to object names, such suffixes can be defined once in `defaults.yaml` and then consistently appended to all objects of a specific type including its references.
-
-The modules are maintained in the following repository: [link](https://wwwin-github.cisco.com/netascode/terraform-aac/tree/master/modules)
 
 ## CI/CD Integration
 
@@ -137,13 +128,13 @@ Cisco NAE/NDI offers a feature called *Pre-Change Validation* which allows asses
 A Python [script](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/.ci/nae-pcv.py) pushes the rendered JSON configuration of a planned change to NAE and waits until the Pre-Change Validation has been completed. The JSON configuration is rendered from the *Terraform Plan* output.
 
 ```shell
-$ export NAE_HOSTNAME_IP="10.1.1.101"
-$ export NAE_USERNAME=admin
-$ export NAE_PASSWORD=password
-$ export NAE_ASSURANCE_GROUP=ACI1
-$ terraform plan -out=plan.tfplan
-$ terraform show -json plan.tfplan > plan.json
-$ python ./.ci/nae-pcv.py "My Terraform PCV" ./plan.json
+export NAE_HOSTNAME_IP="10.1.1.101"
+export NAE_USERNAME=admin
+export NAE_PASSWORD=password
+export NAE_ASSURANCE_GROUP=ACI1
+terraform plan -out=plan.tfplan
+terraform show -json plan.tfplan > plan.json
+python ./.ci/nae-pcv.py "My Terraform PCV" ./plan.json
 ```
 
 ## Automated Testing
@@ -164,16 +155,16 @@ Furthermore test suites are considered critical or non-critical:
 A failed non-critical test does not impact the overall test result in contrast to a critical test.
 
 ```shell
-$ export APIC_TEST_HOSTNAME_IP="10.1.1.100"
-$ export APIC_TEST_USERNAME=admin
-$ export APIC_TEST_PASSWORD=password
-$ mkdir tests
-$ aac-tool apic yaml robot --input ./data/ --output ./tests/ --defaults ./defaults/defaults.yaml
-$ cd tests/
-$ robot -o NONE -l NONE -r NONE apic_login.robot
-$ rm apic_login.robot
-$ cd ..
-$ pabot -d tests/ -V tests/apic_token.py --skiponfailure non-critical tests/
+export APIC_TEST_HOSTNAME_IP="10.1.1.100"
+export APIC_TEST_USERNAME=admin
+export APIC_TEST_PASSWORD=password
+mkdir tests
+aac-tool apic yaml robot --input ./data/ --output ./tests/ --defaults ./defaults/defaults.yaml
+cd tests/
+robot -o NONE -l NONE -r NONE apic_login.robot
+rm apic_login.robot
+cd ..
+pabot -d tests/ -V tests/apic_token.py --skiponfailure non-critical tests/
 ```
 
 After applying  changes with `terraform apply`, a subsequent `terraform plan` (using the same infrastructure code) is expected to return with no changes.
