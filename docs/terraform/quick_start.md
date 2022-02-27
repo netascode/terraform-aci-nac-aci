@@ -26,8 +26,8 @@ Depending on where the Terraform state should be maintained the backend and prov
 terraform {
   required_providers {
     aci = {
-      source  = "netascode/aci"
-      version = ">= 0.2.0"
+      source  = "CiscoDevNet/aci"
+      version = ">= 2.0.0"
     }
     utils = {
       source  = "cloudposse/utils"
