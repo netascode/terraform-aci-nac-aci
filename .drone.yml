@@ -26,7 +26,7 @@ steps:
     image: danischm/aac:0.3.1
     commands:
       - pip install --upgrade mkdocs mkdocs-material mkdocs-mermaid2-plugin
-      - python docs/aac-doc.py
+      - python3 docs/aac-doc.py
       - mkdocs build
     when:
       branch:
