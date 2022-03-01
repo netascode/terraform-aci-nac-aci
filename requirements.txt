@@ -10,4 +10,4 @@ ruamel.yaml
 RESTinstance
 robotframework>=4.0
 robotframework-pabot
-yamale-aac
+yamale
