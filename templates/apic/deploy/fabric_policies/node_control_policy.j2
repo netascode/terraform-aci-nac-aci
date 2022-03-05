@@ -7,7 +7,7 @@
             {%- set comma1 = joiner(",") %}
             {%- for policy in apic.fabric_policies.switch_policies.node_control_policies | default([]) %}{{ comma1() }}
             {% set dom = "None" %}
-            {% if policy.dom | default(defaults.apic.fabric_policies.switch_policies.node_control_policies.dom) == "enabled" %}{% set dom = "Dom" %}{% endif %}
+            {% if policy.dom | default(defaults.apic.fabric_policies.switch_policies.node_control_policies.dom) | cisco.aac.aac_bool("enabled") == "enabled" %}{% set dom = "Dom" %}{% endif %}
             {% set policy_name = policy.name ~ defaults.apic.fabric_policies.switch_policies.node_control_policies.name_suffix %}
             {
                 "fabricNodeControl": {

@@ -11,7 +11,7 @@ Resource        ../../apic_common.resource
 Verify AAEP {{ aaep_name }}
     GET   "/api/mo/uni/infra/attentp-{{ aaep_name }}.json?rsp-subtree=full"
     String   $..infraAttEntityP.attributes.name   {{ aaep_name }}
-{% if aaep.infra_vlan | default(defaults.apic.access_policies.aaeps.infra_vlan) == 'enabled' %}
+{% if aaep.infra_vlan | default(defaults.apic.access_policies.aaeps.infra_vlan) | cisco.aac.aac_bool("enabled") == 'enabled' %}
     String   $..infraProvAcc..infraRsFuncToEpg.attributes.encap   vlan-{{ apic.access_policies.infra_vlan }}
 {% endif %}
 

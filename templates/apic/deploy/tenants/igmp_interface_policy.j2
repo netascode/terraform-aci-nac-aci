@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -10,9 +10,9 @@
             {%- for igmp_pol in tenant.policies.igmp_interface_policies | default([]) %}{{ comma1() }}
             {% set igmp_pol_name = igmp_pol.name ~ defaults.apic.tenants.policies.igmp_interface_policies.name_suffix %}
             {% set ctrl = [] %}
-            {% if igmp_pol.allow_v3_asm | default(defaults.apic.tenants.policies.igmp_interface_policies.allow_v3_asm) == "yes" %}{% set ctrl = ctrl + [("allow-v3-asm")] %}{% endif %}
-            {% if igmp_pol.fast_leave | default(defaults.apic.tenants.policies.igmp_interface_policies.fast_leave) == "yes" %}{% set ctrl = ctrl + [("fast-leave")] %}{% endif %}
-            {% if igmp_pol.report_link_local_groups | default(defaults.apic.tenants.policies.igmp_interface_policies.report_link_local_groups) == "yes" %}{% set ctrl = ctrl + [("rep-ll")] %}{% endif %}
+            {% if igmp_pol.allow_v3_asm | default(defaults.apic.tenants.policies.igmp_interface_policies.allow_v3_asm) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("allow-v3-asm")] %}{% endif %}
+            {% if igmp_pol.fast_leave | default(defaults.apic.tenants.policies.igmp_interface_policies.fast_leave) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("fast-leave")] %}{% endif %}
+            {% if igmp_pol.report_link_local_groups | default(defaults.apic.tenants.policies.igmp_interface_policies.report_link_local_groups) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("rep-ll")] %}{% endif %}
             {
                 "igmpIfPol": {
                     "attributes": {

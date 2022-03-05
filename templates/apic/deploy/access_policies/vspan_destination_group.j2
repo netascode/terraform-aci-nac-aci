@@ -1,0 +1,69 @@
+ {
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for vspan in apic.access_policies.vspan.destination_groups | default([]) %}{{ comma1() }}
+            {% set vspan_name = vspan.name ~ defaults.apic.access_policies.vspan.destination_groups.name_suffix %}
+            {
+                "spanVDestGrp": {
+                    "attributes": {
+                        "descr": "{{ vspan.description | default()}}",
+                        "dn": "uni/infra/vdestgrp-{{ vspan_name }}",
+                        "name": "{{ vspan_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for destination in vspan.destinations | default([]) %}{{ comma2() }}
+                        {% set destination_name = destination.name ~ defaults.apic.access_policies.vspan.destination_groups.destinations.name_suffix %}
+                        {
+                            "spanVDest": {
+                                "attributes": {
+                                    "descr": "{{ destination.description | default() }}",
+                                    "name": "{{ destination_name }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {% if destination.tenant is defined and destination.application_profile is defined and destination.endpoint_group is defined and destination.endpoint is defined %}
+                                    {% set application_profile_name = destination.application_profile ~ defaults.apic.tenants.application_profiles.name_suffix %}
+                                    {% set endpoint_group_name = destination.endpoint_group ~ defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix %}
+                                    {
+                                        "spanRsDestToVPort": {
+                                            "attributes": {
+                                                "tDn": "uni/tn-{{ destination.tenant }}/ap-{{ application_profile_name }}/epg-{{ endpoint_group_name }}/cep-{{ destination.endpoint }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+                                    {%- if destination.ip is defined %}
+                                    {
+                                        "spanVEpgSummary": {
+                                            "attributes": {
+                                                "dstIp": "{{ destination.ip }}",
+                                                "dscp": "{{ destination.dscp | default(defaults.apic.access_policies.vspan.destination_groups.destinations.dscp) }}",
+                                                "flowId": "{{ destination.flow_id | default(defaults.apic.access_policies.vspan.destination_groups.destinations.flow_id) }}",
+                                                "mode": "not-visible",
+                                                "mtu": "{{ destination.mtu | default(defaults.apic.access_policies.vspan.destination_groups.destinations.mtu) }}",
+                                                "srcIpPrefix": "0.0.0.0",
+                                                "ttl": "{{ destination.ttl | default(defaults.apic.access_policies.vspan.destination_groups.destinations.ttl) }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

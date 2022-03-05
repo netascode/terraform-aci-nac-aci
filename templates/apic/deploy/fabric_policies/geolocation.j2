@@ -68,7 +68,7 @@
                                                                                     {%- set comma7 = joiner(",") %}
                                                                                     {%- for node in rack.nodes | default([]) %}{{ comma7() }}
                                                                                     {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
-                                                                                    {% set pod = (apic.node_policies | json_query(query))[0] | default('1') %}
+                                                                                    {% set pod = (apic.node_policies | community.general.json_query(query))[0] | default('1') %}
                                                                                     {
                                                                                         "geoRsNodeLocation": {
                                                                                             "attributes": {

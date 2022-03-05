@@ -32,7 +32,7 @@
                                                 "mtu": "{{ span.mtu | default(defaults.apic.access_policies.span.destination_groups.mtu) }}",
                                                 {% if span.node_id is defined and span.channel is not defined %}
                                                     {% set query = "nodes[?id==`" ~ span.node_id ~ "`].pod" %}
-                                                    {% set pod = span.pod_id | default(((apic.node_policies | default()) | json_query(query))[0] | default('1')) %}
+                                                    {% set pod = span.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
                                                     {% if span.sub_port is defined %}
                                                 "tDn": "topology/pod-{{ pod }}/paths-{{ span.node_id }}/pathep-[eth{{ span.module | default(defaults.apic.access_policies.span.destination_groups.module) }}/{{ span.port }}/{{ span.sub_port }}]"
                                                     {%else%}
@@ -41,30 +41,30 @@
                                                 {% else %}
                                                     {% set policy_group_name = span.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
                                                     {% set query = "leaf_interface_policy_groups[?name==`" ~ span.channel ~ "`].type" %}
-                                                    {% set type = (apic.access_policies | json_query(query))[0] %}
+                                                    {% set type = (apic.access_policies | community.general.json_query(query))[0] %}
                                                     {% set query_sub_ports = "nodes[?interfaces[?sub_ports[?policy_group==`" ~ span.channel ~ "`]]].id" %}
-                                                    {% set id_sub_ports = (apic.interface_policies | default() | json_query(query_sub_ports)) %}
+                                                    {% set id_sub_ports = (apic.interface_policies | default() | community.general.json_query(query_sub_ports)) %}
                                                     {% set query_ports = "nodes[?interfaces[?policy_group==`" ~ span.channel ~ "`]].id" %}
-                                                    {% set id_ports = (apic.interface_policies | default() | json_query(query_ports)) %}
+                                                    {% set id_ports = (apic.interface_policies | default() | community.general.json_query(query_ports)) %}
                                                     {% if id_sub_ports | length > 0 %}
                                                         {% if span.node_id is defined %}
                                                             {% set node = span.node_id %}
                                                         {% else %}
                                                             {% set query = "nodes[?interfaces[?sub_ports[?policy_group==`" ~ span.channel ~ "`]]].id" %}
-                                                            {% set node = (apic.interface_policies | default() | json_query(query))[0] %}
+                                                            {% set node = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
                                                         {% endif %}
                                                         {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
-                                                        {% set pod = span.pod_id | default(((apic.node_policies | default()) | json_query(query))[0] | default('1')) %}
+                                                        {% set pod = span.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
                                                 "tDn": "topology/pod-{{ pod }}/paths-{{ node }}/pathep-[{{ policy_group_name }}]"                                                 
                                                     {% elif id_ports | length > 0 %}
                                                         {% if span.node_id is defined %}
                                                             {% set node = span.node_id %}
                                                         {% else %}
                                                             {% set query = "nodes[?interfaces[?policy_group==`" ~ span.channel ~ "`]].id" %}
-                                                            {% set node = (apic.interface_policies | default() | json_query(query))[0] %}
+                                                            {% set node = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
                                                         {% endif %}
                                                         {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
-                                                        {% set pod = span.pod_id | default(((apic.node_policies | default()) | json_query(query))[0] | default('1')) %}
+                                                        {% set pod = span.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
                                                 "tDn": "topology/pod-{{ pod }}/paths-{{ node }}/pathep-[{{ policy_group_name }}]"
                                                     {% endif %}
                                                 {% endif %}
@@ -86,7 +86,7 @@
                                                 "mtu": "{{ span.mtu | default(defaults.apic.access_policies.span.destination_groups.mtu) }}",
                                                 "ttl": "{{ span.ttl | default(defaults.apic.access_policies.span.destination_groups.ttl) }}",
                                                 "ver": "ver{{ span.version | default(defaults.apic.access_policies.span.destination_groups.version) }}",
-                                                "verEnforced": "{{ span.enforce_version | default(defaults.apic.access_policies.span.destination_groups.enforce_version) }}",
+                                                "verEnforced": "{{ span.enforce_version | default(defaults.apic.access_policies.span.destination_groups.enforce_version) | cisco.aac.aac_bool("yes") }}",
                                                 "tDn": "uni/tn-{{ span.tenant  }}/ap-{{ application_profile_name }}/epg-{{ endpoint_group_name }}"
                                             }
                                         }

@@ -7,7 +7,7 @@ Resource        ../../apic_common.resource
 *** Test Cases ***
 {% for node in apic.interface_policies.nodes | default([]) %}
 {% set query = "nodes[?id==`" ~ node.id ~ "`]" %}
-{% set full_node = (apic.node_policies | json_query(query))[0] %}
+{% set full_node = (apic.node_policies | community.general.json_query(query))[0] %}
 {% if full_node.role == "leaf" %}
 {% for fex in node.fexes | default([]) %}
 {% set fex_profile_name = (full_node.id ~ ":" ~ full_node.name~ ":" ~ fex.id) | regex_replace("^(?P<id>.+):(?P<name>.+):(?P<fex>.+)$", (apic.access_policies.fex_profile_name | default(defaults.apic.access_policies.fex_profile_name))) %}

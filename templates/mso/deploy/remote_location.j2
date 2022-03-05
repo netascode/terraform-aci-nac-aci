@@ -1,5 +1,5 @@
 {% set query = "remote_locations[?name==`" ~ item ~ "`]" %}
-{% set remote = (mso | json_query(query))[0] %}
+{% set remote = (mso | community.general.json_query(query))[0] %}
 {
     "name": "{{ remote.name }}",
     "description": "{{ remote.description | default() }}",

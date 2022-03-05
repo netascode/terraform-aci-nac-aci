@@ -11,7 +11,7 @@
                         "name": "{{ link_level_policy_name }}",
                         "dn": "uni/infra/hintfpol-{{ link_level_policy_name }}",
                         "speed": "{{ policy.speed | default(defaults.apic.access_policies.interface_policies.link_level_policies.speed) }}",
-                        "autoNeg": "{{ policy.auto | default(defaults.apic.access_policies.interface_policies.link_level_policies.auto) }}",
+                        "autoNeg": "{{ policy.auto | default(defaults.apic.access_policies.interface_policies.link_level_policies.auto) | cisco.aac.aac_bool("on") }}",
                         "fecMode": "{{ policy.fec_mode | default(defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode) }}"
                     }
                 }

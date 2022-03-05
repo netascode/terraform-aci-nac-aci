@@ -5,7 +5,7 @@ Default Tags    apic   day2   health   tenants   non-critical
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for l3out in tenant.l3outs | default([]) %}
 {% set l3out_name = l3out.name ~ defaults.apic.tenants.l3outs.name_suffix %}
 

@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -15,12 +15,12 @@
                         "name": "{{ policy_name }}",
                         "descr": "{{ policy.description | default()}}",
                         "dn": "uni/tn-{{ tenant.name }}/trustctrlpol-{{ policy_name }}",
-                        "hasDhcpv4Server": "{{ policy.dhcp_v4_server | default(defaults.apic.tenants.policies.trust_control_policies.dhcp_v4_server) }}",
-                        "hasDhcpv6Server": "{{ policy.dhcp_v6_server | default(defaults.apic.tenants.policies.trust_control_policies.dhcp_v6_server) }}",
-                        "hasIpv6Router": "{{ policy.ipv6_router | default(defaults.apic.tenants.policies.trust_control_policies.ipv6_router) }}",
-                        "trustArp": "{{ policy.arp | default(defaults.apic.tenants.policies.trust_control_policies.arp) }}",
-                        "trustNd": "{{ policy.nd | default(defaults.apic.tenants.policies.trust_control_policies.nd) }}",
-                        "trustRa": "{{ policy.ra | default(defaults.apic.tenants.policies.trust_control_policies.ra) }}"
+                        "hasDhcpv4Server": "{{ policy.dhcp_v4_server | default(defaults.apic.tenants.policies.trust_control_policies.dhcp_v4_server) | cisco.aac.aac_bool("yes") }}",
+                        "hasDhcpv6Server": "{{ policy.dhcp_v6_server | default(defaults.apic.tenants.policies.trust_control_policies.dhcp_v6_server) | cisco.aac.aac_bool("yes") }}",
+                        "hasIpv6Router": "{{ policy.ipv6_router | default(defaults.apic.tenants.policies.trust_control_policies.ipv6_router) | cisco.aac.aac_bool("yes") }}",
+                        "trustArp": "{{ policy.arp | default(defaults.apic.tenants.policies.trust_control_policies.arp) | cisco.aac.aac_bool("yes") }}",
+                        "trustNd": "{{ policy.nd | default(defaults.apic.tenants.policies.trust_control_policies.nd) | cisco.aac.aac_bool("yes") }}",
+                        "trustRa": "{{ policy.ra | default(defaults.apic.tenants.policies.trust_control_policies.ra) | cisco.aac.aac_bool("yes") }}"
                     }
                 }
             }

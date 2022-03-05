@@ -5,7 +5,7 @@ Default Tags    apic   day2   health   tenants   non-critical
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for vrf in tenant.vrfs | default([]) %}
 {% set vrf_name = vrf.name ~ ('' if vrf.name in ('inb', 'obb', 'overlay-1') else defaults.apic.tenants.vrfs.name_suffix) %}
 

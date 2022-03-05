@@ -5,10 +5,10 @@ Default Tags    apic   day2   health   tenants   non-critical
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for dsp in tenant.services.device_selection_policies | default([]) %}
 {% set query = "service_graph_templates[?name==`" ~ dsp.service_graph_template ~ "`]" %}
-{% set sgt = (tenant.services | json_query(query))[0] %}
+{% set sgt = (tenant.services | community.general.json_query(query))[0] %}
 {% set contract_name = dsp.contract ~ defaults.apic.tenants.contracts.name_suffix %}
 {% set sgt_name = dsp.service_graph_template ~ defaults.apic.tenants.services.service_graph_templates.name_suffix %}
 

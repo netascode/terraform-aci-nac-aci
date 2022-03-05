@@ -1,5 +1,5 @@
 {% set query = "ca_certificates[?name==`" ~ item ~ "`]" %}
-{% set cert = (mso | json_query(query))[0] %}
+{% set cert = (mso | community.general.json_query(query))[0] %}
 {
     "name": "{{ cert.name }}",
     "description": "{{ cert.description | default() }}",

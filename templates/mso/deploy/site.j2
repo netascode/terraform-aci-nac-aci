@@ -1,5 +1,5 @@
 {% set query = "sites[?name==`" ~ item ~ "`]" %}
-{% set site = (mso | json_query(query))[0] %}
+{% set site = (mso | community.general.json_query(query))[0] %}
 {
     "name": "{{ site.name }}",
     "urls": [

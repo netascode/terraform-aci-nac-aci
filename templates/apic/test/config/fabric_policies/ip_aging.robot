@@ -7,4 +7,4 @@ Resource        ../../apic_common.resource
 *** Test Cases ***
 Verify IP Aging
     GET   "/api/mo/uni/infra/ipAgingP-default.json"
-    String   $..epIpAgingP.attributes.adminSt   {{ apic.fabric_policies.ip_aging | default(defaults.apic.fabric_policies.ip_aging) }}
+    String   $..epIpAgingP.attributes.adminSt   {{ apic.fabric_policies.ip_aging | default(defaults.apic.fabric_policies.ip_aging) | cisco.aac.aac_bool("enabled") }}

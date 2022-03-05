@@ -5,14 +5,14 @@ Default Tags    apic   day1   config   interface_policies
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) == "enabled" or apic.auto_generate_access_spine_switch_interface_profiles | default(defaults.apic.auto_generate_access_spine_switch_interface_profiles) == "enabled" %}
+{% if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) | cisco.aac.aac_bool("enabled") == "enabled" or apic.auto_generate_access_spine_switch_interface_profiles | default(defaults.apic.auto_generate_access_spine_switch_interface_profiles) | cisco.aac.aac_bool("enabled") == "enabled" %}
 {% for node in apic.node_policies.nodes | default([]) %}
 {% if node.role == "spine" and node.id | string == item[1] %}
 {% set spine_interface_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.spine_interface_profile_name | default(defaults.apic.access_policies.spine_interface_profile_name))) %}
 
 {% set query = "nodes[?id==`" ~ node.id ~ "`].interfaces[]" %}
 {% if apic.interface_policies is defined %}
-{% for int in (apic.interface_policies | default() | json_query(query) | default([])) %}
+{% for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
 {% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
 {% set spine_interface_selector_name = (module ~ ":" ~ int.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.spine_interface_selector_name | default(defaults.apic.access_policies.spine_interface_selector_name))) %}
 

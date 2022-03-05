@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -41,8 +41,8 @@
                                     {%- for filter in subject.filters | default([]) %}{{ comma3() }}
                                     {% set filter_name = filter.filter ~ defaults.apic.tenants.filters.name_suffix %}
                                     {% set directives = [] %}
-                                    {% if filter.log | default(defaults.apic.tenants.contracts.subjects.filters.log) == "yes" %}{% set directives = directives + [("log")] %}{% endif %}
-                                    {% if filter.no_stats | default(defaults.apic.tenants.contracts.subjects.filters.no_stats) == "yes" %}{% set directives = directives + [("no-stats")] %}{% endif %}
+                                    {% if filter.log | default(defaults.apic.tenants.contracts.subjects.filters.log) | cisco.aac.aac_bool("yes") == "yes" %}{% set directives = directives + [("log")] %}{% endif %}
+                                    {% if filter.no_stats | default(defaults.apic.tenants.contracts.subjects.filters.no_stats) | cisco.aac.aac_bool("yes") == "yes" %}{% set directives = directives + [("no-stats")] %}{% endif %}
                                     {
                                         "vzRsSubjFiltAtt": {
                                             "attributes": {

@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -81,18 +81,18 @@
                         },
                         {%- set ten = sgt.device.tenant | default(tenant.name) %}
                         {%- set query = "tenants[?name==`" ~ ten ~ "`].services.l4l7_devices[?name==`" ~ sgt.device.name ~ "`]" %}
-                        {%- set dev = (apic | json_query(query))[0] %}
+                        {%- set dev = (apic | community.general.json_query(query))[0] %}
                         {
                             "vnsAbsNode": {
                                 "attributes": {
                                     "funcTemplateType": "{{ sgt.template_type | default(defaults.apic.tenants.services.service_graph_templates.template_type) }}",
                                     "funcType": "{{ dev.function | default(defaults.apic.tenants.services.l4l7_devices.function) }}",
-                                    "isCopy": "{{ dev.copy_device | default(defaults.apic.tenants.services.l4l7_devices.copy_device) }}",
-                                    "managed": "{{ dev.managed | default(defaults.apic.tenants.services.l4l7_devices.managed) }}",
+                                    "isCopy": "{{ dev.copy_device | default(defaults.apic.tenants.services.l4l7_devices.copy_device) | cisco.aac.aac_bool("yes") }}",
+                                    "managed": "{{ dev.managed | default(defaults.apic.tenants.services.l4l7_devices.managed) | cisco.aac.aac_bool("yes") }}",
                                     "name": "N1",
-                                    "routingMode": "{{ 'Redirect' if sgt.redirect | default(defaults.apic.tenants.services.service_graph_templates.redirect) == 'enabled' else 'unspecified' }}",
+                                    "routingMode": "{{ 'Redirect' if sgt.redirect | default(defaults.apic.tenants.services.service_graph_templates.redirect) | cisco.aac.aac_bool("enabled") == 'enabled' else 'unspecified' }}",
                                     "sequenceNumber": "0",
-                                    "shareEncap": "{{ 'yes' if sgt.share_encapsulation | default(defaults.apic.tenants.services.service_graph_templates.share_encapsulation)  == 'enabled' else 'no' }}",
+                                    "shareEncap": "{{ 'yes' if sgt.share_encapsulation | default(defaults.apic.tenants.services.service_graph_templates.share_encapsulation) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no' }}",
                                     "childAction": "deleteNonPresent"
                                 },
                                 "children": [

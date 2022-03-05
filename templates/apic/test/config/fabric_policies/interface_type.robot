@@ -9,7 +9,7 @@ Verify Port Interface Type
     GET   "/api/mo/uni/infra/prtdirec.json?rsp-subtree=full"
 {% for node in apic.interface_policies.nodes | default([]) %}
 {% set query = "nodes[?id==`" ~ node.id ~ "`]" %}
-{% set full_node = (apic.node_policies | json_query(query))[0] %}
+{% set full_node = (apic.node_policies | community.general.json_query(query))[0] %}
 {% if full_node.role == "leaf" %}
 {% for interface in node.interfaces | default([]) %}
 {% if interface.type is defined %}

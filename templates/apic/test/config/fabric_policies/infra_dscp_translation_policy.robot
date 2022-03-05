@@ -7,7 +7,7 @@ Resource        ../../apic_common.resource
 *** Test Cases ***
 Verify APIC Infra DSCP Translation Policy
     GET   "/api/mo/uni/tn-infra/dscptranspol-default.json"
-    String   $..qosDscpTransPol.attributes.adminSt   {{ apic.fabric_policies.infra_dscp_translation_policy.admin_state | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.admin_state) }}
+    String   $..qosDscpTransPol.attributes.adminSt   {{ apic.fabric_policies.infra_dscp_translation_policy.admin_state | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.admin_state) | cisco.aac.aac_bool("enabled") }}
     String   $..qosDscpTransPol.attributes.control   {{ apic.fabric_policies.infra_dscp_translation_policy.control_plane | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.control_plane) }}
     String   $..qosDscpTransPol.attributes.level1   {{ apic.fabric_policies.infra_dscp_translation_policy.level_1 | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.level_1) }}
     String   $..qosDscpTransPol.attributes.level2   {{ apic.fabric_policies.infra_dscp_translation_policy.level_2 | default(defaults.apic.fabric_policies.infra_dscp_translation_policy.level_2) }}

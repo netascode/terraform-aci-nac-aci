@@ -12,8 +12,8 @@
                         "authProtocol": "{{ prov.protocol | default(defaults.apic.fabric_policies.aaa.tacacs_providers.protocol) }}",
                         "descr": "{{ prov.description | default() }}",
                         "dn": "uni/userext/tacacsext/tacacsplusprovider-{{ prov.hostname_ip }}",
-                        "monitorServer": "{{ prov.monitoring | default(defaults.apic.fabric_policies.aaa.tacacs_providers.monitoring) }}",
-                        {% if prov.monitoring | default(defaults.apic.fabric_policies.aaa.tacacs_providers.monitoring) == "enabled" %}
+                        "monitorServer": "{{ prov.monitoring | default(defaults.apic.fabric_policies.aaa.tacacs_providers.monitoring) | cisco.aac.aac_bool("enabled") }}",
+                        {% if prov.monitoring | default(defaults.apic.fabric_policies.aaa.tacacs_providers.monitoring) | cisco.aac.aac_bool("enabled") == "enabled" %}
                         "monitoringUser": "{{ prov.monitoring_username | default() }}",
                         "monitoringPassword": "{{ prov.monitoring_password | default() }}",
                         {% endif %}

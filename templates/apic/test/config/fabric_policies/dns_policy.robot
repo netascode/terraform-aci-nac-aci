@@ -23,7 +23,7 @@ Verify DNS Policy {{ policy_name }}
 Verify DNS Policy {{ policy_name }} Provider {{ provider.ip }}
     ${provider}=   Set Variable   $..dnsProfile.children[?(@.dnsProv.attributes.addr=='{{ provider.ip }}')]
     String   ${provider}..dnsProv.attributes.addr   {{ provider.ip }}
-    String   ${provider}..dnsProv.attributes.preferred   {{ provider.preferred | default(defaults.apic.fabric_policies.dns_policies.providers.preferred) }}
+    String   ${provider}..dnsProv.attributes.preferred   {{ provider.preferred | default(defaults.apic.fabric_policies.dns_policies.providers.preferred) | cisco.aac.aac_bool("yes") }}
 
 {% endfor %}
 
@@ -32,7 +32,7 @@ Verify DNS Policy {{ policy_name }} Provider {{ provider.ip }}
 Verify DNS Policy {{ policy_name }} Domain {{ domain.name }}
     ${domain}=   Set Variable   $..dnsProfile.children[?(@.dnsDomain.attributes.name=='{{ domain.name }}')]
     String   ${domain}..dnsDomain.attributes.name   {{ domain.name }}
-    String   ${domain}..dnsDomain.attributes.isDefault   {{ domain.default | default(defaults.apic.fabric_policies.dns_policies.domains.default) }}
+    String   ${domain}..dnsDomain.attributes.isDefault   {{ domain.default | default(defaults.apic.fabric_policies.dns_policies.domains.default) | cisco.aac.aac_bool("yes") }}
 {% endfor %}
 
 {% endfor %}

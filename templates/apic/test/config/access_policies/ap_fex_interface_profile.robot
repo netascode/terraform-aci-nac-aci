@@ -5,10 +5,10 @@ Default Tags    apic   day1   config   access_policies
 Resource        ../../apic_common.resource
 
 *** Test Cases ***
-{% if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) == "enabled" or apic.auto_generate_access_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_access_leaf_switch_interface_profiles) == "enabled" %}
+{% if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) | cisco.aac.aac_bool("enabled") == "enabled" or apic.auto_generate_access_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_access_leaf_switch_interface_profiles) | cisco.aac.aac_bool("enabled") == "enabled" %}
 {% for node in apic.interface_policies.nodes | default([]) %}
 {% set query = "nodes[?id==`" ~ node.id ~ "`]" %}
-{% set full_node = (apic.node_policies | json_query(query))[0] %}
+{% set full_node = (apic.node_policies | community.general.json_query(query))[0] %}
 {% if full_node.role == "leaf" %}
 {% for fex in node.fexes | default([]) %}
 {% set fex_profile_name = (full_node.id ~ ":" ~ full_node.name~ ":" ~ fex.id) | regex_replace("^(?P<id>.+):(?P<name>.+):(?P<fex>.+)$", (apic.access_policies.fex_profile_name | default(defaults.apic.access_policies.fex_profile_name))) %}
@@ -39,7 +39,7 @@ Verify Access FEX Interface Profile {{ fex_interface_profile_name }} Selector {{
     String   ${sel}..infraHPortS.attributes.name   {{ fex_interface_selector_name }}
 {% if sel.policy_group is defined %}
 {% set query = "leaf_interface_policy_groups[?name=='" ~ sel.policy_group ~ "'].type[]" %}
-{% set type = (apic.access_policies | json_query(query)) %}
+{% set type = (apic.access_policies | community.general.json_query(query)) %}
 {% set policy_group_name = sel.policy_group ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
 {% if type[0] in ["pc", "vpc"] %}
     String   ${sel}..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/accbundle-{{ policy_group_name }}

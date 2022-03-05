@@ -5,13 +5,13 @@ Default Tags    apic   day2   config   tenants
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for pim_pol in tenant.policies.pim_policies | default([]) %}
 {% set pim_policy_name = pim_pol.name ~ defaults.apic.tenants.policies.pim_policies.name_suffix %}
 {% set ctrl = [] %}     
-{% if pim_pol.mcast_dom_boundary | default(defaults.apic.tenants.policies.pim_policies.mcast_dom_boundary) == "yes" %}{% set ctrl = ctrl + [("border")] %}{% endif %}
-{% if pim_pol.passive | default(defaults.apic.tenants.policies.pim_policies.passive) == "yes" %}{% set ctrl = ctrl + [("passive")] %}{% endif %}
-{% if pim_pol.strict_rfc | default(defaults.apic.tenants.policies.pim_policies.strict_rfc) == "yes" %}{% set ctrl = ctrl + [("strict-rfc-compliant")] %}{% endif %}
+{% if pim_pol.mcast_dom_boundary | default(defaults.apic.tenants.policies.pim_policies.mcast_dom_boundary) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("border")] %}{% endif %}
+{% if pim_pol.passive | default(defaults.apic.tenants.policies.pim_policies.passive) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("passive")] %}{% endif %}
+{% if pim_pol.strict_rfc | default(defaults.apic.tenants.policies.pim_policies.strict_rfc) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("strict-rfc-compliant")] %}{% endif %}
 
 Verify PIM Policy {{ pim_policy_name }}
     GET   "/api/mo/uni/tn-{{ tenant.name }}/pimifpol-{{ pim_policy_name }}.json"

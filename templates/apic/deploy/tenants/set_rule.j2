@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -126,7 +126,7 @@
                             }
                         }
                         {%- endif %}
-                        {%- if rule.next_hop_propagation | default(defaults.apic.tenants.policies.set_rules.next_hop_propagation) == 'enabled' %}{{ comma2() }}
+                        {%- if rule.next_hop_propagation | default(defaults.apic.tenants.policies.set_rules.next_hop_propagation) | cisco.aac.aac_bool("enabled") == 'enabled' %}{{ comma2() }}
                         {
                             "rtctrlSetNhUnchanged": {
                                 "attributes": {
@@ -135,7 +135,7 @@
                             }
                         }
                         {%- endif %}
-                        {%- if rule.multipath | default(defaults.apic.tenants.policies.set_rules.multipath) == 'enabled' %}{{ comma2() }}
+                        {%- if rule.multipath | default(defaults.apic.tenants.policies.set_rules.multipath) | cisco.aac.aac_bool("enabled") == 'enabled' %}{{ comma2() }}
                         {
                             "rtctrlSetRedistMultipath": {
                                 "attributes": {

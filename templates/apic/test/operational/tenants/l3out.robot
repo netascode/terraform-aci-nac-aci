@@ -5,13 +5,13 @@ Default Tags    apic   day2   operational   tenants   non-critical
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for l3out in tenant.l3outs | default([]) %}
 {% set l3out_name = l3out.name ~ defaults.apic.tenants.l3outs.name_suffix %}
 {% set vrf_name = l3out.vrf ~ ('' if l3out.vrf in ('inb', 'obb', 'overlay-1') else defaults.apic.tenants.vrfs.name_suffix) %}
 {% for node in l3out.nodes | default([]) %}
 {% set query = "nodes[?id==`" ~ node.node_id ~ "`].pod" %}
-{% set pod = node.pod_id | default(((apic.node_policies | default()) | json_query(query))[0] | default('1')) %}
+{% set pod = node.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
 {% for int in node.interfaces | default([]) %}
 {% for peer in int.bgp_peers | default([]) %}
 
@@ -27,7 +27,7 @@ Verify L3out {{ l3out_name }} BGP Neighbor {{ peer.ip }}
 {% endfor %}
 
 
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for l3out in tenant.l3outs | default([]) %}
 {% set l3out_name = l3out.name ~ defaults.apic.tenants.l3outs.name_suffix %}
 {% set vrf_name = l3out.vrf ~ ('' if l3out.vrf in ('inb', 'obb', 'overlay-1') else defaults.apic.tenants.vrfs.name_suffix) %}
@@ -35,7 +35,7 @@ Verify L3out {{ l3out_name }} BGP Neighbor {{ peer.ip }}
 {% for ip in np.interface_profiles | default([]) %}
 {% for int in ip.interfaces | default([]) %}
 {% set query = "nodes[?id==`" ~ int.node_id ~ "`].pod" %}
-{% set pod = int.pod_id | default(((apic.node_policies | default()) | json_query(query))[0] | default('1')) %}
+{% set pod = int.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
 {% set node_list = [int.node_id] %}
 {% if int.node2_id is defined %}
     {% set node_list = [int.node_id, int.node2_id] %}

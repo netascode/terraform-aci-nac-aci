@@ -11,7 +11,7 @@ Resource        ../../apic_common.resource
 Verify LLDP Interface Policy {{ lldp_policy_name }}
     GET   "/api/mo/uni/infra/lldpIfP-{{ lldp_policy_name }}.json"
     String   $..lldpIfPol.attributes.name   {{ lldp_policy_name }}
-    String   $..lldpIfPol.attributes.adminRxSt   {{ policy.admin_rx_state }}
-    String   $..lldpIfPol.attributes.adminTxSt   {{ policy.admin_tx_state }}
+    String   $..lldpIfPol.attributes.adminRxSt   {{ policy.admin_rx_state | cisco.aac.aac_bool("enabled") }}
+    String   $..lldpIfPol.attributes.adminTxSt   {{ policy.admin_tx_state | cisco.aac.aac_bool("enabled") }}
 
 {% endfor %}

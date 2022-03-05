@@ -12,7 +12,7 @@ Verify SPAN Source Group {{ span_name }}
     GET  "/api/mo/uni/fabric/srcgrp-{{ span_name }}.json?rsp-subtree=full"
     String   $..spanSrcGrp.attributes.name   {{ span_name }}
     String   $..spanSrcGrp.attributes.descr   {{ span.description | default() }}
-    String   $..spanSrcGrp.attributes.adminSt   {{ span.admin_state | default(defaults.apic.fabric_policies.span.source_groups.admin_state) }}
+    String   $..spanSrcGrp.attributes.adminSt   {{ span.admin_state | default(defaults.apic.fabric_policies.span.source_groups.admin_state) | cisco.aac.aac_bool("enabled") }}
 
 {% for source in span.sources | default([]) %}
 {% set source_name = source.name ~ defaults.apic.fabric_policies.span.source_groups.sources.name_suffix %}
@@ -20,7 +20,7 @@ Verify SPAN Source Group {{ span_name }} Source {{ source_name }}
     ${source}=   Set Variable   $..spanSrcGrp.children[?(@.spanSrc.attributes.name=='{{ source_name }}')].spanSrc
     String   ${source}.attributes.name   {{ source_name }}
     String   ${source}.attributes.dir   {{ source.direction | default(defaults.apic.fabric_policies.span.source_groups.sources.direction) }}
-    String   ${source}.attributes.spanOnDrop   {{ source.span_drop | default(defaults.apic.fabric_policies.span.source_groups.sources.span_drop) }}
+    String   ${source}.attributes.spanOnDrop   {{ source.span_drop | default(defaults.apic.fabric_policies.span.source_groups.sources.span_drop) | cisco.aac.aac_bool("yes") }}
 {% if source.tenant is defined and source.vrf is defined %}
 {% set vrf_name = source.vrf ~ defaults.apic.tenants.vrfs.name_suffix %} 
     String   ${source}..spanRsSrcToCtx.attributes.tDn   uni/tn-{{ source.tenant }}/ctx-{{ vrf_name }}                     
@@ -32,7 +32,7 @@ Verify SPAN Source Group {{ span_name }} Source {{ source_name }}
 
 {% for path in source.fabric_paths| default([]) %}
 {% set query = "nodes[?id==`" ~ path.node_id ~ "`].pod" %}
-{% set pod = path.pod_id | default(((apic.node_policies | default()) | json_query(query))[0] | default('1')) %}
+{% set pod = path.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
     ${path}=   Set Variable   ${source}.children[?(@.spanRsSrcToPathEp.attributes.tDn=='topology/pod-{{ pod }}/paths-{{ path.node_id }}/pathep-[eth{{ path.module | default(defaults.apic.fabric_policies.span.source_groups.sources.access_paths.module) }}/{{ path.port }}]')].spanRsSrcToPathEp
     String   ${path}.attributes.tDn   topology/pod-{{ pod }}/paths-{{ path.node_id }}/pathep-[eth{{ path.module | default(defaults.apic.fabric_policies.span.source_groups.sources.access_paths.module) }}/{{ path.port }}]
 

@@ -1,5 +1,5 @@
 {% set query = "tenants[?name==`" ~ item ~ "`]" %}
-{% set tenant = (mso | json_query(query))[0] %}
+{% set tenant = (mso | community.general.json_query(query))[0] %}
 {
     "name": "{{ tenant.name }}",
     "displayName": "{{ tenant.name }}",

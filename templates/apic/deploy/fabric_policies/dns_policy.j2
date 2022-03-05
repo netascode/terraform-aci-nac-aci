@@ -33,7 +33,7 @@
                             "dnsProv": {
                                 "attributes": {
                                     "addr": "{{ provider.ip }}",
-                                    "preferred": "{{ provider.preferred | default(defaults.apic.fabric_policies.dns_policies.providers.preferred) }}"
+                                    "preferred": "{{ provider.preferred | default(defaults.apic.fabric_policies.dns_policies.providers.preferred) | cisco.aac.aac_bool("yes") }}"
                                 }
                             }
                         }
@@ -43,7 +43,7 @@
                             "dnsDomain": {
                                 "attributes": {
                                     "name": "{{ domain.name }}",
-                                    "isDefault": "{{ domain.default | default(defaults.apic.fabric_policies.dns_policies.domains.default) }}"
+                                    "isDefault": "{{ domain.default | default(defaults.apic.fabric_policies.dns_policies.domains.default) | cisco.aac.aac_bool("yes") }}"
                                 }
                             }
                         }

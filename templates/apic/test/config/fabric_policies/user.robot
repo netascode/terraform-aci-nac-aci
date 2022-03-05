@@ -12,8 +12,8 @@ Verify User {{ user.username }}
     String   $..aaaUser.attributes.certAttribute   {{ user.certificate_name | default() }}
     String   $..aaaUser.attributes.descr   {{ user.description | default() }}
     String   $..aaaUser.attributes.email   {{ user.email | default() }}
-    String   $..aaaUser.attributes.expires   {{ user.expires | default(defaults.apic.fabric_policies.aaa.users.expires) }}
-{% if user.expires | default(defaults.apic.fabric_policies.aaa.users.expires) == 'yes' %}
+    String   $..aaaUser.attributes.expires   {{ user.expires | default(defaults.apic.fabric_policies.aaa.users.expires) | cisco.aac.aac_bool("yes") }}
+{% if user.expires | default(defaults.apic.fabric_policies.aaa.users.expires) | cisco.aac.aac_bool("yes") == 'yes' %}
     String   $..aaaUser.attributes.expiration   {{ user.expire_date | default() }}
 {% endif %}
     String   $..aaaUser.attributes.firstName   {{ user.first_name | default() }}

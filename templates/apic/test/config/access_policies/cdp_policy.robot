@@ -11,6 +11,6 @@ Resource        ../../apic_common.resource
 Verify CDP Interface Policy {{ cdp_policy_name }}
     GET   "/api/mo/uni/infra/cdpIfP-{{ cdp_policy_name }}.json"
     String   $..cdpIfPol.attributes.name   {{ cdp_policy_name }}
-    String   $..cdpIfPol.attributes.adminSt   {{ policy.admin_state }}
+    String   $..cdpIfPol.attributes.adminSt   {{ policy.admin_state | cisco.aac.aac_bool("enabled") }}
 
 {% endfor %}

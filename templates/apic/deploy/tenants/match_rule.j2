@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -63,7 +63,7 @@
                         {
                             "rtctrlMatchRtDest": {
                                 "attributes": {
-                                    "aggregate": "{{ prefix.aggregate | default(defaults.apic.tenants.policies.match_rules.prefixes.aggregate) }}",
+                                    "aggregate": "{{ prefix.aggregate | default(defaults.apic.tenants.policies.match_rules.prefixes.aggregate) | cisco.aac.aac_bool("yes") }}",
                                     "descr": "{{ prefix.description | default() }}",
                                     "fromPfxLen": "{{ prefix.from_length | default(defaults.apic.tenants.policies.match_rules.prefixes.from_length) }}",
                                     "ip": "{{ prefix.ip }}",

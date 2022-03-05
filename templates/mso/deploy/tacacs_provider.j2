@@ -1,5 +1,5 @@
 {% set query = "tacacs_providers[?hostname_ip==`" ~ item ~ "`]" %}
-{% set tacacs = (mso | json_query(query))[0] %}
+{% set tacacs = (mso | community.general.json_query(query))[0] %}
 {
     "host": "{{ tacacs.hostname_ip }}",
     "description": "{{ tacacs.description | default() }}",

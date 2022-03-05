@@ -1,5 +1,5 @@
 {% set query = "policies.dhcp_relays[?name==`" ~ item ~ "`]" %}
-{% set pol = (mso | json_query(query))[0] %}
+{% set pol = (mso | community.general.json_query(query))[0] %}
 {% set pol_name = pol.name ~ defaults.mso.policies.dhcp_relays.name_suffix %}
 {
     "name": "{{ pol_name }}",

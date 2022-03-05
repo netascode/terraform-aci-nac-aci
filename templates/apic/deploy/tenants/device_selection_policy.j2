@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -9,7 +9,7 @@
             {%- set comma1 = joiner(",") %}
             {%- for dsp in tenant.services.device_selection_policies | default([]) %}{{ comma1() }}
             {% set query = "service_graph_templates[?name==`" ~ dsp.service_graph_template ~ "`]" %}
-            {% set sgt = (tenant.services | json_query(query))[0] %}
+            {% set sgt = (tenant.services | community.general.json_query(query))[0] %}
             {% set contract_name = dsp.contract ~ defaults.apic.tenants.contracts.name_suffix %}
             {% set sgt_name = dsp.service_graph_template ~ defaults.apic.tenants.services.service_graph_templates.name_suffix %}
             {% set dev_name = sgt.device.name ~ defaults.apic.tenants.services.l4l7_devices.name_suffix %}
@@ -34,8 +34,8 @@
                             "vnsLIfCtx": {
                                 "attributes": {
                                     "connNameOrLbl": "consumer",
-                                    "l3Dest": "{{ 'yes' if dsp.consumer.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination)  == 'enabled' else 'no'}}",
-                                    "permitLog": "{{ 'yes' if dsp.consumer.permit_logging | default(defaults.apic.tenants.services.device_selection_policies.consumer.permit_logging)  == 'enabled' else 'no'}}",
+                                    "l3Dest": "{{ 'yes' if dsp.consumer.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}",
+                                    "permitLog": "{{ 'yes' if dsp.consumer.permit_logging | default(defaults.apic.tenants.services.device_selection_policies.consumer.permit_logging) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}",
                                     "childAction": "deleteNonPresent"
                                 },
                                 "children": [
@@ -60,10 +60,10 @@
                                     },
                                     {% elif dsp.consumer.external_endpoint_group is defined %}
                                     {% set redistribute = [] %}
-                                    {% if dsp.consumer.external_endpoint_group.redistribute.bgp | default(defaults.apic.tenants.services.device_selection_policies.consumer.external_endpoint_group.redistribute.bgp) == "enabled" %}{% set redistribute = redistribute + [("bgp")] %}{% endif %}
-                                    {% if dsp.consumer.external_endpoint_group.redistribute.ospf | default(defaults.apic.tenants.services.device_selection_policies.consumer.external_endpoint_group.redistribute.ospf) == "enabled" %}{% set redistribute = redistribute + [("ospf")] %}{% endif %}
-                                    {% if dsp.consumer.external_endpoint_group.redistribute.connected | default(defaults.apic.tenants.services.device_selection_policies.consumer.external_endpoint_group.redistribute.connected) == "enabled" %}{% set redistribute = redistribute + [("connected")] %}{% endif %}
-                                    {% if dsp.consumer.external_endpoint_group.redistribute.static | default(defaults.apic.tenants.services.device_selection_policies.consumer.external_endpoint_group.redistribute.static) == "enabled" %}{% set redistribute = redistribute + [("static")] %}{% endif %}
+                                    {% if dsp.consumer.external_endpoint_group.redistribute.bgp | default(defaults.apic.tenants.services.device_selection_policies.consumer.external_endpoint_group.redistribute.bgp) | cisco.aac.aac_bool("enabled") == "enabled" %}{% set redistribute = redistribute + [("bgp")] %}{% endif %}
+                                    {% if dsp.consumer.external_endpoint_group.redistribute.ospf | default(defaults.apic.tenants.services.device_selection_policies.consumer.external_endpoint_group.redistribute.ospf) | cisco.aac.aac_bool("enabled") == "enabled" %}{% set redistribute = redistribute + [("ospf")] %}{% endif %}
+                                    {% if dsp.consumer.external_endpoint_group.redistribute.connected | default(defaults.apic.tenants.services.device_selection_policies.consumer.external_endpoint_group.redistribute.connected) | cisco.aac.aac_bool("enabled") == "enabled" %}{% set redistribute = redistribute + [("connected")] %}{% endif %}
+                                    {% if dsp.consumer.external_endpoint_group.redistribute.static | default(defaults.apic.tenants.services.device_selection_policies.consumer.external_endpoint_group.redistribute.static) | cisco.aac.aac_bool("enabled") == "enabled" %}{% set redistribute = redistribute + [("static")] %}{% endif %}
                                     {% set l3out_name = dsp.consumer.external_endpoint_group.l3out ~ defaults.apic.tenants.l3outs.name_suffix %}
                                     {% set eepg_name = dsp.consumer.external_endpoint_group.name ~ defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix %}
                                     {
@@ -110,8 +110,8 @@
                             "vnsLIfCtx": {
                                 "attributes": {
                                     "connNameOrLbl": "provider",
-                                    "l3Dest": "{{ 'yes' if dsp.provider.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.provider.l3_destination)  == 'enabled' else 'no'}}",
-                                    "permitLog": "{{ 'yes' if dsp.provider.permit_logging | default(defaults.apic.tenants.services.device_selection_policies.provider.permit_logging)  == 'enabled' else 'no'}}",
+                                    "l3Dest": "{{ 'yes' if dsp.provider.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.provider.l3_destination) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}",
+                                    "permitLog": "{{ 'yes' if dsp.provider.permit_logging | default(defaults.apic.tenants.services.device_selection_policies.provider.permit_logging) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}",
                                     "childAction": "deleteNonPresent"
                                 },
                                 "children": [
@@ -136,10 +136,10 @@
                                     },
                                     {% elif dsp.provider.external_endpoint_group is defined %}
                                     {% set redistribute = [] %}
-                                    {% if dsp.provider.external_endpoint_group.redistribute.bgp | default(defaults.apic.tenants.services.device_selection_policies.provider.external_endpoint_group.redistribute.bgp) == "enabled" %}{% set redistribute = redistribute + [("bgp")] %}{% endif %}
-                                    {% if dsp.provider.external_endpoint_group.redistribute.ospf | default(defaults.apic.tenants.services.device_selection_policies.provider.external_endpoint_group.redistribute.ospf) == "enabled" %}{% set redistribute = redistribute + [("ospf")] %}{% endif %}
-                                    {% if dsp.provider.external_endpoint_group.redistribute.connected | default(defaults.apic.tenants.services.device_selection_policies.provider.external_endpoint_group.redistribute.connected) == "enabled" %}{% set redistribute = redistribute + [("connected")] %}{% endif %}
-                                    {% if dsp.provider.external_endpoint_group.redistribute.static | default(defaults.apic.tenants.services.device_selection_policies.provider.external_endpoint_group.redistribute.static) == "enabled" %}{% set redistribute = redistribute + [("static")] %}{% endif %}
+                                    {% if dsp.provider.external_endpoint_group.redistribute.bgp | default(defaults.apic.tenants.services.device_selection_policies.provider.external_endpoint_group.redistribute.bgp) | cisco.aac.aac_bool("enabled") == "enabled" %}{% set redistribute = redistribute + [("bgp")] %}{% endif %}
+                                    {% if dsp.provider.external_endpoint_group.redistribute.ospf | default(defaults.apic.tenants.services.device_selection_policies.provider.external_endpoint_group.redistribute.ospf) | cisco.aac.aac_bool("enabled") == "enabled" %}{% set redistribute = redistribute + [("ospf")] %}{% endif %}
+                                    {% if dsp.provider.external_endpoint_group.redistribute.connected | default(defaults.apic.tenants.services.device_selection_policies.provider.external_endpoint_group.redistribute.connected) | cisco.aac.aac_bool("enabled") == "enabled" %}{% set redistribute = redistribute + [("connected")] %}{% endif %}
+                                    {% if dsp.provider.external_endpoint_group.redistribute.static | default(defaults.apic.tenants.services.device_selection_policies.provider.external_endpoint_group.redistribute.static) | cisco.aac.aac_bool("enabled") == "enabled" %}{% set redistribute = redistribute + [("static")] %}{% endif %}
                                     {% set l3out_name = dsp.provider.external_endpoint_group.l3out ~ defaults.apic.tenants.l3outs.name_suffix %}
                                     {% set eepg_name = dsp.provider.external_endpoint_group.name ~ defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix %}
                                     {

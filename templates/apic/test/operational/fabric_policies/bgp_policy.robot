@@ -7,7 +7,7 @@ Resource        ../../apic_common.resource
 *** Test Cases ***
 {% for rr in apic.fabric_policies.fabric_bgp_rr | default([]) %}
 {% set query = "nodes[?id==`" ~ rr ~ "`].pod" %}
-{% set pod = (apic.node_policies | json_query(query))[0] | default(defaults.apic.fabric_policies.fabric_bgp_rr.pod_id) %}
+{% set pod = (apic.node_policies | community.general.json_query(query))[0] | default(defaults.apic.fabric_policies.fabric_bgp_rr.pod_id) %}
 
 Verify BGP Route Reflector {{ rr }} Peerings
     GET   "/api/mo/uni/controller/setuppol/setupp-{{ pod }}.json"

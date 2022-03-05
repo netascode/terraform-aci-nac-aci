@@ -5,7 +5,7 @@ Default Tags    apic   day2   config   tenants
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for rule in tenant.policies.match_rules | default([]) %}
 {% set rule_name = rule.name ~ defaults.apic.tenants.policies.match_rules.name_suffix %}
 
@@ -53,7 +53,7 @@ Verify Match Rule {{ rule_name }} Prefix {{ prefix.ip }}
     ${prefix}=   Set Variable   $..rtctrlSubjP.children[?(@.rtctrlMatchRtDest.attributes.ip=='{{ prefix.ip }}')]
     String   ${prefix}..rtctrlMatchRtDest.attributes.ip   {{ prefix.ip }}
     String   ${prefix}..rtctrlMatchRtDest.attributes.descr   {{ prefix.description | default() }}
-    String   ${prefix}..rtctrlMatchRtDest.attributes.aggregate   {{ prefix.aggregate | default(defaults.apic.tenants.policies.match_rules.prefixes.aggregate) }}
+    String   ${prefix}..rtctrlMatchRtDest.attributes.aggregate   {{ prefix.aggregate | default(defaults.apic.tenants.policies.match_rules.prefixes.aggregate) | cisco.aac.aac_bool("yes") }}
     String   ${prefix}..rtctrlMatchRtDest.attributes.fromPfxLen   {{ prefix.from_length | default(defaults.apic.tenants.policies.match_rules.prefixes.from_length) }}
     String   ${prefix}..rtctrlMatchRtDest.attributes.toPfxLen   {{ prefix.to_length | default(defaults.apic.tenants.policies.match_rules.prefixes.to_length) }}
 

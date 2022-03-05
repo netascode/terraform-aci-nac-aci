@@ -5,7 +5,7 @@ Default Tags    apic   day2   config   tenants
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for epg in tenant.inb_endpoint_groups | default([]) %}
 {% set epg_name = epg.name ~ defaults.apic.tenants.inb_endpoint_groups.name_suffix %}
 {% set bd_name = epg.bridge_domain ~ defaults.apic.tenants.bridge_domains.name_suffix %}

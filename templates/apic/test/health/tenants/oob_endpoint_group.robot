@@ -5,7 +5,7 @@ Default Tags    apic   day2   health   tenants   non-critical
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for epg in tenant.oob_endpoint_groups | default([]) %}
 {% if epg.name is not defined %}
 {% set epg_name = defaults.apic.tenants.oob_endpoint_groups.name %}

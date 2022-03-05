@@ -5,7 +5,7 @@ Default Tags    apic   day2   config   tenant
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for span in tenant.policies.span.destination_groups | default([]) %}
 {% set span_dst_grp_name = span.name ~ defaults.apic.tenants.policies.span.destination_groups.name_suffix %}
 {% set application_profile_name = span.application_profile ~ defaults.apic.tenants.application_profiles.name_suffix %}
@@ -23,7 +23,7 @@ Verify Tenant SPAN Destination Group {{ span_dst_grp_name }}
     String   $..spanRsDestEpg.attributes.mtu   {{ span.mtu | default(defaults.apic.tenants.policies.span.destination_groups.mtu) }}
     String   $..spanRsDestEpg.attributes.ttl   {{ span.ttl | default(defaults.apic.tenants.policies.span.destination_groups.ttl) }}
     String   $..spanRsDestEpg.attributes.ver   ver{{ span.version | default(defaults.apic.tenants.policies.span.destination_groups.version) }}
-    String   $..spanRsDestEpg.attributes.verEnforced   {{ span.enforce_version | default(defaults.apic.tenants.policies.span.destination_groups.enforce_version) }}
+    String   $..spanRsDestEpg.attributes.verEnforced   {{ span.enforce_version | default(defaults.apic.tenants.policies.span.destination_groups.enforce_version) | cisco.aac.aac_bool("yes") }}
     String   $..spanRsDestEpg.attributes.tDn   uni/tn-{{ span.tenant | default(tenant.name) }}/ap-{{ application_profile_name }}/epg-{{ endpoint_group_name }}
 
 {% endfor %}

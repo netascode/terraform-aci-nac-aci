@@ -13,7 +13,7 @@ Verify SNMP Policy '{{ snmp_policy_name }}'
     GET   "/api/mo/uni/fabric/snmppol-{{ snmp_policy_name }}.json?rsp-subtree=full"
     String   $..snmpPol.attributes.name   {{ snmp_policy_name }}
     # Verify admin state
-    String   $..snmpPol.attributes.adminSt   {{ policy.admin_state | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.admin_state) }}
+    String   $..snmpPol.attributes.adminSt   {{ policy.admin_state | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.admin_state) | cisco.aac.aac_bool("enabled") }}
     # Verify location
     String   $..snmpPol.attributes.loc   {{ policy.location | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.location) }}
     # Verify contact information

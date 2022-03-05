@@ -11,7 +11,7 @@ Resource        ../../../apic_common.resource
     {{ ports[name] | default(name)}}
 {% endmacro %}
 
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for filter in tenant.filters | default([]) %}
 {% set filter_name = filter.name ~ defaults.apic.tenants.filters.name_suffix %}
 
@@ -37,7 +37,7 @@ Verify Tenant {{ tenant.name }} Filter {{ filter.name }} Entry {{ entry_name }}
     String   ${filter_entry}.attributes.dFromPort   {{ get_protocol_from_port(entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_from_port)) }}
     String   ${filter_entry}.attributes.dToPort   {{ get_protocol_from_port(entry.destination_to_port | default(entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_to_port))) }}
 {% if entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) == 'tcp' %}
-    String   ${filter_entry}.attributes.stateful   {{ entry.stateful | default(defaults.apic.tenants.filters.entries.stateful) }}
+    String   ${filter_entry}.attributes.stateful   {{ entry.stateful | default(defaults.apic.tenants.filters.entries.stateful) | cisco.aac.aac_bool("yes") }}
 {% endif %}
 {% endif %}
 {% endif %}

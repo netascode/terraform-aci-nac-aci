@@ -2,7 +2,7 @@
     "l3IfPol": {
         "attributes": {
             "dn": "uni/fabric/l3IfP-default",
-            "bfdIsis": "{{ apic.fabric_policies.fabric_isis_bfd | default(defaults.apic.fabric_policies.fabric_isis_bfd) }}"
+            "bfdIsis": "{{ apic.fabric_policies.fabric_isis_bfd | default(defaults.apic.fabric_policies.fabric_isis_bfd) | cisco.aac.aac_bool("enabled") }}"
         }
     }
 }

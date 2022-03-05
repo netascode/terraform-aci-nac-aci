@@ -5,7 +5,7 @@ Default Tags    apic   day2   config   tenants
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for policy in tenant.policies.dhcp_relay_policies | default([]) %}
 {% set policy_name = policy.name ~ defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix %}
 

@@ -5,11 +5,11 @@ Default Tags    apic   day2   config   tenants
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for bafc in tenant.policies.bgp_address_family_context_policies | default([]) %}
 {% set bafc_name = bafc.name ~ defaults.apic.tenants.policies.bgp_address_family_context_policies.name_suffix %}
 {% set enable_host_route_leak = "" %}
-{% if bafc.enable_host_route_leak | default(defaults.apic.tenants.policies.bgp_address_family_context_policies.enable_host_route_leak) == "yes" %}{% set enable_host_route_leak = "host-rt-leak" %}{% endif %}
+{% if bafc.enable_host_route_leak | default(defaults.apic.tenants.policies.bgp_address_family_context_policies.enable_host_route_leak) | cisco.aac.aac_bool("yes") == "yes" %}{% set enable_host_route_leak = "host-rt-leak" %}{% endif %}
 
 Verify BGP Address Family Context Policy {{ bafc_name }}
     GET   "/api/mo/uni/tn-{{ tenant.name }}/bgpCtxAfP-{{ bafc_name }}.json"

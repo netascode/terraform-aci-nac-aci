@@ -18,10 +18,10 @@ Verify Monitoring Policy SNMP Trap Policy {{ snmp_policy_name }}
 {% for syslog in apic.fabric_policies.monitoring.syslogs | default([]) %}
 {% set syslog_policy_name = syslog.name ~ defaults.apic.fabric_policies.monitoring.syslogs.name_suffix %}
 {% set include = [] %}
-{% if syslog.audit | default(defaults.apic.fabric_policies.monitoring.syslogs.audit) == "yes" %}{% set include = include + [("audit")] %}{% endif %}
-{% if syslog.events | default(defaults.apic.fabric_policies.monitoring.syslogs.events) == "yes" %}{% set include = include + [("events")] %}{% endif %}
-{% if syslog.faults | default(defaults.apic.fabric_policies.monitoring.syslogs.faults) == "yes" %}{% set include = include + [("faults")] %}{% endif %}
-{% if syslog.session | default(defaults.apic.fabric_policies.monitoring.syslogs.session) == "yes" %}{% set include = include + [("session")] %}{% endif %}
+{% if syslog.audit | default(defaults.apic.fabric_policies.monitoring.syslogs.audit) | cisco.aac.aac_bool("yes") == "yes" %}{% set include = include + [("audit")] %}{% endif %}
+{% if syslog.events | default(defaults.apic.fabric_policies.monitoring.syslogs.events) | cisco.aac.aac_bool("yes") == "yes" %}{% set include = include + [("events")] %}{% endif %}
+{% if syslog.faults | default(defaults.apic.fabric_policies.monitoring.syslogs.faults) | cisco.aac.aac_bool("yes") == "yes" %}{% set include = include + [("faults")] %}{% endif %}
+{% if syslog.session | default(defaults.apic.fabric_policies.monitoring.syslogs.session) | cisco.aac.aac_bool("yes") == "yes" %}{% set include = include + [("session")] %}{% endif %}
 {% if include == ['audit', 'events', 'faults', 'session'] %}{% set include = [("all")] + include %}{% endif %}
 
 Verify Monitoring Policy Syslog Policy {{ syslog_policy_name }}

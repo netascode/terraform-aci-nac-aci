@@ -5,7 +5,7 @@ Default Tags    apic   day2   config   tenants
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for route_map in tenant.policies.route_control_route_maps | default([]) %}
 {% set route_map_name = route_map.name ~ defaults.apic.tenants.policies.route_control_route_maps.name_suffix %}
 

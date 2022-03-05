@@ -13,7 +13,7 @@ Verify Physical Domain {{ domain_name }}
     String   $..physDomP.attributes.name   {{ domain_name }}
     {% set vlan_pool_name = domain.vlan_pool ~ defaults.apic.access_policies.vlan_pools.name_suffix %}
     {% set query = "vlan_pools[?name==`" ~ vlan_pool_name ~ "`].allocation[]" %}
-    {% set allocation = (apic.access_policies | json_query(query))[0] | default(defaults.apic.access_policies.physical_domains.allocation) %}
+    {% set allocation = (apic.access_policies | community.general.json_query(query))[0] | default(defaults.apic.access_policies.physical_domains.allocation) %}
     String   $..infraRsVlanNs.attributes.tDn   uni/infra/vlanns-[{{ vlan_pool_name }}]-{{ allocation }}
 
 {% endfor %}

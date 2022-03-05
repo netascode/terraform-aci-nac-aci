@@ -11,12 +11,12 @@ Verify Error Disabled Recovery Policy
 
 Verify MCP Loop Policy
     ${policy}=   Set Variable   $..edrErrDisRecoverPol.children[?(@.edrEventP.attributes.event=='event-mcp-loop')]
-    String   ${policy}..edrEventP.attributes.recover   {{ apic.fabric_policies.err_disabled_recovery.mcp_loop | default(defaults.apic.fabric_policies.err_disabled_recovery.mcp_loop) }}
+    String   ${policy}..edrEventP.attributes.recover   {{ apic.fabric_policies.err_disabled_recovery.mcp_loop | default(defaults.apic.fabric_policies.err_disabled_recovery.mcp_loop) | cisco.aac.aac_bool("yes") }}
 
 Verify EP Move Policy
     ${policy}=   Set Variable   $..edrErrDisRecoverPol.children[?(@.edrEventP.attributes.event=='event-ep-move')]
-    String   ${policy}..edrEventP.attributes.recover   {{ apic.fabric_policies.err_disabled_recovery.ep_move | default(defaults.apic.fabric_policies.err_disabled_recovery.ep_move) }}
+    String   ${policy}..edrEventP.attributes.recover   {{ apic.fabric_policies.err_disabled_recovery.ep_move | default(defaults.apic.fabric_policies.err_disabled_recovery.ep_move) | cisco.aac.aac_bool("yes") }}
 
 Verify BPDU Guard Policy
     ${policy}=   Set Variable   $..edrErrDisRecoverPol.children[?(@.edrEventP.attributes.event=='event-bpduguard')]
-    String   ${policy}..edrEventP.attributes.recover   {{ apic.fabric_policies.err_disabled_recovery.bpdu_guard | default(defaults.apic.fabric_policies.err_disabled_recovery.bpdu_guard) }}
+    String   ${policy}..edrEventP.attributes.recover   {{ apic.fabric_policies.err_disabled_recovery.bpdu_guard | default(defaults.apic.fabric_policies.err_disabled_recovery.bpdu_guard) | cisco.aac.aac_bool("yes") }}

@@ -49,7 +49,7 @@ Verify Site {{ site.name }} Building {{ building.name }} Floor {{ floor.name }} 
 
 {% for node in rack.nodes | default([]) %}
 {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
-{% set pod = (apic.node_policies | json_query(query))[0] | default('1') %}
+{% set pod = (apic.node_policies | community.general.json_query(query))[0] | default('1') %}
 
 Verify Site {{ site.name }} Building {{ building.name }} Floor {{ floor.name }} Room {{ room.name }} Row {{ row.name }} Rack {{ rack.name }} Node {{ node }}
     ${node}=   Set Variable   $..geoSite.children[?(@.geoBuilding.attributes.name=='{{ building.name }}')].geoBuilding.children[?(@.geoFloor.attributes.name=='{{ floor.name }}')].geoFloor.children[?(@.geoRoom.attributes.name=='{{ room.name }}')].geoRoom.children[?(@.geoRow.attributes.name=='{{ row.name }}')].geoRow.children[?(@.geoRack.attributes.name=='{{ rack.name }}')].geoRack.children[?(@.geoRsNodeLocation.attributes.tDn=='topology/pod-{{ pod }}/node-{{ node }}')]

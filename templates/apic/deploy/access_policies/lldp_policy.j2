@@ -12,8 +12,8 @@
                     "attributes": {
                         "name": "{{ lldp_policy_name }}",
                         "dn": "uni/infra/lldpIfP-{{ lldp_policy_name }}",
-                        "adminRxSt": "{{ policy.admin_rx_state }}",
-                        "adminTxSt": "{{ policy.admin_tx_state }}"
+                        "adminRxSt": "{{ policy.admin_rx_state | cisco.aac.aac_bool("enabled") }}",
+                        "adminTxSt": "{{ policy.admin_tx_state | cisco.aac.aac_bool("enabled") }}"
                     }
                 }
             }

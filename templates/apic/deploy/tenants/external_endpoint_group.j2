@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -35,15 +35,15 @@
                                     {%- set comma3 = joiner(",") %}
                                     {%- for subnet in epg.subnets | default([]) %}{{ comma3() }}
                                     {% set scope = [] %}
-                                    {% if subnet.export_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.export_route_control) == "yes" %}{% set scope = scope + [("export-rtctrl")] %}{% endif %}
-                                    {% if subnet.import_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_route_control) == "yes" %}{% set scope = scope + [("import-rtctrl")] %}{% endif %}
-                                    {% if subnet.import_security | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_security) == "yes" %}{% set scope = scope + [("import-security")] %}{% endif %}
-                                    {% if subnet.shared_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.shared_route_control) == "yes" %}{% set scope = scope + [("shared-rtctrl")] %}{% endif %}
-                                    {% if subnet.shared_security | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.shared_security) == "yes" %}{% set scope = scope + [("shared-security")] %}{% endif %}
+                                    {% if subnet.export_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.export_route_control) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("export-rtctrl")] %}{% endif %}
+                                    {% if subnet.import_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_route_control) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("import-rtctrl")] %}{% endif %}
+                                    {% if subnet.import_security | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_security) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("import-security")] %}{% endif %}
+                                    {% if subnet.shared_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.shared_route_control) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("shared-rtctrl")] %}{% endif %}
+                                    {% if subnet.shared_security | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.shared_security) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("shared-security")] %}{% endif %}
                                     {% set agg = [] %}
-                                    {% if subnet.aggregate_export_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_export_route_control) == "yes" %}{% set agg = agg + [("export-rtctrl")] %}{% endif %}
-                                    {% if subnet.aggregate_import_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_import_route_control) == "yes" %}{% set agg = agg + [("import-rtctrl")] %}{% endif %}
-                                    {% if subnet.aggregate_shared_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_shared_route_control) == "yes" %}{% set agg = agg + [("shared-rtctrl")] %}{% endif %}
+                                    {% if subnet.aggregate_export_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_export_route_control) | cisco.aac.aac_bool("yes") == "yes" %}{% set agg = agg + [("export-rtctrl")] %}{% endif %}
+                                    {% if subnet.aggregate_import_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_import_route_control) | cisco.aac.aac_bool("yes") == "yes" %}{% set agg = agg + [("import-rtctrl")] %}{% endif %}
+                                    {% if subnet.aggregate_shared_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_shared_route_control) | cisco.aac.aac_bool("yes") == "yes" %}{% set agg = agg + [("shared-rtctrl")] %}{% endif %}
                                     {
                                         "l3extSubnet": {
                                             "attributes": {
@@ -54,7 +54,7 @@
                                                 "childAction": "deleteNonPresent"
                                             },
                                             "children": [
-                                                {% if subnet.bgp_route_summarization | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.bgp_route_summarization) ==  "yes" %}
+                                                {% if subnet.bgp_route_summarization | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.bgp_route_summarization) | cisco.aac.aac_bool("yes") ==  "yes" %}
                                                 {
                                                     "l3extRsSubnetToRtSumm": {
                                                         "attributes": {

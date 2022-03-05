@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -16,7 +16,7 @@
                         "dn":"uni/tn-{{ tenant.name }}/srcgrp-{{ span_group_name }}",
                         "name": "{{ span_group_name }}",
                         "descr":  "{{ span.description | default()}}",
-                        "adminSt" : "{{ span.admin_state | default(defaults.apic.tenants.policies.span.source_groups.admin_state) }}",
+                        "adminSt" : "{{ span.admin_state | default(defaults.apic.tenants.policies.span.source_groups.admin_state) | cisco.aac.aac_bool("enabled") }}",
                         "childAction": "deleteNonPresent"
                     },
                     "children": [

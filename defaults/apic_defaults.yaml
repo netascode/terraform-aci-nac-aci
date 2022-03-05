@@ -6,18 +6,20 @@ defaults:
     apic_option_render: True
     apic_option_configure: True
     apic_option_delete: False
+    ignore_annotations:
+      - orchestrator:msc
   nae:
     nae_port: 443
     nae_ignore_smart_events:
       - APP_EPG_NOT_DEPLOYED
       - APP_EPG_HAS_NO_CONTRACT_IN_ENFORCED_VRF
   apic:
-    auto_generate_switch_pod_profiles: disabled
-    auto_generate_pod_profiles: disabled
-    auto_generate_fabric_leaf_switch_interface_profiles: disabled
-    auto_generate_fabric_spine_switch_interface_profiles: disabled
-    auto_generate_access_leaf_switch_interface_profiles: disabled
-    auto_generate_access_spine_switch_interface_profiles: disabled
+    auto_generate_switch_pod_profiles: false
+    auto_generate_pod_profiles: false
+    auto_generate_fabric_leaf_switch_interface_profiles: false
+    auto_generate_fabric_spine_switch_interface_profiles: false
+    auto_generate_access_leaf_switch_interface_profiles: false
+    auto_generate_access_spine_switch_interface_profiles: false
     bootstrap:
       admin_username: admin
     fabric_policies:
@@ -38,32 +40,32 @@ defaults:
         apic_cli_banner: ''
         switch_cli_banner: ''
       ep_loop_protection:
-        admin_state: disabled
+        admin_state: false
         detection_interval: 60
         detection_multiplier: 4
         action: bd-learn-disable
       rogue_ep_control:
-        admin_state: enabled
+        admin_state: true
         detection_interval: 30
         detection_multiplier: 10
         hold_interval: 1800
       global_settings:
-        domain_validation: 'yes'
-        enforce_subnet_check: 'yes'
-        opflex_authentication: 'no'
-        disable_remote_endpoint_learn: 'no'
-        overlapping_vlan_validation: 'yes'
-        remote_leaf_direct: 'no'
+        domain_validation: true
+        enforce_subnet_check: true
+        opflex_authentication: false
+        disable_remote_endpoint_learn: false
+        overlapping_vlan_validation: true
+        remote_leaf_direct: false
       port_tracking:
-        admin_state: 'on'
+        admin_state: true
         delay: 120
         min_links: 0
-      ptp_admin_state: disabled
-      ip_aging: enabled
-      ignore_acked_faults: 'no'
-      use_infra_gipo: disabled
+      ptp_admin_state: false
+      ip_aging: false
+      ignore_acked_faults: false
+      use_infra_gipo: false
       fabric_isis_redistribute_metric: 60
-      fabric_isis_bfd: enabled
+      fabric_isis_bfd: true
       fabric_bgp_rr:
         pod_id: 1
       fabric_bgp_ext_rr:
@@ -71,20 +73,20 @@ defaults:
       date_time_format:
         display_format: local
         timezone: p0_UTC
-        show_offset: enabled
+        show_offset: true
       dns_policies:
         name_suffix: ''
         mgmt_epg: inb
         mgmt_epg_oob: default
         providers:
-          preferred: 'no'
+          preferred: false
         domains:
-          default: 'yes'
+          default: true
       err_disabled_recovery:
         interval: 300
-        mcp_loop: 'no'
-        ep_move: 'no'
-        bpdu_guard: 'no'
+        mcp_loop: false
+        ep_move: false
+        bpdu_guard: false
       coop_group_policy: strict
       l2_port_mtu: 9000
       pod_policy_groups:
@@ -99,17 +101,17 @@ defaults:
       pod_policies:
         date_time_policies:
           name_suffix: ''
-          ntp_admin_state: enabled
-          ntp_auth_state: disabled
-          apic_ntp_server_state: disabled
-          apic_ntp_server_master_mode: disabled
+          ntp_admin_state: true
+          ntp_auth_state: false
+          apic_ntp_server_state: false
+          apic_ntp_server_master_mode: false
           apic_ntp_server_master_stratum: 8
           ntp_servers:
-            preferred: 'yes'
+            preferred: true
             mgmt_epg: inb
         snmp_policies:
           name_suffix: ''
-          admin_state: enabled
+          admin_state: true
           location: ''
           contact: ''
           users:
@@ -122,37 +124,37 @@ defaults:
         management_access_policies:
           name_suffix: ''
           telnet:
-            admin_state: disabled
+            admin_state: false
             port: 23
           ssh:
-            admin_state: enabled
+            admin_state: true
             port: 22
-            password_auth: enabled
-            aes128_ctr: 'yes'
-            aes128_gcm: 'yes'
-            aes192_ctr: 'yes'
-            aes256_ctr: 'yes'
-            chacha: 'yes'
-            hmac_sha1: 'yes'
-            hmac_sha2_256: 'yes'
-            hmac_sha2_512: 'yes'
+            password_auth: true
+            aes128_ctr: true
+            aes128_gcm: true
+            aes192_ctr: true
+            aes256_ctr: true
+            chacha: true
+            hmac_sha1: true
+            hmac_sha2_256: true
+            hmac_sha2_512: true
           https:
-            admin_state: enabled
-            client_cert_auth_state: disabled
+            admin_state: true
+            client_cert_auth_state: false
             dh: 'none'
             port: 443
             key_ring: default
-            tlsv1: 'no'
-            tlsv1_1: 'yes'
-            tlsv1_2: 'yes'
+            tlsv1: false
+            tlsv1_1: true
+            tlsv1_2: true
           http:
-            admin_state: disabled
+            admin_state: false
             port: 80
       switch_policies:
         node_control_policies:
           name_suffix: ''
           telemetry: telemetry
-          dom: enabled
+          dom: true
         psu_policies:
           name_suffix: ''
       leaf_switch_policy_groups:
@@ -183,7 +185,7 @@ defaults:
         routing_profiles:
           name_suffix: ''
       infra_dscp_translation_policy:
-        admin_state: disabled
+        admin_state: false
         control_plane: CS7
         level_1: EF
         level_2: CS3
@@ -198,7 +200,7 @@ defaults:
         name_suffix: ''
         access_mode: read-write
         delimiter: ''
-        tag_collection: 'no'
+        tag_collection: false
         vswitch:
           enhanced_lags:
             name_suffix: ''
@@ -211,15 +213,15 @@ defaults:
           name_suffix: ''
           mgmt_epg: inb
           dvs_version: unmanaged
-          statistics: disabled
+          statistics: false
       aaa:
         remote_user_login_policy: no-login
-        default_fallback_check: disabled
+        default_fallback_check: false
         default_realm: local
         console_realm: local
         tacacs_providers:
           protocol: pap
-          monitoring: disabled
+          monitoring: false
           port: 49
           retries: 1
           timeout: 5
@@ -229,7 +231,7 @@ defaults:
             priority: 0
         users:
           status: active
-          expires: 'no'
+          expires: false
           domains:
             roles:
               privilege_type: write
@@ -276,23 +278,23 @@ defaults:
             mgmt_epg: inb
         syslogs:
           name_suffix: ''
-          audit: 'yes'
-          events: 'yes'
-          faults: 'yes'
-          session: 'no'
+          audit: true
+          events: true
+          faults: true
+          session: false
           minimum_severity: warnings
           format: aci
-          show_millisecond: disabled
-          admin_state: enabled
-          local_admin_state: enabled
+          show_millisecond: false
+          admin_state: true
+          local_admin_state: true
           local_severity: information
-          console_admin_state: enabled
+          console_admin_state: true
           console_severity: alerts
           destinations:
             port: 514
             facility: local7
             severity: warnings
-            admin_state: enabled
+            admin_state: true
             mgmt_epg: inb
       span:
         destination_groups:
@@ -302,22 +304,16 @@ defaults:
           flow_id: 1
           ttl: 64
           version: 2
-          enforce_version: 'no'
+          enforce_version: false
         source_groups:
           name_suffix: ''
-          admin_state: enabled
+          admin_state: true
           sources:
             name_suffix: ''
             direction: both
-            span_drop: 'no'
+            span_drop: false
             access_paths:
               module: 1
-          mtu: 1518
-          dscp: unspecified
-          flow_id: 1
-          ttl: 64
-          version: 2
-          enforce_version: 'no'
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
@@ -345,7 +341,7 @@ defaults:
         allocation: static
       aaeps:
         name_suffix: ''
-        infra_vlan: disabled
+        infra_vlan: false
         endpoint_groups:
           mode: regular
           deployment_immediacy: lazy
@@ -382,17 +378,17 @@ defaults:
         link_level_policies:
           name_suffix: ''
           speed: inherit
-          auto: 'on'
+          auto: true
           fec_mode: inherit
         port_channel_policies:
           name_suffix: ''
           min_links: 1
           max_links: 16
-          suspend_individual: 'yes'
-          graceful_convergence: 'yes'
-          fast_select_standby: 'yes'
-          load_defer: 'no'
-          symmetric_hash: 'no'
+          suspend_individual: true
+          graceful_convergence: true
+          fast_select_standby: true
+          load_defer: false
+          symmetric_hash: false
         port_channel_member_policies:
           name_suffix: ''
           priority: 32768
@@ -420,8 +416,8 @@ defaults:
           action: drop
         spanning_tree_policies:
           name_suffix: ''
-          bpdu_guard: 'no'
-          bpdu_filter: 'no'
+          bpdu_guard: false
+          bpdu_filter: false
       leaf_interface_policy_groups:
         name_suffix: ''
       spine_interface_policy_groups:
@@ -448,109 +444,109 @@ defaults:
             name_suffix: ''
             from_module: 1
       mcp:
-        admin_state: enabled
-        per_vlan: enabled
-        action: enabled
+        admin_state: true
+        per_vlan: true
+        action: true
         key: cisco
         loop_detection: 3
         initial_delay: 180
         frequency_sec: 2
         frequency_msec: 0
       qos:
-        preserve_cos: disabled
+        preserve_cos: false
         qos_classes:
           - level: 1
-            admin_state: enabled
+            admin_state: true
             mtu: 9216
             scheduling: wrr
             bandwidth_percent: 20
             congestion_algorithm: tail-drop
             minimum_buffer: 0
-            pfc_state: disabled
+            pfc_state: false
             no_drop_cos: unspecified
             pfc_scope: tor
-            ecn: disabled
-            forward_non_ecn: disabled
+            ecn: false
+            forward_non_ecn: false
             wred_max_threshold: 100
             wred_min_threshold: 0
             wred_probability: 0
             weight: 0
           - level: 2
-            admin_state: enabled
+            admin_state: true
             mtu: 9216
             scheduling: wrr
             bandwidth_percent: 20
             congestion_algorithm: tail-drop
             minimum_buffer: 0
-            pfc_state: disabled
+            pfc_state: false
             no_drop_cos: unspecified
             pfc_scope: tor
-            ecn: disabled
-            forward_non_ecn: disabled
+            ecn: false
+            forward_non_ecn: false
             wred_max_threshold: 100
             wred_min_threshold: 0
             wred_probability: 0
             weight: 0
           - level: 3
-            admin_state: enabled
+            admin_state: true
             mtu: 9216
             scheduling: wrr
             bandwidth_percent: 20
             congestion_algorithm: tail-drop
             minimum_buffer: 0
-            pfc_state: disabled
+            pfc_state: false
             no_drop_cos: unspecified
             pfc_scope: tor
-            ecn: disabled
-            forward_non_ecn: disabled
+            ecn: false
+            forward_non_ecn: false
             wred_max_threshold: 100
             wred_min_threshold: 0
             wred_probability: 0
             weight: 0
           - level: 4
-            admin_state: enabled
+            admin_state: true
             mtu: 9216
             scheduling: wrr
             bandwidth_percent: 0
             congestion_algorithm: tail-drop
             minimum_buffer: 0
-            pfc_state: disabled
+            pfc_state: false
             no_drop_cos: unspecified
             pfc_scope: tor
-            ecn: disabled
-            forward_non_ecn: disabled
+            ecn: false
+            forward_non_ecn: false
             wred_max_threshold: 100
             wred_min_threshold: 0
             wred_probability: 0
             weight: 0
           - level: 5
-            admin_state: enabled
+            admin_state: true
             mtu: 9216
             scheduling: wrr
             bandwidth_percent: 0
             congestion_algorithm: tail-drop
             minimum_buffer: 0
-            pfc_state: disabled
+            pfc_state: false
             no_drop_cos: unspecified
             pfc_scope: tor
-            ecn: disabled
-            forward_non_ecn: disabled
+            ecn: false
+            forward_non_ecn: false
             wred_max_threshold: 100
             wred_min_threshold: 0
             wred_probability: 0
             weight: 0
           - level: 6
-            admin_state: enabled
+            admin_state: true
             mtu: 9216
             scheduling: wrr
             bandwidth_percent: 0
             congestion_algorithm: tail-drop
             minimum_buffer: 0
-            pfc_state: disabled
+            pfc_state: false
             no_drop_cos: unspecified
             pfc_scope: tor
-            ecn: disabled
-            forward_non_ecn: disabled
+            ecn: false
+            forward_non_ecn: false
             wred_max_threshold: 100
             wred_min_threshold: 0
             wred_probability: 0
@@ -564,14 +560,14 @@ defaults:
           flow_id: 1
           ttl: 64
           version: 2
-          enforce_version: 'no'
+          enforce_version: false
         source_groups:
           name_suffix: ''
-          admin_state: enabled
+          admin_state: true
           sources:
             name_suffix: ''
             direction: 'both'
-            span_drop: 'no'
+            span_drop: false
             access_paths:
               module: 1
         filter_groups:
@@ -583,6 +579,23 @@ defaults:
             source_port_from: unspecified
             source_port_to: unspecified
             ip_protocol: unspecified
+      vspan:
+        destination_groups:
+          name_suffix: ''
+          destinations:
+            name_suffix: ''
+            mtu: 1518
+            flow_id: 1
+            ttl: 64
+            dscp: unspecified
+        sessions:
+          name_suffix: ''
+          admin_state: true
+          sources:
+            name_suffix: ''
+            direction: both
+            access_paths:
+              module: 1
     node_policies:
       oob_endpoint_group: default
       inb_endpoint_group: default
@@ -606,45 +619,45 @@ defaults:
     tenants:
       vrfs:
         name_suffix: ''
-        data_plane_learning: enabled
+        data_plane_learning: true
         enforcement_direction: ingress
         enforcement_preference: enforced
         pim:
           mtu: 1500
-          bsr_forward_updates: 'no'
-          bsr_listen_updates: 'no'
-          auto_rp_forward_updates: 'no'
-          auto_rp_listen_updates: 'no'
-          fast_convergence: 'no'
-          strict_rfc: 'no'
+          bsr_forward_updates: false
+          bsr_listen_updates: false
+          auto_rp_forward_updates: false
+          auto_rp_listen_updates: false
+          fast_convergence: false
+          strict_rfc: false
           max_multicast_entries: 4294967295
           reserved_multicast_entries: undefined
           asm_sg_expiry: 180
           asm_traffic_registry_max_rate: 65535
           asm_traffic_registry_source_ip: '0.0.0.0'
-        preferred_group: disabled
+        preferred_group: false
       bridge_domains:
         name_suffix: ''
         mac: 00:22:BD:F8:19:FF
-        arp_flooding: 'yes'
-        ip_dataplane_learning: 'yes'
-        limit_ip_learn_to_subnets: 'yes'
+        arp_flooding: true
+        ip_dataplane_learning: true
+        limit_ip_learn_to_subnets: true
         multi_destination_flooding: bd-flood
         unknown_unicast: flood
         unknown_ipv4_multicast: flood
         unknown_ipv6_multicast: flood
-        unicast_routing: 'yes'
-        advertise_host_routes: 'no'
-        l3_multicast: 'no'
+        unicast_routing: true
+        advertise_host_routes: false
+        l3_multicast: false
         subnets:
-          primary_ip: 'no'
-          public: 'no'
-          private: 'yes'
-          shared: 'no'
-          virtual: 'no'
-          igmp_querier: 'no'
-          nd_ra_prefix: 'yes'
-          no_default_gateway: 'no'
+          primary_ip: false
+          public: false
+          private: true
+          shared: false
+          virtual: false
+          igmp_querier: false
+          nd_ra_prefix: true
+          no_default_gateway: false
       l3outs:
         name_suffix: ''
         target_dscp: unspecified
@@ -655,89 +668,89 @@ defaults:
           area_cost: 1
           area_type: regular
         bgp_peers:
-          allow_self_as: 'no'
-          as_override: 'no'
-          disable_peer_as_check: 'no'
-          next_hop_self: 'no'
-          send_community: 'no'
-          send_ext_community: 'no'
+          allow_self_as: false
+          as_override: false
+          disable_peer_as_check: false
+          next_hop_self: false
+          send_community: false
+          send_ext_community: false
           allowed_self_as_count: 3
           ttl: 1
           weight: 0
-          bfd: 'no'
-          disable_connected_check: 'no'
-          remove_all_private_as: 'no'
-          remove_private_as: 'no'
-          replace_private_as_with_local_as: 'no'
-          unicast_address_family: 'yes'
-          multicast_address_family: 'yes'
-          admin_state: 'enabled'
+          bfd: false
+          disable_connected_check: false
+          remove_all_private_as: false
+          remove_private_as: false
+          replace_private_as_with_local_as: false
+          unicast_address_family: true
+          multicast_address_family: true
+          admin_state: true
           as_propagate: none
         redistribution_route_maps:
           source: static
         nodes:
           pod: 1
-          router_id_as_loopback: 'yes'
+          router_id_as_loopback: true
           static_routes:
             preference: 1
-            bfd: disabled
+            bfd: false
             next_hops:
               preference: 1
               type: prefix
           interfaces:
             pod: 1
             module: 1
-            svi: 'no'
-            floating_svi: 'no'
+            svi: false
+            floating_svi: false
             ip: 0.0.0.0
             mac: 00:22:BD:F8:19:FF
             mtu: inherit
             bgp_peers:
-              allow_self_as: 'no'
-              as_override: 'no'
-              disable_peer_as_check: 'no'
-              next_hop_self: 'no'
-              send_community: 'no'
-              send_ext_community: 'no'
+              allow_self_as: false
+              as_override: false
+              disable_peer_as_check: false
+              next_hop_self: false
+              send_community: false
+              send_ext_community: false
               allowed_self_as_count: 3
               ttl: 1
               weight: 0
-              bfd: 'no'
-              disable_connected_check: 'no'
-              remove_all_private_as: 'no'
-              remove_private_as: 'no'
-              replace_private_as_with_local_as: 'no'
-              unicast_address_family: 'yes'
-              multicast_address_family: 'yes'
-              admin_state: 'enabled'
+              bfd: false
+              disable_connected_check: false
+              remove_all_private_as: false
+              remove_private_as: false
+              replace_private_as_with_local_as: false
+              unicast_address_family: true
+              multicast_address_family: true
+              admin_state: true
               as_propagate: none
         node_profiles:
           name_suffix: ''
           bgp_peers:
-            allow_self_as: 'no'
-            as_override: 'no'
-            disable_peer_as_check: 'no'
-            next_hop_self: 'no'
-            send_community: 'no'
-            send_ext_community: 'no'
+            allow_self_as: false
+            as_override: false
+            disable_peer_as_check: false
+            next_hop_self: false
+            send_community: false
+            send_ext_community: false
             allowed_self_as_count: 3
             ttl: 1
             weight: 0
-            bfd: 'no'
-            disable_connected_check: 'no'
-            remove_all_private_as: 'no'
-            remove_private_as: 'no'
-            replace_private_as_with_local_as: 'no'
-            unicast_address_family: 'yes'
-            multicast_address_family: 'yes'
-            admin_state: 'enabled'
+            bfd: false
+            disable_connected_check: false
+            remove_all_private_as: false
+            remove_private_as: false
+            replace_private_as_with_local_as: false
+            unicast_address_family: true
+            multicast_address_family: true
+            admin_state: true
             as_propagate: none
           nodes:
             pod: 1
-            router_id_as_loopback: 'yes'
+            router_id_as_loopback: true
             static_routes:
               preference: 1
-              bfd: disabled
+              bfd: false
               next_hops:
                 preference: 1
                 type: prefix
@@ -751,29 +764,29 @@ defaults:
             interfaces:
               pod: 1
               module: 1
-              svi: 'no'
-              floating_svi: 'no'
+              svi: false
+              floating_svi: false
               ip: 0.0.0.0
               mac: 00:22:BD:F8:19:FF
               mtu: inherit
               bgp_peers:
-                allow_self_as: 'no'
-                as_override: 'no'
-                disable_peer_as_check: 'no'
-                next_hop_self: 'no'
-                send_community: 'no'
-                send_ext_community: 'no'
+                allow_self_as: false
+                as_override: false
+                disable_peer_as_check: false
+                next_hop_self: false
+                send_community: false
+                send_ext_community: false
                 allowed_self_as_count: 3
                 ttl: 1
                 weight: 0
-                bfd: 'no'
-                disable_connected_check: 'no'
-                remove_all_private_as: 'no'
-                remove_private_as: 'no'
-                replace_private_as_with_local_as: 'no'
-                unicast_address_family: 'yes'
-                multicast_address_family: 'yes'
-                admin_state: 'enabled'
+                bfd: false
+                disable_connected_check: false
+                remove_all_private_as: false
+                remove_private_as: false
+                replace_private_as_with_local_as: false
+                unicast_address_family: true
+                multicast_address_family: true
+                admin_state: true
                 as_propagate: none
         external_endpoint_groups:
           name_suffix: ''
@@ -781,15 +794,15 @@ defaults:
           qos_class: unspecified
           target_dscp: unspecified
           subnets:
-            import_route_control: 'no'
-            export_route_control: 'no'
-            shared_route_control: 'no'
-            import_security: 'yes'
-            shared_security: 'no'
-            aggregate_import_route_control: 'no'
-            aggregate_export_route_control: 'no'
-            aggregate_shared_route_control: 'no'
-            bgp_route_summarization: 'no'
+            import_route_control: false
+            export_route_control: false
+            shared_route_control: false
+            import_security: true
+            shared_security: false
+            aggregate_import_route_control: false
+            aggregate_export_route_control: false
+            aggregate_shared_route_control: false
+            bgp_route_summarization: false
         import_route_map:
           type: global
           contexts:
@@ -803,24 +816,24 @@ defaults:
             action: permit
             order: 0
         default_route_leak_policy:
-          always: 'no'
+          always: false
           criteria: 'only'
-          context_scope: 'no'
-          outside_scope: 'yes'
-        l3_multicast_ipv4: 'no'
+          context_scope: false
+          outside_scope: true
+        l3_multicast_ipv4: false
       application_profiles:
         name_suffix: ''
         endpoint_groups:
           name_suffix: ''
-          flood_in_encap: disabled
+          flood_in_encap: false
           intra_epg_isolation: unenforced
           preferred_group: exclude
           qos_class: unspecified
           vmware_vmm_domains:
             name_suffix: ''
-            u_segmentation: 'no'
+            u_segmentation: false
             delimiter: ''
-            netflow: disabled
+            netflow: false
             deployment_immediacy: lazy
             resolution_immediacy: pre-provision
             allow_promiscuous: reject
@@ -835,14 +848,14 @@ defaults:
             ip: '0.0.0.0'
             module: 1
           subnets:
-            primary_ip: 'no'
-            public: 'no'
-            private: 'yes'
-            shared: 'no'
-            igmp_querier: 'no'
-            nd_ra_prefix: 'yes'
-            no_default_gateway: 'no'
-            virtual: 'no'
+            primary_ip: false
+            public: false
+            private: true
+            shared: false
+            igmp_querier: false
+            nd_ra_prefix: true
+            no_default_gateway: false
+            virtual: false
             nlb_group: 0.0.0.0
             nlb_mac: 00:00:00:00:00:00
             ip_pools:
@@ -868,8 +881,8 @@ defaults:
           filters:
             action: permit
             priority: default
-            log: 'no'
-            no_stats: 'no'
+            log: false
+            no_stats: false
       imported_contracts:
         name_suffix: ''
       oob_contracts:
@@ -887,17 +900,17 @@ defaults:
           source_to_port: unspecified
           destination_from_port: unspecified
           destination_to_port: unspecified
-          stateful: 'no'
+          stateful: false
       policies:
         custom_qos:
           name_suffix: ''
         ospf_interface_policies:
           name_suffix: ''
           cost: unspecified
-          passive_interface: 'no'
-          mtu_ignore: 'no'
-          advertise_subnet: 'no'
-          bfd: 'no'
+          passive_interface: false
+          mtu_ignore: false
+          advertise_subnet: false
+          bfd: false
           hello_interval: 10
           dead_interval: 40
           network_type: p2p
@@ -912,7 +925,7 @@ defaults:
           keepalive_interval: 60
           hold_interval: 180
           stale_interval: default
-          graceful_restart_helper: enabled
+          graceful_restart_helper: true
           maximum_as_limit: 0
         bgp_peer_prefix_policies:
           name_suffix: ''
@@ -927,7 +940,7 @@ defaults:
           local_distance: 220
           ebgp_max_ecmp: 16
           ibgp_max_ecmp: 16
-          enable_host_route_leak: 'no'
+          enable_host_route_leak: false
         dhcp_relay_policies:
           name_suffix: ''
         dhcp_option_policies:
@@ -949,7 +962,7 @@ defaults:
             factors:
               scope: 'transitive'
           prefixes:
-            aggregate: 'no'
+            aggregate: false
             from_length: 0
             to_length: 0
         set_rules:
@@ -963,26 +976,26 @@ defaults:
           set_as_path:
             criteria: 'prepend'
             count: 1
-          next_hop_propagation: disabled
-          multipath: disabled
+          next_hop_propagation: false
+          multipath: false
         bfd_interface_policies:
           name_suffix: ''
-          subinterface_optimization: disabled
+          subinterface_optimization: false
           detection_multiplier: 3
-          echo_admin_state: enabled
+          echo_admin_state: true
           echo_rx_interval: 50
           min_rx_interval: 50
           min_tx_interval: 50
         igmp_snooping_policies:
           name_suffix: ''
-          admin_state: enabled
+          admin_state: true
           last_member_query_interval: 1
           query_interval: 125
           query_response_interval: 10
           start_query_count: 2
           start_query_interval: 31
-          fast_leave: 'no'
-          querier: 'no'
+          fast_leave: false
+          querier: false
         multicast_route_maps:
           name_suffix: ''
           multicast_route_map_entries:
@@ -997,15 +1010,15 @@ defaults:
           designated_router_priority: 1
           hello_interval: 30000
           join_prune_interval: 60
-          mcast_dom_boundary: 'no'
-          passive: 'no'
-          strict_rfc: 'no'
+          mcast_dom_boundary: false
+          passive: false
+          strict_rfc: false
         igmp_interface_policies:
           name_suffix: ''
           grp_timeout: 260
-          allow_v3_asm: 'no'
-          fast_leave: 'no'
-          report_link_local_groups: 'no'
+          allow_v3_asm: false
+          fast_leave: false
+          report_link_local_groups: false
           last_member_count: 2
           last_member_response_time: 1
           querier_timeout: 255
@@ -1035,16 +1048,16 @@ defaults:
           port: 0
         trust_control_policies:
           name_suffix: ''
-          dhcp_v4_server: 'no'
-          dhcp_v6_server: 'no'
-          ipv6_router: 'no'
-          arp: 'no'
-          nd: 'no'
-          ra: 'no'
+          dhcp_v4_server: false
+          dhcp_v6_server: false
+          ipv6_router: false
+          arp: false
+          nd: false
+          ra: false
         span:
           source_groups:
             name_suffix: ''
-            admin_state: disabled
+            admin_state: false
             sources:
               direction: both
           destination_groups:
@@ -1054,18 +1067,18 @@ defaults:
             mtu: 1518
             ttl: 64
             version: 2
-            enforce_version: 'no'
+            enforce_version: false
       services:
         l4l7_devices:
           name_suffix: ''
           context_aware: single-Context
           type: PHYSICAL
           function: GoTo
-          copy_device: 'no'
-          managed: 'no'
-          promiscuous_mode: 'no'
+          copy_device: false
+          managed: false
+          promiscuous_mode: false
           service_type: FW
-          trunking: 'no'
+          trunking: false
           concrete_devices:
             name_suffix: ''
             interfaces:
@@ -1078,14 +1091,14 @@ defaults:
         redirect_policies:
           name_suffix: ''
           type: L3
-          anycast: disabled
+          anycast: false
           hashing: sip-dip-prototype
-          threshold: disabled
+          threshold: false
           max_threshold: 0
           min_threshold: 0
           threshold_down_action: permit
-          resilient_hashing: disabled
-          pod_aware: disabled
+          resilient_hashing: false
+          pod_aware: false
           l3_destinations:
             pod: 1
         redirect_backup_policies:
@@ -1100,24 +1113,24 @@ defaults:
         service_graph_templates:
           name_suffix: ''
           template_type: FW_ROUTED
-          redirect: disabled
-          share_encapsulation: disabled
+          redirect: false
+          share_encapsulation: false
         device_selection_policies:
           consumer:
-            l3_destination: enabled
-            permit_logging: disabled
+            l3_destination: true
+            permit_logging: false
             external_endpoint_group:
               redistribute:
-                bgp: disabled
-                ospf: disabled
-                connected: disabled
-                static: disabled
+                bgp: false
+                ospf: false
+                connected: false
+                static: false
           provider:
-            l3_destination: enabled
-            permit_logging: disabled
+            l3_destination: true
+            permit_logging: false
             external_endpoint_group:
               redistribute:
-                bgp: disabled
-                ospf: disabled
-                connected: disabled
-                static: disabled
+                bgp: false
+                ospf: false
+                connected: false
+                static: false

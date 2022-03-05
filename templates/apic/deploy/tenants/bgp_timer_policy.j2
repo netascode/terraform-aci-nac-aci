@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -16,7 +16,7 @@
                         "name": "{{ bgp_timer_name }}",
                         "descr": "{{ bt.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/bgpCtxP-{{ bgp_timer_name }}",
-                        "grCtrl": "{% if bt.graceful_restart_helper | default(defaults.apic.tenants.policies.bgp_timer_policies.graceful_restart_helper) == "enabled" %}helper{% elif bt.graceful_restart_helper | default(defaults.apic.tenants.policies.bgp_timer_policies.graceful_restart_helper) == "disabled" %}{% endif %}",
+                        "grCtrl": "{% if bt.graceful_restart_helper | default(defaults.apic.tenants.policies.bgp_timer_policies.graceful_restart_helper) | cisco.aac.aac_bool("enabled") == "enabled" %}helper{% elif bt.graceful_restart_helper | default(defaults.apic.tenants.policies.bgp_timer_policies.graceful_restart_helper) | cisco.aac.aac_bool("enabled") == "disabled" %}{% endif %}",
                         "holdIntvl": "{{ bt.hold_interval | default(defaults.apic.tenants.policies.bgp_timer_policies.hold_interval) }}",
                         "kaIntvl": "{{ bt.keepalive_interval | default(defaults.apic.tenants.policies.bgp_timer_policies.keepalive_interval) }}",
                         "maxAsLimit": "{{ bt.maximum_as_limit | default(defaults.apic.tenants.policies.bgp_timer_policies.maximum_as_limit) }}",

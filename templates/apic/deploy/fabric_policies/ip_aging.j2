@@ -1,7 +1,7 @@
 {
     "epIpAgingP": {
         "attributes": {
-            "adminSt": "{{ apic.fabric_policies.ip_aging | default(defaults.apic.fabric_policies.ip_aging) }}",
+            "adminSt": "{{ apic.fabric_policies.ip_aging | default(defaults.apic.fabric_policies.ip_aging) | cisco.aac.aac_bool("enabled") }}",
             "dn": "uni/infra/ipAgingP-default"
         }
     }

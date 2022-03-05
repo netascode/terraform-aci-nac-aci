@@ -1,5 +1,5 @@
 {% set query = "schemas[?name==`" ~ item ~ "`]" %}
-{% set schema = (mso | json_query(query))[0] %}
+{% set schema = (mso | community.general.json_query(query))[0] %}
 {
     "displayName": "{{ schema.name }}",
     "templates": [

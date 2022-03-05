@@ -11,16 +11,16 @@ Verify Date and Time Policy {{ date_time_policy_name }}
     GET   "/api/mo/uni/fabric/time-{{ date_time_policy_name }}.json?rsp-subtree=full"
     String   $..datetimePol.attributes.name   {{ date_time_policy_name }}
     String   $..datetimePol.attributes.StratumValue   {{ policy.apic_ntp_server_master_stratum | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.apic_ntp_server_master_stratum) }}
-    String   $..datetimePol.attributes.adminSt   {{ policy.ntp_admin_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_admin_state) }}
-    String   $..datetimePol.attributes.authSt   {{ policys.ntp_auth_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_auth_state) }}
-    String   $..datetimePol.attributes.serverState   {{ policy.apic_ntp_server_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.apic_ntp_server_state) }}
+    String   $..datetimePol.attributes.adminSt   {{ policy.ntp_admin_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_admin_state) | cisco.aac.aac_bool("enabled") }}
+    String   $..datetimePol.attributes.authSt   {{ policys.ntp_auth_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_auth_state) | cisco.aac.aac_bool("enabled") }}
+    String   $..datetimePol.attributes.serverState   {{ policy.apic_ntp_server_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.apic_ntp_server_state) | cisco.aac.aac_bool("enabled") }}
 
 {% for server in policy.ntp_servers | default([]) %}
 
 Verify NTP Server {{ server.hostname_ip }}
     ${server}=   Set Variable   $..datetimePol.children[?(@.datetimeNtpProv.attributes.name=='{{ server.hostname_ip }}')]
     String   ${server}..datetimeNtpProv.attributes.name   {{ server.hostname_ip }}
-    String   ${server}..datetimeNtpProv.attributes.preferred   {{ server.preferred | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_servers.preferred) }}
+    String   ${server}..datetimeNtpProv.attributes.preferred   {{ server.preferred | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_servers.preferred) | cisco.aac.aac_bool("yes") }}
 {% set mgmt_epg = server.mgmt_epg | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_servers.mgmt_epg) %}
 {% if mgmt_epg == "oob" %}
     String   ${server}..datetimeRsNtpProvToEpg.attributes.tDn   uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}
@@ -40,7 +40,7 @@ Verify NTP Key {{ key.id }}
     String   ${key}.datetimeNtpAuthKey.attributes.id   {{ key.id }}
     String   ${key}.datetimeNtpAuthKey.attributes.key   {{ key.key }}
     String   ${key}.datetimeNtpAuthKey.attributes.keyType   {{ key.auth_type }}
-    String   ${key}.datetimeNtpAuthKey.attributes.trusted   {{ key.trusted }}
+    String   ${key}.datetimeNtpAuthKey.attributes.trusted   {{ key.trusted | cisco.aac.aac_bool("yes") }}
 
 {% endfor %}
 

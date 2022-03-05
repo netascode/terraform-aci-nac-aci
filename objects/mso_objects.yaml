@@ -20,7 +20,7 @@ objects:
   - name: Tacacs Provider
     template: tacacs_provider
     api_path: auth/providers/tacacs
-    object_ids: "{{ mso | default() | json_query('tacacs_providers[*].hostname_ip') }}"
+    object_ids: "{{ mso | default() | community.general.json_query('tacacs_providers[*].hostname_ip') }}"
     folder: mso
     test_types:
       - config
@@ -29,7 +29,7 @@ objects:
   - name: Login Domain
     template: login_domain
     api_path: auth/domains
-    object_ids: "{{ mso | default() | json_query('login_domains[*].name') }}"
+    object_ids: "{{ mso | default() | community.general.json_query('login_domains[*].name') }}"
     delete_ignore:
       - Local
     folder: mso
@@ -40,7 +40,7 @@ objects:
   - name: Remote Location
     template: remote_location
     api_path: platform/remote-locations
-    object_ids: "{{ mso | default() | json_query('remote_locations[*].name') }}"
+    object_ids: "{{ mso | default() | community.general.json_query('remote_locations[*].name') }}"
     folder: mso
     test_types:
       - config
@@ -49,7 +49,7 @@ objects:
   - name: User
     template: user
     api_path: users
-    object_ids: "{{ mso | default() | json_query('users[*].username') }}"
+    object_ids: "{{ mso | default() | community.general.json_query('users[*].username') }}"
     delete_ignore:
       - admin
       - '{{ mso_username }}'
@@ -62,7 +62,7 @@ objects:
   - name: CA Certificate
     template: ca_certificate
     api_path: auth/security/certificates
-    object_ids: "{{ mso | default() | json_query('ca_certificates[*].name') }}"
+    object_ids: "{{ mso | default() | community.general.json_query('ca_certificates[*].name') }}"
     folder: mso
     test_types:
       - config
@@ -71,7 +71,7 @@ objects:
   - name: Site
     template: site
     api_path: sites
-    object_ids: "{{ mso | default() | json_query('sites[*].name') }}"
+    object_ids: "{{ mso | default() | community.general.json_query('sites[*].name') }}"
     folder: mso
     test_types:
       - config
@@ -105,7 +105,7 @@ objects:
   - name: Tenant
     template: tenant
     api_path: tenants
-    object_ids: "{{ mso | default() | json_query('tenants[*].name') }}"
+    object_ids: "{{ mso | default() | community.general.json_query('tenants[*].name') }}"
     delete_ignore:
       - common
       - infra
@@ -117,7 +117,7 @@ objects:
   - name: Schema
     template: schema
     api_path: schemas
-    object_ids: "{{ mso | default() | json_query('schemas[*].name') }}"
+    object_ids: "{{ mso | default() | community.general.json_query('schemas[*].name') }}"
     folder: schema
     test_types:
       - config
@@ -126,7 +126,7 @@ objects:
   - name: DHCP Relay Policy
     template: dhcp_relay
     api_path: policies/dhcp/relay
-    object_ids: "{{ mso | default() | json_query('policies.dhcp_relays[*].name') }}"
+    object_ids: "{{ mso | default() | community.general.json_query('policies.dhcp_relays[*].name') }}"
     folder: mso
     test_types:
       - config
@@ -135,7 +135,7 @@ objects:
   - name: DHCP Option Policy
     template: dhcp_option
     api_path: policies/dhcp/option
-    object_ids: "{{ mso | default() | json_query('policies.dhcp_options[*].name') }}"
+    object_ids: "{{ mso | default() | community.general.json_query('policies.dhcp_options[*].name') }}"
     folder: mso
     test_types:
       - config

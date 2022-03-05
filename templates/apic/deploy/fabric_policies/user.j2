@@ -15,8 +15,8 @@
                         "descr": "{{ user.description | default() }}",
                         "dn": "uni/userext/user-{{ user.username }}",
                         "email": "{{ user.email | default() }}",
-                        "expires": "{{ user.expires | default(defaults.apic.fabric_policies.aaa.users.expires) }}",
-                        {% if user.expires | default(defaults.apic.fabric_policies.aaa.users.expires) == 'yes' %}
+                        "expires": "{{ user.expires | default(defaults.apic.fabric_policies.aaa.users.expires) | cisco.aac.aac_bool("yes") }}",
+                        {% if user.expires | default(defaults.apic.fabric_policies.aaa.users.expires) | cisco.aac.aac_bool("yes") == 'yes' %}
                         "expiration": "{{ user.expire_date | default() }}",
                         {% endif %}
                         "firstName": "{{ user.first_name | default() }}",

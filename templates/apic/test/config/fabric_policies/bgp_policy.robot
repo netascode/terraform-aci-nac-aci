@@ -12,7 +12,7 @@ Retrieve BGP config
 {% if apic.fabric_policies.fabric_bgp_rr is defined %}
 {% for item in apic.fabric_policies.fabric_bgp_rr | default([]) %}
 {% set query = "nodes[?id==`" ~ item ~ "`].pod" %}
-{% set pod = (apic.node_policies | json_query(query))[0] | default(defaults.apic.fabric_policies.fabric_bgp_ext_rr.pod_id) %}
+{% set pod = (apic.node_policies | community.general.json_query(query))[0] | default(defaults.apic.fabric_policies.fabric_bgp_ext_rr.pod_id) %}
 
 Verify BGP Route Reflector {{ item }}
     ${rr}=   Set Variable   $..bgpRRP.children[?(@.bgpRRNodePEp.attributes.id=='{{ item }}')]
@@ -25,7 +25,7 @@ Verify BGP Route Reflector {{ item }}
 {% if apic.fabric_policies.fabric_bgp_ext_rr is defined %}
 {% for item in apic.fabric_policies.fabric_bgp_ext_rr | default([]) %}
 {% set query = "nodes[?id==`" ~ item ~ "`].pod" %}
-{% set pod = (apic.node_policies | json_query(query))[0] | default(defaults.apic.fabric_policies.fabric_bgp_ext_rr.pod_id) %}
+{% set pod = (apic.node_policies | community.general.json_query(query))[0] | default(defaults.apic.fabric_policies.fabric_bgp_ext_rr.pod_id) %}
 
 Verify External BGP Route Reflector {{ item }}
     ${extrr}=   Set Variable   $..bgpExtRRP.children[?(@.bgpRRNodePEp.attributes.id=='{{ item }}')]

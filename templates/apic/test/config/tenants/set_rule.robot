@@ -5,7 +5,7 @@ Default Tags    apic   day2   config   tenants
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for rule in tenant.policies.set_rules | default([]) %}
 {% set rule_name = rule.name ~ defaults.apic.tenants.policies.set_rules.name_suffix %}
 
@@ -45,10 +45,10 @@ Verify Set Rule {{ rule_name }}
     String   $..rtctrlSetASPath.attributes.criteria   {{ rule.set_as_path.criteria | default(defaults.apic.tenants.policies.set_rules.set_as_path.criteria ) }}
     String   $..rtctrlSetASPath.attributes.lastnum   {{ rule.set_as_path.count | default(defaults.apic.tenants.policies.set_rules.set_as_path.count ) }}
 {% endif %}
-{% if rule.next_hop_propagation | default(defaults.apic.tenants.policies.set_rules.next_hop_propagation) == 'enabled' %}
+{% if rule.next_hop_propagation | default(defaults.apic.tenants.policies.set_rules.next_hop_propagation) | cisco.aac.aac_bool("enabled") == 'enabled' %}
     String   $..rtctrlSetNhUnchanged.attributes.type   nh-unchanged
 {% endif %}
-{% if rule.multipath | default(defaults.apic.tenants.policies.set_rules.multipath) == 'enabled' %}
+{% if rule.multipath | default(defaults.apic.tenants.policies.set_rules.multipath) | cisco.aac.aac_bool("enabled") == 'enabled' %}
     String   $..rtctrlSetRedistMultipath.attributes.type   redist-multipath
 {% endif %}
 

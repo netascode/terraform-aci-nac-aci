@@ -5,7 +5,7 @@ Default Tags    apic   day2   config   tenant
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for span in tenant.policies.span.source_groups | default([]) %}
 {% set span_grp_name = span.name ~ defaults.apic.tenants.policies.span.source_groups.name_suffix %}
 {% set span_destination_name = span.destination ~ defaults.apic.tenants.policies.span.destination_groups.name_suffix %}
@@ -14,7 +14,7 @@ Verify Tenant SPAN Source Group {{ span_grp_name }}
     GET  "/api/mo/uni/tn-{{ tenant.name }}/srcgrp-{{ span_grp_name }}.json?rsp-subtree=full"
     String   $..spanSrcGrp.attributes.name   {{ span_grp_name }}
     String   $..spanSrcGrp.attributes.descr   {{ span.description | default() }}
-    String   $..spanSrcGrp.attributes.adminSt   {{ span.admin_state | default(defaults.apic.tenants.policies.span.source_groups.admin_state) }}
+    String   $..spanSrcGrp.attributes.adminSt   {{ span.admin_state | default(defaults.apic.tenants.policies.span.source_groups.admin_state) | cisco.aac.aac_bool("enabled") }}
     String   $..spanSpanLbl.attributes.name   {{ span_destination_name }}
 
 {% for source in span.sources | default([]) %}

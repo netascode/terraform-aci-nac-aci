@@ -5,10 +5,10 @@
         },
         "children": [
             {%- set comma1 = joiner(",") %}
-            {%- if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) == "enabled" or apic.auto_generate_access_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_access_leaf_switch_interface_profiles) == "enabled" %}
+            {%- if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) | cisco.aac.aac_bool("enabled") == "enabled" or apic.auto_generate_access_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_access_leaf_switch_interface_profiles) | cisco.aac.aac_bool("enabled") == "enabled" %}
             {%- for node in apic.interface_policies.nodes | default([]) %}
             {%- set query = "nodes[?id==`" ~ node.id ~ "`]" %}
-            {%- set full_node = (apic.node_policies | json_query(query))[0] %}
+            {%- set full_node = (apic.node_policies | community.general.json_query(query))[0] %}
             {%- if full_node.role == "leaf" %}
             {%- for fex in node.fexes | default([]) %}
             {%- set fex_profile_name = (full_node.id ~ ":" ~ full_node.name~ ":" ~ fex.id) | regex_replace("^(?P<id>.+):(?P<name>.+):(?P<fex>.+)$", (apic.access_policies.fex_profile_name | default(defaults.apic.access_policies.fex_profile_name))) %}{{ comma1() }}
@@ -62,7 +62,7 @@
                                         "infraRsAccBaseGrp": {
                                             "attributes": {
                                                 {% set query = "leaf_interface_policy_groups[?name=='" ~ sel.policy_group ~ "'].type[]" %}
-                                                {% set type = (apic.access_policies | json_query(query)) %}
+                                                {% set type = (apic.access_policies | community.general.json_query(query)) %}
                                                 {% set policy_group_name = sel.policy_group ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
                                                 {% if type[0] in ["pc", "vpc"] %}
                                                 "tDn": "uni/infra/funcprof/accbundle-{{ policy_group_name }}"

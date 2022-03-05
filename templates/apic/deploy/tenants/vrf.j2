@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -15,7 +15,7 @@
                         "name": "{{ vrf_name }}",
                         "dn": "uni/tn-{{ tenant.name }}/ctx-{{ vrf_name }}",
                         "nameAlias": "{{ vrf.alias | default() }}",
-                        "ipDataPlaneLearning": "{{ vrf.data_plane_learning | default(defaults.apic.tenants.vrfs.data_plane_learning) }}",
+                        "ipDataPlaneLearning": "{{ vrf.data_plane_learning | default(defaults.apic.tenants.vrfs.data_plane_learning) | cisco.aac.aac_bool("enabled") }}",
                         "pcEnfDir": "{{ vrf.enforcement_direction | default(defaults.apic.tenants.vrfs.enforcement_direction) }}",
                         "pcEnfPref": "{{ vrf.enforcement_preference | default(defaults.apic.tenants.vrfs.enforcement_preference) }}",
                         "descr": "{{ vrf.description | default() }}",
@@ -26,7 +26,7 @@
                        {
                             "vzAny": {
                                 "attributes": {
-                                    "prefGrMemb": "{{ vrf.preferred_group | default(defaults.apic.tenants.vrfs.preferred_group) }}"
+                                    "prefGrMemb": "{{ vrf.preferred_group | default(defaults.apic.tenants.vrfs.preferred_group) | cisco.aac.aac_bool("enabled") }}"
                                 },
                                 "children": [
                                     {%- set comma2 = joiner(",") %}
@@ -181,8 +181,8 @@
                         {%- if vrf.pim is defined %}{{ comma1() }}
                         {
                             {% set ctrl = [] %}
-                            {% if vrf.pim.fast_convergence | default(defaults.apic.tenants.vrfs.pim.fast_convergence) == "yes" %}{% set ctrl = ctrl + [("fast-conv")] %}{% endif %}
-                            {% if vrf.pim.strict_rfc | default(defaults.apic.tenants.vrfs.pim.strict_rfc) == "yes" %}{% set ctrl = ctrl + [("strict-rfc-compliant")] %}{% endif %}
+                            {% if vrf.pim.fast_convergence | default(defaults.apic.tenants.vrfs.pim.fast_convergence) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("fast-conv")] %}{% endif %}
+                            {% if vrf.pim.strict_rfc | default(defaults.apic.tenants.vrfs.pim.strict_rfc) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("strict-rfc-compliant")] %}{% endif %}
                             "pimCtxP": {
                                 "attributes": {
                                     "dn": "uni/tn-{{ tenant.name }}/ctx-{{ vrf_name}}/pimctxp",
@@ -304,8 +304,8 @@
                                         "pimBSRPPol": {
                                             "attributes": {
                                                 {% set ctrl = [] %}
-                                                {% if vrf.pim.bsr_forward_updates | default(defaults.apic.tenants.vrfs.pim.bsr_forward_updates) == "yes" %}{% set ctrl = ctrl + [("forward")] %}{% endif %}
-                                                {% if vrf.pim.bsr_listen_updates | default(defaults.apic.tenants.vrfs.pim.bsr_listen_updates) == "yes" %}{% set ctrl = ctrl + [("listen")] %}{% endif %}
+                                                {% if vrf.pim.bsr_forward_updates | default(defaults.apic.tenants.vrfs.pim.bsr_forward_updates) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("forward")] %}{% endif %}
+                                                {% if vrf.pim.bsr_listen_updates | default(defaults.apic.tenants.vrfs.pim.bsr_listen_updates) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("listen")] %}{% endif %}
                                                 "ctrl": "{{ ctrl | join(',') }}",
                                                 "childAction": "deleteNonPresent"
                                             },
@@ -336,8 +336,8 @@
                                         "pimAutoRPPol": {
                                             "attributes": {
                                                 {% set ctrl = [] %}
-                                                {% if vrf.pim.auto_rp_forward_updates | default(defaults.apic.tenants.vrfs.pim.auto_rp_forward_updates) == "yes" %}{% set ctrl = ctrl + [("forward")] %}{% endif %}
-                                                {% if vrf.pim.auto_rp_listen_updates | default(defaults.apic.tenants.vrfs.pim.auto_rp_listen_updates) == "yes" %}{% set ctrl = ctrl + [("listen")] %}{% endif %}
+                                                {% if vrf.pim.auto_rp_forward_updates | default(defaults.apic.tenants.vrfs.pim.auto_rp_forward_updates) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("forward")] %}{% endif %}
+                                                {% if vrf.pim.auto_rp_listen_updates | default(defaults.apic.tenants.vrfs.pim.auto_rp_listen_updates) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("listen")] %}{% endif %}
                                                 "ctrl": "{{ ctrl | join(',') }}",
                                                 "childAction": "deleteNonPresent"
                                             },

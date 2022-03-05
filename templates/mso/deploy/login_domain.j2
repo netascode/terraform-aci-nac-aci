@@ -1,5 +1,5 @@
 {% set query = "login_domains[?name==`" ~ item ~ "`]" %}
-{% set domain = (mso | json_query(query))[0] %}
+{% set domain = (mso | community.general.json_query(query))[0] %}
 {
     "name": "{{ domain.name }}",
     "description": "{{ domain.description | default() }}",

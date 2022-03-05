@@ -12,7 +12,7 @@ Verify VMware VMM Domain {{ vmm_name }}
     GET   "/api/mo/uni/vmmp-VMware/dom-{{ vmm_name }}.json?rsp-subtree=full"
     String   $..vmmDomP.attributes.name   {{ vmm_name }}
     String   $..vmmDomP.attributes.accessMode   {{ vmm.access_mode | default(defaults.apic.fabric_policies.vmware_vmm_domains.access_mode) }}
-    String   $..vmmDomP.attributes.enableTag   {{ vmm.tag_collection | default(defaults.apic.fabric_policies.vmware_vmm_domains.tag_collection) }}
+    String   $..vmmDomP.attributes.enableTag   {{ vmm.tag_collection | default(defaults.apic.fabric_policies.vmware_vmm_domains.tag_collection) | cisco.aac.aac_bool("yes") }}
 {% if vmm.vswitch.cdp_policy is defined %}
 {% set cdp_policy_name = vmm.vswitch.cdp_policy ~ defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix %}
     String   $..vmmRsVswitchOverrideCdpIfPol.attributes.tDn   uni/infra/cdpIfP-{{ cdp_policy_name }}
@@ -56,7 +56,7 @@ Verify VMware VMM Domain {{ vmm_name }} vCenter {{ vc_name }}
     String   ${cp}..vmmCtrlrP.attributes.dvsVersion   {{ vc.dvs_version | default(defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.dvs_version) }}
     String   ${cp}..vmmCtrlrP.attributes.hostOrIp   {{ vc.hostname_ip }}
     String   ${cp}..vmmCtrlrP.attributes.rootContName   {{ vc.datacenter }}
-    String   ${cp}..vmmCtrlrP.attributes.statsMode   {{ vc.statistics | default(defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.statistics) }}
+    String   ${cp}..vmmCtrlrP.attributes.statsMode   {{ vc.statistics | default(defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.statistics) | cisco.aac.aac_bool("enabled") }}
     String   ${cp}..vmmRsAcc.attributes.tDn   uni/vmmp-VMware/dom-{{ vmm_name }}/usracc-{{ vc_policy_name }}
 {% set mgmt_epg = vmm.mgmt_epg | default(defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.mgmt_epg) %}
 {% if mgmt_epg == "inb" %}

@@ -5,7 +5,7 @@ Default Tags    apic   day1   config   fabric_policies
 Resource        ../../apic_common.resource
 
 *** Test Cases ***
-{% if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) == "enabled" or apic.auto_generate_fabric_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles) == "enabled" %}
+{% if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) | cisco.aac.aac_bool("enabled") == "enabled" or apic.auto_generate_fabric_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles) | cisco.aac.aac_bool("enabled") == "enabled" %}
 {% for node in apic.node_policies.nodes | default([]) %}
 {% if node.role == "leaf" %}
 {% set leaf_switch_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.fabric_policies.leaf_switch_profile_name | default(defaults.apic.fabric_policies.leaf_switch_profile_name))) %}

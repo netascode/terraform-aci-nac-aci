@@ -14,7 +14,7 @@
                         {
                             "aaaDefaultAuth": {
                                 "attributes": {
-                                    "fallbackCheck": "{% if apic.fabric_policies.aaa.default_fallback_check | default(defaults.apic.fabric_policies.aaa.default_fallback_check) == "enabled" %}true{% else %}false{% endif %}",
+                                    "fallbackCheck": "{% if apic.fabric_policies.aaa.default_fallback_check | default(defaults.apic.fabric_policies.aaa.default_fallback_check) | cisco.aac.aac_bool("enabled") == "enabled" %}true{% else %}false{% endif %}",
                                     {% if apic.fabric_policies.aaa.default_realm | default(defaults.apic.fabric_policies.aaa.default_realm) == "tacacs" %}
                                     "providerGroup": "{{ apic.fabric_policies.aaa.default_login_domain | default(defaults.apic.fabric_policies.aaa.default_login_domain) }}",
                                     {% endif %}

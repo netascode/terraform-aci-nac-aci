@@ -10,7 +10,7 @@
                 "edrEventP": {
                     "attributes": {
                         "event": "event-mcp-loop",
-                        "recover": "{{ apic.fabric_policies.err_disabled_recovery.mcp_loop | default(defaults.apic.fabric_policies.err_disabled_recovery.mcp_loop) }}"
+                        "recover": "{{ apic.fabric_policies.err_disabled_recovery.mcp_loop | default(defaults.apic.fabric_policies.err_disabled_recovery.mcp_loop) | cisco.aac.aac_bool("yes") }}"
                     }
                 }
             },
@@ -18,7 +18,7 @@
                 "edrEventP": {
                     "attributes": {
                         "event": "event-ep-move",
-                        "recover": "{{ apic.fabric_policies.err_disabled_recovery.ep_move | default(defaults.apic.fabric_policies.err_disabled_recovery.ep_move) }}"
+                        "recover": "{{ apic.fabric_policies.err_disabled_recovery.ep_move | default(defaults.apic.fabric_policies.err_disabled_recovery.ep_move) | cisco.aac.aac_bool("yes") }}"
                     }
                 }
             },
@@ -26,7 +26,7 @@
                 "edrEventP": {
                     "attributes": {
                         "event": "event-bpduguard",
-                        "recover": "{{ apic.fabric_policies.err_disabled_recovery.bpdu_guard | default(defaults.apic.fabric_policies.err_disabled_recovery.bpdu_guard) }}"
+                        "recover": "{{ apic.fabric_policies.err_disabled_recovery.bpdu_guard | default(defaults.apic.fabric_policies.err_disabled_recovery.bpdu_guard) | cisco.aac.aac_bool("yes") }}"
                     }
                 }
             }

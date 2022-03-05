@@ -151,6 +151,7 @@ def parse_schema_type_constraint(element, name=""):
         result_constraint = ", ".join(args)
     elif element.tag == "bool":
         result_type = "Boolean"
+        result_constraint = "`true`, `false`"
     elif element.tag == "null":
         result_type = "Null"
     elif element.tag == "enum":
@@ -183,15 +184,23 @@ def parse_schema_type_constraint(element, name=""):
         result_constraint = "`[{}]`".format(name)
     elif element.tag == "any":
         types = []
+        enum = True
+        enum_constraint = []
         for validator in element.validators:
             type, constraint = parse_schema_type_constraint(validator)
+            if type not in ["Choice", "Boolean"]:
+                enum = False
             if type is not None:
+                enum_constraint.append(constraint)
                 if constraint:
                     types.append("{}[{}]".format(type, constraint))
                 else:
                     types.append(type)
-                result_type = "Any"
-        result_constraint = " or ".join(types)
+        result_type = "Any"
+        if enum:
+            result_constraint = ", ".join(enum_constraint)
+        else:
+            result_constraint = " or ".join(types)
     return result_type, result_constraint
 
 
@@ -218,6 +227,10 @@ def get_default(defaults, path):
             break
     if isinstance(default_value, dict) or isinstance(default_value, list):
         return ""
+    if default_value is True:
+        default_value = "true"
+    elif default_value is False:
+        default_value = "false"
     return default_value
 
 

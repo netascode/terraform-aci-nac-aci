@@ -2,20 +2,20 @@
     "qosInstPol": {
         "attributes": {
             "dn": "uni/infra/qosinst-default",
-            "ctrl": "{% if apic.access_policies.qos.preserve_cos | default(defaults.apic.access_policies.qos.preserve_cos) == "enabled" %}dot1p-preserve{% elif apic.access_policies.qos.preserve_cos | default(defaults.apic.access_policies.qos.preserve_cos) == "disabled" %}none{% endif %}"
+            "ctrl": "{% if apic.access_policies.qos.preserve_cos | default(defaults.apic.access_policies.qos.preserve_cos) | cisco.aac.aac_bool("enabled") == "enabled" %}dot1p-preserve{% elif apic.access_policies.qos.preserve_cos | default(defaults.apic.access_policies.qos.preserve_cos) | cisco.aac.aac_bool("enabled") == "disabled" %}none{% endif %}"
         },
         "children": [
             {%- set comma1 = joiner(",") %}
             {%- for level in range(1, 7) %}{{ comma1() }}
             {% set query = "qos_classes[?level==`" ~ level ~ "`]" %}
-            {% set default_qos_class = (defaults.apic.access_policies.qos | json_query(query))[0] %}
+            {% set default_qos_class = (defaults.apic.access_policies.qos | community.general.json_query(query))[0] %}
             {% if apic.access_policies.qos is defined %}
-            {% set qos_class = ((apic.access_policies.qos | json_query(query)) | default([]))[0] %}
+            {% set qos_class = ((apic.access_policies.qos | community.general.json_query(query)) | default([]))[0] %}
             {% endif %}
             {
                 "qosClass": {
                     "attributes": {
-                        "admin": "{{ qos_class.admin_state | default(default_qos_class.admin_state) }}",
+                        "admin": "{{ qos_class.admin_state | default(default_qos_class.admin_state) | cisco.aac.aac_bool("enabled") }}",
                         "dn": "uni/infra/qosinst-default/class-level{{ qos_class.level | default(default_qos_class.level) }}",
                         "mtu": "{{ qos_class.mtu | default(default_qos_class.mtu) }}",
                         "prio": "level{{ qos_class.level | default(default_qos_class.level) }}"
@@ -40,7 +40,7 @@
                         {
                             "qosPfcPol": {
                                 "attributes": {
-                                    "adminSt": "{% if qos_class.pfc_state | default(default_qos_class.pfc_state) == "enabled" %}yes{% else %}no{% endif %}",
+                                    "adminSt": "{% if qos_class.pfc_state | default(default_qos_class.pfc_state) | cisco.aac.aac_bool("enabled") == "enabled" %}yes{% else %}no{% endif %}",
                                     "name": "default",
                                     "noDropCos": "{{ qos_class.no_drop_cos | default(default_qos_class.no_drop_cos)  }}",
                                     "enableScope": "{{ qos_class.pfc_scope | default(default_qos_class.pfc_scope)  }}"
@@ -52,8 +52,8 @@
                                 "attributes": {
                                     "afdQueueLength": "0",
                                     "algo": "{{ qos_class.congestion_algorithm | default(default_qos_class.congestion_algorithm) }}",
-                                    "ecn": "{{ qos_class.ecn | default(default_qos_class.ecn) }}",
-                                    "forwardNonEcn": "{{ qos_class.forward_non_ecn | default(default_qos_class.forward_non_ecn) }}",
+                                    "ecn": "{{ qos_class.ecn | default(default_qos_class.ecn) | cisco.aac.aac_bool("enabled") }}",
+                                    "forwardNonEcn": "{{ qos_class.forward_non_ecn | default(default_qos_class.forward_non_ecn) | cisco.aac.aac_bool("enabled") }}",
                                     "wredMaxThreshold": "{{ qos_class.wred_max_threshold | default(default_qos_class.wred_max_threshold) }}",
                                     "wredMinThreshold": "{{ qos_class.wred_min_threshold | default(default_qos_class.wred_min_threshold) }}",
                                     "wredProbability": "{{ qos_class.wred_probability | default(default_qos_class.wred_probability) }}",

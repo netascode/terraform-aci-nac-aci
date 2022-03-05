@@ -11,6 +11,6 @@ Resource        ../../apic_common.resource
 Verify MCP Interface Policy {{ mcp_policy_name }}
     GET   "/api/mo/uni/infra/mcpIfP-{{ mcp_policy_name }}.json"
     String   $..mcpIfPol.attributes.name   {{ mcp_policy_name }}
-    String   $..mcpIfPol.attributes.adminSt   {{ policy.admin_state }}
+    String   $..mcpIfPol.attributes.adminSt   {{ policy.admin_state | cisco.aac.aac_bool("enabled") }}
 
 {% endfor %}

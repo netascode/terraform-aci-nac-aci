@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -16,15 +16,15 @@
                         "devtype": "{{ dev.type | default(defaults.apic.tenants.services.l4l7_devices.type) }}",
                         "dn": "uni/tn-{{ tenant.name }}/lDevVip-{{ dev_name }}",
                         "funcType": "{{ dev.function | default(defaults.apic.tenants.services.l4l7_devices.function) }}",
-                        "isCopy": "{{ dev.copy_device | default(defaults.apic.tenants.services.l4l7_devices.copy_device) }}",
-                        "managed": "{{ dev.managed | default(defaults.apic.tenants.services.l4l7_devices.managed) }}",
+                        "isCopy": "{{ dev.copy_device | default(defaults.apic.tenants.services.l4l7_devices.copy_device) | cisco.aac.aac_bool("yes") }}",
+                        "managed": "{{ dev.managed | default(defaults.apic.tenants.services.l4l7_devices.managed) | cisco.aac.aac_bool("yes") }}",
                         "mode": "legacy-Mode",
                         "name": "{{ dev_name }}",
                         "nameAlias": "{{ dev.alias | default() }}",
                         "packageModel": "",
-                        "promMode": "{{ dev.promiscuous_mode | default(defaults.apic.tenants.services.l4l7_devices.promiscuous_mode) }}",
+                        "promMode": "{{ dev.promiscuous_mode | default(defaults.apic.tenants.services.l4l7_devices.promiscuous_mode) | cisco.aac.aac_bool("yes") }}",
                         "svcType": "{{ dev.service_type | default(defaults.apic.tenants.services.l4l7_devices.service_type) }}",
-                        "trunking": "{{ dev.trunking | default(defaults.apic.tenants.services.l4l7_devices.trunking) }}",
+                        "trunking": "{{ dev.trunking | default(defaults.apic.tenants.services.l4l7_devices.trunking) | cisco.aac.aac_bool("yes") }}",
                         "childAction": "deleteNonPresent"
                     },
                     "children": [
@@ -73,7 +73,7 @@
                                                         "attributes": {
                                                             {% if int.node_id is defined and int.channel is not defined %}
                                                             {% set query = "nodes[?id==`" ~ int.node_id ~ "`].pod" %}
-                                                            {% set pod = int.pod_id | default((apic.node_policies | json_query(query))[0] | default('1')) %}
+                                                            {% set pod = int.pod_id | default((apic.node_policies | community.general.json_query(query))[0] | default('1')) %}
                                                             {% if int.fex_id is defined %}
                                                             "tDn": "topology/pod-{{ pod }}/paths-{{ int.node_id }}/extpaths-{{ int.fex_id }}/pathep-[eth{{ int.module | default(defaults.apic.tenants.services.l4l7_devices.concrete_devices.interfaces.module) }}/{{ int.port }}]"
                                                             {% else %}
@@ -81,22 +81,22 @@
                                                             {% endif %}
                                                             {% else %}
                                                             {% set query = "leaf_interface_policy_groups[?name==`" ~ int.channel ~ "`].type" %}
-                                                            {% set type = (apic.access_policies | json_query(query))[0] %}
+                                                            {% set type = (apic.access_policies | community.general.json_query(query))[0] %}
                                                             {% if int.node_id is defined %}
                                                                 {% set node = int.node_id %}
                                                             {% else %}
                                                                 {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
-                                                                {% set node = (apic.interface_policies | default() | json_query(query))[0] %}
+                                                                {% set node = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
                                                             {% endif %}
                                                             {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
-                                                            {% set pod = int.pod_id | default((apic.node_policies | json_query(query))[0] | default('1')) %}
+                                                            {% set pod = int.pod_id | default((apic.node_policies | community.general.json_query(query))[0] | default('1')) %}
                                                             {% set policy_group_name = int.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
                                                             {% if type == 'vpc' %}
                                                             {% if int.node2_id is defined %}
                                                                 {% set node2 = int.node2_id %}
                                                             {% else %}
                                                                 {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
-                                                                {% set node2 = (apic.interface_policies | default() | json_query(query))[1] %}
+                                                                {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
                                                             {% endif %}
                                                             "tDn": "topology/pod-{{ pod }}/protpaths-{{ node }}-{{ node2 }}/pathep-[{{ policy_group_name }}]"
                                                             {% else %}

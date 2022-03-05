@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -36,7 +36,7 @@
                                     "dFromPort": "{{ entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_from_port) }}",
                                     "dToPort": "{{ entry.destination_to_port | default(entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_to_port)) }}"
                                     {%- if entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) == 'tcp' %},
-                                    "stateful": "{{ entry.stateful | default(defaults.apic.tenants.filters.entries.stateful) }}"
+                                    "stateful": "{{ entry.stateful | default(defaults.apic.tenants.filters.entries.stateful) | cisco.aac.aac_bool("yes") }}"
                                     {% endif %}
                                     {% endif %}
                                     {% endif %}

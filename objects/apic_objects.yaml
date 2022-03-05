@@ -941,6 +941,26 @@ objects:
       - config
     paths:
       - apic.access_policies.span.filter_groups
+  - name: VSPAN Destination Group
+    template: vspan_destination_group
+    folder: access_policies
+    aci_classes:
+      - spanVDestGrp
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.access_policies.vspan.destination_groups
+  - name: VSPAN Session
+    template: vspan_session
+    folder: access_policies
+    aci_classes:
+      - spanVSrcGrp
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.access_policies.vspan.sessions
   - name: Tenant
     template: tenant
     folder: tenants

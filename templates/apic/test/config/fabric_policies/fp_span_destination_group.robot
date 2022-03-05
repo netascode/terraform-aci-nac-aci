@@ -23,7 +23,7 @@ Verify SPAN Destination Group {{ span_name }}
     String   $..spanDestGrp.children..spanDest.children..spanRsDestEpg.attributes.mtu   {{ span.mtu | default(defaults.apic.fabric_policies.span.destination_groups.mtu) }}
     String   $..spanDestGrp.children..spanDest.children..spanRsDestEpg.attributes.ttl   {{ span.ttl | default(defaults.apic.fabric_policies.span.destination_groups.ttl) }}
     String   $..spanDestGrp.children..spanDest.children..spanRsDestEpg.attributes.ver   ver{{ span.version | default(defaults.apic.fabric_policies.span.destination_groups.version) }}
-    String   $..spanDestGrp.children..spanDest.children..spanRsDestEpg.attributes.verEnforced   {{ span.enforce_version | default(defaults.apic.fabric_policies.span.destination_groups.enforce_version) }}
+    String   $..spanDestGrp.children..spanDest.children..spanRsDestEpg.attributes.verEnforced   {{ span.enforce_version | default(defaults.apic.fabric_policies.span.destination_groups.enforce_version) | cisco.aac.aac_bool("yes") }}
     String   $..spanDestGrp.children..spanDest.children..spanRsDestEpg.attributes.tDn   uni/tn-{{ span.tenant | default(tenant.name) }}/ap-{{ application_profile_name }}/epg-{{ endpoint_group_name }}
 {% endif %}                                  
 

@@ -13,7 +13,7 @@ Verify Syslog Policy {{ policy_name }}
     String   $..syslogGroup.attributes.name   {{ policy_name }}
     String   $..syslogGroup.attributes.descr   {{ syslog.description | default() }}
     String   $..syslogGroup.attributes.format   {{ syslog.format | default(defaults.apic.fabric_policies.monitoring.syslogs.format) }}
-    String   $..syslogGroup.attributes.includeMilliSeconds   {% if syslog.show_millisecond | default(defaults.apic.fabric_policies.monitoring.syslogs.show_millisecond) == 'enabled' %}yes{% else %}no{% endif %}
+    String   $..syslogGroup.attributes.includeMilliSeconds   {% if syslog.show_millisecond | default(defaults.apic.fabric_policies.monitoring.syslogs.show_millisecond) | cisco.aac.aac_bool("enabled") == 'enabled' %}yes{% else %}no{% endif %}
 
 {% for dest in syslog.destinations | default([]) %}
 
@@ -21,7 +21,7 @@ Verify Syslog Policy {{ policy_name }} Destination {{ dest.hostname_ip }}
     ${dest}=   Set Variable   $..syslogGroup.children[?(@.syslogRemoteDest.attributes.host=='{{ dest.hostname_ip }}')]
     String   ${dest}..syslogRemoteDest.attributes.host   {{ dest.hostname_ip }}
     String   ${dest}..syslogRemoteDest.attributes.port   {{ dest.port | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.port) }}
-    String   ${dest}..syslogRemoteDest.attributes.adminState   {{ dest.admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.admin_state) }}
+    String   ${dest}..syslogRemoteDest.attributes.adminState   {{ dest.admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.admin_state) | cisco.aac.aac_bool("enabled") }}
     String   ${dest}..syslogRemoteDest.attributes.format   {{ syslog.format | default(defaults.apic.fabric_policies.monitoring.syslogs.format) }}
     String   ${dest}..syslogRemoteDest.attributes.forwardingFacility   {{ dest.facility | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.facility) }}
     String   ${dest}..syslogRemoteDest.attributes.severity   {{ dest.severity | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.severity) }}
@@ -31,11 +31,11 @@ Verify Syslog Policy {{ policy_name }} Destination {{ dest.hostname_ip }}
 {% elif mgmt_epg == "inb" %}
     String   $..fileRsARemoteHostToEpg.attributes.tDn   uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}
 {% endif %}
-    String   $..syslogProf.attributes.adminState   {{ syslog.admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.admin_state) }}
-    String   $..syslogFile.attributes.adminState   {{ syslog.local_admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.local_admin_state) }}
+    String   $..syslogProf.attributes.adminState   {{ syslog.admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.admin_state) | cisco.aac.aac_bool("enabled") }}
+    String   $..syslogFile.attributes.adminState   {{ syslog.local_admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.local_admin_state) | cisco.aac.aac_bool("enabled") }}
     String   $..syslogFile.attributes.format   {{ syslog.format | default(defaults.apic.fabric_policies.monitoring.syslogs.format) }}
     String   $..syslogFile.attributes.severity   {{ syslog.local_severity | default(defaults.apic.fabric_policies.monitoring.syslogs.local_severity) }}
-    String   $..syslogConsole.attributes.adminState   {{ syslog.console_admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.console_admin_state) }}
+    String   $..syslogConsole.attributes.adminState   {{ syslog.console_admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.console_admin_state) | cisco.aac.aac_bool("enabled") }}
     String   $..syslogConsole.attributes.format   {{ syslog.format | default(defaults.apic.fabric_policies.monitoring.syslogs.format) }}
     String   $..syslogConsole.attributes.severity   {{ syslog.console_severity | default(defaults.apic.fabric_policies.monitoring.syslogs.console_severity) }}
 

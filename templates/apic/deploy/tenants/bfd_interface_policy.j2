@@ -1,4 +1,4 @@
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant": {
         "attributes": {
@@ -15,9 +15,9 @@
                         "name": "{{ bfd_name }}",
                         "descr": "{{ bfd.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/bfdIfPol-{{ bfd_name }}",
-                        "ctrl": "{{ 'opt-subif' if bfd.subinterface_optimization | default(defaults.apic.tenants.policies.bfd_interface_policies.subinterface_optimization) == "enabled" else ''}}",
+                        "ctrl": "{{ 'opt-subif' if bfd.subinterface_optimization | default(defaults.apic.tenants.policies.bfd_interface_policies.subinterface_optimization) | cisco.aac.aac_bool("enabled") == "enabled" else ''}}",
                         "detectMult": "{{ bfd.detection_multiplier | default(defaults.apic.tenants.policies.bfd_interface_policies.detection_multiplier) }}",
-                        "echoAdminSt": "{{ bfd.echo_admin_state | default(defaults.apic.tenants.policies.bfd_interface_policies.echo_admin_state) }}",
+                        "echoAdminSt": "{{ bfd.echo_admin_state | default(defaults.apic.tenants.policies.bfd_interface_policies.echo_admin_state) | cisco.aac.aac_bool("enabled") }}",
                         "echoRxIntvl": "{{ bfd.echo_rx_interval | default(defaults.apic.tenants.policies.bfd_interface_policies.echo_rx_interval) }}",
                         "minRxIntvl": "{{ bfd.min_rx_interval | default(defaults.apic.tenants.policies.bfd_interface_policies.min_rx_interval) }}",
                         "minTxIntvl": "{{ bfd.min_tx_interval | default(defaults.apic.tenants.policies.bfd_interface_policies.min_tx_interval) }}"

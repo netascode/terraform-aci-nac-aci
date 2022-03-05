@@ -1,5 +1,5 @@
 {% set query = "users[?username==`" ~ item ~ "`]" %}
-{% set user = (mso | json_query(query))[0] %}
+{% set user = (mso | community.general.json_query(query))[0] %}
 {
     "username": "{{ user.username }}",
     "password": "{{ user.password }}",

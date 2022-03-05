@@ -5,7 +5,7 @@ Default Tags    apic   day2   config   tenants
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for bpp in tenant.policies.bgp_peer_prefix_policies | default([]) %}
 {% set bgp_peer_prefix_name = bpp.name ~ defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix %}
 

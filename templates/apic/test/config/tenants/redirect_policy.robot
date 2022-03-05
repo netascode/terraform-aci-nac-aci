@@ -5,7 +5,7 @@ Default Tags    apic   day2   config   tenants
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
-{% set tenant = ((apic | default()) | json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for pol in tenant.services.redirect_policies | default([]) %}
 {% set pol_name = pol.name ~ defaults.apic.tenants.services.redirect_policies.name_suffix %}
 
@@ -19,10 +19,10 @@ Verify Redirect Policy {{ pol_name }}
     String   $..vnsSvcRedirectPol.attributes.maxThresholdPercent   {{ pol.max_threshold | default(defaults.apic.tenants.services.redirect_policies.max_threshold) }}
     String   $..vnsSvcRedirectPol.attributes.minThresholdPercent   {{ pol.min_threshold | default(defaults.apic.tenants.services.redirect_policies.min_threshold) }}
     String   $..vnsSvcRedirectPol.attributes.thresholdDownAction   {{ pol.threshold_down_action | default(defaults.apic.tenants.services.redirect_policies.threshold_down_action) }}
-    String   $..vnsSvcRedirectPol.attributes.programLocalPodOnly   {% if pol.pod_aware | default(defaults.apic.tenants.services.redirect_policies.pod_aware) == "enabled" %}yes{% else %}no{% endif %} 
-    String   $..vnsSvcRedirectPol.attributes.resilientHashEnabled   {% if pol.resilient_hashing | default(defaults.apic.tenants.services.redirect_policies.resilient_hashing) == "enabled" %}yes{% else %}no{% endif %} 
-    String   $..vnsSvcRedirectPol.attributes.AnycastEnabled   {% if pol.anycast | default(defaults.apic.tenants.services.redirect_policies.anycast) == "enabled" %}yes{% else %}no{% endif %} 
-    String   $..vnsSvcRedirectPol.attributes.thresholdEnable   {% if pol.threshold | default(defaults.apic.tenants.services.redirect_policies.threshold) == "enabled" %}yes{% else %}no{% endif %} 
+    String   $..vnsSvcRedirectPol.attributes.programLocalPodOnly   {% if pol.pod_aware | default(defaults.apic.tenants.services.redirect_policies.pod_aware) | cisco.aac.aac_bool("enabled") == "enabled" %}yes{% else %}no{% endif %} 
+    String   $..vnsSvcRedirectPol.attributes.resilientHashEnabled   {% if pol.resilient_hashing | default(defaults.apic.tenants.services.redirect_policies.resilient_hashing) | cisco.aac.aac_bool("enabled") == "enabled" %}yes{% else %}no{% endif %} 
+    String   $..vnsSvcRedirectPol.attributes.AnycastEnabled   {% if pol.anycast | default(defaults.apic.tenants.services.redirect_policies.anycast) | cisco.aac.aac_bool("enabled") == "enabled" %}yes{% else %}no{% endif %} 
+    String   $..vnsSvcRedirectPol.attributes.thresholdEnable   {% if pol.threshold | default(defaults.apic.tenants.services.redirect_policies.threshold) | cisco.aac.aac_bool("enabled") == "enabled" %}yes{% else %}no{% endif %} 
 
 {% if pol.sla_policy is defined %}
 {% set ip_sla_name = pol.sla_policy ~ defaults.apic.tenants.policies.ip_sla_policies.name_suffix %} 

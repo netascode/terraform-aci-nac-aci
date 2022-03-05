@@ -11,7 +11,7 @@
                 "spanSrcGrp": {
                     "attributes": {
                         "name": "{{ span_name }}",
-                        "adminSt": "{{ span.admin_state | default(defaults.apic.fabric_policies.span.source_groups.admin_state) }}",
+                        "adminSt": "{{ span.admin_state | default(defaults.apic.fabric_policies.span.source_groups.admin_state) | cisco.aac.aac_bool("enabled") }}",
                         "descr": "{{ span.description | default() }}",
                         "dn": "uni/fabric/srcgrp-{{ span_name }}",
                         "childAction": "deleteNonPresent"                        
@@ -26,7 +26,7 @@
                                     "descr": "{{ source.description | default() }}",
                                     "dir": "{{ source.direction | default(defaults.apic.fabric_policies.span.source_groups.sources.direction)}}",
                                     "name": "{{ source_name}}",
-                                    "spanOnDrop": "{{ source.span_drop | default(defaults.apic.fabric_policies.span.source_groups.sources.span_drop) }}",
+                                    "spanOnDrop": "{{ source.span_drop | default(defaults.apic.fabric_policies.span.source_groups.sources.span_drop) | cisco.aac.aac_bool("yes") }}",
                                     "childAction": "deleteNonPresent"
                                 },
                                 "children": [
@@ -56,7 +56,7 @@
                                         "spanRsSrcToPathEp": {
                                             "attributes": {
                                                 {% set query = "nodes[?id==`" ~ path.node_id ~ "`].pod" %}
-                                                {% set pod = path.pod_id | default(((apic.node_policies | default()) | json_query(query))[0] | default('1')) %}
+                                                {% set pod = path.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
                                                 "tDn": "topology/pod-{{ pod }}/paths-{{ path.node_id }}/pathep-[eth{{ path.module | default(defaults.apic.fabric_policies.span.source_groups.sources.access_paths.module) }}/{{ path.port }}]"
                                             }
                                         }

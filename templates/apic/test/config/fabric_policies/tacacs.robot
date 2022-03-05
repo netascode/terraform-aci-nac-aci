@@ -15,8 +15,8 @@ Verify TACACS Provider {{ prov.hostname_ip }}
     String   $..aaaTacacsPlusProvider.attributes.port   {{ prov.port | default(defaults.apic.fabric_policies.aaa.tacacs_providers.port) }}
     String   $..aaaTacacsPlusProvider.attributes.retries   {{ prov.retries | default(defaults.apic.fabric_policies.aaa.tacacs_providers.retries) }}
     String   $..aaaTacacsPlusProvider.attributes.timeout   {{ prov.timeout | default(defaults.apic.fabric_policies.aaa.tacacs_providers.timeout) }}
-    String   $..aaaTacacsPlusProvider.attributes.monitorServer   {{ prov.monitoring | default(defaults.apic.fabric_policies.aaa.tacacs_providers.monitoring) }}
-{% if prov.monitoring | default(defaults.apic.fabric_policies.aaa.tacacs_providers.monitoring) == "enabled" %}
+    String   $..aaaTacacsPlusProvider.attributes.monitorServer   {{ prov.monitoring | default(defaults.apic.fabric_policies.aaa.tacacs_providers.monitoring) | cisco.aac.aac_bool("enabled") }}
+{% if prov.monitoring | default(defaults.apic.fabric_policies.aaa.tacacs_providers.monitoring) | cisco.aac.aac_bool("enabled") == "enabled" %}
     String   $..aaaTacacsPlusProvider.attributes.monitoringUser   {{ prov.monitoring_username | default() }}
 {% endif %}
 {% set mgmt_epg = prov.mgmt_epg | default(defaults.apic.fabric_policies.aaa.tacacs_providers.mgmt_epg) %}

@@ -14,7 +14,7 @@
                             "healthEvalP": {
                                 "attributes": {
                                     "dn": "uni/fabric/hsPols/hseval",
-                                    "ignoreAckedFaults": "{{ apic.fabric_policies.ignore_acked_faults |  default(defaults.apic.fabric_policies.ignore_acked_faults) }}"
+                                    "ignoreAckedFaults": "{{ apic.fabric_policies.ignore_acked_faults |  default(defaults.apic.fabric_policies.ignore_acked_faults) | cisco.aac.aac_bool("yes") }}"
                                 }
                             }
                         }
