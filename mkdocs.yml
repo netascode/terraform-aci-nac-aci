@@ -192,6 +192,7 @@ nav:
               - Multicast Route Map: data_model/apic/tenants/multicast_route_map.md
               - PIM Policy: data_model/apic/tenants/pim_policy.md
               - IGMP Snooping Policy: data_model/apic/tenants/igmp_snooping_policy.md
+              - IGMP Interface Policy: data_model/apic/tenants/igmp_interface_policy.md
               - Redirect Policy: data_model/apic/tenants/redirect_policy.md
               - Redirect Backup Policy: data_model/apic/tenants/redirect_backup_policy.md
               - Service EPG Policy: data_model/apic/tenants/service_epg_policy.md
