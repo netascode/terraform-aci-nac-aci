@@ -86,7 +86,7 @@ nav:
               - DNS Profile Policy: data_model/apic/fabric_policies/dns_policy.md
               - Error Disabled Recovery Policy: data_model/apic/fabric_policies/err_disabled_recovery.md
               - COOP Policy Group: data_model/apic/fabric_policies/coop_policy.md
-              - L2 MTU: data_mode/apic/fabric_policies/l2_mtu.md
+              - L2 MTU: data_model/apic/fabric_policies/l2_mtu.md
               - Infra DSCP Translation Policy: data_model/apic/fabric_policies/infra_dscp_translation_policy.md
               - AAA Settings: data_model/apic/fabric_policies/aaa.md
               - TACACS Provider: data_model/apic/fabric_policies/tacacs.md
