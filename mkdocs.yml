@@ -86,6 +86,7 @@ nav:
               - DNS Profile Policy: data_model/apic/fabric_policies/dns_policy.md
               - Error Disabled Recovery Policy: data_model/apic/fabric_policies/err_disabled_recovery.md
               - COOP Policy Group: data_model/apic/fabric_policies/coop_policy.md
+              - L2 MTU: data_mode/apic/fabric_policies/l2_mtu.md
               - Infra DSCP Translation Policy: data_model/apic/fabric_policies/infra_dscp_translation_policy.md
               - AAA Settings: data_model/apic/fabric_policies/aaa.md
               - TACACS Provider: data_model/apic/fabric_policies/tacacs.md
@@ -183,8 +184,8 @@ nav:
               - BGP Best Path Policy: data_model/apic/tenants/bgp_best_path_policy.md
               - Tenant SPAN Source Group: data_model/apic/tenants/tenant_span_source_group.md
               - Tenant SPAN Destination Group: data_model/apic/tenants/tenant_span_destination_group.md
-              - Trust Control Policy: model/apic/tenants/trust_control_policy.md
-              - QoS Policy: model/apic/tenants/qos_policy.md
+              - Trust Control Policy: data_model/apic/tenants/trust_control_policy.md
+              - QoS Policy: data_model/apic/tenants/qos_policy.md
               - Redirect Policy: data_model/apic/tenants/redirect_policy.md
               - Redirect Backup Policy: data_model/apic/tenants/redirect_backup_policy.md
               - Service EPG Policy: data_model/apic/tenants/service_epg_policy.md
