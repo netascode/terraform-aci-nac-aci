@@ -189,6 +189,7 @@ nav:
               - Trust Control Policy: data_model/apic/tenants/trust_control_policy.md
               - QoS Policy: data_model/apic/tenants/qos_policy.md
               - Route Control Route Map: data_model/apic/tenants/route_control_route_map.md
+              - Multicast Route Map: data_model/apic/tenants/multicast_route_map.md
               - Redirect Policy: data_model/apic/tenants/redirect_policy.md
               - Redirect Backup Policy: data_model/apic/tenants/redirect_backup_policy.md
               - Service EPG Policy: data_model/apic/tenants/service_epg_policy.md
