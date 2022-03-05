@@ -8,6 +8,8 @@ Location in GUI:
 ### Terraform modules
 
 * [L3out](https://registry.terraform.io/modules/netascode/l3out/aci/latest)
+* [L3out Node Profile](https://registry.terraform.io/modules/netascode/l3out-node-profile/aci/latest)
+* [L3out Interface Profile](https://registry.terraform.io/modules/netascode/l3out-interface-profile/aci/latest)
 
 {{ aac_doc }}
 
@@ -99,10 +101,10 @@ apic:
             policy: OIP1
           interleak_route_map: ROUTE_MAP1
           default_route_leak_policy:
-            always: 'no'
+            always: false
             criteria: 'in-addition'
-            context_scope: 'no'
-            outside_scope: 'no'
+            context_scope: false
+            outside_scope: false
           redistribution_route_maps:
             - source: direct
               route_map: ROUTE_MAP2
@@ -111,7 +113,7 @@ apic:
           nodes:
             - node_id: 101
               router_id: 5.5.5.5
-              router_id_as_loopback: 'yes'
+              router_id_as_loopback: true
               static_routes:
                 - prefix: 2.2.2.0/24
                   description: My Desc
@@ -120,7 +122,7 @@ apic:
                     - ip: 6.6.6.6
               interfaces:
                 - channel: VPC1
-                  svi: 'yes'
+                  svi: true
                   vlan: 301
                   ip_a: 14.14.14.1/24
                   ip_b: 14.14.14.2/24
@@ -130,13 +132,13 @@ apic:
                       remote_as: 65010
                       description: My Desc
                       bfd: enabled
-                      allow_self_as: 'yes'
-                      as_override: 'yes'
-                      bfd: 'yes'
-                      disable_connected_check: 'yes'
-                      remove_private_as: 'yes'
-                      remove_all_private_as: 'yes'
-                      multicast_address_family: 'yes'
+                      allow_self_as: true
+                      as_override: true
+                      bfd: true
+                      disable_connected_check: true
+                      remove_private_as: true
+                      remove_all_private_as: true
+                      multicast_address_family: true
                       ttl: 1
                       weight: 0
                       password: C1sco123

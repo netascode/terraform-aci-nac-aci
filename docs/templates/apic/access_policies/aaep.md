@@ -8,6 +8,7 @@ Location in GUI:
 * [AAEP](https://registry.terraform.io/modules/netascode/aaep/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -28,7 +29,7 @@ apic:
   access_policies:
     aaeps:
       - name: AAEP1
-        infra_vlan: enabled
+        infra_vlan: true
         physical_domains:
           - PHY1
         routed_domains:

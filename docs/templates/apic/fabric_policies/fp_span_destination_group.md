@@ -4,6 +4,7 @@ Location in GUI:
 `Fabric` » `Fabric Policies` » `Policies` » `Troubleshooting` » `SPAN` » `SPAN Destination Groups`
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
@@ -22,5 +23,5 @@ apic:
           flow_id: 1
           ttl: 10
           version: 2
-          enforce_version: 'yes'
+          enforce_version: true
 ```

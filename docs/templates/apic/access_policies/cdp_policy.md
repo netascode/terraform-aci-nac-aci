@@ -8,6 +8,7 @@ Location in GUI:
 * [CDP Policy](https://registry.terraform.io/modules/netascode/cdp-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
@@ -16,5 +17,5 @@ apic:
     interface_policies:
       cdp_policies:
         - name: CDP-ENABLED
-          admin_state: enabled
+          admin_state: true
 ```

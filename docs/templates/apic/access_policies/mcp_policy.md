@@ -8,6 +8,7 @@ Location in GUI:
 * [MCP Policy](https://registry.terraform.io/modules/netascode/mcp-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
@@ -16,5 +17,5 @@ apic:
     interface_policies:
       mcp_policies:
         - name: MCP-ENABLED
-          admin_state: enabled
+          admin_state: true
 ```

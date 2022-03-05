@@ -13,13 +13,14 @@ Location in GUI:
 * [Access Spine Switch Profile](https://registry.terraform.io/modules/netascode/access-spine-switch-profile/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Auto-generate profiles:
 
 ```yaml
 apic:
-  auto_generate_switch_pod_profiles: enabled
+  auto_generate_switch_pod_profiles: true
   access_policies:
     spine_switch_profile_name: "SPINE\\g<id>"
     spine_switch_selector_name: "SPINE\\g<id>"

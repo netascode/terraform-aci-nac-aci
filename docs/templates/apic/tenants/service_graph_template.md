@@ -8,6 +8,7 @@ Location in GUI:
 * [Service Graph Template](https://registry.terraform.io/modules/netascode/service-graph-template/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -19,7 +20,7 @@ apic:
       services:
         service_graph_templates:
           - name: TEMPLATE1
-            redirect: enabled
+            redirect: true
             device:
               name: DEV1
 ```
@@ -36,8 +37,8 @@ apic:
             alias: TEMPLATE1-ALIAS
             description: My Desc
             template_type: FW_ROUTED
-            redirect: enabled
-            share_encapsulation: disabled
+            redirect: true
+            share_encapsulation: false
             device:
               tenant: ABC
               name: DEV1

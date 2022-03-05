@@ -8,6 +8,7 @@ Location in GUI:
 * [Link Level Policy](https://registry.terraform.io/modules/netascode/link-level-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
@@ -17,6 +18,6 @@ apic:
       link_level_policies:
         - name: 10G
           speed: 10G
-          auto: 'on'
+          auto: true
           fec_mode: inherit
 ```

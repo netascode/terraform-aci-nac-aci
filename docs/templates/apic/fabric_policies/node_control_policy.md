@@ -8,6 +8,7 @@ Location in GUI:
 * [Node Control Policy](https://registry.terraform.io/modules/netascode/node-control-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
@@ -16,5 +17,5 @@ apic:
     switch_policies:
       node_control_policies:
         - name: DOM_NETFLOW
-          dom: enabled
+          dom: true
 ```

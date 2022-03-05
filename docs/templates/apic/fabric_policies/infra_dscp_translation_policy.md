@@ -8,13 +8,14 @@ Location in GUI:
 * [Infra DSCP Translation Policy](https://registry.terraform.io/modules/netascode/infra-dscp-translation-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
 apic:
   fabric_policies:
     infra_dscp_translation_policy:
-      admin_state: enabled
+      admin_state: true
       control_plane: CS7
       level_1: EF
       level_2: CS3

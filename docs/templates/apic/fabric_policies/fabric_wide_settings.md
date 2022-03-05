@@ -8,17 +8,18 @@ Location in GUI:
 * [Fabric Wide Settings](https://registry.terraform.io/modules/netascode/fabric-wide-settings/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
 apic:
   fabric_policies:
     global_settings:
-      domain_validation: 'no'
-      enforce_subnet_check: 'no'
-      opflex_authentication: 'yes'
-      disable_remote_endpoint_learn: 'yes'
-      overlapping_vlan_validation: 'yes'
-      remote_leaf_direct: 'no'
+      domain_validation: false
+      enforce_subnet_check: false
+      opflex_authentication: true
+      disable_remote_endpoint_learn: true
+      overlapping_vlan_validation: true
+      remote_leaf_direct: false
 
 ```

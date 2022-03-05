@@ -8,6 +8,7 @@ Location in GUI:
 * [VMware VMM Domain](https://registry.terraform.io/modules/netascode/vmware-vmm-domain/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -38,7 +39,7 @@ apic:
       - name: VMM1
         access_mode: read-write
         delimiter: '|'
-        tag_collection: 'yes'
+        tag_collection: true
         vlan_pool: VMM1
         vswitch:
           cdp_policy: CDP-ENABLED
@@ -58,7 +59,7 @@ apic:
             hostname_ip: 10.10.10.10
             datacenter: DC1
             dvs_version: unmanaged
-            statistics: enabled
+            statistics: true
             credential_policy: CRED1
         uplinks:
           - id: 1

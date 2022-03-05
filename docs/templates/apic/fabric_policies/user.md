@@ -8,6 +8,7 @@ Location in GUI:
 * [User](https://registry.terraform.io/modules/netascode/user/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -36,7 +37,7 @@ apic:
       users:
         - username: user1
           password: ciscocisco
-          expires: 'no'
+          expires: false
           first_name: cisco
           last_name: cisco
           phone: '1234567'

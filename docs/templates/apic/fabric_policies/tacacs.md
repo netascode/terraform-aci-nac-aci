@@ -8,6 +8,7 @@ Location in GUI:
 * [TACACS](https://registry.terraform.io/modules/netascode/tacacs/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -36,7 +37,7 @@ apic:
           timeout: 2
           retries: 2
           mgmt_epg: oob
-          monitoring: enabled
+          monitoring: true
           monitoring_username: user1
           monitoring_password: pass1
 ```

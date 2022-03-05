@@ -8,6 +8,7 @@ Location in GUI:
 * [External Endpoint Group](https://registry.terraform.io/modules/netascode/external-endpoint-group/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -45,11 +46,11 @@ apic:
               subnets:
                 - name: ALL
                   prefix: 0.0.0.0/0
-                  import_route_control: 'no'
-                  export_route_control: 'no'
-                  shared_route_control: 'no'
-                  import_security: 'yes'
-                  shared_security: 'no'
+                  import_route_control: false
+                  export_route_control: false
+                  shared_route_control: false
+                  import_security: true
+                  shared_security: false
               contracts:
                 consumers:
                   - CON1

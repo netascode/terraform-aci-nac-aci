@@ -8,6 +8,7 @@ Location in GUI:
 * [VRF](https://registry.terraform.io/modules/netascode/vrf/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -30,7 +31,7 @@ apic:
         - name: VRF1
           alias: VRF1-ALIAS
           description: My VRF
-          data_plane_learning: disabled
+          data_plane_learning: false
           enforcement_direction: egress
           enforcement_preference: unenforced
           bgp_timer_policy: BGP-TIMER1
@@ -45,8 +46,8 @@ apic:
               - IMPORT-CON1
           pim:
             mtu: 9000
-            fast_convergence: 'yes'
-            strict_rfc: 'yes'
+            fast_convergence: true
+            strict_rfc: true
             resource_policy_multicast_route_map: TEST_MRM1
             max_multicast_entries: 10
             reserved_multicast_entries: 10
@@ -58,9 +59,9 @@ apic:
               - ip: 1.1.1.3
               - ip: 1.1.1.4
                 multicast_route_map: TEST_MRM1
-            auto_rp_forward_updates: 'yes'
+            auto_rp_forward_updates: true
             auto_rp_filter_multicast_route_map: TEST_MRM1
-            bsr_listen_updates: 'yes'
+            bsr_listen_updates: true
             bsr_filter_multicast_route_map: TEST_MRM1
             asm_shared_range_multicast_route_map: TEST_MRM1
             asm_sg_expiry_multicast_route_map: TEST_MRM2

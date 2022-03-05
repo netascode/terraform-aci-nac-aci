@@ -4,6 +4,7 @@ Location in GUI:
 `Fabric` » `Fabric Policies` » `Policies` » `Troubleshooting` » `SPAN` » `SPAN Source Groups`
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml

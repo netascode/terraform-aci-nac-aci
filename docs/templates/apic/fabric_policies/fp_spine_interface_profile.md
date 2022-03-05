@@ -13,11 +13,12 @@ Location in GUI:
 * [Fabric Spine Interface Profile](https://registry.terraform.io/modules/netascode/fabric-spine-interface-profile/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
 apic:
-  auto_generate_switch_pod_profiles: enabled
+  auto_generate_switch_pod_profiles: true
   fabric_policies:
     spine_interface_profile_name: "SPINE\\g<id>"
 ```

@@ -8,6 +8,7 @@ Location in GUI:
 * [OOB Endpoint Group](https://registry.terraform.io/modules/netascode/oob-endpoint-group/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml

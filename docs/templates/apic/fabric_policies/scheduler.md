@@ -8,6 +8,7 @@ Location in GUI:
 * [Fabric Scheduler](https://registry.terraform.io/modules/netascode/fabric-scheduler/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml

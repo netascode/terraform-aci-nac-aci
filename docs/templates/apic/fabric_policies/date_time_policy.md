@@ -8,6 +8,7 @@ Location in GUI:
 * [Date Time Policy](https://registry.terraform.io/modules/netascode/date-time-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -30,19 +31,19 @@ apic:
     pod_policies:
       date_time_policies:
         - name: NTP1
-          ntp_admin_state: enabled
-          ntp_auth_state: disabled
-          apic_ntp_server_state: disabled
-          apic_ntp_server_master_mode: disabled
+          ntp_admin_state: true
+          ntp_auth_state: false
+          apic_ntp_server_state: false
+          apic_ntp_server_master_mode: false
           apic_ntp_server_master_stratum: 8
           ntp_servers:
             - hostname_ip: 1.1.1.13
               auth_key_id: 1
-              preferred: 'yes'
+              preferred: true
               mgmt_epg: oob
           ntp_keys:
             - id: 1
               key: key1
               auth_type: md5
-              trusted: 'no'
+              trusted: false
 ```

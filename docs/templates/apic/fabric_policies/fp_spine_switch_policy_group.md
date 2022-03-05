@@ -8,6 +8,7 @@ Location in GUI:
 * [Fabric Spine Switch Policy Group](https://registry.terraform.io/modules/netascode/fabric-spine-switch-policy-group/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml

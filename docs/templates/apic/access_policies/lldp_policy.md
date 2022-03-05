@@ -8,6 +8,7 @@ Location in GUI:
 * [LLDP Policy](https://registry.terraform.io/modules/netascode/lldp-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
@@ -16,6 +17,6 @@ apic:
     interface_policies:
       lldp_policies:
         - name: LLDP-ENABLED
-          admin_rx_state: enabled
-          admin_tx_state: enabled
+          admin_rx_state: true
+          admin_tx_state: true
 ```

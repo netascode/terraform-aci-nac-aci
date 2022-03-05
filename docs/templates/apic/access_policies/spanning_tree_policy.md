@@ -8,6 +8,7 @@ Location in GUI:
 * [Spanning Tree Policy](https://registry.terraform.io/modules/netascode/spanning-tree-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
@@ -16,5 +17,5 @@ apic:
     interface_policies:
       spanning_tree_policies:
         - name: BPDU-FILTER
-          bpdu_filter: 'yes'
+          bpdu_filter: true
 ```

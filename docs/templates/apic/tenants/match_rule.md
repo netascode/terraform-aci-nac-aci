@@ -8,6 +8,7 @@ Location in GUI:
 * [Match Rule](https://registry.terraform.io/modules/netascode/match-rule/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
@@ -21,7 +22,7 @@ apic:
             prefixes:
               - ip: 10.0.0.0/8
                 description: desc2
-                aggregate: 'yes'
+                aggregate: true
                 from_length: 24
                 to_length: 32
 ```

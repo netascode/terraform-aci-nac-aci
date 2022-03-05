@@ -8,13 +8,14 @@ Location in GUI:
 * [Endpoint Loop Protection](https://registry.terraform.io/modules/netascode/endpoint-loop-protection/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
 apic:
   fabric_policies:
     ep_loop_protection:
-      admin_state: enabled
+      admin_state: true
       detection_interval: 180
       detection_multiplier: 10
       action: port-disable

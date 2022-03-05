@@ -8,6 +8,7 @@ Location in GUI:
 * [COOP Policy](https://registry.terraform.io/modules/netascode/coop-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml

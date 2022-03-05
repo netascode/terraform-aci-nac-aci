@@ -4,6 +4,7 @@ Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `L4-L6 Redirect Health Groups`
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml

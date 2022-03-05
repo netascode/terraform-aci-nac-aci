@@ -8,6 +8,7 @@ Location in GUI:
 * [L4L7 Device](https://registry.terraform.io/modules/netascode/l4l7-device/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -47,11 +48,11 @@ apic:
             context_aware: single-Context
             type: PHYSICAL
             function: GoTo
-            copy_device: 'no'
-            managed: 'no'
-            promiscuous_mode: 'no'
+            copy_device: false
+            managed: false
+            promiscuous_mode: false
             service_type: FW
-            trunking: 'no'
+            trunking: false
             physical_domain: PHY1
             concrete_devices:
               - name: DEV1

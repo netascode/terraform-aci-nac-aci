@@ -8,6 +8,7 @@ Location in GUI:
 * [MCP](https://registry.terraform.io/modules/netascode/mcp/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -25,11 +26,11 @@ Full example:
 apic:
   access_policies:
     mcp:
-      action: disabled
-      admin_state: enabled
+      action: false
+      admin_state: true
       key: cisco
       frequency_sec: 5
       initial_delay: 300
       loop_detection: 5
-      per_vlan: disabled
+      per_vlan: false
 ```

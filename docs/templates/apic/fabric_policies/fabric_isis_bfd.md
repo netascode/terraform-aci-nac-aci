@@ -8,10 +8,11 @@ Location in GUI:
 * [Fabric ISIS BFD](https://registry.terraform.io/modules/netascode/fabric-isis-bfd/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
 apic:
   fabric_policies:
-    fabric_isis_bfd: disabled
+    fabric_isis_bfd: false
 ```

@@ -8,6 +8,7 @@ Location in GUI:
 * [APIC Connectivity Preference](https://registry.terraform.io/modules/netascode/apic-connectivity-preference/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml

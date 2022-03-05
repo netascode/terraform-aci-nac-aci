@@ -8,10 +8,11 @@ Location in GUI:
 * [IP Aging](https://registry.terraform.io/modules/netascode/ip-aging/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
 apic:
   fabric_policies:
-    ip_aging: disabled
+    ip_aging: false
 ```

@@ -8,6 +8,7 @@ Location in GUI:
 * [SNMP Policy](https://registry.terraform.io/modules/netascode/snmp-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -35,7 +36,7 @@ apic:
     pod_policies:
       snmp_policies:
         - name: SNMP1
-          admin_state: enabled
+          admin_state: true
           location: LOCATION
           contact: CONTACT
           users:

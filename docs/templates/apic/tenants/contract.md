@@ -8,6 +8,7 @@ Location in GUI:
 * [Contract](https://registry.terraform.io/modules/netascode/contract/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -48,6 +49,6 @@ apic:
                 - filter: FILTER1
                   action: permit
                   priority: default
-                  log: 'yes'
-                  no_stats: 'no'
+                  log: true
+                  no_stats: false
 ```

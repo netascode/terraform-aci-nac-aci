@@ -14,13 +14,14 @@ Location in GUI:
 * [Access FEX Interface Profile](https://registry.terraform.io/modules/netascode/access-fex-interface-profile/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Auto-generate profiles:
 
 ```yaml
 apic:
-  auto_generate_switch_pod_profiles: enabled
+  auto_generate_switch_pod_profiles: true
   access_policies:
     fex_profile_name: "LEAF\\g<id>-FEX\\g<fex>"
 ```

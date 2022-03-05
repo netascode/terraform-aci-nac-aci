@@ -8,6 +8,7 @@ Location in GUI:
 * [Endpoint Group](https://registry.terraform.io/modules/netascode/endpoint-group/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -43,19 +44,19 @@ apic:
           endpoint_groups:
             - name: EPG1
               bridge_domain: BD1
-              flood_in_encap: disabled
+              flood_in_encap: false
               intra_epg_isolation: unenforced
               preferred_group: exclude
               physical_domains:
                 - PHY1
               vmware_vmm_domains:
                 - name: VMM1
-                  u_segmentation: 'yes'
+                  u_segmentation: true
                   delimiter: '|'
                   vlan:
                   primary_vlan: 100
                   secondary_vlan: 101
-                  netflow: disabled
+                  netflow: false
                   deployment_immediacy: lazy
                   resolution_immediacy: immediate
                   allow_promiscuous: reject
@@ -88,14 +89,14 @@ apic:
               subnets:
                 - ip: 5.50.5.1/30
                   description: My Desc
-                  public: 'yes'
-                  private: 'no'
-                  shared: 'yes'
-                  igmp_querier: 'yes'
-                  nd_ra_prefix: 'yes'
-                  no_default_gateway: 'no'
+                  public: true
+                  private: false
+                  shared: true
+                  igmp_querier: true
+                  nd_ra_prefix: true
+                  no_default_gateway: false
                 - ip: 5.50.5.5/32
-                  no_default_gateway: 'yes'
+                  no_default_gateway: true
                   next_hop_ip: 8.8.8.8
                   ips_pools:
                     - name: POOL1

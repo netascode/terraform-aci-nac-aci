@@ -8,6 +8,7 @@ Location in GUI:
 * [DNS Policy](https://registry.terraform.io/modules/netascode/dns-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
@@ -18,8 +19,8 @@ apic:
         mgmt_epg: oob
         providers:
           - ip: 1.1.1.1
-            preferred: 'yes'
+            preferred: true
         domains:
           - name: cisco.com
-            default: 'yes'
+            default: true
 ```

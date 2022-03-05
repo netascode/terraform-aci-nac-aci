@@ -8,6 +8,7 @@ Location in GUI:
 * [OSPF Interface Policy](https://registry.terraform.io/modules/netascode/ospf-interface-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -33,10 +34,10 @@ apic:
           - name: OIP1
             description: My Desc
             cost: 40
-            passive_interface: 'yes'
-            mtu_ignore: 'yes'
-            advertise_subnet: 'yes'
-            bfd: 'yes'
+            passive_interface: true
+            mtu_ignore: true
+            advertise_subnet: true
+            bfd: true
             hello_interval: 30
             dead_interval: 180
             network_type: p2p

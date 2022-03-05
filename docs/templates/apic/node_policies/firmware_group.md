@@ -8,6 +8,7 @@ Location in GUI:
 * [Firmware Group](https://registry.terraform.io/modules/netascode/firmware-group/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml

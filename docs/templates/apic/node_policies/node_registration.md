@@ -8,6 +8,7 @@ Location in GUI:
 * [Node Registration](https://registry.terraform.io/modules/netascode/node-registration/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml

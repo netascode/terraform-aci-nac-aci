@@ -24,7 +24,7 @@ apic:
               ethertype: ip
               protocol: tcp
               destination_from_port: 80
-              stateful: 'yes'
+              stateful: true
 ```
 
 Full example:
@@ -46,5 +46,5 @@ apic:
               source_to_port: 80
               destination_from_port: 80
               destination_to_port: 80
-              stateful: 'yes'
+              stateful: true
 ```

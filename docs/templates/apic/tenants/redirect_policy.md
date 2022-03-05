@@ -37,13 +37,13 @@ apic:
             alias: PBR1
             description: My Desc
             type: L3
-            anycast: disabled
+            anycast: false
             hashing: sip-dip-prototype
-            threshold: disabled
+            threshold: false
             max_threshold: 0
             min_threshold: 0
             threshold_down_action: permit
-            resilient_hashing: disabled
+            resilient_hashing: false
             redirect_backup_policy: L4L7_REDIRECT_BACKUP1
             l3_destinations:
               - description: My Desc

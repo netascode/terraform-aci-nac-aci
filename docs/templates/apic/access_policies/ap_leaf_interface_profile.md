@@ -13,13 +13,14 @@ Location in GUI:
 * [Access Leaf Interface Profile](https://registry.terraform.io/modules/netascode/access-leaf-interface-profile/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Auto-generate profiles:
 
 ```yaml
 apic:
-  auto_generate_switch_pod_profiles: enabled
+  auto_generate_switch_pod_profiles: true
   access_policies:
     leaf_interface_profile_name: "LEAF\\g<id>"
 ```

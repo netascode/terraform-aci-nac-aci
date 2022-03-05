@@ -8,6 +8,7 @@ Location in GUI:
 * [BGP Timer Policy](https://registry.terraform.io/modules/netascode/bgp-timer-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
@@ -21,6 +22,6 @@ apic:
             keepalive_interval: 30
             hold_interval: 300
             stale_interval: 200
-            graceful_restart_helper: disabled
+            graceful_restart_helper: false
             maximum_as_limit: 2
 ```

@@ -8,6 +8,7 @@ Location in GUI:
 * [BFD Interface Policy](https://registry.terraform.io/modules/netascode/bfd-interface-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -19,7 +20,7 @@ apic:
       policies:
         bfd_interface_policies:
           - name: BFD1
-            subinterface_optimization: enabled
+            subinterface_optimization: true
 ```
 
 Full example:
@@ -32,9 +33,9 @@ apic:
         bfd_interface_policies:
           - name: BFD1
             description: descr
-            subinterface_optimization: enabled
+            subinterface_optimization: true
             detection_multiplier: 5
-            echo_admin_state: disabled
+            echo_admin_state: false
             echo_rx_interval: 100
             min_rx_interval: 100
             min_tx_interval: 100

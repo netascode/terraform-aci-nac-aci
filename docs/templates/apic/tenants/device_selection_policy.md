@@ -8,6 +8,7 @@ Location in GUI:
 * [Device Selection Policy](https://registry.terraform.io/modules/netascode/device-selection-policy/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 Simple example:
@@ -45,8 +46,8 @@ apic:
           - contract: CON1
             service_graph_template: TEMPLATE1
             consumer:
-              l3_destination: enabled
-              permit_logging: disabled
+              l3_destination: true
+              permit_logging: false
               redirect_policy:
                 name: PBR1
               logical_interface: INT1

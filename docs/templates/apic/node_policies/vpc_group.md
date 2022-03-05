@@ -8,6 +8,7 @@ Location in GUI:
 * [vPC Group](https://registry.terraform.io/modules/netascode/vpc-group/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml

@@ -8,10 +8,11 @@ Location in GUI:
 * [PTP](https://registry.terraform.io/modules/netascode/ptp/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
 apic:
   fabric_policies:
-    ptp_admin_state: disabled
+    ptp_admin_state: false
 ```

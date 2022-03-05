@@ -8,6 +8,7 @@ Location in GUI:
 * [AAA](https://registry.terraform.io/modules/netascode/aaa/aci/latest)
 
 {{ aac_doc }}
+
 ### Examples
 
 ```yaml
@@ -15,7 +16,7 @@ apic:
   fabric_policies:
     aaa:
       remote_user_login_policy: no-login
-      default_fallback_check: enabled
+      default_fallback_check: true
       default_realm: local
       console_realm: tacacs
       console_login_domain: tacacs
