@@ -119,6 +119,7 @@ nav:
               - Geolocation Policy: data_model/apic/fabric_policies/geolocation.md
               - Fabric SPAN Source Group: data_model/apic/fabric_policies/fp_span_source_group.md
               - Fabric SPAN Destination Group: data_model/apic/fabric_policies/fp_span_destination_group.md
+              - Interface Type: data_model/apic/fabric_policies/interface_type.md
           - Access Policies:
               - MCP Global Instance: data_model/apic/access_policies/mcp.md
               - QoS Class: data_model/apic/access_policies/qos.md
