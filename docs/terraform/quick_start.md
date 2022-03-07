@@ -15,7 +15,7 @@ Alternatively Terraform and the necessary Python requirements can be installed l
 ```shell
 python -m virtualenv aac          # Create a virtualenv if one does not already exist
 source aac/bin/activate           # Activate the virtual environment
-pip install robotframework robotframework-pabot RESTinstance yamale-aac yamllint
+pip install robotframework robotframework-pabot RESTinstance yamale yamllint
 ```
 
 ## Terraform Configuration
