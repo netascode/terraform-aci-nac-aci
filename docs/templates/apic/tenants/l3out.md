@@ -63,16 +63,16 @@ apic:
                       description: My Desc
                       next_hops:
                         - ip: 6.6.6.6
-                  interface_profiles:
-                    - name: NODE_101
-                      interfaces:
-                        - node_id: 101
-                          port: 10
-                          vlan: 301
-                          ip: 14.14.14.1/24
-                          bgp_peers:
-                            - ip: 14.14.14.14
-                              remote_as: 65010
+              interface_profiles:
+                - name: NODE_101
+                  interfaces:
+                    - node_id: 101
+                      port: 10
+                      vlan: 301
+                      ip: 14.14.14.1/24
+                      bgp_peers:
+                        - ip: 14.14.14.14
+                          remote_as: 65010
 ```
 
 Full example:
