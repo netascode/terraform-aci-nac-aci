@@ -71,7 +71,15 @@ Verify Schema {{ schema.name }} Template {{ template.name }} VRF {{ vrf_name }}
     String   ${vrf}.displayName   {{ vrf_name }}
     Boolean   ${vrf}.preferredGroup   {% if vrf.preferred_group | default(defaults.mso.schemas.templates.vrfs.preferred_group) == "enabled" %}true{% else %}false{% endif %} 
     Boolean   ${vrf}.l3MCast   {% if vrf.l3_multicast | default(defaults.mso.schemas.templates.vrfs.l3_multicast) == "enabled" %}true{% else %}false{% endif %} 
-
+    Boolean   ${vrf}.vzAnyEnabled   {% if vrf.vzany | default(defaults.mso.schemas.templates.vrfs.vzany) == "enabled" %}true{% else %}false{% endif %} 
+{% for contract in vrf.contracts.consumers | default([]) %}
+    ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].vrfs[?(@.name=='{{ vrf_name }}')].vzAnyConsumerContracts[?(@.contractRef=='/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}')]
+    String   ${con}.contractRef   "/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}"
+{% endfor %}
+{% for contract in vrf.contracts.providers | default([]) %}
+    ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].vrfs[?(@.name=='{{ vrf_name }}')].vzAnyProviderContracts[?(@.contractRef=='/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}')]
+    String   ${con}.contractRef   "/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}"
+{% endfor %}                        
 {% endfor %}
 
 {% for bd in template.bridge_domains | default([]) %}

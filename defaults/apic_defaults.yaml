@@ -61,7 +61,7 @@ defaults:
         delay: 120
         min_links: 0
       ptp_admin_state: false
-      ip_aging: false
+      ip_aging: true
       ignore_acked_faults: false
       use_infra_gipo: false
       fabric_isis_redistribute_metric: 60
@@ -976,6 +976,7 @@ defaults:
           set_as_path:
             criteria: 'prepend'
             count: 1
+            order: 0
           next_hop_propagation: false
           multipath: false
         bfd_interface_policies:

@@ -103,8 +103,32 @@
                     "name": "{{ vrf_name }}",
                     "displayName": "{{ vrf_name }}",
                     "preferredGroup": {% if vrf.preferred_group | default(defaults.mso.schemas.templates.vrfs.preferred_group) == "enabled" %}true{% else %}false{% endif %},
-                    "l3MCast": {% if vrf.l3_multicast | default(defaults.mso.schemas.templates.vrfs.l3_multicast) == "enabled" %}true{% else %}false{% endif %}
-
+                    "l3MCast": {% if vrf.l3_multicast | default(defaults.mso.schemas.templates.vrfs.l3_multicast) == "enabled" %}true{% else %}false{% endif %},
+                    "vzAnyEnabled": {% if vrf.vzany | default(defaults.mso.schemas.templates.vrfs.vzany) == "enabled" %}true{% else %}false{% endif %},
+                    "vzAnyConsumerContracts": [
+                        {% set comma3 = joiner(",") %}
+                        {%- for contract in vrf.contracts.consumers | default([]) %}{{ comma3() }}
+                        {
+                        {% if contract.schema | default(schema.name) == schema.name %}
+                            "contractRef": "/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}"
+                        {% else %}
+                            "contractRef": "/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}"
+                        {% endif %}
+                        }
+                        {%- endfor %}
+                    ],
+                    "vzAnyProviderContracts": [
+                        {% set comma3 = joiner(",") %}
+                        {%- for contract in vrf.contracts.providers | default([]) %}{{ comma3() }}
+                        {
+                        {% if contract.schema | default(schema.name) == schema.name %}
+                            "contractRef": "/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}"
+                        {% else %}
+                            "contractRef": "/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}"
+                        {% endif %}
+                        }
+                        {%- endfor %}                  
+                    ]
                 }
                 {%- endfor %}
 

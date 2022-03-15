@@ -42,8 +42,12 @@ Verify Set Rule {{ rule_name }}
     String   $..rtctrlSetRtMetricType.attributes.metricType   {{ rule.metric_type }}
 {% endif %}
 {% if rule.set_as_path is defined %}
-    String   $..rtctrlSetASPath.attributes.criteria   {{ rule.set_as_path.criteria | default(defaults.apic.tenants.policies.set_rules.set_as_path.criteria ) }}
-    String   $..rtctrlSetASPath.attributes.lastnum   {{ rule.set_as_path.count | default(defaults.apic.tenants.policies.set_rules.set_as_path.count ) }}
+    String   $..rtctrlSetASPath.attributes.criteria   {{ rule.set_as_path.criteria | default(defaults.apic.tenants.policies.set_rules.set_as_path.criteria) }}
+    String   $..rtctrlSetASPath.attributes.lastnum   {{ rule.set_as_path.count | default(defaults.apic.tenants.policies.set_rules.set_as_path.count) }}
+{% if rule.set_as_path.criteria == 'prepend' %}
+    String   $..rtctrlSetASPathASN.attributes.asn   {{ rule.set_as_path.asn }}
+    String   $..rtctrlSetASPathASN.attributes.order   {{ rule.set_as_path.order | default(defaults.apic.tenants.policies.set_rules.set_as_path.order) }}"
+{% endif %}
 {% endif %}
 {% if rule.next_hop_propagation | default(defaults.apic.tenants.policies.set_rules.next_hop_propagation) | cisco.aac.aac_bool("enabled") == 'enabled' %}
     String   $..rtctrlSetNhUnchanged.attributes.type   nh-unchanged

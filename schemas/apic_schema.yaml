@@ -1953,6 +1953,8 @@ ten_set_rule_additional_communities:
 ten_set_rule_set_as_path:
   criteria: enum('prepend', 'prepend-last-as', required=False)
   count: int(min=0, max=10, required=False)
+  asn: int(min=0, max=65535, required=False)
+  order: int(min=0, max=31, required=False)
 
 ten_bfd_interface_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

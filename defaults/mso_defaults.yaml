@@ -131,6 +131,7 @@ defaults:
           name_suffix: ''
           preferred_group: disabled
           l3_multicast: disabled
+          vzany: disabled
           sites:
             regions:
               vpn_gateway: disabled

@@ -121,8 +121,21 @@
                                 "attributes": {
                                     "criteria": "{{ rule.set_as_path.criteria | default(defaults.apic.tenants.policies.set_rules.set_as_path.criteria) }}",
                                     "lastnum": "{{ rule.set_as_path.count | default(defaults.apic.tenants.policies.set_rules.set_as_path.count) }}",
-                                    "type": "as-path"
-                                }
+                                    "type": "as-path",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {% if rule.set_as_path.criteria == 'prepend' %}
+                                    {
+                                        "rtctrlSetASPathASN": {
+                                            "attributes": {
+                                                "asn": "{{ rule.set_as_path.asn }}",
+                                                "order": "{{ rule.set_as_path.order | default(defaults.apic.tenants.policies.set_rules.set_as_path.order) }}"
+                                            }
+                                        }
+                                    }
+                                    {% endif %}
+                                ]
                             }
                         }
                         {%- endif %}

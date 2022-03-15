@@ -343,8 +343,24 @@ t_ap_epg_sites_selectors_expressions:
 t_vrfs:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   l3_multicast: enum('enabled', 'disabled', required=False)
+  vzany: enum('enabled', 'disabled', required=False)
   preferred_group: enum('enabled', 'disabled', required=False)
   sites: list(include('t_vrf_sites'), required=False) # @name(VRF Sites) @ref_name(Site)
+  contracts: include('t_vrfs_contracts', required=False) # @flatten()
+
+t_vrfs_contracts:
+  consumers: list(include('t_vrfs_contracts_consumers'), required=False) # @name(VRF Consumers)
+  providers: list(include('t_vrfs_contracts_providers'), required=False) # @name(VRF Providers)
+
+t_vrfs_contracts_consumers:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @ref_table(schemas_templates.contracts)
+  schema: str(required=False) # @ref_table(mso.schemas)
+  template: str(required=False) # @ref_table(schemas.templates)
+
+t_vrfs_contracts_providers:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @ref_table(schemas_templates.contracts)
+  schema: str(required=False) # @ref_table(mso.schemas)
+  template: str(required=False) # @ref_table(schemas.templates)
 
 t_vrf_sites:
   name: str() # @ref_table(mso.sites)
