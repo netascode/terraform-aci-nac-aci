@@ -18,7 +18,7 @@ This role is typically run after the initial setup of APICs has been completed. 
  
   tasks:
     - name: APIC Bootstrap
-      include_role:
+      ansible.builtin.include_role:
         name: cisco.aac.apic_bootstrap
 ```
 

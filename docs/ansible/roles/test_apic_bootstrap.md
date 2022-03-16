@@ -12,6 +12,6 @@ This role will run all tests related to 'apic_bootstrap' role. It will verify th
  
   tasks:
     - name: APIC Bootstrap Tests
-      include_role:
+      ansible.builtin.include_role:
         name: cisco.aac.test_apic_bootstrap
 ```

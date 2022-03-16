@@ -12,7 +12,7 @@ This role adds/modifies/deletes MSO objects.
  
   tasks:
     - name: MSO Deploy
-      include_role:
+      ansible.builtin.include_role:
         name: cisco.aac.mso_deploy
 ```
 

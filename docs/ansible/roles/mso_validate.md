@@ -14,6 +14,6 @@ This role validates all provided MSO data input files (typically in host_vars di
  
   tasks:
     - name: Validate MSO Data
-      include_role:
+      ansible.builtin.include_role:
         name: cisco.aac.mso_validate
 ```

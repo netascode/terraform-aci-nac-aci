@@ -14,6 +14,6 @@ This role validates all provided APIC data input files (typically in host_vars d
  
   tasks:
     - name: Validate APIC Data
-      include_role:
+      ansible.builtin.include_role:
         name: cisco.aac.apic_validate
 ```

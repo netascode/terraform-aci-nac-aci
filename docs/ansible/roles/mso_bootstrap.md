@@ -16,7 +16,7 @@ This role is typically run after the initial setup of MSO instances has been com
  
   tasks:
     - name: MSO Bootstrap
-      include_role:
+      ansible.builtin.include_role:
         name: cisco.aac.mso_bootstrap
 ```
 

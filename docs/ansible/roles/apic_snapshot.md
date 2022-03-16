@@ -12,6 +12,6 @@ This role creates an APIC snapshot. It is a wrapper for the existing ACI Ansible
  
   tasks:
     - name: APIC Snapshot
-      include_role:
+      ansible.builtin.include_role:
         name: cisco.aac.apic_snapshot
 ```

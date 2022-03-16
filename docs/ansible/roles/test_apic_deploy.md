@@ -12,6 +12,6 @@ This role will run all tests related to 'apic_deploy' role.
  
   tasks:
     - name: APIC Deploy Tests
-      include_role:
+      ansible.builtin.include_role:
         name: cisco.aac.test_apic_deploy
 ```

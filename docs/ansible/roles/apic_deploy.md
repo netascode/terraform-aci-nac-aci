@@ -12,7 +12,7 @@ This role adds/modifies/deletes APIC objects.
  
   tasks:
     - name: APIC Deploy
-      include_role:
+      ansible.builtin.include_role:
         name: cisco.aac.apic_deploy
 ```
 

@@ -12,6 +12,6 @@ This role will run all tests related to 'mso_deploy' role.
  
   tasks:
     - name: MSO Deploy Tests
-      include_role:
+      ansible.builtin.include_role:
         name: cisco.aac.test_mso_deploy
 ```
