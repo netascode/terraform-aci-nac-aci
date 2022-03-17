@@ -7,7 +7,8 @@
             "opflexpAuthenticateClients": "{{ apic.fabric_policies.global_settings.opflex_authentication | default(defaults.apic.fabric_policies.global_settings.opflex_authentication) | cisco.aac.aac_bool("yes") }}",
             "unicastXrEpLearnDisable": "{{ apic.fabric_policies.global_settings.disable_remote_endpoint_learn | default(defaults.apic.fabric_policies.global_settings.disable_remote_endpoint_learn) | cisco.aac.aac_bool("yes") }}",
             "validateOverlappingVlans": "{{ apic.fabric_policies.global_settings.overlapping_vlan_validation | default(defaults.apic.fabric_policies.global_settings.overlapping_vlan_validation) | cisco.aac.aac_bool("yes") }}",
-            "enableRemoteLeafDirect": "{{ apic.fabric_policies.global_settings.remote_leaf_direct | default(defaults.apic.fabric_policies.global_settings.remote_leaf_direct) | cisco.aac.aac_bool("yes") }}"
+            "enableRemoteLeafDirect": "{{ apic.fabric_policies.global_settings.remote_leaf_direct | default(defaults.apic.fabric_policies.global_settings.remote_leaf_direct) | cisco.aac.aac_bool("yes") }}",
+            "reallocateGipo": "{{ apic.fabric_policies.global_settings.reallocate_gipo | default(defaults.apic.fabric_policies.global_settings.reallocate_gipo) | cisco.aac.aac_bool("yes") }}"
         }
     }
 }

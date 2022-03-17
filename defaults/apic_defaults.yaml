@@ -56,6 +56,7 @@ defaults:
         disable_remote_endpoint_learn: false
         overlapping_vlan_validation: true
         remote_leaf_direct: false
+        reallocate_gipo: false
       port_tracking:
         admin_state: true
         delay: 120

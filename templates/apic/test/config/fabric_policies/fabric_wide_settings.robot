@@ -13,3 +13,4 @@ Verify Fabric Wide Settings
     String   $..infraSetPol.attributes.unicastXrEpLearnDisable   {{ apic.fabric_policies.global_settings.disable_remote_endpoint_learn | default(defaults.apic.fabric_policies.global_settings.disable_remote_endpoint_learn) | cisco.aac.aac_bool("yes") }}
     String   $..infraSetPol.attributes.validateOverlappingVlans   {{ apic.fabric_policies.global_settings.overlapping_vlan_validation | default(defaults.apic.fabric_policies.global_settings.overlapping_vlan_validation) | cisco.aac.aac_bool("yes") }}
     String   $..infraSetPol.attributes.enableRemoteLeafDirect   {{ apic.fabric_policies.global_settings.remote_leaf_direct | default(defaults.apic.fabric_policies.global_settings.remote_leaf_direct) | cisco.aac.aac_bool("yes") }}
+    String   $..infraSetPol.attributes.reallocateGipo   {{ apic.fabric_policies.global_settings.reallocate_gipo | default(defaults.apic.fabric_policies.global_settings.reallocate_gipo) | cisco.aac.aac_bool("yes") }}
