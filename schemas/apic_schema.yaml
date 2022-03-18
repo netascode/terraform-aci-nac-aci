@@ -103,6 +103,7 @@ fp_global_settings:
   disable_remote_endpoint_learn: any(bool(), enum('yes', 'no'), required=False)
   overlapping_vlan_validation: any(bool(), enum('yes', 'no'), required=False)
   remote_leaf_direct: any(bool(), enum('yes', 'no'), required=False)
+  reallocate_gipo: any(bool(), enum('yes', 'no'), required=False)
 
 fp_port_tracking:
   admin_state: any(bool(), enum('on', 'off'), required=False)
