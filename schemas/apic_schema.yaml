@@ -81,6 +81,7 @@ fabric_policies:
 fp_banners:
   apic_gui_alias: str(required=False)
   apic_gui_banner_url: str(required=False)
+  apic_gui_banner_message: str(required=False)
   apic_cli_banner: str(required=False)
   switch_cli_banner: str(required=False)
 

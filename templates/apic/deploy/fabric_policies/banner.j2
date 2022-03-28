@@ -2,7 +2,13 @@
     "aaaPreLoginBanner": {
         "attributes": {
             "dn": "uni/userext/preloginbanner",
+            {% if apic.fabric_policies.banners.apic_gui_banner_message is defined %}
+            "guiMessage": "{{ apic.fabric_policies.banners.apic_gui_banner_message | replace('\\', '\\\\') | replace('\n', '\\n') }}",
+            "isGuiMessageText": "yes",
+            {% else %}
             "guiMessage": "{{ apic.fabric_policies.banners.apic_gui_banner_url | default(defaults.apic.fabric_policies.banners.apic_gui_banner_url) }}",
+            "isGuiMessageText": "no",
+            {% endif %}
             "guiTextMessage": "{{ apic.fabric_policies.banners.apic_gui_alias | default(defaults.apic.fabric_policies.banners.apic_gui_alias) }}",
             "message": "{{ apic.fabric_policies.banners.apic_cli_banner | default(defaults.apic.fabric_policies.banners.apic_cli_banner) | replace('\\', '\\\\') | replace('\n', '\\n') }}",
             "switchMessage": "{{ apic.fabric_policies.banners.switch_cli_banner | default(defaults.apic.fabric_policies.banners.switch_cli_banner) | replace('\\', '\\\\') | replace('\n', '\\n') }}"
