@@ -4,7 +4,7 @@ site_description: Manage ACI following Infrastructure as Code principles. Codify
 repo_name: aac
 repo_url: https://wwwin-github.cisco.com/netascode/aac
 site_author: Daniel Schmidt
-copyright: Copyright &copy; 2018 - 2021 Daniel Schmidt
+copyright: Copyright &copy; 2018 - 2022 Daniel Schmidt
 theme:
   name: material
   features:
@@ -268,6 +268,11 @@ nav:
       - Overview: terraform/overview.md
       - Quick Start: terraform/quick_start.md
       - Development: terraform/development.md
+  - Labs:
+      - Overview: labs/overview.md
+      - Guides:
+          - Ansible, APIC, GitLab and Drone: labs/guide_ansible_apic_gitlab_drone.md
+      - Lab IPs: labs/ip_addresses.md
   - About:
       - Support: about/support.md
       - Contributors: about/contributors.md
