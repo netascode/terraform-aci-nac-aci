@@ -36,6 +36,7 @@ Variable | Mandatory | Default | Description
 Variable | Mandatory | Default | Description
 ---|---|---|---
 **apic_mode** | No | "only_provided" | - ```only_provided``` limits the list of objects to those configured as per inventory <br> - ```only_changed``` limits the list of objects to those that have changed compared to previous snapshot of the inventory (```previous_inventory``` is thr path to previous inventory files) <br> - ```all``` unconditionally includes all objects
+**apic_delete_mode** | No | "aac" | - ```aac```: only delete objects with `orchestrator:aac` annotation <br> - ```all```: potentially delete all objects including objects not configured by AAC
 **apic_username** | Yes | | The username for a local user created as part of the ```apic_bootstrap``` role and subsequently used by ```apic_deploy``` roles
 **apic_password** | No | | The password used for ```apic_username``` user. This option is mutual exclusive with ```apic_private_key``` which is the preferred option.
 **apic_private_key** | No | | The private key used for signature based authentication

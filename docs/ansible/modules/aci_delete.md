@@ -11,6 +11,8 @@ Parameter | Type | Mandatory | Comments
 **ignore** | list<<string\>\> | no | List of additional attribute values (except ```default```) to ignore
 **ignore_attr** | list<<string\>\> | no | List of additional attributes (except ```name```) to consider to ignore
 **match_dn** | string | no | A string that must be part of the objects DN, otherwise it is not considered for deletion
+**ignore_annotations** | list<<string\>\> | no | A list of annotations to ignore
+**only_aac** | bool | no | If `true` only delete objects with `orchestrator:aac` annotation.
 
 ## Return Values
 
