@@ -274,5 +274,6 @@ nav:
           - Ansible, APIC, GitLab and Drone: labs/guide_ansible_apic_gitlab_drone.md
       - Lab IPs: labs/ip_addresses.md
   - About:
+      - Changelog: about/changelog.md
       - Support: about/support.md
       - Contributors: about/contributors.md
