@@ -101,10 +101,9 @@ Once completed, refresh the browser screen and you should be able to see the API
 In order to configure the ACI as Code framework, some pre-requisite steps are required:
 
 - [Clone aac-inventory locally](#5a-clone-aac-inventory-locally)
-- [Encrypting passwords](#5b-encrypting-passwords)
-- [Preparing Webex notifications](#5c-preparing-webex-notifications)
-- [Create Gitlab Access Token](#5d-create-gitlab-access-token)
-- [Configure Drone secrets](#5e-configure-drone-secrets)
+- [Preparing Webex notifications](#5b-preparing-webex-notifications)
+- [Create Gitlab Access Token](#5c-create-gitlab-access-token)
+- [Configure Drone secrets](#5d-configure-drone-secrets)
 
 ### 5A) Clone aac-inventory locally
 
@@ -126,31 +125,9 @@ Resolving deltas: 100% (92/92), done.
 
 This will make the `aac-inventory` available locally. Open up the folder in your favorite IDE (e.g. Visual Studio, PyCharm...). All changes described in the next section will be made on the local copy of this repository
 
-### 5B) Encrypting passwords
+### 5B) Preparing Webex notifications
 
-You will notice that the `aac-inventory` repository uses encrypted passwords in various files. While these values could also be replaced with clear passwords, it's best practice to use encrypted passwords in the Ansible files. This section explains how to encrypt your passwords using Ansible.
-
-Use the `ansible-vault encrypt-string` command to encrypt the password of your choice. You will be asked to provide a Vault password: choose a password of your choice but remember it as it will be required later on to decrypt the Ansible passwords during pipeline execution. In later sections, we will refer to this password as the `ANSIBLE_VAULT_PASSWORD`.
-
-```
-~/Code/AAC_Lab$ ansible-vault encrypt_string cisco123
-New Vault password:
-Confirm New Vault password:
-!vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          31616237616261616365366136313538303638663139306662343538653962626531623431643935
-          3065343265336363316332633136336466656661636336620a393132356639663866336339353735
-          33646333316238306439633730343837333932386536663031373338616364336338386533386639
-          3665313764383831370a653839353132373236656535663037363135323461353337626530383430
-          3037
-Encryption successful
-```
-
-You will receive an encrypted string of the password you used. This encrypted string can then be used in the various files in our repository. Keep a copy of the encrypted string as this will be required in later sections.
-
-### 5C) Preparing Webex notifications
-
-#### 5C-1) Create a Webex Bot
+#### 5B-1) Create a Webex Bot
 
 Go to <https://developer.webex.com> and login with CEC credentials. Select `My Webex Apps` and `Create a New App`.
 
@@ -162,7 +139,7 @@ Select `Create a bot` and fill out all required fields. Use a unique bot usernam
 
 Once finished, click `Add Bot` and your Webex bot will be created. You will receive a `Bot Access Token`. Copy this token as it will be required in the next section (e.g. SPARK_ACCESS_TOKEN).
 
-#### 5C-2) Create a Webex space
+#### 5B-2) Create a Webex space
 
 Next, we will create a Webex space. In Webex, click the `+` icon and select ``Create Space`.
 
@@ -172,7 +149,7 @@ Choose an appropriate name for your space. Then add the bot we created earlier a
 
 ![aac_webex_4](../assets/labs/guide_ansible_apic_gitlab_drone/webex4.png)
 
-#### 5C-3) Retrieve Room ID
+#### 5B-3) Retrieve Room ID
 
 The Drone pipeline will need to know the room ID in order to be able to send messages to it. So in the section, we will retrieve the room ID for the room we just created. There are multiple ways to do this (e.g postman, python, CURL...). In this lab guide, we will use CURL.
 
@@ -202,7 +179,7 @@ In the above command, replace the \<BEARER> value with Bot Access Token value th
 }
 ```
 
-### 5D) Create Gitlab Access Token
+### 5C) Create Gitlab Access Token
 
 Go to your Gitlab instance. Click on the profile icon in the upper right corner and go to `Edit Profile`. Next on the left select `Access Tokens`. Create a Personal Access Token and give it `api` scope.
 
@@ -210,7 +187,7 @@ Go to your Gitlab instance. Click on the profile icon in the upper right corner 
 
 Take a note of the value as it will need to be added as a secret in Drone in the next section (e.g. GITHUB_TOKEN)
 
-### 5E) Configure Drone secrets
+### 5D) Configure Drone secrets
 
 Go to the `aci-iac/aac-inventory` repository on Drone and go to `Settings`. We will add some secrets to Drone that will be used inside the drone.yml file.
 
@@ -222,22 +199,19 @@ Add the following secrets:
 - ARTIFACTORY_PASSWORD: we will use the Cisco internal artifactory (<https://engci-maven.cisco.com/artifactory>). Set this password to 'yp41v2t9wiuanhfr'.
 - SPARK_ACCESS_TOKEN: set this to the token you created in the `Preparing Webex notifications` section. Click on `Allow Pull requests`.
 - GITHUB_TOKEN: set this to the token you created in the `Create Gitlab Access Token` section. Click on `Allow Pull requests`.
+- APIC_HOST: set this to the IP address of the APIC
 
 When finished you should see the following secrets added to your repository:
 
-![aac_drone_5](../assets/labs/guide_ansible_apic_gitlab_drone/drone5.png)
+![aac_drone_5](../assets/labs/guide_ansible_apic_gitlab_drone/drone5a.png)
 
 ## Section 6: Customize inventory files
 
 Next, we need to perform some preparation activities prior to working with the ACI as Code framework.
 
-### 6A) Copy drone file
+### 6A) Change hosts.yaml file
 
-In the local repository, you will see a `.drone_aci.yml` file. Rename that file to `.drone.yml` (you can safely remove the existing .drone.yml file if needed).
-
-### 6B) Change hosts.yaml file
-
-We need to change the `hosts.yaml` file which can be found in the `aac-inventory/data/lab/group_vars` folder. Change the IP address to the ACI simulator you are using.
+We need to change the `hosts.yaml` file which can be found in the `aac-inventory/data/lab/group_vars` folder. The `APIC_HOST` is read from an environment variable. We have set this already in section 5E.
 
 ```
 ---
@@ -246,59 +220,35 @@ aci:
     apic:
       hosts:
         apic1:
-          apic_host: APIC_IP
+          apic_host: "{{ lookup('ansible.builtin.env', 'APIC_HOST') }}"
           ansible_connection: local
+    # mso:
+    #   hosts:
+    #     mso1:
+    #       mso_host: "{{ lookup('ansible.builtin.env', 'MSO_HOST') }}"
+    #       ansible_connection: local
 ```
 
-Note: as this lab guide focuses only on APIC, you can comment out the MSO section
+Note: as this lab guide focuses only on APIC, you can comment out the MSO section (see screenshot above).
 
-### 6C) Change aci.yaml file
+### 6B) Change aci.yaml file
 
 We need to change the `aci.yaml` file which can be found in the `aac-inventory/data/lab` folder. Make the following changes:
 
-A. Change the `apic_password` password of the `ansible` user. Use the encrypted string that was generated in the `Encrypting passwords` section. For simplicity, comment out the entire `apic_private_key` and `apic_public_key` sections. You should have something similar to below example:
+A. For simplicity we will use a simple APIC password. Add the `apic_password` password of the `ansible` user and comment out the `apic_private_key` and `apic_public_cert` section. You should have something similar to below example:
 
 ```
+---
+apic_mode: only_changed
 apic_username: ansible
-apic_password: !vault |
-  $ANSIBLE_VAULT;1.1;AES256
-  31616237616261616365366136313538303638663139306662343538653962626531623431643935
-  3065343265336363316332633136336466656661636336620a393132356639663866336339353735
-  33646333316238306439633730343837333932386536663031373338616364336338386533386639
-  3665313764383831370a653839353132373236656535663037363135323461353337626530383430
-  3037
+apic_password: C1sco123
 # apic_private_key: !vault |
 # ...
 # apic_public_cert: |
 # ...
 ```
 
-B. Change the `apic_test_password` password of the `apic_test_user` user. Use the encrypted string that was generated in the `Encrypting passwords` section. You should have something similar to below example:
-
-```
-apic_test_username: test-user
-apic_test_password: !vault |
-  $ANSIBLE_VAULT;1.1;AES256
-  31616237616261616365366136313538303638663139306662343538653962626531623431643935
-  3065343265336363316332633136336466656661636336620a393132356639663866336339353735
-  33646333316238306439633730343837333932386536663031373338616364336338386533386639
-  3665313764383831370a653839353132373236656535663037363135323461353337626530383430
-  3037
-```
-
-C. Change the `apic_admin_password`. Use the encrypted string that was generated in the `Encrypting passwords` section. You should have something similar to the below example:
-
-```
-apic_admin_password: !vault |
-  $ANSIBLE_VAULT;1.1;AES256
-  31616237616261616365366136313538303638663139306662343538653962626531623431643935
-  3065343265336363316332633136336466656661636336620a393132356639663866336339353735
-  33646333316238306439633730343837333932386536663031373338616364336338386533386639
-  3665313764383831370a653839353132373236656535663037363135323461353337626530383430
-  3037
-```
-
-Note: as this lab guide focuses only on APIC, you can comment out the MSO relevant parts in the rest of the file. These include:
+Note: as this lab guide focuses only on APIC, you can comment out the MSO and NEA relevant parts in the rest of the file. These include:
 
 - mso_mode
 - apic_mso_username and apic_mso_password
@@ -307,39 +257,18 @@ Note: as this lab guide focuses only on APIC, you can comment out the MSO releva
 - mso_option_configure
 - mso_option_delete
 - mso_option_deploy
+- nae_host
+- nae_username
+- nae_password
+- nae_ignore_smart_events
 
-### 6D) Remove mso1 directory file
+### 6C) Remove mso1 directory file
 
 Since we only use an APIC configuration, go ahead and remove the `aac-inventory/data/lab/host_vars/mso1` directory
 
-### 6E) Change bootstrap file
-
-We need to change the `bootstrap.yaml` file which can be found in the `aac-inventory/data/lab/host_vars/apic1` folder. Make the following changes:
-
-- Change the admin password of the `admin` user. Use the encrypted string that was generated in the `Encrypting passwords` section.
-
-```
-    admin_username: admin
-    admin_password: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      31616237616261616365366136313538303638663139306662343538653962626531623431643935
-      3065343265336363316332633136336466656661636336620a393132356639663866336339353735
-      33646333316238306439633730343837333932386536663031373338616364336338386533386639
-      3665313764383831370a653839353132373236656535663037363135323461353337626530383430
-      3037
-```
-
-- Change the config_passphrase
-
-The config passphrase needs to consist of 16 characters. Use the `ansible-vault encrypt-string` command just as we did in the `Encrypting passwords` section. Choose a password with minimum 16 characters and use the encrypted result for the `config_passphrase`. For simplicity, you could use the same `ANSIBLE_VAULT_PASSWORD` to perform the encryption.
-
-### 6F) Change fabric_policies.yaml file
-
-This file can be found in the directory `/data/lab/host_vars/apic1/fabric_policies.yaml`. Comment out the `ca_certificates` and `key_rings` sections
-
 ## Section 7: Drone pipeline configuration
 
-WIn this section, we will modify the drone.yml file. We will go step by step through the drone.yml file and specify the changes that are required in each of the steps. Go to the local (cloned) repository and open the `.drone.yml` file.
+In this section, we will modify the drone.yml file. We will go step by step through the drone.yml file and specify the changes that are required in each of the steps. Go to the local (cloned) repository and open the `.drone.yml` file.
 
 ### Step: Setup
 
@@ -425,7 +354,7 @@ collections:
 
 Description: The `Validate` step is perform syntactic and semantic validations on your inventory.
 
-Currently, the `Validate` step will contain following code. No changes are required as such.
+Currently, the `Validate` step will contain following code. As this guide only covers ACI, go ahead and comment out the MSO and NAE section.
 
 ```
   - name: Validate
@@ -433,10 +362,17 @@ Currently, the `Validate` step will contain following code. No changes are requi
     environment:
       ANSIBLE_VAULT_PASSWORD:
         from_secret: ANSIBLE_VAULT_PASSWORD
+      APIC_HOST:
+        from_secret: APIC_HOST
+      MSO_HOST:
+        from_secret: MSO_HOST
+      NAE_HOST:
+        from_secret: NAE_HOST
     commands:
       - export ANSIBLE_CONFIG=$(pwd)/ansible.cfg
       - set -o pipefail
       - ansible-playbook -i data/lab/hosts.yaml apic_validate.yaml |& tee validate_output.txt
+      # - ansible-playbook -i data/lab/hosts.yaml mso_validate.yaml |& tee validate_output.txt
     depends_on:
       - Setup
 ```
@@ -445,7 +381,7 @@ Currently, the `Validate` step will contain following code. No changes are requi
 
 Description: the `Boostrap` step is responsible for setting up your ACI fabric for the first time. Hence the Bootstrap step is only required for Day-0 operations and can be removed once it was run successfully.
 
-Currently, the `Bootstrap` step will contain following code. No changes are required as such.
+Currently, the `Bootstrap` step will not be in the drone.yml file so we need to add it. Copy and paste the following snippet to your drone file.
 
 ```
   - name: Bootstrap
@@ -472,7 +408,7 @@ The bootstrap step will only be executed on `status: [FAILURE]` so for the very 
 
 Description: the `Test Bootstrap` step is responsible for testing the bootstrapped configuration.
 
-Currently, the `Test Bootstrap` step will contain following code. No changes are required as such.
+Currently, the `Bootstrap` step will not be in the drone.yml file so we need to add it. Copy and paste the following snippet to your drone file.
 
 ```
   - name: Test Bootstrap
@@ -482,12 +418,9 @@ Currently, the `Test Bootstrap` step will contain following code. No changes are
       ANSIBLE_VAULT_PASSWORD:
         from_secret: ANSIBLE_VAULT_PASSWORD
     commands:
-      - >
-        if [ "$BOOTSTRAP" == "true" ]; then
-          export ANSIBLE_CONFIG=$(pwd)/ansible.cfg
-          set -o pipefail
-          ansible-playbook -i data/lab/hosts.yaml test_apic_bootstrap.yaml |& tee test_apic_bootstrap_output.txt
-        fi
+      - export ANSIBLE_CONFIG=$(pwd)/ansible.cfg
+      - set -o pipefail
+      - ansible-playbook -i data/lab/hosts.yaml test_apic_bootstrap.yaml |& tee test_apic_bootstrap_output.txt
     depends_on:
       - Bootstrap
     when:
@@ -499,12 +432,13 @@ Currently, the `Test Bootstrap` step will contain following code. No changes are
 
 Description: the `Render APIC` step is responsible for creating the JSON bodies to effectly provision the fabric.
 
-Currently, the `Render` step will contain following code. We need to make 2 changes:
+Currently, the `Render` step will contain following code. We need to make 3 changes:
 
+- Comment out the MSO and NAE environment variables
 - Change the `git clone` command to point it to your `aac-inventory-config` repository
 - Change the if clause to point to the correct local directory
 
-BEFORE
+You should end up with the following:
 
 ```
   - name: Render APIC
@@ -513,6 +447,8 @@ BEFORE
       GIT_SSL_NO_VERIFY: 'true'
       ANSIBLE_VAULT_PASSWORD:
         from_secret: ANSIBLE_VAULT_PASSWORD
+      APIC_HOST:
+        from_secret: APIC_HOST
     commands:
       - git clone https://CONTROLLER_IP/aci-iac/aac-inventory-config.git
       - export ANSIBLE_CONFIG=$(pwd)/ansible.cfg
@@ -537,11 +473,20 @@ BEFORE
 
 Note: the first time we run our pipeline, we will add a dependency on the `Test Bootstrap`. After the pipeline was run successfully, that dependency can be removed.
 
+### Step: NAE PCA
+
+As this guide only focuses on APIC, you can comment out this section
+
 ### Step: Deploy APIC
 
 Description: The `Deploy APIC` step is responsible for taking the rendered JSON bodies and use them to configure the ACI fabric.
 
-Currently, the `Deploy APIC` step will contain following code. No changes are required as such.
+The following changes are required:
+
+- comment out the MSO and NAE environment variables
+- comment out the' NAE PCA' dependency in the `depends on` part
+
+You should have the following
 
 ```
   - name: Deploy APIC
@@ -549,6 +494,8 @@ Currently, the `Deploy APIC` step will contain following code. No changes are re
     environment:
       ANSIBLE_VAULT_PASSWORD:
         from_secret: ANSIBLE_VAULT_PASSWORD
+      APIC_HOST:
+        from_secret: APIC_HOST
     commands:
       - export ANSIBLE_CONFIG=$(pwd)/ansible.cfg
       - 'echo "apic_snapshot: $APIC_SNAPSHOT" >> apic_deploy_vars.yaml'
@@ -569,11 +516,18 @@ Currently, the `Deploy APIC` step will contain following code. No changes are re
       - Render APIC
 ```
 
+### Deploy MSO
+
+As this guide only focuses on APIC, you can comment out this section
+
 ### Step: Test APIC
 
 Description: the `Test APIC` step is responsible for testing the ACI fabric after the deployment has been finished
 
-Currently, the `Test APIC` step will contain following code.
+The following changes are required:
+
+- comment out the MSO and NAE environment variables
+- comment out the 'Deploy MSO' dependency in the `depends on` part
 
 ```
   - name: Test APIC
@@ -581,6 +535,8 @@ Currently, the `Test APIC` step will contain following code.
     environment:
       ANSIBLE_VAULT_PASSWORD:
         from_secret: ANSIBLE_VAULT_PASSWORD
+      APIC_HOST:
+        from_secret: APIC_HOST
     commands:
       - export ANSIBLE_CONFIG=$(pwd)/ansible.cfg
       - 'echo "test_apic_deploy: $TEST_APIC_DEPLOY" >> apic_test_vars.yaml'
@@ -600,14 +556,19 @@ Currently, the `Test APIC` step will contain following code.
       - Deploy APIC
 ```
 
+### Test MSO
+
+As this guide only focuses on APIC, you can comment out this section
+
 ### Step: Git Config Update
 
 Description: the `Git Config Update` will store the rendered files inside the config repository that was created earlier (e.g. `aac-inventory-config`).
 
 Currently, the `GIT Config Update` step will contain following code. Pay attention to the following:
 
-- cd into the config directory that was created earlier (e.g. `aac-inventory-config`)
-- Use the Gitlab access token name as created in the `Create Gitlab Access Token` section (e.g in our case the token was called `GIT_TOKEN')
+- change the location in the `cd` command (1st line under the commands section) to the config directory that was created earlier (e.g. `aac-inventory-config`)
+- use the Gitlab access token name (3rd line under the commands section) as created in the `Create Gitlab Access Token` section (e.g in our case the token was called `GIT_TOKEN')
+- comment out the 'Deploy MSO' dependency in the `depends on` part
 
 Your code should look as follows:
 
@@ -640,9 +601,10 @@ Your code should look as follows:
 
 Description: the `GIT Tag Release` will tag the repository with the `last_deploy1 tag.
 
-Currently, the `GIT Config Update` step will contain following code. Pay attention to the following:
+Change the following:
 
-- Use the Gitlab access token name as created in the `Create Gitlab Access Token` section (e.g in our case the token was called `GIT_TOKEN')
+- use the Gitlab access token name (3rd line under the commands section) as created in the `Create Gitlab Access Token` section (e.g in our case the token was called `GIT_TOKEN')
+- comment out the 'Test MSO' dependency in the depends on part
 
 ```
   - name: GIT Tag Release
@@ -654,7 +616,7 @@ Currently, the `GIT Config Update` step will contain following code. Pay attenti
     commands:
       - git config credential.helper "store --file=.git/credentials"
       - echo "https://GIT_TOKEN:$GITHUB_TOKEN@CONTROLLER_IP" > .git/credentials
-      - git push --delete origin last_deploy
+      # - git push --delete origin last_deploy
       - git tag last_deploy
       - git push --tags
     when:
@@ -667,13 +629,19 @@ Currently, the `GIT Config Update` step will contain following code. Pay attenti
       - Test APIC
 ```
 
+Note: the first time we run the code, there is no `last_deploy` so we cannot delete it. Hence, the first time we run the pipeline, we will comment out that line.
+
 ### Step: Upload Artifacts
 
 Description: the `Upload Artifacts` step is responsible for uploading the automated test reports to an artifactory repository
 
-Currently, the `Upload Artifacts` step will contain following code. Pay attention to the following:
+Make the following changes:
 
 - change the path to a different location so your reports are stored in a folder that belongs to you (e.g CEC_USERNAME/aac-lab)
+- comment out the MSO related item under the sources part
+- comment out the 'Test MSO' dependency in the depends on part
+
+You should have something similar to:
 
 ```
   - name: Upload Artifacts
