@@ -23,7 +23,7 @@ $ docker run -it containers.cisco.com/aide/aac-tool bash
 Be aware that by default you do not have access to any files on your host from within the container. In order to share/access files from your host you need to create a shared volume which maps a directory from your host into the container environment. This can done using the `-v` flag when using the `docker run` command.
 
 ```shell
-$ docker run -it -v $(pwd):/home containers.cisco.com/aide/aac-tool bash
+$ docker run -it -v "`pwd`:/home" containers.cisco.com/aide/aac-tool bash
 ```
 
 ## Local installation
