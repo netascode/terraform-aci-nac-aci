@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.1 (unreleased)
+
+#### Terraform (terraform-aac)
+
+- Introduce module switches (`modules/modules.yaml`) to selectively disable modules for brownfield scenarios
+- BREAKING CHANGE: Use boolean values in data model instead of `enabled`/`disabled`, `yes`/`no` and `on`/`off`
+
 ## 0.4.0 <small>April 25, 2022</small>
 
 #### CLI (aac-tool)
