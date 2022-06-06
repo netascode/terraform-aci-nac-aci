@@ -15,6 +15,7 @@
             {
                 "spanDestGrp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn": "uni/tn-{{ tenant.name }}/destgrp-{{ span_dst_grp_name }}",
                         "name": "{{ span_dst_grp_name }}",
                         "descr" : "{{ span.description | default() }}",
@@ -24,6 +25,7 @@
                         {
                             "spanDest":{
                                 "attributes":{
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ span_dst_grp_name }}",
                                     "childAction": "deleteNonPresent"
                                 },
@@ -31,6 +33,7 @@
                                     {
                                         "spanRsDestEpg": {
                                             "attributes":{
+                                                "annotation": "orchestrator:aac",
                                                 "ip": "{{ span.ip }}",
                                                 "srcIpPrefix": "{{ span.source_prefix }}",
                                                 "dscp": "{{ span.dscp | default(defaults.apic.tenants.policies.span.destination_groups.dscp) }}",

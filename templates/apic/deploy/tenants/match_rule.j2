@@ -12,6 +12,7 @@
             {
                 "rtctrlSubjP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ rule_name }}",
                         "dn": "uni/tn-{{ tenant.name }}/subj-{{ rule_name }}",
                         "descr": "{{ rule.description | default() }}",
@@ -24,6 +25,7 @@
                         {
                             "rtctrlMatchCommRegexTerm": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ re_comm_term_name }}",
                                     "regex": "{{ re_comm_term.regex }}",
                                     "commType": "{{ re_comm_term.type | default(defaults.apic.tenants.policies.match_rules.regex_community_terms.type)  }}",
@@ -37,6 +39,7 @@
                         {
                             "rtctrlMatchCommTerm": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ comm_term_name }}",
                                     "descr": "{{ comm_term.description | default() }}",
                                     "childAction": "deleteNonPresent"
@@ -47,6 +50,7 @@
                                     {
                                         "rtctrlMatchCommFactor": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "community": "{{ factor.community }}",
                                                 "descr": "{{ factor.description | default() }}",
                                                 "scope": "{{ factor.scope | default(defaults.apic.tenants.policies.match_rules.community_terms.factors.scope) }}"
@@ -63,6 +67,7 @@
                         {
                             "rtctrlMatchRtDest": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "aggregate": "{{ prefix.aggregate | default(defaults.apic.tenants.policies.match_rules.prefixes.aggregate) | cisco.aac.aac_bool("yes") }}",
                                     "descr": "{{ prefix.description | default() }}",
                                     "fromPfxLen": "{{ prefix.from_length | default(defaults.apic.tenants.policies.match_rules.prefixes.from_length) }}",

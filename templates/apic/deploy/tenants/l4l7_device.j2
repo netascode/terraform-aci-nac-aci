@@ -12,6 +12,7 @@
             {
                 "vnsLDevVip": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "contextAware": "{{ dev.context_aware | default(defaults.apic.tenants.services.l4l7_devices.context_aware) }}",
                         "devtype": "{{ dev.type | default(defaults.apic.tenants.services.l4l7_devices.type) }}",
                         "dn": "uni/tn-{{ tenant.name }}/lDevVip-{{ dev_name }}",
@@ -33,6 +34,7 @@
                         {
                             "vnsRsALDevToPhysDomP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/phys-{{ domain_name }}"
                                 }
                             }
@@ -44,6 +46,7 @@
                         {
                             "vnsCDev": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "cloneCount": "0",
                                     "devCtxLbl": "",
                                     "host": "",
@@ -62,6 +65,7 @@
                                     {
                                         "vnsCIf": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "name": "{{ int_name }}",
                                                 "nameAlias": "{{ int.alias | default() }}",
                                                 "vnicName": "{{ int.vnic_name | default() }}",
@@ -71,6 +75,7 @@
                                                 {
                                                     "vnsRsCIfPathAtt": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             {% if int.node_id is defined and int.channel is not defined %}
                                                             {% set query = "nodes[?id==`" ~ int.node_id ~ "`].pod" %}
                                                             {% set pod = int.pod_id | default((apic.node_policies | community.general.json_query(query))[0] | default('1')) %}
@@ -120,6 +125,7 @@
                         {
                             "vnsLIf": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "encap": "vlan-{{ int.vlan }}",
                                     "name": "{{ int_name }}",
                                     "nameAlias": "{{ int.alias | default() }}",
@@ -133,6 +139,7 @@
                                     {
                                         "vnsRsCIfAttN": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/lDevVip-{{ dev_name }}/cDev-{{ cd_name }}/cIf-[{{ ci_name }}]"
                                             }
                                         }

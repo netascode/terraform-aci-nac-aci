@@ -12,6 +12,7 @@
             {
                 "fabricPodP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ pod_profile_name }}",
                         "dn": "uni/fabric/podprof-{{ pod_profile_name }}",
                         "childAction": "deleteNonPresent"
@@ -20,6 +21,7 @@
                         {
                             "fabricPodS": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ pod_profile_pod_selector_name }}",
                                     "type": "range",
                                     "childAction": "deleteNonPresent"
@@ -30,6 +32,7 @@
                                     {
                                         "fabricRsPodPGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/fabric/funcprof/podpgrp-{{ pod_policy_group_name }}"
                                             }
                                         }
@@ -38,6 +41,7 @@
                                     {
                                         "fabricPodBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "from_": "{{ pod.id }}",
                                                 "name": "{{ pod.id }}",
                                                 "to_": "{{ pod.id }}"
@@ -57,6 +61,7 @@
             {
                 "fabricPodP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ pod_profile_name }}",
                         "dn": "uni/fabric/podprof-{{ pod_profile_name }}",
                         "childAction": "deleteNonPresent"
@@ -68,6 +73,7 @@
                         {
                             "fabricPodS": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ selector_name }}",
                                     "type": "{% if sel.type | default(defaults.apic.fabric_policies.pod_profiles.selectors.type) == "all" %}ALL{% else %}range{% endif %}",
                                     "childAction": "deleteNonPresent"
@@ -79,6 +85,7 @@
                                     {
                                         "fabricRsPodPGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/fabric/funcprof/podpgrp-{{ pod_policy_group_name }}"
                                             }
                                         }
@@ -89,6 +96,7 @@
                                     {
                                         "fabricPodBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "from_": "{{ blk.from }}",
                                                 "name": "{{ pod_block_name }}",
                                                 "to_": "{{ blk.to | default(blk.from) }}"

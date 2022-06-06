@@ -16,6 +16,7 @@
             {
                 "vnsLDevCtx": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn": "uni/tn-{{ tenant.name }}/ldevCtx-c-{{ contract_name }}-g-{{ sgt_name }}-n-N1",
                         "ctrctNameOrLbl": "{{ contract_name }}",
                         "graphNameOrLbl": "{{ sgt_name }}",
@@ -26,6 +27,7 @@
                         {
                             "vnsRsLDevCtxToLDev": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}"
                                 }
                             }
@@ -33,6 +35,7 @@
                         {
                             "vnsLIfCtx": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "connNameOrLbl": "consumer",
                                     "l3Dest": "{{ 'yes' if dsp.consumer.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}",
                                     "permitLog": "{{ 'yes' if dsp.consumer.permit_logging | default(defaults.apic.tenants.services.device_selection_policies.consumer.permit_logging) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}",
@@ -44,6 +47,7 @@
                                     {
                                         "vnsRsLIfCtxToSvcRedirectPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ dsp.consumer.redirect_policy.tenant | default(tenant.name) }}/svcCont/svcRedirectPol-{{ pol_name }}"
                                             }
                                         }
@@ -54,6 +58,7 @@
                                     {
                                         "vnsRsLIfCtxToBD": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ dsp.consumer.bridge_domain.tenant | default(tenant.name) }}/BD-{{ bd_name }}"
                                             }
                                         }
@@ -69,6 +74,7 @@
                                     {
                                         "vnsRsLIfCtxToInstP": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "redistribute": "{{ redistribute | join(',') }}",
                                                 "tDn": "uni/tn-{{ dsp.consumer.external_endpoint_group.tenant | default(tenant.name) }}/out-{{ l3out_name }}/instP-{{ eepg_name }}"
                                             }
@@ -80,6 +86,7 @@
                                     {
                                         "vnsRsLIfCtxToSvcEPgPol":{
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/svcCont/svcEPgPol-{{ pol_name }}"
                                             }
                                         }
@@ -90,6 +97,7 @@
                                     {
                                         "vnsRsLIfCtxToCustQosPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnQosCustomPolName": "{{ custom_qos_policy_name }}"
                                             }
                                         }
@@ -99,6 +107,7 @@
                                     {
                                         "vnsRsLIfCtxToLIf": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}/lIf-{{ int_name }}"
                                             }
                                         }
@@ -109,6 +118,7 @@
                         {
                             "vnsLIfCtx": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "connNameOrLbl": "provider",
                                     "l3Dest": "{{ 'yes' if dsp.provider.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.provider.l3_destination) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}",
                                     "permitLog": "{{ 'yes' if dsp.provider.permit_logging | default(defaults.apic.tenants.services.device_selection_policies.provider.permit_logging) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}",
@@ -120,6 +130,7 @@
                                     {
                                         "vnsRsLIfCtxToSvcRedirectPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ dsp.provider.redirect_policy.tenant | default(tenant.name) }}/svcCont/svcRedirectPol-{{ pol_name }}"
                                             }
                                         }
@@ -130,6 +141,7 @@
                                     {
                                         "vnsRsLIfCtxToBD": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ dsp.provider.bridge_domain.tenant | default(tenant.name) }}/BD-{{ bd_name }}"
                                             }
                                         }
@@ -145,6 +157,7 @@
                                     {
                                         "vnsRsLIfCtxToInstP": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "redistribute": "{{ redistribute | join(',') }}",
                                                 "tDn": "uni/tn-{{ dsp.provider.external_endpoint_group.tenant | default(tenant.name) }}/out-{{ l3out_name }}/instP-{{ eepg_name }}"
                                             }
@@ -156,6 +169,7 @@
                                     {
                                         "vnsRsLIfCtxToSvcEPgPol":{
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/svcCont/svcEPgPol-{{ pol_name }}"
                                             }
                                         }
@@ -166,6 +180,7 @@
                                     {
                                         "vnsRsLIfCtxToCustQosPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnQosCustomPolName": "{{ custom_qos_policy_name }}"
                                             }
                                         }
@@ -175,6 +190,7 @@
                                     {
                                         "vnsRsLIfCtxToLIf": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}/lIf-{{ int_name }}"
                                             }
                                         }

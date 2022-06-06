@@ -12,6 +12,7 @@
             {
                 "rtctrlAttrP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ rule_name }}",
                         "dn": "uni/tn-{{ tenant.name }}/attr-{{ rule_name }}",
                         "descr": "{{ rule.description | default() }}",
@@ -23,6 +24,7 @@
                         {
                             "rtctrlSetComm": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "community": "{{ rule.community }}",
                                     "setCriteria": "{{ rule.community_mode | default(defaults.apic.tenants.policies.set_rules.community_mode) }}",
                                     "type": "community"
@@ -34,6 +36,7 @@
                         {
                             "rtctrlSetTag": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tag": "{{ rule.tag }}",
                                     "type": "rt-tag"
                                 }
@@ -44,6 +47,7 @@
                         {
                             "rtctrlSetDamp": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "halfLife": "{{ rule.dampening.half_life | default(defaults.apic.tenants.policies.set_rules.dampening.half_life) }}",
                                     "maxSuppressTime": "{{ rule.dampening.max_suppress_time | default(defaults.apic.tenants.policies.set_rules.dampening.max_suppress_time) }}",
                                     "reuse": "{{ rule.dampening.reuse_limit | default(defaults.apic.tenants.policies.set_rules.dampening.reuse_limit) }}",
@@ -57,6 +61,7 @@
                         {
                             "rtctrlSetWeight": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "type": "rt-weight",
                                     "weight": "{{ rule.weight }}"
                                 }
@@ -67,6 +72,7 @@
                         {
                             "rtctrlSetNh": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "addr": "{{ rule.next_hop }}",
                                     "type": "ip-nh"
                                 }
@@ -77,6 +83,7 @@
                         {
                             "rtctrlSetPref": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "localPref": "{{ rule.preference }}",
                                     "type": "local-pref"
                                 }
@@ -87,6 +94,7 @@
                         {
                             "rtctrlSetRtMetric": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "metric": "{{ rule.metric }}",
                                     "type": "metric"
                                 }
@@ -97,6 +105,7 @@
                         {
                             "rtctrlSetRtMetricType": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "metricType": "{{ rule.metric_type }}",
                                     "type": "metric"
                                 }
@@ -107,6 +116,7 @@
                         {
                             "rtctrlSetAddComm": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "community": "{{ add_comm.community }}",
                                     "descr": "{{ add_comm.description | default() }}",
                                     "setCriteria": "append",
@@ -119,6 +129,7 @@
                         {
                             "rtctrlSetASPath": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "criteria": "{{ rule.set_as_path.criteria | default(defaults.apic.tenants.policies.set_rules.set_as_path.criteria) }}",
                                     "lastnum": "{{ rule.set_as_path.count | default(defaults.apic.tenants.policies.set_rules.set_as_path.count) }}",
                                     "type": "as-path",
@@ -129,6 +140,7 @@
                                     {
                                         "rtctrlSetASPathASN": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "asn": "{{ rule.set_as_path.asn }}",
                                                 "order": "{{ rule.set_as_path.order | default(defaults.apic.tenants.policies.set_rules.set_as_path.order) }}"
                                             }
@@ -143,6 +155,7 @@
                         {
                             "rtctrlSetNhUnchanged": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "type": "nh-unchanged"
                                 }
                             }
@@ -152,6 +165,7 @@
                         {
                             "rtctrlSetRedistMultipath": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "type": "redist-multipath"
                                 }
                             }

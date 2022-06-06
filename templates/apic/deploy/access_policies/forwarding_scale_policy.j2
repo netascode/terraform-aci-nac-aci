@@ -10,6 +10,7 @@
             {
                 "topoctrlFwdScaleProfilePol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ forwarding_scale_policy_name }}",
                         "dn": "uni/infra/fwdscalepol-{{ forwarding_scale_policy_name }}",
                         "profType": "{{ policy.profile | default(defaults.apic.access_policies.switch_policies.forwarding_scale_policies.profile) }}"

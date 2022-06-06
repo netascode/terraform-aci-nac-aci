@@ -15,6 +15,7 @@
             {
                 "igmpSnoopPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ policy_name }}",
                         "dn": "uni/tn-{{ tenant.name }}/snPol-{{ policy_name }}",
                         "descr": "{{ igmp_snoop_pol.description | default() }}",

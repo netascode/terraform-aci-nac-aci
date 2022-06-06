@@ -23,6 +23,7 @@
                         {
                             "mgmtOoB": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-mgmt/mgmtp-default/oob-{{ epg_name }}",
                                     "name": "{{ epg_name }}"
                                 },
@@ -33,6 +34,7 @@
                                     {
                                         "mgmtRsOoBProv": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "dn": "uni/tn-mgmt/mgmtp-default/oob-{{ epg_name }}/rsooBProv-{{ oob_contract_name }}",
                                                 "tnVzOOBBrCPName": "{{ oob_contract_name }}"
                                             }

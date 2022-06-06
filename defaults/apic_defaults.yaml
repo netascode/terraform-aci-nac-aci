@@ -1,6 +1,7 @@
 ---
 defaults:
   aci:
+    apic_delete_mode: aac
     apic_use_proxy: no
     apic_validate_certs: no
     apic_option_render: True

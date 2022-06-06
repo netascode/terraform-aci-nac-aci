@@ -10,6 +10,7 @@
             {
                 "trigSchedP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn": "uni/fabric/schedp-{{ scheduler_name }}",
                         "name": "{{ scheduler_name }}",
                         "descr": "{{ scheduler.description | default() }}",
@@ -22,6 +23,7 @@
                         {
                             "trigRecurrWindowP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ win_name }}",
                                     "day": "{{ win.day | default(defaults.apic.fabric_policies.schedulers.recurring_windows.day) }}",
                                     "hour": "{{ win.hour | default(defaults.apic.fabric_policies.schedulers.recurring_windows.hour) }}",

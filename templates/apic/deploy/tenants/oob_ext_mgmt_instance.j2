@@ -19,6 +19,7 @@
                         {
                             "mgmtInstP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-mgmt/extmgmt-default/instp-{{ ext_name }}",
                                     "name": "{{ ext_name }}"
                                 },
@@ -28,6 +29,7 @@
                                     {
                                         "mgmtSubnet": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "ip": "{{ subnet }}"
                                             }
                                         }
@@ -38,6 +40,7 @@
                                     {
                                         "mgmtRsOoBCons": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnVzOOBBrCPName": "{{ contract_name }}"
                                             }
                                         }

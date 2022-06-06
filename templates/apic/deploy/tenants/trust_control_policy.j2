@@ -12,6 +12,7 @@
             {
                 "fhsTrustCtrlPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ policy_name }}",
                         "descr": "{{ policy.description | default()}}",
                         "dn": "uni/tn-{{ tenant.name }}/trustctrlpol-{{ policy_name }}",

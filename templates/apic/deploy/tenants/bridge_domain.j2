@@ -16,6 +16,7 @@
             {
                 "fvBD": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "arpFlood": "{{ bd.arp_flooding | default(defaults.apic.tenants.bridge_domains.arp_flooding) | cisco.aac.aac_bool("yes") }}",
                         "descr": "{{ bd.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/BD-{{ bd_name }}",
@@ -43,6 +44,7 @@
                         {             
                             "dhcpLbl": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/BD-{{ bd_name }}/dhcplbl-{{ dhcp_relay_policy_name }}",
                                     "owner": "tenant",
                                     "name": "{{ dhcp_relay_policy_name }}"
@@ -53,6 +55,7 @@
                                     {
                                         "dhcpRsDhcpOptionPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnDhcpOptionPolName": "{{ dhcp_option_policy_name }}"
                                             }
                                         }
@@ -74,6 +77,7 @@
                         {
                             "fvSubnet": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "ctrl": "{{ ctrl | join(',') }}",
                                     "descr": "{{ subnet.description | default() }}",
                                     "dn": "uni/tn-{{ tenant.name }}/BD-{{ bd_name }}/subnet-[{{ subnet.ip }}]",
@@ -90,6 +94,7 @@
                         {
                             "fvRsBDToOut": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnL3extOutName": "{{ l3out_name }}"
                                 }
                             }
@@ -99,6 +104,7 @@
                         {
                             "fvRsCtx": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnFvCtxName": "{{ vrf_name }}"
                                 }
                             }
@@ -108,12 +114,14 @@
                         {
                             "igmpIfP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "childAction": "deleteNonPresent"
                                 },
                                 "children": [
                                     {
                                         "igmpRsIfPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/igmpIfPol-{{ igmp_interface_policy_name }}"
                                             }
                                         }
@@ -127,6 +135,7 @@
                         {
                             "fvRsIgmpsn": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnIgmpSnoopPolName": "{{ igmp_snooping_policy_name }}"
                                 }
                             }

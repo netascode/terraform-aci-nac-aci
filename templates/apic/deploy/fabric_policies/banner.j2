@@ -1,6 +1,7 @@
 {
     "aaaPreLoginBanner": {
         "attributes": {
+            "annotation": "orchestrator:aac",
             "dn": "uni/userext/preloginbanner",
             {% if apic.fabric_policies.banners.apic_gui_banner_message is defined %}
             "guiMessage": "{{ apic.fabric_policies.banners.apic_gui_banner_message | replace('\\', '\\\\') | replace('\n', '\\n') }}",

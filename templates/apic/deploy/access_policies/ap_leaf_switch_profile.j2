@@ -12,6 +12,7 @@
             {
                 "infraNodeP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ leaf_switch_profile_name }}",
                         "dn": "uni/infra/nprof-{{ leaf_switch_profile_name }}",
                         "childAction": "deleteNonPresent"
@@ -20,6 +21,7 @@
                         {
                             "infraLeafS": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ leaf_switch_selector_name }}",
                                     "type": "range",
                                     "childAction": "deleteNonPresent"
@@ -30,6 +32,7 @@
                                     {
                                         "infraRsAccNodePGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/infra/funcprof/accnodepgrp-{{ policy_group_name }}"
                                             }
                                         }
@@ -38,6 +41,7 @@
                                     {
                                         "infraNodeBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "from_": "{{ node.id }}",
                                                 "name": "{{ node.id }}",
                                                 "to_": "{{ node.id }}"
@@ -50,6 +54,7 @@
                         {
                             "infraRsAccPortP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/infra/accportprof-{{ leaf_interface_profile_name }}"
                                 }
                             }
@@ -65,6 +70,7 @@
             {
                 "infraNodeP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ leaf_switch_profile_name }}",
                         "dn": "uni/infra/nprof-{{ leaf_switch_profile_name }}",
                         "childAction": "deleteNonPresent"
@@ -76,6 +82,7 @@
                         {
                             "infraLeafS": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ leaf_switch_selector_name }}",
                                     "type": "range",
                                     "childAction": "deleteNonPresent"
@@ -87,6 +94,7 @@
                                     {
                                         "infraRsAccNodePGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/infra/funcprof/accnodepgrp-{{ policy_group_name }}"
                                             }
                                         }
@@ -97,6 +105,7 @@
                                     {
                                         "infraNodeBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "from_": "{{ blk.from }}",
                                                 "name": "{{ block_name }}",
                                                 "to_": "{{ blk.to | default(blk.from) }}"
@@ -114,6 +123,7 @@
                         {
                             "infraRsAccPortP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/infra/accportprof-{{ leaf_interface_profile_name }}"
                                 }
                             }

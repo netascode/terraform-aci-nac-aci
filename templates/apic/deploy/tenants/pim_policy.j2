@@ -16,6 +16,7 @@
             {
                 "pimIfPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ pim_policy_name }}",
                         "dn": "uni/tn-{{ tenant.name }}/pimifpol-{{ pim_policy_name }}",
                         "authKey": "{{ pim_pol.auth_key | default() }}",
@@ -33,12 +34,14 @@
                         {
                             "pimNbrFilterPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "childAction": "deleteNonPresent"
                                 },
                                 "children": [
                                     {
                                         "rtdmcRsFilterToRtMapPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ join_prune_filter_policy_in_name }}"
                                             }
                                         }
@@ -52,12 +55,14 @@
                         {
                             "pimJPOutbFilterPol": {
                                 "attributes": {
-                                        "childAction": "deleteNonPresent"
+                                    "annotation": "orchestrator:aac",
+                                    "childAction": "deleteNonPresent"
                                 },
                                 "children": [
                                     {
                                         "rtdmcRsFilterToRtMapPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ join_prune_filter_policy_out_name }}"
                                             }
                                         }
@@ -71,12 +76,14 @@
                         {
                             "pimJPInbFilterPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "childAction": "deleteNonPresent"
                                 },
                                 "children": [
                                     {
                                         "rtdmcRsFilterToRtMapPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ neighbor_filter_policy_name }}"
                                             }
                                         }

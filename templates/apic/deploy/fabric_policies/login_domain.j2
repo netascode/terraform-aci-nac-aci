@@ -9,6 +9,7 @@
             {
                 "aaaLoginDomain": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "descr": "{{ login_domain.description | default() }}",
                         "dn": "uni/userext/logindomain-{{ login_domain.name }}",
                         "name": "{{ login_domain.name }}",
@@ -18,6 +19,7 @@
                         {
                             "aaaDomainAuth": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/userext/logindomain-{{ login_domain.name }}/domainauth",
                                     {% if login_domain.realm == 'tacacs' %}
                                     "providerGroup": "{{ login_domain.name }}",
@@ -39,6 +41,7 @@
                         {
                             "aaaTacacsPlusProviderGroup": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/userext/tacacsext/tacacsplusprovidergroup-{{ login_domain.name }}",
                                     "childAction": "deleteNonPresent"
                                 },
@@ -48,6 +51,7 @@
                                     {
                                         "aaaProviderRef": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "dn": "uni/userext/tacacsext/tacacsplusprovidergroup-{{ login_domain.name }}/providerref-{{ prov.hostname_ip }}",
                                                 "order": "{{ prov.priority | default(defaults.apic.fabric_policies.aaa.login_domains.tacacs_providers.priority) }}",
                                                 "name": "{{ prov.hostname_ip }}"

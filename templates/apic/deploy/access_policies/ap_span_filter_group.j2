@@ -10,6 +10,7 @@
             {
                 "spanFilterGrp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ filter_name }}",
                         "descr": "{{filter_.description | default() }}",
                         "dn": "uni/infra/filtergrp-{{ filter_name }}",
@@ -22,6 +23,7 @@
                         {
                             "spanFilterEntry": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ entry_name }}",
                                     "descr": "{{ entry.description | default() }}",
                                     "dstAddr": "{{ entry.destination_ip }}",

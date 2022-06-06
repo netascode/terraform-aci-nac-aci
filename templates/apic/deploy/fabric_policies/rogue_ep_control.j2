@@ -1,6 +1,7 @@
 {
     "epControlP": {
         "attributes": {
+            "annotation": "orchestrator:aac",
             "adminSt": "{{ apic.fabric_policies.rogue_ep_control.admin_state | default(defaults.apic.fabric_policies.rogue_ep_control.admin_state) | cisco.aac.aac_bool("enabled") }}",
             "dn": "uni/infra/epCtrlP-default",
             "holdIntvl": "{{ apic.fabric_policies.rogue_ep_control.hold_interval | default(defaults.apic.fabric_policies.rogue_ep_control.hold_interval) }}",

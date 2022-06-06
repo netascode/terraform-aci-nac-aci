@@ -10,6 +10,7 @@
             {
                 "cdpIfPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ cdp_policy_name }}",
                         "dn": "uni/infra/cdpIfP-{{ cdp_policy_name }}",
                         "adminSt": "{{ policy.admin_state | cisco.aac.aac_bool("enabled") }}"

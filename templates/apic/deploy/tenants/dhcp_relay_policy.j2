@@ -12,6 +12,7 @@
             {
                 "dhcpRelayP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn": "uni/tn-{{ tenant.name }}/relayp-{{ policy_name }}",
                         "owner": "tenant",
                         "descr": "{{ policy.description | default() }}",
@@ -23,6 +24,7 @@
                         {
                             "dhcpRsProv": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     {% if provider.type == "epg" %}
                                     {% set ap_name = provider.application_profile ~ defaults.apic.tenants.application_profiles.name_suffix %}
                                     {% set epg_name = provider.endpoint_group ~ defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix %}

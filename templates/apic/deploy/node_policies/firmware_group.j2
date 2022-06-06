@@ -10,6 +10,7 @@
             {
                 "firmwareFwP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ update_group_name }}",
                         "dn": "uni/fabric/fwpol-{{ update_group_name }}"
                     }
@@ -18,6 +19,7 @@
             {
                 "firmwareFwGrp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ update_group_name }}",
                         "dn": "uni/fabric/fwgrp-{{ update_group_name }}",
                         "type": "range",
@@ -27,6 +29,7 @@
                         {
                             "firmwareRsFwgrpp": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnFirmwareFwPName": "{{ update_group_name }}"
                                 }
                             }
@@ -36,6 +39,7 @@
                         {
                             "fabricNodeBlk": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "from_": "{{ node.id }}",
                                     "name": "{{ node.id }}",
                                     "to_": "{{ node.id }}"

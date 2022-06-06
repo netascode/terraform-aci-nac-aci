@@ -10,6 +10,7 @@
             {
                 "dnsProfile": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "IPVerPreference": "IPv4",
                         "dn": "uni/fabric/dnsp-{{ policy_name }}",
                         "name": "{{ policy_name }}",
@@ -19,6 +20,7 @@
                         {
                             "dnsRsProfileToEpg": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     {% set mgmt_epg = policy.mgmt_epg | default(defaults.apic.fabric_policies.dns_policies.mgmt_epg) %}
                                     {% if mgmt_epg == "oob" %}
                                     "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"
@@ -32,6 +34,7 @@
                         {
                             "dnsProv": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "addr": "{{ provider.ip }}",
                                     "preferred": "{{ provider.preferred | default(defaults.apic.fabric_policies.dns_policies.providers.preferred) | cisco.aac.aac_bool("yes") }}"
                                 }
@@ -42,6 +45,7 @@
                         {
                             "dnsDomain": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ domain.name }}",
                                     "isDefault": "{{ domain.default | default(defaults.apic.fabric_policies.dns_policies.domains.default) | cisco.aac.aac_bool("yes") }}"
                                 }

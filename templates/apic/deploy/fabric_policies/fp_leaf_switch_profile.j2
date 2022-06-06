@@ -14,6 +14,7 @@
             {
                 "fabricLeafP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ leaf_switch_profile_name }}",
                         "dn": "uni/fabric/leprof-{{ leaf_switch_profile_name }}",
                         "childAction": "deleteNonPresent"
@@ -22,6 +23,7 @@
                         {
                             "fabricLeafS": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ leaf_switch_selector_name }}",
                                     "type": "range",
                                     "childAction": "deleteNonPresent"
@@ -32,6 +34,7 @@
                                     {
                                         "fabricRsLeNodePGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/fabric/funcprof/lenodepgrp-{{ policy_group_name }}"
                                             }
                                         }
@@ -40,6 +43,7 @@
                                     {
                                         "fabricNodeBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "from_": "{{ node.id }}",
                                                 "name": "{{ node.id }}",
                                                 "to_": "{{ node.id }}"
@@ -52,6 +56,7 @@
                         {
                             "fabricRsLePortP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/fabric/leportp-{{ leaf_interface_profile_name }}"
                                 }
                             }
@@ -67,6 +72,7 @@
             {
                 "fabricLeafP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ leaf_switch_profile_name }}",
                         "dn": "uni/fabric/leprof-{{ leaf_switch_profile_name }}",
                         "childAction": "deleteNonPresent"
@@ -78,6 +84,7 @@
                         {
                             "fabricLeafS": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ leaf_switch_selector_name }}",
                                     "type": "range",
                                     "childAction": "deleteNonPresent"
@@ -88,6 +95,7 @@
                                     {
                                         "fabricRsLeNodePGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/fabric/funcprof/lenodepgrp-{{ policy_group_name }}"
                                             }
                                         }
@@ -99,6 +107,7 @@
                                     {
                                         "fabricNodeBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "from_": "{{ blk.from }}",
                                                 "name": "{{ block_name }}",
                                                 "to_": "{{ blk.to | default(blk.from) }}"
@@ -116,6 +125,7 @@
                         {
                             "fabricRsLePortP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/fabric/leportp-{{ leaf_interface_profile_name }}"
                                 }
                             }

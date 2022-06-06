@@ -10,6 +10,7 @@
             {
                 "vpcInstPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ vpc_policy_name }}",
                         "dn": "uni/fabric/vpcInst-{{ vpc_policy_name }}",
                         "deadIntvl": "{{ policy.peer_dead_interval | default(defaults.apic.access_policies.switch_policies.vpc_policies.peer_dead_interval) }}"

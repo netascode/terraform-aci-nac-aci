@@ -1,6 +1,7 @@
 {
     "edrErrDisRecoverPol": {
         "attributes": {
+            "annotation": "orchestrator:aac",
             "dn": "uni/infra/edrErrDisRecoverPol-default",
             "name": "default",
             "errDisRecovIntvl": "{{ apic.fabric_policies.err_disabled_recovery.interval | default(defaults.apic.fabric_policies.err_disabled_recovery.interval) }}"
@@ -9,6 +10,7 @@
             {
                 "edrEventP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "event": "event-mcp-loop",
                         "recover": "{{ apic.fabric_policies.err_disabled_recovery.mcp_loop | default(defaults.apic.fabric_policies.err_disabled_recovery.mcp_loop) | cisco.aac.aac_bool("yes") }}"
                     }
@@ -17,6 +19,7 @@
             {
                 "edrEventP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "event": "event-ep-move",
                         "recover": "{{ apic.fabric_policies.err_disabled_recovery.ep_move | default(defaults.apic.fabric_policies.err_disabled_recovery.ep_move) | cisco.aac.aac_bool("yes") }}"
                     }
@@ -25,6 +28,7 @@
             {
                 "edrEventP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "event": "event-bpduguard",
                         "recover": "{{ apic.fabric_policies.err_disabled_recovery.bpdu_guard | default(defaults.apic.fabric_policies.err_disabled_recovery.bpdu_guard) | cisco.aac.aac_bool("yes") }}"
                     }

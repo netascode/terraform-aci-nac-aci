@@ -1,3 +1,4 @@
+{# iterate_list apic.tenants name item[2] #}
 *** Settings ***
 Documentation   Verify Route Control Route Map
 Suite Setup     Login APIC

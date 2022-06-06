@@ -18,6 +18,7 @@
                         {
                             "vnsSvcRedirectPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "descr": "{{ pol.description | default() }}",
                                     "dn": "uni/tn-{{ tenant.name }}/svcCont/svcRedirectPol-{{ pol_name }}",
                                     "name": "{{ pol_name }}",
@@ -40,6 +41,7 @@
                                     {
                                         "vnsRsIPSLAMonitoringPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/ipslaMonitoringPol-{{ ip_sla_name }}"
                                             }
                                         }
@@ -50,6 +52,7 @@
                                     {
                                         "vnsRsBackupPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/svcCont/backupPol-{{ backup_pol_name }}"
                                             }
                                         }
@@ -59,6 +62,7 @@
                                     {
                                         "vnsRedirectDest": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "descr": "{{ dest.description | default() }}",
                                                 "ip": "{{ dest.ip }}",
                                                 "ip2": "{{ dest.ip_2 | default() }}",
@@ -71,6 +75,7 @@
                                                 {
                                                     "vnsRsRedirectHealthGroup": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "tDn": "uni/tn-{{ tenant.name }}/svcCont/redirectHealthGroup-{{ health_group_name }}"
                                                         }
                                                     }

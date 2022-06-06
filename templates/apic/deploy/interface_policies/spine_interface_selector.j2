@@ -12,6 +12,7 @@
             {
                 "infraSpAccPortP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ spine_interface_profile_name }}",
                         "dn": "uni/infra/spaccportprof-{{ spine_interface_profile_name }}",
                         "childAction": "deleteNonPresent"
@@ -26,6 +27,7 @@
                         {
                             "infraSHPortS": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/infra/spaccportprof-{{ spine_interface_profile_name }}/shports-{{ spine_interface_selector_name }}-typ-range",
                                     "name": "{{ spine_interface_selector_name }}",
                                     "type": "range",
@@ -37,6 +39,7 @@
                                     {
                                         "infraRsSpAccGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/infra/funcprof/spaccportgrp-{{ policy_group_name }}"
                                             }
                                         }
@@ -45,6 +48,7 @@
                                     {
                                         "infraPortBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "descr": "{{ int.description | default() }}",
                                                 "fromCard": "{{ module }}",
                                                 "fromPort": "{{ int.port }}",

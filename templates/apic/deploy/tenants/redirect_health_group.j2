@@ -9,6 +9,7 @@
             {
                 "vnsSvcCont": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn": "uni/tn-{{ tenant.name }}/svcCont"
                     },
                     "children": [
@@ -18,6 +19,7 @@
                         {
                             "vnsRedirectHealthGroup": {
                                 "attributes":{
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ health_group_name }}",                        
                                     "dn": "uni/tn-{{ tenant.name }}/svcCont/redirectHealthGroup-{{ health_group_name }}",
                                     "descr": "{{ health_grp.description | default() }}"

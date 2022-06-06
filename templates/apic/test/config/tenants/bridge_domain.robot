@@ -1,3 +1,4 @@
+{# iterate_list apic.tenants name item[2] #}
 *** Settings ***
 Documentation   Verify Bridge Domain
 Suite Setup     Login APIC

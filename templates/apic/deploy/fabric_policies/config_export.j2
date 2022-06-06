@@ -10,6 +10,7 @@
             {
                 "configExportP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn": "uni/fabric/configexp-{{ policy_name }}",
                         "name": "{{ policy_name }}",
                         "descr": "{{ policy.description | default() }}",
@@ -22,6 +23,7 @@
                         {
                             "configRsRemotePath": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnFileRemotePathName": "{{ rl_name }}"
                                 }
                             }
@@ -32,6 +34,7 @@
                         {
                             "configRsExportScheduler": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnTrigSchedPName": "{{ scheduler_name }}"
                                 }
                             }

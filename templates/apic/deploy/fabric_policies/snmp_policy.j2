@@ -11,6 +11,7 @@
             {
                 "snmpPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ snmp_policy_name }}",
                         "dn": "uni/fabric/snmppol-{{ snmp_policy_name }}",
                         "adminSt": "{{ policy.admin_state | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.admin_state) | cisco.aac.aac_bool("enabled") }}",
@@ -24,6 +25,7 @@
                         {
                             "snmpUserP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ user.name }}",
                                     "privType": "{{ user.privacy_type | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.users.privacy_type) }}",
                                     {% if user.privacy_type | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.users.privacy_type) != "none" %}
@@ -39,6 +41,7 @@
                         {
                             "snmpCommunityP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ community }}"
                                 }
                             }
@@ -48,6 +51,7 @@
                         {
                             "snmpTrapFwdServerP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "addr": "{{ forwarder.ip }}",
                                     "port": "{{ forwarder.port | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.trap_forwarders.port) }}"
                                 }
@@ -59,16 +63,18 @@
                         {
                             "snmpClientGrpP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ snmp_client_name }}"
                                 },
                                 "children": [
                                     {
                                         "snmpRsEpg": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                             {% if client.mgmt_epg == "oob" %}
-                                            "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"
+                                                "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"
                                             {% elif client.mgmt_epg == "inb" %}
-                                            "tDn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}"
+                                                "tDn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}"
                                             {% endif %}
                                             }
                                         }
@@ -77,6 +83,7 @@
                                     {
                                         "snmpClientP": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "addr": "{{ entry.ip }}",
                                                 "name": "{{ entry.name }}"
                                             }

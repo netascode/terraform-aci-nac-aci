@@ -10,6 +10,7 @@
             {
                 "fileRemotePath": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "authType": "{% if rl.auth_type | default(defaults.apic.fabric_policies.remote_locations.auth_type) == "ssh_keys" %}useSshKeyContents{% else %}usePassword{% endif %}",
                         "descr": "{{ rl.description | default() }}",
                         "dn": "uni/fabric/path-{{ rl_name }}",
@@ -33,6 +34,7 @@
                         {
                             "fileRsARemoteHostToEpg": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     {% set mgmt_epg = rl.mgmt_epg | default(defaults.apic.fabric_policies.remote_locations.mgmt_epg) %}
                                     {% if mgmt_epg == "oob" %}
                                     "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"

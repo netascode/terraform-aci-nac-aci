@@ -12,6 +12,7 @@
             {
                 "rtctrlProfile": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ route_map_name }}",
                         "dn": "uni/tn-{{ tenant.name }}/prof-{{ route_map_name }}",
                         "descr": "{{ route_map.description | default() }}",
@@ -25,6 +26,7 @@
                         {
                             "rtctrlCtxP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ context_name }}",
                                     "descr": "{{ context.description | default() }}",
                                     "action": "{{ context.action | default(defaults.apic.tenants.policies.route_control_route_maps.contexts.action) }}",
@@ -38,12 +40,14 @@
                                     {
                                         "rtctrlScope": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "childAction": "deleteNonPresent"
                                             },
                                             "children": [
                                                 {
                                                     "rtctrlRsScopeToAttrP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "tnRtctrlAttrPName": "{{ set_rule_name }}"
                                                         }
                                                     }
@@ -57,6 +61,7 @@
                                     {
                                         "rtctrlRsCtxPToSubjP": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnRtctrlSubjPName": "{{ match_rule_name }}"
                                             }
                                         }

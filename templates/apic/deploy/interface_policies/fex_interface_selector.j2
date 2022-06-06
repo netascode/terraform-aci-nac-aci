@@ -15,6 +15,7 @@
             {
                 "infraFexP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ fex_profile_name }}",
                         "dn": "uni/infra/fexprof-{{ fex_profile_name }}",
                         "childAction": "deleteNonPresent"
@@ -27,6 +28,7 @@
                         {
                             "infraHPortS": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/infra/fexprof-{{ fex_profile_name }}/hports-{{ fex_interface_selector_name }}-typ-range",
                                     "name": "{{ fex_interface_selector_name }}",
                                     "type": "range",
@@ -37,6 +39,7 @@
                                     {
                                         "infraRsAccBaseGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 {% set query = "leaf_interface_policy_groups[?name=='" ~ int.policy_group ~ "'].type[]" %}
                                                 {% set type = (apic.access_policies | community.general.json_query(query)) %}
                                                 {% set policy_group_name = int.policy_group ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
@@ -52,6 +55,7 @@
                                     {
                                         "infraPortBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "descr": "{{ int.description | default() }}",
                                                 "fromCard": "{{ module }}",
                                                 "fromPort": "{{ int.port }}",
@@ -68,6 +72,7 @@
                         {
                             "infraFexBndlGrp": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ fex_profile_name }}"
                                 }
                             }

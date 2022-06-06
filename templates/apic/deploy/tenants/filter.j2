@@ -12,6 +12,7 @@
             {
                 "vzFilter": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "descr": "{{ filter.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/flt-{{ filter_name }}",
                         "name": "{{ filter_name }}",
@@ -25,6 +26,7 @@
                         {
                             "vzEntry": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ entry_name }}",
                                     "nameAlias": "{{ entry.alias | default() }}",
                                     "etherT": "{{ entry.ethertype | default(defaults.apic.tenants.filters.entries.ethertype) }}"

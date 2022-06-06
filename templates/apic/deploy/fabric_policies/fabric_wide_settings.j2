@@ -1,6 +1,7 @@
 {
     "infraSetPol": {
         "attributes": {
+            "annotation": "orchestrator:aac",
             "dn": "uni/infra/settings",
             "domainValidation": "{{ apic.fabric_policies.global_settings.domain_validation | default(defaults.apic.fabric_policies.global_settings.domain_validation) | cisco.aac.aac_bool("yes") }}",
             "enforceSubnetCheck": "{{ apic.fabric_policies.global_settings.enforce_subnet_check | default(defaults.apic.fabric_policies.global_settings.enforce_subnet_check) | cisco.aac.aac_bool("yes") }}",

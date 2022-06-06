@@ -10,6 +10,7 @@
             {
                 "fvnsVlanInstP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "allocMode": "{{ pool.allocation | default(defaults.apic.access_policies.vlan_pools.allocation) }}",
                         "name": "{{ vlan_pool_name }}",
                         "descr": "{{ pool.description | default() }}",
@@ -22,6 +23,7 @@
                         {
                             "fvnsEncapBlk": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "descr": "{{ range.description | default() }}",
                                     "allocMode": "{{ range.allocation | default(defaults.apic.access_policies.vlan_pools.ranges.allocation) }}",
                                     "from": "vlan-{{ range.from }}",

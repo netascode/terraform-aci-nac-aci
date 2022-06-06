@@ -10,6 +10,7 @@
             {
                 "infraSpAccPortGrp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ policy_group_name }}",
                         "dn": "uni/infra/funcprof/spaccportgrp-{{ policy_group_name }}",
                         "childAction": "deleteNonPresent"
@@ -21,6 +22,7 @@
                         {
                             "infraRsHIfPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnFabricHIfPolName": "{{ link_level_policy_name }}"
                                 }
                             }
@@ -31,6 +33,7 @@
                         {
                             "infraRsCdpIfPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnCdpIfPolName": "{{ cdp_policy_name }}"
                                 }
                             }
@@ -41,6 +44,7 @@
                         {
                             "infraRsAttEntP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/infra/attentp-{{ aaep_name }}"
                                 }
                             }

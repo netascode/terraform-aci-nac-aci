@@ -1,6 +1,7 @@
 {
     "mcpInstPol": {
         "attributes": {
+            "annotation": "orchestrator:aac",
             "adminSt": "{{ apic.access_policies.mcp.admin_state | default(defaults.apic.access_policies.mcp.admin_state) | cisco.aac.aac_bool("enabled") }}",
             "ctrl": "{% if apic.access_policies.mcp.per_vlan | default(defaults.apic.access_policies.mcp.per_vlan) | cisco.aac.aac_bool("enabled") == "enabled" %}pdu-per-vlan{% elif apic.access_policies.mcp.per_vlan | default(defaults.apic.access_policies.mcp.per_vlan) == "disabled" %}{% endif %}",
             "dn": "uni/infra/mcpInstP-default",

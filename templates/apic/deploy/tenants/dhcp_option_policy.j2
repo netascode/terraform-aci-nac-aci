@@ -12,6 +12,7 @@
             {
                 "dhcpOptionPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn": "uni/tn-{{ tenant.name }}/dhcpoptpol-{{ policy_name }}",
                         "descr": "{{ policy.description | default() }}",
                         "name": "{{ policy_name }}"
@@ -23,6 +24,7 @@
                         {
                             "dhcpOption": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "id": "{{ option.id | default() }}",
                                     "data": "{{ option.data | default() }}",
                                     "dn": "uni/tn-{{ tenant.name }}/dhcpoptpol-{{ policy_name }}/opt-{{ option_name }}",

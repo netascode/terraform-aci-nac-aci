@@ -10,6 +10,7 @@
             {
                 "lldpIfPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ lldp_policy_name }}",
                         "dn": "uni/infra/lldpIfP-{{ lldp_policy_name }}",
                         "adminRxSt": "{{ policy.admin_rx_state | cisco.aac.aac_bool("enabled") }}",

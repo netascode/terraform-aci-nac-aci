@@ -9,6 +9,7 @@
             {
                 "aaaTacacsPlusProvider": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "authProtocol": "{{ prov.protocol | default(defaults.apic.fabric_policies.aaa.tacacs_providers.protocol) }}",
                         "descr": "{{ prov.description | default() }}",
                         "dn": "uni/userext/tacacsext/tacacsplusprovider-{{ prov.hostname_ip }}",
@@ -28,6 +29,7 @@
                         {
                             "aaaRsSecProvToEpg": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     {% set mgmt_epg = prov.mgmt_epg | default(defaults.apic.fabric_policies.aaa.tacacs_providers.mgmt_epg) %}
                                     {% if mgmt_epg == "oob" %}
                                     "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"

@@ -17,6 +17,7 @@
             {
                 "ospfIfPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ policy_name }}",
                         "dn": "uni/tn-{{ tenant.name }}/ospfIfPol-{{ policy_name }}",
                         "descr": "{{ oip.description | default() }}",

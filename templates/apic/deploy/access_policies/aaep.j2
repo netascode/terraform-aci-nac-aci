@@ -10,6 +10,7 @@
             {
                 "infraAttEntityP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ aaep_name }}",
                         "dn": "uni/infra/attentp-{{ aaep_name }}",
                         "childAction": "deleteNonPresent"
@@ -21,6 +22,7 @@
                         {
                             "infraRsDomP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/phys-{{ domain_name }}"
                                 }
                             }
@@ -31,6 +33,7 @@
                         {
                             "infraRsDomP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/l3dom-{{ domain_name }}"
                                 }
                             }
@@ -41,6 +44,7 @@
                         {
                             "infraRsDomP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/vmmp-VMware/dom-{{ domain_name }}"
                                 }
                             }
@@ -50,12 +54,14 @@
                         {
                             "infraProvAcc": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "provacc"
                                 },
                                 "children": [
                                     {
                                         "infraRsFuncToEpg": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "encap": "vlan-{{ apic.access_policies.infra_vlan }}",
                                                 "instrImedcy": "lazy",
                                                 "mode": "regular",
@@ -67,6 +73,7 @@
                                     {
                                         "dhcpInfraProvP": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "mode": "controller"
                                             }
                                         }
@@ -79,6 +86,7 @@
                         {
                             "infraGeneric": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "default",
                                     "childAction": "deleteNonPresent"
                                 },
@@ -90,6 +98,7 @@
                                     {
                                         "infraRsFuncToEpg": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 {% if epg.primary_vlan is defined %}
                                                 "encap": "vlan-{{ epg.secondary_vlan }}",
                                                 {% else %}

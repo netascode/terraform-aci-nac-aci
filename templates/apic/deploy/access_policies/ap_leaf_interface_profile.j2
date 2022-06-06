@@ -12,6 +12,7 @@
             {
                 "infraAccPortP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ leaf_interface_profile_name }}",
                         "dn": "uni/infra/accportprof-{{ leaf_interface_profile_name }}"
                     }
@@ -25,6 +26,7 @@
             {
                 "infraAccPortP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ leaf_interface_profile_name }}",
                         "dn": "uni/infra/accportprof-{{ leaf_interface_profile_name }}",
                         "childAction": "deleteNonPresent"
@@ -36,6 +38,7 @@
                         {
                             "infraHPortS": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/infra/accportprof-{{ leaf_interface_profile_name }}/hports-{{ leaf_interface_selector_name }}-typ-range",
                                     "name": "{{ leaf_interface_selector_name }}",
                                     "type": "range",
@@ -48,6 +51,7 @@
                                     {
                                         "infraRsAccBaseGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "fexId": "{{ sel.fex_id }}",
                                                 "tDn": "uni/infra/fexprof-{{ fex_profile_name }}/fexbundle-{{ fex_profile_name }}"
                                             }
@@ -57,6 +61,7 @@
                                     {
                                         "infraRsAccBaseGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 {% set query = "leaf_interface_policy_groups[?name=='" ~ sel.policy_group ~ "'].type[]" %}
                                                 {% set type = (apic.access_policies | community.general.json_query(query)) %}
                                                 {% set policy_group_name = sel.policy_group ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
@@ -74,6 +79,7 @@
                                     {
                                         "infraPortBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "descr": "{{ blk.description | default() }}",
                                                 "fromCard": "{{ blk.from_module | default(defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module) }}",
                                                 "fromPort": "{{ blk.from_port }}",

@@ -14,6 +14,7 @@
             {
                 "infraSpineP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ spine_switch_profile_name }}",
                         "dn": "uni/infra/spprof-{{ spine_switch_profile_name }}",
                         "childAction": "deleteNonPresent"
@@ -22,6 +23,7 @@
                         {
                             "infraSpineS": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ spine_switch_selector_name }}",
                                     "type": "range",
                                     "childAction": "deleteNonPresent"
@@ -32,6 +34,7 @@
                                     {
                                         "infraRsSpineAccNodePGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/infra/funcprof/spaccnodepgrp-{{ policy_group_name }}"
                                             }
                                         }
@@ -40,6 +43,7 @@
                                     {
                                         "infraNodeBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "from_": "{{ node.id }}",
                                                 "name": "{{ node.id }}",
                                                 "to_": "{{ node.id }}"
@@ -52,6 +56,7 @@
                         {
                             "infraRsSpAccPortP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/infra/spaccportprof-{{ spine_interface_profile_name }}"
                                 }
                             }
@@ -67,6 +72,7 @@
             {
                 "infraSpineP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ spine_switch_profile_name }}",
                         "dn": "uni/infra/spprof-{{ spine_switch_profile_name }}",
                         "childAction": "deleteNonPresent"
@@ -78,6 +84,7 @@
                         {
                             "infraSpineS": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ spine_switch_selector_name }}",
                                     "type": "range",
                                     "childAction": "deleteNonPresent"
@@ -89,6 +96,7 @@
                                     {
                                         "infraRsSpineAccNodePGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/infra/funcprof/spaccnodepgrp-{{ policy_group_name }}"
 
                                             }
@@ -100,6 +108,7 @@
                                     {
                                         "infraNodeBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "from_": "{{ blk.from }}",
                                                 "name": "{{ blk.name }}",
                                                 "to_": "{{ blk.to | default(blk.from) }}"
@@ -117,6 +126,7 @@
                         {
                             "infraRsSpAccPortP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/infra/spaccportprof-{{ spine_interface_profile_name }}"
                                 }
                             }

@@ -15,6 +15,7 @@
             {
                 "l3extOut": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "descr": "{{ l3out.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}",
                         "name": "{{ l3out_name }}",
@@ -27,6 +28,7 @@
                         {
                             "l3extLNodeP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/lnodep-{{ l3out_np_name }}",
                                     "name": "{{ l3out_np_name }}",
                                     "childAction": "deleteNonPresent"
@@ -39,6 +41,7 @@
                                     {
                                         "l3extRsNodeL3OutAtt": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "rtrId": "{{ node.router_id }}",
                                                 "rtrIdLoopBack": "{{ node.router_id_as_loopback | default(defaults.apic.tenants.l3outs.nodes.router_id_as_loopback) | cisco.aac.aac_bool("yes") }}",
                                                 "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.pod) }}/node-{{ node.node_id }}",
@@ -50,6 +53,7 @@
                                                 {
                                                     "l3extLoopBackIfP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "addr": "{{ node.loopback }}"
                                                         }
                                                     }
@@ -59,6 +63,7 @@
                                                 {
                                                     "ipRouteP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "aggregate": "no",
                                                             "descr": "{{ sr.description | default() }}",
                                                             "ip": "{{ sr.prefix }}",
@@ -72,6 +77,7 @@
                                                             {
                                                                 "ipNexthopP": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "nhAddr": "{{ nh.ip }}",
                                                                         "pref": "{{ nh.preference | default(defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference) }}",
                                                                         "type": "{{ nh.type | default(defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.type) }}"
@@ -88,6 +94,7 @@
                                                 {
                                                     "l3extInfraNodeP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "fabricExtCtrlPeering": "yes"
                                                         }
                                                     }
@@ -119,6 +126,7 @@
                                     {
                                         "bgpPeerP": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "addr": "{{ peer.ip }}",
                                                 "descr": "{{ peer.description | default() }}",
                                                 "ctrl": "{{ ctrl | join(',') }}",
@@ -138,6 +146,7 @@
                                                 {
                                                     "bgpAsP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "asn": "{{ peer.remote_as }}"
                                                         }
                                                     }
@@ -146,6 +155,7 @@
                                                 {
                                                     "bgpLocalAsnP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "localAsn": "{{ peer.local_as }}",
                                                             "asnPropagate" : "{{ peer.as_propagate | default(defaults.apic.tenants.l3outs.bgp_peers.as_propagate) }}"
                                                         }
@@ -157,6 +167,7 @@
                                                 {
                                                     "bgpRsPeerPfxPol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "tnBgpPeerPfxPolName": "{{ peer_prefix_policy_name }}"
                                                         }
                                                     }
@@ -167,6 +178,7 @@
                                                 {
                                                     "bgpRsPeerToProfile": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "direction": "export",
                                                             "tDn": "uni/tn-{{ tenant.name }}/prof-{{ export_route_control_name }}"
                                                         }
@@ -178,6 +190,7 @@
                                                 {
                                                     "bgpRsPeerToProfile": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "direction": "import",
                                                             "tDn": "uni/tn-{{ tenant.name}}/prof-{{ import_route_control_name }}"
                                                         }
@@ -192,6 +205,7 @@
                                     {
                                         "l3extLIfP": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "name": "{{ l3out_ip_name }}",
                                                 "prio": "{{ l3out.qos_class | default(defaults.apic.tenants.l3outs.qos_class) }}",
                                                 "childAction": "deleteNonPresent"
@@ -202,6 +216,7 @@
                                                 {
                                                     "ospfIfP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "name": "{{ l3out.ospf.ospf_interface_profile_name | default(l3out.name) }}",
                                                             "authKeyId": "{{ l3out.ospf.auth_key_id | default(defaults.apic.tenants.l3outs.ospf.auth_key_id) }}",
                                                             "authKey": "{{ l3out.ospf.auth_key | default() }}",
@@ -214,6 +229,7 @@
                                                             {
                                                                 "ospfRsIfPol": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "tnOspfIfPolName": "{{ policy_name }}"
                                                                     }
                                                                 }
@@ -228,6 +244,7 @@
                                                 {
                                                     "bfdIfP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "type": "none",
                                                             "childAction": "deleteNonPresent"
                                                         },
@@ -235,6 +252,7 @@
                                                             {
                                                                 "bfdRsIfPol": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "tnBfdIfPolName": "{{ bfd_name }}"
                                                                     }
                                                                 }
@@ -248,12 +266,14 @@
                                                 {
                                                     "pimIfP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
                                                             {
                                                                 "pimRsIfPol": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "tDn": "uni/tn-{{tenant.name}}/pimifpol-{{ pim_name }}"
                                                                     }
                                                                 }
@@ -267,12 +287,14 @@
                                                 {
                                                     "igmpIfP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
                                                             {
                                                                 "igmpRsIfPol": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "tDn": "uni/tn-{{ tenant.name }}/igmpIfPol-{{ igmp_name }}"
                                                                     }
                                                                 }
@@ -286,6 +308,7 @@
                                                 {
                                                     "l3extRsLIfPCustQosPol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "tnQosCustomPolName": "{{ custom_qos_policy_name }}"
                                                         }
                                                     }
@@ -322,6 +345,7 @@
                                                 {
                                                     "l3extRsPathL3OutAtt": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "addr": "{{ defaults.apic.tenants.l3outs.nodes.interfaces.ip if type == 'vpc' else int.ip }}",
                                                             "autostate": "disabled",
                                                             "descr": "{{ int.description | default() }}",
@@ -350,6 +374,7 @@
                                                 {
                                                     "l3extVirtualLIfP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "addr": "{{ int.ip }}",
                                                             "autostate": "disabled",
                                                             "descr": "{{ int.description | default() }}",
@@ -371,6 +396,7 @@
                                                             {
                                                                 "l3extIp": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "addr": "{{ int.ip_shared }}"
                                                                     }
                                                                 }
@@ -380,6 +406,7 @@
                                                             {
                                                                 "l3extMember": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "addr": "{{ int.ip_a }}",
                                                                         "side": "A",
                                                                         "childAction": "deleteNonPresent"
@@ -388,6 +415,7 @@
                                                                         {
                                                                             "l3extIp": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "addr": "{{ int.ip_shared }}"
                                                                                 }
                                                                             }
@@ -398,6 +426,7 @@
                                                             {
                                                                 "l3extMember": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "addr": "{{ int.ip_b }}",
                                                                         "side": "B",
                                                                         "childAction": "deleteNonPresent"
@@ -406,6 +435,7 @@
                                                                         {
                                                                             "l3extIp": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "addr": "{{ int.ip_shared }}"
                                                                                 }
                                                                             }
@@ -419,6 +449,7 @@
                                                             {
                                                                 "l3extRsDynPathAtt": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "floatingAddr": "{{ path.floating_ip }}",
                                                                         "tDn": "uni/phys-{{ path.physical_domain }}"
                                                                     }
@@ -448,6 +479,7 @@
                                                             {
                                                                 "bgpPeerP": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "addr": "{{ peer.ip }}",
                                                                         "descr": "{{ peer.description | default() }}",
                                                                         "ctrl": "{{ ctrl | join(',') }}",
@@ -467,6 +499,7 @@
                                                                         {
                                                                             "bgpAsP": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "asn": "{{ peer.remote_as }}"
                                                                                 }
                                                                             }
@@ -475,6 +508,7 @@
                                                                         {
                                                                             "bgpLocalAsnP": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "localAsn": "{{ peer.local_as }}",
                                                                                     "asnPropagate" : "{{ peer.as_propagate | default(defaults.apic.tenants.l3outs.nodes.interfaces.bgp_peers.as_propagate) }}"
                                                                                 }
@@ -486,6 +520,7 @@
                                                                         {
                                                                             "bgpRsPeerPfxPol": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "tnBgpPeerPfxPolName": "{{ peer_prefix_policy_name }}"
                                                                                 }
                                                                             }
@@ -496,6 +531,7 @@
                                                                         {
                                                                             "bgpRsPeerToProfile": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "direction": "export",
                                                                                     "tDn": "uni/tn-{{ tenant.name }}/prof-{{ export_route_control_name }}"
                                                                                 }
@@ -507,6 +543,7 @@
                                                                         {
                                                                             "bgpRsPeerToProfile": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "direction": "import",
                                                                                     "tDn": "uni/tn-{{ tenant.name}}/prof-{{ import_route_control_name }}"
                                                                                 }
@@ -538,6 +575,7 @@
                         {
                             "l3extLNodeP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/lnodep-{{ l3out_np_name }}",
                                     "name": "{{ l3out_np_name }}",
                                     "childAction": "deleteNonPresent"
@@ -550,6 +588,7 @@
                                     {
                                         "l3extRsNodeL3OutAtt": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "rtrId": "{{ node.router_id }}",
                                                 "rtrIdLoopBack": "{{ node.router_id_as_loopback | default(defaults.apic.tenants.l3outs.node_profiles.nodes.router_id_as_loopback) | cisco.aac.aac_bool("yes") }}",
                                                 "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.node_profiles.nodes.pod) }}/node-{{ node.node_id }}",
@@ -561,6 +600,7 @@
                                                 {
                                                     "l3extLoopBackIfP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "addr": "{{ node.loopback }}"
                                                         }
                                                     }
@@ -570,6 +610,7 @@
                                                 {
                                                     "ipRouteP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "aggregate": "no",
                                                             "descr": "{{ sr.description | default() }}",
                                                             "ip": "{{ sr.prefix }}",
@@ -583,6 +624,7 @@
                                                             {
                                                                 "ipNexthopP": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "nhAddr": "{{ nh.ip }}",
                                                                         "pref": "{{ nh.preference | default(defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference) }}",
                                                                         "type": "{{ nh.type | default(defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type) }}"
@@ -599,6 +641,7 @@
                                                 {
                                                     "l3extInfraNodeP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "fabricExtCtrlPeering": "yes"
                                                         }
                                                     }
@@ -630,6 +673,7 @@
                                     {
                                         "bgpPeerP": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "addr": "{{ peer.ip }}",
                                                 "descr": "{{ peer.description | default() }}",
                                                 "ctrl": "{{ ctrl | join(',') }}",
@@ -649,6 +693,7 @@
                                                 {
                                                     "bgpAsP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "asn": "{{ peer.remote_as }}"
                                                         }
                                                     }
@@ -657,6 +702,7 @@
                                                 {
                                                     "bgpLocalAsnP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "localAsn": "{{ peer.local_as }}",
                                                             "asnPropagate" : "{{ peer.as_propagate | default(defaults.apic.tenants.l3outs.node_profiles.bgp_peers.as_propagate) }}"
                                                         }
@@ -668,6 +714,7 @@
                                                 {
                                                     "bgpRsPeerPfxPol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "tnBgpPeerPfxPolName": "{{ peer_prefix_policy_name }}"
                                                         }
                                                     }
@@ -678,6 +725,7 @@
                                                 {
                                                     "bgpRsPeerToProfile": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "direction": "export",
                                                             "tDn": "uni/tn-{{ tenant.name }}/prof-{{ export_route_control_name }}"
                                                         }
@@ -689,6 +737,7 @@
                                                 {
                                                     "bgpRsPeerToProfile": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "direction": "import",
                                                             "tDn": "uni/tn-{{ tenant.name}}/prof-{{ import_route_control_name }}"
                                                         }
@@ -705,6 +754,7 @@
                                     {
                                         "l3extLIfP": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "name": "{{ l3out_ip_name }}",
                                                 "prio": "{{ ip.qos_class | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class) }}",
                                                 "childAction": "deleteNonPresent"
@@ -715,6 +765,7 @@
                                                 {
                                                     "ospfIfP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "name": "{{ ip.ospf.ospf_interface_profile_name | default(l3out.name) }}",
                                                             "authKeyId": "{{ ip.ospf.auth_key_id | default(defaults.apic.tenants.l3outs.ospf.auth_key_id) }}",
                                                             "authKey": "{{ ip.ospf.auth_key | default() }}",
@@ -727,6 +778,7 @@
                                                             {
                                                                 "ospfRsIfPol": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "tnOspfIfPolName": "{{ policy_name }}"
                                                                     }
                                                                 }
@@ -741,6 +793,7 @@
                                                 {
                                                     "bfdIfP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "type": "none",
                                                             "childAction": "deleteNonPresent"
                                                         },
@@ -748,6 +801,7 @@
                                                             {
                                                                 "bfdRsIfPol": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "tnBfdIfPolName": "{{ bfd_name }}"
                                                                     }
                                                                 }
@@ -761,12 +815,14 @@
                                                 {
                                                     "pimIfP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
                                                             {
                                                                 "pimRsIfPol": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "tDn": "uni/tn-{{tenant.name}}/pimifpol-{{ pim_name }}"
                                                                     }
                                                                 }
@@ -780,12 +836,14 @@
                                                 {
                                                     "igmpIfP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
                                                             {
                                                                 "igmpRsIfPol": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "tDn": "uni/tn-{{ tenant.name }}/igmpIfPol-{{ igmp_name }}"
                                                                     }
                                                                 }
@@ -799,6 +857,7 @@
                                                 {
                                                     "l3extRsLIfPCustQosPol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "tnQosCustomPolName": "{{ custom_qos_policy_name }}"
                                                         }
                                                     }
@@ -834,6 +893,7 @@
                                                 {
                                                     "l3extRsPathL3OutAtt": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "addr": "{{ defaults.apic.tenants.l3outs.nodes.interfaces.ip if type == 'vpc' else int.ip }}",
                                                             "autostate": "disabled",
                                                             "descr": "{{ int.description | default() }}",
@@ -862,6 +922,7 @@
                                                 {
                                                     "l3extVirtualLIfP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "addr": "{{ int.ip }}",
                                                             "autostate": "disabled",
                                                             "descr": "{{ int.description | default() }}",
@@ -883,6 +944,7 @@
                                                             {
                                                                 "l3extIp": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "addr": "{{ int.ip_shared }}"
                                                                     }
                                                                 }
@@ -892,6 +954,7 @@
                                                             {
                                                                 "l3extMember": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "addr": "{{ int.ip_a }}",
                                                                         "side": "A",
                                                                         "childAction": "deleteNonPresent"
@@ -900,6 +963,7 @@
                                                                         {
                                                                             "l3extIp": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "addr": "{{ int.ip_shared }}"
                                                                                 }
                                                                             }
@@ -910,6 +974,7 @@
                                                             {
                                                                 "l3extMember": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "addr": "{{ int.ip_b }}",
                                                                         "side": "B",
                                                                         "childAction": "deleteNonPresent"
@@ -918,6 +983,7 @@
                                                                         {
                                                                             "l3extIp": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "addr": "{{ int.ip_shared }}"
                                                                                 }
                                                                             }
@@ -931,6 +997,7 @@
                                                             {
                                                                 "l3extRsDynPathAtt": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "floatingAddr": "{{ path.floating_ip }}",
                                                                         "tDn": "uni/phys-{{ path.physical_domain }}"
                                                                     }
@@ -960,6 +1027,7 @@
                                                             {
                                                                 "bgpPeerP": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "addr": "{{ peer.ip }}",
                                                                         "descr": "{{ peer.description | default() }}",
                                                                         "ctrl": "{{ ctrl | join(',') }}",
@@ -979,6 +1047,7 @@
                                                                         {
                                                                             "bgpAsP": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "asn": "{{ peer.remote_as }}"
                                                                                 }
                                                                             }
@@ -987,6 +1056,7 @@
                                                                         {
                                                                             "bgpLocalAsnP": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "localAsn": "{{ peer.local_as }}",
                                                                                     "asnPropagate" : "{{ peer.as_propagate | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.as_propagate) }}"
                                                                                 }
@@ -998,6 +1068,7 @@
                                                                         {
                                                                             "bgpRsPeerPfxPol": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "tnBgpPeerPfxPolName": "{{ peer_prefix_policy_name }}"
                                                                                 }
                                                                             }
@@ -1008,6 +1079,7 @@
                                                                         {
                                                                             "bgpRsPeerToProfile": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "direction": "export",
                                                                                     "tDn": "uni/tn-{{ tenant.name }}/prof-{{ export_route_control_name }}"
                                                                                 }
@@ -1019,6 +1091,7 @@
                                                                         {
                                                                             "bgpRsPeerToProfile": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "direction": "import",
                                                                                     "tDn": "uni/tn-{{ tenant.name}}/prof-{{ import_route_control_name }}"
                                                                                 }
@@ -1049,6 +1122,7 @@
                         {
                             "ospfExtP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/ospfExtP",
                                     "areaCost": "{{ l3out.ospf.area_cost | default(defaults.apic.tenants.l3outs.ospf.area_cost) }}",
                                     "areaCtrl": "redistribute,summary",
@@ -1062,6 +1136,7 @@
                         {
                             "bgpExtP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/bgpExtP"
                                 }
                             }
@@ -1071,6 +1146,7 @@
                         {
                             "l3extRsL3DomAtt": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/rsl3DomAtt",
                                     "tDn": "uni/l3dom-{{ domain_name }}"
                                 }
@@ -1080,6 +1156,7 @@
                         {
                             "l3extRsEctx": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/rsectx",
                                     "tnFvCtxName": "{{ vrf_name }}"
                                 }
@@ -1089,6 +1166,7 @@
                         {
                             "rtctrlProfile": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/prof-default-import",
                                     "name": "default-import",
                                     "descr": "{{ l3out.import_route_map.description | default() }}",
@@ -1102,6 +1180,7 @@
                                     {
                                         "rtctrlCtxP": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "action": "{{ context.action | default(defaults.apic.tenants.l3outs.import_route_map.contexts.action) }}",
                                                 "descr": "{{ context.description | default() }}",
                                                 "name": "{{ context_name }}",
@@ -1115,6 +1194,7 @@
                                                 {
                                                     "rtctrlScope": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "name": "",
                                                             "childAction": "deleteNonPresent"
                                                         },
@@ -1122,6 +1202,7 @@
                                                             {
                                                                 "rtctrlRsScopeToAttrP": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "tnRtctrlAttrPName": "{{ rule_name }}"
                                                                     }
                                                                 }
@@ -1135,6 +1216,7 @@
                                                 {
                                                     "rtctrlRsCtxPToSubjP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "tnRtctrlSubjPName": "{{ rule_name }}"
                                                         }
                                                     }
@@ -1154,6 +1236,7 @@
                         {
                             "rtctrlProfile": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/prof-default-export",
                                     "name": "default-export",
                                     "descr": "{{ l3out.export_route_map.description | default() }}",
@@ -1167,6 +1250,7 @@
                                     {
                                         "rtctrlCtxP": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "action": "{{ context.action | default(defaults.apic.tenants.l3outs.export_route_map.contexts.action) }}",
                                                 "descr": "{{ context.description | default() }}",
                                                 "name": "{{ context_name }}",
@@ -1180,6 +1264,7 @@
                                                 {
                                                     "rtctrlScope": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "name": "",
                                                             "childAction": "deleteNonPresent"
                                                         },
@@ -1187,6 +1272,7 @@
                                                             {
                                                                 "rtctrlRsScopeToAttrP": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "tnRtctrlAttrPName": "{{ rule_name }}"
                                                                     }
                                                                 }
@@ -1200,6 +1286,7 @@
                                                 {
                                                     "rtctrlRsCtxPToSubjP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "tnRtctrlSubjPName": "{{ rule_name }}"
                                                         }
                                                     }
@@ -1219,6 +1306,7 @@
                         {
                             "pimExtP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/pimextp",
                                     "enabledAf": "ipv4-mcast",
                                     "name": "pim"
@@ -1231,6 +1319,7 @@
                         {
                             "l3extRsInterleakPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/rsinterleakPol",
                                     "tnRtctrlProfileName": "{{ interleak_route_map_name }}"                                    
                                 }
@@ -1244,6 +1333,7 @@
                         {
                             "l3extDefaultRouteLeakP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/defrtleak",
                                     "always": "{{ default_route_leak_policy.always | default(defaults.apic.tenants.l3outs.default_route_leak_policy.always) | cisco.aac.aac_bool("yes") }}",
                                     "criteria": "{{ default_route_leak_policy.criteria | default(defaults.apic.tenants.l3outs.default_route_leak_policy.criteria) }}",
@@ -1257,6 +1347,7 @@
                         {
                             "l3extRsDampeningPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/rsdampeningPol-[{{ dampening_ipv4_route_map_name }}]-ipv4-ucast",
                                     "af": "ipv4-ucast",
                                     "tnRtctrlProfileName": "{{ dampening_ipv4_route_map_name }}"
@@ -1269,6 +1360,7 @@
                         {
                             "l3extRsDampeningPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/rsdampeningPol-[{{ dampening_ipv6_route_map_name_name }}]-ipv6-ucast",
                                     "af": "ipv6-ucast",
                                     "tnRtctrlProfileName": "{{ dampening_ipv6_route_map_name_name }}"
@@ -1281,6 +1373,7 @@
                         {
                             "l3extRsRedistributePol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/rsredistributePol-[{{ redistribution_route_map_name }}]-{{ rm.source | default(defaults.apic.tenants.l3outs.redistribution_route_maps.source) }}",
                                     "src": "{{ rm.source | default(defaults.apic.tenants.l3outs.redistribution_route_maps.source) }}",
                                     "tnRtctrlProfileName": "{{ redistribution_route_map_name }}"

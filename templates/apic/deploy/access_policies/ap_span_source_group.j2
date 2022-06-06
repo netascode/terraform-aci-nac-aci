@@ -10,6 +10,7 @@
             {
                 "spanSrcGrp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "adminSt": "{{ span.admin_state | default(defaults.apic.access_policies.span.source_groups.admin_state) | cisco.aac.aac_bool("enabled") }}",
                         "descr": "{{ span.description | default() }}",
                         "dn": "uni/infra/srcgrp-{{ span_name }}",
@@ -23,6 +24,7 @@
                         {
                             "spanSrc": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "descr": "{{ source.description | default() }}",
                                     "dir": "{{ source.direction | default(defaults.apic.access_policies.span.source_groups.sources.direction)}}",
                                     "name": "{{ source_name}}",
@@ -37,6 +39,7 @@
                                     {
                                         "spanRsSrcToEpg":  {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ source.tenant }}/ap-{{ application_profile_name }}/epg-{{ endpoint_group_name }}"
                                             }
                                         }
@@ -47,6 +50,7 @@
                                     {
                                         "spanRsSrcToL3extOut": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "addr": "0.0.0.0",
                                                 "encap": "vlan-{{ source.vlan }}",
                                                 "tDn": "uni/tn-{{ source.tenant }}/out-{{ l3out_name }}"
@@ -58,6 +62,7 @@
                                     {
                                         "spanRsSrcToPathEp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 {% if path.node_id is defined and path.channel is not defined %}
                                                     {% set query = "nodes[?id==`" ~ path.node_id ~ "`].pod" %}
                                                     {% set pod = path.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
@@ -132,6 +137,7 @@
                         {
                             "spanRsSrcGrpToFilterGrp": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/infra/filtergrp-{{ filter_group_name }}"
                                 }
                             }
@@ -141,6 +147,7 @@
                         {
                             "spanSpanLbl": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "descr": "{{ span.destination.description | default()}}",
                                     "name": "{{ destination_name }}",
                                     "tag": "yellow-green"

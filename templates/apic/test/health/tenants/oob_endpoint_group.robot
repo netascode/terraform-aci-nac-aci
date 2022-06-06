@@ -1,3 +1,4 @@
+{# iterate_list apic.tenants name item[2] #}
 *** Settings ***
 Documentation   Verify OOB Endpoint Group Health
 Suite Setup     Login APIC

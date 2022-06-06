@@ -10,6 +10,7 @@
             {
                 "stpMstRegionPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ mst_policy_name }}",
                         "dn": "uni/infra/mstpInstPol-default/mstpRegionPol-{{ mst_policy_name }}",
                         "regName": "{{ policy.region }}",
@@ -22,6 +23,7 @@
                         {
                             "stpMstDomPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ inst.name }}",
                                     "id": "{{ inst.id }}"
                                 },
@@ -31,6 +33,7 @@
                                     {
                                         "fvnsEncapBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "allocMode": "inherit",
                                                 "from": "vlan-{{ range.from }}",
                                                 "to": "vlan-{{ range.to | default(range.from) }}",

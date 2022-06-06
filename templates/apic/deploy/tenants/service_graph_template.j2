@@ -12,6 +12,7 @@
             {
                 "vnsAbsGraph": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "descr": "{{ sgt.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/AbsGraph-{{ sgt_name }}",
                         "name": "{{ sgt_name }}",
@@ -24,6 +25,7 @@
                         {
                             "vnsAbsTermNodeCon": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "T1",
                                     "childAction": "deleteNonPresent"
                                 },
@@ -31,18 +33,21 @@
                                     {
                                         "vnsOutTerm": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac"
                                             }
                                         }
                                     },
                                     {
                                         "vnsInTerm": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac"
                                             }
                                         }
                                     },
                                     {
                                         "vnsAbsTermConn": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "name": "1"
                                             }
                                         }
@@ -53,6 +58,7 @@
                         {
                             "vnsAbsTermNodeProv": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "T2",
                                     "childAction": "deleteNonPresent"
                                 },
@@ -60,18 +66,21 @@
                                     {
                                         "vnsOutTerm": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac"
                                             }
                                         }
                                     },
                                     {
                                         "vnsInTerm": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac"
                                             }
                                         }
                                     },
                                     {
                                         "vnsAbsTermConn": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "name": "1"
                                             }
                                         }
@@ -85,6 +94,7 @@
                         {
                             "vnsAbsNode": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "funcTemplateType": "{{ sgt.template_type | default(defaults.apic.tenants.services.service_graph_templates.template_type) }}",
                                     "funcType": "{{ dev.function | default(defaults.apic.tenants.services.l4l7_devices.function) }}",
                                     "isCopy": "{{ dev.copy_device | default(defaults.apic.tenants.services.l4l7_devices.copy_device) | cisco.aac.aac_bool("yes") }}",
@@ -100,6 +110,7 @@
                                     {
                                         "vnsRsNodeToLDev": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}"
                                             }
                                         }
@@ -107,6 +118,7 @@
                                     {
                                         "vnsAbsFuncConn": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "attNotify": "no",
                                                 "name": "provider"
                                             }
@@ -115,6 +127,7 @@
                                     {
                                         "vnsAbsFuncConn": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "attNotify": "no",
                                                 "name": "consumer"
                                             }
@@ -126,6 +139,7 @@
                         {
                             "vnsAbsConnection": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "adjType": "L3",
                                     "connDir": "provider",
                                     "connType": "external",
@@ -138,6 +152,7 @@
                                     {
                                         "vnsRsAbsConnectionConns": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/AbsGraph-{{ sgt_name }}/AbsTermNodeCon-T1/AbsTConn"
                                             }
                                         }
@@ -145,6 +160,7 @@
                                     {
                                         "vnsRsAbsConnectionConns": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/AbsGraph-{{ sgt_name }}/AbsNode-N1/AbsFConn-consumer"
                                             }
                                         }
@@ -155,6 +171,7 @@
                         {
                             "vnsAbsConnection": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "adjType": "L3",
                                     "connDir": "provider",
                                     "connType": "external",
@@ -167,6 +184,7 @@
                                     {
                                         "vnsRsAbsConnectionConns": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/AbsGraph-{{ sgt_name }}/AbsTermNodeProv-T2/AbsTConn"
                                             }
                                         }
@@ -174,6 +192,7 @@
                                     {
                                         "vnsRsAbsConnectionConns": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/AbsGraph-{{ sgt_name }}/AbsNode-N1/AbsFConn-provider"
                                             }
                                         }

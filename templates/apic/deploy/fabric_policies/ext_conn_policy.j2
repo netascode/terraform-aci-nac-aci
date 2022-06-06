@@ -9,6 +9,7 @@
             {
                 "fvFabricExtConnP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn": "uni/tn-infra/fabricExtConnP-{{ apic.fabric_policies.external_connectivity_policy.fabric_id | default(defaults.apic.fabric_policies.external_connectivity_policy.fabric_id) }}",
                         "id": "{{ apic.fabric_policies.external_connectivity_policy.fabric_id | default(defaults.apic.fabric_policies.external_connectivity_policy.fabric_id) }}",
                         "name": "{{ policy_name }}",
@@ -19,6 +20,7 @@
                         {
                             "fvPeeringP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "type": "automatic_with_full_mesh"
                                     {%- if apic.fabric_policies.external_connectivity_policy.bgp_password is defined %},
                                     "password": "{{ apic.fabric_policies.external_connectivity_policy.bgp_password }}"
@@ -31,6 +33,7 @@
                         {
                             "l3extFabricExtRoutingP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ routing_profile_name }}"
                                 },
                                 "children": [
@@ -39,6 +42,7 @@
                                     {
                                         "l3extSubnet": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "ip": "{{ subnet }}",
                                                 "scope": "import-security"
                                             }
@@ -54,12 +58,14 @@
                         {
                             "fvPodConnP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "id": "{{ pod.id }}"
                                 },
                                 "children": [
                                     {
                                         "fvIp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "addr": "{{ pod.data_plane_tep }}"
                                             }
                                         }

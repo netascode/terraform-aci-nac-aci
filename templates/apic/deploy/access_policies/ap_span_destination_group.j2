@@ -10,6 +10,7 @@
             {
                 "spanDestGrp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "descr": "{{ span.description | default() }}",
                         "dn": "uni/infra/destgrp-{{ span_name }}",
                         "name": "{{ span_name }}",
@@ -19,9 +20,10 @@
                         {
                             "spanDest": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "descr": "",
                                     "name": "{{ span_name }}",
-                                     "childAction": "deleteNonPresent"
+                                    "childAction": "deleteNonPresent"
                                 },
                                 "children": [
                                 {%- set comma2 = joiner(",") %}
@@ -29,6 +31,7 @@
                                     {
                                         "spanRsDestPathEp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "mtu": "{{ span.mtu | default(defaults.apic.access_policies.span.destination_groups.mtu) }}",
                                                 {% if span.node_id is defined and span.channel is not defined %}
                                                     {% set query = "nodes[?id==`" ~ span.node_id ~ "`].pod" %}
@@ -79,6 +82,7 @@
                                     {
                                         "spanRsDestEpg": {
                                             "attributes":{
+                                                "annotation": "orchestrator:aac",
                                                 "ip": "{{ span.ip }}",
                                                 "srcIpPrefix": "{{ span.source_prefix }}",
                                                 "dscp": "{{ span.dscp | default(defaults.apic.access_policies.span.destination_groups.dscp) }}",

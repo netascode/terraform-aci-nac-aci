@@ -12,6 +12,7 @@
             {
                 "fvIPSLAMonitoringPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "descr": "{{ ip_sla.description | default()}}",
                         "name": "{{ ip_sla_name }}",
                         "dn": "uni/tn-{{ tenant.name }}/ipslaMonitoringPol-{{ ip_sla_name }}",

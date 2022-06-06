@@ -1,6 +1,7 @@
 {
     "fabricProtPol": {
         "attributes": {
+            "annotation": "orchestrator:aac",
             "name": "default",
             "pairT": "{{ apic.node_policies.vpc_groups.mode | default(defaults.apic.node_policies.vpc_groups.mode) }}",
             "dn": "uni/fabric/protpol"
@@ -13,6 +14,7 @@
             {
                 "fabricExplicitGEp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "id": "{{ group.id }}",
                         "name": "{{ group.name | default(vpc_group_name) }}",
                         "dn": "uni/fabric/protpol/expgep-{{ group.name | default(vpc_group_name) }}",
@@ -23,6 +25,7 @@
                         {
                             "fabricRsVpcInstPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnVpcInstPolName": "{{ vpc_policy_name }}"
                                 }
                             }
@@ -31,6 +34,7 @@
                         {
                             "fabricNodePEp": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "id": "{{ group.switch_1 }}"
                                 }
                             }
@@ -38,6 +42,7 @@
                         {
                             "fabricNodePEp": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "id": "{{ group.switch_2 }}"
                                 }
                             }

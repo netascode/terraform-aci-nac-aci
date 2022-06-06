@@ -16,6 +16,7 @@
             {
                 "lacpLagPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "ctrl": "{{ ctrl | join(',') }}",
                         "maxLinks": "{{ policy.max_links | default(defaults.apic.access_policies.interface_policies.port_channel_policies.max_links) }}",
                         "minLinks": "{{ policy.min_links | default(defaults.apic.access_policies.interface_policies.port_channel_policies.min_links) }}",
@@ -29,6 +30,7 @@
                         {
                             "l2LoadBalancePol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "hashFields": "{{ policy.hash_key }}"
                                 }
                             }

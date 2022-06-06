@@ -12,6 +12,7 @@
             {
                 "vzBrCP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "descr": "{{ contract.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/brc-{{ contract_name }}",
                         "name": "{{ contract_name }}",
@@ -28,6 +29,7 @@
                         {
                             "vzSubj": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ subject_name }}",
                                     "nameAlias": "{{ subject.alias | default() }}",
                                     "descr": "{{ subject.description | default() }}",
@@ -46,6 +48,7 @@
                                     {
                                         "vzRsSubjFiltAtt": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "action": "{{ filter.action | default(defaults.apic.tenants.contracts.subjects.filters.action) }}",
                                                 "tnVzFilterName": "{{ filter_name }}",
                                                 "directives": "{{ directives | join(',') }}",
@@ -58,6 +61,7 @@
                                     {
                                         "vzRsSubjGraphAtt": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnVnsAbsGraphName": "{{ subject.service_graph }}"
                                             }
                                         }

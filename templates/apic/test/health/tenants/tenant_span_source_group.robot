@@ -1,3 +1,4 @@
+{# iterate_list apic.tenants name item[2] #}
 *** Settings ***
 Documentation   Verify Tenant SPAN Source Group
 Suite Setup     Login APIC

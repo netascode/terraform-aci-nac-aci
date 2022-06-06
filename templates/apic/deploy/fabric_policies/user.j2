@@ -9,6 +9,7 @@
             {
                 "aaaUser": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "accountStatus": "{{ user.status | default(defaults.apic.fabric_policies.aaa.users.status) }}",
                         "certAttribute": "{{ user.certificate_name | default() }}",
                         "clearPwdHistory": "no",
@@ -32,6 +33,7 @@
                         {
                             "aaaUserDomain": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ domain.name }}",
                                     "childAction": "deleteNonPresent"
                                 },
@@ -41,6 +43,7 @@
                                     {
                                         "aaaUserRole": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "name": "{{ role.name }}",
                                                 "privType": "{% if role.privilege_type | default(defaults.apic.fabric_policies.aaa.users.domains.roles.privilege_type) == "write" %}writePriv{% else %}readPriv{% endif %}"
                                             }
@@ -56,6 +59,7 @@
                         {
                             "aaaUserCert": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ cert.name }}",
                                     "data": "{{ cert.data }}"
                                 }
@@ -66,6 +70,7 @@
                         {
                             "aaaSshAuth": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ key.name }}",
                                     "data": "{{ key.data }}"
                                 }
@@ -80,6 +85,7 @@
             {
                 "aaaPwdProfile": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "historyCount": "0"
                     }
                 }

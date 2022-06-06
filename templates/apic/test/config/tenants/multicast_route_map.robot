@@ -1,3 +1,4 @@
+{# iterate_list apic.tenants name item[2] #}
 *** Settings ***
 Documentation   Verify Multicast Route Map Policies Option Policy
 Suite Setup     Login APIC

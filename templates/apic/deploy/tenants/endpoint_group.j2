@@ -16,6 +16,7 @@
             {
                 "fvAp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn": "uni/tn-{{ tenant.name }}/ap-{{ ap_name }}",
                         "name": "{{ ap_name }}"
                     },
@@ -26,6 +27,7 @@
                         {
                             "fvAEPg": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "descr": "{{ epg.description | default() }}",
                                     "dn": "uni/tn-{{ tenant.name }}/ap-{{ ap_name }}/epg-{{ epg_name }}",
                                     "name": "{{ epg_name }}",
@@ -43,6 +45,7 @@
                                     {
                                         "fvRsDomAtt": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/phys-{{ domain_name }}"
                                             }
                                         }
@@ -53,6 +56,7 @@
                                     {
                                         "fvRsDomAtt": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "bindingType": "none",
                                                 {% if vmm.u_segmentation | default(defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.u_segmentation) | cisco.aac.aac_bool("yes") == 'yes' %}{% set useg = 'useg' %}{% else %}{% set useg = 'encap' %}{% endif %}
                                                 "classPref": "{{ useg }}",
@@ -81,6 +85,7 @@
                                                 {
                                                     "vmmSecP": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "allowPromiscuous": "{{ vmm.allow_promiscuous | default(defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.allow_promiscuous) }}",
                                                             "forgedTransmits": "{{ vmm.forged_transmits | default(defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.forged_transmits) }}",
                                                             "macChanges": "{{ vmm.mac_changes | default(defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.mac_changes) }}"
@@ -91,12 +96,13 @@
                                                 {
                                                     "fvAEPgLagPolAtt": {
                                                         "attributes": {
-                                                            "annotation": ""
+                                                            "annotation": "orchestrator:aac"
                                                         },
                                                         "children": [
                                                             {
                                                                 "fvRsVmmVSwitchEnhancedLagPol": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "tDn": "uni/vmmp-VMware/dom-{{ vmm_name }}/vswitchpolcont/enlacplagp-{{ vmm.elag }}"
                                                                     }
                                                                 }
@@ -109,6 +115,7 @@
                                                 {
                                                     "fvUplinkOrderCont": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "active": "{{ vmm.active_uplinks_order | default()  }}",
                                                             "standby": "{{ vmm.standby_uplinks | default()  }}"
                                                         }
@@ -123,6 +130,7 @@
                                     {
                                         "fvRsPathAtt": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "encap": "vlan-{{ sp.vlan }}",
                                                 "instrImedcy": "{{ sp.deployment_immediacy | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.deployment_immediacy)  }}",
                                                 "mode": "{{ sp.mode | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.mode) }}",
@@ -167,6 +175,7 @@
                                     {
                                         "fvStCEp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 {% if st_ep.type != "vep" %}
                                                 "encap": "vlan-{{ st_ep.vlan }}",
                                                 {% else %}
@@ -185,6 +194,7 @@
                                                 {
                                                 "fvStIp": {
                                                     "attributes": {
+                                                        "annotation": "orchestrator:aac",
                                                         "addr": "{{ ip }}"
                                                     }
                                                 }
@@ -195,6 +205,7 @@
                                                 {
                                                 "fvRsStCEpToPathEp": {
                                                     "attributes": {
+                                                        "annotation": "orchestrator:aac",
                                                         {% if st_ep.node_id is defined and st_ep.channel is not defined%}
                                                         {% set query = "nodes[?id==`" ~ st_ep.node_id ~ "`].pod" %}
                                                         {% set pod = st_ep.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
@@ -237,6 +248,7 @@
                                     {
                                         "fvRsProv": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnVzBrCPName": "{{ contract_name }}"
                                             }
                                         }
@@ -247,6 +259,7 @@
                                     {
                                         "fvRsCons": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnVzBrCPName": "{{ contract_name }}"
                                             }
                                         }
@@ -257,6 +270,7 @@
                                     {
                                         "fvRsConsIf": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnVzCPIfName": "{{ contract_name }}"
                                             }
                                         }
@@ -274,6 +288,7 @@
                                     {
                                         "fvSubnet": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "ctrl": "{{ ctrl | join(',') }}",
                                                 "descr": "{{ subnet.description | default() }}",
                                                 "ip": "{{ subnet.ip }}",
@@ -288,6 +303,7 @@
                                                 {
                                                     "fvCepNetCfgPol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "name": "{{ pool_name }}",
                                                             "startIp": "{{ pool.start_ip | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.ip_pools.start_ip) }}",
                                                             "endIp": "{{ pool.end_ip | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.ip_pools.end_ip) }}",
@@ -303,12 +319,14 @@
                                                 {
                                                     "fvEpReachability": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
                                                             {
                                                                 "ipNexthopEpP": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "nhAddr": "{{ subnet.next_hop_ip }}"
                                                                     }
                                                                 }
@@ -320,6 +338,7 @@
                                                 {
                                                     "fvEpAnycast": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "mac": "{{ subnet.anycast_mac }}"
                                                         }
                                                     }
@@ -328,6 +347,7 @@
                                                 {
                                                     "fvEpNlb": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "group": "{{ subnet.nlb_group | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.nlb_group) }}",
                                                             "mac": "{{ subnet.nlb_mac | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.nlb_mac) }}",
                                                             "mode": "{{ get_nlb_mode(subnet.nlb_mode) }}"
@@ -343,6 +363,7 @@
                                     {
                                         "tagInst": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "name": "{{ tag }}"
                                             }
                                         }
@@ -353,6 +374,7 @@
                                     {
                                         "fvRsTrustCtrl": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnFhsTrustCtrlPolName": "{{ trust_control_policy_name }}"
                                             }
                                         }
@@ -362,6 +384,7 @@
                                     {
                                         "fvVip": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "addr": "{{ vip.ip }}",
                                                 "descr": "{{ vip.description | default() }}"
                                             }
@@ -372,6 +395,7 @@
                                     {
                                         "vnsAddrInst": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "name": "{{ pool.name }}",
                                                 "addr": "{{ pool.gateway_address }}",
                                                 "childAction": "deleteNonPresent"                                                
@@ -381,6 +405,7 @@
                                                 {
                                                     "fvnsUcastAddrBlk": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "from": "{{ pool.from }}",
                                                             "to": "{{ pool.to }}"
                                                         }
@@ -396,6 +421,7 @@
                                     {
                                         "fvRsBd": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnFvBDName": "{{ bd_name }}"
                                             }
                                         }
@@ -405,6 +431,7 @@
                                     {
                                         "fvRsCustQosPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnQosCustomPolName": "{{ custom_qos_policy_name }}"
                                             }
                                         }

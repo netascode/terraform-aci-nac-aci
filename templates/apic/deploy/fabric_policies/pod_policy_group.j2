@@ -10,6 +10,7 @@
             {
                 "fabricPodPGrp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ pod_policy_group_name }}",
                         "dn": "uni/fabric/funcprof/podpgrp-{{ pod_policy_group_name }}"
                     },
@@ -20,6 +21,7 @@
                         {
                             "fabricRsSnmpPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnSnmpPolName": "{{ snmp_policy_name }}"
                                 }
                             }
@@ -30,6 +32,7 @@
                         {
                             "fabricRsTimePol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnDatetimePolName": "{{ date_time_policy_name }}"
                                 }
                             }
@@ -40,6 +43,7 @@
                         {
                             "fabricRsCommPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnCommPolName": "{{ management_access_policy_name }}"
                                 }
                             }

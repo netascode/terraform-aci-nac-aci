@@ -16,6 +16,7 @@
             {
                 "igmpIfPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ igmp_pol_name }}",
                         "descr": "{{ igmp_pol.description | default()}}",
                         "dn": "uni/tn-{{ tenant.name }}/igmpIfPol-{{ igmp_pol_name }}",
@@ -37,12 +38,14 @@
                         {
                             "igmpStRepPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "joinType": "static-group"
                                 },
                                 "children": [
                                     {
                                         "rtdmcRsFilterToRtMapPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ report_policy_rm_name }}"
                                             }
                                         }
@@ -56,12 +59,14 @@
                         {
                             "igmpRepPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "childAction": "deleteNonPresent"
                                 },
                                 "children": [
                                     {
                                         "rtdmcRsFilterToRtMapPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ static_report_rm_name }}"
                                             }
                                         }
@@ -73,6 +78,7 @@
                         {
                             "igmpStateLPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "max": "{{ igmp_pol.max_mcast_entries | default(defaults.apic.tenants.policies.igmp_interface_policies.max_mcast_entries) }}",
                                     "rsvd": "{{ igmp_pol.reserved_mcast_entries | default(defaults.apic.tenants.policies.igmp_interface_policies.reserved_mcast_entries) }}"
                                 },
@@ -80,6 +86,7 @@
                                     {
                                         "rtdmcRsFilterToRtMapPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 {% if igmp_pol.state_limit_multicast_route_map is defined %}
                                                 {% set state_limit_rm_name = igmp_pol.state_limit_multicast_route_map ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix %}
                                                 "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ state_limit_rm_name }}"

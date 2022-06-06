@@ -1,3 +1,4 @@
+{# iterate_list apic.tenants name item[2] #}
 *** Settings ***
 Documentation   Verify BGP Peer Prefix Policy
 Suite Setup     Login APIC

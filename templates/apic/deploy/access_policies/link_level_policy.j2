@@ -8,6 +8,7 @@
             {
                 "fabricHIfPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ link_level_policy_name }}",
                         "dn": "uni/infra/hintfpol-{{ link_level_policy_name }}",
                         "speed": "{{ policy.speed | default(defaults.apic.access_policies.interface_policies.link_level_policies.speed) }}",

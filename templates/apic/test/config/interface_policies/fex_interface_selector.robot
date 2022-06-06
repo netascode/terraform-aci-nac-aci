@@ -1,3 +1,4 @@
+{# iterate_list apic.node_policies.nodes id item[1] #}
 *** Settings ***
 Documentation   Verify Access FEX Interface Selector
 Suite Setup     Login APIC

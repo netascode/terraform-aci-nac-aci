@@ -1,3 +1,4 @@
+{# iterate_list apic.tenants name item[2] #}
 *** Settings ***
 Documentation   Verify IGMP Interface Policy Health
 Suite Setup     Login APIC

@@ -1,6 +1,7 @@
 {
     "infraPortTrackPol": {
         "attributes": {
+            "annotation": "orchestrator:aac",
             "adminSt": "{{ apic.fabric_policies.port_tracking.admin_state | default(defaults.apic.fabric_policies.port_tracking.admin_state) | cisco.aac.aac_bool("on") }}",
             "delay": "{{ apic.fabric_policies.port_tracking.delay | default(defaults.apic.fabric_policies.port_tracking.delay) }}",
             "dn": "uni/infra/trackEqptFabP-default",

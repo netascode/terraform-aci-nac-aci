@@ -13,6 +13,7 @@
 
                 "bgpCtxPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ bgp_timer_name }}",
                         "descr": "{{ bt.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/bgpCtxP-{{ bgp_timer_name }}",

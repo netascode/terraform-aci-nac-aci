@@ -15,6 +15,7 @@
 
                 "bgpBestPathCtrlPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ bpp_name }}",
                         "descr": "{{ bpp.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/bestpath-{{ bpp_name }}",

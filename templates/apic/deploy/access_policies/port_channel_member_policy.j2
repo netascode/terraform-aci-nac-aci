@@ -10,6 +10,7 @@
             {
                 "lacpIfPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ port_channel_member_policy_name }}",
                         "dn": "uni/infra/lacpifp-{{ port_channel_member_policy_name }}",
                         "prio": "{{ policy.priority | default(defaults.apic.access_policies.interface_policies.port_channel_member_policies.priority) }}",

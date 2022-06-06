@@ -19,6 +19,7 @@
                         {
                             "mgmtInB": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-mgmt/mgmtp-default/inb-{{ epg_name }}",
                                     "name": "{{ epg_name }}",
                                     "encap": "vlan-{{ epg.vlan }}"
@@ -30,6 +31,7 @@
                                     {
                                         "fvRsProv": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "dn": "uni/tn-mgmt/mgmtp-default/inb-{{ epg_name }}/rsprov-{{ contract_name }}",
                                                 "tnVzBrCPName": "{{ contract_name }}"
                                             }
@@ -41,6 +43,7 @@
                                     {
                                         "fvRsCons": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "dn": "uni/tn-mgmt/mgmtp-default/inb-{{ epg_name }}/rscons-{{ contract_name }}",
                                                 "tnVzBrCPName": "{{ contract_name }}"
                                             }
@@ -52,6 +55,7 @@
                                     {
                                         "fvRsConsIf": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "dn": "uni/tn-mgmt/mgmtp-default/inb-{{ epg_name }}/rsconsif-{{ contract_name }}",
                                                 "tnVzCPIfName": "{{ contract_name }}"
                                             }
@@ -62,6 +66,7 @@
                                     {
                                         "mgmtRsMgmtBD": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnFvBDName": "{{ bd_name }}"
                                             }
                                         }

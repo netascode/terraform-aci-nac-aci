@@ -12,6 +12,7 @@
             {
                 "l3extOut": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}",
                         "name": "{{ l3out_name }}"
                     },
@@ -22,6 +23,7 @@
                         {
                             "l3extInstP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/instP-{{ eepg_name }}",
                                     "descr": "{{ epg.description | default() }}",
                                     "name": "{{ eepg_name }}",
@@ -47,6 +49,7 @@
                                     {
                                         "l3extSubnet": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "aggregate": "{{ agg | join(',') }}",
                                                 "ip": "{{ subnet.prefix }}",
                                                 "name": "{{ subnet.name | default() }}",
@@ -58,6 +61,7 @@
                                                 {
                                                     "l3extRsSubnetToRtSumm": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "tDn": "uni/tn-common/bgprtsum-default"
                                                         }
                                                     }
@@ -72,6 +76,7 @@
                                     {
                                         "fvRsProv": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnVzBrCPName": "{{ contract_name }}"
                                             }
                                         }
@@ -82,6 +87,7 @@
                                     {
                                         "fvRsCons": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnVzBrCPName": "{{ contract_name }}"
                                             }
                                         }
@@ -92,6 +98,7 @@
                                     {
                                         "fvRsConsIf": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnVzCPIfName": "{{ contract_name }}"
                                             }
                                         }

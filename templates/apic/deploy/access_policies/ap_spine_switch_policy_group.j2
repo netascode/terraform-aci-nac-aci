@@ -10,6 +10,7 @@
             {
                 "infraSpineAccNodePGrp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ policy_group_name }}",
                         "dn": "uni/infra/funcprof/spaccnodepgrp-{{ policy_group_name }}"
                     },
@@ -19,6 +20,7 @@
                         {
                             "infraRsSpinePGrpToLldpIfPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnLldpIfPolName": "{{ lldp_policy_name }}"
                                 }
                             }

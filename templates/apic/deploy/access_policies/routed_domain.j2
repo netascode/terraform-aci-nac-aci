@@ -19,6 +19,7 @@
             {
                 "l3extDomP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ domain_name }}",
                         "dn": "uni/l3dom-{{ domain_name }}"
                     },
@@ -26,6 +27,7 @@
                         {
                             "infraRsVlanNs": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     {% set vlan_pool_name = domain.vlan_pool ~ defaults.apic.access_policies.vlan_pools.name_suffix %}
                                     {% set query = "vlan_pools[?name==`" ~ vlan_pool_name ~ "`].allocation[]" %}
                                     {% set allocation = (apic.access_policies | community.general.json_query(query))[0] | default(defaults.apic.access_policies.routed_domains.allocation) %}

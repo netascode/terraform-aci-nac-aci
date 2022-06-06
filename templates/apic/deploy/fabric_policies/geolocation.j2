@@ -9,6 +9,7 @@
             {
                 "geoSite": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn": "uni/fabric/site-{{ site.name }}",
                         "name": "{{ site.name }}",
                         "descr": "{{ site.description | default() }}",
@@ -20,6 +21,7 @@
                         {
                             "geoBuilding": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ building.name }}",
                                     "descr": "{{ building.description | default() }}",
                                     "childAction": "deleteNonPresent"
@@ -30,6 +32,7 @@
                                     {
                                         "geoFloor": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "name": "{{ floor.name }}",
                                                 "descr": "{{ floor.description | default() }}",
                                                 "childAction": "deleteNonPresent"
@@ -40,6 +43,7 @@
                                                 {
                                                     "geoRoom": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "name": "{{ room.name }}",
                                                             "descr": "{{ room.description | default() }}",
                                                             "childAction": "deleteNonPresent"
@@ -50,6 +54,7 @@
                                                             {
                                                                 "geoRow": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "name": "{{ row.name }}",
                                                                         "descr": "{{ row.description | default() }}",
                                                                         "childAction": "deleteNonPresent"
@@ -60,6 +65,7 @@
                                                                         {
                                                                             "geoRack": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "name": "{{ rack.name }}",
                                                                                     "descr": "{{ rack.description | default() }}",
                                                                                     "childAction": "deleteNonPresent"
@@ -72,6 +78,7 @@
                                                                                     {
                                                                                         "geoRsNodeLocation": {
                                                                                             "attributes": {
+                                                                                                "annotation": "orchestrator:aac",
                                                                                                 "tDn": "topology/pod-{{ pod }}/node-{{ node }}"
                                                                                             }
                                                                                         }

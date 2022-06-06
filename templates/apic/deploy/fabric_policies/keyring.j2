@@ -10,6 +10,7 @@
             {
                 "pkiKeyRing":{
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn":"uni/userext/pkiext/keyring-{{ keyring_name }}",
                         "name": "{{ keyring_name }}",
                         "descr": "{{ keyring.description | default() }}",

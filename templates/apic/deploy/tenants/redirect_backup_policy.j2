@@ -18,6 +18,7 @@
                         {
                             "vnsBackupPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "descr": "{{ pol.description | default() }}",
                                     "name": "{{ pol_name }}",
                                     "dn": "uni/tn-{{ tenant.name }}/svcCont/backupPol-{{ pol_name }}",
@@ -30,6 +31,7 @@
                                     {
                                         "vnsRedirectDest": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "descr": "{{ des.description | default() }}",
                                                 "destName": "{{ des.destination_name | default() }}",
                                                 "ip": "{{ des.ip }}",
@@ -42,6 +44,7 @@
                                                 {
                                                     "vnsRsRedirectHealthGroup": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "tDn": "uni/tn-{{ tenant.name }}/svcCont/redirectHealthGroup-{{ redirect_health_group_name }}"
                                                         }
                                                     }

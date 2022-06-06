@@ -10,6 +10,7 @@
             {
                 "spanVDestGrp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "descr": "{{ vspan.description | default()}}",
                         "dn": "uni/infra/vdestgrp-{{ vspan_name }}",
                         "name": "{{ vspan_name }}",
@@ -22,6 +23,7 @@
                         {
                             "spanVDest": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "descr": "{{ destination.description | default() }}",
                                     "name": "{{ destination_name }}",
                                     "childAction": "deleteNonPresent"
@@ -33,6 +35,7 @@
                                     {
                                         "spanRsDestToVPort": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ destination.tenant }}/ap-{{ application_profile_name }}/epg-{{ endpoint_group_name }}/cep-{{ destination.endpoint }}"
                                             }
                                         }
@@ -42,6 +45,7 @@
                                     {
                                         "spanVEpgSummary": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "dstIp": "{{ destination.ip }}",
                                                 "dscp": "{{ destination.dscp | default(defaults.apic.access_policies.vspan.destination_groups.destinations.dscp) }}",
                                                 "flowId": "{{ destination.flow_id | default(defaults.apic.access_policies.vspan.destination_groups.destinations.flow_id) }}",

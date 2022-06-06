@@ -10,6 +10,7 @@
             {
                 "spanSrcGrp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ span_name }}",
                         "adminSt": "{{ span.admin_state | default(defaults.apic.fabric_policies.span.source_groups.admin_state) | cisco.aac.aac_bool("enabled") }}",
                         "descr": "{{ span.description | default() }}",
@@ -23,6 +24,7 @@
                         {
                             "spanSrc": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "descr": "{{ source.description | default() }}",
                                     "dir": "{{ source.direction | default(defaults.apic.fabric_policies.span.source_groups.sources.direction)}}",
                                     "name": "{{ source_name}}",
@@ -36,6 +38,7 @@
                                     {
                                         "spanRsSrcToCtx":  {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ source.tenant }}/ctx-{{ vrf_name }}"
                                             }
                                         }
@@ -46,6 +49,7 @@
                                     {
                                         "spanRsSrcToBD": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ source.tenant }}/BD-{{ bd_name }}"
                                             }
                                         }
@@ -55,6 +59,7 @@
                                     {
                                         "spanRsSrcToPathEp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 {% set query = "nodes[?id==`" ~ path.node_id ~ "`].pod" %}
                                                 {% set pod = path.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
                                                 "tDn": "topology/pod-{{ pod }}/paths-{{ path.node_id }}/pathep-[eth{{ path.module | default(defaults.apic.fabric_policies.span.source_groups.sources.access_paths.module) }}/{{ path.port }}]"
@@ -71,6 +76,7 @@
                         {
                             "spanSpanLbl": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "descr": "{{ span.destination.description | default()}}",
                                     "name": "{{ destination_name }}",
                                     "tag": "yellow-green"

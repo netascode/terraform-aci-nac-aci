@@ -1,6 +1,7 @@
 {
     "epLoopProtectP": {
         "attributes": {
+            "annotation": "orchestrator:aac",
             "action": "{{ apic.fabric_policies.ep_loop_protection.action | default(defaults.apic.fabric_policies.ep_loop_protection.action) }}",
             "adminSt": "{{ apic.fabric_policies.ep_loop_protection.admin_state | default(defaults.apic.fabric_policies.ep_loop_protection.admin_state) | cisco.aac.aac_bool("enabled") }}",
             "dn": "uni/infra/epLoopProtectP-default",

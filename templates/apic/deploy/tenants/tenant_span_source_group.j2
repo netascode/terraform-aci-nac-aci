@@ -13,6 +13,7 @@
             {
                 "spanSrcGrp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn":"uni/tn-{{ tenant.name }}/srcgrp-{{ span_group_name }}",
                         "name": "{{ span_group_name }}",
                         "descr":  "{{ span.description | default()}}",
@@ -25,6 +26,7 @@
                         {
                             "spanSrc": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ source.name }}",
                                     "descr":  "{{ source.description | default()}}",
                                     "dir": "{{ source.direction | default(defaults.apic.tenants.policies.span.source_groups.sources.direction ) }}",
@@ -37,6 +39,7 @@
                                     {
                                         "spanRsSrcToEpg": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/tn-{{ tenant.name }}/ap-{{ application_profile_name }}/epg-{{ endpoint_group_name }}"
                                             }
                                         }
@@ -49,6 +52,7 @@
                         {
                             "spanSpanLbl": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name":"{{ span_destination_name }}"
                                 }
                             }

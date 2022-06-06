@@ -12,6 +12,7 @@
             {
                 "fvCtx": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ vrf_name }}",
                         "dn": "uni/tn-{{ tenant.name }}/ctx-{{ vrf_name }}",
                         "nameAlias": "{{ vrf.alias | default() }}",
@@ -26,6 +27,7 @@
                        {
                             "vzAny": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "prefGrMemb": "{{ vrf.preferred_group | default(defaults.apic.tenants.vrfs.preferred_group) | cisco.aac.aac_bool("enabled") }}"
                                 },
                                 "children": [
@@ -35,6 +37,7 @@
                                     {
                                         "vzRsAnyToProv": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnVzBrCPName": "{{ contract_name }}"
                                             }
                                         }
@@ -45,6 +48,7 @@
                                     {
                                         "vzRsAnyToCons": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnVzBrCPName": "{{ contract_name }}"
                                             }
                                         }
@@ -55,6 +59,7 @@
                                     {
                                         "vzRsAnyToConsIf": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tnVzCPIfName": "{{ contract_name }}"
                                             }
                                         }
@@ -69,6 +74,7 @@
                         {
                             "fvRsBgpCtxPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnBgpCtxPolName": "{{ bgp_timer_name }}"
                                 }
                             }
@@ -79,6 +85,7 @@
                         {
                             "fvRsCtxToBgpCtxAfPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "af": "ipv4-ucast",
                                     "tnBgpCtxAfPolName": "{{ address_family_context_policy_name }}"
                                 }
@@ -90,6 +97,7 @@
                         {
                             "fvRsCtxToBgpCtxAfPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "af": "ipv6-ucast",
                                     "tnBgpCtxAfPolName": "{{ address_family_context_policy_name }}"
                                 }
@@ -100,6 +108,7 @@
                         {
                             "bgpRtTargetP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "af": "ipv4-ucast",
                                     "childAction": "deleteNonPresent"
                                 },
@@ -108,6 +117,7 @@
                                     {
                                         "bgpRtTarget": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "rt": "{{ vrf.bgp.ipv4_import_route_target }}",
                                                 "type": "import"
                                             }
@@ -121,6 +131,7 @@
                                     {
                                         "bgpRtTarget": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "rt": "{{ vrf.bgp.ipv4_export_route_target }}",
                                                 "type": "export"
                                             }
@@ -135,6 +146,7 @@
                         {
                             "bgpRtTargetP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "af": "ipv6-ucast",
                                     "childAction": "deleteNonPresent"
                                 },
@@ -143,6 +155,7 @@
                                     {
                                         "bgpRtTarget": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "rt": "{{ vrf.bgp.ipv6_import_route_target }}",
                                                 "type": "import"
                                             }
@@ -156,6 +169,7 @@
                                     {
                                         "bgpRtTarget": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "rt": "{{ vrf.bgp.ipv6_export_route_target }}",
                                                 "type": "export"
                                             }
@@ -172,6 +186,7 @@
                         {
                             "dnsLbl": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ dns_label_name }}"
                                 }
                             }
@@ -185,6 +200,7 @@
                             {% if vrf.pim.strict_rfc | default(defaults.apic.tenants.vrfs.pim.strict_rfc) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("strict-rfc-compliant")] %}{% endif %}
                             "pimCtxP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/ctx-{{ vrf_name}}/pimctxp",
                                     "mtu": "{{ vrf.pim.mtu | default(defaults.apic.tenants.vrfs.pim.mtu) }}",
                                     "ctrl": "{{ ctrl | join(',') }}",
@@ -194,6 +210,7 @@
                                     {
                                         "pimResPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "max": "{{ vrf.pim.max_multicast_entries | default(defaults.apic.tenants.vrfs.pim.max_multicast_entries) }}",
                                                 "rsvd": "{{ vrf.pim.reserved_multicast_entries | default(defaults.apic.tenants.vrfs.pim.reserved_multicast_entries) }}",
                                                 "childAction": "deleteNonPresent"
@@ -204,6 +221,7 @@
                                                 {
                                                     "rtdmcRsFilterToRtMapPol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ resource_policy_multicast_route_map_name }}"
                                                         }
                                                     }
@@ -215,6 +233,7 @@
                                     {
                                         "pimStaticRPPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "childAction": "deleteNonPresent"
                                             },
                                             "children": [
@@ -224,6 +243,7 @@
                                                 {
                                                     "pimStaticRPEntryPol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "rpIp": "{{ static_rp.ip }}",
                                                             "childAction": "deleteNonPresent"
                                                         },
@@ -233,12 +253,14 @@
                                                             {
                                                                 "pimRPGrpRangePol": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "childAction": "deleteNonPresent"
                                                                     },
                                                                     "children": [
                                                                         {                                                                        
                                                                             "rtdmcRsFilterToRtMapPol": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ static_rp_route_map_name }}"
                                                                                 }
                                                                             }                                                                       
@@ -259,6 +281,7 @@
                                     {
                                         "pimFabricRPPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "childAction": "deleteNonPresent"
                                             },
                                             "children": [
@@ -268,6 +291,7 @@
                                                 {
                                                     "pimStaticRPEntryPol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "rpIp": "{{ fabric_rp.ip }}",
                                                             "childAction": "deleteNonPresent"
                                                         },
@@ -277,12 +301,14 @@
                                                             {
                                                                 "pimRPGrpRangePol": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "childAction": "deleteNonPresent"
                                                                     },
                                                                     "children": [
                                                                         {
                                                                             "rtdmcRsFilterToRtMapPol": {
                                                                                 "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
                                                                                     "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ fabric_rp_route_map_name }}"
                                                                                 }
                                                                             }
@@ -303,6 +329,7 @@
                                     {
                                         "pimBSRPPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 {% set ctrl = [] %}
                                                 {% if vrf.pim.bsr_forward_updates | default(defaults.apic.tenants.vrfs.pim.bsr_forward_updates) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("forward")] %}{% endif %}
                                                 {% if vrf.pim.bsr_listen_updates | default(defaults.apic.tenants.vrfs.pim.bsr_listen_updates) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("listen")] %}{% endif %}
@@ -315,13 +342,15 @@
                                                 {
                                                     "pimBSRFilterPol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
                                                             {
                                                                 "rtdmcRsFilterToRtMapPol": {
                                                                     "attributes": {
-                                                                            "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ bsr_filter_name }}"                                                                            
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ bsr_filter_name }}"                                                                            
                                                                     }
                                                                 }
                                                             }
@@ -335,6 +364,7 @@
                                     {
                                         "pimAutoRPPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 {% set ctrl = [] %}
                                                 {% if vrf.pim.auto_rp_forward_updates | default(defaults.apic.tenants.vrfs.pim.auto_rp_forward_updates) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("forward")] %}{% endif %}
                                                 {% if vrf.pim.auto_rp_listen_updates | default(defaults.apic.tenants.vrfs.pim.auto_rp_listen_updates) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("listen")] %}{% endif %}
@@ -347,13 +377,15 @@
                                                 {
                                                     "pimMAFilterPol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
                                                             {
                                                                 "rtdmcRsFilterToRtMapPol": {
                                                                     "attributes": {
-                                                                            "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ auto_rp_filter_name }}"
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ auto_rp_filter_name }}"
                                                                     }
                                                                 }
                                                             }
@@ -367,6 +399,7 @@
                                     {
                                         "pimASMPatPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "ctrl": "",
                                                 "childAction": "deleteNonPresent"
                                             },
@@ -376,12 +409,14 @@
                                                 {
                                                     "pimSharedRangePol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
                                                             {                                                              
                                                                 "rtdmcRsFilterToRtMapPol": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ asm_shared_range_multicast_route_map_name }}"
                                                                     }
                                                                 }
@@ -393,6 +428,7 @@
                                                 {
                                                     "pimSGRangeExpPol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "sgExpItvl": "{{ vrf.pim.asm_sg_expiry | default(defaults.apic.tenants.vrfs.pim.asm_sg_expiry) }}"
                                                         },
                                                         "children": [
@@ -401,6 +437,7 @@
                                                             {
                                                                 "rtdmcRsFilterToRtMapPol": {
                                                                     "attributes": {
+                                                                        "annotation": "orchestrator:aac",
                                                                         "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ asm_sg_expiry_multicast_route_map_name }}"
                                                                     }
                                                                 }
@@ -412,6 +449,7 @@
                                                 {
                                                     "pimRegTrPol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "maxRate": "{{ vrf.pim.asm_traffic_registry_max_rate | default(defaults.apic.tenants.vrfs.pim.asm_traffic_registry_max_rate) }}",
                                                             "srcIp": "{{ vrf.pim.asm_traffic_registry_source_ip | default(defaults.apic.tenants.vrfs.pim.asm_traffic_registry_source_ip) }}"
                                                         }
@@ -423,6 +461,7 @@
                                     {
                                         "pimSSMPatPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "childAction": "deleteNonPresent"
                                             },
                                             "children": [
@@ -431,13 +470,15 @@
                                                 {
                                                     "pimSSMRangePol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
                                                             {
                                                                 "rtdmcRsFilterToRtMapPol": {
                                                                     "attributes": {
-                                                                         "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ ssm_group_range_multicast_route_map_name }}"
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ ssm_group_range_multicast_route_map_name }}"
                                                                     }
                                                                 }
                                                             }
@@ -451,6 +492,7 @@
                                     {
                                         "pimInterVRFPol": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "childAction": "deleteNonPresent"
                                             },
                                             "children": [
@@ -460,6 +502,7 @@
                                                 {
                                                     "pimInterVRFEntryPol": {
                                                         "attributes": {
+                                                            "annotation": "orchestrator:aac",
                                                             "srcVrfDn": "uni/tn-{{ pol.tenant }}/ctx-{{ vrf_name }}",
                                                             "childAction": "deleteNonPresent"
                                                         },
@@ -469,7 +512,8 @@
                                                             {
                                                                 "rtdmcRsFilterToRtMapPol": {
                                                                     "attributes": {
-                                                                         "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ multicast_route_map_name }}"
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ multicast_route_map_name }}"
                                                                     }
                                                                 }
                                                             }
@@ -490,6 +534,7 @@
                         {
                             "igmpCtxP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "childAction": "deleteNonPresent"
                                 },
                                 "children": [
@@ -498,6 +543,7 @@
                                     {
                                         "igmpSSMXlateP": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "descr": "{{ pol.group_prefix }}-{{ pol.source_address }}",
                                                 "grpPfx": "{{ pol.group_prefix }}",
                                                 "srcAddr": "{{ pol.source_address }}"

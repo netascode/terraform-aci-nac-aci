@@ -11,6 +11,7 @@
             {
                 "infraAccBndlGrp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ policy_group_name }}",
                         "dn": "uni/infra/funcprof/accbundle-{{ policy_group_name }}",
                         "descr": "{{ pg.description | default() }}",
@@ -26,6 +27,7 @@
             {
                 "infraAccPortGrp": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ policy_group_name }}",
                         "dn": "uni/infra/funcprof/accportgrp-{{ policy_group_name }}",
                         "descr": "{{ pg.description | default() }}",
@@ -39,6 +41,7 @@
                         {
                             "infraRsHIfPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnFabricHIfPolName": "{{ link_level_policy_name }}"
                                 }
                             }
@@ -49,6 +52,7 @@
                         {
                             "infraRsCdpIfPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnCdpIfPolName": "{{ cdp_policy_name }}"
                                 }
                             }
@@ -59,6 +63,7 @@
                         {
                             "infraRsLldpIfPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnLldpIfPolName": "{{ lldp_policy_name }}"
                                 }
                             }
@@ -69,6 +74,7 @@
                         {
                             "infraRsStpIfPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnStpIfPolName": "{{ spanning_tree_policy_name }}"
                                 }
                             }
@@ -79,6 +85,7 @@
                         {
                             "infraRsMcpIfPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnMcpIfPolName": "{{ mcp_policy_name }}"
                                 }
                             }
@@ -89,6 +96,7 @@
                         {
                             "infraRsL2IfPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnL2IfPolName": "{{ l2_policy_name }}"
                                 }
                             }
@@ -99,6 +107,7 @@
                         {
                             "infraRsStormctrlIfPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnStormctrlIfPolName": "{{ storm_control_policy_name }}"
                                 }
                             }
@@ -109,6 +118,7 @@
                         {
                             "infraRsLacpPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tnLacpLagPolName": "{{ port_channel_policy_name }}"
                                 }
                             }
@@ -119,6 +129,7 @@
                         {
                             "infraAccBndlSubgrp": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ policy_group_name }}"
                                 },
                                 "children": [
@@ -138,6 +149,7 @@
                         {
                             "infraRsAttEntP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/infra/attentp-{{ aaep_name }}"
                                 }
                             }

@@ -14,6 +14,7 @@
             {
                 "fabricSpineP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ spine_switch_profile_name }}",
                         "dn": "uni/fabric/spprof-{{ spine_switch_profile_name }}",
                         "childAction": "deleteNonPresent"
@@ -22,6 +23,7 @@
                         {
                             "fabricSpineS": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ spine_switch_selector_name }}",
                                     "type": "range",
                                     "childAction": "deleteNonPresent"
@@ -32,6 +34,7 @@
                                     {
                                         "fabricRsSpNodePGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/fabric/funcprof/spnodepgrp-{{ policy_group_name }}"
                                             }
                                         }
@@ -40,6 +43,7 @@
                                     {
                                         "fabricNodeBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "from_": "{{ node.id }}",
                                                 "name": "{{ node.id }}",
                                                 "to_": "{{ node.id }}"
@@ -52,6 +56,7 @@
                         {
                             "fabricRsSpPortP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/fabric/spportp-{{ spine_interface_profile_name }}"
                                 }
                             }
@@ -67,6 +72,7 @@
             {
                 "fabricSpineP": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ spine_switch_profile_name }}",
                         "dn": "uni/fabric/spprof-{{ spine_switch_profile_name }}",
                         "childAction": "deleteNonPresent"
@@ -78,6 +84,7 @@
                         {
                             "fabricSpineS": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "name": "{{ spine_switch_selector_name }}",
                                     "type": "range",
                                     "childAction": "deleteNonPresent"
@@ -88,6 +95,7 @@
                                     {
                                         "fabricRsSpNodePGrp": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "tDn": "uni/fabric/funcprof/spnodepgrp-{{ policy_group_name }}"
                                             }
                                         }
@@ -99,6 +107,7 @@
                                     {
                                         "fabricNodeBlk": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "from_": "{{ blk.from }}",
                                                 "name": "{{ block_name }}",
                                                 "to_": "{{ blk.to | default(blk.from) }}"
@@ -116,6 +125,7 @@
                         {
                             "fabricRsSpPortP": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "tDn": "uni/fabric/spportp-{{ spine_interface_profile_name }}"
                                 }
                             }

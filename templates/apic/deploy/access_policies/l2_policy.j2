@@ -10,6 +10,7 @@
             {
                 "l2IfPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ l2_policy_name }}",
                         "dn": "uni/infra/l2IfP-{{ l2_policy_name }}",
                         "vlanScope": "{{ policy.vlan_scope | default(defaults.apic.access_policies.interface_policies.l2_policies.vlan_scope) }}",

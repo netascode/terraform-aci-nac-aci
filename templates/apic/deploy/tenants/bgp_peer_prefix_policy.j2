@@ -12,6 +12,7 @@
             {
                 "bgpPeerPfxPol": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "name": "{{ bgp_peer_prefix_name }}",
                         "descr": "{{ bpp.action | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/bgpPfxP-{{ bgp_peer_prefix_name }}",

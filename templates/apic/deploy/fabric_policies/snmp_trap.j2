@@ -10,6 +10,7 @@
             {
                 "snmpGroup": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "dn": "uni/fabric/snmpgroup-{{ policy_name }}",
                         "name": "{{ policy_name }}",
                         "descr": "{{ snmp.description | default() }}",
@@ -21,6 +22,7 @@
                         {
                             "snmpTrapDest": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "host": "{{ dest.hostname_ip }}",
                                     "port": "{{ dest.port | default(defaults.apic.fabric_policies.monitoring.snmp_traps.destinations.port) }}",
                                     "secName": "{{ dest.community }}",
@@ -32,6 +34,7 @@
                                     {
                                         "fileRsARemoteHostToEpg": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 {% set mgmt_epg = dest.mgmt_epg | default(defaults.apic.fabric_policies.monitoring.snmp_traps.destinations.mgmt_epg) %}
                                                 {% if mgmt_epg == "oob" %}
                                                 "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"

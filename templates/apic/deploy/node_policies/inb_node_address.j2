@@ -22,6 +22,7 @@
                             {% if ns.found is sameas true %}
                             "mgmtInB": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}",
                                     "name": "{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}"
                                 },
@@ -32,6 +33,7 @@
                                     {
                                         "mgmtRsInBStNode": {
                                             "attributes": {
+                                                "annotation": "orchestrator:aac",
                                                 "dn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}/rsinBStNode-[topology/pod-{{ node.pod | default(defaults.apic.node_policies.nodes.pod) }}/node-{{ node.id }}]",
                                                 "addr": "{{ node.inb_address }}",
                                                 "gw": "{{ node.inb_gateway }}",

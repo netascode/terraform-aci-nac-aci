@@ -1,6 +1,7 @@
 {
     "qosInstPol": {
         "attributes": {
+            "annotation": "orchestrator:aac",
             "dn": "uni/infra/qosinst-default",
             "ctrl": "{% if apic.access_policies.qos.preserve_cos | default(defaults.apic.access_policies.qos.preserve_cos) | cisco.aac.aac_bool("enabled") == "enabled" %}dot1p-preserve{% elif apic.access_policies.qos.preserve_cos | default(defaults.apic.access_policies.qos.preserve_cos) | cisco.aac.aac_bool("enabled") == "disabled" %}none{% endif %}"
         },
@@ -15,6 +16,7 @@
             {
                 "qosClass": {
                     "attributes": {
+                        "annotation": "orchestrator:aac",
                         "admin": "{{ qos_class.admin_state | default(default_qos_class.admin_state) | cisco.aac.aac_bool("enabled") }}",
                         "dn": "uni/infra/qosinst-default/class-level{{ qos_class.level | default(default_qos_class.level) }}",
                         "mtu": "{{ qos_class.mtu | default(default_qos_class.mtu) }}",
@@ -24,6 +26,7 @@
                         {
                             "qosSched": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "bw": "{{ qos_class.bandwidth_percent | default(default_qos_class.bandwidth_percent) }}",
                                     "meth": "{% if qos_class.scheduling | default(default_qos_class.scheduling) == "wrr" %}wrr{% elif qos_class.scheduling | default(default_qos_class.scheduling) == "strict-priority" %}sp{% endif %}"
                                 }
@@ -32,6 +35,7 @@
                         {
                             "qosQueue": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "limit": "1522",
                                     "meth": "dynamic"
                                 }
@@ -40,6 +44,7 @@
                         {
                             "qosPfcPol": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "adminSt": "{% if qos_class.pfc_state | default(default_qos_class.pfc_state) | cisco.aac.aac_bool("enabled") == "enabled" %}yes{% else %}no{% endif %}",
                                     "name": "default",
                                     "noDropCos": "{{ qos_class.no_drop_cos | default(default_qos_class.no_drop_cos)  }}",
@@ -50,6 +55,7 @@
                         {
                             "qosCong": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "afdQueueLength": "0",
                                     "algo": "{{ qos_class.congestion_algorithm | default(default_qos_class.congestion_algorithm) }}",
                                     "ecn": "{{ qos_class.ecn | default(default_qos_class.ecn) | cisco.aac.aac_bool("enabled") }}",
@@ -64,6 +70,7 @@
                         {
                             "qosBuffer": {
                                 "attributes": {
+                                    "annotation": "orchestrator:aac",
                                     "min": "{{ qos_class.minimum_buffer | default(default_qos_class.weight)}}"
                                 }
                             }
