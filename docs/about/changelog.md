@@ -6,6 +6,8 @@
 
 - Introduce module switches (`modules/modules.yaml`) to selectively disable modules for brownfield scenarios
 - BREAKING CHANGE: Use boolean values in data model instead of `enabled`/`disabled`, `yes`/`no` and `on`/`off`
+- Use [iac-validate](https://github.com/netascode/iac-validate) to perform syntactic and semantic validation
+- Use [iac-test](https://github.com/netascode/iac-test) to perform testing
 
 ## 0.4.0 <small>April 25, 2022</small>
 
