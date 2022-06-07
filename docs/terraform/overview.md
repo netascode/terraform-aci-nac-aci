@@ -119,7 +119,11 @@ Semantic validation is about verifying specific data model related constraints l
 - Check uniqueness of key values (e.g., Node IDs)
 - Check references/relationships between objects (e.g., Interface Policy Group referencing a CDP Policy)
 
-To perform syntactic and semantic validation, [aac-tool](../../cli/overview/) can be used.
+To perform syntactic and semantic validation, [iac-validate](https://github.com/netascode/iac-validate) can be used.
+
+```shell
+iac-validate -s "./validation/apic_schema.yaml" -r "./validation/rules/" ./data/
+```
 
 ## NAE/NDI Integration
 
@@ -139,7 +143,7 @@ python ./.ci/nae-pcv.py "My Terraform PCV" ./plan.json
 
 ## Automated Testing
 
-To perform automated testing, [aac-tool](../../cli/overview/) can be used to dynamically render the [Robot](https://robotframework.org/) test suites and subsequently [Pabot](https://pabot.org/) to execute the tests.
+To perform automated testing, [iac-test](https://github.com/netascode/iac-test) can be used to dynamically render the [Robot](https://robotframework.org/) test suites and subsequently execute them using [Pabot](https://pabot.org/).
 
 Test suites can be categorized in three groups:
 
@@ -158,13 +162,7 @@ A failed non-critical test does not impact the overall test result in contrast t
 export APIC_TEST_HOSTNAME_IP="10.1.1.100"
 export APIC_TEST_USERNAME=admin
 export APIC_TEST_PASSWORD=password
-mkdir tests
-aac-tool apic yaml robot --input ./data/ --output ./tests/ --defaults ./defaults/defaults.yaml
-cd tests/
-robot -o NONE -l NONE -r NONE apic_login.robot
-rm apic_login.robot
-cd ..
-pabot -d tests/ -V tests/apic_token.py --skiponfailure non-critical tests/
+iac-test -d ./data -d ./defaults -t ./tests/templates -f ./tests/filters -o ./tests/results/aci
 ```
 
 After applying  changes with `terraform apply`, a subsequent `terraform plan` (using the same infrastructure code) is expected to return with no changes.
