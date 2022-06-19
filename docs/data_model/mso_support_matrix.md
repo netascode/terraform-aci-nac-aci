@@ -2,7 +2,7 @@
 
 This table provides an overview of which object is supported in combination with which tool.
 
-* **CLI** refers to the ability to deploy the object using [aac-tool](../cli/overview.md)
+* **CLI** refers to the ability to render the JSON configuration using [aac-tool](../cli/overview.md)
 * **Ansible** refers to the ability to deploy the object using Ansible
 * **Terraform** refers to the ability to deploy the object using Terraform
 * **Reverse** refers to the ability to generate YAML files from JSON configurations (e.g., MSO JSON dumps) using [aac-tool](../cli/overview.md)
