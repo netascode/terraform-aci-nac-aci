@@ -190,6 +190,7 @@ def parse_schema_type_constraint(element, name=""):
         types = []
         enum = True
         enum_constraint = []
+        result_type = "Any"
         for validator in element.validators:
             type, constraint = parse_schema_type_constraint(validator)
             if type not in ["Choice", "Boolean"]:
@@ -200,7 +201,10 @@ def parse_schema_type_constraint(element, name=""):
                     types.append("{}[{}]".format(type, constraint))
                 else:
                     types.append(type)
-        result_type = "Any"
+            # if Boolean skip other options like enabled/disabled, yes/no, etc.
+            if type == "Boolean":
+                result_type = "Boolean"
+                break
         if enum:
             result_constraint = ", ".join(enum_constraint)
         else:
