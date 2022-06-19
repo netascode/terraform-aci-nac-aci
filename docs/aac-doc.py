@@ -1,8 +1,11 @@
 # Copyright: (c) 2021, Daniel Schmidt <danischm@cisco.com>
 
+import argparse
 import copy
 import os
 import re
+
+import subprocess
 
 import ruamel.yaml
 import yamale
@@ -22,6 +25,7 @@ ANNOTATIONS = [
 APIC_SCHEMA_PATH = "./schemas/apic_schema.yaml"
 APIC_OBJECTS_PATH = "./objects/apic_objects.yaml"
 APIC_DEFAULTS_PATH = "./defaults/apic_defaults.yaml"
+APIC_SUPPORT_MATRIX_PATH = "./docs/data_model/apic_support_matrix.md"
 
 MSO_SCHEMA_PATH = "./schemas/mso_schema.yaml"
 MSO_OBJECTS_PATH = "./objects/mso_objects.yaml"
@@ -259,6 +263,7 @@ def render_class(schema, defaults, class_path, paths):
                 default,
             ).strip()
             output += "\n"
+    output += "\n<br />\n"
     return output
 
 
@@ -383,6 +388,28 @@ def render_diagram(schema, defaults, class_paths, paths):
     return output
 
 
+def render_diagram_image(schema, defaults, class_paths, paths, name, image_path):
+    output = "### Diagram\n\n"
+    output += "![Class Diagram](" + name + ".svg)\n"
+    output += "\n"
+    mm = "%%{init: {'themeVariables': {'mainBkg': '#e3f0f9', 'nodeBorder': '#000000', 'lineColor': '#000000', 'fontSize': '14px', 'fontFamily': 'CiscoSansTT, CiscoSans, Arial'}}}%%\nclassDiagram\n"
+    rendered_paths = []
+    mappings = get_rename_mappings(class_paths)
+    # Move apic element to the end to fix mermaid rendering
+    ordered_class_paths = copy.copy(class_paths)
+    ordered_class_paths.append(ordered_class_paths.pop(0))
+    for class_path in ordered_class_paths:
+        mm += render_diagram_class(
+            schema, defaults, class_path, paths, rendered_paths, mappings
+        )
+    mmd_path = image_path[:-4] + ".mmd"
+    with open(mmd_path, "w") as file:
+        file.write(mm)
+    subprocess.run(["mmdc", "-i", mmd_path, "-o", image_path])
+    os.remove(mmd_path)
+    return output
+
+
 def extract_class_paths(schema, paths):
     class_paths = []
     schema_names = []
@@ -404,7 +431,7 @@ def extract_class_paths(schema, paths):
     return class_paths
 
 
-def render_doc(system, schema_path, objects_path, defaults_path):
+def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
     schema = load_schema(schema_path)
     objects = load_yaml_file(objects_path)[0]
     defaults = load_yaml_file(defaults_path)[0]
@@ -416,6 +443,34 @@ def render_doc(system, schema_path, objects_path, defaults_path):
         + objects.get("spine_objects", [])
         + objects.get("tenant_objects", [])
     ):
+        if pubhub:
+            with open(APIC_SUPPORT_MATRIX_PATH, "r") as file:
+                matrix = file.read()
+            regex = r".*\/" + item["template"] + r"\.md.*?\|.*?\|.*?\|(.*?)\|.*"
+            entry = re.search(regex, matrix)
+            if entry and not entry.group(1).strip():
+                continue
+            rendered_image_path = os.path.join(
+                ".",
+                "pubhub",
+                item["folder"],
+                item["template"] + ".svg",
+            )
+            rendered_path = os.path.join(
+                ".",
+                "pubhub",
+                item["folder"],
+                item["template"] + ".md",
+            )
+        else:
+            rendered_path = os.path.join(
+                ".",
+                "docs",
+                "data_model",
+                system,
+                item["folder"],
+                item["template"] + ".md",
+            )
         template_path = os.path.join(
             ".",
             "docs",
@@ -424,20 +479,25 @@ def render_doc(system, schema_path, objects_path, defaults_path):
             item["folder"],
             item["template"] + ".md",
         )
-        rendered_path = os.path.join(
-            ".",
-            "docs",
-            "data_model",
-            system,
-            item["folder"],
-            item["template"] + ".md",
-        )
         if os.path.isfile(template_path):
+            if not os.path.exists(os.path.dirname(rendered_path)):
+                os.makedirs(os.path.dirname(rendered_path))
+
             paths = item.get("paths")
             paths = expand_paths(schema, paths)
             class_paths = extract_class_paths(schema, paths)
             output = ""
-            output += render_diagram(schema, defaults, class_paths, paths)
+            if pubhub:
+                output += render_diagram_image(
+                    schema,
+                    defaults,
+                    class_paths,
+                    paths,
+                    item["template"],
+                    rendered_image_path,
+                )
+            else:
+                output += render_diagram(schema, defaults, class_paths, paths)
             output += render_class_list(schema, defaults, class_paths, paths)
 
             with open(template_path, "r") as file:
@@ -445,15 +505,23 @@ def render_doc(system, schema_path, objects_path, defaults_path):
 
             filedata = filedata.replace("{{ aac_doc }}", output)
 
-            if not os.path.exists(os.path.dirname(rendered_path)):
-                os.makedirs(os.path.dirname(rendered_path))
             with open(rendered_path, "w") as file:
                 file.write(filedata)
 
 
 def main():
-    render_doc("apic", APIC_SCHEMA_PATH, APIC_OBJECTS_PATH, APIC_DEFAULTS_PATH)
-    render_doc("mso", MSO_SCHEMA_PATH, MSO_OBJECTS_PATH, MSO_DEFAULTS_PATH)
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--pubhub", help="Render PubHub documentation", action="store_true"
+    )
+    args = parser.parse_args()
+    if args.pubhub:
+        render_doc(
+            "apic", APIC_SCHEMA_PATH, APIC_OBJECTS_PATH, APIC_DEFAULTS_PATH, pubhub=True
+        )
+    else:
+        render_doc("apic", APIC_SCHEMA_PATH, APIC_OBJECTS_PATH, APIC_DEFAULTS_PATH)
+        render_doc("mso", MSO_SCHEMA_PATH, MSO_OBJECTS_PATH, MSO_DEFAULTS_PATH)
 
 
 if __name__ == "__main__":

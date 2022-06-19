@@ -406,3 +406,4 @@ ansible_collections/
 
 # Rendered Documentation
 site/
+pubhub/
