@@ -905,6 +905,7 @@ objects:
     aci_classes:
       - infraAccPortGrp
       - infraAccBndlGrp
+      - infraBrkoutPortGrp
     test_types:
       - config
     paths:

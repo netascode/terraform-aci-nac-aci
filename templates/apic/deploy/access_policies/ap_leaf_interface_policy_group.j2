@@ -7,7 +7,19 @@
             {%- set comma1 = joiner(",") %}
             {%- for pg in apic.access_policies.leaf_interface_policy_groups | default([]) %}{{ comma1() }}
             {% set policy_group_name = pg.name ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
-            {% if pg.type in ["vpc", "pc"] %}
+            {% if pg.type == "breakout" %}
+            {
+                "infraBrkoutPortGrp": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ policy_group_name }}",
+                        "dn": "uni/infra/funcprof/brkoutportgrp-{{ policy_group_name }}",
+                        "descr": "{{ pg.description | default() }}",
+                        "brkoutMap": "{{ pg.map | default(defaults.apic.access_policies.leaf_interface_policy_groups.map)}}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [            
+            {% elif pg.type in ["vpc", "pc"] %}
             {
                 "infraAccBndlGrp": {
                     "attributes": {

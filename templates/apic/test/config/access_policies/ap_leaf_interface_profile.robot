@@ -41,6 +41,8 @@ Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector 
 {% set policy_group_name = sel.policy_group ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
 {% if type[0] in ["pc", "vpc"] %}
     String   ${sel}..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/accbundle-{{ policy_group_name }}
+{% elif type[0] == "breakout" %}
+    String   ${sel}..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/brkoutportgrp-{{ policy_group_name }}
 {% else %}
     String   ${sel}..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/accportgrp-{{ policy_group_name }}
 {% endif %}
@@ -58,5 +60,22 @@ Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector 
     String   ${blk}..infraPortBlk.attributes.toPort   {{ blk.to_port | default(blk.from_port) }}
 
 {% endfor %}
+
+{% for sub_blk in sel.sub_port_blocks | default([]) %}
+{% set sub_block_name = sub_blk.name ~ defaults.apic.access_policies.leaf_interface_profiles.selectors.sub_port_blocks.name_suffix %}
+
+Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector {{ leaf_interface_selector_name }} Sub-Port Block {{ sub_block_name }}
+    ${blk}=   Set Variable   $..infraAccPortP.children[?(@.infraHPortS.attributes.name=='{{ leaf_interface_selector_name }}')].infraHPortS.children[?(@.infraSubPortBlk.attributes.name=='{{ sub_block_name }}')]
+    String   ${blk}..infraSubPortBlk.attributes.descr   {{ sub_blk.description | default() }}
+    String   ${blk}..infraSubPortBlk.attributes.fromCard   {{ sub_blk.from_module | default(defaults.apic.access_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module) }}
+    String   ${blk}..infraSubPortBlk.attributes.fromPort   {{ sub_blk.from_port }}
+    String   ${blk}..infraSubPortBlk.attributes.name   {{ sub_block_name }}
+    String   ${blk}..infraSubPortBlk.attributes.toCard   {{ sub_blk.to_module | default(sub_blk.from_module | default(defaults.apic.access_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module)) }}
+    String   ${blk}..infraSubPortBlk.attributes.toPort   {{ sub_blk.to_port | default(sub_blk.from_port) }}
+    String   ${blk}..infraSubPortBlk.attributes.fromSubPort   {{ sub_blk.from_sub_port }}
+    String   ${blk}..infraSubPortBlk.attributes.toSubPort   {{ sub_blk.to_sub_port | default(sub_blk.from_sub_port) }}"     
+
+{% endfor %}
+
 {% endfor %}
 {% endfor %}

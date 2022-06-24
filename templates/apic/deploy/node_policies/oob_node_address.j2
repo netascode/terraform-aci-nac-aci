@@ -22,14 +22,16 @@
                                 "children": [
                                     {%- set comma1 = joiner(",") %}
                                     {%- for node in apic.node_policies.nodes | default([]) %}
-                                    {%- if node.oob_address is defined %}{{ comma1() }}
+                                    {%- if node.oob_address is defined or node.oob_v6_address is defined %}{{ comma1() }}
                                     {
                                         "mgmtRsOoBStNode": {
                                             "attributes": {
                                                 "annotation": "orchestrator:aac",
                                                 "dn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}/rsooBStNode-[topology/pod-{{ node.pod | default(defaults.apic.node_policies.nodes.pod) }}/node-{{ node.id }}]",
-                                                "addr": "{{ node.oob_address }}",
-                                                "gw": "{{ node.oob_gateway }}",
+                                                "addr": "{{ node.oob_address | default() }}",
+                                                "gw": "{{ node.oob_gateway | default() }}",
+                                                "v6Addr": "{{ node.oob_v6_address | default() }}",
+                                                "v6Gw": "{{ node.oob_v6_gateway | default() }}",
                                                 "tDn": "topology/pod-{{ node.pod | default(defaults.apic.node_policies.nodes.pod) }}/node-{{ node.id }}"
                                             }
                                         }

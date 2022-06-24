@@ -30,6 +30,8 @@ Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector 
 {% set policy_group_name = int.policy_group ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
 {% if type[0] in ["pc", "vpc"] %}
     String   $..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/accbundle-{{ policy_group_name }}
+{% elif type[0] == "breakout" %}
+    String   $..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/brkoutportgrp-{{ policy_group_name }}
 {% else %}
     String   $..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/accportgrp-{{ policy_group_name }}
 {% endif %}
@@ -40,6 +42,39 @@ Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector 
     String   $..infraPortBlk.attributes.name   {{ module }}-{{ int.port }}
     String   $..infraPortBlk.attributes.toCard   {{ module }}
     String   $..infraPortBlk.attributes.toPort   {{ int.port }}
+
+{% for sub in int.sub_ports | default([]) %}
+{% set module = sub.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
+{% set leaf_interface_selector_sub_port_name = (module ~ ":" ~ int.port ~ ":" ~ sub.port ) | regex_replace("^(?P<mod>.+):(?P<port>.+):(?P<sport>.+)$", (apic.access_policies.leaf_interface_selector_sub_port_name | default(defaults.apic.access_policies.leaf_interface_selector_sub_port_name))) %}
+Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector {{ leaf_interface_selector_sub_port_name }}
+    GET   "/api/mo/uni/infra/accportprof-{{ leaf_interface_profile_name }}/hports-{{ leaf_interface_selector_sub_port_name }}-typ-range.json?rsp-subtree=full"
+    String   $..infraHPortS.attributes.name   {{ leaf_interface_selector_sub_port_name }}
+{% if sub.fex_id is defined %}
+{% set fex_profile_name = (_node.id ~ ":" ~ _node.name~ ":" ~ sub.fex_id) | regex_replace("^(?P<id>.+):(?P<name>.+):(?P<fex>.+)$", (apic.access_policies.fex_profile_name | default(defaults.apic.access_policies.fex_profile_name))) %}
+    String   $..infraRsAccBaseGrp.attributes.fexId   {{ sub.fex_id }}
+    String   $..infraRsAccBaseGrp.attributes.tDn   uni/infra/fexprof-{{ fex_profile_name }}/fexbundle-{{ fex_profile_name }}
+{% elif sub.policy_group is defined %}
+{% set query = "leaf_interface_policy_groups[?name=='" ~ sub.policy_group ~ "'].type[]" %}
+{% set type = (apic.access_policies | community.general.json_query(query)) %}
+{% set policy_group_name = sub.policy_group ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
+{% if type[0] in ["pc", "vpc"] %}
+    String   $..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/accbundle-{{ policy_group_name }}
+{% elif type[0] == "breakout" %}
+    String   $..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/brkoutportgrp-{{ policy_group_name }}
+{% else %}    
+    String   $..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/accportgrp-{{ policy_group_name }}
+{% endif %}
+{% endif %}
+    String   $..infraSubPortBlk.attributes.descr   "{{ sub.description | default() }}"
+    String   $..infraSubPortBlk.attributes.fromCard   {{ module }}
+    String   $..infraSubPortBlk.attributes.fromPort   {{ int.port }}
+    String   $..infraSubPortBlk.attributes.name   {{ module }}-{{int.port}}-{{ sub.port }}
+    String   $..infraSubPortBlk.attributes.toCard   {{ module }}
+    String   $..infraSubPortBlk.attributes.toPort   {{ int.port }}
+    String   $..infraSubPortBlk.attributes.fromSubPort   {{ sub.port }}
+    String   $..infraSubPortBlk.attributes.toSubPort   {{ sub.port }}
+
+{% endfor %}
 
 {% endfor %}
 {% endif %}

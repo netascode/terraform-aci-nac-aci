@@ -29,14 +29,16 @@
                                 "children": [
                                     {%- set comma1 = joiner(",") %}
                                     {%- for node in apic.node_policies.nodes | default([]) %}
-                                    {%- if node.inb_address is defined %}{{ comma1() }}
+                                    {%- if node.inb_address is defined or node.inb_v6_address is defined %}{{ comma1() }}
                                     {
                                         "mgmtRsInBStNode": {
                                             "attributes": {
                                                 "annotation": "orchestrator:aac",
                                                 "dn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}/rsinBStNode-[topology/pod-{{ node.pod | default(defaults.apic.node_policies.nodes.pod) }}/node-{{ node.id }}]",
-                                                "addr": "{{ node.inb_address }}",
-                                                "gw": "{{ node.inb_gateway }}",
+                                                "addr": "{{ node.inb_address | default() }}",
+                                                "gw": "{{ node.inb_gateway | default() }}",
+                                                "v6Addr": "{{ node.inb_v6_address | default() }}",
+                                                "v6Gw": "{{ node.inb_v6_gateway | default() }}",
                                                 "tDn": "topology/pod-{{ node.pod | default(defaults.apic.node_policies.nodes.pod) }}/node-{{ node.id }}"
                                             }
                                         }

@@ -9,7 +9,12 @@ Resource        ../../apic_common.resource
 {% set policy_group_name = pg.name ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
 
 Verify Leaf Interface Policy Group {{ policy_group_name }}
-{% if pg.type in ["vpc", "pc"] %}
+{% if pg.type == "breakout" %}
+    GET   "/api/mo/uni/infra/funcprof/brkoutportgrp-{{ policy_group_name }}.json?rsp-subtree=full"
+    String   $..infraBrkoutPortGrp.attributes.name   {{ policy_group_name }}
+    String   $..infraBrkoutPortGrp.attributes.descr   {{ pg.description | default() }}
+    String   $..infraBrkoutPortGrp.attributes.brkoutMap   {{ pg.map | default(defaults.apic.access_policies.leaf_interface_policy_groups.map)}}
+{% elif pg.type in ["vpc", "pc"] %}
     GET   "/api/mo/uni/infra/funcprof/accbundle-{{ policy_group_name }}.json?rsp-subtree=full"
     String   $..infraAccBndlGrp.attributes.name   {{ policy_group_name }}
     String   $..infraAccBndlGrp.attributes.descr   {{ pg.description | default() }}

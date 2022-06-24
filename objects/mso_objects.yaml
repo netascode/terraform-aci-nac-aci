@@ -109,6 +109,7 @@ objects:
     delete_ignore:
       - common
       - infra
+      - dcnm-default-tn
     folder: mso
     test_types:
       - config

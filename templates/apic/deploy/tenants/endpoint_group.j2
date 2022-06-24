@@ -135,36 +135,64 @@
                                                 "instrImedcy": "{{ sp.deployment_immediacy | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.deployment_immediacy)  }}",
                                                 "mode": "{{ sp.mode | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.mode) }}",
                                                 {% if sp.node_id is defined and sp.channel is not defined %}
-                                                {% set query = "nodes[?id==`" ~ sp.node_id ~ "`].pod" %}
-                                                {% set pod = sp.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
-                                                {% if sp.fex_id is defined %}
+                                                    {% set query = "nodes[?id==`" ~ sp.node_id ~ "`].pod" %}
+                                                    {% set pod = sp.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+                                                    {% if sp.sub_port is defined %}
+                                                "tDn": "topology/pod-{{ pod }}/paths-{{ sp.node_id }}/pathep-[eth{{ sp.module | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.module) }}/{{ sp.port }}/{{ sp.sub_port }}]"
+                                                    {% elif sp.fex_id is defined %}
                                                 "tDn": "topology/pod-{{ pod }}/paths-{{ sp.node_id }}/extpaths-{{ sp.fex_id }}/pathep-[eth{{ sp.module | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.module) }}/{{ sp.port }}]"
-                                                {% else %}
+                                                    {%else%}
                                                 "tDn": "topology/pod-{{ pod }}/paths-{{ sp.node_id }}/pathep-[eth{{ sp.module | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.module) }}/{{ sp.port }}]"
-                                                {% endif %}
+                                                    {% endif %}                                                    
                                                 {% else %}
-                                                {% set policy_group_name = sp.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
-                                                {% set query = "leaf_interface_policy_groups[?name==`" ~ sp.channel ~ "`].type" %}
-                                                {% set type = (apic.access_policies | community.general.json_query(query))[0] %}
-                                                {% if sp.node_id is defined %}
-                                                    {% set node = sp.node_id %}
-                                                {% else %}
-                                                    {% set query = "nodes[?interfaces[?policy_group==`" ~ sp.channel ~ "`]].id" %}
-                                                    {% set node = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
-                                                {% endif %}
-                                                {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
-                                                {% set pod = sp.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
-                                                {% if type == 'vpc' %}
-                                                {% if sp.node2_id is defined %}
-                                                    {% set node2 = sp.node2_id %}
-                                                {% else %}
-                                                    {% set query = "nodes[?interfaces[?policy_group==`" ~ sp.channel ~ "`]].id" %}
-                                                    {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
-                                                {% endif %}
+                                                    {% set policy_group_name = sp.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
+                                                    {% set query = "leaf_interface_policy_groups[?name==`" ~ sp.channel ~ "`].type" %}
+                                                    {% set type = (apic.access_policies | community.general.json_query(query))[0] %}
+                                                    {% set query_sub_ports = "nodes[?interfaces[?sub_ports[?policy_group==`" ~ sp.channel ~ "`]]].id" %}
+                                                    {% set id_sub_ports = (apic.interface_policies | default() | community.general.json_query(query_sub_ports)) %}
+                                                    {% set query_ports = "nodes[?interfaces[?policy_group==`" ~ sp.channel ~ "`]].id" %}
+                                                    {% set id_ports = (apic.interface_policies | default() | community.general.json_query(query_ports)) %}
+                                                    {% if id_sub_ports | length > 0 %}
+                                                        {% if sp.node_id is defined %}
+                                                            {% set node = sp.node_id %}
+                                                        {% else %}
+                                                            {% set query = "nodes[?interfaces[?sub_ports[?policy_group==`" ~ sp.channel ~ "`]]].id" %}
+                                                            {% set node = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
+                                                        {% endif %}
+                                                        {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
+                                                        {% set pod = sp.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+                                                        {% if type == 'vpc' %}
+                                                            {% if sp.node2_id is defined %}
+                                                                {% set node2 = sp.node2_id %}
+                                                            {% else %}
+                                                                {% set query = "nodes[?interfaces[?sub_ports[?policy_group==`" ~ sp.channel ~ "`]]].id" %}
+                                                                {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
+                                                            {% endif %}
                                                 "tDn": "topology/pod-{{ pod }}/protpaths-{{ node }}-{{ node2 }}/pathep-[{{ policy_group_name }}]"
-                                                {% else %}
+                                                        {% else %}
                                                 "tDn": "topology/pod-{{ pod }}/paths-{{ node }}/pathep-[{{ policy_group_name }}]"
-                                                {% endif %}
+                                                        {% endif %}                                                    
+                                                    {% elif id_ports | length > 0 %}
+                                                        {% if sp.node_id is defined %}
+                                                            {% set node = sp.node_id %}
+                                                        {% else %}
+                                                            {% set query = "nodes[?interfaces[?policy_group==`" ~ sp.channel ~ "`]].id" %}
+                                                            {% set node = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
+                                                        {% endif %}
+                                                        {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
+                                                        {% set pod = sp.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+                                                        {% if type == 'vpc' %}
+                                                            {% if sp.node2_id is defined %}
+                                                                {% set node2 = sp.node2_id %}
+                                                            {% else %}
+                                                                {% set query = "nodes[?interfaces[?policy_group==`" ~ sp.channel ~ "`]].id" %}
+                                                                {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
+                                                            {% endif %}
+                                                "tDn": "topology/pod-{{ pod }}/protpaths-{{ node }}-{{ node2 }}/pathep-[{{ policy_group_name }}]"
+                                                        {% else %}
+                                                "tDn": "topology/pod-{{ pod }}/paths-{{ node }}/pathep-[{{ policy_group_name }}]"
+                                                        {% endif %}
+                                                    {% endif %}
                                                 {% endif %}
                                             }
                                         }

@@ -869,6 +869,7 @@ ap_leaf_interface_profiles_selectors:
   fex_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   port_blocks: list(include('ap_leaf_interface_profiles_selectors_port_blocks'), required=False) # @name(Access Leaf Int Prof Sel Blocks) @ref_name(Port Block)
+  sub_port_blocks: list(include('ap_leaf_interface_profiles_selectors_sub_port_blocks'), required=False) # @name(Access Leaf IntP Sel Sub Blocks) @ref_name(Sub Port Block)
 
 ap_leaf_interface_profiles_selectors_port_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -877,6 +878,16 @@ ap_leaf_interface_profiles_selectors_port_blocks:
   from_port: int(min=1, max=127)
   to_module: int(min=1, max=9, required=False)
   to_port: int(min=1, max=127, required=False)
+
+ap_leaf_interface_profiles_selectors_sub_port_blocks:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  from_module: int(min=1, max=9, required=False)
+  from_port: int(min=1, max=127)
+  to_module: int(min=1, max=9, required=False)
+  to_port: int(min=1, max=127, required=False)
+  from_sub_port: int(min=1, max=16)
+  to_sub_port: int(min=1, max=16, required=False)
 
 ap_fex_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -994,7 +1005,8 @@ ap_storm_control_policy:
 ap_leaf_interface_policy_group:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  type: enum('access', 'vpc', 'pc')
+  type: enum('access', 'vpc', 'pc', 'breakout')
+  map: enum('none', '10g-4x', '25g-4x', '100g-2x', '50g-8', '100g-4x', required=False)
   link_level_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   cdp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   lldp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1118,8 +1130,12 @@ np_node:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   oob_address: ip(required=False)
   oob_gateway: ip(required=False)
+  oob_v6_address: ip(required=False)
+  oob_v6_gateway: ip(required=False)
   inb_address: ip(required=False)
   inb_gateway: ip(required=False)
+  inb_v6_address: ip(required=False)
+  inb_v6_gateway: ip(required=False)
   update_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   fabric_policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   access_policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1149,6 +1165,14 @@ ip_interface:
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   fex_id: int(min=101, max=199, required=False)
   type: enum('uplink', 'downlink', required=False)
+  sub_ports: list(include('ip_interface_sub_ports'), required=False)
+
+ip_interface_sub_ports:
+  port: int(min=1, max=127)
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  module: int(min=1, max=9, required=False)
+  policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  fex_id: int(min=101, max=199, required=False)
 
 tenant:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1302,6 +1326,7 @@ ten_ap_endpoint_groups_static_ports:
   pod_id: int(min=1, max=255, required=False)
   module: int(min=1, max=9, required=False)
   port: int(min=1, max=127, required=False)
+  sub_port: int(min=1, max=16, required=False)
   channel: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   vlan: int(min=1, max=4096)
   deployment_immediacy: enum('immediate', 'lazy', required=False)
