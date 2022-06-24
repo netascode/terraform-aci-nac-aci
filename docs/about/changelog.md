@@ -2,6 +2,21 @@
 
 ## 0.4.1 (unreleased)
 
+#### CLI (aac-tool)
+
+- APIC: Add support for IPv6 OOB and inband management addresses
+- APIC: Add support for breakout interface policy groups
+- APIC: Add support fur sub-port (breakout) leaf interface selectors
+- APIC: Add support for sub-port (breakout) EPG static ports
+
+#### Ansible (ansible-aac)
+
+- APIC: Add support for IPv6 OOB and inband management addresses
+- APIC: Add support for breakout interface policy groups
+- APIC: Add support fur sub-port (breakout) leaf interface selectors
+- APIC: Add support for sub-port (breakout) EPG static ports
+- MSO: Do not touch (ignore) default `dcnm-default-tn` NDO tenant
+
 #### Terraform (terraform-aac)
 
 - Introduce module switches (`modules/modules.yaml`) to selectively disable modules for brownfield scenarios
@@ -11,6 +26,10 @@
 - FIX: Intra-EPG Isolation enforcement
 - Add BD Subnet `virtual` option and IGMP policy relationships
 - FIX: Do not create empty auto-generated L3out Node Profiles
+- APIC: Add support for IPv6 OOB and inband management addresses
+- APIC: Add support for breakout interface policy groups
+- APIC: Add support fur sub-port (breakout) leaf interface selectors
+- APIC: Add support for sub-port (breakout) EPG static ports
 
 ## 0.4.0 <small>April 25, 2022</small>
 
