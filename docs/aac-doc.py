@@ -4,6 +4,8 @@ import argparse
 import copy
 import os
 import re
+import json
+import shutil
 
 import subprocess
 
@@ -439,6 +441,19 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
     schema = load_schema(schema_path)
     objects = load_yaml_file(objects_path)[0]
     defaults = load_yaml_file(defaults_path)[0]
+    pubhub_items = {}
+
+    if pubhub:
+        pubhub_path = os.path.join(".", "pubhub")
+        shutil.rmtree(pubhub_path, ignore_errors=True)
+        ignore_func = lambda d, files: [
+            f for f in files if os.path.isfile(os.path.join(d, f)) and f[-4:] == ".mmd"
+        ]
+        shutil.copytree(
+            os.path.join(".", "docs", "data_model", "pubhub"),
+            pubhub_path,
+            ignore=ignore_func,
+        )
 
     for item in (
         objects["objects"]
@@ -454,6 +469,13 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
             entry = re.search(regex, matrix)
             if entry and not entry.group(1).strip():
                 continue
+            i = {
+                "title": item["name"],
+                "content": os.path.join(item["folder"], item["template"] + ".md"),
+            }
+            if item["folder"] not in pubhub_items:
+                pubhub_items[item["folder"]] = {"items": []}
+            pubhub_items[item["folder"]]["items"].append(i)
             rendered_image_path = os.path.join(
                 ".",
                 "pubhub",
@@ -509,8 +531,24 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
 
             filedata = filedata.replace("{{ aac_doc }}", output)
 
+            if pubhub:
+                cleaned_data = ""
+                for line in iter(filedata.splitlines(keepends=True)):
+                    if line.startswith("### ") and not line.startswith("### Terraform"):
+                        line = line[1:]
+                    elif line.startswith("#### "):
+                        line = line[1:]
+                    cleaned_data += line
+            else:
+                cleaned_data = filedata
+
             with open(rendered_path, "w") as file:
-                file.write(filedata)
+                file.write(cleaned_data)
+    if pubhub:
+        for file in pubhub_items:
+            path = os.path.join(".", "pubhub", file + "-config.json")
+            with open(path, "w") as f:
+                json.dump(pubhub_items[file], f, indent=4)
 
 
 def main():
