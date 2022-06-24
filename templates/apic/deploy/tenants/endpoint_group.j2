@@ -152,7 +152,7 @@
                                                     {% set id_sub_ports = (apic.interface_policies | default() | community.general.json_query(query_sub_ports)) %}
                                                     {% set query_ports = "nodes[?interfaces[?policy_group==`" ~ sp.channel ~ "`]].id" %}
                                                     {% set id_ports = (apic.interface_policies | default() | community.general.json_query(query_ports)) %}
-                                                    {% if id_sub_ports | length > 0 %}
+                                                    {% if id_sub_ports != None and id_sub_ports | length > 0 %}
                                                         {% if sp.node_id is defined %}
                                                             {% set node = sp.node_id %}
                                                         {% else %}
@@ -172,7 +172,7 @@
                                                         {% else %}
                                                 "tDn": "topology/pod-{{ pod }}/paths-{{ node }}/pathep-[{{ policy_group_name }}]"
                                                         {% endif %}                                                    
-                                                    {% elif id_ports | length > 0 %}
+                                                    {% else %}
                                                         {% if sp.node_id is defined %}
                                                             {% set node = sp.node_id %}
                                                         {% else %}
