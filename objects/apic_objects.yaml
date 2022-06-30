@@ -769,6 +769,9 @@ objects:
     folder: access_policies
     aci_classes:
       - cdpIfPol
+    delete_ignore:
+      - system-cdp-enabled
+      - system-cdp-disabled
     test_types:
       - config
     paths:
@@ -778,6 +781,9 @@ objects:
     folder: access_policies
     aci_classes:
       - lldpIfPol
+    delete_ignore:
+      - system-lldp-enabled
+      - system-lldp-disabled
     test_types:
       - config
     paths:
@@ -787,6 +793,14 @@ objects:
     folder: access_policies
     aci_classes:
       - fabricHIfPol
+    delete_ignore:
+      - system-link-level-100M-auto
+      - system-link-level-1G-auto
+      - system-link-level-10G-auto
+      - system-link-level-25G-auto
+      - system-link-level-40G-auto
+      - system-link-level-100G-auto
+      - system-link-level-400G-auto
     test_types:
       - config
     paths:
@@ -796,6 +810,10 @@ objects:
     folder: access_policies
     aci_classes:
       - lacpLagPol
+    delete_ignore:
+      - system-lacp-active
+      - system-lacp-passive
+      - system-static-on
     test_types:
       - config
     paths:
