@@ -639,7 +639,7 @@ access_policies:
   spine_interface_profile_name: str(min=1, max=64, required=False)
   spine_interface_selector_name: str(min=1, max=64, required=False)
   vpc_group_name: str(min=1, max=64, required=False)
-  infra_vlan: int(min=1, max=4096)
+  infra_vlan: int(min=1, max=4096, required=False)
   vlan_pools: list(include('ap_vlan_pool'), required=False) # @ref_name(Vlan Pool)
   physical_domains: list(include('ap_physical_domain'), required=False)
   routed_domains: list(include('ap_routed_domain'), required=False)
