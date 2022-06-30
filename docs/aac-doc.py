@@ -446,14 +446,6 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
     if pubhub:
         pubhub_path = os.path.join(".", "pubhub")
         shutil.rmtree(pubhub_path, ignore_errors=True)
-        ignore_func = lambda d, files: [
-            f for f in files if os.path.isfile(os.path.join(d, f)) and f[-4:] == ".mmd"
-        ]
-        shutil.copytree(
-            os.path.join(".", "docs", "data_model", "pubhub"),
-            pubhub_path,
-            ignore=ignore_func,
-        )
 
     for item in (
         objects["objects"]
