@@ -3,6 +3,14 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Global` » `Attachable Access Entity Profiles`
 
+If `infra_vlan` is enabled, the infrastructure VLAN ID must be configured under `access_policies`.
+
+```yaml
+apic:
+  access_policies:
+    infra_vlan: 10
+```
+
 ### Terraform modules
 
 * [AAEP](https://registry.terraform.io/modules/netascode/aaep/aci/latest)
@@ -27,6 +35,7 @@ Full example:
 ```yaml
 apic:
   access_policies:
+    infra_vlan: 10
     aaeps:
       - name: AAEP1
         infra_vlan: true
