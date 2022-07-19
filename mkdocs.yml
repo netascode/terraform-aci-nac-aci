@@ -66,6 +66,7 @@ nav:
   - Data Model:
       - Overview: data_model/overview.md
       - APIC:
+          - Overview: data_model/apic_overview.md
           - Support Matrix: data_model/apic_support_matrix.md
           - Bootstrap:
               - Bootstrap: data_model/apic/bootstrap/bootstrap.md
