@@ -99,6 +99,8 @@ Description | CLI | Ansible | Terraform | Reverse
 [Access Leaf Switch Policy Group](./apic/access_policies/ap_leaf_switch_policy_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Access Spine Interface Policy Group](./apic/access_policies/ap_spine_interface_policy_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Access Leaf Interface Policy Group](./apic/access_policies/ap_leaf_interface_policy_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
+[Access SPAN Destination Group](./apic/access_policies/ap_span_destination_group.md) | :material-check: | :material-check: | |
+[Access SPAN Source Group](./apic/access_policies/ap_span_source_group.md) | :material-check: | :material-check: | |
 [Access VSPAN Destination Group](./apic/access_policies/vspan_destination_group.md) | :material-check: | :material-check: | |
 [Access VSPAN Session](./apic/access_policies/vspan_session.md) | :material-check: | :material-check: | |
 
