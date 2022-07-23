@@ -1,5 +1,6 @@
 ansible-core>=2.12
 filelock
+iac-validate>=0.1.3
 jmespath
 jsonpath_ng
 pyopenssl
@@ -10,4 +11,3 @@ ruamel.yaml
 RESTinstance
 robotframework>=4.0
 robotframework-pabot
-yamale
