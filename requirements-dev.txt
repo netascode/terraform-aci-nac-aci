@@ -5,6 +5,7 @@ click
 filelock
 flake8
 iac-validate>=0.1.3
+iac-test>=0.1.0
 jmespath
 jsonpath_ng
 mkdocs
