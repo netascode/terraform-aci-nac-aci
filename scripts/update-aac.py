@@ -7,12 +7,8 @@ import subprocess
 
 DIRS = [
     {
-        "src": "./ansible-aac/roles/apic_validate/files",
-        "dest": "../schemas",
-    },
-    {
-        "src": "./ansible-aac/roles/mso_validate/files",
-        "dest": "../schemas",
+        "src": "./ansible-aac/roles/apic_validate/files/rules",
+        "dest": "../validation/rules",
     },
     {
         "src": "./ansible-aac/roles/apic_deploy/templates",
@@ -33,6 +29,14 @@ DIRS = [
 ]
 
 FILES = [
+    {
+        "src": "./ansible-aac/roles/apic_validate/files/apic_schema.yaml",
+        "dest": "../schemas/apic_schema.yaml",
+    },
+    {
+        "src": "./ansible-aac/roles/mso_validate/files/mso_schema.yaml",
+        "dest": "../schemas/mso_schema.yaml",
+    },
     {
         "src": "./ansible-aac/roles/apic_common/vars/apic_defaults.yaml",
         "dest": "../defaults/apic_defaults.yaml",

@@ -15,13 +15,13 @@ Resource        ../../../apic_common.resource
 {% if pim_pol.strict_rfc | default(defaults.apic.tenants.policies.pim_policies.strict_rfc) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("strict-rfc-compliant")] %}{% endif %}
 
 Verify PIM Policy {{ pim_policy_name }}
-    GET   "/api/mo/uni/tn-{{ tenant.name }}/pimifpol-{{ pim_policy_name }}.json"
-    String   $..pimIfPol.attributes.name   {{ pim_policy_name }}
-    String   $..pimIfPol.attributes.authT   {{ pim_pol.auth_type | default(defaults.apic.tenants.policies.pim_policies.auth_type) }}
-    String   $..pimIfPol.attributes.ctrl   {{ ctrl | join(',') }}
-    String   $..pimIfPol.attributes.drDelay   {{ pim_pol.designated_router_delay | default(defaults.apic.tenants.policies.pim_policies.designated_router_delay) }}
-    String   $..pimIfPol.attributes.drPrio   {{ pim_pol.designated_router_priority | default(defaults.apic.tenants.policies.pim_policies.designated_router_priority) }}
-    String   $..pimIfPol.attributes.helloItvl   {{ pim_pol.hello_interval | default(defaults.apic.tenants.policies.pim_policies.hello_interval) }}
-    String   $..pimIfPol.attributes.jpInterval    {{ pim_pol.join_prune_interval |  default(defaults.apic.tenants.policies.pim_policies.join_prune_interval) }}
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/pimifpol-{{ pim_policy_name }}.json
+    Should Be Equal Value Json String   ${r.json()}   $..pimIfPol.attributes.name   {{ pim_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..pimIfPol.attributes.authT   {{ pim_pol.auth_type | default(defaults.apic.tenants.policies.pim_policies.auth_type) }}
+    Should Be Equal Value Json String   ${r.json()}   $..pimIfPol.attributes.ctrl   {{ ctrl | join(',') }}
+    Should Be Equal Value Json String   ${r.json()}   $..pimIfPol.attributes.drDelay   {{ pim_pol.designated_router_delay | default(defaults.apic.tenants.policies.pim_policies.designated_router_delay) }}
+    Should Be Equal Value Json String   ${r.json()}   $..pimIfPol.attributes.drPrio   {{ pim_pol.designated_router_priority | default(defaults.apic.tenants.policies.pim_policies.designated_router_priority) }}
+    Should Be Equal Value Json String   ${r.json()}   $..pimIfPol.attributes.helloItvl   {{ pim_pol.hello_interval | default(defaults.apic.tenants.policies.pim_policies.hello_interval) }}
+    Should Be Equal Value Json String   ${r.json()}   $..pimIfPol.attributes.jpInterval    {{ pim_pol.join_prune_interval |  default(defaults.apic.tenants.policies.pim_policies.join_prune_interval) }}
 
 {% endfor %}

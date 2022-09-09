@@ -9,9 +9,9 @@ Resource        ../../apic_common.resource
 {% set lldp_policy_name = policy.name ~ defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix %}
 
 Verify LLDP Interface Policy {{ lldp_policy_name }}
-    GET   "/api/mo/uni/infra/lldpIfP-{{ lldp_policy_name }}.json"
-    String   $..lldpIfPol.attributes.name   {{ lldp_policy_name }}
-    String   $..lldpIfPol.attributes.adminRxSt   {{ policy.admin_rx_state | cisco.aac.aac_bool("enabled") }}
-    String   $..lldpIfPol.attributes.adminTxSt   {{ policy.admin_tx_state | cisco.aac.aac_bool("enabled") }}
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/lldpIfP-{{ lldp_policy_name }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..lldpIfPol.attributes.name   {{ lldp_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..lldpIfPol.attributes.adminRxSt   {{ policy.admin_rx_state | cisco.aac.aac_bool("enabled") }}
+    Should Be Equal Value Json String   ${r.json()}    $..lldpIfPol.attributes.adminTxSt   {{ policy.admin_tx_state | cisco.aac.aac_bool("enabled") }}
 
 {% endfor %}

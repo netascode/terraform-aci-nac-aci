@@ -9,9 +9,9 @@ Resource        ../../apic_common.resource
 {% set port_channel_member_policy_name = policy.name ~ defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix %}
 
 Verify Port Channel Member Interface Policy {{port_channel_member_policy_name }}
-    GET   "/api/mo/uni/infra/lacpifp-{{port_channel_member_policy_name }}.json"
-    String   $..lacpIfPol.attributes.name   {{ port_channel_member_policy_name }}
-    String   $..lacpIfPol.attributes.prio   {{ policy.priority | default(defaults.apic.access_policies.interface_policies.port_channel_member_policies.priority) }}
-    String   $..lacpIfPol.attributes.txRate   {{ policy.rate | default(defaults.apic.access_policies.interface_policies.port_channel_member_policies.rate) }}
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/lacpifp-{{port_channel_member_policy_name }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..lacpIfPol.attributes.name   {{ port_channel_member_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..lacpIfPol.attributes.prio   {{ policy.priority | default(defaults.apic.access_policies.interface_policies.port_channel_member_policies.priority) }}
+    Should Be Equal Value Json String   ${r.json()}    $..lacpIfPol.attributes.txRate   {{ policy.rate | default(defaults.apic.access_policies.interface_policies.port_channel_member_policies.rate) }}
 
 {% endfor %}

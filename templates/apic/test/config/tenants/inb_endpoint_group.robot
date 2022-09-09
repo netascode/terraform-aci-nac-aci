@@ -12,17 +12,18 @@ Resource        ../../../apic_common.resource
 {% set bd_name = epg.bridge_domain ~ defaults.apic.tenants.bridge_domains.name_suffix %}
 
 Verify Inband Endpoint Group {{ epg_name }}
-    GET   "/api/mo/uni/tn-mgmt/mgmtp-default/inb-{{ epg_name }}.json?rsp-subtree=full"
-    String   $..mgmtInB.attributes.name   {{ epg_name }}
-    String   $..mgmtInB.attributes.encap   vlan-{{ epg.vlan }}
-    String   $..mgmtRsMgmtBD.attributes.tnFvBDName   {{ bd_name }}
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-mgmt/mgmtp-default/inb-{{ epg_name }}.json   params=rsp-subtree=full
+    Set Suite Variable   ${r}
+    Should Be Equal Value Json String   ${r.json()}   $..mgmtInB.attributes.name   {{ epg_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..mgmtInB.attributes.encap   vlan-{{ epg.vlan }}
+    Should Be Equal Value Json String   ${r.json()}   $..mgmtRsMgmtBD.attributes.tnFvBDName   {{ bd_name }}
 
 {% for contract in epg.contracts.providers | default([]) %}
 {% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
 
 Verify Inband Endpoint Group {{ epg_name }} Contract Provider {{ contract_name }}
     ${con}=   Set Variable   $..mgmtInB.children[?(@.fvRsProv.attributes.tnVzBrCPName=='{{ contract_name }}')]
-    String   ${con}..fvRsProv.attributes.tnVzBrCPName   {{ contract_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${con}..fvRsProv.attributes.tnVzBrCPName   {{ contract_name }}
 
 {% endfor %}
 
@@ -31,7 +32,7 @@ Verify Inband Endpoint Group {{ epg_name }} Contract Provider {{ contract_name }
 
 Verify Inband Endpoint Group {{ epg_name }} Contract consumers {{ contract_name }}
     ${con}=   Set Variable   $..mgmtInB.children[?(@.fvRsCons.attributes.tnVzBrCPName=='{{ contract_name }}')]
-    String   ${con}..fvRsCons.attributes.tnVzBrCPName   {{ contract_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${con}..fvRsCons.attributes.tnVzBrCPName   {{ contract_name }}
 
 {% endfor %}
 
@@ -40,7 +41,7 @@ Verify Inband Endpoint Group {{ epg_name }} Contract consumers {{ contract_name 
 
 Verify Inband Endpoint Group {{ epg_name }} Imported Contract {{ contract_name }}
     ${con}=   Set Variable   $..mgmtInB.children[?(@.fvRsConsIf.attributes.tnVzCPIfName=='{{ contract_name }}')]
-    String   ${con}..fvRsConsIf.attributes.tnVzCPIfName   {{ contract_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${con}..fvRsConsIf.attributes.tnVzCPIfName   {{ contract_name }}
 
 {% endfor %}
 

@@ -924,6 +924,10 @@ objects:
       - infraAccPortGrp
       - infraAccBndlGrp
       - infraBrkoutPortGrp
+    delete_ignore:
+      - system-breakout-10g-4x
+      - system-breakout-25g-4x
+      - system-breakout-100g-4x
     test_types:
       - config
     paths:

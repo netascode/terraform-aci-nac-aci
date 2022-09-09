@@ -11,7 +11,7 @@ Resource        ../../../apic_common.resource
 {% set health_group_name = health_grp.name ~ defaults.apic.tenants.services.redirect_health_groups.name_suffix %}
 
 Verify Redirect Health Group {{ health_group_name }}
-    GET   "/api/mo/uni/tn-{{ tenant.name }}/svcCont/redirectHealthGroup-{{ health_group_name }}.json?rsp-subtree=full"
-    String   $..vnsRedirectHealthGroup.attributes.descr   {{ health_grp.description | default() }}
-    String   $..vnsRedirectHealthGroup.attributes.name   {{ health_group_name }}
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/svcCont/redirectHealthGroup-{{ health_group_name }}.json   params=rsp-subtree=full
+    Should Be Equal Value Json String   ${r.json()}   $..vnsRedirectHealthGroup.attributes.descr   {{ health_grp.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   $..vnsRedirectHealthGroup.attributes.name   {{ health_group_name }}
 {% endfor %}

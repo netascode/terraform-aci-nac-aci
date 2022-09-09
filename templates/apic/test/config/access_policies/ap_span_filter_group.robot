@@ -13,23 +13,24 @@ Resource        ../../apic_common.resource
 {% set filter_name = filter_.name ~ defaults.apic.access_policies.span.filter_groups.name_suffix %}
 
 Verify SPAN Filter Group {{ filter_name }}
-    GET  "/api/mo/uni/infra/filtergrp-{{ filter_name }}.json?rsp-subtree=full"
-    String   $..spanFilterGrp.attributes.name   {{ filter_name }}
-    String   $..spanFilterGrp.attributes.descr   {{ filter_.description | default() }}
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/filtergrp-{{ filter_name }}.json   params=rsp-subtree=full
+    Set Suite Variable   ${r}
+    Should Be Equal Value Json String   ${r.json()}    $..spanFilterGrp.attributes.name   {{ filter_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..spanFilterGrp.attributes.descr   {{ filter_.description | default() }}
 
 {% for entry in filter_.entries | default([]) %}
 {% set entry_name = entry.name ~ defaults.apic.access_policies.span.filter_groups.entries.name_suffix %}
 Verify SPAN Filter Group {{ filter_name }} Entry {{ entry_name }}
     ${entry}=   Set Variable   $..spanFilterGrp.children[?(@.spanFilterEntry.attributes.name=='{{ entry_name }}')].spanFilterEntry
-    String   ${entry}.attributes.name   {{ entry_name }}
-    String   ${entry}.attributes.descr   {{ entry.description | default() }}
-    String   ${entry}.attributes.dstAddr   {{ entry.destination_ip }}
-    String   ${entry}.attributes.dstPortFrom   {{ get_protocol_from_port(entry.destination_port_from | default(defaults.apic.access_policies.span.filter_groups.entries.destination_port_from)) }}
-    String   ${entry}.attributes.dstPortTo   {{ get_protocol_from_port(entry.destination_port_to | default(defaults.apic.access_policies.span.filter_groups.entries.destination_port_to)) }}
-    String   ${entry}.attributes.ipProto   {{ entry.ip_protocol | default(defaults.apic.access_policies.span.filter_groups.entries.ip_protocol) }}
-    String   ${entry}.attributes.srcAddr   {{ entry.source_ip }}
-    String   ${entry}.attributes.srcPortFrom   {{ get_protocol_from_port(entry.source_port_from | default(defaults.apic.access_policies.span.filter_groups.entries.source_port_from)) }}
-    String   ${entry}.attributes.srcPortTo   {{ get_protocol_from_port(entry.source_port_to | default(defaults.apic.access_policies.span.filter_groups.entries.source_port_to)) }}
+    Should Be Equal Value Json String   ${r.json()}    ${entry}.attributes.name   {{ entry_name }}
+    Should Be Equal Value Json String   ${r.json()}    ${entry}.attributes.descr   {{ entry.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}    ${entry}.attributes.dstAddr   {{ entry.destination_ip }}
+    Should Be Equal Value Json String   ${r.json()}    ${entry}.attributes.dstPortFrom   {{ get_protocol_from_port(entry.destination_port_from | default(defaults.apic.access_policies.span.filter_groups.entries.destination_port_from)) }}
+    Should Be Equal Value Json String   ${r.json()}    ${entry}.attributes.dstPortTo   {{ get_protocol_from_port(entry.destination_port_to | default(defaults.apic.access_policies.span.filter_groups.entries.destination_port_to)) }}
+    Should Be Equal Value Json String   ${r.json()}    ${entry}.attributes.ipProto   {{ entry.ip_protocol | default(defaults.apic.access_policies.span.filter_groups.entries.ip_protocol) }}
+    Should Be Equal Value Json String   ${r.json()}    ${entry}.attributes.srcAddr   {{ entry.source_ip }}
+    Should Be Equal Value Json String   ${r.json()}    ${entry}.attributes.srcPortFrom   {{ get_protocol_from_port(entry.source_port_from | default(defaults.apic.access_policies.span.filter_groups.entries.source_port_from)) }}
+    Should Be Equal Value Json String   ${r.json()}    ${entry}.attributes.srcPortTo   {{ get_protocol_from_port(entry.source_port_to | default(defaults.apic.access_policies.span.filter_groups.entries.source_port_to)) }}
 
 {% endfor %}
 

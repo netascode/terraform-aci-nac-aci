@@ -6,19 +6,20 @@ Resource        ../../mso_common.resource
 
 *** Test Cases ***
 Get Sites
-    GET   "/api/v1/sites"
+    ${r}=   GET On Session   mso   /api/v1/sites
+    Set Suite Variable   ${r}
 
 {% for site in mso.sites | default([]) %}
 
 Verify Site {{ site.name }}
     ${site}=   Set Variable   $..sites[?(@.name=='{{ site.name }}')]
-    String   ${site}.name   {{ site.name }}
+    Should Be Equal Value Json String   ${r.json()}   ${site}.name   {{ site.name }}
 {% for url in site.apic_urls | default([]) %}
-    String   ${site}.urls[{{ loop.index - 1 }}]   {{ url }}
+    Should Be Equal Value Json String   ${r.json()}   ${site}.urls[{{ loop.index - 1 }}]   {{ url }}
 {% endfor %}
-    String   ${site}.username   {{ site.username }}
-    String   ${site}.apicSiteId   {{ site.id }}
-    Number   ${site}.location.long   {{ site.location.long | default(defaults.mso.sites.location.long) }}
-    Number   ${site}.location.lat   {{ site.location.long | default(defaults.mso.sites.location.lat) }}
+    Should Be Equal Value Json String   ${r.json()}   ${site}.username   {{ site.username }}
+    Should Be Equal Value Json String   ${r.json()}   ${site}.apicSiteId   {{ site.id }}
+    Should Be Equal Value Json Number   ${r.json()}   ${site}.location.long   {{ site.location.long | default(defaults.mso.sites.location.long) }}
+    Should Be Equal Value Json Number   ${r.json()}   ${site}.location.lat   {{ site.location.long | default(defaults.mso.sites.location.lat) }}
 
 {% endfor %}

@@ -14,15 +14,15 @@ Resource        ../../../apic_common.resource
 {% set sgt_name = dsp.service_graph_template ~ defaults.apic.tenants.services.service_graph_templates.name_suffix %}
 
 Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }} Faults
-    GET   "/api/mo/uni/tn-{{ tenant.name }}/ldevCtx-c-{{ contract_name }}-g-{{ sgt_name }}-n-N1/fltCnts.json"
-    ${critical}=   Output   $..faultCounts.attributes.crit
-    ${major}=   Output   $..faultCounts.attributes.maj
-    ${minor}=   Output   $..faultCounts.attributes.minor
-    Run Keyword If   ${critical} > 0   Run Keyword And Continue On Failure
-    ...   Fail  "{{ contract_name }}-{{ sgt_name }} has ${critical} critical faults"
-    Run Keyword If   ${major} > 0   Run Keyword And Continue On Failure
-    ...   Fail  "{{ contract_name }}-{{ sgt_name }} has ${major} major faults"
-    Run Keyword If   ${minor} > 0   Run Keyword And Continue On Failure
-    ...   Fail  "{{ contract_name }}-{{ sgt_name }} has ${minor} minor faults"
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ldevCtx-c-{{ contract_name }}-g-{{ sgt_name }}-n-N1/fltCnts.json
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
+    Run Keyword If   ${critical}[0] > 0   Run Keyword And Continue On Failure
+    ...   Fail  "{{ contract_name }}-{{ sgt_name }} has ${critical}[0] critical faults"
+    Run Keyword If   ${major}[0] > 0   Run Keyword And Continue On Failure
+    ...   Fail  "{{ contract_name }}-{{ sgt_name }} has ${major}[0] major faults"
+    Run Keyword If   ${minor}[0] > 0   Run Keyword And Continue On Failure
+    ...   Fail  "{{ contract_name }}-{{ sgt_name }} has ${minor}[0] minor faults"
 
 {% endfor %}

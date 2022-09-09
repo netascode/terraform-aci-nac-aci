@@ -15,15 +15,16 @@ Resource        ../../../apic_common.resource
 {% endif %}
 
 Verify OOB Endpoint Group {{ epg_name }}
-    GET   "/api/mo/uni/tn-mgmt/mgmtp-default/oob-{{ epg_name }}.json?rsp-subtree=full"    
-    String   $..mgmtOoB.attributes.name   {{ epg_name }}
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-mgmt/mgmtp-default/oob-{{ epg_name }}.json   params=rsp-subtree=full  
+    Set Suite Variable   ${r}  
+    Should Be Equal Value Json String   ${r.json()}   $..mgmtOoB.attributes.name   {{ epg_name }}
 
 {% for oob_contract in epg.oob_contracts.providers | default([]) %}
 {% set oob_contract_name = oob_contract ~ defaults.apic.tenants.oob_contracts.name_suffix %}
 
 Verify OOB Endpoint Group {{ epg_name }} Contract Provider {{ oob_contract_name }}
     ${con}=   Set Variable   $..mgmtOoB.children[?(@.mgmtRsOoBProv.attributes.tnVzOOBBrCPName=="{{ oob_contract_name }}")]
-    String   ${con}.mgmtRsOoBProv.attributes.tnVzOOBBrCPName   {{ oob_contract_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${con}.mgmtRsOoBProv.attributes.tnVzOOBBrCPName   {{ oob_contract_name }}
 
 {% endfor %}
 

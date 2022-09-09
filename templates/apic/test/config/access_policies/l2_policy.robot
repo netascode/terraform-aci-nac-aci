@@ -9,9 +9,9 @@ Resource        ../../apic_common.resource
 {% set l2_policy_name = policy.name ~ defaults.apic.access_policies.interface_policies.l2_policies.name_suffix %}
 
 Verify L2 Interface Policy {{ l2_policy_name }}
-    GET   "/api/mo/uni/infra/l2IfP-{{ l2_policy_name }}.json"
-    String   $..l2IfPol.attributes.name   {{ l2_policy_name }}
-    String   $..l2IfPol.attributes.vlanScope   {{ policy.vlan_scope | default(defaults.apic.access_policies.interface_policies.l2_policies.vlan_scope) }}
-    String   $..l2IfPol.attributes.qinq   {{ policy.qinq | default(defaults.apic.access_policies.interface_policies.l2_policies.qinq) }}
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/l2IfP-{{ l2_policy_name }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..l2IfPol.attributes.name   {{ l2_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..l2IfPol.attributes.vlanScope   {{ policy.vlan_scope | default(defaults.apic.access_policies.interface_policies.l2_policies.vlan_scope) }}
+    Should Be Equal Value Json String   ${r.json()}    $..l2IfPol.attributes.qinq   {{ policy.qinq | default(defaults.apic.access_policies.interface_policies.l2_policies.qinq) }}
 
 {% endfor %}

@@ -17,8 +17,8 @@ Resource        ../../../apic_common.resource
 {% for peer in int.bgp_peers | default([]) %}
 
 Verify L3out {{ l3out_name }} BGP Neighbor {{ peer.ip }}
-    GET   "/api/node/mo/topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.pod) }}/node-{{ node.node_id }}/sys/bgp/inst/dom-{{ tenant.name }}:{{ vrf_name }}/peer-[{{ peer.ip }}/32]/ent-[{{ peer.ip }}].json"
-    ${state}=   Output   $..bgpPeerEntry.attributes.operSt
+    ${r}=   GET On Session   apic   /api/node/mo/topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.pod) }}/node-{{ node.node_id }}/sys/bgp/inst/dom-{{ tenant.name }}:{{ vrf_name }}/peer-[{{ peer.ip }}/32]/ent-[{{ peer.ip }}].json
+    ${state}=   Get Value From Json   ${r.json()}   $..bgpPeerEntry.attributes.operSt
     Run Keyword If   "${state}" != "established"   Run Keyword And Continue On Failure
     ...   Fail  "Peer {{ peer.ip }}: BGP is not established"
 
@@ -45,18 +45,18 @@ Verify L3out {{ l3out_name }} BGP Neighbor {{ peer.ip }}
 {% for node in node_list %}
 
 Verify L3out {{ l3out_name }} BGP Neighbor {{ peer.ip }} node {{ node }}
-    GET   "/api/node/mo/topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.pod) }}/node-{{ node }}/sys/bgp/inst/dom-{{ tenant.name }}:{{ vrf_name }}/peer-[{{ peer.ip }}/32]/ent-[{{ peer.ip }}].json"
-    ${state}=   Output   $..bgpPeerEntry.attributes.operSt
-    Run Keyword If   "${state}" != "established"   Run Keyword And Continue On Failure
+    ${r}=   GET On Session   apic   /api/node/mo/topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.pod) }}/node-{{ node }}/sys/bgp/inst/dom-{{ tenant.name }}:{{ vrf_name }}/peer-[{{ peer.ip }}/32]/ent-[{{ peer.ip }}].json
+    ${state}=   OutGet Value From Json   ${r.json()}put   $..bgpPeerEntry.attributes.operSt
+    Run Keyword If   "${state}[0]" != "established"   Run Keyword And Continue On Failure
     ...   Fail  "Node {{ node }} Peer {{ peer.ip }}: BGP is not established"
 
 {% set bfd = peer.bfd | default('no') %}
 {% if bfd == 'yes' %}
 
 Verify L3out {{ l3out_name }} BFD Neighbor {{ peer.ip }} node {{ node }}
-    GET   "/api/node/mo/topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.pod) }}/node-{{ node }}/sys/bfd/inst.json?query-target=children&query-target-filter=and(eq(bfdSess.destAddr,\\"{{ peer.ip }}\\"),eq(bfdSess.vrfName,\\"{{ tenant.name }}:{{ vrf_name }}\\"))
-    ${state}=   Output   $..bfdSess.attributes.operSt
-    Run Keyword If   "${state}" != "up"   Run Keyword And Continue On Failure
+    ${r}=   GET On Session   apic   /api/node/mo/topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.pod) }}/node-{{ node }}/sys/bfd/inst.json   params=query-target=children&query-target-filter=and(eq(bfdSess.destAddr,\\"{{ peer.ip }}\\"),eq(bfdSess.vrfName,\\"{{ tenant.name }}:{{ vrf_name }}\\"))
+    ${state}=   Get Value From Json   ${r.json()}   $..bfdSess.attributes.operSt
+    Run Keyword If   "${state}[0]" != "up"   Run Keyword And Continue On Failure
     ...   Fail  "Node {{ node }} Peer {{ peer.ip }}: BFD is not established"
 {% endif %}
 

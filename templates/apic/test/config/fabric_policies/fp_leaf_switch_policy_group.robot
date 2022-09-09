@@ -9,15 +9,15 @@ Resource        ../../apic_common.resource
 {% set policy_group_name = pg.name ~ defaults.apic.fabric_policies.leaf_switch_policy_groups.name_suffix %}
 
 Verify Leaf Switch Policy Group {{ policy_group_name }}
-    GET   "/api/mo/uni/fabric/funcprof/lenodepgrp-{{ policy_group_name }}.json?rsp-subtree=full"
-    String   $..fabricLeNodePGrp.attributes.name   {{ policy_group_name }}
+    ${r}=   GET On Session   apic   /api/mo/uni/fabric/funcprof/lenodepgrp-{{ policy_group_name }}.json   params=rsp-subtree=full
+    Should Be Equal Value Json String   ${r.json()}    $..fabricLeNodePGrp.attributes.name   {{ policy_group_name }}
 {% if pg.psu_policy is defined %}
 {% set psu_policy_name = pg.psu_policy ~ defaults.apic.fabric_policies.switch_policies.psu_policies.name_suffix %}
-    String   $..fabricRsPsuInstPol.attributes.tnPsuInstPolName   {{ psu_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..fabricRsPsuInstPol.attributes.tnPsuInstPolName   {{ psu_policy_name }}
 {% endif %}
 {% if pg.node_control_policy is defined %}
 {% set node_control_policy_name = pg.node_control_policy ~ defaults.apic.fabric_policies.switch_policies.node_control_policies.name_suffix %}
-    String   $..fabricRsNodeCtrl.attributes.tnFabricNodeControlName   {{ node_control_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..fabricRsNodeCtrl.attributes.tnFabricNodeControlName   {{ node_control_policy_name }}
 {% endif %}
 
 {% endfor %}

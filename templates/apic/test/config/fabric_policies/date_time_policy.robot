@@ -8,27 +8,28 @@ Resource        ../../apic_common.resource
 {% for policy in apic.fabric_policies.pod_policies.date_time_policies | default([]) %}
 {% set date_time_policy_name = policy.name ~ defaults.apic.fabric_policies.pod_policies.date_time_policies.name_suffix %}
 Verify Date and Time Policy {{ date_time_policy_name }}
-    GET   "/api/mo/uni/fabric/time-{{ date_time_policy_name }}.json?rsp-subtree=full"
-    String   $..datetimePol.attributes.name   {{ date_time_policy_name }}
-    String   $..datetimePol.attributes.StratumValue   {{ policy.apic_ntp_server_master_stratum | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.apic_ntp_server_master_stratum) }}
-    String   $..datetimePol.attributes.adminSt   {{ policy.ntp_admin_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_admin_state) | cisco.aac.aac_bool("enabled") }}
-    String   $..datetimePol.attributes.authSt   {{ policys.ntp_auth_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_auth_state) | cisco.aac.aac_bool("enabled") }}
-    String   $..datetimePol.attributes.serverState   {{ policy.apic_ntp_server_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.apic_ntp_server_state) | cisco.aac.aac_bool("enabled") }}
+    ${r}=   GET On Session   apic   /api/mo/uni/fabric/time-{{ date_time_policy_name }}.json   params=rsp-subtree=full
+    Set Suite Variable   ${r}
+    Should Be Equal Value Json String   ${r.json()}    $..datetimePol.attributes.name   {{ date_time_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..datetimePol.attributes.StratumValue   {{ policy.apic_ntp_server_master_stratum | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.apic_ntp_server_master_stratum) }}
+    Should Be Equal Value Json String   ${r.json()}    $..datetimePol.attributes.adminSt   {{ policy.ntp_admin_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_admin_state) | cisco.aac.aac_bool("enabled") }}
+    Should Be Equal Value Json String   ${r.json()}    $..datetimePol.attributes.authSt   {{ policys.ntp_auth_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_auth_state) | cisco.aac.aac_bool("enabled") }}
+    Should Be Equal Value Json String   ${r.json()}    $..datetimePol.attributes.serverState   {{ policy.apic_ntp_server_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.apic_ntp_server_state) | cisco.aac.aac_bool("enabled") }}
 
 {% for server in policy.ntp_servers | default([]) %}
 
 Verify NTP Server {{ server.hostname_ip }}
     ${server}=   Set Variable   $..datetimePol.children[?(@.datetimeNtpProv.attributes.name=='{{ server.hostname_ip }}')]
-    String   ${server}..datetimeNtpProv.attributes.name   {{ server.hostname_ip }}
-    String   ${server}..datetimeNtpProv.attributes.preferred   {{ server.preferred | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_servers.preferred) | cisco.aac.aac_bool("yes") }}
+    Should Be Equal Value Json String   ${r.json()}    ${server}..datetimeNtpProv.attributes.name   {{ server.hostname_ip }}
+    Should Be Equal Value Json String   ${r.json()}    ${server}..datetimeNtpProv.attributes.preferred   {{ server.preferred | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_servers.preferred) | cisco.aac.aac_bool("yes") }}
 {% set mgmt_epg = server.mgmt_epg | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_servers.mgmt_epg) %}
 {% if mgmt_epg == "oob" %}
-    String   ${server}..datetimeRsNtpProvToEpg.attributes.tDn   uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}
+    Should Be Equal Value Json String   ${r.json()}    ${server}..datetimeRsNtpProvToEpg.attributes.tDn   uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}
 {% elif mgmt_epg == "inb" %}
-    String   ${server}..datetimeRsNtpProvToEpg.attributes.tDn   uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}
+    Should Be Equal Value Json String   ${r.json()}    ${server}..datetimeRsNtpProvToEpg.attributes.tDn   uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}
 {% endif %}
 {% if server.auth_key_id is defined %}
-    String   ${server}..datetimeRsNtpProvToNtpAuthKey.attributes.tnDatetimeNtpAuthKeyId   {{ server.auth_key_id }}
+    Should Be Equal Value Json String   ${r.json()}    ${server}..datetimeRsNtpProvToNtpAuthKey.attributes.tnDatetimeNtpAuthKeyId   {{ server.auth_key_id }}
 {% endif %}
 
 {% endfor %}
@@ -37,10 +38,10 @@ Verify NTP Server {{ server.hostname_ip }}
 
 Verify NTP Key {{ key.id }}
     ${key}=   Set Variable   $..datetimePol.children[?(@.datetimeNtpAuthKey.attributes.id=='{{ key.id }}')]
-    String   ${key}.datetimeNtpAuthKey.attributes.id   {{ key.id }}
-    String   ${key}.datetimeNtpAuthKey.attributes.key   {{ key.key }}
-    String   ${key}.datetimeNtpAuthKey.attributes.keyType   {{ key.auth_type }}
-    String   ${key}.datetimeNtpAuthKey.attributes.trusted   {{ key.trusted | cisco.aac.aac_bool("yes") }}
+    Should Be Equal Value Json String   ${r.json()}    ${key}.datetimeNtpAuthKey.attributes.id   {{ key.id }}
+    Should Be Equal Value Json String   ${r.json()}    ${key}.datetimeNtpAuthKey.attributes.key   {{ key.key }}
+    Should Be Equal Value Json String   ${r.json()}    ${key}.datetimeNtpAuthKey.attributes.keyType   {{ key.auth_type }}
+    Should Be Equal Value Json String   ${r.json()}    ${key}.datetimeNtpAuthKey.attributes.trusted   {{ key.trusted | cisco.aac.aac_bool("yes") }}
 
 {% endfor %}
 

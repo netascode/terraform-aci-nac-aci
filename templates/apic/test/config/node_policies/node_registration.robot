@@ -9,13 +9,13 @@ Resource        ../../apic_common.resource
 {% if node.role in ["leaf","spine"] and node.serial_number is defined %}
 
 Verify Node {{ node.id }} Registration
-    GET   "/api/mo/uni/controller/nodeidentpol/nodep-{{ node.serial_number }}.json"
-    String   $..fabricNodeIdentP.attributes.serial   {{ node.serial_number }}
-    String   $..fabricNodeIdentP.attributes.name   {{ node.name }}
-    String   $..fabricNodeIdentP.attributes.nodeId   {{ node.id }}
-    String   $..fabricNodeIdentP.attributes.podId   {{ node.pod | default(defaults.apic.node_policies.nodes.pod) }}
+    ${r}=   GET On Session   apic   /api/mo/uni/controller/nodeidentpol/nodep-{{ node.serial_number }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.serial   {{ node.serial_number }}
+    Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.name   {{ node.name }}
+    Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.nodeId   {{ node.id }}
+    Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.podId   {{ node.pod | default(defaults.apic.node_policies.nodes.pod) }}
 {% if node.role == "leaf" and node.type is defined %}
-    String   $..fabricNodeIdentP.attributes.nodeType   {{ node.type }}
+    Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.nodeType   {{ node.type }}
 {% endif %}
 
 {% endif %}

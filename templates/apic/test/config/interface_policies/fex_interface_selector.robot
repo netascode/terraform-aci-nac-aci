@@ -19,24 +19,24 @@ Resource        ../../../apic_common.resource
 {% set fex_interface_selector_name = (module ~ ":" ~ int.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.fex_interface_selector_name | default(defaults.apic.access_policies.fex_interface_selector_name))) %}
 
 Verify Access FEX Interface Profile {{ fex_profile_name }} Selector {{ fex_interface_selector_name }}
-    GET   "/api/mo/uni/infra/fexprof-{{ fex_profile_name }}/hports-{{ fex_interface_selector_name }}-typ-range.json?rsp-subtree=full"
-    String   $..infraHPortS.attributes.name   {{ fex_interface_selector_name }}
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/fexprof-{{ fex_profile_name }}/hports-{{ fex_interface_selector_name }}-typ-range.json   params=rsp-subtree=full
+    Should Be Equal Value Json String   ${r.json()}    $..infraHPortS.attributes.name   {{ fex_interface_selector_name }}
 {% if int.policy_group is defined %}
 {% set query = "leaf_interface_policy_groups[?name=='" ~ int.policy_group ~ "'].type[]" %}
 {% set type = (apic.access_policies | community.general.json_query(query)) %}
 {% set policy_group_name = int.policy_group ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
 {% if type[0] in ["pc", "vpc"] %}
-    String   $..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/accbundle-{{ policy_group_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/accbundle-{{ policy_group_name }}
 {% else %}
-    String   $..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/accportgrp-{{ policy_group_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraRsAccBaseGrp.attributes.tDn   uni/infra/funcprof/accportgrp-{{ policy_group_name }}
 {% endif %}
 {% endif %}
-    String   $..infraPortBlk.attributes.descr   "{{ int.description | default() }}"
-    String   $..infraPortBlk.attributes.fromCard   {{ module }}
-    String   $..infraPortBlk.attributes.fromPort   {{ int.port }}
-    String   $..infraPortBlk.attributes.name   {{ module }}-{{ int.port }}
-    String   $..infraPortBlk.attributes.toCard   {{ module }}
-    String   $..infraPortBlk.attributes.toPort   {{ int.port }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortBlk.attributes.descr   {{ int.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortBlk.attributes.fromCard   {{ module }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortBlk.attributes.fromPort   {{ int.port }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortBlk.attributes.name   {{ module }}-{{ int.port }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortBlk.attributes.toCard   {{ module }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortBlk.attributes.toPort   {{ int.port }}
 
 {% endfor %}
 

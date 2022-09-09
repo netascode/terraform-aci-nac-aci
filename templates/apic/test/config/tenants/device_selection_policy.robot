@@ -15,22 +15,23 @@ Resource        ../../../apic_common.resource
 {% set dev_name = sgt.device.name ~ defaults.apic.tenants.services.l4l7_devices.name_suffix %}
 
 Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }}
-    GET   "/api/mo/uni/tn-{{ tenant.name }}/ldevCtx-c-{{ contract_name }}-g-{{ sgt_name }}-n-N1.json?rsp-subtree=full"
-    String   $..vnsLDevCtx.attributes.ctrctNameOrLbl   {{ contract_name }}
-    String   $..vnsLDevCtx.attributes.graphNameOrLbl   {{ sgt_name }}
-    String   $..vnsRsLDevCtxToLDev.attributes.tDn   uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ldevCtx-c-{{ contract_name }}-g-{{ sgt_name }}-n-N1.json   params=rsp-subtree=full
+    Set Suite Variable   ${r}
+    Should Be Equal Value Json String   ${r.json()}   $..vnsLDevCtx.attributes.ctrctNameOrLbl   {{ contract_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..vnsLDevCtx.attributes.graphNameOrLbl   {{ sgt_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..vnsRsLDevCtxToLDev.attributes.tDn   uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}
 
 Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }} Consumer
     ${consumer}=   Set Variable   $..vnsLDevCtx.children[?(@.vnsLIfCtx.attributes.connNameOrLbl=='consumer')]
-    String   ${consumer}..vnsLIfCtx.attributes.l3Dest   {{ 'yes' if dsp.consumer.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}
-    String   ${consumer}..vnsLIfCtx.attributes.permitLog   {{ 'yes' if dsp.consumer.permit_logging | default(defaults.apic.tenants.services.device_selection_policies.consumer.permit_logging) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}
+    Should Be Equal Value Json String   ${r.json()}   ${consumer}..vnsLIfCtx.attributes.l3Dest   {{ 'yes' if dsp.consumer.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}
+    Should Be Equal Value Json String   ${r.json()}   ${consumer}..vnsLIfCtx.attributes.permitLog   {{ 'yes' if dsp.consumer.permit_logging | default(defaults.apic.tenants.services.device_selection_policies.consumer.permit_logging) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}
 {% if dsp.consumer.redirect_policy is defined %}
 {% set pol_name = dsp.consumer.redirect_policy.name ~ defaults.apic.tenants.services.redirect_policies.name_suffix %}
-    String   ${consumer}..vnsRsLIfCtxToSvcRedirectPol.attributes.tDn   uni/tn-{{ dsp.consumer.redirect_policy.tenant | default(tenant.name) }}/svcCont/svcRedirectPol-{{ pol_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${consumer}..vnsRsLIfCtxToSvcRedirectPol.attributes.tDn   uni/tn-{{ dsp.consumer.redirect_policy.tenant | default(tenant.name) }}/svcCont/svcRedirectPol-{{ pol_name }}
 {% endif %}
 {% if dsp.consumer.bridge_domain is defined %}
 {% set bd_name = dsp.consumer.bridge_domain.name ~ defaults.apic.tenants.bridge_domains.name_suffix %}
-    String   ${consumer}..vnsRsLIfCtxToBD.attributes.tDn   uni/tn-{{ dsp.consumer.bridge_domain.tenant | default(tenant.name) }}/BD-{{ bd_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${consumer}..vnsRsLIfCtxToBD.attributes.tDn   uni/tn-{{ dsp.consumer.bridge_domain.tenant | default(tenant.name) }}/BD-{{ bd_name }}
 {% elif dsp.consumer.external_endpoint_group is defined %}
 {% set redistribute = [] %}
 {% if dsp.consumer.external_endpoint_group.redistribute.bgp | default(defaults.apic.tenants.services.device_selection_policies.consumer.external_endpoint_group.redistribute.bgp) | cisco.aac.aac_bool("enabled") == "enabled" %}{% set redistribute = redistribute + [("bgp")] %}{% endif %}
@@ -39,31 +40,31 @@ Verify Device Selection Policy Contract {{ contract_name }} Service Graph Templa
 {% if dsp.consumer.external_endpoint_group.redistribute.static | default(defaults.apic.tenants.services.device_selection_policies.consumer.external_endpoint_group.redistribute.static) | cisco.aac.aac_bool("enabled") == "enabled" %}{% set redistribute = redistribute + [("static")] %}{% endif %}
 {% set l3out_name = dsp.consumer.external_endpoint_group.l3out ~ defaults.apic.tenants.l3outs.name_suffix %}
 {% set eepg_name = dsp.consumer.external_endpoint_group.name ~ defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix %}
-    String   ${consumer}..vnsRsLIfCtxToInstP.attributes.redistribute   {{ redistribute | join(',') }}
-    String   ${consumer}..vnsRsLIfCtxToInstP.attributes.tDn   uni/tn-{{ dsp.consumer.external_endpoint_group.tenant | default(tenant.name) }}/out-{{ l3out_name }}/instP-{{ eepg_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${consumer}..vnsRsLIfCtxToInstP.attributes.redistribute   {{ redistribute | join(',') }}
+    Should Be Equal Value Json String   ${r.json()}   ${consumer}..vnsRsLIfCtxToInstP.attributes.tDn   uni/tn-{{ dsp.consumer.external_endpoint_group.tenant | default(tenant.name) }}/out-{{ l3out_name }}/instP-{{ eepg_name }}
 {% set int_name = dsp.consumer.logical_interface ~ defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix %}
-    String   ${consumer}..vnsRsLIfCtxToLIf.attributes.tDn   uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}/lIf-{{ int_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${consumer}..vnsRsLIfCtxToLIf.attributes.tDn   uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}/lIf-{{ int_name }}
 {% endif %}
 {% if dsp.consumer.service_epg_policy is defined %}
 {% set pol_name = dsp.consumer.service_epg_policy ~ defaults.apic.tenants.services.service_epg_policies.name_suffix %}
-    String   ${consumer}..vnsRsLIfCtxToSvcEPgPol.attributes.tDn   uni/tn-{{ tenant.name }}/svcCont/svcEPgPol-{{ pol_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${consumer}..vnsRsLIfCtxToSvcEPgPol.attributes.tDn   uni/tn-{{ tenant.name }}/svcCont/svcEPgPol-{{ pol_name }}
 {% endif %}
 {% if dsp.consumer.custom_qos_policy is defined %}
 {% set custom_qos_policy_name = dsp.consumer.custom_qos_policy ~ defaults.apic.tenants.policies.custom_qos.name_suffix %}
-    String   ${consumer}..vnsRsLIfCtxToCustQosPol.attributes.tnQosCustomPolName   {{ custom_qos_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${consumer}..vnsRsLIfCtxToCustQosPol.attributes.tnQosCustomPolName   {{ custom_qos_policy_name }}
 {% endif %}
 
 Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }} Provider
     ${provider}=   Set Variable   $..vnsLDevCtx.children[?(@.vnsLIfCtx.attributes.connNameOrLbl=='provider')]
-    String   ${provider}..vnsLIfCtx.attributes.l3Dest   {{ 'yes' if dsp.provider.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.provider.l3_destination) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}
-    String   ${provider}..vnsLIfCtx.attributes.permitLog   {{ 'yes' if dsp.provider.permit_logging | default(defaults.apic.tenants.services.device_selection_policies.provider.permit_logging) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}
+    Should Be Equal Value Json String   ${r.json()}   ${provider}..vnsLIfCtx.attributes.l3Dest   {{ 'yes' if dsp.provider.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.provider.l3_destination) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}
+    Should Be Equal Value Json String   ${r.json()}   ${provider}..vnsLIfCtx.attributes.permitLog   {{ 'yes' if dsp.provider.permit_logging | default(defaults.apic.tenants.services.device_selection_policies.provider.permit_logging) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}
 {% if dsp.provider.redirect_policy is defined %}
 {% set pol_name = dsp.provider.redirect_policy.name ~ defaults.apic.tenants.services.redirect_policies.name_suffix %}
-    String   ${provider}..vnsRsLIfCtxToSvcRedirectPol.attributes.tDn   uni/tn-{{ dsp.provider.redirect_policy.tenant | default(tenant.name) }}/svcCont/svcRedirectPol-{{ pol_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${provider}..vnsRsLIfCtxToSvcRedirectPol.attributes.tDn   uni/tn-{{ dsp.provider.redirect_policy.tenant | default(tenant.name) }}/svcCont/svcRedirectPol-{{ pol_name }}
 {% endif %}
 {% if dsp.provider.bridge_domain is defined %}
 {% set bd_name = dsp.provider.bridge_domain.name ~ defaults.apic.tenants.bridge_domains.name_suffix %}
-    String   ${provider}..vnsRsLIfCtxToBD.attributes.tDn   uni/tn-{{ dsp.provider.bridge_domain.tenant | default(tenant.name) }}/BD-{{ bd_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${provider}..vnsRsLIfCtxToBD.attributes.tDn   uni/tn-{{ dsp.provider.bridge_domain.tenant | default(tenant.name) }}/BD-{{ bd_name }}
 {% elif dsp.provider.external_endpoint_group is defined %}
 {% set redistribute = [] %}
 {% if dsp.provider.external_endpoint_group.redistribute.bgp | default(defaults.apic.tenants.services.device_selection_policies.provider.external_endpoint_group.redistribute.bgp) | cisco.aac.aac_bool("enabled") == "enabled" %}{% set redistribute = redistribute + [("bgp")] %}{% endif %}
@@ -72,18 +73,18 @@ Verify Device Selection Policy Contract {{ contract_name }} Service Graph Templa
 {% if dsp.provider.external_endpoint_group.redistribute.static | default(defaults.apic.tenants.services.device_selection_policies.provider.external_endpoint_group.redistribute.static) | cisco.aac.aac_bool("enabled") == "enabled" %}{% set redistribute = redistribute + [("static")] %}{% endif %}
 {% set l3out_name = dsp.provider.external_endpoint_group.l3out ~ defaults.apic.tenants.l3outs.name_suffix %}
 {% set eepg_name = dsp.provider.external_endpoint_group.name ~ defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix %}
-    String   ${provider}..vnsRsLIfCtxToInstP.attributes.redistribute   {{ redistribute | join(',') }}
-    String   ${provider}..vnsRsLIfCtxToInstP.attributes.tDn   uni/tn-{{ dsp.provider.external_endpoint_group.tenant | default(tenant.name) }}/out-{{ l3out_name }}/instP-{{ eepg_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${provider}..vnsRsLIfCtxToInstP.attributes.redistribute   {{ redistribute | join(',') }}
+    Should Be Equal Value Json String   ${r.json()}   ${provider}..vnsRsLIfCtxToInstP.attributes.tDn   uni/tn-{{ dsp.provider.external_endpoint_group.tenant | default(tenant.name) }}/out-{{ l3out_name }}/instP-{{ eepg_name }}
 {% set int_name = dsp.provider.logical_interface ~ defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix %}
-    String   ${provider}..vnsRsLIfCtxToLIf.attributes.tDn   uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}/lIf-{{ int_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${provider}..vnsRsLIfCtxToLIf.attributes.tDn   uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}/lIf-{{ int_name }}
 {% endif %}
 {% if dsp.provider.service_epg_policy is defined %}
 {% set pol_name = dsp.provider.service_epg_policy ~ defaults.apic.tenants.services.service_epg_policies.name_suffix %}
-    String   ${provider}..vnsRsLIfCtxToSvcEPgPol.attributes.tDn   uni/tn-{{ tenant.name }}/svcCont/svcEPgPol-{{ pol_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${provider}..vnsRsLIfCtxToSvcEPgPol.attributes.tDn   uni/tn-{{ tenant.name }}/svcCont/svcEPgPol-{{ pol_name }}
 {% endif %}
 {% if dsp.provider.custom_qos_policy is defined %}
 {% set custom_qos_policy_name = dsp.provider.custom_qos_policy ~ defaults.apic.tenants.policies.custom_qos.name_suffix %}
-    String   ${provider}..vnsRsLIfCtxToCustQosPol.attributes.tnQosCustomPolName   {{ custom_qos_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${provider}..vnsRsLIfCtxToCustQosPol.attributes.tnQosCustomPolName   {{ custom_qos_policy_name }}
 {% endif %}
 
 {% endfor %}

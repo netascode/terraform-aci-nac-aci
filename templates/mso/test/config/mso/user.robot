@@ -6,17 +6,18 @@ Resource        ../../mso_common.resource
 
 *** Test Cases ***
 Get Users
-    GET   "/api/v1/users"
+    ${r}=   GET On Session   mso   /api/v1/users
+    Set Suite Variable   ${r}
 
 {% for user in mso.users | default([]) %}
 
 Verify User {{ user.username }}
     ${user}=   Set Variable   $..users[?(@.username=='{{ user.username }}')]
-    String   ${user}.username   {{ user.username }}
-    String   ${user}.firstName   {{ user.first_name }}
-    String   ${user}.lastName   {{ user.last_name }}
-    String   ${user}.emailAddress   {{ user.email_address }}
-    String   ${user}.phoneNumber   {{ user.phone_number | default() }}
-    String   ${user}.accountStatus   {{ user.status | default(defaults.mso.users.status) }}
+    Should Be Equal Value Json String   ${r.json()}   ${user}.username   {{ user.username }}
+    Should Be Equal Value Json String   ${r.json()}   ${user}.firstName   {{ user.first_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${user}.lastName   {{ user.last_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${user}.emailAddress   {{ user.email_address }}
+    Should Be Equal Value Json String   ${r.json()}   ${user}.phoneNumber   {{ user.phone_number | default() }}
+    Should Be Equal Value Json String   ${r.json()}   ${user}.accountStatus   {{ user.status | default(defaults.mso.users.status) }}
 
 {% endfor %}

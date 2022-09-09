@@ -9,19 +9,20 @@ Resource        ../../apic_common.resource
 {% set scheduler_name = scheduler.name ~ defaults.apic.fabric_policies.schedulers.name_suffix %}
 
 Verify Scheduler {{ scheduler_name }}
-    GET   "/api/mo/uni/fabric/schedp-{{ scheduler_name }}.json?rsp-subtree=full"
-    String   $..trigSchedP.attributes.name   {{ scheduler_name }}
-    String   $..trigSchedP.attributes.descr   {{ scheduler.description | default() }}
+    ${r}=   GET On Session   apic   /api/mo/uni/fabric/schedp-{{ scheduler_name }}.json   params=rsp-subtree=full
+    Set Suite Variable   ${r}
+    Should Be Equal Value Json String   ${r.json()}    $..trigSchedP.attributes.name   {{ scheduler_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..trigSchedP.attributes.descr   {{ scheduler.description | default() }}
 
 {% for win in scheduler.recurring_windows | default([]) %}
 {% set win_name = win.name ~ defaults.apic.fabric_policies.schedulers.recurring_windows.name_suffix %}
 
 Verify Scheduler {{ scheduler_name }} Window {{ win_name }}
     ${win}=   Set Variable   $..trigSchedP.children[?(@.trigRecurrWindowP.attributes.name=='{{ win_name }}')]
-    String   ${win}..trigRecurrWindowP.attributes.name   {{ win_name }}
-    String   ${win}..trigRecurrWindowP.attributes.day   {{ win.day | default(defaults.apic.fabric_policies.schedulers.recurring_windows.day) }}
-    String   ${win}..trigRecurrWindowP.attributes.hour   {{ win.hour | default(defaults.apic.fabric_policies.schedulers.recurring_windows.hour) }}
-    String   ${win}..trigRecurrWindowP.attributes.minute   {{ win.minute | default(defaults.apic.fabric_policies.schedulers.recurring_windows.minute) }}
+    Should Be Equal Value Json String   ${r.json()}    ${win}..trigRecurrWindowP.attributes.name   {{ win_name }}
+    Should Be Equal Value Json String   ${r.json()}    ${win}..trigRecurrWindowP.attributes.day   {{ win.day | default(defaults.apic.fabric_policies.schedulers.recurring_windows.day) }}
+    Should Be Equal Value Json String   ${r.json()}    ${win}..trigRecurrWindowP.attributes.hour   {{ win.hour | default(defaults.apic.fabric_policies.schedulers.recurring_windows.hour) }}
+    Should Be Equal Value Json String   ${r.json()}    ${win}..trigRecurrWindowP.attributes.minute   {{ win.minute | default(defaults.apic.fabric_policies.schedulers.recurring_windows.minute) }}
 
 {% endfor %}
 

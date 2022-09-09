@@ -6,13 +6,14 @@ Resource        ../../mso_common.resource
 
 *** Test Cases ***
 Get CA Certificates
-    GET   "/api/v1/auth/security/certificates"
+    ${r}=   GET On Session   mso   /api/v1/auth/security/certificates
+    Set Suite Variable   ${r}
 
 {% for cert in mso.ca_certificates | default([]) %}
 
 Verify CA Certificate {{ cert.name }}
     ${cert}=   Set Variable   $..caCertificates[?(@.name=='{{ cert.name }}')]
-    String   ${cert}.name   {{ cert.name }}
-    String   ${cert}.description   {{ cert.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   ${cert}.name   {{ cert.name }}
+    Should Be Equal Value Json String   ${r.json()}   ${cert}.description   {{ cert.description | default() }}
 
 {% endfor %}

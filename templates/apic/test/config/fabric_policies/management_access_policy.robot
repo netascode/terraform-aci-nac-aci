@@ -10,13 +10,14 @@ Resource        ../../apic_common.resource
 {% set management_access_policy_name = policy.name ~ defaults.apic.fabric_policies.pod_policies.management_access_policies.name_suffix %}
 
 Verify Management Access Policy {{ policy.name }}
-    GET   "/api/node/mo/uni/fabric/comm-{{ management_access_policy_name }}.json?rsp-subtree=full"
-    String   $..commPol.attributes.name   {{ management_access_policy_name }}
-    String   $..commPol.attributes.descr   {{ policy.description | default() }}
+    ${r}=   GET On Session   apic   /api/node/mo/uni/fabric/comm-{{ management_access_policy_name }}.json   params=rsp-subtree=full
+    Set Suite Variable   ${r}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.attributes.name   {{ management_access_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.attributes.descr   {{ policy.description | default() }}
 
 Verify Management Access Policy {{ policy.name }} Telnet
-    String   $..commPol.children..commTelnet.attributes.adminSt   {{ policy.telnet.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.telnet.admin_state) | cisco.aac.aac_bool("eabled") }}
-    String   $..commPol.children..commTelnet.attributes.port   {{ policy.telnet.port | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.telnet.port) }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commTelnet.attributes.adminSt   {{ policy.telnet.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.telnet.admin_state) | cisco.aac.aac_bool("eabled") }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commTelnet.attributes.port   {{ policy.telnet.port | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.telnet.port) }}
 
 {% set ssl_ciphers = [] %}
 {% if policy.ssh.aes128_ctr | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.aes128_ctr) | cisco.aac.aac_bool("yes") == "yes" %}{% set ssl_ciphers = ssl_ciphers + [("aes128-ctr")] %}{% endif %}
@@ -31,11 +32,11 @@ Verify Management Access Policy {{ policy.name }} Telnet
 {% if policy.ssh.hmac_sha2_512 | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.hmac_sha2_512) | cisco.aac.aac_bool("yes") == "yes" %}{% set ssh_macs = ssh_macs + [("hmac-sha2-512")] %}{% endif %}
 
 Verify Management Access Policy {{ policy.name }} SSH
-    String   $..commPol.children..commSsh.attributes.adminSt   {{ policy.ssh.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.admin_state) | cisco.aac.aac_bool("eabled") }}
-    String   $..commPol.children..commSsh.attributes.port   {{ policy.ssh.port | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.port) }}
-    String   $..commPol.children..commSsh.attributes.passwordAuth   {{ policy.ssh.password_auth | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.password_auth) | cisco.aac.aac_bool("eabled") }}
-    String   $..commPol.children..commSsh.attributes.sshCiphers   {{ ssl_ciphers | join(',') }}
-    String   $..commPol.children..commSsh.attributes.sshMacs   {{ ssh_macs | join(',') }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commSsh.attributes.adminSt   {{ policy.ssh.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.admin_state) | cisco.aac.aac_bool("eabled") }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commSsh.attributes.port   {{ policy.ssh.port | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.port) }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commSsh.attributes.passwordAuth   {{ policy.ssh.password_auth | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.password_auth) | cisco.aac.aac_bool("eabled") }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commSsh.attributes.sshCiphers   {{ ssl_ciphers | join(',') }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commSsh.attributes.sshMacs   {{ ssh_macs | join(',') }}
 
 {% set ssl_protocols = [] %}
 {% if policy.https.tlsv1 | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.tlsv1) | cisco.aac.aac_bool("yes") == "yes" %}{% set ssl_protocols = ssl_protocols + [("TLSv1")] %}{% endif %}
@@ -43,15 +44,15 @@ Verify Management Access Policy {{ policy.name }} SSH
 {% if policy.https.tlsv1_2 | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.tlsv1_2) | cisco.aac.aac_bool("yes") == "yes" %}{% set ssl_protocols = ssl_protocols + [("TLSv1.2")] %}{% endif %}
 
 Verify Management Access Policy {{ policy.name }} HTTPS
-    String   $..commPol.children..commHttps.attributes.adminSt   {{ policy.https.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.admin_state) | cisco.aac.aac_bool("eabled") }}
-    String   $..commPol.children..commHttps.attributes.clientCertAuthState   {{ policy.https.client_cert_auth_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.client_cert_auth_state) | cisco.aac.aac_bool("eabled") }}
-    String   $..commPol.children..commHttps.attributes.dhParam   {{ policy.https.dh | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.dh) }}
-    String   $..commPol.children..commHttps.attributes.port   {{ policy.https.port | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.port) }}
-    String   $..commPol.children..commHttps.attributes.sslProtocols   {{ ssl_protocols | join(',') }}             
-    String   $..commPol.children..commHttps.children..commRsKeyRing.attributes.tnPkiKeyRingName   {{ policy.https.key_ring | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.key_ring) }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commHttps.attributes.adminSt   {{ policy.https.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.admin_state) | cisco.aac.aac_bool("eabled") }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commHttps.attributes.clientCertAuthState   {{ policy.https.client_cert_auth_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.client_cert_auth_state) | cisco.aac.aac_bool("eabled") }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commHttps.attributes.dhParam   {{ policy.https.dh | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.dh) }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commHttps.attributes.port   {{ policy.https.port | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.port) }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commHttps.attributes.sslProtocols   {{ ssl_protocols | join(',') }}             
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commHttps.children..commRsKeyRing.attributes.tnPkiKeyRingName   {{ policy.https.key_ring | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.key_ring) }}
 
 Verify Management Access Policy {{ policy.name }} HTTP
-    String   $..commPol.children..commHttp.attributes.adminSt   {{ policy.http.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.http.admin_state) | cisco.aac.aac_bool("eabled") }}
-    String   $..commPol.children..commHttp.attributes.port   {{ policy.http.port | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.http.port) }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commHttp.attributes.adminSt   {{ policy.http.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.http.admin_state) | cisco.aac.aac_bool("eabled") }}
+    Should Be Equal Value Json String   ${r.json()}    $..commPol.children..commHttp.attributes.port   {{ policy.http.port | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.http.port) }}
 
 {% endfor %}

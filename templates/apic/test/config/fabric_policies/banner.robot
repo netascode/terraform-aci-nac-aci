@@ -6,8 +6,8 @@ Resource        ../../apic_common.resource
 
 *** Test Cases ***
 Verify Banners
-    GET   "/api/mo/uni/userext/preloginbanner.json"
+    ${r}=   GET On Session   apic   /api/mo/uni/userext/preloginbanner.json
 {% if apic.fabric_policies.banners.apic_gui_banner_message is not defined %}
-    String   $..aaaPreLoginBanner.attributes.guiMessage   {{ apic.fabric_policies.banners.apic_gui_banner_url | default(defaults.apic.fabric_policies.banners.apic_gui_banner_url) }}
+    Should Be Equal Value Json String   ${r.json()}    $..aaaPreLoginBanner.attributes.guiMessage   {{ apic.fabric_policies.banners.apic_gui_banner_url | default(defaults.apic.fabric_policies.banners.apic_gui_banner_url) }}
 {% endif %}
-    String   $..aaaPreLoginBanner.attributes.guiTextMessage   {{ apic.fabric_policies.banners.apic_gui_alias | default(defaults.apic.fabric_policies.banners.apic_gui_alias) }}
+    Should Be Equal Value Json String   ${r.json()}    $..aaaPreLoginBanner.attributes.guiTextMessage   {{ apic.fabric_policies.banners.apic_gui_alias | default(defaults.apic.fabric_policies.banners.apic_gui_alias) }}

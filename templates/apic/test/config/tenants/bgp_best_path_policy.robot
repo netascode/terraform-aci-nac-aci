@@ -13,8 +13,8 @@ Resource        ../../../apic_common.resource
 {% if bpp.control_type | default(defaults.apic.tenants.policies.bgp_best_path_policies.control_type) == "multi-path-relax" %}{% set control_type = "asPathMultipathRelax" %}{% endif %}
 
 Verify BGP Best Path Policy {{ bpp_name }}
-    GET   "/api/mo/uni/tn-{{ tenant.name }}/bestpath-{{ bpp_name }}.json"
-    String   $..bgpBestPathCtrlPol.attributes.name    {{ bpp_name }}
-    String   $..bgpBestPathCtrlPol.attributes.descr    {{ bpp.description | default() }}
-    String   $..bgpBestPathCtrlPol.attributes.ctrl    {{ control_type }}
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/bestpath-{{ bpp_name }}.json
+    Should Be Equal Value Json String   ${r.json()}   $..bgpBestPathCtrlPol.attributes.name    {{ bpp_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..bgpBestPathCtrlPol.attributes.descr    {{ bpp.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   $..bgpBestPathCtrlPol.attributes.ctrl    {{ control_type }}
 {% endfor %}

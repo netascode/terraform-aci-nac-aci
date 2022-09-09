@@ -8,10 +8,10 @@ Resource        ../../apic_common.resource
 {% for pod in apic.pod_policies.pods | default([]) %}
 
 Verify Pod {{ pod.id }} Setup
-    GET   "/api/mo/uni/controller/setuppol/setupp-{{ pod.id }}.json"
-    String   $..fabricSetupP.attributes.podId   {{ pod.id }}
+    ${r}=   GET On Session   apic   /api/mo/uni/controller/setuppol/setupp-{{ pod.id }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..fabricSetupP.attributes.podId   {{ pod.id }}
 {% if pod.id != 1 %}
-    String   $..fabricSetupP.attributes.tepPool   {{ pod.tep_pool }}
+    Should Be Equal Value Json String   ${r.json()}    $..fabricSetupP.attributes.tepPool   {{ pod.tep_pool }}
 {% endif %}
 
 {% endfor %}

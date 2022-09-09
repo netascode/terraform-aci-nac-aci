@@ -11,15 +11,15 @@ Resource        ../../../apic_common.resource
 {% set bgp_peer_prefix_name = bpp.name ~ defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix %}
 
 Verify BGP Peer Prefix Policy {{ bgp_peer_prefix_name }}
-    GET   "/api/mo/uni/tn-{{ tenant.name }}/bgpPfxP-{{ bgp_peer_prefix_name }}.json"
-    String   $..bgpPeerPfxPol.attributes.name   {{ bgp_peer_prefix_name }}
-    String   $..bgpPeerPfxPol.attributes.descr   {{ bpp.action | default() }}
-    String   $..bgpPeerPfxPol.attributes.dn   uni/tn-{{ tenant.name }}/bgpPfxP-{{ bgp_peer_prefix_name }}
-    String   $..bgpPeerPfxPol.attributes.action   {{ bpp.action | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.action) }}
-    String   $..bgpPeerPfxPol.attributes.maxPfx   {{ bpp.max_prefixes | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.max_prefixes) }}
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/bgpPfxP-{{ bgp_peer_prefix_name }}.json
+    Should Be Equal Value Json String   ${r.json()}   $..bgpPeerPfxPol.attributes.name   {{ bgp_peer_prefix_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..bgpPeerPfxPol.attributes.descr   {{ bpp.action | default() }}
+    Should Be Equal Value Json String   ${r.json()}   $..bgpPeerPfxPol.attributes.dn   uni/tn-{{ tenant.name }}/bgpPfxP-{{ bgp_peer_prefix_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..bgpPeerPfxPol.attributes.action   {{ bpp.action | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.action) }}
+    Should Be Equal Value Json String   ${r.json()}   $..bgpPeerPfxPol.attributes.maxPfx   {{ bpp.max_prefixes | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.max_prefixes) }}
 {% if bpp.action | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.action) == "restart" %}
-    String   $..bgpPeerPfxPol.attributes.restartTime   {{ bpp.restart_time | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.restart_time) }}
+    Should Be Equal Value Json String   ${r.json()}   $..bgpPeerPfxPol.attributes.restartTime   {{ bpp.restart_time | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.restart_time) }}
 {% endif %}
-    String   $..bgpPeerPfxPol.attributes.thresh   {{ bpp.threshold | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.threshold) }}
+    Should Be Equal Value Json String   ${r.json()}   $..bgpPeerPfxPol.attributes.thresh   {{ bpp.threshold | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.threshold) }}
 
 {% endfor %}

@@ -11,15 +11,16 @@ Resource        ../../../apic_common.resource
 {% set contract_name = contract.name ~ defaults.apic.tenants.contracts.name_suffix %}
 
 Verify Contract {{ contract_name }}
-    GET   "/api/mo/uni/tn-{{ tenant.name }}/brc-{{ contract_name }}.json?rsp-subtree=full"
-    String   $..vzBrCP.attributes.name   {{ contract_name }}
-    String   $..vzBrCP.attributes.nameAlias   {{ contract.alias  | default() }}
-    String   $..vzBrCP.attributes.descr   {{ contract.description | default() }}
-    String   $..vzBrCP.attributes.scope   {{ contract.scope | default(defaults.apic.tenants.contracts.scope) }}
-    String   $..vzBrCP.attributes.prio   {{ contract.qos_class | default(defaults.apic.tenants.contracts.qos_class) }}
-    String   $..vzBrCP.attributes.targetDscp   {{ contract.target_dscp | default(defaults.apic.tenants.contracts.target_dscp) }}
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/brc-{{ contract_name }}.json   params=rsp-subtree=full
+    Set Suite Variable   ${r}
+    Should Be Equal Value Json String   ${r.json()}   $..vzBrCP.attributes.name   {{ contract_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..vzBrCP.attributes.nameAlias   {{ contract.alias  | default() }}
+    Should Be Equal Value Json String   ${r.json()}   $..vzBrCP.attributes.descr   {{ contract.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   $..vzBrCP.attributes.scope   {{ contract.scope | default(defaults.apic.tenants.contracts.scope) }}
+    Should Be Equal Value Json String   ${r.json()}   $..vzBrCP.attributes.prio   {{ contract.qos_class | default(defaults.apic.tenants.contracts.qos_class) }}
+    Should Be Equal Value Json String   ${r.json()}   $..vzBrCP.attributes.targetDscp   {{ contract.target_dscp | default(defaults.apic.tenants.contracts.target_dscp) }}
 {% if subject.service_graph is defined %}
-    String   $..vzRsSubjGraphAtt.attributes.tnVnsAbsGraphName   {{ subject.service_graph }}
+    Should Be Equal Value Json String   ${r.json()}   $..vzRsSubjGraphAtt.attributes.tnVnsAbsGraphName   {{ subject.service_graph }}
 {% endif %}
 
 {% for subject in contract.subjects | default([]) %}
@@ -27,11 +28,11 @@ Verify Contract {{ contract_name }}
 
 Verify Contract {{ contract_name }} Subject {{ subject_name }}
     ${subject}=   Set Variable   $..vzBrCP.children[?(@.vzSubj.attributes.name=='{{ subject_name }}')]
-    String   ${subject}..vzSubj.attributes.name   {{ subject_name }}
-    String   ${subject}..vzSubj.attributes.nameAlias   {{ subject.alias | default() }}
-    String   ${subject}..vzSubj.attributes.descr   {{ subject.description | default() }}
-    String   ${subject}..vzSubj.attributes.prio   {{ subject.qos_class | default(defaults.apic.tenants.contracts.subjects.qos_class) }}
-    String   ${subject}..vzSubj.attributes.targetDscp   {{ subject.target_dscp | default(defaults.apic.tenants.contracts.subjects.target_dscp) }}
+    Should Be Equal Value Json String   ${r.json()}   ${subject}..vzSubj.attributes.name   {{ subject_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${subject}..vzSubj.attributes.nameAlias   {{ subject.alias | default() }}
+    Should Be Equal Value Json String   ${r.json()}   ${subject}..vzSubj.attributes.descr   {{ subject.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   ${subject}..vzSubj.attributes.prio   {{ subject.qos_class | default(defaults.apic.tenants.contracts.subjects.qos_class) }}
+    Should Be Equal Value Json String   ${r.json()}   ${subject}..vzSubj.attributes.targetDscp   {{ subject.target_dscp | default(defaults.apic.tenants.contracts.subjects.target_dscp) }}
 
 {% for filter in subject.filters | default([]) %}
 {% set filter_name = filter.filter ~ defaults.apic.tenants.filters.name_suffix %}
@@ -41,10 +42,10 @@ Verify Contract {{ contract_name }} Subject {{ subject_name }}
 
 Verify Contract {{ contract_name }} Subject {{ subject_name }} Filter {{ filter_name }}
     ${filter}=   Set Variable   $..vzBrCP.children[?(@.vzSubj.attributes.name=='{{ subject_name }}')].vzSubj.children[?(@.vzRsSubjFiltAtt.attributes.tnVzFilterName=='{{ filter_name }}')]
-    String   ${filter}..vzRsSubjFiltAtt.attributes.tnVzFilterName   {{ filter_name }}
-    String   ${filter}..vzRsSubjFiltAtt.attributes.action   {{ filter.action | default(defaults.apic.tenants.contracts.subjects.filters.action) }}
-    String   ${filter}..vzRsSubjFiltAtt.attributes.directives   {{ directives | join(',') }}
-    String   ${filter}..vzRsSubjFiltAtt.attributes.priorityOverride   {{ filter.priority | default(defaults.apic.tenants.contracts.subjects.filters.priority) }}
+    Should Be Equal Value Json String   ${r.json()}   ${filter}..vzRsSubjFiltAtt.attributes.tnVzFilterName   {{ filter_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${filter}..vzRsSubjFiltAtt.attributes.action   {{ filter.action | default(defaults.apic.tenants.contracts.subjects.filters.action) }}
+    Should Be Equal Value Json String   ${r.json()}   ${filter}..vzRsSubjFiltAtt.attributes.directives   {{ directives | join(',') }}
+    Should Be Equal Value Json String   ${r.json()}   ${filter}..vzRsSubjFiltAtt.attributes.priorityOverride   {{ filter.priority | default(defaults.apic.tenants.contracts.subjects.filters.priority) }}
 
 {% endfor %}
 

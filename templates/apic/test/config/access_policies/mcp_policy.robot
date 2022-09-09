@@ -9,8 +9,8 @@ Resource        ../../apic_common.resource
 {% set mcp_policy_name = policy.name ~ defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix %}
 
 Verify MCP Interface Policy {{ mcp_policy_name }}
-    GET   "/api/mo/uni/infra/mcpIfP-{{ mcp_policy_name }}.json"
-    String   $..mcpIfPol.attributes.name   {{ mcp_policy_name }}
-    String   $..mcpIfPol.attributes.adminSt   {{ policy.admin_state | cisco.aac.aac_bool("enabled") }}
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/mcpIfP-{{ mcp_policy_name }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..mcpIfPol.attributes.name   {{ mcp_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..mcpIfPol.attributes.adminSt   {{ policy.admin_state | cisco.aac.aac_bool("enabled") }}
 
 {% endfor %}

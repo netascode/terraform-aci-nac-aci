@@ -18,17 +18,17 @@ Resource        ../../../apic_common.resource
 {% set spine_interface_selector_name = (module ~ ":" ~ int.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.spine_interface_selector_name | default(defaults.apic.access_policies.spine_interface_selector_name))) %}
 
 Verify Access Spine Interface Profile {{ spine_interface_profile_name }} Selector {{ spine_interface_selector_name }}
-    GET   "/api/mo/uni/infra/spaccportprof-{{ spine_interface_profile_name }}/shports-{{ spine_interface_selector_name }}-typ-range.json?rsp-subtree=full"
-    String   $..infraSHPortS.attributes.name   {{ spine_interface_selector_name }}
-    String   $..infraPortBlk.attributes.descr   "{{ int.description | default() }}"
-    String   $..infraPortBlk.attributes.fromCard   {{ module }}
-    String   $..infraPortBlk.attributes.fromPort   {{ int.port }}
-    String   $..infraPortBlk.attributes.name   {{ module }}-{{ int.port }}
-    String   $..infraPortBlk.attributes.toCard   {{ module }}
-    String   $..infraPortBlk.attributes.toPort   {{ int.port }}
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/spaccportprof-{{ spine_interface_profile_name }}/shports-{{ spine_interface_selector_name }}-typ-range.json   params=rsp-subtree=full
+    Should Be Equal Value Json String   ${r.json()}    $..infraSHPortS.attributes.name   {{ spine_interface_selector_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortBlk.attributes.descr   {{ int.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortBlk.attributes.fromCard   {{ module }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortBlk.attributes.fromPort   {{ int.port }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortBlk.attributes.name   {{ module }}-{{ int.port }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortBlk.attributes.toCard   {{ module }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortBlk.attributes.toPort   {{ int.port }}
 {% if int.policy_group is defined %}
 {% set policy_group_name = int.policy_group ~ defaults.apic.access_policies.spine_interface_policy_groups.name_suffix %}
-    String   $..infraRsSpAccGrp.attributes.tDn   uni/infra/funcprof/spaccportgrp-{{ policy_group_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraRsSpAccGrp.attributes.tDn   uni/infra/funcprof/spaccportgrp-{{ policy_group_name }}
 {% endif %}
 
 {% endfor %}

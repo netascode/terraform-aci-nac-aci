@@ -11,13 +11,13 @@ Resource        ../../../apic_common.resource
 {% set bgp_timer_name = bt.name ~ defaults.apic.tenants.policies.bgp_timer_policies.name_suffix %}
 
 Verify BGP Timer Policy {{ bgp_timer_name }}
-    GET   "/api/mo/uni/tn-{{ tenant.name }}/bgpCtxP-{{ bgp_timer_name }}.json"
-    String   $..bgpCtxPol.attributes.name   {{ bgp_timer_name }}
-    String   $..bgpCtxPol.attributes.descr   {{ bt.description | default() }}
-    String   $..bgpCtxPol.attributes.grCtrl   {% if bt.graceful_restart_helper | default(defaults.apic.tenants.policies.bgp_timer_policies.graceful_restart_helper) | cisco.aac.aac_bool("enabled") == "enabled" %}helper{% elif bt.graceful_restart_helper | default(defaults.apic.tenants.policies.bgp_timer_policies.graceful_restart_helper) | cisco.aac.aac_bool("enabled") == "disabled" %}""{% endif %} 
-    String   $..bgpCtxPol.attributes.holdIntvl   {{ bt.hold_interval | default(defaults.apic.tenants.policies.bgp_timer_policies.hold_interval) }}
-    String   $..bgpCtxPol.attributes.kaIntvl   {{ bt.keepalive_interval | default(defaults.apic.tenants.policies.bgp_timer_policies.keepalive_interval) }}
-    String   $..bgpCtxPol.attributes.maxAsLimit   {{ bt.maximum_as_limit | default(defaults.apic.tenants.policies.bgp_timer_policies.maximum_as_limit) }}
-    String   $..bgpCtxPol.attributes.staleIntvl  {% if bt.stale_interval | default(defaults.apic.tenants.policies.bgp_timer_policies.stale_interval) == 300 %}default{% else %}{{ bt.stale_interval | default(defaults.apic.tenants.policies.bgp_timer_policies.stale_interval) }}{% endif %} 
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/bgpCtxP-{{ bgp_timer_name }}.json
+    Should Be Equal Value Json String   ${r.json()}   $..bgpCtxPol.attributes.name   {{ bgp_timer_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..bgpCtxPol.attributes.descr   {{ bt.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   $..bgpCtxPol.attributes.grCtrl   {% if bt.graceful_restart_helper | default(defaults.apic.tenants.policies.bgp_timer_policies.graceful_restart_helper) | cisco.aac.aac_bool("enabled") == "enabled" %}helper{% elif bt.graceful_restart_helper | default(defaults.apic.tenants.policies.bgp_timer_policies.graceful_restart_helper) | cisco.aac.aac_bool("enabled") == "disabled" %}{% endif %} 
+    Should Be Equal Value Json String   ${r.json()}   $..bgpCtxPol.attributes.holdIntvl   {{ bt.hold_interval | default(defaults.apic.tenants.policies.bgp_timer_policies.hold_interval) }}
+    Should Be Equal Value Json String   ${r.json()}   $..bgpCtxPol.attributes.kaIntvl   {{ bt.keepalive_interval | default(defaults.apic.tenants.policies.bgp_timer_policies.keepalive_interval) }}
+    Should Be Equal Value Json String   ${r.json()}   $..bgpCtxPol.attributes.maxAsLimit   {{ bt.maximum_as_limit | default(defaults.apic.tenants.policies.bgp_timer_policies.maximum_as_limit) }}
+    Should Be Equal Value Json String   ${r.json()}   $..bgpCtxPol.attributes.staleIntvl  {% if bt.stale_interval | default(defaults.apic.tenants.policies.bgp_timer_policies.stale_interval) == 300 %}default{% else %}{{ bt.stale_interval | default(defaults.apic.tenants.policies.bgp_timer_policies.stale_interval) }}{% endif %} 
 
 {% endfor %}

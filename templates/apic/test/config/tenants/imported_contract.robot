@@ -12,8 +12,8 @@ Resource        ../../../apic_common.resource
 {% set con_name = con.contract ~ defaults.apic.tenants.contracts.name_suffix %}
 
 Verify Imported Contract {{ imported_con_name }}
-    GET   "/api/mo/uni/tn-{{ tenant.name }}/cif-{{ imported_con_name }}.json?rsp-subtree=full"
-    String   $..vzCPIf.attributes.name   {{ imported_con_name }}
-    String   $..vzCPIf.children..vzRsIf.attributes.tDn   "uni/tn-{{ con.tenant }}/brc-{{ con_name }}"
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/cif-{{ imported_con_name }}.json   params=rsp-subtree=full
+    Should Be Equal Value Json String   ${r.json()}   $..vzCPIf.attributes.name   {{ imported_con_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..vzCPIf.children..vzRsIf.attributes.tDn   uni/tn-{{ con.tenant }}/brc-{{ con_name }}
 
 {% endfor %}

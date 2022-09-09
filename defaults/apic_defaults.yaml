@@ -470,7 +470,7 @@ defaults:
             congestion_algorithm: tail-drop
             minimum_buffer: 0
             pfc_state: false
-            no_drop_cos: unspecified
+            no_drop_cos: ''
             pfc_scope: tor
             ecn: false
             forward_non_ecn: false
@@ -486,7 +486,7 @@ defaults:
             congestion_algorithm: tail-drop
             minimum_buffer: 0
             pfc_state: false
-            no_drop_cos: unspecified
+            no_drop_cos: ''
             pfc_scope: tor
             ecn: false
             forward_non_ecn: false
@@ -502,7 +502,7 @@ defaults:
             congestion_algorithm: tail-drop
             minimum_buffer: 0
             pfc_state: false
-            no_drop_cos: unspecified
+            no_drop_cos: ''
             pfc_scope: tor
             ecn: false
             forward_non_ecn: false
@@ -518,7 +518,7 @@ defaults:
             congestion_algorithm: tail-drop
             minimum_buffer: 0
             pfc_state: false
-            no_drop_cos: unspecified
+            no_drop_cos: ''
             pfc_scope: tor
             ecn: false
             forward_non_ecn: false
@@ -534,7 +534,7 @@ defaults:
             congestion_algorithm: tail-drop
             minimum_buffer: 0
             pfc_state: false
-            no_drop_cos: unspecified
+            no_drop_cos: ''
             pfc_scope: tor
             ecn: false
             forward_non_ecn: false
@@ -550,7 +550,7 @@ defaults:
             congestion_algorithm: tail-drop
             minimum_buffer: 0
             pfc_state: false
-            no_drop_cos: unspecified
+            no_drop_cos: ''
             pfc_scope: tor
             ecn: false
             forward_non_ecn: false

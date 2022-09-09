@@ -9,9 +9,9 @@ Resource        ../../apic_common.resource
 {% set snmp_policy_name = snmp.name ~ defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix %}
 
 Verify Monitoring Policy SNMP Trap Policy {{ snmp_policy_name }}
-    GET   "/api/mo/uni/fabric/moncommon/snmpsrc-{{ snmp_policy_name }}.json?rsp-subtree=full"
-    String   $..snmpSrc.attributes.name   {{ snmp_policy_name }}
-    String   $..snmpRsDestGroup.attributes.tDn   uni/fabric/snmpgroup-{{ snmp_policy_name }}
+    ${r}=   GET On Session   apic   /api/mo/uni/fabric/moncommon/snmpsrc-{{ snmp_policy_name }}.json   params=rsp-subtree=full
+    Should Be Equal Value Json String   ${r.json()}    $..snmpSrc.attributes.name   {{ snmp_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..snmpRsDestGroup.attributes.tDn   uni/fabric/snmpgroup-{{ snmp_policy_name }}
 
 {% endfor %}
 
@@ -25,10 +25,10 @@ Verify Monitoring Policy SNMP Trap Policy {{ snmp_policy_name }}
 {% if include == ['audit', 'events', 'faults', 'session'] %}{% set include = [("all")] + include %}{% endif %}
 
 Verify Monitoring Policy Syslog Policy {{ syslog_policy_name }}
-    GET   "/api/mo/uni/fabric/moncommon/slsrc-{{ syslog_policy_name }}.json?rsp-subtree=full"
-    String   $..syslogSrc.attributes.name   {{ syslog_policy_name }}
-    String   $..syslogSrc.attributes.incl   {{ include | join(',') }}
-    String   $..syslogSrc.attributes.minSev   {{ syslog.minimum_severity | default(defaults.apic.fabric_policies.monitoring.syslogs.minimum_severity) }}
-    String   $..syslogRsDestGroup.attributes.tDn   uni/fabric/slgroup-{{ syslog_policy_name }}
+    ${r}=   GET On Session   apic   /api/mo/uni/fabric/moncommon/slsrc-{{ syslog_policy_name }}.json   params=rsp-subtree=full
+    Should Be Equal Value Json String   ${r.json()}    $..syslogSrc.attributes.name   {{ syslog_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..syslogSrc.attributes.incl   {{ include | join(',') }}
+    Should Be Equal Value Json String   ${r.json()}    $..syslogSrc.attributes.minSev   {{ syslog.minimum_severity | default(defaults.apic.fabric_policies.monitoring.syslogs.minimum_severity) }}
+    Should Be Equal Value Json String   ${r.json()}    $..syslogRsDestGroup.attributes.tDn   uni/fabric/slgroup-{{ syslog_policy_name }}
 
 {% endfor %}

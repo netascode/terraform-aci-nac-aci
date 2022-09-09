@@ -6,7 +6,7 @@ Resource        ../../apic_common.resource
 
 *** Test Cases ***
 Verify Port Tracking
-    GET   "/api/mo/uni/infra/trackEqptFabP-default.json"
-    String   $..infraPortTrackPol.attributes.adminSt   {{ apic.fabric_policies.port_tracking.admin_state | default(defaults.apic.fabric_policies.port_tracking.admin_state) | cisco.aac.aac_bool("on") }}
-    String   $..infraPortTrackPol.attributes.delay   {{ apic.fabric_policies.port_tracking.delay | default(defaults.apic.fabric_policies.port_tracking.delay) }}
-    String   $..infraPortTrackPol.attributes.minlinks   {{ apic.fabric_policies.port_tracking.min_links | default(defaults.apic.fabric_policies.port_tracking.min_links) }}
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/trackEqptFabP-default.json
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortTrackPol.attributes.adminSt   {{ apic.fabric_policies.port_tracking.admin_state | default(defaults.apic.fabric_policies.port_tracking.admin_state) | cisco.aac.aac_bool("on") }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortTrackPol.attributes.delay   {{ apic.fabric_policies.port_tracking.delay | default(defaults.apic.fabric_policies.port_tracking.delay) }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraPortTrackPol.attributes.minlinks   {{ apic.fabric_policies.port_tracking.min_links | default(defaults.apic.fabric_policies.port_tracking.min_links) }}

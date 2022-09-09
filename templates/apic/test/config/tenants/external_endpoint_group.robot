@@ -11,19 +11,20 @@ Resource        ../../../apic_common.resource
 {% set l3out_name = l3out.name ~ defaults.apic.tenants.l3outs.name_suffix %}
 
 Get L3out {{ l3out_name }}
-    GET   "/api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}.json?rsp-subtree=full&rsp-prop-include=config-only"
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}.json   params=rsp-subtree=full&rsp-prop-include=config-only
+    Set Suite Variable   ${r}
 
 {% for epg in l3out.external_endpoint_groups | default([]) %}
 {% set eepg_name = epg.name ~ defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix %}
 
 Verify L3out {{ l3out_name }} External EPG {{ eepg_name }}
     ${eepg}=   Set Variable   $..l3extOut.children[?(@.l3extInstP.attributes.name=='{{ eepg_name }}')]
-    String   ${eepg}..l3extInstP.attributes.name   {{ eepg_name }}
-    String   ${eepg}..l3extInstP.attributes.nameAlias   {{ epg.alias | default() }}
-    String   ${eepg}..l3extInstP.attributes.descr   {{ epg.description | default() }}
-    String   ${eepg}..l3extInstP.attributes.prefGrMemb   {{ epg.preferred_group | default(defaults.apic.tenants.l3outs.external_endpoint_groups.preferred_group) }}
-    String   ${eepg}..l3extInstP.attributes.prio   {{ epg.qos_class | default(defaults.apic.tenants.l3outs.external_endpoint_groups.qos_class) }}
-    String   ${eepg}..l3extInstP.attributes.targetDscp   {{ epg.target_dscp | default(defaults.apic.tenants.l3outs.external_endpoint_groups.target_dscp) }}
+    Should Be Equal Value Json String   ${r.json()}   ${eepg}..l3extInstP.attributes.name   {{ eepg_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${eepg}..l3extInstP.attributes.nameAlias   {{ epg.alias | default() }}
+    Should Be Equal Value Json String   ${r.json()}   ${eepg}..l3extInstP.attributes.descr   {{ epg.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   ${eepg}..l3extInstP.attributes.prefGrMemb   {{ epg.preferred_group | default(defaults.apic.tenants.l3outs.external_endpoint_groups.preferred_group) }}
+    Should Be Equal Value Json String   ${r.json()}   ${eepg}..l3extInstP.attributes.prio   {{ epg.qos_class | default(defaults.apic.tenants.l3outs.external_endpoint_groups.qos_class) }}
+    Should Be Equal Value Json String   ${r.json()}   ${eepg}..l3extInstP.attributes.targetDscp   {{ epg.target_dscp | default(defaults.apic.tenants.l3outs.external_endpoint_groups.target_dscp) }}
 
 {% for subnet in epg.subnets | default([]) %}
 {% set scope = [] %}
@@ -40,12 +41,12 @@ Verify L3out {{ l3out_name }} External EPG {{ eepg_name }}
 Verify L3out {{ l3out_name }} External EPG {{ eepg_name }} Subnet {{ subnet.prefix }}
     ${eepg}=   Set Variable   $..l3extOut.children[?(@.l3extInstP.attributes.name=='{{ eepg_name }}')]
     ${subnet}=   Set Variable   ${eepg}..l3extInstP.children[?(@.l3extSubnet.attributes.ip=='{{ subnet.prefix }}')]
-    String   ${subnet}..l3extSubnet.attributes.aggregate   {{ agg | join(',') }}
-    String   ${subnet}..l3extSubnet.attributes.ip   {{ subnet.prefix }}
-    String   ${subnet}..l3extSubnet.attributes.name   {{ subnet.name | default() }}
-    String   ${subnet}..l3extSubnet.attributes.scope   {{ scope | join(',') }}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..l3extSubnet.attributes.aggregate   {{ agg | join(',') }}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..l3extSubnet.attributes.ip   {{ subnet.prefix }}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..l3extSubnet.attributes.name   {{ subnet.name | default() }}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..l3extSubnet.attributes.scope   {{ scope | join(',') }}
 {% if subnet.bgp_route_summarization | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.bgp_route_summarization) | cisco.aac.aac_bool("yes") ==  "yes" %}
-    String   ${subnet}..l3extRsSubnetToRtSumm.attributes.tDn   uni/tn-common/bgprtsum-default
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..l3extRsSubnetToRtSumm.attributes.tDn   uni/tn-common/bgprtsum-default
 {% endif %}
 
 {% endfor %}
@@ -56,7 +57,7 @@ Verify L3out {{ l3out_name }} External EPG {{ eepg_name }} Subnet {{ subnet.pref
 Verify L3out {{ l3out_name }} External EPG {{ eepg_name }} Provided Contract {{ contract_name }}
     ${eepg}=   Set Variable   $..l3extOut.children[?(@.l3extInstP.attributes.name=='{{ eepg_name }}')]
     ${contract}=   Set Variable   ${eepg}..l3extInstP.children[?(@.fvRsProv.attributes.tnVzBrCPName=='{{ contract_name }}')]
-    String   ${contract}..fvRsProv.attributes.tnVzBrCPName   {{ contract_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${contract}..fvRsProv.attributes.tnVzBrCPName   {{ contract_name }}
 
 {% endfor %}
 
@@ -66,7 +67,7 @@ Verify L3out {{ l3out_name }} External EPG {{ eepg_name }} Provided Contract {{ 
 Verify L3out {{ l3out_name }} External EPG {{ eepg_name }} Consumed Contract {{ contract_name }}
     ${eepg}=   Set Variable   $..l3extOut.children[?(@.l3extInstP.attributes.name=='{{ eepg_name }}')]
     ${contract}=   Set Variable   ${eepg}..l3extInstP.children[?(@.fvRsCons.attributes.tnVzBrCPName=='{{ contract_name }}')]
-    String   ${contract}..fvRsCons.attributes.tnVzBrCPName   {{ contract_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${contract}..fvRsCons.attributes.tnVzBrCPName   {{ contract_name }}
 
 {% endfor %}
 
@@ -76,7 +77,7 @@ Verify L3out {{ l3out_name }} External EPG {{ eepg_name }} Consumed Contract {{ 
 Verify L3out {{ l3out_name }} External EPG {{ eepg_name }} Consumed Contract {{ contract_name }}
     ${eepg}=   Set Variable   $..l3extOut.children[?(@.l3extInstP.attributes.name=='{{ eepg_name }}')]
     ${contract}=   Set Variable   ${eepg}..l3extInstP.children[?(@.fvRsConsIf.attributes.tnVzCPIfName=='{{ contract_name }}')]
-    String   ${contract}..fvRsConsIf.attributes.tnVzCPIfName   {{ contract_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${contract}..fvRsConsIf.attributes.tnVzCPIfName   {{ contract_name }}
 
 {% endfor %}
 

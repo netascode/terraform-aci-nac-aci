@@ -12,8 +12,8 @@ Resource        ../../apic_common.resource
 {% if policy.bpdu_guard | default(defaults.apic.access_policies.interface_policies.spanning_tree_policies.bpdu_guard) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("bpdu-guard")] %}{% endif %}
 
 Verify Spanning Tree Interface Policy {{spanning_tree_policy_name }}
-    GET   "/api/mo/uni/infra/ifPol-{{spanning_tree_policy_name }}.json"
-    String   $..stpIfPol.attributes.name   {{ spanning_tree_policy_name }}
-    String   $..stpIfPol.attributes.ctrl   {{ ctrl | join(',') }}
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/ifPol-{{spanning_tree_policy_name }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..stpIfPol.attributes.name   {{ spanning_tree_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..stpIfPol.attributes.ctrl   {{ ctrl | join(',') }}
 
 {% endfor %}

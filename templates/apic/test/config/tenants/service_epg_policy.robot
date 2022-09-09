@@ -11,9 +11,9 @@ Resource        ../../../apic_common.resource
 {% set pol_name = pol.name ~ defaults.apic.tenants.services.service_epg_policies.name_suffix %}
 
 Verify Service EPG Policy {{ pol_name }}
-    GET   "/api/mo/uni/tn-{{ tenant.name }}/svcCont/svcEPgPol-{{ pol_name }}.json?rsp-subtree=full"
-    String   $..vnsSvcEPgPol.attributes.descr   {{ pol.description | default() }}
-    String   $..vnsSvcEPgPol.attributes.name   {{ pol_name }}
-    String   $..vnsSvcEPgPol.attributes.prefGrMemb   {{ pol.preferred_group | default() }}
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/svcCont/svcEPgPol-{{ pol_name }}.json   params=rsp-subtree=full
+    Should Be Equal Value Json String   ${r.json()}   $..vnsSvcEPgPol.attributes.descr   {{ pol.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   $..vnsSvcEPgPol.attributes.name   {{ pol_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..vnsSvcEPgPol.attributes.prefGrMemb   {{ pol.preferred_group | default() }}
 
 {% endfor %}

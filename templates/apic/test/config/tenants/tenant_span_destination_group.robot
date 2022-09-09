@@ -13,18 +13,18 @@ Resource        ../../../apic_common.resource
 {% set endpoint_group_name = span.endpoint_group ~ defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix %}
 
 Verify Tenant SPAN Destination Group {{ span_dst_grp_name }}
-    GET  "/api/mo/uni/tn-{{ tenant.name }}/destgrp-{{ span_dst_grp_name }}.json?rsp-subtree=full"
-    String   $..spanDestGrp.attributes.name   {{ span_dst_grp_name }}
-    String   $..spanDestGrp.attributes.descr   {{ span.description | default() }}
-    String   $..spanDest.attributes.name   {{ span_dst_grp_name }}
-    String   $..spanRsDestEpg.attributes.ip   {{ span.ip }}
-    String   $..spanRsDestEpg.attributes.srcIpPrefix   {{ span.source_prefix }}
-    String   $..spanRsDestEpg.attributes.dscp   {{ span.dscp | default(defaults.apic.tenants.policies.span.destination_groups.dscp) }}
-    String   $..spanRsDestEpg.attributes.flowId   {{ span.flow_id | default(defaults.apic.tenants.policies.span.destination_groups.flow_id) }}
-    String   $..spanRsDestEpg.attributes.mtu   {{ span.mtu | default(defaults.apic.tenants.policies.span.destination_groups.mtu) }}
-    String   $..spanRsDestEpg.attributes.ttl   {{ span.ttl | default(defaults.apic.tenants.policies.span.destination_groups.ttl) }}
-    String   $..spanRsDestEpg.attributes.ver   ver{{ span.version | default(defaults.apic.tenants.policies.span.destination_groups.version) }}
-    String   $..spanRsDestEpg.attributes.verEnforced   {{ span.enforce_version | default(defaults.apic.tenants.policies.span.destination_groups.enforce_version) | cisco.aac.aac_bool("yes") }}
-    String   $..spanRsDestEpg.attributes.tDn   uni/tn-{{ span.tenant | default(tenant.name) }}/ap-{{ application_profile_name }}/epg-{{ endpoint_group_name }}
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/destgrp-{{ span_dst_grp_name }}.json   params=rsp-subtree=full
+    Should Be Equal Value Json String   ${r.json()}   $..spanDestGrp.attributes.name   {{ span_dst_grp_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..spanDestGrp.attributes.descr   {{ span.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   $..spanDest.attributes.name   {{ span_dst_grp_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..spanRsDestEpg.attributes.ip   {{ span.ip }}
+    Should Be Equal Value Json String   ${r.json()}   $..spanRsDestEpg.attributes.srcIpPrefix   {{ span.source_prefix }}
+    Should Be Equal Value Json String   ${r.json()}   $..spanRsDestEpg.attributes.dscp   {{ span.dscp | default(defaults.apic.tenants.policies.span.destination_groups.dscp) }}
+    Should Be Equal Value Json String   ${r.json()}   $..spanRsDestEpg.attributes.flowId   {{ span.flow_id | default(defaults.apic.tenants.policies.span.destination_groups.flow_id) }}
+    Should Be Equal Value Json String   ${r.json()}   $..spanRsDestEpg.attributes.mtu   {{ span.mtu | default(defaults.apic.tenants.policies.span.destination_groups.mtu) }}
+    Should Be Equal Value Json String   ${r.json()}   $..spanRsDestEpg.attributes.ttl   {{ span.ttl | default(defaults.apic.tenants.policies.span.destination_groups.ttl) }}
+    Should Be Equal Value Json String   ${r.json()}   $..spanRsDestEpg.attributes.ver   ver{{ span.version | default(defaults.apic.tenants.policies.span.destination_groups.version) }}
+    Should Be Equal Value Json String   ${r.json()}   $..spanRsDestEpg.attributes.verEnforced   {{ span.enforce_version | default(defaults.apic.tenants.policies.span.destination_groups.enforce_version) | cisco.aac.aac_bool("yes") }}
+    Should Be Equal Value Json String   ${r.json()}   $..spanRsDestEpg.attributes.tDn   uni/tn-{{ span.tenant | default(tenant.name) }}/ap-{{ application_profile_name }}/epg-{{ endpoint_group_name }}
 
 {% endfor %}

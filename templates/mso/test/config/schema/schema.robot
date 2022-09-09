@@ -8,53 +8,54 @@ Resource        ../../mso_common.resource
 {% for schema in mso.schemas | default([]) %}
 
 Verify Schema {{ schema.name }}
-    GET   "/api/v1/schemas/%%schemas%{{ schema.name }}%%"
-    String   $.displayName   {{ schema.name }}
+    ${r}=   GET On Session   mso   /api/v1/schemas/%%schemas%{{ schema.name }}%%
+    Set Suite Variable   ${r}
+    Should Be Equal Value Json String   ${r.json()}   $.displayName   {{ schema.name }}
 
 {% for template in schema.templates | default([]) %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }}
     ${template}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')]
-    String   ${template}.name   {{ template.name }}
+    Should Be Equal Value Json String   ${r.json()}   ${template}.name   {{ template.name }}
 
 {% for ap in template.application_profiles | default([]) %}
 {% set ap_name = ap.name ~ defaults.mso.schemas.templates.application_profiles.name_suffix %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile {{ ap_name }}
     ${ap}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].anps[?(@.name=='{{ ap_name }}')]
-    String   ${ap}.name   {{ ap_name }}
-    String   ${ap}.displayName   {{ ap_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${ap}.name   {{ ap_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${ap}.displayName   {{ ap_name }}
 
 {% for epg in ap.endpoint_groups | default([]) %}
 {% set epg_name = epg.name ~ defaults.mso.schemas.templates.application_profiles.endpoint_groups.name_suffix %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile {{ ap_name }} Endpoint Group {{ epg_name }}
     ${epg}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].anps[?(@.name=='{{ ap_name }}')].epgs[?(@.name=='{{ epg_name }}')]
-    String   ${epg}.name   {{ epg_name }}
-    String   ${epg}.displayName   {{ epg_name }}
-    Boolean   ${epg}.uSegEpg   {% if epg.useg | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.useg) == "enabled" %}true{% else %}false{% endif %} 
-    String   ${epg}.intraEpg   {% if epg.proxy_arp | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.proxy_arp) == "enabled" %}"enforced"{% else %}"unenforced"{% endif %}
-    Boolean   ${epg}.proxyArp   {% if epg.proxy_arp | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.proxy_arp) == "enabled" %}true{% else %}false{% endif %} 
-    Boolean   ${epg}.preferredGroup   {% if epg.preferred_group | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.preferred_group) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.name   {{ epg_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.displayName   {{ epg_name }}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${epg}.uSegEpg   {% if epg.useg | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.useg) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.intraEpg   {% if epg.proxy_arp | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.proxy_arp) == "enabled" %}"enforced"{% else %}unenforced{% endif %} 
+    Should Be Equal Value Json Boolean   ${r.json()}   ${epg}.proxyArp   {% if epg.proxy_arp | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.proxy_arp) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json Boolean   ${r.json()}   ${epg}.preferredGroup   {% if epg.preferred_group | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.preferred_group) == "enabled" %}true{% else %}false{% endif %} 
 {% if epg.bridge_domain.name is defined %}
 {% set bd_name = epg.bridge_domain.name ~ defaults.mso.schemas.templates.bridge_domains.name_suffix %}
-    String   ${epg}.bdRef   /schemas/%%schemas%{{ epg.bridge_domain.schema | default(schema.name) }}%%/templates/{{ epg.bridge_domain.template | default(template.name) }}/bds/{{ bd_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.bdRef   /schemas/%%schemas%{{ epg.bridge_domain.schema | default(schema.name) }}%%/templates/{{ epg.bridge_domain.template | default(template.name) }}/bds/{{ bd_name }}
 {% endif %}
 {% if epg.vrf.name is defined %}
 {% set vrf_name = epg.vrf.name ~ defaults.mso.schemas.templates.vrfs.name_suffix %}
-    String   ${epg}.vrfRef   /schemas/%%schemas%{{ epg.vrf.schema | default(schema.name) }}%%/templates/{{ epg.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.vrfRef   /schemas/%%schemas%{{ epg.vrf.schema | default(schema.name) }}%%/templates/{{ epg.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}
 {% endif %}
 
 {% for subnet in epg.subnets | default([]) %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile {{ ap_name }} Endpoint Group {{ epg_name }} Subnet {{ subnet.ip }}
     ${subnet}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].anps[?(@.name=='{{ ap_name }}')].epgs[?(@.name=='{{ epg_name }}')].subnets[?(@.ip=='{{ subnet.ip }}')]
-    String   ${subnet}.ip   {{ subnet.ip }}
-    String   ${subnet}.scope   {{ subnet.scope | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.subnets.scope) }}
-    Boolean   ${subnet}.shared   {% if subnet.shared | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.subnets.shared) == "enabled" %}true{% else %}false{% endif %} 
-    Boolean   ${subnet}.noDefaultGateway   {% if subnet.no_default_gateway | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.subnets.no_default_gateway) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}.ip   {{ subnet.ip }}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}.scope   {{ subnet.scope | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.subnets.scope) }}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.shared   {% if subnet.shared | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.subnets.shared) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.noDefaultGateway   {% if subnet.no_default_gateway | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.subnets.no_default_gateway) == "enabled" %}true{% else %}false{% endif %} 
 {% if mso.version | default(defaults.mso.version) is version('3.1.1h', '>=') %}
-    Boolean   ${subnet}.primary   {% if subnet.primary | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.subnets.primary) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.primary   {% if subnet.primary | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.subnets.primary) == "enabled" %}true{% else %}false{% endif %} 
 {% endif %}
 {% endfor %}
 
@@ -67,18 +68,18 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
 
 Verify Schema {{ schema.name }} Template {{ template.name }} VRF {{ vrf_name }}
     ${vrf}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].vrfs[?(@.name=='{{ vrf_name }}')]
-    String   ${vrf}.name   {{ vrf_name }}
-    String   ${vrf}.displayName   {{ vrf_name }}
-    Boolean   ${vrf}.preferredGroup   {% if vrf.preferred_group | default(defaults.mso.schemas.templates.vrfs.preferred_group) == "enabled" %}true{% else %}false{% endif %} 
-    Boolean   ${vrf}.l3MCast   {% if vrf.l3_multicast | default(defaults.mso.schemas.templates.vrfs.l3_multicast) == "enabled" %}true{% else %}false{% endif %} 
-    Boolean   ${vrf}.vzAnyEnabled   {% if vrf.vzany | default(defaults.mso.schemas.templates.vrfs.vzany) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json String   ${r.json()}   ${vrf}.name   {{ vrf_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${vrf}.displayName   {{ vrf_name }}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.preferredGroup   {% if vrf.preferred_group | default(defaults.mso.schemas.templates.vrfs.preferred_group) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.l3MCast   {% if vrf.l3_multicast | default(defaults.mso.schemas.templates.vrfs.l3_multicast) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.vzAnyEnabled   {% if vrf.vzany | default(defaults.mso.schemas.templates.vrfs.vzany) == "enabled" %}true{% else %}false{% endif %} 
 {% for contract in vrf.contracts.consumers | default([]) %}
     ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].vrfs[?(@.name=='{{ vrf_name }}')].vzAnyConsumerContracts[?(@.contractRef=='/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}')]
-    String   ${con}.contractRef   "/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}"
+    Should Be Equal Value Json String   ${r.json()}   ${con}.contractRef   /schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}
 {% endfor %}
 {% for contract in vrf.contracts.providers | default([]) %}
     ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].vrfs[?(@.name=='{{ vrf_name }}')].vzAnyProviderContracts[?(@.contractRef=='/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}')]
-    String   ${con}.contractRef   "/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}"
+    Should Be Equal Value Json String   ${r.json()}   ${con}.contractRef   /schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}
 {% endfor %}                        
 {% endfor %}
 
@@ -87,27 +88,27 @@ Verify Schema {{ schema.name }} Template {{ template.name }} VRF {{ vrf_name }}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd_name }}
     ${bd}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].bds[?(@.name=='{{ bd_name }}')]
-    String   ${bd}.name   {{ bd_name }}
-    String   ${bd}.displayName   {{ bd_name }}
-    String   ${bd}.l2UnknownUnicast   {{ bd.l2_unknown_unicast | default(defaults.mso.schemas.templates.bridge_domains.l2_unknown_unicast)}}
-    Boolean   ${bd}.intersiteBumTrafficAllow   {% if bd.intersite_bum_traffic | default(defaults.mso.schemas.templates.bridge_domains.intersite_bum_traffic) == "enabled" %}true{% else %}false{% endif %} 
-    Boolean   ${bd}.optimizeWanBandwidth   {% if bd.optimize_wan_bandwidth | default(defaults.mso.schemas.templates.bridge_domains.optimize_wan_bandwidth) == "enabled" %}true{% else %}false{% endif %} 
-    Boolean   ${bd}.l2Stretch   {% if bd.l2_stretch | default(defaults.mso.schemas.templates.bridge_domains.l2_stretch) == "enabled" %}true{% else %}false{% endif %} 
-    Boolean   ${bd}.l3MCast   {% if bd.l3_multicast | default(defaults.mso.schemas.templates.bridge_domains.l3_multicast) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json String   ${r.json()}   ${bd}.name   {{ bd_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${bd}.displayName   {{ bd_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${bd}.l2UnknownUnicast   {{ bd.l2_unknown_unicast | default(defaults.mso.schemas.templates.bridge_domains.l2_unknown_unicast)}}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.intersiteBumTrafficAllow   {% if bd.intersite_bum_traffic | default(defaults.mso.schemas.templates.bridge_domains.intersite_bum_traffic) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.optimizeWanBandwidth   {% if bd.optimize_wan_bandwidth | default(defaults.mso.schemas.templates.bridge_domains.optimize_wan_bandwidth) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.l2Stretch   {% if bd.l2_stretch | default(defaults.mso.schemas.templates.bridge_domains.l2_stretch) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.l3MCast   {% if bd.l3_multicast | default(defaults.mso.schemas.templates.bridge_domains.l3_multicast) == "enabled" %}true{% else %}false{% endif %} 
 {% if mso.version | default(defaults.mso.version) is version('3.1.1h', '>=') %}
-    Boolean   ${bd}.unicastRouting  {% if bd.unicast_routing | default(defaults.mso.schemas.templates.bridge_domains.unicast_routing) == "enabled" %}true{% else %}false{% endif %}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.unicastRouting  {% if bd.unicast_routing | default(defaults.mso.schemas.templates.bridge_domains.unicast_routing) == "enabled" %}true{% else %}false{% endif %}
 {% endif %}
 
 {% if mso.version | default(defaults.mso.version) is version('3.1.1g', '>=') %}
-    Boolean   ${bd}.arpFlood   {% if bd.arp_flooding | default(defaults.mso.schemas.templates.bridge_domains.arp_flooding) == "enabled" %}true{% else %}false{% endif %}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.arpFlood   {% if bd.arp_flooding | default(defaults.mso.schemas.templates.bridge_domains.arp_flooding) == "enabled" %}true{% else %}false{% endif %}
 {% endif %}
 
 {% if bd.dhcp_relay_policy is defined %}
 {% set dhcp_relay_policy_name = bd.dhcp_relay_policy ~ defaults.mso.policies.dhcp_relays.name_suffix %}
-    String   ${bd}.dhcpLabel.name   {{ dhcp_relay_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${bd}.dhcpLabel.name   {{ dhcp_relay_policy_name }}
 {% if bd.dhcp_option_policy is defined %}
 {% set dhcp_option_name = bd.dhcp_option_policy ~ defaults.mso.policies.dhcp_options.name_suffix %}
-    String   ${bd}.dhcpLabel.dhcpOptionLabel.name   {{ dhcp_option_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${bd}.dhcpLabel.dhcpOptionLabel.name   {{ dhcp_option_name }}
 {% endif %}
 {% endif %}
 
@@ -115,10 +116,10 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
 {% for pol in  bd.dhcp_policies | default([]) %}
 {% set dhcp_relay_policy_name = pol.dhcp_relay_policy ~ defaults.mso.policies.dhcp_relays.name_suffix %}
     ${dhcp}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].bds[?(@.name=='{{ bd_name }}')].dhcpLabels[?(@.name=='{{ dhcp_relay_policy_name }}')]                     
-    String   ${dhcp}.name   {{ dhcp_relay_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${dhcp}.name   {{ dhcp_relay_policy_name }}
 {% if pol.dhcp_option_policy is defined %}
 {% set dhcp_option_name = pol.dhcp_option_policy ~ defaults.mso.policies.dhcp_options.name_suffix %}
-    String   ${dhcp}.dhcpOptionLabel.name   {{ dhcp_option_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${dhcp}.dhcpOptionLabel.name   {{ dhcp_option_name }}
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -128,12 +129,12 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd_name }} Subnet {{ subnet.ip }}
     ${subnet}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].bds[?(@.name=='{{ bd_name }}')].subnets[?(@.ip=='{{ subnet.ip }}')]
-    String   ${subnet}.ip   {{ subnet.ip }}
-    String   ${subnet}.scope   {{ subnet.scope | default(defaults.mso.schemas.templates.bridge_domains.subnets.scope) }}
-    Boolean   ${subnet}.shared   {% if subnet.shared | default(defaults.mso.schemas.templates.bridge_domains.subnets.shared) == "enabled" %}true{% else %}false{% endif %} 
-    Boolean   ${subnet}.querier   {% if subnet.querier | default(defaults.mso.schemas.templates.bridge_domains.subnets.querier) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}.ip   {{ subnet.ip }}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}.scope   {{ subnet.scope | default(defaults.mso.schemas.templates.bridge_domains.subnets.scope) }}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.shared   {% if subnet.shared | default(defaults.mso.schemas.templates.bridge_domains.subnets.shared) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.querier   {% if subnet.querier | default(defaults.mso.schemas.templates.bridge_domains.subnets.querier) == "enabled" %}true{% else %}false{% endif %} 
 {% if mso.version | default(defaults.mso.version) is version('3.1.1h', '>=') %}
-    Boolean   ${subnet}.primary   {% if subnet.primary | default(defaults.mso.schemas.templates.bridge_domains.subnets.primary) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.primary   {% if subnet.primary | default(defaults.mso.schemas.templates.bridge_domains.subnets.primary) == "enabled" %}true{% else %}false{% endif %} 
 {% endif %}
 {% endfor %}
 
@@ -144,10 +145,10 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Contract {{ contract_name }}
     ${contract}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].contracts[?(@.name=='{{ contract_name }}')]
-    String   ${contract}.name   {{ contract_name }}
-    String   ${contract}.displayName   {{ contract_name }}
-    String   ${contract}.scope   {{ contract.scope | default(defaults.mso.schemas.templates.contracts.scope) }}
-    String   ${contract}.filterType   {{ contract.type | default(defaults.mso.schemas.templates.contracts.type) }}
+    Should Be Equal Value Json String   ${r.json()}   ${contract}.name   {{ contract_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${contract}.displayName   {{ contract_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${contract}.scope   {{ contract.scope | default(defaults.mso.schemas.templates.contracts.scope) }}
+    Should Be Equal Value Json String   ${r.json()}   ${contract}.filterType   {{ contract.type | default(defaults.mso.schemas.templates.contracts.type) }}
 
 {% endfor %}
 
@@ -156,8 +157,8 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Contract {{ contrac
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Filter {{ filter_name }}
     ${filter}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].filters[?(@.name=='{{ filter_name }}')]
-    String   ${filter}.name   {{ filter_name }}
-    String   ${filter}.displayName   {{ filter_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${filter}.name   {{ filter_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${filter}.displayName   {{ filter_name }}
 
 {% for entry in filter.entries | default([]) %}
 {% set entry_name = entry.name ~ defaults.mso.schemas.templates.filters.entries.name_suffix %}
@@ -169,18 +170,18 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Filter {{ filter_na
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Filter {{ filter_name }} Entry {{ entry_name }}
     ${entry}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].filters[?(@.name=='{{ filter_name }}')].entries[?(@.name=='{{ entry_name }}')]
-    String   ${entry}.description   {{ entry.description | default() }}
-    String   ${entry}.etherType   {{ entry.ethertype | default(defaults.mso.schemas.templates.filters.entries.ethertype) }}
+    Should Be Equal Value Json String   ${r.json()}   ${entry}.description   {{ entry.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   ${entry}.etherType   {{ entry.ethertype | default(defaults.mso.schemas.templates.filters.entries.ethertype) }}
 {% if entry.ethertype | default(defaults.mso.schemas.templates.filters.entries.ethertype) in ['ip', 'ipv4', 'ipv6'] %}
-    String   ${entry}.ipProtocol   {{ entry.protocol | default(defaults.mso.schemas.templates.filters.entries.protocol) }}
+    Should Be Equal Value Json String   ${r.json()}   ${entry}.ipProtocol   {{ entry.protocol | default(defaults.mso.schemas.templates.filters.entries.protocol) }}
 {% else %}
-    String   ${entry}.ipProtocol   unspecified
+    Should Be Equal Value Json String   ${r.json()}   ${entry}.ipProtocol   unspecified
 {% endif %}
-    Boolean   ${entry}.stateful   {% if entry.stateful | default(defaults.mso.schemas.templates.filters.entries.stateful) == "enabled" %}true{% else %}false{% endif %} 
-    String   ${entry}.sourceFrom   {{ get_protocol_from_port(entry.source_from_port | default(defaults.mso.schemas.templates.filters.entries.source_from_port)) }}
-    String   ${entry}.sourceTo   {{ get_protocol_from_port(entry.source_to_port | default(entry.source_from_port | default(defaults.mso.schemas.templates.filters.entries.source_from_port))) }}
-    String   ${entry}.destinationFrom   {{ get_protocol_from_port(entry.destination_from_port | default(defaults.mso.schemas.templates.filters.entries.destination_from_port)) }}
-    String   ${entry}.destinationTo   {{ get_protocol_from_port(entry.destination_to_port | default(entry.destination_from_port | default(defaults.mso.schemas.templates.filters.entries.destination_from_port))) }}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${entry}.stateful   {% if entry.stateful | default(defaults.mso.schemas.templates.filters.entries.stateful) == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json String   ${r.json()}   ${entry}.sourceFrom   {{ get_protocol_from_port(entry.source_from_port | default(defaults.mso.schemas.templates.filters.entries.source_from_port)) }}
+    Should Be Equal Value Json String   ${r.json()}   ${entry}.sourceTo   {{ get_protocol_from_port(entry.source_to_port | default(entry.source_from_port | default(defaults.mso.schemas.templates.filters.entries.source_from_port))) }}
+    Should Be Equal Value Json String   ${r.json()}   ${entry}.destinationFrom   {{ get_protocol_from_port(entry.destination_from_port | default(defaults.mso.schemas.templates.filters.entries.destination_from_port)) }}
+    Should Be Equal Value Json String   ${r.json()}   ${entry}.destinationTo   {{ get_protocol_from_port(entry.destination_to_port | default(entry.destination_from_port | default(defaults.mso.schemas.templates.filters.entries.destination_from_port))) }}
 
 {% endfor %}
 
@@ -192,23 +193,23 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Filter {{ filter_na
 
 Verify Schema {{ schema.name }} Template {{ template.name }} External EPG {{ epg_name }}
     ${epg}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].externalEpgs[?(@.name=='{{ epg_name }}')]
-    String   ${epg}.name   {{ epg_name }}
-    String   ${epg}.displayName   {{ epg_name }}
-    Boolean   ${epg}.preferredGroup   {% if epg.preferred_group | default() == "enabled" %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.name   {{ epg_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.displayName   {{ epg_name }}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${epg}.preferredGroup   {% if epg.preferred_group | default() == "enabled" %}true{% else %}false{% endif %} 
 {% if epg.l3out.name is defined %}
 {% set l3out_name = epg.l3out.name ~ defaults.mso.schemas.templates.l3outs.name_suffix %}
-    String   ${epg}.l3outRef   /schemas/%%schemas%{{ epg.l3out.schema | default(schema.name) }}%%/templates/{{ epg.l3out.template | default(template.name) }}/l3outs/{{ l3out_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.l3outRef   /schemas/%%schemas%{{ epg.l3out.schema | default(schema.name) }}%%/templates/{{ epg.l3out.template | default(template.name) }}/l3outs/{{ l3out_name }}
 {% endif %}
 {% if epg.application_profile.name is defined %}
 {% set ap_name = epg.application_profile.name ~ defaults.mso.schemas.templates.application_profiles.name_suffix %}
-    String   ${epg}.anpRef   /schemas/%%schemas%{{ epg.application_profile.schema | default(schema.name) }}%%/templates/{{ epg.application_profile.template | default(template.name) }}/anps/{{ ap_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.anpRef   /schemas/%%schemas%{{ epg.application_profile.schema | default(schema.name) }}%%/templates/{{ epg.application_profile.template | default(template.name) }}/anps/{{ ap_name }}
 {% endif %}
 
 {% for subnet in epg.subnets | default([]) %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} External EPG {{ epg_name }} Subnet {{ subnet.prefix }}
     ${subnet}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].externalEpgs[?(@.name=='{{ epg_name }}')].subnets[?(@.ip=='{{ subnet.prefix }}')]
-    String   ${subnet}.ip   {{ subnet.prefix }}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}.ip   {{ subnet.prefix }}
 
 {% endfor %}
 
@@ -219,15 +220,15 @@ Verify Schema {{ schema.name }} Template {{ template.name }} External EPG {{ epg
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Service Graph {{ sg_name }}
     ${sg}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].serviceGraphs[?(@.name=='{{ sg_name }}')]
-    String   ${sg}.name   {{ sg_name }}
-    String   ${sg}.displayName   {{ sg_name }}
-    String   ${sg}.description   {{ sg.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   ${sg}.name   {{ sg_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${sg}.displayName   {{ sg_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${sg}.description   {{ sg.description | default() }}
 
 {%- for node in sg.nodes | default([]) %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Service Graph {{ sg_name }} Node {{ node.name }}
     ${node}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].serviceGraphs[?(@.name=='{{ sg_name }}')].serviceNodes[?(@.name=='{{ node.name }}')]
-    String   ${node}.name   {{ node.name }}
+    Should Be Equal Value Json String   ${r.json()}   ${node}.name   {{ node.name }}
 
 {% endfor %}
 
@@ -239,8 +240,8 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Service Graph {{ sg
 
 Verify Schema {{ schema.name }} Template {{ template.name }} L3out {{ l3out_name }}
     ${l3out}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].intersiteL3outs[?(@.name=='{{ l3out_name }}')]
-    String   ${l3out}.name   {{ l3out_name }}
-    String   ${l3out}.displayName   {{ l3out_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${l3out}.name   {{ l3out_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${l3out}.displayName   {{ l3out_name }}
 
 {% endfor %}
 

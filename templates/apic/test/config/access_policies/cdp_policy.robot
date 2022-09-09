@@ -9,8 +9,8 @@ Resource        ../../apic_common.resource
 {% set cdp_policy_name = policy.name ~ defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix %}
 
 Verify CDP Interface Policy {{ cdp_policy_name }}
-    GET   "/api/mo/uni/infra/cdpIfP-{{ cdp_policy_name }}.json"
-    String   $..cdpIfPol.attributes.name   {{ cdp_policy_name }}
-    String   $..cdpIfPol.attributes.adminSt   {{ policy.admin_state | cisco.aac.aac_bool("enabled") }}
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/cdpIfP-{{ cdp_policy_name }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..cdpIfPol.attributes.name   {{ cdp_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..cdpIfPol.attributes.adminSt   {{ policy.admin_state | cisco.aac.aac_bool("enabled") }}
 
 {% endfor %}

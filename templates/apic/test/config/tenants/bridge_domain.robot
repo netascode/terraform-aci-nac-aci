@@ -16,34 +16,35 @@ Verify Bridge Domain {{ bd_name }}
 {%- if bd.ep_move_detection is defined and bd.ep_move_detection | cisco.aac.aac_bool("enabled") == "enabled" %}
 {%- set bd_move_detection = "garp" %}
 {%- endif %}
-    GET   "/api/node/mo/uni/tn-{{ tenant.name }}/BD-{{ bd_name }}.json?rsp-subtree=full"
-    string   $..fvBD.attributes.arpFlood   {{ bd.arp_flooding | default(defaults.apic.tenants.bridge_domains.arp_flooding) | cisco.aac.aac_bool("yes") }}
-    string   $..fvBD.attributes.descr   {{ bd.description | default() }}
-    string   $..fvBD.attributes.hostBasedRouting   {{ bd.advertise_host_routes | default(defaults.apic.tenants.bridge_domains.advertise_host_routes) | cisco.aac.aac_bool("yes") }}
-    string   $..fvBD.attributes.ipLearning   {{ bd.ip_dataplane_learning | default(defaults.apic.tenants.bridge_domains.ip_dataplane_learning) | cisco.aac.aac_bool("yes") }}
-    string   $..fvBD.attributes.limitIpLearnToSubnets  {{ bd.limit_ip_learn_to_subnets | default(defaults.apic.tenants.bridge_domains.limit_ip_learn_to_subnets) | cisco.aac.aac_bool("yes") }}
-    string   $..fvBD.attributes.mac   {{ bd.mac | default(defaults.apic.tenants.bridge_domains.mac) }}
-    string   $..fvBD.attributes.vmac   {{ bd.virtual_mac | default() }}
-    string   $..fvBD.attributes.mcastAllow   {{ bd.l3_multicast | default(defaults.apic.tenants.bridge_domains.l3_multicast) | cisco.aac.aac_bool("yes") }}
-    string   $..fvBD.attributes.multiDstPktAct   {{ bd.multi_destination_flooding | default(defaults.apic.tenants.bridge_domains.multi_destination_flooding) }}
-    string   $..fvBD.attributes.nameAlias   {{ bd.alias | default() }}
-    string   $..fvBD.attributes.unicastRoute   {{ bd.unicast_routing | default(defaults.apic.tenants.bridge_domains.unicast_routing) | cisco.aac.aac_bool("yes") }}
-    string   $..fvBD.attributes.unkMacUcastAct   {{ bd.unknown_unicast | default(defaults.apic.tenants.bridge_domains.unknown_unicast) }}
-    string   $..fvBD.attributes.unkMcastAct   {{ bd.unknown_ipv4_multicast | default(defaults.apic.tenants.bridge_domains.unknown_ipv4_multicast) }}
-    string   $..fvBD.attributes.v6unkMcastAct   {{ bd.unknown_ipv6_multicast | default(defaults.apic.tenants.bridge_domains.unknown_ipv6_multicast) }}
-    String   $..fvRsCtx.attributes.tnFvCtxName   {{ vrf_name }}
-    String   $..fvBD.attributes.epMoveDetectMode   {{ bd_move_detection }}
+    ${r}=   GET On Session   apic   /api/node/mo/uni/tn-{{ tenant.name }}/BD-{{ bd_name }}.json   params=rsp-subtree=full
+    Set Suite Variable   ${r}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.arpFlood   {{ bd.arp_flooding | default(defaults.apic.tenants.bridge_domains.arp_flooding) | cisco.aac.aac_bool("yes") }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.descr   {{ bd.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.hostBasedRouting   {{ bd.advertise_host_routes | default(defaults.apic.tenants.bridge_domains.advertise_host_routes) | cisco.aac.aac_bool("yes") }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.ipLearning   {{ bd.ip_dataplane_learning | default(defaults.apic.tenants.bridge_domains.ip_dataplane_learning) | cisco.aac.aac_bool("yes") }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.limitIpLearnToSubnets  {{ bd.limit_ip_learn_to_subnets | default(defaults.apic.tenants.bridge_domains.limit_ip_learn_to_subnets) | cisco.aac.aac_bool("yes") }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.mac   {{ bd.mac | default(defaults.apic.tenants.bridge_domains.mac) }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.vmac   {{ bd.virtual_mac | default() }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.mcastAllow   {{ bd.l3_multicast | default(defaults.apic.tenants.bridge_domains.l3_multicast) | cisco.aac.aac_bool("yes") }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.multiDstPktAct   {{ bd.multi_destination_flooding | default(defaults.apic.tenants.bridge_domains.multi_destination_flooding) }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.nameAlias   {{ bd.alias | default() }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.unicastRoute   {{ bd.unicast_routing | default(defaults.apic.tenants.bridge_domains.unicast_routing) | cisco.aac.aac_bool("yes") }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.unkMacUcastAct   {{ bd.unknown_unicast | default(defaults.apic.tenants.bridge_domains.unknown_unicast) }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.unkMcastAct   {{ bd.unknown_ipv4_multicast | default(defaults.apic.tenants.bridge_domains.unknown_ipv4_multicast) }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.v6unkMcastAct   {{ bd.unknown_ipv6_multicast | default(defaults.apic.tenants.bridge_domains.unknown_ipv6_multicast) }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvRsCtx.attributes.tnFvCtxName   {{ vrf_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.epMoveDetectMode   {{ bd_move_detection }}
 
 {% for dhcp_label in bd.dhcp_labels | default([]) %}
 {% set dhcp_relay_policy_name = dhcp_label.dhcp_relay_policy ~ defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix %}
 
 Verify Bridge Domain {{ bd_name }} DHCP Relay Policy {{ dhcp_relay_policy_name }}
     ${dhcp_label}=   Set Variable   $..fvBD.children[?(@.dhcpLbl.attributes.name=='{{ dhcp_relay_policy_name }}')]
-    String   ${dhcp_label}..dhcpLbl.attributes.name   {{ dhcp_relay_policy_name }}
-    String   ${dhcp_label}..dhcpLbl.attributes.descr   {{ dhcp_label.description | default() }} 
+    Should Be Equal Value Json String   ${r.json()}   ${dhcp_label}..dhcpLbl.attributes.name   {{ dhcp_relay_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${dhcp_label}..dhcpLbl.attributes.descr   {{ dhcp_label.description | default() }} 
 {% if dhcp_label.dhcp_option_policy is defined %}
 {% set dhcp_option_policy_name = dhcp_label.dhcp_option_policy ~ defaults.apic.tenants.policies.dhcp_option_policies.name_suffix %}
-    String   ${dhcp_label}..dhcpRsDhcpOptionPol.attributes.tnDhcpOptionPolName   {{ dhcp_option_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${dhcp_label}..dhcpRsDhcpOptionPol.attributes.tnDhcpOptionPolName   {{ dhcp_option_policy_name }}
 {% endif %}
 
 {% endfor %}
@@ -60,12 +61,12 @@ Verify Bridge Domain {{ bd_name }} DHCP Relay Policy {{ dhcp_relay_policy_name }
 
 Verify Bridge Domain {{ bd_name }} Subnet {{ subnet.ip }}
     ${subnet}=   Set Variable   $..fvBD.children[?(@.fvSubnet.attributes.ip=='{{ subnet.ip }}')]
-    String   ${subnet}..fvSubnet.attributes.ip   {{ subnet.ip }}
-    String   ${subnet}..fvSubnet.attributes.ctrl   {{ ctrl | join(',') }}
-    String   ${subnet}..fvSubnet.attributes.descr   {{ subnet.description | default() }}
-    String   ${subnet}..fvSubnet.attributes.preferred   {{ subnet.primary_ip | default(defaults.apic.tenants.bridge_domains.subnets.primary_ip) | cisco.aac.aac_bool("yes") }}
-    String   ${subnet}..fvSubnet.attributes.scope   {{ scope | join(',') }}   
-    String   ${subnet}..fvSubnet.attributes.virtual   {{ subnet.virtual | default(defaults.apic.tenants.bridge_domains.subnets.virtual) | cisco.aac.aac_bool("yes") }}               
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.attributes.ip   {{ subnet.ip }}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.attributes.ctrl   {{ ctrl | join(',') }}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.attributes.descr   {{ subnet.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.attributes.preferred   {{ subnet.primary_ip | default(defaults.apic.tenants.bridge_domains.subnets.primary_ip) | cisco.aac.aac_bool("yes") }}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.attributes.scope   {{ scope | join(',') }}   
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.attributes.virtual   {{ subnet.virtual | default(defaults.apic.tenants.bridge_domains.subnets.virtual) | cisco.aac.aac_bool("yes") }}               
 
 {% endfor %}
 
@@ -74,7 +75,7 @@ Verify Bridge Domain {{ bd_name }} Subnet {{ subnet.ip }}
 
 Verify Bridge Domain {{ bd_name }} L3out {{ l3out_name }}
     ${l3out}=   Set Variable   $..fvBD.children[?(@.fvRsBDToOut.attributes.tnL3extOutName=='{{ l3out_name }}')]
-    String   ${l3out}..fvRsBDToOut.attributes.tnL3extOutName   {{ l3out_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${l3out}..fvRsBDToOut.attributes.tnL3extOutName   {{ l3out_name }}
 
 {% endfor %}
 
@@ -82,7 +83,7 @@ Verify Bridge Domain {{ bd_name }} L3out {{ l3out_name }}
 {% set igmp_interface_policy_name = bd.igmp_interface_policy ~ defaults.apic.tenants.policies.igmp_interface_policies.name_suffix %}
 
 Verify Bridge Domain {{ bd_name }} IGMP Interface Policy
-    String   $..fvBD.children..igmpIfP.children..igmpRsIfPol.attributes.tDn   uni/tn-{{ tenant.name }}/igmpIfPol-{{ igmp_interface_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.children..igmpIfP.children..igmpRsIfPol.attributes.tDn   uni/tn-{{ tenant.name }}/igmpIfPol-{{ igmp_interface_policy_name }}
 
 {% endif %}
 
@@ -90,7 +91,7 @@ Verify Bridge Domain {{ bd_name }} IGMP Interface Policy
 {% set igmp_snooping_policy_name = bd.igmp_snooping_policy ~ defaults.apic.tenants.policies.igmp_snooping_policies.name_suffix %}
                         
 Verify Bridge Domain {{ bd_name }} IGMP Snooping Policy
-    String   $..fvBD.children..fvRsIgmpsn.attributes.tnIgmpSnoopPolName   {{ igmp_snooping_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.children..fvRsIgmpsn.attributes.tnIgmpSnoopPolName   {{ igmp_snooping_policy_name }}
 
 {% endif %}
 

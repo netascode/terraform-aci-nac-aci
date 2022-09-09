@@ -13,9 +13,9 @@ Resource        ../../apic_common.resource
 {% if policy.admin_state == "n1red" %}{% set admin_state = "ps-rdn" %}{% endif %}
 
 Verify PSU Policy {{ policy_name }}
-    GET   "/api/mo/uni/fabric/psuInstP-{{ policy_name }}.json"
-    String   $..psuInstPol.attributes.name   {{ policy_name }}
-    String   $..psuInstPol.attributes.adminRdnM   {{ admin_state }}
+    ${r}=   GET On Session   apic   /api/mo/uni/fabric/psuInstP-{{ policy_name }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..psuInstPol.attributes.name   {{ policy_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..psuInstPol.attributes.adminRdnM   {{ admin_state }}
 
 {% endfor %}
 

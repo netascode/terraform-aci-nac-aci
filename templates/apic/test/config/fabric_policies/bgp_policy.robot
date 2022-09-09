@@ -7,7 +7,8 @@ Resource        ../../apic_common.resource
 *** Test Cases ***
 {% if apic.fabric_policies is defined %}
 Retrieve BGP config
-    GET   "/api/mo/uni/fabric/bgpInstP-default.json?rsp-subtree=full"
+    ${r}=   GET On Session   apic   /api/mo/uni/fabric/bgpInstP-default.json   params=rsp-subtree=full
+    Set Suite Variable   ${r}
 
 {% if apic.fabric_policies.fabric_bgp_rr is defined %}
 {% for item in apic.fabric_policies.fabric_bgp_rr | default([]) %}
@@ -16,8 +17,8 @@ Retrieve BGP config
 
 Verify BGP Route Reflector {{ item }}
     ${rr}=   Set Variable   $..bgpRRP.children[?(@.bgpRRNodePEp.attributes.id=='{{ item }}')]
-    String   ${rr}..bgpRRNodePEp.attributes.id   {{ item }}
-    String   ${rr}..bgpRRNodePEp.attributes.podId   {{ pod }}
+    Should Be Equal Value Json String   ${r.json()}    ${rr}..bgpRRNodePEp.attributes.id   {{ item }}
+    Should Be Equal Value Json String   ${r.json()}    ${rr}..bgpRRNodePEp.attributes.podId   {{ pod }}
 
 {% endfor %}
 {% endif %}
@@ -29,15 +30,15 @@ Verify BGP Route Reflector {{ item }}
 
 Verify External BGP Route Reflector {{ item }}
     ${extrr}=   Set Variable   $..bgpExtRRP.children[?(@.bgpRRNodePEp.attributes.id=='{{ item }}')]
-    String   ${extrr}..bgpRRNodePEp.attributes.id   {{ item }}
-    String   ${extrr}..bgpRRNodePEp.attributes.podId   {{ pod }}
+    Should Be Equal Value Json String   ${r.json()}    ${extrr}..bgpRRNodePEp.attributes.id   {{ item }}
+    Should Be Equal Value Json String   ${r.json()}    ${extrr}..bgpRRNodePEp.attributes.podId   {{ pod }}
 
 {% endfor %}
 {% endif %}
 
 {% if apic.fabric_policies.fabric_bgp_as is defined %}
 Verify BGP AS Number
-    String   $..bgpAsP.attributes.asn   {{ apic.fabric_policies.fabric_bgp_as }}
+    Should Be Equal Value Json String   ${r.json()}    $..bgpAsP.attributes.asn   {{ apic.fabric_policies.fabric_bgp_as }}
 {% else %}
 
 {% endif %}

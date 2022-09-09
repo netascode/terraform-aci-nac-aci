@@ -11,8 +11,8 @@ Resource        ../../apic_common.resource
 {% set leaf_interface_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.fabric_policies.leaf_interface_profile_name | default(defaults.apic.fabric_policies.leaf_interface_profile_name))) %}
 
 Verify Fabric Leaf Interface Profile {{ leaf_interface_profile_name }}
-    GET   "/api/mo/uni/fabric/leportp-{{ leaf_interface_profile_name }}.json"
-    String   $..fabricLePortP.attributes.name   {{ leaf_interface_profile_name }}
+    ${r}=   GET On Session   apic   /api/mo/uni/fabric/leportp-{{ leaf_interface_profile_name }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..fabricLePortP.attributes.name   {{ leaf_interface_profile_name }}
 
 {% endif %}
 {% endfor %}
@@ -22,7 +22,7 @@ Verify Fabric Leaf Interface Profile {{ leaf_interface_profile_name }}
 {% set leaf_interface_profile_name = prof.name ~ defaults.apic.fabric_policies.leaf_interface_profiles.name_suffix %}
 
 Verify Fabric Leaf Interface Profile {{ leaf_interface_profile_name }}
-    GET   "/api/mo/uni/fabric/leportp-{{ leaf_interface_profile_name }}.json"
-    String   $..fabricLePortP.attributes.name   {{ leaf_interface_profile_name }}
+    ${r}=   GET On Session   apic   /api/mo/uni/fabric/leportp-{{ leaf_interface_profile_name }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..fabricLePortP.attributes.name   {{ leaf_interface_profile_name }}
 
 {% endfor %}

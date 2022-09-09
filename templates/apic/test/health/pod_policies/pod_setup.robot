@@ -8,15 +8,15 @@ Resource        ../../apic_common.resource
 {% for pod in apic.pod_policies.pods | default([]) %}
 
 Verify Pod {{ pod.id }} Faults
-    GET   "/api/mo/uni/controller/setuppol/setupp-{{ pod.id }}/fltCnts.json"
-    ${critical}=   Output   $..faultCounts.attributes.crit
-    ${major}=   Output   $..faultCounts.attributes.maj
-    ${minor}=   Output   $..faultCounts.attributes.minor
-    Run Keyword If   ${critical} > 0   Run Keyword And Continue On Failure
-    ...   Fail  "{{ pod.id }} has ${critical} critical faults"
-    Run Keyword If   ${major} > 0   Run Keyword And Continue On Failure
-    ...   Fail  "{{ pod.id }} has ${major} major faults"
-    Run Keyword If   ${minor} > 0   Run Keyword And Continue On Failure
-    ...   Fail  "{{ pod.id }} has ${minor} minor faults"
+    ${r}=   GET On Session   apic   /api/mo/uni/controller/setuppol/setupp-{{ pod.id }}/fltCnts.json
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
+    Run Keyword If   ${critical}[0] > 0   Run Keyword And Continue On Failure
+    ...   Fail  "{{ pod.id }} has ${critical}[0] critical faults"
+    Run Keyword If   ${major}[0] > 0   Run Keyword And Continue On Failure
+    ...   Fail  "{{ pod.id }} has ${major}[0] major faults"
+    Run Keyword If   ${minor}[0] > 0   Run Keyword And Continue On Failure
+    ...   Fail  "{{ pod.id }} has ${minor}[0] minor faults"
 
 {% endfor %}

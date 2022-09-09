@@ -9,12 +9,12 @@ Resource        ../../apic_common.resource
 {% set keyring_name = keyring.name ~ defaults.apic.fabric_policies.aaa.key_rings.name_suffix %}
 
 Verify Keyring {{ keyring_name }}
-    GET   "api/node/mo/uni/userext/pkiext/keyring-{{ keyring_name }}.json"
-    String   $..pkiKeyRing.attributes.name  {{ keyring_name }}
-    String   $..pkiKeyRing.attributes.descr  {{ keyring.description | default() }}
+    ${r}=   GET On Session   apic   api/node/mo/uni/userext/pkiext/keyring-{{ keyring_name }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..pkiKeyRing.attributes.name  {{ keyring_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..pkiKeyRing.attributes.descr  {{ keyring.description | default() }}
 {% if keyring.ca_certificate is defined %}
-    String   $..pkiKeyRing.attributes.tp  {{ keyring.ca_certificate }}
+    Should Be Equal Value Json String   ${r.json()}    $..pkiKeyRing.attributes.tp  {{ keyring.ca_certificate }}
 {% endif %}
-    String   $..pkiKeyRing.attributes.modulus  {{ keyring.modulus | default(defaults.apic.fabric_policies.aaa.key_rings.modulus) }}
+    Should Be Equal Value Json String   ${r.json()}    $..pkiKeyRing.attributes.modulus  {{ keyring.modulus | default(defaults.apic.fabric_policies.aaa.key_rings.modulus) }}
 
 {% endfor %}
