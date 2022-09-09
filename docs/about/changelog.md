@@ -8,6 +8,11 @@
 - APIC: Add support for breakout interface policy groups
 - APIC: Add support fur sub-port (breakout) leaf interface selectors
 - APIC: Add support for sub-port (breakout) EPG static ports
+- APIC: Support VMM read-only mode (no Vlan Pool)
+- APIC: Make infra_vlan configuration optional and add semantic validation rule to verify if infra_vlan is configured when enabled on AAEP
+- APIC: Fix filter config test to support ssh protocol
+- APIC: Fix QoS no_drop_cos default value
+- APIC: Replace RESTinstance Robot library with Requests and JSONLibrary to align with CXTA curated libraries
 
 #### Ansible (ansible-aac)
 
@@ -16,6 +21,13 @@
 - APIC: Add support fur sub-port (breakout) leaf interface selectors
 - APIC: Add support for sub-port (breakout) EPG static ports
 - MSO: Do not touch (ignore) default `dcnm-default-tn` NDO tenant
+- APIC: Ignore (do not delete) default system interface policies (ACI 5.x)
+- APIC: Support VMM read-only mode (no Vlan Pool)
+- APIC: Make infra_vlan configuration optional and add semantic validation rule to verify if infra_vlan is configured when enabled on AAEP
+- APIC: Fix filter config test to support ssh protocol
+- APIC: Fix QoS no_drop_cos default value
+- APIC: Replace RESTinstance Robot library with Requests and JSONLibrary to align with CXTA curated libraries
+- MSO: Replace RESTinstance Robot library with Requests and JSONLibrary to align with CXTA curated libraries
 
 #### Terraform (terraform-aac)
 
@@ -30,6 +42,11 @@
 - APIC: Add support for breakout interface policy groups
 - APIC: Add support fur sub-port (breakout) leaf interface selectors
 - APIC: Add support for sub-port (breakout) EPG static ports
+- APIC: Support VMM read-only mode (no Vlan Pool)
+- APIC: Make infra_vlan configuration optional and add semantic validation rule to verify if infra_vlan is configured when enabled on AAEP
+- APIC: Fix filter config test to support ssh protocol
+- APIC: Fix QoS no_drop_cos default value
+- APIC: Replace RESTinstance Robot library with Requests and JSONLibrary to align with CXTA curated libraries
 
 ## 0.4.0 <small>April 25, 2022</small>
 
