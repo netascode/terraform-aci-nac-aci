@@ -1,3 +1,4 @@
+{# iterate_list apic.tenants name item[2] #}
 {% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {
     "fvTenant":

@@ -1,3 +1,4 @@
+{# iterate_list apic.tenants name item[2] #}
 {% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {%- macro get_nlb_mode(name) -%}
     {%- set modes = {"mode-mcast-static":"mode-mcast--static"} -%}
