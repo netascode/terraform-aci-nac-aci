@@ -10,7 +10,7 @@ Resource        ../../../apic_common.resource
 {% for igmp_snoop_pol in tenant.policies.igmp_snooping_policies | default([]) %}
 {% set policy_name = igmp_snoop_pol.name ~ defaults.apic.tenants.policies.igmp_snooping_policies.name_suffix %}
 
-Verify IGMP Snooping Policy  {{ policy_name }} Faults
+Verify IGMP Snooping Policy {{ policy_name }} Faults
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/snPol-{{ policy_name }}/fltCnts.json
     ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
     ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
