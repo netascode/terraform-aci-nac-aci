@@ -5,11 +5,11 @@ Library   JSONLibrary
 Library   Collections
 
 *** Variables ***
-${login_json}   {"aaaUser" : {"attributes" : {"name" : "%{APIC_TEST_USERNAME}", "pwd" : "%{APIC_TEST_PASSWORD}"}}}
+${login_json}   {"aaaUser" : {"attributes" : {"name" : "%{ACI_USERNAME}", "pwd" : "%{ACI_PASSWORD}"}}}
 
 *** Keywords ***
 Get APIC Token
-    Create Session   login   https://%{APIC_TEST_HOSTNAME_IP}
+    Create Session   login   %{ACI_URL}
     ${response}=   POST On Session   login   /api/aaaLogin.json   data=${login_json}
     ${r_token}=   Get Value From Json   ${response.json()}   $..token
     Set Parallel Value For Key   apic_token   ${r_token[0]}
@@ -20,7 +20,7 @@ Login APIC
     ${apic_token}=   Get Parallel Value For Key   apic_token
     Run Keyword If   "${apic_token}"=="${EMPTY}"   Get APIC Token
     Release Lock   login
-    Create Session   apic   https://%{APIC_TEST_HOSTNAME_IP}   headers={"Cookie": "APIC-cookie=${apic_token}"}
+    Create Session   apic   %{ACI_URL}   headers={"Cookie": "APIC-cookie=${apic_token}"}
 
 Should Be Equal Value Json String
     [Arguments]    ${json}    ${json_path}   ${value}=${EMPTY}

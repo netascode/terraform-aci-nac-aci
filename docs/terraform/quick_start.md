@@ -15,30 +15,29 @@ Alternatively Terraform and the necessary Python requirements can be installed l
 ```shell
 python -m virtualenv aac          # Create a virtualenv if one does not already exist
 source aac/bin/activate           # Activate the virtual environment
-pip install robotframework robotframework-pabot RESTinstance yamale yamllint
+pip install iac-validate iac-test
 ```
 
 ## Terraform Configuration
 
-Depending on where the Terraform state should be maintained the backend and provider configuration (in [main.tf](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/main.tf)) should be updated.
+Depending on where the Terraform state should be maintained the `cloud` configuration (in [main.tf](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/main.tf)) should be updated or removed completely to revert to local state storage.
 
-```Terraform
+```terraform
 terraform {
-  required_providers {
-    aci = {
-      source  = "CiscoDevNet/aci"
-      version = ">= 2.0.0"
-    }
-    utils = {
-      source  = "cloudposse/utils"
-      version = ">= 0.15.0"
+  cloud {
+    organization = "AAC"
+
+    workspaces {
+      name = "terraform-aac"
     }
   }
 }
+```
 
-provider "aci" {
-  username    = "terraform"
-  password    = "terraform"
-  url         = "https://10.1.1.100"
-}
+To point this to your own APIC instance the following environment variables are required:
+
+```shell
+export ACI_URL=https://10.1.1.1
+export ACI_USERNAME=admin
+export ACI_PASSWORD=Password123
 ```

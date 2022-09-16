@@ -122,7 +122,7 @@ Semantic validation is about verifying specific data model related constraints l
 To perform syntactic and semantic validation, [iac-validate](https://github.com/netascode/iac-validate) can be used.
 
 ```shell
-iac-validate -s "./validation/apic_schema.yaml" -r "./validation/rules/" ./data/
+iac-validate --schema ./validation/apic_schema.yaml --rules ./validation/rules/ ./data/
 ```
 
 ## NAE/NDI Integration
@@ -159,10 +159,10 @@ Furthermore test suites are considered critical or non-critical:
 A failed non-critical test does not impact the overall test result in contrast to a critical test.
 
 ```shell
-export APIC_TEST_HOSTNAME_IP="10.1.1.100"
-export APIC_TEST_USERNAME=admin
-export APIC_TEST_PASSWORD=password
-iac-test -d ./data -d ./defaults -t ./tests/templates -f ./tests/filters -o ./tests/results/aci
+export ACI_URL="https://10.1.1.100"
+export ACI_USERNAME=admin
+export ACI_PASSWORD=password
+iac-test --data ./data --data ./defaults --templates ./tests/templates --filters ./tests/filters --output ./tests/results/aci
 ```
 
 After applying  changes with `terraform apply`, a subsequent `terraform plan` (using the same infrastructure code) is expected to return with no changes.
