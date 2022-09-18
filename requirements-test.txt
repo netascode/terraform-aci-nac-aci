@@ -1,0 +1,4 @@
+pytest
+pyvmomi
+iac-validate
+iac-test
