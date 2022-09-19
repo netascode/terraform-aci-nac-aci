@@ -31,6 +31,17 @@ steps:
 
   - name: Test APIC
     image: danischm/aac:0.3.5
+    environment:
+      VMWARE_HOST:
+        from_secret: VMWARE_HOST
+      VMWARE_USER:
+        from_secret: VMWARE_USER
+      VMWARE_PASSWORD:
+        from_secret: VMWARE_PASSWORD
+      ACI_USERNAME:
+        from_secret: ACI_USERNAME
+      ACI_PASSWORD:
+        from_secret: ACI_PASSWORD
     commands:
       - pytest -m apic
     depends_on:
@@ -38,6 +49,17 @@ steps:
 
   - name: Test MSO
     image: danischm/aac:0.3.5
+    environment:
+      VMWARE_HOST:
+        from_secret: VMWARE_HOST
+      VMWARE_USER:
+        from_secret: VMWARE_USER
+      VMWARE_PASSWORD:
+        from_secret: VMWARE_PASSWORD
+      MSO_USERNAME:
+        from_secret: MSO_USERNAME
+      MSO_PASSWORD:
+        from_secret: MSO_PASSWORD
     commands:
       - pytest -m mso
     depends_on:
