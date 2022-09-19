@@ -407,3 +407,10 @@ ansible_collections/
 # Rendered Documentation
 site/
 pubhub/
+
+# Pabot
+.pabotsuitenames
+
+# Test logs
+apic_log.html
+mso_log.html

@@ -1,3 +1,4 @@
+{# iterate_list_folder mso.ca_certificates name item #}
 {% set query = "ca_certificates[?name==`" ~ item ~ "`]" %}
 {% set cert = (mso | community.general.json_query(query))[0] %}
 {

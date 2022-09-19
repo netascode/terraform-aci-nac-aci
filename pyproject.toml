@@ -1,0 +1,3 @@
+[tool.pytest.ini_options]
+filterwarnings = ["ignore::DeprecationWarning", "ignore::PendingDeprecationWarning"]
+markers = ["unit", "integration", "validate", "apic", "mso"]

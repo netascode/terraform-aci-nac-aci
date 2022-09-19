@@ -1,0 +1,22 @@
+---
+apic:
+  tenants:
+    - name: DEF
+      vrfs:
+        - name: DMZ
+        - name: DEV
+      bridge_domains:
+        - name: BD1
+          vrf: DMZ
+      application_profiles:
+        - name: AP1
+          endpoint_groups:
+            - name: EPG1
+              bridge_domain: BD1
+      contracts:
+        - name: CON1
+          scope: global
+          subjects:
+            - name: SUB1
+        - name: CON2
+          scope: global

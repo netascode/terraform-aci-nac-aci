@@ -1,3 +1,4 @@
+{# iterate_list_folder mso.tenants name item #}
 {% set query = "tenants[?name==`" ~ item ~ "`]" %}
 {% set tenant = (mso | community.general.json_query(query))[0] %}
 {
@@ -35,7 +36,7 @@
     ],
     "userAssociations": [
         {%- set comma1 = joiner(",") %}
-        {%- if mso_username != 'admin' %}{{ comma1() }}
+        {%- if mso_username is defined and mso_username != 'admin' %}{{ comma1() }}
         {
             "userId": "%%tenants/allowed-users%{{ mso_login_domain | default('Local') }}/{{ mso_username }}%%"
         }

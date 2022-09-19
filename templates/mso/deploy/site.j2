@@ -1,3 +1,4 @@
+{# iterate_list_folder mso.sites name item #}
 {% set query = "sites[?name==`" ~ item ~ "`]" %}
 {% set site = (mso | community.general.json_query(query))[0] %}
 {

@@ -1,0 +1,940 @@
+---
+apic:
+  tenants:
+    - name: ABC
+      alias: ABC-ALIAS
+      description: My Description
+      vrfs:
+        - name: VRF1
+          alias: VRF1-ALIAS
+          description: My VRF
+          data_plane_learning: false
+          enforcement_direction: egress
+          enforcement_preference: unenforced
+          bgp:
+            timer_policy: BGP-TIMER1
+            ipv6_address_family_context_policy: BGP_ADDR_IPV6
+            ipv4_address_family_context_policy: BGP_ADDR_IPV4
+            ipv4_import_route_target: extended:as2-nn4:5:16
+            ipv4_export_route_target: extended:as2-nn4:5:16
+            ipv6_import_route_target: extended:as2-nn4:5:16
+            ipv6_export_route_target: extended:as2-nn4:5:16
+          dns_labels:
+            - DNS1
+            - DNS2
+          contracts:
+            consumers:
+              - CON1
+              - CON2
+            providers:
+              - CON1
+              - CON2
+            imported_consumers:
+              - IMPORT-CON1
+              - IMPORT-CON2
+        - name: VRF2
+          pim:
+            mtu: 9000
+            fast_convergence: true
+            strict_rfc: true
+            resource_policy_multicast_route_map: TEST_MRM1
+            max_multicast_entries: 10
+            reserved_multicast_entries: 10
+            static_rps:
+              - ip: 1.1.1.1
+              - ip: 1.1.1.2
+                multicast_route_map: TEST_MRM1
+            fabric_rps:
+              - ip: 1.1.1.3
+              - ip: 1.1.1.4
+                multicast_route_map: TEST_MRM1
+            auto_rp_forward_updates: true
+            auto_rp_filter_multicast_route_map: TEST_MRM1
+            bsr_listen_updates: true
+            bsr_filter_multicast_route_map: TEST_MRM1
+            asm_shared_range_multicast_route_map: TEST_MRM1
+            asm_sg_expiry_multicast_route_map: TEST_MRM2
+            asm_sg_expiry: 200
+            asm_traffic_registry_max_rate: 100
+            asm_traffic_registry_source_ip: 1.1.1.1
+            ssm_group_range_multicast_route_map: TEST_MRM3
+            igmp_context_ssm_translate_policies:
+              - group_prefix: '228.0.0.0/8'
+                source_address: 3.3.3.3
+              - group_prefix: '229.0.0.0/8'
+                source_address: 4.4.4.4
+            inter_vrf_policies:
+              - tenant: DEF
+                vrf: DMZ
+                multicast_route_map: TEST_MRM4
+              - tenant: DEF
+                vrf: DEV
+        - name: VRF3
+          pim:
+            mtu: 9000
+      bridge_domains:
+        - name: BD1
+          alias: ABC_BD1
+          mac: 00:22:BD:F8:19:FE
+          virtual_mac: 00:23:BD:F8:19:12
+          ep_move_detection: true
+          arp_flooding: false
+          ip_dataplane_learning: false
+          limit_ip_learn_to_subnets: false
+          multi_destination_flooding: encap-flood
+          unknown_unicast: proxy
+          unknown_ipv4_multicast: flood
+          unknown_ipv6_multicast: flood
+          unicast_routing: true
+          advertise_host_routes: true
+          l3_multicast: false
+          vrf: VRF1
+          subnets:
+            - ip: 1.1.1.1/24
+              description: My Desc
+              primary_ip: true
+              public: true
+              private: false
+              shared: true
+              virtual: false
+              igmp_querier: true
+              nd_ra_prefix: true
+              no_default_gateway: false
+          l3outs:
+            - L3OUT1
+          dhcp_labels:
+            - dhcp_relay_policy: DHCP-RELAY1
+              dhcp_option_policy: DHCP-OPTION1
+          igmp_snooping_policy: IGMP_SNOOP1
+          igmp_interface_policy: IGMP1
+        - name: BD2
+          vrf: VRF2
+          subnets:
+            - ip: 2.2.2.2/24
+      l3outs:
+        - name: L3OUT1
+          alias: L3OUT1-ALIAS
+          description: My Desc
+          target_dscp: AF13
+          qos_class: level3
+          custom_qos_policy: TEST_QOS_POLICY
+          vrf: VRF1
+          domain: ROUTED1
+          bfd_policy: BFD1
+          ospf:
+            area: 0
+            area_type: regular
+            area_cost: 1
+            auth_type: simple
+            auth_key: cisco
+            auth_key_id: 1
+            policy: OIP1
+          bgp_peers:
+            - ip: 14.14.14.12
+              remote_as: 65010
+              allow_self_as: true
+              as_override: true
+              bfd: true
+              disable_connected_check: true
+              remove_private_as: true
+              remove_all_private_as: true
+              multicast_address_family: true
+              description: My Desc
+              ttl: 1
+              weight: 0
+              password: C1sco123
+              local_as: 1234
+              as_propagate: dual-as
+              peer_prefix_policy: BGP_PP1
+              export_route_control: ROUTE_MAP1
+              import_route_control: ROUTE_MAP2
+            - ip: 14.14.14.13
+              remote_as: 65010
+          interleak_route_map: ROUTE_MAP1
+          default_route_leak_policy:
+            always: false
+            criteria: 'in-addition'
+            context_scope: false
+            outside_scope: false
+          redistribution_route_maps:
+            - route_map: ROUTE_MAP2
+          dampening_ipv4_route_map: ROUTE_MAP3
+          dampening_ipv6_route_map: ROUTE_MAP4
+          nodes:
+            - node_id: 101
+              router_id: 5.5.5.5
+              router_id_as_loopback: true
+              static_routes:
+                - prefix: 2.2.2.0/24
+                  description: My Desc
+                  preference: 1
+                  bfd: true
+                  next_hops:
+                    - ip: 6.6.6.6
+                      preference: 2
+                      type: prefix
+                    - ip: 7.7.7.7
+              interfaces:
+                - port: 10
+                  description: My Desc
+                  ip: 7.7.7.7/24
+                  mac: 00:22:BD:F8:19:11
+                  mtu: 'inherit'
+                - channel: VPC1
+                  svi: true
+                  vlan: 301
+                  ip_a: 14.14.14.1/24
+                  ip_b: 14.14.14.2/24
+                  ip_shared: 14.14.14.3/24
+                  bgp_peers:
+                    - ip: 14.14.14.14
+                      remote_as: 65010
+                      description: My Desc
+                      allow_self_as: true
+                      as_override: true
+                      bfd: true
+                      disable_connected_check: true
+                      remove_private_as: true
+                      remove_all_private_as: true
+                      multicast_address_family: true
+                      ttl: 1
+                      weight: 0
+                      password: C1sco123
+                      local_as: 1234
+                      as_propagate: dual-as
+                      peer_prefix_policy: BGP_PP1
+                      export_route_control: ROUTE_MAP1
+                      import_route_control: ROUTE_MAP2
+                    - ip: 14.14.14.15
+                      remote_as: 65010
+                - floating_svi: true
+                  vlan: 302
+                  ip: 24.24.24.24/24
+                  paths:
+                    - floating_ip: 24.24.24.25/24
+                      physical_domain: PHY1
+        - name: L3OUT2
+          vrf: VRF1
+          domain: ROUTED1
+          default_route_leak_policy:
+            context_scope: true
+            outside_scope: false
+          l3_multicast_ipv4: true
+          node_profiles:
+            - name: NP1
+              bgp_peers:
+                - ip: 14.14.14.16
+                  remote_as: 65010
+                  allow_self_as: true
+                  as_override: true
+                  bfd: true
+                  disable_connected_check: true
+                  remove_private_as: true
+                  remove_all_private_as: true
+                  multicast_address_family: true
+                  description: My Desc
+                  ttl: 1
+                  weight: 0
+                  password: C1sco123
+                  local_as: 1234
+                  as_propagate: dual-as
+                  peer_prefix_policy: BGP_PP1
+                  export_route_control: ROUTE_MAP1
+                  import_route_control: ROUTE_MAP2
+                - ip: 14.14.14.17
+                  remote_as: 65010
+              nodes:
+                - node_id: 101
+                  router_id: 5.5.5.5
+                  router_id_as_loopback: false
+                  loopback: 4.4.4.4
+                  static_routes:
+                    - prefix: 3.3.3.0/24
+                      description: My Desc
+                      preference: 1
+                      next_hops:
+                        - ip: 8.8.8.9
+              interface_profiles:
+                - name: IP1
+                  pim_policy: PIM1
+                  igmp_interface_policy: IGMP_IF1
+                  qos_class: level3
+                  custom_qos_policy: TEST_QOS_POLICY
+                  interfaces:
+                    - node_id: 101
+                      port: 11
+                      ip: 8.8.8.8/24
+                      bgp_peers:
+                        - ip: 8.8.8.9
+                          remote_as: 65010
+                          allow_self_as: true
+                          as_override: true
+                          bfd: true
+                          disable_connected_check: true
+                          remove_private_as: true
+                          remove_all_private_as: true
+                          multicast_address_family: true
+                          description: My Desc
+                          ttl: 1
+                          weight: 0
+                          password: C1sco123
+                          local_as: 1234
+                          as_propagate: dual-as
+                          peer_prefix_policy: BGP_PP1
+                          export_route_control: ROUTE_MAP1
+                          import_route_control: ROUTE_MAP2
+                    - node_id: 102
+                      floating_svi: true
+                      vlan: 304
+                      ip: 34.34.34.34/24
+                      paths:
+                        - floating_ip: 34.34.34.35/24
+                          physical_domain: PHY1
+          external_endpoint_groups:
+            - name: EXT-EPG1
+              alias: ABC-EXT-EPG1
+              description: My Desc
+              preferred_group: exclude
+              qos_class: level4
+              target_dscp: CS5
+              subnets:
+                - name: ALL
+                  prefix: 0.0.0.0/0
+                  import_route_control: true
+                  export_route_control: true
+                  shared_route_control: true
+                  aggregate_import_route_control: true
+                  aggregate_export_route_control: true
+                  aggregate_shared_route_control: true
+                  import_security: true
+                  shared_security: false
+                - prefix: 10.0.0.0/8
+                  export_route_control: true
+                  bgp_route_summarization: true
+              contracts:
+                consumers:
+                  - CON1
+                  - CON2
+                providers:
+                  - CON1
+                  - CON2
+                imported_consumers:
+                  - IMPORT-CON1
+                  - IMPORT-CON2
+            - name: EXT-EPG2
+          import_route_map:
+            description: desc
+            type: global
+            contexts:
+              - name: CONTEXT1
+                description: desc1
+                action: deny
+                order: 2
+                match_rule: MATCH1
+                set_rule: SET1
+              - name: CONTEXT2
+          export_route_map:
+            contexts:
+              - name: CONTEXT2
+                match_rule: MATCH2
+                set_rule: SET2
+        - name: L3OUT3
+          vrf: VRF2
+          domain: ROUTED1
+          pim_policy: PIM1
+          igmp_interface_policy: IGMP_IF1
+          l3_multicast_ipv4: true
+          ospf:
+            area: 10
+      application_profiles:
+        - name: AP1
+          alias: AP1-ALIAS
+          description: My AP Desc
+          endpoint_groups:
+            - name: EPG1
+              bridge_domain: BD1
+              flood_in_encap: false
+              intra_epg_isolation: unenforced
+              preferred_group: exclude
+              trust_control_policy: TRUST_ALL
+              qos_class: level3
+              custom_qos_policy: QOS_POL
+              physical_domains:
+                - PHY1
+              vmware_vmm_domains:
+                - name: VMM1
+                  u_segmentation: true
+                  delimiter: '='
+                  primary_vlan: 100
+                  secondary_vlan: 101
+                  netflow: false
+                  deployment_immediacy: lazy
+                  resolution_immediacy: immediate
+                  allow_promiscuous: reject
+                  forged_transmits: reject
+                  mac_changes: reject
+                  elag: ELAGCustom
+                  active_uplinks_order: 1,2
+                  standby_uplinks: 3,4
+              static_ports:
+                - node_id: 101
+                  port: 10
+                  vlan: 135
+                  mode: regular
+                  deployment_immediacy: lazy
+                - node_id: 101
+                  fex_id: 101
+                  port: 12
+                  vlan: 135
+                - channel: VPC1
+                  vlan: 135
+                  mode: regular
+                - node_id: 101
+                  port: 20
+                  sub_port: 1
+                  vlan: 135
+              static_endpoints:
+                - name: ST_EP1
+                  mac: 00:00:00:00:00:01
+                  ip: 1.1.1.1
+                  type: silent-host
+                  vlan: 123
+                  node_id: 101
+                  port: 1
+                - name: ST_EP2
+                  mac: 00:00:00:00:00:02
+                  ip: 2.2.2.2
+                  type: tep
+                  vlan: 200
+                  node_id: 101
+                  port: 1
+                - name: ST_EP3
+                  mac: 00:00:00:00:00:03
+                  ip: 3.3.3.3
+                  type: vep
+                - name: ST_EP4
+                  mac: 00:00:00:00:00:04
+                  ip: 4.4.4.1
+                  type: silent-host
+                  vlan: 200
+                  node_id: 101
+                  port: 2
+                  additional_ips:
+                    - 4.4.4.1
+                    - 4.4.4.2
+                    - 4.4.4.3
+              contracts:
+                consumers:
+                  - CON1
+                  - CON2
+                providers:
+                  - CON1
+                  - CON2
+                imported_consumers:
+                  - IMPORT-CON1
+                  - IMPORT-CON2
+              subnets:
+                - ip: 5.50.5.1/30
+                  description: My Desc
+                  public: true
+                  private: false
+                  shared: true
+                  igmp_querier: true
+                  nd_ra_prefix: true
+                  no_default_gateway: false
+                - ip: 5.50.5.5/32
+                  no_default_gateway: true
+                  next_hop_ip: 8.8.8.8
+                  ip_pools:
+                    - name: POOL1
+                      start_ip: 172.16.0.1
+                      end_ip: 172.16.0.10
+                      dns_server: dns.cisco.com
+                      dns_search_suffix: cisco
+                      dns_suffix: cisco
+                      wins_server: wins
+                    - name: POOL2
+                - ip: 5.50.5.6/32
+                  no_default_gateway: true
+                  anycast_mac: 00:00:00:01:02:03
+                - ip: 5.50.5.7/32
+                  no_default_gateway: true
+                  nlb_mode: mode-mcast-igmp
+                  nlb_group: 230.1.1.1
+                - ip: 5.50.5.8/32
+                  no_default_gateway: true
+                  nlb_mode: mode-uc
+                  nlb_mac: 00:00:00:01:01:01
+                - ip: 5.50.5.9/32
+                  no_default_gateway: true
+                  nlb_mode: mode-mcast-static
+                  nlb_mac: 03:00:0C:CC:CC:CC
+              tags:
+                - tag1
+                - tag2
+                - tag3
+              l4l7_virtual_ips:
+                - ip: 11.11.11.11
+                  description: My LB VIP
+                - ip: 22.22.22.22
+              l4l7_address_pools:
+                - name: L4L7_POOL1
+                  gateway_address: 11.11.11.254/24
+                  from: 11.11.11.100
+                  to: 11.11.11.200
+                - name: L4L7_POOL2
+                  gateway_address: 22.22.22.254/24
+            - name: EPG2
+              bridge_domain: BD1
+        - name: AP2
+      contracts:
+        - name: CON1
+          alias: CON1-ALIAS
+          description: My Desc
+          scope: global
+          qos_class: level3
+          target_dscp: AF13
+          subjects:
+            - name: SUB1
+              alias: SUB1-ALIAS
+              description: My Desc
+              qos_class: level3
+              target_dscp: AF13
+              service_graph: TEMPLATE1
+              filters:
+                - filter: FILTER1
+                  action: permit
+                  priority: default
+                  log: true
+                  no_stats: false
+        - name: CON2
+      imported_contracts:
+        - name: IMPORT-CON1
+          tenant: DEF
+          contract: CON1
+        - name: IMPORT-CON2
+          tenant: DEF
+          contract: CON2
+      filters:
+        - name: FILTER1
+          alias: ABC-FILTER1
+          description: My Desc
+          entries:
+            - name: HTTP1
+              alias: HTTP1-ALIAS
+              ethertype: ip
+              protocol: tcp
+              source_from_port: 80
+              source_to_port: 80
+              destination_from_port: 80
+              destination_to_port: 80
+              stateful: true
+            - name: HTTPS1
+              destination_from_port: 443
+        - name: FILTER2
+      policies:
+        qos:
+          - name: TEST_QOS_POLICY
+            dscp_priority_maps:
+              - dscp_from: AF11
+                dscp_to: AF12
+                cos_target: 1
+                dscp_target: AF11
+              - priority: level2
+                dscp_from: AF21
+                dscp_to: AF21
+            dot1p_classifiers:
+              - dot1p_from: 4
+                dot1p_to: 5
+              - priority: level3
+                dot1p_from: 1
+                dot1p_to: 2
+                dscp_target: CS2
+                cos_target: 3
+        ospf_interface_policies:
+          - name: OIP1
+            description: My Desc
+            cost: 40
+            passive_interface: true
+            mtu_ignore: true
+            advertise_subnet: true
+            bfd: true
+            hello_interval: 30
+            dead_interval: 180
+            network_type: p2p
+            priority: 2
+            lsa_retransmit_interval: 6
+            lsa_transmit_delay: 2
+          - name: OIP2
+        dhcp_relay_policies:
+          - name: DHCP-RELAY1
+            description: a_description
+            providers:
+              - ip: 6.6.6.6
+                type: epg
+                tenant: ABC
+                application_profile: AP1
+                endpoint_group: EPG1
+          - name: DHCP-RELAY2
+        dhcp_option_policies:
+          - name: DHCP-OPTION1
+            description: a_description
+            options:
+              - name: OPTION1
+                id: 13
+                data: DATA1
+              - name: OPTION2
+                id: 15
+                data: DATA2
+          - name: DHCP-OPTION2
+        route_control_route_maps:
+          - name: ROUTE_MAP1
+            description: My first route map
+            contexts:
+              - name: permit1
+                description: Permit context
+                action: 'permit'
+                order: 1
+                match_rules:
+                  - MATCH1
+                  - MATCH2
+                set_rule: SET1
+              - name: permit2
+                action: 'permit'
+                order: 2
+                match_rules:
+                  - MATCH3
+              - name: deny5
+                action: 'deny'
+                order: 5
+                set_rule: SET1
+          - name: ROUTE_MAP2
+            contexts:
+              - name: permit9
+                order: 9
+                set_rule: SET2
+          - name: ROUTE_MAP3
+          - name: ROUTE_MAP4
+        match_rules:
+          - name: MATCH1
+            description: desc1
+            prefixes:
+              - ip: 10.0.0.0/8
+                description: desc2
+                aggregate: true
+                from_length: 24
+                to_length: 32
+              - ip: 11.0.0.0/8
+          - name: MATCH2
+            prefixes:
+              - ip: 12.0.0.0/8
+              - ip: 192.168.0.0/16
+          - name: MATCH3
+            regex_community_terms:
+              - name: REGEX1
+                regex: '[0-9]()$'
+                description: My First Regex
+              - name: REGEX2
+                regex: '[0-9]()'
+                description: My Second Regex
+                type: 'extended'
+          - name: MATCH4
+            community_terms:
+              - name: TERM1
+                description: Empty factors
+                factors:
+                  - community: regular:as2-nn2:4:13
+                    description: Non-Transistive Community
+                    scope: non-transitive
+                  - community: regular:as2-nn2:4:14
+              - name: TERM2
+        set_rules:
+          - name: SET1
+            description: desc1
+            community_mode: replace
+            community: regular:as2-nn2:12:123
+            tag: 100
+            dampening:
+              half_life: 10
+              max_suppress_time: 50
+              reuse_limit: 700
+              suppress_limit: 1000
+            weight: 3000
+            next_hop: 1.1.1.1
+            preference: 10
+            metric: 150
+            metric_type: ospf-type1
+            additional_communities:
+              - description: 'Additional Communities'
+                community: regular:as2-nn2:34:3456
+            set_as_path:
+              criteria: prepend-last-as
+              count: 2
+          - name: SET2
+            set_as_path:
+              criteria: prepend
+              asn: 12345
+              count: 0
+        bgp_timer_policies:
+          - name: BGP-TIMER1
+            description: BGP_POLICY
+            keepalive_interval: 30
+            hold_interval: 300
+            stale_interval: 200
+            graceful_restart_helper: false
+            maximum_as_limit: 2
+          - name: BGP-TIMER2
+        bgp_peer_prefix_policies:
+          - name: BGP_PP1
+            description: 'My BGP PP Policy 1'
+            action: 'shut'
+            threshold: 90
+            max_prefixes: 10000
+          - name: BGP_PP2
+            description: 'My BGP PP Policy 2'
+            action: 'restart'
+            restart_time: 5
+          - name: BGP_PP3
+        bgp_best_path_policies:
+          - name: BGP-BEST-PATH1
+            control_type: multi-path-relax
+          - name: BGP-BEST-PATH2
+        bgp_address_family_context_policies:
+          - name: BGP-AFC1
+            ebgp_distance: 201
+            ibgp_distance: 20
+            local_distance: 22
+            ebgp_max_ecmp: 18
+            ibgp_max_ecmp: 19
+            enable_host_route_leak: true
+          - name: BGP-AFC2
+        bfd_interface_policies:
+          - name: BFD1
+            description: descr
+            subinterface_optimization: true
+            detection_multiplier: 5
+            echo_admin_state: false
+            echo_rx_interval: 100
+            min_rx_interval: 100
+            min_tx_interval: 100
+          - name: BFD2
+        multicast_route_maps:
+          - name: TEST_MRM1
+            multicast_route_map_entries:
+              - order: 1
+                source_ip: 1.2.3.4/32
+                group_ip: 224.0.0.0/8
+                rp_ip: 3.4.5.6
+                action: permit
+              - order: 2
+                source_ip: 7.8.9.10/32
+                group_ip: 224.0.0.0/8
+                rp_ip: 11.12.13.14
+                action: deny
+              - order: 3
+          - name: TEST_MRM2
+          - name: TEST_MRM3
+          - name: TEST_MRM4
+        pim_policies:
+          - name: PIM1
+          - name: PIM2
+            passive: true
+            auth_type: ah-md5
+            auth_key: C1sco123
+            designated_router_delay: 100
+            designated_router_priority: 100
+            hello_interval: 100
+            join_prune_interval: 60
+            join_prune_filter_policy_out: TEST_MRM1
+            join_prune_filter_policy_in: TEST_MRM2
+            neighbor_filter_policy: TEST_MRM1
+        igmp_snooping_policies:
+          - name: IGMP_SNOOP1
+            description: 'My Snooping Policy'
+            fast_leave: true
+            querier: true
+          - name: IGMP_SNOOP2
+            admin_state: false
+        igmp_interface_policies:
+          - name: IGMP_IF1
+          - name: IGMP_IF2
+            state_limit_multicast_route_map: TEST_MRM1
+          - name: IGMP_IF3
+            report_policy_multicast_route_map: TEST_MRM1
+            static_report_multicast_route_map: TEST_MRM1
+        ip_sla_policies:
+          - name: EXAMPLE
+            frequency: 10
+            multiplier: 10
+            sla_type: tcp
+            port: 150
+          - name: EXAMPLE2
+        trust_control_policies:
+          - name: TRUST_ALL
+            description: My Trust Policy
+            dhcp_v6_server: true
+            dhcp_v4_server: true
+            ipv6_router: true
+            arp: true
+            nd: true
+            ra: true
+          - name: TRUST_IPV4
+            dhcp_v4_server: true
+            arp: true
+          - name: TRUST_IPV6
+            dhcp_v6_server: true
+            nd: true
+            ra: true
+          - name: TRUST_DUMMY
+        span:
+          source_groups:
+            - name: SRC_GRP1
+              description: My Source Group
+              sources:
+                - name: SRC1
+                  description: My source
+                  direction: in
+                  application_profile: AP1
+                  endpoint_group: EPG1
+                - name: SRC2
+              destination: DST_GRP1
+            - name: SRC_GRP2
+              destination: DST_GRP2
+          destination_groups:
+            - name: DST_GRP1
+              ip: 1.1.1.1
+              source_prefix: 2.2.2.2/32
+              dscp: CS0
+              flow_id: 10
+              mtu: 9000
+              ttl: 64
+              version: 1
+              enforce_version: false
+              application_profile: AP1
+              endpoint_group: EPG1
+            - name: DST_GRP2
+              ip: 2.2.2.2
+              source_prefix: 2.2.2.2/32
+              tenant: DEF
+              application_profile: AP1
+              endpoint_group: EPG1
+      services:
+        l4l7_devices:
+          - name: DEV1
+            alias: DEV1-ALIAS
+            context_aware: single-Context
+            type: PHYSICAL
+            function: GoTo
+            copy_device: false
+            managed: false
+            promiscuous_mode: false
+            service_type: FW
+            trunking: false
+            physical_domain: PHY1
+            concrete_devices:
+              - name: DEV1
+                alias: DEV1-ALIAS
+                interfaces:
+                  - name: INT1
+                    alias: INT1-ALIAS
+                    node_id: 101
+                    module: 1
+                    port: 11
+                  - name: INT2
+                    node_id: 101
+                    fex_id: 101
+                    port: 13
+                  - name: INT3
+                    channel: VPC1
+                    node_id: 101
+                    node2_id: 102
+                  - name: INT4
+                    channel: PC1
+            logical_interfaces:
+              - name: INT1
+                alias: INT1-ALIAS
+                vlan: 135
+                concrete_interfaces:
+                  - device: DEV1
+                    interface_name: INT1
+          - name: DEV2
+        redirect_policies:
+          - name: PBR1
+            alias: PBR1
+            description: My Desc
+            type: L3
+            anycast: false
+            hashing: sip-dip-prototype
+            threshold: false
+            max_threshold: 0
+            min_threshold: 0
+            threshold_down_action: permit
+            resilient_hashing: false
+            redirect_backup_policy: L4L7_REDIRECT_BACKUP1
+            ip_sla_policy: EXAMPLE
+            l3_destinations:
+              - description: My Desc
+                ip: 1.1.1.1
+                mac: 00:00:00:11:22:33
+                pod: 1
+                redirect_health_group: HEALTH_GROUP_1
+              - ip: 1.1.1.2
+                mac: 00:00:00:11:22:34
+                redirect_health_group: HEALTH_GROUP_2
+          - name: PBR2
+        service_epg_policies:
+          - name: SERVICE_EPG1
+            description: My Desc
+            preferred_group: include
+          - name: SERVICE_EPG2
+        redirect_health_groups:
+          - name: HEALTH_GROUP1
+            description: My Desc
+          - name: HEALTH_GROUP2
+        redirect_backup_policies:
+          - name: L4L7_REDIRECT_BACKUP1
+            l3_destinations:
+              - ip: 5.6.7.8
+                mac: 00:00:00:11:22:33
+                redirect_health_group: HEALTH_GROUP_1
+          - name: L4L7_REDIRECT_BACKUP2
+            l3_destinations:
+              - ip: 10.6.7.8
+                ip_2: 4.5.6.7
+                mac: 84:53:64:09:53:00
+                destination_name: BACKUP_DESTINATION_NAME
+          - name: L4L7_REDIRECT_BACKUP3
+        service_graph_templates:
+          - name: TEMPLATE1
+            alias: TEMPLATE1-ALIAS
+            description: My Desc
+            template_type: FW_ROUTED
+            redirect: true
+            share_encapsulation: false
+            device:
+              tenant: ABC
+              name: DEV1
+          - name: TEMPLATE2
+            device:
+              name: DEV1
+        device_selection_policies:
+          - contract: CON1
+            service_graph_template: TEMPLATE1
+            consumer:
+              l3_destination: true
+              permit_logging: false
+              redirect_policy:
+                name: PBR1
+              logical_interface: INT1
+              bridge_domain:
+                name: BD1
+              service_epg_policy: SERVICE_EPG1
+              custom_qos_policy: TEST_QOS_POLICY
+            provider:
+              redirect_policy:
+                name: PBR1
+              logical_interface: INT1
+              bridge_domain:
+                name: BD1
+              service_epg_policy: SERVICE_EPG2
+              custom_qos_policy: TEST_QOS_POLICY

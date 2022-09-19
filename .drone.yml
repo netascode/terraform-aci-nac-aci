@@ -22,8 +22,49 @@ steps:
     image: drone/git
     pull: if-not-exists
 
+  - name: Test Validate
+    image: danischm/aac:0.3.5
+    commands:
+      - pytest -m validate
+    depends_on:
+      - Clone Repo
+
+  - name: Test APIC
+    image: danischm/aac:0.3.5
+    commands:
+      - pytest -m apic
+    depends_on:
+      - Clone Repo
+
+  - name: Test MSO
+    image: danischm/aac:0.3.5
+    commands:
+      - pytest -m mso
+    depends_on:
+      - Clone Repo
+
+  - name: Upload Reports
+    image: jmccann/drone-artifactory:3.3
+    settings:
+      username: as-deployer
+      password:
+        from_secret: ARTIFACTORY_PASSWORD
+      url: https://engci-maven.cisco.com/artifactory
+      actions:
+        - action: upload
+          path: AS-release/Community/netascode/aac/${DRONE_BUILD_NUMBER}/
+          sources:
+            - apic_log.html
+            - mso_log.html
+    when:
+      status: [changed, failure, success]
+    depends_on:
+      - Test Validate
+      - Test APIC
+      - Test MSO
+
   - name: Build Documentation
-    image: danischm/aac:0.3.1
+    image: danischm/aac:0.3.5
     commands:
       - pip install --upgrade mkdocs mkdocs-material mkdocs-mermaid2-plugin
       - python3 docs/aac-doc.py
@@ -69,7 +110,9 @@ steps:
         * Branch: {{ commit.branch }}
         * Event: {{ build.event }}
         * Started at: {{ datetime build.created "Mon Jan 2 15:04:05 MST 2006" "Local" }}
+        * Test Reports: [APIC](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/netascode/aac/{{ build.number }}/apic_log.html) [MSO](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/netascode/aac/{{ build.number }}/mso_log.html)
     when:
       status: [changed, failure, success]
     depends_on:
+      - Upload Reports
       - Deploy Documentation

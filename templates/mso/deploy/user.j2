@@ -1,3 +1,4 @@
+{# iterate_list_folder mso.users username item #}
 {% set query = "users[?username==`" ~ item ~ "`]" %}
 {% set user = (mso | community.general.json_query(query))[0] %}
 {

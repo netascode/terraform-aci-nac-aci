@@ -1,0 +1,8 @@
+---
+apic:
+  auto_generate_switch_pod_profiles: false
+  auto_generate_pod_profiles: true
+  auto_generate_fabric_leaf_switch_interface_profiles: true
+  auto_generate_fabric_spine_switch_interface_profiles: true
+  auto_generate_access_leaf_switch_interface_profiles: true
+  auto_generate_access_spine_switch_interface_profiles: true

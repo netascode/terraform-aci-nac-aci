@@ -1,0 +1,64 @@
+---
+apic:
+  tenants:
+    - name: mgmt
+      inb_endpoint_groups:
+        - name: INB
+          vlan: 2
+          bridge_domain: inb
+          contracts:
+            consumers:
+              - STD-CON1
+              - STD-CON2
+            providers:
+              - STD-CON1
+              - STD-CON2
+      filters:
+        - name: ALL
+          entries:
+            - name: ALL
+              ethertype: unspecified
+        - name: FILTER2
+      oob_endpoint_groups:
+        - name: OOB
+          oob_contracts:
+            providers:
+              - OOB-CON1
+        - name: OOB2
+      ext_mgmt_instances:
+        - name: EXT1
+          subnets:
+            - 0.0.0.0/0
+            - 10.0.0.0/8
+          oob_contracts:
+            consumers:
+              - OOB-CON1
+        - name: EXT2
+      contracts:
+        - name: STD-CON1
+          alias: STD-CON1-ALIAS
+          description: My Desc
+          scope: context
+          subjects:
+            - name: SUB1
+              filters:
+                - filter: FILTER1
+        - name: STD-CON2
+      imported_contracts:
+        - name: IMPORTED-CON1
+          contract: CON1
+          tenant: ABC
+        - name: IMPORTED-CON2
+          contract: CON2
+          tenant: ABC
+      oob_contracts:
+        - name: OOB-CON1
+          alias: OOB-CON1-ALIAS
+          description: My Desc
+          scope: context
+          subjects:
+            - name: OOB-SUB
+              alias: OOB-SUB-ALIAS
+              description: My Desc
+              filters:
+                - filter: ALL

@@ -1,0 +1,593 @@
+---
+apic:
+  fabric_policies:
+    leaf_switch_profile_name: "LEAF\\g<id>"
+    leaf_switch_selector_name: "LEAF\\g<id>"
+    leaf_interface_profile_name: "LEAF\\g<id>"
+    spine_switch_profile_name: "SPINE\\g<id>"
+    spine_switch_selector_name: "SPINE\\g<id>"
+    spine_interface_profile_name: "SPINE\\g<id>"
+    pod_profile_name: "POD\\g<id>"
+    pod_profile_pod_selector_name: "POD\\g<id>"
+
+    apic_conn_pref: ooband
+
+    banners:
+      apic_gui_alias: APIC GUI BANNER
+      apic_gui_banner_url: APIC GUI BANNER URL
+      apic_cli_banner: APIC CLI BANNER
+      switch_cli_banner: SWITCH CLI BANNER
+
+    ep_loop_protection:
+      admin_state: true
+      detection_interval: 180
+      detection_multiplier: 10
+      action: port-disable
+
+    rogue_ep_control:
+      admin_state: false
+      detection_interval: 180
+      detection_multiplier: 10
+      hold_interval: 1900
+
+    global_settings:
+      domain_validation: false
+      enforce_subnet_check: false
+      opflex_authentication: true
+      disable_remote_endpoint_learn: true
+      overlapping_vlan_validation: true
+      remote_leaf_direct: false
+
+    port_tracking:
+      admin_state: false
+      delay: 130
+      min_links: 1
+
+    ptp_admin_state: false
+
+    ip_aging: false
+
+    ignore_acked_faults: true
+
+    use_infra_gipo: false
+
+    fabric_isis_redistribute_metric: 59
+
+    fabric_isis_bfd: false
+
+    date_time_format:
+      display_format: local
+      timezone: p0_UTC
+      show_offset: true
+
+    dns_policies:
+      - name: DNS-1
+        mgmt_epg: oob
+        providers:
+          - ip: 1.1.1.1
+            preferred: true
+        domains:
+          - name: cisco.com
+            default: true
+      - name: DNS-2
+
+    err_disabled_recovery:
+      interval: 360
+      mcp_loop: true
+      ep_move: true
+      bpdu_guard: true
+
+    coop_group_policy: strict
+
+    l2_port_mtu: 9100
+
+    infra_dscp_translation_policy:
+      admin_state: true
+      control_plane: CS7
+      level_1: EF
+      level_2: CS3
+      level_3: CS0
+      level_4: AF11
+      level_5: AF21
+      level_6: AF31
+      policy_plane: CS4
+      span: CS1
+      traceroute: CS2
+
+    aaa:
+      remote_user_login_policy: no-login
+      default_fallback_check: true
+      default_realm: local
+      console_realm: tacacs
+      console_login_domain: tacacs
+      tacacs_providers:
+        - hostname_ip: 1.1.1.1
+          description: descr
+          port: 4949
+          protocol: chap
+          key: '123'
+          timeout: 2
+          retries: 2
+          mgmt_epg: oob
+          monitoring: true
+          monitoring_username: user1
+          monitoring_password: pass1
+        - hostname_ip: 1.1.1.2
+
+      users:
+        - username: user1
+          password: ciscocisco
+          expires: false
+          first_name: cisco
+          last_name: cisco
+          phone: '1234567'
+          email: cisco@cisco.com
+          certificate_name: cisco
+          description: descr
+          status: active
+          domains:
+            - name: all
+              roles:
+                - name: admin
+                  privilege_type: write
+            - name: common
+        - username: user2
+          password: ciscocisco
+          domains:
+            - name: common
+
+      ca_certificates:
+        - name: CA1
+          certificate_chain: |
+            -----BEGIN CERTIFICATE-----
+            MIIC2jCCAcICCQDFcJLlj4fzhjANBgkqhkiG9w0BAQsFADAvMQswCQYDVQQGEwJE
+            RTERMA8GA1UEBwwITGFMYUxhbmQxDTALBgNVBAoMBENTQ08wHhcNMjAwNzAxMTQw
+            NjQ3WhcNMjYwMjA4MTQwNjQ3WjAvMQswCQYDVQQGEwJERTERMA8GA1UEBwwITGFM
+            YUxhbmQxDTALBgNVBAoMBENTQ08wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+            AoIBAQCiq0iWqZwzsox8gEGo52Mk2iHbiKHMfXHYgWvzcOLMR2AHWjz5zcAtGW4J
+            3yUcAP7SGYe7NvVwEc9D1TFOjaMz4dUPE9XhTBdvLpD2czfAWPa+5RakyvP7MsVN
+            DPyI5mUnz6+5E5dunxXg8RgkzixO3qrjRCxm43L/yyBRr6N1h0D5Lh03WeZQc4gj
+            X5R48ychf4uCLd/lPbBa3+5eLZaL+sOAH2Q/BPU12toqdSY9BpN5x11YJUZ/X2gr
+            CQN443SrmcXdkb3ykF5JknbQhCuPW0X1grb8yko7DoQE6NP+TeT4K6aYtsVEvV2n
+            Dldr6pRtKpJYwTuWrn8D06iIaaM/AgMBAAEwDQYJKoZIhvcNAQELBQADggEBAJ9f
+            sTG4uuKYb737YKhwCxYoLAki58ofCCk2kQEUEFKXSHOX2QSvjtRhWl6g9AWO/SLG
+            hOK2DQhwCcoR9zxfG/sWWc7zCdv8w1PXHtmBGqUZn76qXFF0G+nuY57XPJ0NKKj/
+            G2Bs/g1TgyYzhErtxV/hmctgnnm4PfEQJYGNwCWkITxEg1lTQbN9JxsLpCZFldYW
+            kE8Np68n0/ljx9ywqv0iUWkVDo30rs0Fo1uqDwHhAzuzRGFDrh97sAzVJ8ZH/Ge8
+            Z0TC0TaX1BnUh5wsRz8hSlVAfgYQtQSarq9k9iLHDVcbffsYZbQKer6ftEGTTKOd
+            DBPQR1dcBaa218Bjxl0=
+            -----END CERTIFICATE-----
+
+      key_rings:
+        - name: KEYRING1
+          ca_certificate: CA1
+          certificate: |
+            -----BEGIN CERTIFICATE-----
+            MIICyzCCAbMCCQCUc/SvuffglTANBgkqhkiG9w0BAQsFADAvMQswCQYDVQQGEwJE
+            RTERMA8GA1UEBwwITGFMYUxhbmQxDTALBgNVBAoMBENTQ08wHhcNMjAwNzAxMTQw
+            ODI1WhcNMjYwMjA4MTQwODI1WjAgMQswCQYDVQQGEwJERTERMA8GA1UEBwwITGFM
+            YUxhbmQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC2KTuvhTSK3bYC
+            8thn47aI6Hj0HLLDkqS72M7KSF6kCEFn2lxC8yKQ1PpHEyRxEeqKD5+V3ndC5Nun
+            wqRPwA+qHyAJ+qKMqrmbE98KxuKeavyGfroLvMYRb7UUnCPsLOUpwimm3jWw2Jvz
+            Mevb8q5kXJuPPWGIZ6DoUliJKRwiW62qlY/zq+wbweij4NzzMM+Xiaw9KzGnn0GY
+            meeKEDdO4Q0gLo89FLXpoEBptfhqYWWqrlQNYUizew7MCKhYNjOn8D/clvD7Qynn
+            kFlHEnAugR8TWgXiujZAZuUFvImu++KDdzCX1PTa7Q1NN1hjuaK1WgEqeUEQWmOD
+            68FdILFrAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAA7BcY4rMsc2kggoZ6MQv0Pc
+            lPpM+cowoRWhUaKMveLrUJoAtUshLn8MneDWopPFx2tXWw+RfBlsbcQUWkonEFb1
+            oVdbBIoLT3VH/VKDUNdYa43KuugKe2nCba7Fpya54HCC2jtIv+W7SIZuAhu1937x
+            OF3O8itHhBMW5/teX/Uo3JPjE4JoFPoQ7P6KmertvWAIFvQB/1oFQhJ6rmkNYjKY
+            f4n71cuGmduTWzKv7UoG4nf5YoKC0tZQfOCYU9W7ywnvJThaSN0ZUf3Dqa2WB4Zx
+            91bgkeI6vpJLPnjyAsmbNRePNj1xgXC5YMcN5LiGhsMiep9yBqJR1Knq80J0DwE=
+            -----END CERTIFICATE-----
+          private_key: |
+            -----BEGIN RSA PRIVATE KEY-----
+            MIIEpAIBAAKCAQEAtik7r4U0it22AvLYZ+O2iOh49Byyw5Kku9jOykhepAhBZ9pc
+            QvMikNT6RxMkcRHqig+fld53QuTbp8KkT8APqh8gCfqijKq5mxPfCsbinmr8hn66
+            C7zGEW+1FJwj7CzlKcIppt41sNib8zHr2/KuZFybjz1hiGeg6FJYiSkcIlutqpWP
+            86vsG8Hoo+Dc8zDPl4msPSsxp59BmJnnihA3TuENIC6PPRS16aBAabX4amFlqq5U
+            DWFIs3sOzAioWDYzp/A/3Jbw+0Mp55BZRxJwLoEfE1oF4ro2QGblBbyJrvvig3cw
+            l9T02u0NTTdYY7mitVoBKnlBEFpjg+vBXSCxawIDAQABAoIBAQCKtjFWAdg12ojM
+            DAKQcc1Ayc25DdVuqc85n+owDRXMUOEFZTkWXjC3GwcOclwwodT4ltcN957XWJCP
+            Wd9nPzhuck8iajG3bhXyKhqRCUvuGEf9XqjrYS9ufaLlc9TC9pj2yHyRLeqypO90
+            LFKPZWg40nA+jh4kEc1su6/hmmVrHxwUdf7bdZwYqBW3xedQGWHZtZxmbY8pLT7n
+            iJnv/EC8mrAQdxiNOcO9z2aWQY14hBsqD2hQkjSSVuhAnzeonU9VrCg0v/VQmX+/
+            VhGF48aVQbG1yfh0IxBbX2tbl1tSvh2Vtb6r29mywKRDaKmxRd/Qr6iImSM8A/fz
+            m6UpLTzRAoGBAO/zIpxan454J9qh4qaPybhdBwfUMr4HAJtUiWJnLJ2CMvJa8rOA
+            Xf7QS9ddTE78rUSe1dS2a/RUJ/a1JwI5rj3Un2C9L13YXmWwRHolsjz/lC1pDC87
+            sqDG/PT4y5qxQ8r5zJ5+XaJxN37ojtHZipfIYuVAlH+whlInWoUgq6dzAoGBAMJY
+            iG7sxLx8mXE+U2630HIbTw/jZwKUVPcjMMYDqc97qfDgAVFN3lkKxqHjSW7bUsdF
+            DLiwuzlluVuRiAFRFwy256P8yHhfHigCzKuFLGhXuzTGdn7gdvlKsXfgPKOIMcHx
+            lpAPU7lIIh3xmoVUWWtHqXGMXqY2Jz3f5BJWWaApAoGAHvAYbFR68iGn8dahpJwx
+            hCXqfCXuDPZWK7DwrdFjvUNGUl1Lob1RYUN2I+SRrDWEGa7pHy4OKUiYhoTA7NaH
+            Es3RZuW9r7nwIehiS+WEX70MW/aJbaWi2HwPrX5Osjlc5lTi/ySH6iPy5dgSYhhM
+            eFmL9scm3nfiOcF9OGEIAOUCgYBmrN9nuy81ZZ6rdYIevH4jysm6WynQ8wzwhGcA
+            Nm9AbtUZrT8E9V7DLC5E2Q+yway6GoDeEoDXkiabegegqnbDAN7ghGxlK9uCx/fZ
+            pkIP3knJWBDCd1Rj4FJiQtXGj+25ySkCcxaIjNN5fmtkhWu4gePDWaWnqnSQ+/hC
+            t9wiAQKBgQCkVuIjhK82p3OJXZPaq8jrGy8hvHM02zj9tZxK98wDApafZBA4VRW+
+            KAh7qxM2mhQsDwKplp5noW9pXlQfgBniDmCFK/4xcEaD+UwYF/Ao7RlLjLL2MfsP
+            40igT6oadbESZNx815FBttdPkKc3zWRgv40MdZNdTQ9BlShqN9jTQw==
+            -----END RSA PRIVATE KEY-----
+
+      login_domains:
+        - name: tacacs
+          realm: tacacs
+          description: login domain tacacs
+          tacacs_providers:
+            - hostname_ip: 1.1.1.1
+              priority: 1
+            - hostname_ip: 1.1.1.2
+        - name: local
+          realm: local
+          description: login domain local
+
+    remote_locations:
+      - name: remote1
+        description: desc1
+        hostname_ip: 1.2.3.4
+        protocol: scp
+        path: '/path'
+        port: 22
+        auth_type: password
+        username: cisco
+        password: cisco
+        mgmt_epg: inb
+
+    schedulers:
+      - name: scheduler1
+        description: desc1
+        recurring_windows:
+          - name: window1
+            day: Monday
+            hour: 23
+            minute: 1
+      - name: scheduler2
+
+    config_exports:
+      - name: export1
+        description: desc1
+        format: xml
+        remote_location: remote1
+        scheduler: scheduler1
+      - name: export2
+        remote_location: remote1
+        scheduler: scheduler1
+
+    monitoring:
+      snmp_traps:
+        - name: trap1
+          description: desc1
+          destinations:
+            - hostname_ip: 2.2.2.2
+              port: 1062
+              version: v3
+              community: test
+              security: priv
+              mgmt_epg: inb
+            - hostname_ip: 2.2.2.3
+              community: test2
+        - name: trap2
+
+      syslogs:
+        - name: syslog1
+          description: desc1
+          session: true
+          minimum_severity: debugging
+          admin_state: false
+          format: nxos
+          show_millisecond: true
+          local_admin_state: false
+          local_severity: emergencies
+          console_admin_state: false
+          console_severity: alerts
+          destinations:
+            - hostname_ip: 2.2.2.2
+              port: 1234
+              admin_state: false
+              facility: local0
+              severity: emergencies
+              mgmt_epg: inb
+            - hostname_ip: 2.2.2.3
+        - name: syslog2
+
+    fabric_bgp_as: 65009
+
+    fabric_bgp_rr:
+      - 1001
+
+    fabric_bgp_ext_rr:
+      - 1001
+
+    pod_policies:
+      date_time_policies:
+        - name: default
+          ntp_admin_state: true
+          ntp_auth_state: false
+          apic_ntp_server_state: false
+          apic_ntp_server_master_mode: false
+          apic_ntp_server_master_stratum: 8
+        - name: NTP1
+          ntp_admin_state: true
+          ntp_auth_state: false
+          apic_ntp_server_state: false
+          apic_ntp_server_master_mode: false
+          apic_ntp_server_master_stratum: 8
+          ntp_servers:
+            - hostname_ip: 1.1.1.13
+              auth_key_id: 1
+              preferred: true
+              mgmt_epg: oob
+            - hostname_ip: 1.1.1.14
+              auth_key_id: 1
+              preferred: false
+              mgmt_epg: oob
+          ntp_keys:
+            - id: 1
+              key: key1
+              auth_type: md5
+              trusted: false
+
+      snmp_policies:
+        - name: SNMP1
+          admin_state: true
+          location: LOCATION
+          contact: CONTACT
+          users:
+            - name: USER1
+              privacy_type: aes-128
+              privacy_key: Key123456
+              authorization_type: hmac-sha1-96
+              authorization_key: Key123456
+          communities:
+            - abcABC123
+          clients:
+            - name: CLIENTS
+              mgmt_epg: inb
+              entries:
+                - name: NMS1
+                  ip: 1.1.1.1
+
+      management_access_policies:
+        - name: MGMT1
+          telnet:
+            admin_state: true
+          ssh:
+            port: 22
+            hmac_sha1: false
+            chacha: false
+          https:
+            tlsv1: true
+          http:
+            admin_state: true
+            port: 8080
+
+    pod_policy_groups:
+      - name: POD1
+        snmp_policy: SNMP1
+        date_time_policy: NTP1
+      - name: POD2
+        snmp_policy: SNMP1
+        date_time_policy: NTP1
+        management_access_policy: MGMT1
+
+    pod_profiles:
+      - name: PODX
+        selectors:
+          - name: SEL1
+            type: range
+            policy: POD1
+            pod_blocks:
+              - name: PB1
+                from: 3
+                to: 3
+      - name: PODY
+        selectors:
+          - name: SEL2
+            type: all
+
+    switch_policies:
+      psu_policies:
+        - name: COMBINED
+          admin_state: combined
+        - name: NNRED
+          admin_state: nnred
+      node_control_policies:
+        - name: DOM_NETFLOW
+          dom: true
+          telemetry: netflow
+        - name: TELEMETRY
+          telemetry: telemetry
+
+    leaf_switch_policy_groups:
+      - name: ALL_LEAFS
+        psu_policy: COMBINED
+        node_control_policy: DOM_NETFLOW
+      - name: SPECIAL1
+        psu_policy: NNRED
+        node_control_policy: TELEMETRY
+
+    spine_switch_policy_groups:
+      - name: ALL_SPINES
+        psu_policy: COMBINED
+        node_control_policy: DOM_NETFLOW
+      - name: SPECIAL1
+        psu_policy: NNRED
+        node_control_policy: TELEMETRY
+
+    leaf_switch_profiles:
+      - name: LEAF-PROF1
+        selectors:
+          - name: SEL1
+            policy: ALL_LEAFS
+            node_blocks:
+              - name: BLOCK1
+                from: 500
+                to: 501
+        interface_profiles:
+          - LEAF-INT-PROF1
+
+    spine_switch_profiles:
+      - name: SPINE-PROF1
+        selectors:
+          - name: SEL1
+            policy: ALL_SPINES
+            node_blocks:
+              - name: BLOCK1
+                from: 600
+                to: 601
+              - name: BLOCK2
+                from: 602
+                to: 603
+          - name: SEL2
+            policy: ALL_SPINES
+            node_blocks:
+              - name: BLOCK1
+                from: 604
+                to: 605
+              - name: BLOCK2
+                from: 606
+                to: 607
+        interface_profiles:
+          - SPINE-INT-PROF1
+      - name: SPINE-PROF2
+        selectors:
+          - name: SEL1
+            policy: ALL_SPINES
+            node_blocks:
+              - name: BLOCK1
+                from: 700
+                to: 701
+        interface_profiles:
+          - SPINE-INT-PROF2
+
+    leaf_interface_profiles:
+      - name: LEAF-INT-PROF1
+
+    spine_interface_profiles:
+      - name: SPINE-INT-PROF1
+      - name: SPINE-INT-PROF2
+
+    external_connectivity_policy:
+      name: IPN
+      site_id: 1
+      bgp_password: cisco
+      routing_profiles:
+        - name: IPN1
+          subnets:
+            - 11.1.0.0/16
+        - name: IPN2
+          subnets:
+            - 11.2.0.0/16
+            - 11.3.0.0/16
+
+    vmware_vmm_domains:
+      - name: VMM1
+        access_mode: read-write
+        delimiter: '='
+        tag_collection: true
+        vlan_pool: VMM1
+        vswitch:
+          cdp_policy: CDP-ENABLED
+          lldp_policy: LLDP-ENABLED
+          port_channel_policy: LACP-ACTIVE
+          enhanced_lags:
+            - name: ELAGDefault
+            - name: ELAGCustom
+              mode: active
+              lb_mode: src-dst-l4port
+              num_links: 4
+        credential_policies:
+          - name: CRED1
+            username: Administrator
+            password: C1sco123
+          - name: CRED2
+            username: Administrator
+            password: C1sco123
+        vcenters:
+          - name: VC
+            hostname_ip: 10.10.10.10
+            datacenter: dc
+            dvs_version: unmanaged
+            statistics: true
+            credential_policy: CRED1
+        uplinks:
+          - id: 1
+            name: UPLINK1
+          - id: 2
+            name: UPLINK2
+          - id: 3
+            name: UPLINK3
+          - id: 4
+            name: UPLINK4
+    geolocation:
+      sites:
+        - name: site1
+          description: s1
+          buildings:
+            - name: building1
+              description: b1
+              floors:
+                - name: floor1
+                  description: f1
+                  rooms:
+                    - name: room1
+                      description: r1
+                      rows:
+                        - name: row1
+                          description: rw1
+                          racks:
+                            - name: rack1
+                              description: ra1
+                              nodes:
+                                - 101
+                                - 102
+                            - name: rack2
+                        - name: row2
+                    - name: room2
+                - name: floor2
+            - name: building2
+        - name: site2
+
+    span:
+      source_groups:
+        - name: SRC_GRP1
+          description: My Fabric SPAN Source Group
+          destination:
+            name: DST_GRP1
+            description: The Destination
+          sources:
+            - name: SRC1
+              tenant: AP1
+              vrf: VRF1
+              fabric_paths:
+                - node_id: 101
+                  port: 1
+                - node_id: 102
+                  port: 1
+                  module: 2
+                - node_id: 201
+                  pod_id: 1
+                  port: 1
+                  module: 2
+            - name: SRC2
+              tenant: AP1
+              bridge_domain: BD1
+      destination_groups:
+        - name: DST_GRP1
+          description: My Fabric SPAN
+          tenant: ABC
+          application_profile: AP1
+          endpoint_group: EPG1
+          ip: 1.1.1.1
+          source_prefix: 1.2.3.4/32
+          dscp: CS4
+          flow_id: 1
+          ttl: 10
+          version: 2
+          enforce_version: true
+        - name: DST_GRP2
+          tenant: ABC
+          application_profile: AP1
+          endpoint_group: EPG1
+          ip: 2.2.2.2
+          source_prefix: 4.5.6.7/32
+        - name: DST_GRP3

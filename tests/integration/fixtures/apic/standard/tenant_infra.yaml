@@ -1,0 +1,29 @@
+---
+apic:
+  tenants:
+    - name: infra
+      l3outs:
+        - name: IPN
+          vrf: overlay-1
+          domain: ANS-L3
+          ospf:
+            area: 0
+            area_type: regular
+            policy: IPN1
+          nodes:
+            - node_id: 1001
+              router_id: 100.100.100.1
+              interfaces:
+                - port: 1
+                  ip: 11.11.11.1/24
+                  vlan: 4
+                - port: 2
+                  ip: 11.11.12.1/24
+                  vlan: 4
+          external_endpoint_groups:
+            - name: ALL
+      policies:
+        ospf_interface_policies:
+          - name: IPN1
+            network_type: p2p
+          - name: IPN2

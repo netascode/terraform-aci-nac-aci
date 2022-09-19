@@ -1,3 +1,4 @@
+{# iterate_list_folder mso.remote_locations name item #}
 {% set query = "remote_locations[?name==`" ~ item ~ "`]" %}
 {% set remote = (mso | community.general.json_query(query))[0] %}
 {

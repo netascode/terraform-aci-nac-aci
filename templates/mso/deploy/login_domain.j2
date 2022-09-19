@@ -1,3 +1,4 @@
+{# iterate_list_folder mso.login_domains name item #}
 {% set query = "login_domains[?name==`" ~ item ~ "`]" %}
 {% set domain = (mso | community.general.json_query(query))[0] %}
 {

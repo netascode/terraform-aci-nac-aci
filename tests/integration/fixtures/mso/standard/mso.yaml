@@ -1,0 +1,174 @@
+---
+mso:
+  version: '2.2.4e'
+  system_config:
+    lockout_time: 5
+    allowed_consecutive_attempts: 5
+    banner:
+      alias: My Banner New
+      type: informational
+      message: My Message New
+      state: active
+  remote_locations:
+    - name: APIC2
+      description: APIC2 SCP
+      hostname_ip: 10.51.77.63
+      port: 22
+      protocol: scp
+      path: /
+      authentication: password
+      username: admin
+      password: C1sco123
+      ssh_key:
+      passphrase:
+  tacacs_providers:
+    - hostname_ip: 2.2.2.2
+      description: My Desc
+      shared_secret: cisco
+      port: 49
+      protocol: pap
+      timeout: 5
+      retries: 3
+    - hostname_ip: 2.2.2.3
+  login_domains:
+    - name: TACACS1
+      description: My Desc
+      realm: tacacs
+      status: active
+      default: false
+      providers:
+        - hostname_ip: 2.2.2.2
+        - hostname_ip: 2.2.2.3
+          priority: 2
+  ca_certificates:
+    - name: CERT1
+      description: My Desc
+      public_key: -----BEGIN CERTIFICATE-----\nMIIB8TCCAVoCCQC1fWFVBBN/BDANBgkqhkiG9w0BAQsFADA8MRAwDgYDVQQDDAdh\nbnNpYmxlMQ4wDAYDVQQKDAVDaXNjbzELMAkGA1UECwwCQ1gxCzAJBgNVBAYTAlVT\nMCAXDTE5MDUxNDE4Mzc0NVoYDzIxMTkwNDIwMTgzNzQ1WjA8MRAwDgYDVQQDDAdh\nbnNpYmxlMQ4wDAYDVQQKDAVDaXNjbzELMAkGA1UECwwCQ1gxCzAJBgNVBAYTAlVT\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDU5ZySFa/ToZgF53wwlgl8CRzX\nbkHsNSxAnaWdBda4Hw9+qp+IbZcJB93Y1c4BprvEXU0FRkvqoe7r4Yy/qKme85If\nmYbEcXYqxJEA1z28nQJKIplVo8LNB746FkcA8+An9e0jUM3MqHsW4kQUBRvoiv55\n4/VUfxJ6LNN4lokX1wIDAQABMA0GCSqGSIb3DQEBCwUAA4GBAFVPScMEESle01WX\nGASnupBAgX3NnJuSKo/ReOzagFjZj4RqmaE2XgoHfMjb7/wHfNsuDB3aZ/6gg22c\nARrqj23UtwyWtgVjzLipaqmfDLXtQe54qO81rMsd6wnhy9AUZwPbnELe4tcrQrlM\nkhsvmhqSFHxtVsIzJgwUs4kGU39i\n-----END CERTIFICATE-----
+    - name: CERT2
+      public_key: -----BEGIN CERTIFICATE-----\nMIIB8TCCAVoCCQC1fWFVBBN/BDANBgkqhkiG9w0BAQsFADA8MRAwDgYDVQQDDAdh\nbnNpYmxlMQ4wDAYDVQQKDAVDaXNjbzELMAkGA1UECwwCQ1gxCzAJBgNVBAYTAlVT\nMCAXDTE5MDUxNDE4Mzc0NVoYDzIxMTkwNDIwMTgzNzQ1WjA8MRAwDgYDVQQDDAdh\nbnNpYmxlMQ4wDAYDVQQKDAVDaXNjbzELMAkGA1UECwwCQ1gxCzAJBgNVBAYTAlVT\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDU5ZySFa/ToZgF53wwlgl8CRzX\nbkHsNSxAnaWdBda4Hw9+qp+IbZcJB93Y1c4BprvEXU0FRkvqoe7r4Yy/qKme85If\nmYbEcXYqxJEA1z28nQJKIplVo8LNB746FkcA8+An9e0jUM3MqHsW4kQUBRvoiv55\n4/VUfxJ6LNN4lokX1wIDAQABMA0GCSqGSIb3DQEBCwUAA4GBAFVPScMEESle01WX\nGASnupBAgX3NnJuSKo/ReOzagFjZj4RqmaE2XgoHfMjb7/wHfNsuDB3aZ/6gg22c\nARrqj23UtwyWtgVjzLipaqmfDLXtQe54qO81rMsd6wnhy9AUZwPbnELe4tcrQrlM\nkhsvmhqSFHxtVsIzJgwUs4kGU39i\n-----END CERTIFICATE-----
+  users:
+    - username: USER1
+      password: Cisco123456!
+      first_name: first
+      last_name: last
+      email_address: aa.aa@aa.aa
+      phone_number: '12345678910'
+      status: active
+      roles:
+        - role: powerUser
+          access: readWrite
+    - username: USER2
+      password: Cisco123456!
+      first_name: first2
+      last_name: last2
+      email_address: aaa.aaa@aaa.aaa
+      roles:
+        - role: powerUser
+          access: readWrite
+  sites:
+    - name: BUILD1-ACISIM2
+      apic_urls:
+        - https://10.51.77.63
+      username: admin
+      password: C1sco123
+      id: 1
+      location:
+        long: '50'
+        lat: '50'
+      multisite: enabled
+      multicast_tep: 5.6.7.8
+      bgp:
+        as: 65009
+        password: cisco
+      ospf:
+        area_id: 0
+        area_type: regular
+      routed_domain: ANS-L3
+      ospf_policies:
+        - name: IPN
+          network_type: point-to-point
+          priority: 1
+          interface_cost: 0
+          passive_interface: disabled
+          mtu_ignore: disabled
+          advertise_subnet: disabled
+          bfd: disabled
+          hello_interval: 10
+          dead_interval: 40
+          retransmit_interval: 5
+          retransmit_delay: 1
+        - name: IPN2
+          mtu_ignore: enabled
+          bfd: enabled
+          passive_interface: enabled
+          advertise_subnet: enabled
+        - name: IPN-DEFAULT
+      pods:
+        - id: 1
+          unicast_tep: 3.4.5.6
+          spines:
+            - id: 1001
+              name: SPINE1001
+              bgp_peering: enabled
+              bgp_route_reflector: disabled
+              control_plane_tep: 100.100.100.1
+              interfaces:
+                - port: 1
+                  ip: 11.11.11.1/24
+                  mtu: inherit
+                  ospf:
+                    policy: IPN
+                    authentication_type: none
+                    authentication_key: cisco
+                    authentication_key_id: 1
+                - port: 2
+                  ip: 11.11.12.1/24
+                  ospf:
+                    policy: IPN-DEFAULT
+        - id: 2
+          unicast_tep: 3.4.5.7
+  fabric_connectivity:
+    bgp:
+      peering_type: full-mesh
+      ttl: 15
+      max_as: 10
+      keepalive_interval: 30
+      hold_interval: 90
+      stale_interval: 180
+      graceful_restart: disabled
+  tenants:
+    - name: TEN1
+    - name: TEN2
+    - name: MSO1
+      description: My Desc
+      sites:
+        - name: BUILD1-ACISIM2
+  policies:
+    dhcp_relays:
+      - name: ANS-REL1
+        description: My Desc
+        tenant: MSO1
+        providers:
+          - ip: 1.2.3.4
+            tenant: MSO1
+            schema: ABC
+            template: TEMPLATE1
+            application_profile: AP1
+            endpoint_group: EPG1
+          - ip: 1.2.3.5
+            tenant: MSO1
+            schema: ABC
+            template: TEMPLATE1
+            external_endpoint_group: EXT-EPG1
+      - name: ANS-REL2
+        tenant: MSO1
+    dhcp_options:
+      - name: ANS-OPT1
+        description: My Desc
+        tenant: MSO1
+        options:
+          - name: OPT1
+            id: 1
+            data: DATA1
+      - name: ANS-OPT2
+        tenant: MSO1

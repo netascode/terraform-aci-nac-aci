@@ -1,0 +1,58 @@
+---
+apic:
+  interface_policies:
+    nodes:
+      - id: 1001
+        interfaces:
+          - port: 60
+            policy_group: IPN1
+          - port: 61
+            description: DESC1
+
+      - id: 101
+        interfaces:
+          - port: 1
+            description: interface descr 1
+            policy_group: ACC1
+          - port: 2
+            policy_group: VPC1
+          - port: 3
+            description: interface descr 2
+            policy_group: PC1
+          - port: 4
+            policy_group: ACC1
+          - port: 5
+            description: reserved
+          - port: 10
+            fex_id: 101
+          - port: 20
+            policy_group: BREAKOUT1
+            sub_ports:
+              - port: 1
+                policy_group: ACC1
+              - port: 2
+                description: FEX
+                fex_id: 102
+              - port: 3
+                policy_group: VPC2
+          - port: 53
+            policy_group: ACC1
+            type: downlink
+          - port: 54
+            policy_group: ACC1
+            type: uplink
+        fexes:
+          - id: 101
+            interfaces:
+              - port: 1
+                description: interface descr 3
+                policy_group: ACC1
+              - port: 2
+
+      - id: 102
+        interfaces:
+          - port: 2
+            policy_group: VPC1
+          - port: 54
+            policy_group: ACC1
+            type: uplink
