@@ -5,68 +5,190 @@
 import shutil
 import subprocess
 
-DIRS = [
+ANSIBLE_DIRS = [
     {
-        "src": "./ansible-aac/roles/apic_validate/files/rules",
-        "dest": "../validation/rules",
+        "src": "../validation/rules",
+        "dest": "./ansible-aac/roles/apic_validate/files/rules",
     },
     {
-        "src": "./ansible-aac/roles/apic_deploy/templates",
-        "dest": "../templates/apic/deploy",
+        "src": "../templates/apic/deploy",
+        "dest": "./ansible-aac/roles/apic_deploy/templates",
     },
     {
-        "src": "./ansible-aac/roles/mso_deploy/templates",
-        "dest": "../templates/mso/deploy",
+        "src": "../templates/mso/deploy",
+        "dest": "./ansible-aac/roles/mso_deploy/templates",
     },
     {
-        "src": "./ansible-aac/roles/test_apic_deploy/templates",
-        "dest": "../templates/apic/test",
+        "src": "../templates/apic/test/config",
+        "dest": "./ansible-aac/roles/test_apic_deploy/templates/config",
     },
     {
-        "src": "./ansible-aac/roles/test_mso_deploy/templates",
-        "dest": "../templates/mso/test",
-    },
-]
-
-FILES = [
-    {
-        "src": "./ansible-aac/roles/apic_validate/files/apic_schema.yaml",
-        "dest": "../schemas/apic_schema.yaml",
+        "src": "../templates/apic/test/health",
+        "dest": "./ansible-aac/roles/test_apic_deploy/templates/health",
     },
     {
-        "src": "./ansible-aac/roles/mso_validate/files/mso_schema.yaml",
-        "dest": "../schemas/mso_schema.yaml",
+        "src": "../templates/apic/test/operational",
+        "dest": "./ansible-aac/roles/test_apic_deploy/templates/operational",
     },
     {
-        "src": "./ansible-aac/roles/apic_common/vars/apic_defaults.yaml",
-        "dest": "../defaults/apic_defaults.yaml",
-    },
-    {
-        "src": "./ansible-aac/roles/mso_common/vars/mso_defaults.yaml",
-        "dest": "../defaults/mso_defaults.yaml",
-    },
-    {
-        "src": "./ansible-aac/roles/apic_common/vars/apic_objects.yaml",
-        "dest": "../objects/apic_objects.yaml",
-    },
-    {
-        "src": "./ansible-aac/roles/mso_common/vars/mso_objects.yaml",
-        "dest": "../objects/mso_objects.yaml",
+        "src": "../templates/mso/test/config",
+        "dest": "./ansible-aac/roles/test_mso_deploy/templates/config",
     },
 ]
 
+ANSIBLE_FILES = [
+    {
+        "src": "../schemas/apic_schema.yaml",
+        "dest": "./ansible-aac/roles/apic_validate/files/apic_schema.yaml",
+    },
+    {
+        "src": "../schemas/mso_schema.yaml",
+        "dest": "./ansible-aac/roles/mso_validate/files/mso_schema.yaml",
+    },
+    {
+        "src": "../defaults/apic_defaults.yaml",
+        "dest": "./ansible-aac/roles/apic_common/vars/apic_defaults.yaml",
+    },
+    {
+        "src": "../defaults/mso_defaults.yaml",
+        "dest": "./ansible-aac/roles/mso_common/vars/mso_defaults.yaml",
+    },
+    {
+        "src": "../objects/apic_objects.yaml",
+        "dest": "./ansible-aac/roles/apic_common/vars/apic_objects.yaml",
+    },
+    {
+        "src": "../objects/mso_objects.yaml",
+        "dest": "./ansible-aac/roles/mso_common/vars/mso_objects.yaml",
+    },
+]
 
-def update_aac():
+TERRAFORM_DIRS = [
+    {
+        "src": "../validation/rules",
+        "dest": "./terraform-aac/validation/rules",
+    },
+    {
+        "src": "../templates/apic/test",
+        "dest": "./terraform-aac/tests/templates",
+    },
+    {
+        "src": "../jinja_filters",
+        "dest": "./terraform-aac/tests/filters",
+    },
+]
+
+TERRAFORM_FILES = [
+    {
+        "src": "../schemas/apic_schema.yaml",
+        "dest": "./terraform-aac/validation/apic_schema.yaml",
+    },
+    {
+        "src": "../defaults/apic_defaults.yaml",
+        "dest": "./terraform-aac/defaults/defaults.yaml",
+    },
+]
+
+AAC_TOOL_DIRS = [
+    {
+        "src": "../defaults",
+        "dest": "./aac-tool/aac_tool/schemas",
+    },
+    {
+        "src": "../schemas",
+        "dest": "./aac-tool/aac_tool/schemas",
+    },
+    {
+        "src": "../templates/apic/deploy",
+        "dest": "./aac-tool/aac_tool/templates/apic/deploy",
+    },
+    {
+        "src": "../templates/mso/deploy",
+        "dest": "./aac-tool/aac_tool/templates/mso/deploy",
+    },
+    {
+        "src": "../templates/apic/test",
+        "dest": "./aac-tool/aac_tool/templates/apic/test",
+    },
+    {
+        "src": "../templates/mso/test",
+        "dest": "./aac-tool/aac_tool/templates/mso/test",
+    },
+]
+
+AAC_TOOL_FILES = [
+    {
+        "src": "../objects/apic_objects.yaml",
+        "dest": "./aac-tool/aac_tool/schemas/apic_objects.yaml",
+    },
+    {
+        "src": "../objects/mso_objects.yaml",
+        "dest": "./aac-tool/aac_tool/schemas/mso_objects.yaml",
+    },
+]
+
+
+def update_ansible():
     shutil.rmtree("./ansible-aac", ignore_errors=True)
     subprocess.run(
         ["git", "clone", "https://wwwin-github.cisco.com/netascode/ansible-aac.git"]
     )
     # copy files and dirs
-    for dir in DIRS:
-        shutil.copytree(dir.get("src"), dir.get("dest"), dirs_exist_ok=True)
-    for file in FILES:
-        shutil.copyfile(file.get("src"), file.get("dest"))
+    for dir in ANSIBLE_DIRS:
+        shutil.copytree(dir["src"], dir["dest"], dirs_exist_ok=True)
+    for file in ANSIBLE_FILES:
+        shutil.copyfile(file["src"], file["dest"])
+    cwd = "./ansible-aac"
+    p = subprocess.run(["git", "diff", "--exit-code"], cwd=cwd)
+    if p.returncode > 0:
+        subprocess.run(["git", "add", "--all"], cwd=cwd)
+        subprocess.run(["git", "commit", "-m", "Aac updates"], cwd=cwd)
+        subprocess.run(["git", "push"], cwd=cwd)
     shutil.rmtree("./ansible-aac", ignore_errors=True)
+
+
+def update_terraform():
+    shutil.rmtree("./terraform-aac", ignore_errors=True)
+    subprocess.run(
+        ["git", "clone", "https://wwwin-github.cisco.com/netascode/terraform-aac.git"]
+    )
+    # copy files and dirs
+    for dir in TERRAFORM_DIRS:
+        shutil.copytree(dir["src"], dir["dest"], dirs_exist_ok=True)
+    for file in TERRAFORM_FILES:
+        shutil.copyfile(file["src"], file["dest"])
+    cwd = "./terraform-aac"
+    p = subprocess.run(["git", "diff", "--exit-code"], cwd=cwd)
+    if p.returncode > 0:
+        subprocess.run(["git", "add", "--all"], cwd=cwd)
+        subprocess.run(["git", "commit", "-m", "Aac updates"], cwd=cwd)
+        subprocess.run(["git", "push"], cwd=cwd)
+    shutil.rmtree("./terraform-aac", ignore_errors=True)
+
+
+def update_aac_tool():
+    shutil.rmtree("./aac-tool", ignore_errors=True)
+    subprocess.run(
+        ["git", "clone", "https://wwwin-github.cisco.com/netascode/aac-tool.git"]
+    )
+    # copy files and dirs
+    for dir in AAC_TOOL_DIRS:
+        shutil.copytree(dir["src"], dir["dest"], dirs_exist_ok=True)
+    for file in AAC_TOOL_FILES:
+        shutil.copyfile(file["src"], file["dest"])
+    cwd = "./aac-tool"
+    p = subprocess.run(["git", "diff", "--exit-code"], cwd=cwd)
+    if p.returncode > 0:
+        subprocess.run(["git", "add", "--all"], cwd=cwd)
+        subprocess.run(["git", "commit", "-m", "Aac updates"], cwd=cwd)
+        subprocess.run(["git", "push"], cwd=cwd)
+    shutil.rmtree("./aac-tool", ignore_errors=True)
+
+
+def update_aac():
+    update_ansible()
+    update_terraform()
+    update_aac_tool()
 
 
 if __name__ == "__main__":
