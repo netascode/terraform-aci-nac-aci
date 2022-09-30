@@ -114,7 +114,7 @@ Go to the aac-inventory repo (<https://CONTROLLER_IP/aci-iac/aac-inventory>) and
 Clone the repository locally in a directory of your choice.
 
 ```
-~/Code/AAC_Lab$ git clone https://CONTROLLER_IP/aci-iac/aac-inventory
+~/Code/AAC_Lab$ git -c http.sslVerify=false clone https://CONTROLLER_IP/aci-iac/aac-inventory
 Cloning into 'aac-inventory'...
 warning: redirecting to https://CONTROLLER_IP/aci-iac/aac-inventory.git/
 remote: Enumerating objects: 208, done.
@@ -124,6 +124,11 @@ Resolving deltas: 100% (92/92), done.
 ```
 
 This will make the `aac-inventory` available locally. Open up the folder in your favorite IDE (e.g. Visual Studio, PyCharm...). All changes described in the next section will be made on the local copy of this repository
+
+**Please note** that as the Gitlab instance is using a self-signed certificate is it required to disable certificate validation when executing
+the git command. This can be done using either a command line argument as in the example above or by disabling this in the global git
+configuration with the following command. It is however not advised disabling SSL verification globally as this **will introduce a security risk**
+and should only be used temporarily.
 
 ### 5B) Preparing Webex notifications
 
