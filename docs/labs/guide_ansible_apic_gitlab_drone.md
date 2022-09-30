@@ -42,7 +42,7 @@ Three repositories have been created during the provisioning process:
 
 ### 2C) Creating new repository
 
-We will need to create a third repository to contain our configuration (single source of truth)
+We will need to create a fourth repository to contain our configuration (single source of truth)
 
 3. <b>aac-inventory-config</b>: not created as part of the POD setup so we will create it as follows:
 
