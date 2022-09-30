@@ -32,11 +32,13 @@ Go to the Gitlab instance at <https://CONTROLLER_IP>. Login with username `cisco
 
 ### 2B) Repositories for ACI as Code
 
-Two repositories have been created during the provisioning process:
+Three repositories have been created during the provisioning process:
 
 1. <b>aac-inventory</b>: contains a sample repository representing the desired state of the ACI configuration. This repo is available at <https://CONTROLLER_IP/aci-iac/aac-inventory>
 
 2. <b>ansible-aac</b>: contains the ACI as Code framework consisting of Ansible collection, modules, plugins being used by the aac-inventory repository. This repo is available at <https://CONTROLLER_IP/aci-iac/ansible-aac>
+
+3. <b>terraform-aac</b>: contains the ACI as Code framework consisting of Terraform, modules, plugins being used by the aac-inventory repository. This repo will **not** be used in this lab guide althrough it is available at <https://CONTROLLER_IP/aci-iac/terraform-aac>
 
 ### 2C) Creating new repository
 
