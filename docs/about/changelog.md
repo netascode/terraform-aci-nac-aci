@@ -4,6 +4,8 @@
 
 #### CLI (aac-tool)
 
+- APIC: Add support for endpoint security groups
+- BREAKING CHANGE APIC: Enable remote leaf direct option by default
 - APIC: Add support for IPv6 OOB and inband management addresses
 - APIC: Add support for breakout interface policy groups
 - APIC: Add support fur sub-port (breakout) leaf interface selectors
@@ -16,6 +18,8 @@
 
 #### Ansible (ansible-aac)
 
+- APIC: Add support for endpoint security groups
+- BREAKING CHANGE APIC: Enable remote leaf direct option by default
 - APIC: Add support for IPv6 OOB and inband management addresses
 - APIC: Add support for breakout interface policy groups
 - APIC: Add support fur sub-port (breakout) leaf interface selectors
@@ -31,6 +35,10 @@
 
 #### Terraform (terraform-aac)
 
+- APIC: Add support for endpoint security groups
+- APIC: Add option to configure EPG mappings under AAEP
+- BREAKING CHANGE APIC: Enable remote leaf direct option by default
+- Update modules to Terraform 1.3 syntax
 - Introduce module switches (`modules/modules.yaml`) to selectively disable modules for brownfield scenarios
 - BREAKING CHANGE: Use boolean values in data model instead of `enabled`/`disabled`, `yes`/`no` and `on`/`off`
 - Use [iac-validate](https://github.com/netascode/iac-validate) to perform syntactic and semantic validation
