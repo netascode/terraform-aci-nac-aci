@@ -131,7 +131,7 @@ Verify Endpoint Group {{ epg_name }} Contract Provider {{ contract_name }}
 {% for contract in epg.contracts.consumers | default([]) %}
 {% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
 
-Verify Endpoint Group {{ epg_name }} Contract consumers {{ contract_name }}
+Verify Endpoint Group {{ epg_name }} Contract Consumers {{ contract_name }}
     ${con}=   Set Variable   $..fvAEPg.children[?(@.fvRsCons.attributes.tnVzBrCPName=='{{ contract_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${con}..fvRsCons.attributes.tnVzBrCPName   {{ contract_name }}
 

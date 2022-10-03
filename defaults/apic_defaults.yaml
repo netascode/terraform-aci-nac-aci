@@ -869,6 +869,13 @@ defaults:
               name_suffix: ''
               start_ip: 0.0.0.0
               end_ip: 0.0.0.0
+        endpoint_security_groups:
+          name_suffix: ''
+          shutdown: false
+          intra_esg_isolation: false
+          preferred_group: false
+          tag_selectors:
+            operator: equals
       inb_endpoint_groups:
         name_suffix: ''
       oob_endpoint_groups:

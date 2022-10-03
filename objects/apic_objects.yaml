@@ -1150,6 +1150,19 @@ tenant_objects:
       - health
     paths:
       - apic.tenants.application_profiles.endpoint_groups
+  - name: Endpoint Security Group
+    template: endpoint_security_group
+    folder: tenants
+    aci_classes:
+      - fvESg
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.application_profiles.endpoint_security_groups
   - name: Contract
     template: contract
     folder: tenants

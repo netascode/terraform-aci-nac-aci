@@ -2,7 +2,7 @@
 *** Settings ***
 Documentation   Verify Tenant SPAN Source Group
 Suite Setup     Login APIC
-Default Tags    apic   day2   config   tenant
+Default Tags    apic   day2   config   tenants
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***

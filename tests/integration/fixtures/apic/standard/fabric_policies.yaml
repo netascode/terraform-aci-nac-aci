@@ -36,7 +36,6 @@ apic:
       opflex_authentication: true
       disable_remote_endpoint_learn: true
       overlapping_vlan_validation: true
-      remote_leaf_direct: false
 
     port_tracking:
       admin_state: false

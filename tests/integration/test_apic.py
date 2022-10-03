@@ -21,11 +21,15 @@ APIC_DEPLOY_TEMPLATES_PATH = "templates/apic/deploy/"
 APIC_TEST_TEMPLATES_PATH = "templates/apic/test/"
 
 
-def apic_deploy_config(apic_ip, config_path):
+def apic_deploy_config(apic_url, config_path):
     """Deploy config via a set of json files"""
     username = os.getenv("ACI_USERNAME")
     password = os.getenv("ACI_PASSWORD")
-    apic = Apic(apic_ip, username, password)
+    if not username:
+        return "APIC username must be specified with ACI_USERNAME environment variable."
+    if not password:
+        return "APIC password must be specified with ACI_PASSWORD environment variable."
+    apic = Apic(apic_url, username, password)
     r = apic.login()
     if r:
         return "APIC login failed: {}.".format(r)
@@ -57,17 +61,33 @@ def apic_render_run_tests(apic_url, data_paths, output_path):
 
 
 @pytest.mark.parametrize(
-    "data_paths, vm_name, snapshot_name, apic_url",
+    "data_paths, vm_name, snapshot_name, apic_url, version",
     [
         (
-            ["tests/integration/fixtures/apic/standard/", "defaults/"],
+            [
+                "tests/integration/fixtures/apic/standard/",
+                "tests/integration/fixtures/apic/standard_42/",
+                "defaults/",
+            ],
             "BUILD1-ACISIM1",
             "Bootstrap",
             "https://10.51.77.39",
-        )
+            "4.2",
+        ),
+        (
+            [
+                "tests/integration/fixtures/apic/standard/",
+                "tests/integration/fixtures/apic/standard_52/",
+                "defaults/",
+            ],
+            "BUILD1-ACISIM3",
+            "Clean",
+            "https://10.51.77.46",
+            "5.2",
+        ),
     ],
 )
-def test_apic(data_paths, vm_name, snapshot_name, apic_url, tmpdir):
+def test_apic(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir):
     """Deploy config to ACI simulator and run tests"""
 
     # Render templates
@@ -92,6 +112,8 @@ def test_apic(data_paths, vm_name, snapshot_name, apic_url, tmpdir):
     error = apic_render_run_tests(
         apic_url, data_paths, os.path.join(tmpdir, "results/")
     )
-    shutil.copy(os.path.join(tmpdir, "results/", "log.html"), "apic_log.html")
+    shutil.copy(
+        os.path.join(tmpdir, "results/", "log.html"), "apic_{}_log.html".format(version)
+    )
     if error:
         pytest.fail(error)

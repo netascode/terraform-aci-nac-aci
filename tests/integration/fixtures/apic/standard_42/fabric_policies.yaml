@@ -1,0 +1,5 @@
+---
+apic:
+  fabric_policies:
+    global_settings:
+      remote_leaf_direct: false

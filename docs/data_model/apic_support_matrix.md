@@ -139,6 +139,7 @@ Description | CLI | Ansible | Terraform | Reverse
 [External Endpoint Group](./apic/tenants/external_endpoint_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Application Profile](./apic/tenants/application_profile.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Endpoint Group](./apic/tenants/endpoint_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
+[Endpoint Security Group](./apic/tenants/endpoint_security_group.md) | :material-check: | :material-check: | :material-check:
 [Contract](./apic/tenants/contract.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Imported Contract](./apic/tenants/imported_contract.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Filter](./apic/tenants/filter.md) | :material-check: | :material-check: | :material-check: | :material-check:

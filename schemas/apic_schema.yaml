@@ -1297,6 +1297,7 @@ ten_application_profiles:
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   endpoint_groups: list(include('ten_ap_endpoint_groups'), required=False) # @ref_name(Endpoint Group)
+  endpoint_security_groups: list(include('ten_ap_endpoint_security_groups'), required=False) # @ref_name(Endpoint Security Group)
 
 ten_ap_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1394,6 +1395,43 @@ ten_ap_endpoint_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Consumers) @ref_name(Contract)
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Providers) @ref_name(Contract)
   imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Imported Consumers) @ref_name(Contract)
+
+ten_ap_endpoint_security_groups:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  shutdown: bool(required=False)
+  intra_esg_isolation: bool(required=False)
+  preferred_group: bool(required=False)
+  contracts: include('ten_ap_endpoint_security_groups_contracts', required=False) # @flatten()
+  tag_selectors: list(include('ten_ap_endpoint_security_groups_tag_selectors'), required=False) # @name(ESG Tag Selectors)
+  epg_selectors: list(include('ten_ap_endpoint_security_groups_epg_selectors'), required=False) # @name(ESG EPG Selectors)
+  ip_subnet_selectors: list(include('ten_ap_endpoint_security_groups_ip_subnet_selectors'), required=False) # @name(ESG IP Subnet Selectors)
+
+ten_ap_endpoint_security_groups_contracts:
+  consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Consumers) @ref_name(Contract)
+  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Providers) @ref_name(Contract)
+  masters: list(include('ten_ap_endpoint_security_groups_contracts_masters'), required=False) # @name(ESG Contract Masters) @ref_name(Contract)
+
+ten_ap_endpoint_security_groups_contracts_masters:
+  application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  endpoint_security_group: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+
+ten_ap_endpoint_security_groups_tag_selectors:
+  key: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  operator: enum('contains', 'equals', 'regex', required=False)
+  value: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+
+ten_ap_endpoint_security_groups_epg_selectors:
+  tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+
+ten_ap_endpoint_security_groups_ip_subnet_selectors:
+  value: ip()
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ten_contracts:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

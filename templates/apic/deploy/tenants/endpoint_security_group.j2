@@ -1,0 +1,132 @@
+{# iterate_list apic.tenants name item[2] #}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for ap in tenant.application_profiles | default([]) %}{{ comma1() }}
+            {% set ap_name = ap.name ~ defaults.apic.tenants.application_profiles.name_suffix %}
+            {
+                "fvAp": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/tn-{{ tenant.name }}/ap-{{ ap_name }}",
+                        "name": "{{ ap_name }}"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for esg in ap.endpoint_security_groups | default([]) %}{{ comma2() }}
+                        {% set esg_name = esg.name ~ defaults.apic.tenants.application_profiles.endpoint_security_groups.name_suffix %}
+                        {
+                            "fvESg": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "descr": "{{ esg.description | default() }}",
+                                    "dn": "uni/tn-{{ tenant.name }}/ap-{{ ap_name }}/esg-{{ esg_name }}",
+                                    "name": "{{ esg_name }}",
+                                    "pcEnfPref": "{{ esg.intra_esg_isolation | default(defaults.apic.tenants.application_profiles.endpoint_security_groups.intra_esg_isolation) | cisco.aac.aac_bool("enforced") }}",
+                                    "prefGrMemb": "{{ esg.preferred_group | default(defaults.apic.tenants.application_profiles.endpoint_security_groups.preferred_group) | cisco.aac.aac_bool("include") }}",
+                                    "shutdown": "{{ esg.shutdown | default(defaults.apic.tenants.application_profiles.endpoint_security_groups.shutdown) | cisco.aac.aac_bool("yes") }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}{{ comma3() }}
+                                    {% set vrf_name = esg.vrf ~ ('' if esg.vrf in ('inb', 'obb', 'overlay-1') else defaults.apic.tenants.vrfs.name_suffix) %}
+                                    {
+                                        "fvRsScope": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tnFvCtxName": "{{ vrf_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- for contract in esg.contracts.providers | default([]) %}{{ comma3() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
+                                    {
+                                        "fvRsProv": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tnVzBrCPName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for contract in esg.contracts.consumers | default([]) %}{{ comma3() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
+                                    {
+                                        "fvRsCons": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tnVzBrCPName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for master in esg.contracts.masters | default([]) %}{{ comma3() }}
+                                    {% set ap_name = master.application_profile | default(ap.name) ~ defaults.apic.tenants.application_profiles.name_suffix %}
+                                    {% set esg_name = master.endpoint_security_group ~ defaults.apic.tenants.application_profiles.endpoint_security_groups.name_suffix %}
+
+                                    {
+                                        "fvRsSecInherited": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tDn": "uni/tn-{{ tenant.name }}/ap-{{ ap_name }}/esg-{{ esg_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for sel in esg.tag_selectors | default([]) %}{{ comma3() }}
+                                    {
+                                        "fvTagSelector": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "descr": "{{ sel.description | default() }}",
+                                                "matchKey": "{{ sel.key }}",
+                                                "matchValue": "{{ sel.value }}",
+                                                "valueOperator": "{{ sel.operator | default(defaults.apic.tenants.application_profiles.endpoint_security_groups.tag_selectors.operator) }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for sel in esg.epg_selectors | default([]) %}{{ comma3() }}
+                                    {% set ap_name = sel.application_profile | default(ap.name) ~ defaults.apic.tenants.application_profiles.name_suffix %}
+                                    {% set epg_name = sel.endpoint_group ~ defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix %}
+                                    {
+                                        "fvEPgSelector": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "descr": "{{ sel.description | default() }}",
+                                                "matchEpgDn": "uni/tn-{{ master.tenant | default(tenant.name) }}/ap-{{ ap_name }}/epg-{{ epg_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for sel in esg.ip_subnet_selectors | default([]) %}{{ comma3() }}
+                                    {
+                                        "fvEPSelector": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "descr": "{{ sel.description | default() }}",
+                                                "matchExpression": "ip=='{{ sel.value }}'"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

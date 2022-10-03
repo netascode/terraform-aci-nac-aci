@@ -201,6 +201,8 @@ apic:
             role: external
             description: 'Range #1'
           - from: 4003
+          - from: 300
+            to: 305
       - name: STATIC2
       - name: VMM1
         allocation: dynamic
@@ -209,7 +211,8 @@ apic:
             to: 2099
       - name: ROUTED1
         ranges:
-          - from: 4004
+          - from: 300
+            to: 305
       - name: ROUTED2
 
     physical_domains:

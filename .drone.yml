@@ -76,7 +76,8 @@ steps:
         - action: upload
           path: AS-release/Community/netascode/aac/${DRONE_BUILD_NUMBER}/
           sources:
-            - apic_log.html
+            - apic_4.2_log.html
+            - apic_5.2_log.html
             - mso_log.html
     when:
       status: [changed, failure, success]
@@ -132,7 +133,7 @@ steps:
         * Branch: {{ commit.branch }}
         * Event: {{ build.event }}
         * Started at: {{ datetime build.created "Mon Jan 2 15:04:05 MST 2006" "Local" }}
-        * Test Reports: [APIC](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/netascode/aac/{{ build.number }}/apic_log.html) [MSO](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/netascode/aac/{{ build.number }}/mso_log.html)
+        * Test Reports: [APIC 4.2](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/netascode/aac/{{ build.number }}/apic_4.2_log.html) [APIC 5.2](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/netascode/aac/{{ build.number }}/apic_5.2_log.html) [MSO](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/netascode/aac/{{ build.number }}/mso_log.html)
     when:
       status: [changed, failure, success]
     depends_on:

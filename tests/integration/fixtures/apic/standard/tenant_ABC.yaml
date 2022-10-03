@@ -15,10 +15,10 @@ apic:
             timer_policy: BGP-TIMER1
             ipv6_address_family_context_policy: BGP_ADDR_IPV6
             ipv4_address_family_context_policy: BGP_ADDR_IPV4
-            ipv4_import_route_target: extended:as2-nn4:5:16
-            ipv4_export_route_target: extended:as2-nn4:5:16
-            ipv6_import_route_target: extended:as2-nn4:5:16
-            ipv6_export_route_target: extended:as2-nn4:5:16
+            ipv4_import_route_target: route-target:as2-nn2:10:10
+            ipv4_export_route_target: route-target:as2-nn2:10:10
+            ipv6_import_route_target: route-target:as2-nn2:10:10
+            ipv6_export_route_target: route-target:as2-nn2:10:10
           dns_labels:
             - DNS1
             - DNS2
@@ -82,7 +82,7 @@ apic:
           ip_dataplane_learning: false
           limit_ip_learn_to_subnets: false
           multi_destination_flooding: encap-flood
-          unknown_unicast: proxy
+          unknown_unicast: flood
           unknown_ipv4_multicast: flood
           unknown_ipv6_multicast: flood
           unicast_routing: true
@@ -150,7 +150,7 @@ apic:
               import_route_control: ROUTE_MAP2
             - ip: 14.14.14.13
               remote_as: 65010
-          interleak_route_map: ROUTE_MAP1
+          interleak_route_map: ROUTE_MAP2
           default_route_leak_policy:
             always: false
             criteria: 'in-addition'
@@ -508,6 +508,8 @@ apic:
                   log: true
                   no_stats: false
         - name: CON2
+        - name: CON3
+        - name: CON4
       imported_contracts:
         - name: IMPORT-CON1
           tenant: DEF
