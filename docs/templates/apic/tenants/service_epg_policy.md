@@ -15,6 +15,6 @@ apic:
         service_epg_policies:
           - name: SERVICE_EPG1
             description: My Desc
-            preferred_group: include
+            preferred_group: true
           - name: SERVICE_EPG2
 ```

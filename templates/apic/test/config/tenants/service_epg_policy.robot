@@ -14,6 +14,6 @@ Verify Service EPG Policy {{ pol_name }}
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/svcCont/svcEPgPol-{{ pol_name }}.json   params=rsp-subtree=full
     Should Be Equal Value Json String   ${r.json()}   $..vnsSvcEPgPol.attributes.descr   {{ pol.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   $..vnsSvcEPgPol.attributes.name   {{ pol_name }}
-    Should Be Equal Value Json String   ${r.json()}   $..vnsSvcEPgPol.attributes.prefGrMemb   {{ pol.preferred_group | default() }}
+    Should Be Equal Value Json String   ${r.json()}   $..vnsSvcEPgPol.attributes.prefGrMemb   {{ pol.preferred_group | default(defaults.apic.tenants.services.service_epg_policies.preferred_group) | cisco.aac.aac_bool("include") }}
 
 {% endfor %}

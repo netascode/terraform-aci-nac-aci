@@ -294,7 +294,7 @@ apic:
             - name: EXT-EPG1
               alias: ABC-EXT-EPG1
               description: My Desc
-              preferred_group: exclude
+              preferred_group: false
               qos_class: level4
               target_dscp: CS5
               subnets:
@@ -355,7 +355,7 @@ apic:
               bridge_domain: BD1
               flood_in_encap: false
               intra_epg_isolation: unenforced
-              preferred_group: exclude
+              preferred_group: false
               trust_control_policy: TRUST_ALL
               qos_class: level3
               custom_qos_policy: QOS_POL
@@ -887,7 +887,7 @@ apic:
         service_epg_policies:
           - name: SERVICE_EPG1
             description: My Desc
-            preferred_group: include
+            preferred_group: true
           - name: SERVICE_EPG2
         redirect_health_groups:
           - name: HEALTH_GROUP1

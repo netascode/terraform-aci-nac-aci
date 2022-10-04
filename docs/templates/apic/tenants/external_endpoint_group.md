@@ -40,7 +40,7 @@ apic:
             - name: EXT-EPG1
               alias: ABC-EXT-EPG1
               description: My Desc
-              preferred_group: exclude
+              preferred_group: false
               qos_class: level4
               target_dscp: CS5
               subnets:

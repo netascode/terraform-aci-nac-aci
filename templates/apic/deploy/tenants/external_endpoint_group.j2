@@ -29,7 +29,7 @@
                                     "descr": "{{ epg.description | default() }}",
                                     "name": "{{ eepg_name }}",
                                     "nameAlias": "{{ epg.alias | default() }}",
-                                    "prefGrMemb": "{{ epg.preferred_group | default(defaults.apic.tenants.l3outs.external_endpoint_groups.preferred_group) }}",
+                                    "prefGrMemb": "{{ epg.preferred_group | default(defaults.apic.tenants.l3outs.external_endpoint_groups.preferred_group) | cisco.aac.aac_bool("include") }}",
                                     "prio": "{{ epg.qos_class | default(defaults.apic.tenants.l3outs.external_endpoint_groups.qos_class) }}",
                                     "targetDscp": "{{ epg.target_dscp | default(defaults.apic.tenants.l3outs.external_endpoint_groups.target_dscp) }}",
                                     "childAction": "deleteNonPresent"

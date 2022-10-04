@@ -1305,7 +1305,7 @@ ten_ap_endpoint_groups:
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   flood_in_encap: any(bool(), enum('disabled', 'enabled'), required=False)
   intra_epg_isolation: enum('enforced', 'unenforced', required=False)
-  preferred_group: enum('include', 'exclude', required=False)
+  preferred_group: any(bool(), enum('include', 'exclude'), required=False)
   bridge_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   physical_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Physical Domains) @ref_name(Physical Domain)
   vmware_vmm_domains: list(include('ten_ap_endpoint_groups_vmware_vmm_domains'), required=False) # @name(EPG VMware VMM Domains)
@@ -1755,7 +1755,7 @@ ten_l3outs_external_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  preferred_group: enum('exclude', 'include', required=False)
+  preferred_group: any(bool(), enum('exclude', 'include'), required=False)
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
   target_dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7', 'unspecified'), int(min=0, max=63), required=False)
   subnets: list(include('ten_l3outs_external_endpoint_groups_subnets'), required=False) # @name(L3out External EPG Subnets)
@@ -2258,7 +2258,7 @@ ten_ser_redirect_policies_l3_destinations:
 ten_ser_service_epg_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  preferred_group: enum('include', 'exclude', required=False)
+  preferred_group: any(bool(), enum('include', 'exclude'), required=False)
 
 ten_ser_redirect_health_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

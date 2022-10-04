@@ -23,7 +23,7 @@
                                     "dn": "uni/tn-{{ tenant.name }}/svcCont/svcEPgPol-{{ pol_name }}",
                                     "name": "{{ pol_name }}",
                                     "descr": "{{ pol.description | default() }}",
-                                    "prefGrMemb": "{{ pol.preferred_group | default(defaults.apic.tenants.services.service_epg_policies.preferred_group) }}"
+                                    "prefGrMemb": "{{ pol.preferred_group | default(defaults.apic.tenants.services.service_epg_policies.preferred_group) | cisco.aac.aac_bool("include") }}"
                                 }
                             }
                         }

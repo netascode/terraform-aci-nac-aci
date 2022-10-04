@@ -46,7 +46,7 @@ apic:
               bridge_domain: BD1
               flood_in_encap: false
               intra_epg_isolation: unenforced
-              preferred_group: exclude
+              preferred_group: false
               physical_domains:
                 - PHY1
               vmware_vmm_domains:

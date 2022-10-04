@@ -26,7 +26,7 @@ Verify Endpoint Group {{ epg_name }}
     Should Be Equal Value Json String   ${r.json()}   $..fvAEPg.attributes.nameAlias   {{ epg.alias | default() }}
     Should Be Equal Value Json String   ${r.json()}   $..fvAEPg.attributes.floodOnEncap   {{ epg.flood_in_encap | default(defaults.apic.tenants.application_profiles.endpoint_groups.flood_in_encap) | cisco.aac.aac_bool("enabled") }}
     Should Be Equal Value Json String   ${r.json()}   $..fvAEPg.attributes.pcEnfPref   {{ epg.intra_epg_isolation | default(defaults.apic.tenants.application_profiles.endpoint_groups.intra_epg_isolation) }}
-    Should Be Equal Value Json String   ${r.json()}   $..fvAEPg.attributes.prefGrMemb   {{ epg.preferred_group | default(defaults.apic.tenants.application_profiles.endpoint_groups.preferred_group) }}
+    Should Be Equal Value Json String   ${r.json()}   $..fvAEPg.attributes.prefGrMemb   {{ epg.preferred_group | default(defaults.apic.tenants.application_profiles.endpoint_groups.preferred_group) | cisco.aac.aac_bool("include") }}
     Should Be Equal Value Json String   ${r.json()}   $..fvRsBd.attributes.tnFvBDName   {{ bd_name }}
     Should Be Equal Value Json String   ${r.json()}   $..fvAEPg.attributes.prio   {{ epg.qos_class | default(defaults.apic.tenants.application_profiles.endpoint_groups.qos_class) }}
 
