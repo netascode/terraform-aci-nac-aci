@@ -833,7 +833,7 @@ defaults:
         endpoint_groups:
           name_suffix: ''
           flood_in_encap: false
-          intra_epg_isolation: unenforced
+          intra_epg_isolation: false
           preferred_group: false
           qos_class: unspecified
           vmware_vmm_domains:

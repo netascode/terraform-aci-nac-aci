@@ -1304,7 +1304,7 @@ ten_ap_endpoint_groups:
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   flood_in_encap: any(bool(), enum('disabled', 'enabled'), required=False)
-  intra_epg_isolation: enum('enforced', 'unenforced', required=False)
+  intra_epg_isolation: any(bool(), enum('enforced', 'unenforced'), required=False)
   preferred_group: any(bool(), enum('include', 'exclude'), required=False)
   bridge_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   physical_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Physical Domains) @ref_name(Physical Domain)

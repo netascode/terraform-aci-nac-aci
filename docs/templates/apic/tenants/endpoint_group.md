@@ -45,7 +45,7 @@ apic:
             - name: EPG1
               bridge_domain: BD1
               flood_in_encap: false
-              intra_epg_isolation: unenforced
+              intra_epg_isolation: false
               preferred_group: false
               physical_domains:
                 - PHY1
