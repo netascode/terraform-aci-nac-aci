@@ -1686,11 +1686,11 @@ ten_l3outs_node_profiles_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   bfd_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   ospf: include('ten_l3outs_node_profiles_interface_profiles_ospf', required=False) # @name(L3out Interface Profile OSPF)
-  interfaces: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces'), required=False) # @name(L3out Interface Prof Interfaces) @ref_name(Interface) @key(node_id;port;module;channel;vlan)
   pim_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   igmp_interface_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
   custom_qos_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  interfaces: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces'), required=False) # @name(L3out Interface Prof Interfaces) @ref_name(Interface) @key(node_id;port;module;channel;vlan)
 
 ten_l3outs_node_profiles_interface_profiles_ospf:
   ospf_interface_profile_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
