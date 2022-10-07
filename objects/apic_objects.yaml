@@ -108,7 +108,7 @@ objects:
   - name: DNS Profile Policy
     template: dns_policy
     folder: fabric_policies
-    delete: false
+    aci_classes: dnsProfile
     test_types:
       - config
     paths:
