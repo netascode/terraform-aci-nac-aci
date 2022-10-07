@@ -60,34 +60,7 @@ def apic_render_run_tests(apic_url, data_paths, output_path):
     return None
 
 
-@pytest.mark.parametrize(
-    "data_paths, vm_name, snapshot_name, apic_url, version",
-    [
-        (
-            [
-                "tests/integration/fixtures/apic/standard/",
-                "tests/integration/fixtures/apic/standard_42/",
-                "defaults/",
-            ],
-            "BUILD1-ACISIM1",
-            "Bootstrap",
-            "https://10.51.77.39",
-            "4.2",
-        ),
-        (
-            [
-                "tests/integration/fixtures/apic/standard/",
-                "tests/integration/fixtures/apic/standard_52/",
-                "defaults/",
-            ],
-            "BUILD1-ACISIM3",
-            "Clean",
-            "https://10.51.77.46",
-            "5.2",
-        ),
-    ],
-)
-def test_apic(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir):
+def full_apic_test(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir):
     """Deploy config to ACI simulator and run tests"""
 
     # Render templates
@@ -117,3 +90,45 @@ def test_apic(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir):
     )
     if error:
         pytest.fail(error)
+
+
+@pytest.mark.apic_42
+@pytest.mark.parametrize(
+    "data_paths, vm_name, snapshot_name, apic_url, version",
+    [
+        (
+            [
+                "tests/integration/fixtures/apic/standard/",
+                "tests/integration/fixtures/apic/standard_42/",
+                "defaults/",
+            ],
+            "BUILD1-ACISIM1",
+            "Bootstrap",
+            "https://10.51.77.39",
+            "4.2",
+        ),
+    ],
+)
+def test_apic_42(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir):
+    full_apic_test(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir)
+
+
+@pytest.mark.apic_52
+@pytest.mark.parametrize(
+    "data_paths, vm_name, snapshot_name, apic_url, version",
+    [
+        (
+            [
+                "tests/integration/fixtures/apic/standard/",
+                "tests/integration/fixtures/apic/standard_52/",
+                "defaults/",
+            ],
+            "BUILD1-ACISIM3",
+            "Clean",
+            "https://10.51.77.46",
+            "5.2",
+        ),
+    ],
+)
+def test_apic_52(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir):
+    full_apic_test(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir)

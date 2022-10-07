@@ -29,7 +29,7 @@ steps:
     depends_on:
       - Clone Repo
 
-  - name: Test APIC
+  - name: Test APIC 4.2
     image: danischm/aac:0.3.5
     environment:
       VMWARE_HOST:
@@ -43,7 +43,25 @@ steps:
       ACI_PASSWORD:
         from_secret: ACI_PASSWORD
     commands:
-      - pytest -m apic
+      - pytest -m apic_42
+    depends_on:
+      - Clone Repo
+
+  - name: Test APIC 5.2
+    image: danischm/aac:0.3.5
+    environment:
+      VMWARE_HOST:
+        from_secret: VMWARE_HOST
+      VMWARE_USER:
+        from_secret: VMWARE_USER
+      VMWARE_PASSWORD:
+        from_secret: VMWARE_PASSWORD
+      ACI_USERNAME:
+        from_secret: ACI_USERNAME
+      ACI_PASSWORD:
+        from_secret: ACI_PASSWORD
+    commands:
+      - pytest -m apic_52
     depends_on:
       - Clone Repo
 
@@ -83,7 +101,8 @@ steps:
       status: [changed, failure, success]
     depends_on:
       - Test Validate
-      - Test APIC
+      - Test APIC 4.2
+      - Test APIC 5.2
       - Test MSO
 
   - name: Build Documentation
