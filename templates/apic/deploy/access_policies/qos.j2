@@ -47,8 +47,8 @@
                                     "annotation": "orchestrator:aac",
                                     "adminSt": "{% if qos_class.pfc_state | default(default_qos_class.pfc_state) | cisco.aac.aac_bool("enabled") == "enabled" %}yes{% else %}no{% endif %}",
                                     "name": "default",
-                                    "noDropCos": "{{ qos_class.no_drop_cos | default(default_qos_class.no_drop_cos)  }}",
-                                    "enableScope": "{{ qos_class.pfc_scope | default(default_qos_class.pfc_scope)  }}"
+                                    "noDropCos": "{{ qos_class.no_drop_cos | default(default_qos_class.no_drop_cos) }}",
+                                    "enableScope": "{{ qos_class.pfc_scope | default(default_qos_class.pfc_scope) }}"
                                 }
                             }
                         },
@@ -71,7 +71,7 @@
                             "qosBuffer": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
-                                    "min": "{{ qos_class.minimum_buffer | default(default_qos_class.weight)}}"
+                                    "min": "{{ qos_class.minimum_buffer | default(default_qos_class.minimum_buffer)}}"
                                 }
                             }
                         }
