@@ -122,7 +122,7 @@ apic:
           domain: ROUTED1
           bfd_policy: BFD1
           ospf:
-            area: 0
+            area: backbone
             area_type: regular
             area_cost: 1
             auth_type: simple
@@ -526,13 +526,13 @@ apic:
               alias: HTTP1-ALIAS
               ethertype: ip
               protocol: tcp
-              source_from_port: 80
-              source_to_port: 80
-              destination_from_port: 80
-              destination_to_port: 80
+              source_from_port: http
+              source_to_port: http
+              destination_from_port: http
+              destination_to_port: http
               stateful: true
             - name: HTTPS1
-              destination_from_port: 443
+              destination_from_port: https
         - name: FILTER2
       policies:
         qos:

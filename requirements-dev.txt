@@ -23,4 +23,5 @@ ruamel.yaml
 RESTinstance
 robotframework>=4.0
 robotframework-pabot
+tftest
 yamllint

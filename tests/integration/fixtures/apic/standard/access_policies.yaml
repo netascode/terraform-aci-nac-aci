@@ -313,20 +313,20 @@ apic:
           alias: 10P
           broadcast_burst_pps: unspecified
           broadcast_pps: unspecified
-          broadcast_burst_rate: 10
-          broadcast_rate: 10
+          broadcast_burst_rate: '10.000000'
+          broadcast_rate: '10.000000'
           multicast_burst_pps: unspecified
           multicast_pps: unspecified
-          multicast_burst_rate: 10
-          multicast_rate: 10
+          multicast_burst_rate: '10.000000'
+          multicast_rate: '10.000000'
           unknown_unicast_burst_pps: unspecified
           unknown_unicast_pps: unspecified
-          unknown_unicast_burst_rate: 10
-          unknown_unicast_rate: 10
+          unknown_unicast_burst_rate: '10.000000'
+          unknown_unicast_rate: '10.000000'
           action: drop
         - name: 20P
-          broadcast_burst_rate: 20
-          broadcast_rate: 20
+          broadcast_burst_rate: '20.000000'
+          broadcast_rate: '20.000000'
 
     spine_interface_policy_groups:
       - name: IPN1

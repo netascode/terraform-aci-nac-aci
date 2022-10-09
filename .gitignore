@@ -404,6 +404,14 @@ tmp/
 # Ansible Collections
 ansible_collections/
 
+# Terraform
+.terraform/
+.terraform.lock.hcl
+.terraform.tfstate.lock.info
+*.tfstate
+*.tfstate.backup
+*.tfplan
+
 # Rendered Documentation
 site/
 pubhub/

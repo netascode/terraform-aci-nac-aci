@@ -23,14 +23,14 @@ steps:
     pull: if-not-exists
 
   - name: Test Validate
-    image: danischm/aac:0.3.5
+    image: danischm/aac:0.4.1
     commands:
       - pytest -m validate
     depends_on:
       - Clone Repo
 
   - name: Test APIC 4.2
-    image: danischm/aac:0.3.5
+    image: danischm/aac:0.4.1
     environment:
       VMWARE_HOST:
         from_secret: VMWARE_HOST
@@ -43,12 +43,12 @@ steps:
       ACI_PASSWORD:
         from_secret: ACI_PASSWORD
     commands:
-      - pytest -m apic_42
+      - pytest -m "apic_42 and not terraform"
     depends_on:
       - Clone Repo
 
   - name: Test APIC 5.2
-    image: danischm/aac:0.3.5
+    image: danischm/aac:0.4.1
     environment:
       VMWARE_HOST:
         from_secret: VMWARE_HOST
@@ -61,12 +61,12 @@ steps:
       ACI_PASSWORD:
         from_secret: ACI_PASSWORD
     commands:
-      - pytest -m apic_52
+      - pytest -m "apic_52 and not terraform"
     depends_on:
       - Clone Repo
 
   - name: Test MSO
-    image: danischm/aac:0.3.5
+    image: danischm/aac:0.4.1
     environment:
       VMWARE_HOST:
         from_secret: VMWARE_HOST
@@ -106,7 +106,7 @@ steps:
       - Test MSO
 
   - name: Build Documentation
-    image: danischm/aac:0.3.5
+    image: danischm/aac:0.4.1
     commands:
       - pip install --upgrade mkdocs mkdocs-material mkdocs-mermaid2-plugin
       - python3 docs/aac-doc.py
