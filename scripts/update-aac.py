@@ -139,9 +139,9 @@ def update_ansible():
     for file in ANSIBLE_FILES:
         shutil.copyfile(file["src"], file["dest"])
     cwd = "./ansible-aac"
-    p = subprocess.run(["git", "diff", "--exit-code"], cwd=cwd)
+    subprocess.run(["git", "add", "--all"], cwd=cwd)
+    p = subprocess.run(["git", "diff", "--cached", "--exit-code"], cwd=cwd)
     if p.returncode > 0:
-        subprocess.run(["git", "add", "--all"], cwd=cwd)
         subprocess.run(["git", "commit", "-m", "Aac updates"], cwd=cwd)
         subprocess.run(["git", "push"], cwd=cwd)
     shutil.rmtree("./ansible-aac", ignore_errors=True)
@@ -158,9 +158,9 @@ def update_terraform():
     for file in TERRAFORM_FILES:
         shutil.copyfile(file["src"], file["dest"])
     cwd = "./terraform-aac"
-    p = subprocess.run(["git", "diff", "--exit-code"], cwd=cwd)
+    subprocess.run(["git", "add", "--all"], cwd=cwd)
+    p = subprocess.run(["git", "diff", "--cached", "--exit-code"], cwd=cwd)
     if p.returncode > 0:
-        subprocess.run(["git", "add", "--all"], cwd=cwd)
         subprocess.run(["git", "commit", "-m", "Aac updates"], cwd=cwd)
         subprocess.run(["git", "push"], cwd=cwd)
     shutil.rmtree("./terraform-aac", ignore_errors=True)
@@ -177,9 +177,9 @@ def update_aac_tool():
     for file in AAC_TOOL_FILES:
         shutil.copyfile(file["src"], file["dest"])
     cwd = "./aac-tool"
-    p = subprocess.run(["git", "diff", "--exit-code"], cwd=cwd)
+    subprocess.run(["git", "add", "--all"], cwd=cwd)
+    p = subprocess.run(["git", "diff", "--cached", "--exit-code"], cwd=cwd)
     if p.returncode > 0:
-        subprocess.run(["git", "add", "--all"], cwd=cwd)
         subprocess.run(["git", "commit", "-m", "Aac updates"], cwd=cwd)
         subprocess.run(["git", "push"], cwd=cwd)
     shutil.rmtree("./aac-tool", ignore_errors=True)
