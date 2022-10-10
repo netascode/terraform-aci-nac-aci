@@ -42,7 +42,7 @@ module "pod_policies" {
 
 module "node_policies" {
   source  = "netascode/nac-node-policies/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.2.1"
 
   model = local.model
 
