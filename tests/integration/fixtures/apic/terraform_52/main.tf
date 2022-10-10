@@ -20,29 +20,25 @@ data "utils_yaml_merge" "model" {
 }
 
 module "access_policies" {
-  source  = "netascode/nac-access-policies/aci"
-  version = ">= 0.2.1"
+  source = "github.com/netascode/terraform-aci-nac-access-policies.git?ref=main"
 
   model = local.model
 }
 
 module "fabric_policies" {
-  source  = "netascode/nac-fabric-policies/aci"
-  version = ">= 0.2.0"
+  source = "github.com/netascode/terraform-aci-nac-fabric-policies.git?ref=main"
 
   model = local.model
 }
 
 module "pod_policies" {
-  source  = "netascode/nac-pod-policies/aci"
-  version = ">= 0.1.0"
+  source = "github.com/netascode/terraform-aci-nac-pod-policies.git?ref=main"
 
   model = local.model
 }
 
 module "node_policies" {
-  source  = "netascode/nac-node-policies/aci"
-  version = ">= 0.2.1"
+  source = "github.com/netascode/terraform-aci-nac-node-policies.git?ref=main"
 
   model = local.model
 
@@ -50,8 +46,7 @@ module "node_policies" {
 }
 
 module "interface_policies" {
-  source  = "netascode/nac-interface-policies/aci"
-  version = ">= 0.2.0"
+  source = "github.com/netascode/terraform-aci-nac-interface-policies.git?ref=main"
 
   for_each = { for node in lookup(lookup(local.model.apic, "interface_policies", {}), "nodes", []) : node.id => node }
   model    = local.model
@@ -61,8 +56,7 @@ module "interface_policies" {
 }
 
 module "tenant" {
-  source  = "netascode/nac-tenant/aci"
-  version = ">= 0.2.3"
+  source = "github.com/netascode/terraform-aci-nac-tenant.git?ref=main"
 
   for_each    = toset([for tenant in lookup(local.model.apic, "tenants", {}) : tenant.name])
   model       = local.model
