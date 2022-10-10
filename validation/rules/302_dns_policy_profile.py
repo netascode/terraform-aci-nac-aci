@@ -11,8 +11,11 @@ class Rule:
 
             for x in dns_policy:
                 if len(x.setdefault("providers", [])) > 2:
-                    results.append("apic.fabric_policies.dns_policies.providers - "
-                                   + x.get("name") + " has more than 2 DNS providers")
+                    results.append(
+                        "apic.fabric_policies.dns_policies.providers - "
+                        + x.get("name")
+                        + " has more than 2 DNS providers"
+                    )
         except KeyError:
             pass
         return results
