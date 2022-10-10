@@ -89,6 +89,32 @@ TERRAFORM_FILES = [
     },
 ]
 
+TF_DEMO_DIRS = [
+    {
+        "src": "../validation/rules",
+        "dest": "./aac-tf-demo/validation/rules",
+    },
+    {
+        "src": "../templates/apic/test",
+        "dest": "./aac-tf-demo/tests/templates",
+    },
+    {
+        "src": "../jinja_filters",
+        "dest": "./aac-tf-demo/tests/filters",
+    },
+]
+
+TF_DEMO_FILES = [
+    {
+        "src": "../schemas/apic_schema.yaml",
+        "dest": "./aac-tf-demo/validation/apic_schema.yaml",
+    },
+    {
+        "src": "../defaults/apic_defaults.yaml",
+        "dest": "./aac-tf-demo/defaults/defaults.yaml",
+    },
+]
+
 AAC_TOOL_DIRS = [
     {
         "src": "../defaults",
@@ -166,6 +192,25 @@ def update_terraform():
     shutil.rmtree("./terraform-aac", ignore_errors=True)
 
 
+def update_tf_demo():
+    shutil.rmtree("./aac-tf-demo", ignore_errors=True)
+    subprocess.run(
+        ["git", "clone", "https://wwwin-github.cisco.com/danischm/aac-tf-demo.git"]
+    )
+    # copy files and dirs
+    for dir in TF_DEMO_DIRS:
+        shutil.copytree(dir["src"], dir["dest"], dirs_exist_ok=True)
+    for file in TF_DEMO_FILES:
+        shutil.copyfile(file["src"], file["dest"])
+    cwd = "./aac-tf-demo"
+    subprocess.run(["git", "add", "--all"], cwd=cwd)
+    p = subprocess.run(["git", "diff", "--cached", "--exit-code"], cwd=cwd)
+    if p.returncode > 0:
+        subprocess.run(["git", "commit", "-m", "Aac updates"], cwd=cwd)
+        subprocess.run(["git", "push"], cwd=cwd)
+    shutil.rmtree("./aac-tf-demo", ignore_errors=True)
+
+
 def update_aac_tool():
     shutil.rmtree("./aac-tool", ignore_errors=True)
     subprocess.run(
@@ -188,6 +233,7 @@ def update_aac_tool():
 def update_aac():
     update_ansible()
     update_terraform()
+    update_tf_demo()
     update_aac_tool()
 
 
