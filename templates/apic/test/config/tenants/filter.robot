@@ -35,9 +35,9 @@ Verify Tenant {{ tenant.name }} Filter {{ filter.name }} Entry {{ entry_name }}
     Should Be Equal Value Json String   ${r.json()}   ${filter_entry}.attributes.prot   {{ entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) }}
 {% if entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) in ['tcp', 'udp'] %}
     Should Be Equal Value Json String   ${r.json()}   ${filter_entry}.attributes.sFromPort   {{ get_protocol_from_port(entry.source_from_port | default(defaults.apic.tenants.filters.entries.source_from_port)) }}
-    Should Be Equal Value Json String   ${r.json()}   ${filter_entry}.attributes.sToPort   {{ get_protocol_from_port(entry.source_to_port| default(entry.source_from_port | default(defaults.apic.tenants.filters.entries.source_to_port))) }}
+    Should Be Equal Value Json String   ${r.json()}   ${filter_entry}.attributes.sToPort   {{ get_protocol_from_port(entry.source_to_port| default(entry.source_from_port | default(defaults.apic.tenants.filters.entries.source_from_port))) }}
     Should Be Equal Value Json String   ${r.json()}   ${filter_entry}.attributes.dFromPort   {{ get_protocol_from_port(entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_from_port)) }}
-    Should Be Equal Value Json String   ${r.json()}   ${filter_entry}.attributes.dToPort   {{ get_protocol_from_port(entry.destination_to_port | default(entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_to_port))) }}
+    Should Be Equal Value Json String   ${r.json()}   ${filter_entry}.attributes.dToPort   {{ get_protocol_from_port(entry.destination_to_port | default(entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_from_port))) }}
 {% if entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) == 'tcp' %}
     Should Be Equal Value Json String   ${r.json()}   ${filter_entry}.attributes.stateful   {{ entry.stateful | default(defaults.apic.tenants.filters.entries.stateful) | cisco.aac.aac_bool("yes") }}
 {% endif %}

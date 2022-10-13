@@ -581,10 +581,8 @@ defaults:
           name_suffix: ''
           entries:
             name_suffix: ''
-            destination_port_from: unspecified
-            destination_port_to: unspecified
-            source_port_from: unspecified
-            source_port_to: unspecified
+            destination_from_port: unspecified
+            source_from_port: unspecified
             ip_protocol: unspecified
       vspan:
         destination_groups:
@@ -911,9 +909,7 @@ defaults:
           ethertype: ip
           protocol: tcp
           source_from_port: unspecified
-          source_to_port: unspecified
           destination_from_port: unspecified
-          destination_to_port: unspecified
           stateful: false
       policies:
         custom_qos:

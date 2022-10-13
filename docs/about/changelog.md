@@ -15,6 +15,10 @@
 - APIC: Fix filter config test to support ssh protocol
 - APIC: Fix QoS no_drop_cos default value
 - APIC: Replace RESTinstance Robot library with Requests and JSONLibrary to align with CXTA curated libraries
+- BREAKING CHANGE APIC: Rename `source_port_from` attribute of Access SPAN filter group to `source_from_port`
+- BREAKING CHANGE APIC: Rename `source_port_to` attribute of Access SPAN filter group to `source_to_port`
+- BREAKING CHANGE APIC: Rename `destination_port_from` attribute of Access SPAN filter group to `destination_from_port`
+- BREAKING CHANGE APIC: Rename `destination_port_to` attribute of Access SPAN filter group to `destination_to_port`
 
 #### Ansible (ansible-aac)
 
@@ -32,6 +36,10 @@
 - APIC: Fix QoS no_drop_cos default value
 - APIC: Replace RESTinstance Robot library with Requests and JSONLibrary to align with CXTA curated libraries
 - MSO: Replace RESTinstance Robot library with Requests and JSONLibrary to align with CXTA curated libraries
+- BREAKING CHANGE APIC: Rename `source_port_from` attribute of Access SPAN filter group to `source_from_port`
+- BREAKING CHANGE APIC: Rename `source_port_to` attribute of Access SPAN filter group to `source_to_port`
+- BREAKING CHANGE APIC: Rename `destination_port_from` attribute of Access SPAN filter group to `destination_from_port`
+- BREAKING CHANGE APIC: Rename `destination_port_to` attribute of Access SPAN filter group to `destination_to_port`
 
 #### Terraform (terraform-aac)
 

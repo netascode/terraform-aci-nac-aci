@@ -35,9 +35,9 @@
                                     "prot": "{{ entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) }}"
                                     {%- if entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) in ['tcp', 'udp'] %},
                                     "sFromPort": "{{ entry.source_from_port | default(defaults.apic.tenants.filters.entries.source_from_port) }}",
-                                    "sToPort": "{{ entry.source_to_port | default(entry.source_from_port | default(defaults.apic.tenants.filters.entries.source_to_port)) }}",
+                                    "sToPort": "{{ entry.source_to_port | default(entry.source_from_port | default(defaults.apic.tenants.filters.entries.source_from_port)) }}",
                                     "dFromPort": "{{ entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_from_port) }}",
-                                    "dToPort": "{{ entry.destination_to_port | default(entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_to_port)) }}"
+                                    "dToPort": "{{ entry.destination_to_port | default(entry.destination_from_port | default(defaults.apic.tenants.filters.entries.destination_from_port)) }}"
                                     {%- if entry.protocol | default(defaults.apic.tenants.filters.entries.protocol) == 'tcp' %},
                                     "stateful": "{{ entry.stateful | default(defaults.apic.tenants.filters.entries.stateful) | cisco.aac.aac_bool("yes") }}"
                                     {% endif %}
