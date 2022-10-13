@@ -9,7 +9,7 @@
         "children": [
             {%- set comma1 = joiner(",") %}
             {%- for qos_policy in tenant.policies.qos | default([]) %}{{ comma1() }}
-            {% set policy_name = qos_policy.name ~ defaults.apic.tenants.policies.qos_policies.name_suffix %}
+            {% set policy_name = qos_policy.name ~ defaults.apic.tenants.policies.qos.name_suffix %}
             {
                 "qosCustomPol": {
                     "attributes": {
@@ -29,9 +29,9 @@
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
                                     "from": "{{ pm.dscp_from }}",
-                                    "prio": "{{ pm.priority | default(defaults.apic.tenants.policies.qos_policies.dscp_priority_maps.priority) }}",
-                                    "target": "{{ pm.dscp_target | default(defaults.apic.tenants.policies.qos_policies.dscp_priority_maps.dscp_target) }}",
-                                    "targetCos": "{{ pm.cos_target | default(defaults.apic.tenants.policies.qos_policies.dscp_priority_maps.cos_target) }}",
+                                    "prio": "{{ pm.priority | default(defaults.apic.tenants.policies.qos.dscp_priority_maps.priority) }}",
+                                    "target": "{{ pm.dscp_target | default(defaults.apic.tenants.policies.qos.dscp_priority_maps.dscp_target) }}",
+                                    "targetCos": "{{ pm.cos_target | default(defaults.apic.tenants.policies.qos.dscp_priority_maps.cos_target) }}",
                                     "to": "{{ pm.dscp_to }}"
                                 }
                             }
@@ -43,9 +43,9 @@
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
                                     "from": "{{ dot1p.dot1p_from }}",
-                                    "prio": "{{ dot1p.priority | default(defaults.apic.tenants.policies.qos_policies.dot1p_classifiers.priority) }}",
-                                    "target": "{{ dot1p.dscp_target | default(defaults.apic.tenants.policies.qos_policies.dot1p_classifiers.dscp_target) }}",
-                                    "targetCos": "{{ dot1p.cos_target | default(defaults.apic.tenants.policies.qos_policies.dot1p_classifiers.cos_target) }}",
+                                    "prio": "{{ dot1p.priority | default(defaults.apic.tenants.policies.qos.dot1p_classifiers.priority) }}",
+                                    "target": "{{ dot1p.dscp_target | default(defaults.apic.tenants.policies.qos.dot1p_classifiers.dscp_target) }}",
+                                    "targetCos": "{{ dot1p.cos_target | default(defaults.apic.tenants.policies.qos.dot1p_classifiers.cos_target) }}",
                                     "to": "{{ dot1p.dot1p_to }}"
                                 }
                             }

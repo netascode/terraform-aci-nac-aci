@@ -1041,7 +1041,7 @@ defaults:
           version: 'v2'
           max_mcast_entries: 4294967295
           reserved_mcast_entries: 0
-        qos_policies:
+        qos:
           name_suffix: ''
           dscp_priority_maps:
             priority: level3

@@ -1871,7 +1871,7 @@ ten_policies:
   ip_sla_policies: list(include('ten_ip_sla_policies'), required=False)
   trust_control_policies: list(include('ten_trust_control_policies'), required=False) # @ref_name(Trust Control Policy)
   span: include('ten_span', required=False) # @flatten()
-  qos: list(include('ten_qos_policies'), required=False) # @name(QoS Policies) @ref_name(QoS Policy)
+  qos: list(include('ten_qos'), required=False) # @name(QoS Policies) @ref_name(QoS Policy)
 
 ten_ospf_interface_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2100,21 +2100,21 @@ ten_ip_sla_policies:
   sla_type: enum('icmp', 'tcp', 'l2ping', required=False)
   port: int(min=1, max=65535, required=False)
 
-ten_qos_policies:
+ten_qos:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  dscp_priority_maps: list(include('ten_qos_policies_dscp_priority_map'), required=False) # @name(QoS Policy DSCP Priority Maps)
-  dot1p_classifiers: list(include('ten_qos_policies_dot1p_classifiers'), required=False) # @name(QoS Policy Dot1p Classifiers)
+  dscp_priority_maps: list(include('ten_qos_dscp_priority_map'), required=False) # @name(QoS Policy DSCP Priority Maps)
+  dot1p_classifiers: list(include('ten_qos_dot1p_classifiers'), required=False) # @name(QoS Policy Dot1p Classifiers)
 
-ten_qos_policies_dscp_priority_map:
+ten_qos_dscp_priority_map:
   priority: enum('unspecified', 'level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'level7', required=False)
   dscp_from: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63), required=True)
   dscp_to: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63), required=True)
   dscp_target: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63), required=False)
   cos_target: any(enum('unspecified'), int(min=0, max=7), required=False)
 
-ten_qos_policies_dot1p_classifiers:
+ten_qos_dot1p_classifiers:
   priority: enum('unspecified', 'level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'level7', required=False)
   dot1p_from: any(enum('unspecified'), int(min=0, max=7), required=True)
   dot1p_to: any(enum('unspecified'), int(min=0, max=7), required=True)
