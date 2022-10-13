@@ -28,11 +28,11 @@
                                     "descr": "{{ entry.description | default() }}",
                                     "dstAddr": "{{ entry.destination_ip }}",
                                     "dstPortFrom": "{{ entry.destination_from_port | default(defaults.apic.access_policies.span.filter_groups.entries.destination_from_port) }}",
-                                    "dstPortTo": "{{ entry.destination_to_port | default(entry.destination_from_port | default(defaults.apic.access_policies.span.filter_groups.entries.destination_to_port)) }}",
+                                    "dstPortTo": "{{ entry.destination_to_port | default(entry.destination_from_port | default(defaults.apic.access_policies.span.filter_groups.entries.destination_from_port)) }}",
                                     "ipProto": "{{ entry.ip_protocol | default(defaults.apic.access_policies.span.filter_groups.entries.ip_protocol) }}",
                                     "srcAddr": "{{ entry.source_ip }}",
                                     "srcPortFrom": "{{ entry.source_from_port | default(defaults.apic.access_policies.span.filter_groups.entries.source_from_port) }}",
-                                    "srcPortTo": "{{ entry.source_to_port | default(entry.source_from_port | default(defaults.apic.access_policies.span.filter_groups.entries.source_to_port)) }}"
+                                    "srcPortTo": "{{ entry.source_to_port | default(entry.source_from_port | default(defaults.apic.access_policies.span.filter_groups.entries.source_from_port)) }}"
                                 }
                             }
                         }
