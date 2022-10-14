@@ -682,8 +682,8 @@ Verify L3out {{ l3out_name }} Route Profile for Interleak
 {% if l3out.default_route_leak_policy.outside_scope | default(defaults.apic.tenants.l3outs.default_route_leak_policy.outside_scope) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("l3-out")] %}{% endif %}
 
 Verify L3out {{ l3out_name }} Default Route Leak Policy
-    Should Be Equal Value Json String   ${r.json()}   $..l3extDefaultRouteLeakP.attributes.always   {{ default_route_leak_policy.always | default(defaults.apic.tenants.l3outs.default_route_leak_policy.always) | cisco.aac.aac_bool("yes") }}
-    Should Be Equal Value Json String   ${r.json()}   $..l3extDefaultRouteLeakP.attributes.criteria   {{ default_route_leak_policy.criteria | default(defaults.apic.tenants.l3outs.default_route_leak_policy.criteria) }}
+    Should Be Equal Value Json String   ${r.json()}   $..l3extDefaultRouteLeakP.attributes.always   {{ l3out.default_route_leak_policy.always | default(defaults.apic.tenants.l3outs.default_route_leak_policy.always) | cisco.aac.aac_bool("yes") }}
+    Should Be Equal Value Json String   ${r.json()}   $..l3extDefaultRouteLeakP.attributes.criteria   {{ l3out.default_route_leak_policy.criteria | default(defaults.apic.tenants.l3outs.default_route_leak_policy.criteria) }}
     Should Be Equal Value Json String   ${r.json()}   $..l3extDefaultRouteLeakP.attributes.scope   {{ scope | join(',') }}
 
 {% endif %}
