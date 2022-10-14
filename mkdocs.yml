@@ -274,6 +274,7 @@ nav:
       - Quick Start: labs/quick_start.md
       - Guides:
           - Ansible, APIC, GitLab and Drone: labs/guide_ansible_apic_gitlab_drone.md
+          - Ansible, APIC, GitLab and Gitlab CI: labs/guide_ansible_apic_gitlab_runner.md
       - Lab IPs: labs/ip_addresses.md
   - About:
       - Changelog: about/changelog.md
