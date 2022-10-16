@@ -108,7 +108,7 @@ apic:
               source_ip: 22.22.22.22
             - name: ENTRY1
               destination_ip: 10.10.10.10
-              destination_from_port: 80
+              destination_from_port: http
               destination_to_port: 90
               source_from_port: 100
               source_to_port: 102

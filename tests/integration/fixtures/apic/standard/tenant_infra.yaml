@@ -7,7 +7,7 @@ apic:
           vrf: overlay-1
           domain: ANS-L3
           ospf:
-            area: 0
+            area: backbone
             area_type: regular
             policy: IPN1
           nodes:
