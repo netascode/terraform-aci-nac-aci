@@ -63,6 +63,53 @@
 - APIC: Fix filter config test to support ssh protocol
 - APIC: Fix QoS no_drop_cos default value
 - APIC: Replace RESTinstance Robot library with Requests and JSONLibrary to align with CXTA curated libraries
+- BREAKING CHANGE APIC: Change EPG preferred group attribute to boolean value
+- BREAKING CHANGE APIC: Change External EPG preferred group attribute to boolean value
+- BREAKING CHANGE APIC: Change EPG intra-EPG isolation attribute to boolean value
+- APIC: Add option to specify QoS class for external EPGs
+- APIC: Add option to specify target DSCP value for external EPGs
+- APIC: Add aggregate flags to subnet of external EPGs
+- APIC: Add option to enable IPv4 multicast for L3out
+- APIC: Add option to specify target DSCP for L3out
+- APIC: Add option to reference interleak, dampening and redistribution route maps for L3out
+- APIC: Add option to configure default route leak policy for L3out
+- APIC: Add support for node loopbacks in L3out node profiles
+- APIC: Add support for static route BFD in L3out node profiles
+- APIC: Add support for loopback BGP peerings in L3out node profiles
+- APIC: Add support for PIM policy in L3out interface profiles
+- APIC: Add support for IGMP interface policy in L3out interface profiles
+- APIC: Add support for QoS class in L3out interface profiles
+- APIC: Add support for custom QoS policy in L3out interface profiles
+- APIC: Add support for floating SVI in L3out interface profiles
+- APIC: Add multiple options to BGP peers in L3out interface profiles
+- APIC: Fix default tenant for service graph templates and device selection policies
+- APIC: Make `community` an optional attribute of `set_rule`
+- APIC: Fix BGP peer address family attribute order for L3out node profiles
+- APIC: Add additional attributes to set rules
+- APIC: Add additional attributes to redirect policies
+- APIC: Add `preferred_group` attribute to VRF
+- APIC: Add BGP address family context policies to VRF
+- APIC: Add IP SLA policy module
+- APIC: Add BGP address family context policy module
+- APIC: Add redirect health group module
+- APIC: Add route control route map module
+- APIC: Add QoS policy module
+- APIC: Add custom QoS policy attribute to EPG
+- APIC: Add `minimum_buffer`, `pfc_state`, `no_drop_cos`, `pfc_scope`, `ecn`, `forward_non_ecn`, `wred_max_threshold`, `wred_min_threshold`, `wred_probability`, `weight` attributes to QoS class
+- APIC: Add SPAN filter group module
+- APIC: Add SPAN destination group module
+- APIC: Add SPAN source group module
+- APIC: Fix unintended deletion of inband EPG when inband node address is removed
+- APIC: Fix unintended deletion of out-of-band EPG when out-of-band node address is removed
+- APIC: Add L2 MTU module
+- APIC: Add interface type module
+- APIC: Fix SNMP policy client entry dependencies
+- APIC: Add management access policy module
+- APIC: Add L2 MTU module
+- APIC: Add interface type module
+- APIC: Fix SNMP policy client entry dependencies
+- APIC: Add management access policy module
+- Pin module dependencies
 
 ## 0.4.0 <small>April 25, 2022</small>
 
@@ -178,5 +225,5 @@
 - APIC: Add templates and mappings for health score evaluation
 - BREAKING CHANGE APIC: Add option to specify routing profiles under external connectivity policy
 - APIC: Add templates for SPAN source and destination group
-- Fix various bugss in aac-lint rules
+- Fix various bugs in aac-lint rules
 - Adding necessary config to make this tool CAT enabled
