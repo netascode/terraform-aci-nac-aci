@@ -90,7 +90,7 @@ Verify L4L7 Device {{ dev_name }} Logical Interface {{ int_name }}
     ${con}=   Set Variable   $..vnsLDevVip.children[?(@.vnsLIf.attributes.name=='{{ int_name }}')].vnsLIf
     Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.name   {{ int_name }}
     Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.nameAlias   {{ int.alias | default() }}
-    Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.encap   vlan-{{ int.vlan }}
+    Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.encap   {% if int.vlan is defined %}vlan-{{ int.vlan }}{% else %}unknown{% endif %} 
 
 {% for ci in int.concrete_interfaces | default([]) %}
 {% set ci_name = ci.interface_name ~ defaults.apic.tenants.services.l4l7_devices.logical_interfaces.concrete_interfaces.name_suffix  %}

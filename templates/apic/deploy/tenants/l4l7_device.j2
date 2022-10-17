@@ -127,7 +127,7 @@
                             "vnsLIf": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
-                                    "encap": "vlan-{{ int.vlan }}",
+                                    "encap": "{% if int.vlan is defined %}vlan-{{ int.vlan }}{% else %}unknown{% endif %}",
                                     "name": "{{ int_name }}",
                                     "nameAlias": "{{ int.alias | default() }}",
                                     "childAction": "deleteNonPresent"

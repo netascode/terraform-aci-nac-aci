@@ -859,6 +859,10 @@ apic:
                 concrete_interfaces:
                   - device: DEV1
                     interface_name: INT1
+              - name: INT2
+                concrete_interfaces:
+                  - device: DEV1
+                    interface_name: INT2
           - name: DEV2
         redirect_policies:
           - name: PBR1
