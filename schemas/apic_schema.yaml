@@ -1954,7 +1954,7 @@ ten_route_control_route_maps_contexts:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   action: enum('deny', 'permit', required=False)
-  order: int(min=0, max=9)
+  order: int(min=0, max=9, required=False)
   set_rule: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   match_rules: list(str(), required=False) # @name(Route Control RMap Match Rules)
 

@@ -962,6 +962,7 @@ defaults:
           contexts:
             name_suffix: ''
             action: 'permit'
+            order: 0
         match_rules:
           name_suffix: ''
           regex_community_terms:
