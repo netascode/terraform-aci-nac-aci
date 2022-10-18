@@ -120,11 +120,11 @@ and should only be used temporarily.
 
 Go to <https://developer.webex.com> and login with CEC credentials. Select `My Webex Apps` and `Create a New App`.
 
-![aac_webex_1](../assets/labs/guide_ansible_apic_gitlab_drone/webex1.png)
+![aac_webex_1](../assets/labs/guide_ansible_apic_gitlab_runner/webex1.png)
 
 Select `Create a bot` and fill out all required fields. Use a unique bot username.
 
-![aac_webex_2](../assets/labs/guide_ansible_apic_gitlab_drone/webex2.png)
+![aac_webex_2](../assets/labs/guide_ansible_apic_gitlab_runner/webex2.png)
 
 Once finished, click `Add Bot` and your Webex bot will be created. You will receive a `Bot Access Token`. Copy this token as it will be required in the next section (e.g. SPARK_ACCESS_TOKEN).
 
@@ -132,11 +132,11 @@ Once finished, click `Add Bot` and your Webex bot will be created. You will rece
 
 Next, we will create a Webex space. In Webex, click the `+` icon and select ``Create Space`.
 
-![aac_webex_3](../assets/labs/guide_ansible_apic_gitlab_drone/webex3.png)
+![aac_webex_3](../assets/labs/guide_ansible_apic_gitlab_runner/webex3.png)
 
 Choose an appropriate name for your space. Then add the bot we created earlier as a member to this space.
 
-![aac_webex_4](../assets/labs/guide_ansible_apic_gitlab_drone/webex4.png)
+![aac_webex_4](../assets/labs/guide_ansible_apic_gitlab_runner/webex4.png)
 
 #### 5B-3) Retrieve Room ID
 
