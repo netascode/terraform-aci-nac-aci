@@ -864,6 +864,8 @@ apic:
                   - device: DEV1
                     interface_name: INT2
           - name: DEV2
+            type: VIRTUAL
+            vmware_vmm_domain: VMM1
         redirect_policies:
           - name: PBR1
             alias: PBR1

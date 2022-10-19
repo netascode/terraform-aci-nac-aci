@@ -23,9 +23,13 @@ Verify L4L7 Device {{ dev_name }}
     Should Be Equal Value Json String   ${r.json()}   $..vnsLDevVip.attributes.promMode   {{ dev.promiscuous_mode | default(defaults.apic.tenants.services.l4l7_devices.promiscuous_mode) | cisco.aac.aac_bool("yes") }}
     Should Be Equal Value Json String   ${r.json()}   $..vnsLDevVip.attributes.svcType   {{ dev.service_type | default(defaults.apic.tenants.services.l4l7_devices.service_type) }}
     Should Be Equal Value Json String   ${r.json()}   $..vnsLDevVip.attributes.trunking   {{ dev.trunking | default(defaults.apic.tenants.services.l4l7_devices.trunking) | cisco.aac.aac_bool("yes") }}
-{% if dev.physical_domain is defined %}
+{% if dev.physical_domain is defined and dev.type | default(defaults.apic.tenants.services.l4l7_devices.type) == 'PHYISCAL' %}
 {% set domain_name = dev.physical_domain ~ defaults.apic.access_policies.physical_domains.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   $..vnsRsALDevToPhysDomP.attributes.tDn   uni/phys-{{ domain_name }}
+{% endif %}
+{% if dev.vmware_vmm_domain is defined and dev.type | default(defaults.apic.tenants.services.l4l7_devices.type) == 'VIRTUAL' %}
+{% set domain_name = dev.vmware_vmm_domain ~ defaults.apic.fabric_policies.vmware_vmm_domains.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   $..vnsRsALDevToDomP.attributes.tDn   uni/vmmp-VMware/dom-{{ domain_name }}
 {% endif %}
 
 {% for cd in dev.concrete_devices | default([]) %}

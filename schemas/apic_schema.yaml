@@ -2185,6 +2185,7 @@ ten_ser_l4l7_devices:
   service_type: enum('ADC', 'FW', 'OTHERS', 'COPY', 'NATIVELB', required=False)
   trunking: any(bool(), enum('yes', 'no'), required=False)
   physical_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  vmware_vmm_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   concrete_devices: list(include('ten_ser_l4l7_devices_concrete_devices'), required=False) # @name(L4L7 Device Concrete Device) @ref_name(Concrete Device)
   logical_interfaces: list(include('ten_ser_l4l7_devices_logical_interfaces'), required=False) # @name(L4L7 Device Logical Interfaces) @ref_name(Logical Interface)
 

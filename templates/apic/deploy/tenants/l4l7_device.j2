@@ -30,13 +30,24 @@
                         "childAction": "deleteNonPresent"
                     },
                     "children": [
-                        {% if dev.physical_domain is defined %}
+                        {% if dev.physical_domain is defined and dev.type | default(defaults.apic.tenants.services.l4l7_devices.type) == 'PHYISCAL' %}
                         {% set domain_name = dev.physical_domain ~ defaults.apic.access_policies.physical_domains.name_suffix %}
                         {
                             "vnsRsALDevToPhysDomP": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
                                     "tDn": "uni/phys-{{ domain_name }}"
+                                }
+                            }
+                        },
+                        {% endif %}
+                        {% if dev.vmware_vmm_domain is defined and dev.type | default(defaults.apic.tenants.services.l4l7_devices.type) == 'VIRTUAL' %}
+                        {% set domain_name = dev.vmware_vmm_domain ~ defaults.apic.fabric_policies.vmware_vmm_domains.name_suffix %}
+                        {
+                            "vnsRsALDevToDomP": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "tDn": "uni/vmmp-VMware/dom-{{ domain_name }}"
                                 }
                             }
                         },

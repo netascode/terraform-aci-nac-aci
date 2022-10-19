@@ -19,6 +19,8 @@
 - BREAKING CHANGE APIC: Rename `source_port_to` attribute of Access SPAN filter group to `source_to_port`
 - BREAKING CHANGE APIC: Rename `destination_port_from` attribute of Access SPAN filter group to `destination_from_port`
 - BREAKING CHANGE APIC: Rename `destination_port_to` attribute of Access SPAN filter group to `destination_to_port`
+- APIC: Add support for L4-L7 device logical interfaces without encap
+- APIC: Add support for virtual (VMM Domain) L4-L7 devices
 
 #### Ansible (ansible-aac)
 
@@ -40,6 +42,8 @@
 - BREAKING CHANGE APIC: Rename `source_port_to` attribute of Access SPAN filter group to `source_to_port`
 - BREAKING CHANGE APIC: Rename `destination_port_from` attribute of Access SPAN filter group to `destination_from_port`
 - BREAKING CHANGE APIC: Rename `destination_port_to` attribute of Access SPAN filter group to `destination_to_port`
+- APIC: Add support for L4-L7 device logical interfaces without encap
+- APIC: Add support for virtual (VMM Domain) L4-L7 devices
 
 #### Terraform (terraform-aac)
 
@@ -110,6 +114,12 @@
 - APIC: Fix SNMP policy client entry dependencies
 - APIC: Add management access policy module
 - Pin module dependencies
+- APIC: Add support for L4-L7 device logical interfaces without encap
+- APIC: Add `description` attribute to vlan pools and ranges
+- APIC: Add `description` attribute to interface policy group module
+- APIC: Add `policy_group` attribute to access spine switch profiles
+- APIC: Add support for L4-L7 device logical interfaces without paths
+- APIC: Add support for virtual (VMM Domain) L4-L7 devices
 
 ## 0.4.0 <small>April 25, 2022</small>
 
