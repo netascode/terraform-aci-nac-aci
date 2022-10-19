@@ -30,7 +30,7 @@
                         "childAction": "deleteNonPresent"
                     },
                     "children": [
-                        {% if dev.physical_domain is defined and dev.type | default(defaults.apic.tenants.services.l4l7_devices.type) == 'PHYISCAL' %}
+                        {% if dev.physical_domain is defined and dev.type | default(defaults.apic.tenants.services.l4l7_devices.type) == 'PHYSICAL' %}
                         {% set domain_name = dev.physical_domain ~ defaults.apic.access_policies.physical_domains.name_suffix %}
                         {
                             "vnsRsALDevToPhysDomP": {
