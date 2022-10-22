@@ -1420,7 +1420,7 @@ ten_ap_endpoint_security_groups_contracts_masters:
 ten_ap_endpoint_security_groups_tag_selectors:
   key: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   operator: enum('contains', 'equals', 'regex', required=False)
-  value: regex('^[a-zA-Z0-9_.,:\^$[](){}|+*-]{1,128}$')
+  value: regex('^[a-zA-Z0-9_.,:^$\[\](){}|+*-]{1,128}$')
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ten_ap_endpoint_security_groups_epg_selectors:
