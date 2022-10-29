@@ -3,6 +3,7 @@ pipeline {
         docker {
             image 'danischm/aac:0.4.2'
             label 'emear-sio-slv04'
+            args '-u root'
         }
     }
 
@@ -20,7 +21,7 @@ pipeline {
 
     options {
         disableConcurrentBuilds()
-        // newContainerPerStage()
+        newContainerPerStage()
     }
 
     stages {
@@ -29,6 +30,7 @@ pipeline {
                 branch "master"
             }
             steps {
+                sh 'pip install --upgrade mkdocs mkdocs-material mkdocs-mermaid2-plugin'
                 sh 'python3 docs/aac-doc.py'
                 sh 'mkdocs build'
                 sshagent(credentials: ['AAC_HOST_SSH']) {
