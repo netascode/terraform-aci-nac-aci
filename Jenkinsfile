@@ -9,6 +9,8 @@ pipeline {
     environment { 
         ACI_USERNAME = credentials('ACI_USERNAME')
         ACI_PASSWORD = credentials('ACI_PASSWORD')
+        MSO_USERNAME = credentials('MSO_USERNAME')
+        MSO_PASSWORD = credentials('MSO_PASSWORD')
         VMWARE_HOST = credentials('VMWARE_HOST')
         VMWARE_USER = credentials('VMWARE_USER')
         VMWARE_PASSWORD = credentials('VMWARE_PASSWORD')
