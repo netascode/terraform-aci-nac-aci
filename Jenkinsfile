@@ -20,7 +20,7 @@ pipeline {
 
     options {
         disableConcurrentBuilds()
-        newContainerPerStage()
+        // newContainerPerStage()
     }
 
     stages {
