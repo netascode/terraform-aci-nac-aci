@@ -88,8 +88,10 @@ pipeline {
     
     post {
         always {
-            sh "BUILD_STATUS=${currentBuild.currentResult} python3 .ci/webex-notification-jenkins.py"
-            sh 'rm -rf apic_4.2_log.html apic_5.2_log.html mso_log.html site/'
+            node ('docker') {
+                sh "BUILD_STATUS=${currentBuild.currentResult} python3 .ci/webex-notification-jenkins.py"
+                sh 'rm -rf apic_4.2_log.html apic_5.2_log.html mso_log.html site/'
+            }
         }
     }
 }
