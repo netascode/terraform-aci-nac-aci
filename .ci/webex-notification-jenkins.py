@@ -37,7 +37,6 @@ def main():
     message = TEMPLATE
 
     body = {"roomId": os.getenv("WEBEX_ROOM_ID"), "markdown": message}
-    print(json.dumps(body))
     headers = {
         "Authorization": "Bearer {}".format(os.getenv("WEBEX_TOKEN")),
         "Content-Type": "application/json",

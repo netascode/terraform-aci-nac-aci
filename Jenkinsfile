@@ -52,36 +52,36 @@ pipeline {
                         sh 'pytest -m validate'
                     }
                 }
-                // stage('Test APIC 4.2') {
-                //     steps {
-                //         sh 'pytest -m "apic_42 and not terraform"'
-                //     }
-                //     post {
-                //         always {
-                //             archiveArtifacts 'apic_4.2_log.html'
-                //         }
-                //     }
-                // }
-                // stage('Test APIC 5.2') {
-                //     steps {
-                //         sh 'pytest -m "apic_52 and not terraform"'
-                //     }
-                //     post {
-                //         always {
-                //             archiveArtifacts 'apic_5.2_log.html'
-                //         }
-                //     }
-                // }
-                // stage('Test MSO') {
-                //     steps {
-                //         sh 'pytest -m mso'
-                //     }
-                //     post {
-                //         always {
-                //             archiveArtifacts 'mso_log.html'
-                //         }
-                //     }
-                // }
+                stage('Test APIC 4.2') {
+                    steps {
+                        sh 'pytest -m "apic_42 and not terraform"'
+                    }
+                    post {
+                        always {
+                            archiveArtifacts 'apic_4.2_log.html'
+                        }
+                    }
+                }
+                stage('Test APIC 5.2') {
+                    steps {
+                        sh 'pytest -m "apic_52 and not terraform"'
+                    }
+                    post {
+                        always {
+                            archiveArtifacts 'apic_5.2_log.html'
+                        }
+                    }
+                }
+                stage('Test MSO') {
+                    steps {
+                        sh 'pytest -m mso'
+                    }
+                    post {
+                        always {
+                            archiveArtifacts 'mso_log.html'
+                        }
+                    }
+                }
             }
         }
     }
@@ -89,7 +89,6 @@ pipeline {
     post {
         always {
             sh "BUILD_STATUS=${currentBuild.currentResult} python .ci/webex-notification-jenkins.py"
-            // sh 'rm -rf apic_4.2_log.html apic_5.2_log.html mso_log.html site/'
         }
     }
 }
