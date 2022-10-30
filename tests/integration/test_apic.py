@@ -89,6 +89,18 @@ def full_apic_test(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir
     shutil.copy(
         os.path.join(tmpdir, "results/", "log.html"), "apic_{}_log.html".format(version)
     )
+    shutil.copy(
+        os.path.join(tmpdir, "results/", "report.html"),
+        "apic_{}_report.html".format(version),
+    )
+    shutil.copy(
+        os.path.join(tmpdir, "results/", "output.xml"),
+        "apic_{}_output.xml".format(version),
+    )
+    shutil.copy(
+        os.path.join(tmpdir, "results/", "xunit.xml"),
+        "apic_{}_xunit.xml".format(version),
+    )
     if error:
         pytest.fail(error)
 
@@ -126,6 +138,18 @@ def full_apic_terraform_test(
     shutil.copy(
         os.path.join(tmpdir, "results/", "log.html"),
         "apic_tf_{}_log.html".format(version),
+    )
+    shutil.copy(
+        os.path.join(tmpdir, "results/", "report.html"),
+        "apic_tf_{}_report.html".format(version),
+    )
+    shutil.copy(
+        os.path.join(tmpdir, "results/", "output.xml"),
+        "apic_tf_{}_output.xml".format(version),
+    )
+    shutil.copy(
+        os.path.join(tmpdir, "results/", "xunit.xml"),
+        "apic_tf_{}_xunit.xml".format(version),
     )
     if error:
         # Ignore errors for now as we don't have feature parity with CLI/Ansible

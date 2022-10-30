@@ -58,7 +58,8 @@ pipeline {
                     }
                     post {
                         always {
-                            archiveArtifacts 'apic_4.2_log.html'
+                            junit 'apic_4.2_xunit.xml'
+                            archiveArtifacts 'apic_4.2_*.html, apic_4.2_*.xml'
                         }
                     }
                 }
@@ -68,7 +69,8 @@ pipeline {
                     }
                     post {
                         always {
-                            archiveArtifacts 'apic_5.2_log.html'
+                            junit 'apic_5.2_xunit.xml'
+                            archiveArtifacts 'apic_5.2_*.html, apic_5.2_*.xml'
                         }
                     }
                 }
@@ -78,7 +80,8 @@ pipeline {
                     }
                     post {
                         always {
-                            archiveArtifacts 'mso_log.html'
+                            junit 'mso_xunit.xml'
+                            archiveArtifacts 'mso_*.html, mso_*.xml'
                         }
                     }
                 }

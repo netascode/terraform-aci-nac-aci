@@ -193,5 +193,8 @@ def test_mso(data_paths, vm_name, snapshot_name, mso_url, mso_backup_id, tmpdir)
         mso_inst, mso_url, data_paths, os.path.join(tmpdir, "results/")
     )
     shutil.copy(os.path.join(tmpdir, "results/", "log.html"), "mso_log.html")
+    shutil.copy(os.path.join(tmpdir, "results/", "report.html"), "mso_report.html")
+    shutil.copy(os.path.join(tmpdir, "results/", "output.xml"), "mso_output.xml")
+    shutil.copy(os.path.join(tmpdir, "results/", "xunit.xml"), "mso_xunit.xml")
     if error:
         pytest.fail(error)
