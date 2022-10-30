@@ -106,7 +106,7 @@ def full_apic_terraform_test(
 
     try:
         tf = tftest.TerraformTest(terraform_path)
-        tf.setup(cleanup_on_exit=False)
+        tf.setup(cleanup_on_exit=False, upgrade="upgrade")
         try:
             tf.apply()
         except:
