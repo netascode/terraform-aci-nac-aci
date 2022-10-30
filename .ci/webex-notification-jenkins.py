@@ -20,7 +20,7 @@ import requests
 
 TEMPLATE = """[**[{status}] {job_name} {build}**]({url})
 * _Commit_: [{commit}]({git_url})
-* _Test Reports_: [APIC 4.2]({build_url}artifact/apic_42_log.html) [APIC 5.2]({build_url}artifact/apic_52_log.html) [MSO]({build_url}artifact/mso_log.html)
+* _Test Reports_: [APIC 4.2]({build_url}artifact/apic_4.2_log.html) [APIC 5.2]({build_url}artifact/apic_5.2_log.html) [MSO]({build_url}artifact/mso_log.html)
 """.format(
     status=str(os.getenv("BUILD_STATUS") or "").lower(),
     job_name=os.getenv("JOB_NAME"),
