@@ -9,9 +9,11 @@
 # - BUILD_DISPLAY_NAME
 # - RUN_DISPLAY_URL
 # - BUILD_URL
-# - GIT_COMMIT
+# - GIT_COMMIT_MESSAGE
 # - GIT_URL
-# - BUILD_URL
+# - GIT_COMMIT_AUTHOR
+# - GIT_BRANCH
+# - GIT_EVENT
 # - BUILD_STATUS
 
 import json
@@ -20,6 +22,9 @@ import requests
 
 TEMPLATE = """[**[{status}] {job_name} {build}**]({url})
 * _Commit_: [{commit}]({git_url})
+* _Author_: {author}
+* _Branch_: {branch}
+* _Event_: {event}
 * _Test Reports_: [APIC 4.2]({build_url}artifact/apic_4.2_log.html) [APIC 5.2]({build_url}artifact/apic_5.2_log.html) [MSO]({build_url}artifact/mso_log.html)
 """.format(
     status=str(os.getenv("BUILD_STATUS") or "").lower(),
@@ -28,6 +33,9 @@ TEMPLATE = """[**[{status}] {job_name} {build}**]({url})
     url=os.getenv("RUN_DISPLAY_URL"),
     commit=os.getenv("GIT_COMMIT"),
     git_url=os.getenv("GIT_URL"),
+    author=os.getenv("GIT_COMMIT_AUTHOR"),
+    branch=os.getenv("GIT_BRANCH"),
+    event=os.getenv("GIT_EVENT"),
     build_url=os.getenv("BUILD_URL"),
 )
 
