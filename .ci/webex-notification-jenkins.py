@@ -28,10 +28,10 @@ TEMPLATE = """[**[{status}] {job_name} {build}**]({url})
 * _Test Reports_: [APIC 4.2]({build_url}artifact/apic_4.2_log.html) [APIC 5.2]({build_url}artifact/apic_5.2_log.html) [MSO]({build_url}artifact/mso_log.html)
 """.format(
     status=str(os.getenv("BUILD_STATUS") or "").lower(),
-    job_name=os.getenv("JOB_NAME"),
+    job_name=str(os.getenv("JOB_NAME")).rsplit("/", 1)[0],
     build=os.getenv("BUILD_DISPLAY_NAME"),
     url=os.getenv("RUN_DISPLAY_URL"),
-    commit=os.getenv("GIT_COMMIT"),
+    commit=os.getenv("GIT_COMMIT_MESSAGE"),
     git_url=os.getenv("GIT_URL"),
     author=os.getenv("GIT_COMMIT_AUTHOR"),
     branch=os.getenv("GIT_BRANCH"),
