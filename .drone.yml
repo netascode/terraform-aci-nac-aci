@@ -23,14 +23,14 @@ steps:
     pull: if-not-exists
 
   - name: Test Validate
-    image: danischm/aac:0.4.1
+    image: danischm/aac:0.4.2
     commands:
       - pytest -m validate
     depends_on:
       - Clone Repo
 
   - name: Test APIC 4.2
-    image: danischm/aac:0.4.1
+    image: danischm/aac:0.4.2
     environment:
       VMWARE_HOST:
         from_secret: VMWARE_HOST
@@ -48,7 +48,7 @@ steps:
       - Clone Repo
 
   - name: Test APIC 5.2
-    image: danischm/aac:0.4.1
+    image: danischm/aac:0.4.2
     environment:
       VMWARE_HOST:
         from_secret: VMWARE_HOST
@@ -66,7 +66,7 @@ steps:
       - Clone Repo
 
   - name: Test MSO
-    image: danischm/aac:0.4.1
+    image: danischm/aac:0.4.2
     environment:
       VMWARE_HOST:
         from_secret: VMWARE_HOST
@@ -92,7 +92,7 @@ steps:
       url: https://engci-maven.cisco.com/artifactory
       actions:
         - action: upload
-          path: AS-release/Community/netascode/aac/${DRONE_BUILD_NUMBER}/
+          path: AS-release/Community/${DRONE_REPO_OWNER}/${DRONE_REPO_NAME}/${DRONE_BUILD_NUMBER}/
           sources:
             - apic_4.2_log.html
             - apic_5.2_log.html
@@ -106,7 +106,7 @@ steps:
       - Test MSO
 
   - name: Build Documentation
-    image: danischm/aac:0.4.1
+    image: danischm/aac:0.4.2
     commands:
       - pip install --upgrade mkdocs mkdocs-material mkdocs-mermaid2-plugin
       - python3 docs/aac-doc.py
@@ -138,21 +138,13 @@ steps:
       - Build Documentation
 
   - name: Notify
-    image: ciscosso/drone-webex-team:v0.0.1
-    settings:
-      pull: true
-      room: 'AAC Builds'
-      room_id: 'Y2lzY29zcGFyazovL3VzL1JPT00vNTFmMGNmODAtYjI0My0xMWU5LTljZjUtNWY0NGQ2ZTlmYWY0'
-      access_token:
+    image: danischm/aac:0.4.2
+    environment:
+      WEBEX_TOKEN:
         from_secret: SPARK_ACCESS_TOKEN
-      body: |
-        [**[{{ build.status }}] {{ repo.owner }}/{{ repo.name }} #{{ build.number }}**]({{ build.link }})
-        * Commit: [{{ commit.message }}]({{ commit.link }})
-        * Author: {{ commit.author.name }} {{ commit.author.email }}
-        * Branch: {{ commit.branch }}
-        * Event: {{ build.event }}
-        * Started at: {{ datetime build.created "Mon Jan 2 15:04:05 MST 2006" "Local" }}
-        * Test Reports: [APIC 4.2](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/netascode/aac/{{ build.number }}/apic_4.2_log.html) [APIC 5.2](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/netascode/aac/{{ build.number }}/apic_5.2_log.html) [MSO](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/netascode/aac/{{ build.number }}/mso_log.html)
+      WEBEX_ROOM_ID: 'Y2lzY29zcGFyazovL3VzL1JPT00vNTFmMGNmODAtYjI0My0xMWU5LTljZjUtNWY0NGQ2ZTlmYWY0'
+    commands:
+      - python3 .ci/webex-notification-drone.py
     when:
       status: [changed, failure, success]
     depends_on:
