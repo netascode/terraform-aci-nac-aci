@@ -26,7 +26,7 @@ TEMPLATE = """[**[{build_status}] {repo_owner}/{repo_name} #{build_number}**]({b
 * _Author_: {commit_author_name} {commit_author_email}
 * _Branch_: {commit_branch}
 * _Event_:  {build_event}
-* Test Reports: [APIC 4.2](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/{repo_owner}/{repo_name}/{build_number}/apic_4.2_log.html) [APIC 5.2](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/{repo_owner}/{repo_name}/{build_number}/apic_5.2_log.html) [MSO](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/{repo_owner}/{repo_name}/{build_number}/mso_log.html)
+* Test Reports: [APIC 4.2](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/{repo_owner}/{repo_name}/{build_number}/apic_4.2_log.html), [APIC 5.2](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/{repo_owner}/{repo_name}/{build_number}/apic_5.2_log.html), [MSO](https://engci-maven-master.cisco.com/artifactory/list/AS-release/Community/{repo_owner}/{repo_name}/{build_number}/mso_log.html)
 """.format(
     build_status=os.getenv("DRONE_BUILD_STATUS"),
     repo_owner=os.getenv("DRONE_REPO_OWNER"),
