@@ -25,28 +25,25 @@ pipeline {
     }
 
     stages {
-        stage('Documentation') {
-            when {
-                branch "master"
-            }
-            steps {
-                sh 'pip install --upgrade mkdocs mkdocs-material mkdocs-mermaid2-plugin'
-                sh 'python3 docs/aac-doc.py'
-                sh 'mkdocs build'
-                sshagent(credentials: ['AAC_HOST_SSH']) {
-                    sh '''
-                        [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
-                        ssh-keyscan -t rsa,dsa aac.cisco.com >> ~/.ssh/known_hosts
-                        scp -r site/ danischm@aac.cisco.com:/www/aac/
-                    '''
-                }
-            }
-        }
-        stage('Test') {
+        stage('Pipeline') {
             when {
                 branch "master"
             }
             parallel {
+                stage('Documentation') {
+                    steps {
+                        sh 'pip install --upgrade mkdocs mkdocs-material mkdocs-mermaid2-plugin'
+                        sh 'python3 docs/aac-doc.py'
+                        sh 'mkdocs build'
+                        sshagent(credentials: ['AAC_HOST_SSH']) {
+                            sh '''
+                                [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
+                                ssh-keyscan -t rsa,dsa aac.cisco.com >> ~/.ssh/known_hosts
+                                scp -r site/ danischm@aac.cisco.com:/www/aac/
+                            '''
+                        }
+                    }
+                }
                 stage('Test Validate') {
                     steps {
                         sh 'pytest -m validate'

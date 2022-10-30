@@ -11,6 +11,7 @@
 # - BUILD_URL
 # - GIT_COMMIT
 # - GIT_URL
+# - BUILD_URL
 # - BUILD_STATUS
 
 import json
@@ -19,7 +20,7 @@ import requests
 
 TEMPLATE = """[**[{status}] {job_name} {build}**]({url})
 * _Commit_: [{commit}]({git_url})
-* _Test Reports_: [APIC 4.2]({apic_42_url}) [APIC 5.2]({apic_52_url}) [MSO]({mso_url})
+* _Test Reports_: [APIC 4.2]({build_url}artifact/apic_42_log.html) [APIC 5.2]({build_url}artifact/apic_52_log.html) [MSO]({build_url}artifact/mso_log.html)
 """.format(
     status=str(os.getenv("BUILD_STATUS") or "").lower(),
     job_name=os.getenv("JOB_NAME"),
@@ -27,9 +28,7 @@ TEMPLATE = """[**[{status}] {job_name} {build}**]({url})
     url=os.getenv("RUN_DISPLAY_URL"),
     commit=os.getenv("GIT_COMMIT"),
     git_url=os.getenv("GIT_URL"),
-    apic_42_url="",
-    apic_52_url="",
-    mso_url="",
+    build_url=os.getenv("BUILD_URL"),
 )
 
 
