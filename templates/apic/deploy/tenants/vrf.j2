@@ -70,6 +70,75 @@
                                 ]
                             }
                         }
+                        {%- if vrf.leaked_internal_prefixes is defined or vrf.leaked_external_prefixes is defined %}{{ comma1() }}
+                        {
+                            "leakRoutes": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac"
+                                },
+                                "children": [
+                                    {%- set comma2 = joiner(",") %}
+                                    {%- for prefix in vrf.leaked_internal_prefixes | default([]) %}{{ comma2() }}
+                                    {
+                                        "leakInternalSubnet": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "ip": "{{ prefix.prefix }}",
+                                                "scope": "{% if prefix.public | default(defaults.apic.tenants.vrfs.leaked_internal_prefixes.public) %}public{% else %}private{% endif %}"
+                                            },
+                                            "children": [
+                                                {%- set comma3 = joiner(",") %}
+                                                {%- for destination in prefix.destinations | default([]) %}{{ comma3() }}
+                                                {% set vrf_name = destination.vrf ~ ('' if vrf.name in ('inb', 'obb', 'overlay-1') else defaults.apic.tenants.vrfs.name_suffix) %}
+                                                {
+                                                    "leakTo": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "ctxName": "{{ vrf_name }}",
+                                                            "tenantName": "{{ destination.tenant }}",
+                                                            "scope": "{% if destination.public is defined %}{% if destination.public %}public{% else %}private{% endif %}{% else %}inherit{% endif %}"
+                                                        }
+                                                    }
+                                                }
+                                                {%- endfor %}
+
+                                            ]
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for prefix in vrf.leaked_external_prefixes | default([]) %}{{ comma2() }}
+                                    {
+                                        "leakExternalPrefix": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "ip": "{{ prefix.prefix }}",
+                                                "le": "{{ prefix.to_prefix_length | default('unspecified') }}",
+                                                "ge": "{{ prefix.from_prefix_length | default('unspecified') }}"
+                                            },
+                                            "children": [
+                                                {%- set comma3 = joiner(",") %}
+                                                {%- for destination in prefix.destinations | default([]) %}{{ comma3() }}
+                                                {% set vrf_name = destination.vrf ~ ('' if vrf.name in ('inb', 'obb', 'overlay-1') else defaults.apic.tenants.vrfs.name_suffix) %}
+                                                {
+                                                    "leakTo": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "ctxName": "{{ vrf_name }}",
+                                                            "tenantName": "{{ destination.tenant }}"
+                                                        }
+                                                    }
+                                                }
+                                                {%- endfor %}
+
+                                            ]
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endif %}
                         {%- if vrf.bgp.timer_policy is defined %}{{ comma1() }}
                         {% set bgp_timer_name = vrf.bgp.timer_policy ~ defaults.apic.tenants.policies.bgp_timer_policies.name_suffix %}
                         {

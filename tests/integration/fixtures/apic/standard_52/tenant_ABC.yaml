@@ -2,6 +2,26 @@
 apic:
   tenants:
     - name: ABC
+      vrfs:
+        - name: VRF1
+          leaked_internal_prefixes:
+            - prefix: 1.1.1.0/24
+              public: true
+              destinations:
+                - description: Internal Prefix 1
+                  tenant: ABC
+                  vrf: VRF2
+                  public: false
+            - prefix: 2.2.2.0/24
+          leaked_external_prefixes:
+            - prefix: 3.3.0.0/16
+              from_prefix_length: 24
+              to_prefix_length: 32
+              destinations:
+                - description: External Prefix 1
+                  tenant: ABC
+                  vrf: VRF2
+            - prefix: 4.4.4.0/24
       application_profiles:
         - name: AP1
           endpoint_security_groups:

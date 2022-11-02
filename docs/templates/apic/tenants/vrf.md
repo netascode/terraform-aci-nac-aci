@@ -44,6 +44,22 @@ apic:
               - CON1
             imported_consumers:
               - IMPORT-CON1
+          leaked_internal_prefixes:
+            - prefix: 1.1.1.0/24
+              public: true
+              destinations:
+                - tenant: ABC
+                  vrf: VRF2
+                  public: false
+                  description: Leak to VRF2
+          leaked_external_prefixes:
+            - prefix: 3.3.0.0/16
+              from_prefix_length: 24
+              to_prefix_length: 32
+              destinations:
+                - tenant: ABC
+                  vrf: VRF2
+                  description: Leak to VRF2
           pim:
             mtu: 9000
             fast_convergence: true

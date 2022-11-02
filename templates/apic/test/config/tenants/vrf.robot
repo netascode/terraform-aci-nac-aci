@@ -34,6 +34,46 @@ Verify VRF {{ vrf_name }}
     Should Be Equal Value Json String   ${r.json()}   $..fvCtx.attributes.pcEnfPref   {{ vrf.enforcement_preference | default(defaults.apic.tenants.vrfs.enforcement_preference) }}
     Should Be Equal Value Json String   ${r.json()}   $..vzAny.attributes.prefGrMemb   {{ vrf.preferred_group | default(defaults.apic.tenants.vrfs.preferred_group) | cisco.aac.aac_bool("enabled") }}
 
+{% for prefix in vrf.leaked_internal_prefixes | default([]) %}
+
+Verify VRF {{ vrf_name }} Leaked Internal Prefix {{ prefix.prefix }}
+    ${prefix}=   Set Variable   $..leakRoutes.children[?(@.leakInternalSubnet.attributes.ip=='{{ prefix.prefix }}')].leakInternalSubnet
+    Should Be Equal Value Json String   ${r.json()}   ${prefix}.attributes.ip   {{ prefix.prefix }}
+    Should Be Equal Value Json String   ${r.json()}   ${prefix}.attributes.scope   {% if prefix.public | default(defaults.apic.tenants.vrfs.leaked_internal_prefixes.public) %}public{% else %}private{% endif %} 
+
+{% for destination in prefix.destinations | default([]) %}
+{% set vrf_name = destination.vrf ~ ('' if vrf.name in ('inb', 'obb', 'overlay-1') else defaults.apic.tenants.vrfs.name_suffix) %}
+
+Verify VRF {{ vrf_name }} Leaked Internal Prefix {{ prefix.prefix }} Destination {{ destination.tenant }} {{ vrf_name }}
+    ${prefix}=   Set Variable   $..leakRoutes.children[?(@.leakInternalSubnet.attributes.ip=='{{ prefix.prefix }}')].leakInternalSubnet
+    ${dest}=   Set Variable   ${prefix}.children[?(@.leakTo.attributes.ctxName=='{{ vrf_name }}' & @.leakTo.attributes.tenantName=='{{ destination.tenant }}')].leakTo
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.ctxName   {{ vrf_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.tenantName   {{ destination.tenant }}
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.scope   {% if destination.public is defined %}{% if destination.public %}public{% else %}private{% endif %}{% else %}inherit{% endif %} 
+
+{% endfor %}
+{% endfor %}
+
+{% for prefix in vrf.leaked_external_prefixes | default([]) %}
+
+Verify VRF {{ vrf_name }} Leaked external Prefix {{ prefix.prefix }}
+    ${prefix}=   Set Variable   $..leakRoutes.children[?(@.leakExternalPrefix.attributes.ip=='{{ prefix.prefix }}')].leakExternalPrefix
+    Should Be Equal Value Json String   ${r.json()}   ${prefix}.attributes.ip   {{ prefix.prefix }}
+    Should Be Equal Value Json String   ${r.json()}   ${prefix}.attributes.le   {{ prefix.to_prefix_length | default('unspecified') }}
+    Should Be Equal Value Json String   ${r.json()}   ${prefix}.attributes.ge   {{ prefix.from_prefix_length | default('unspecified') }}
+
+{% for destination in prefix.destinations | default([]) %}
+{% set vrf_name = destination.vrf ~ ('' if vrf.name in ('inb', 'obb', 'overlay-1') else defaults.apic.tenants.vrfs.name_suffix) %}
+
+Verify VRF {{ vrf_name }} Leaked External Prefix {{ prefix.prefix }} Destination {{ destination.tenant }} {{ vrf_name }}
+    ${prefix}=   Set Variable   $..leakRoutes.children[?(@.leakExternalPrefix.attributes.ip=='{{ prefix.prefix }}')].leakExternalPrefix
+    ${dest}=   Set Variable   ${prefix}.children[?(@.leakTo.attributes.ctxName=='{{ vrf_name }}' & @.leakTo.attributes.tenantName=='{{ destination.tenant }}')].leakTo
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.ctxName   {{ vrf_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.tenantName   {{ destination.tenant }}
+
+{% endfor %}
+{% endfor %}
+
 {% if vrf.bgp.timer_policy is defined %}
 
 Verify BGP Timer Policy {{ vrf.bgp.timer_policy }}
