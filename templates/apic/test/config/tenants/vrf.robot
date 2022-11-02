@@ -47,6 +47,7 @@ Verify VRF {{ vrf_name }} Leaked Internal Prefix {{ prefix.prefix }}
 Verify VRF {{ vrf_name }} Leaked Internal Prefix {{ prefix.prefix }} Destination {{ destination.tenant }} {{ vrf_name }}
     ${prefix}=   Set Variable   $..leakRoutes.children[?(@.leakInternalSubnet.attributes.ip=='{{ prefix.prefix }}')].leakInternalSubnet
     ${dest}=   Set Variable   ${prefix}.children[?(@.leakTo.attributes.ctxName=='{{ vrf_name }}' & @.leakTo.attributes.tenantName=='{{ destination.tenant }}')].leakTo
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.descr   {{ destination.description | default("") }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.ctxName   {{ vrf_name }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.tenantName   {{ destination.tenant }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.scope   {% if destination.public is defined %}{% if destination.public %}public{% else %}private{% endif %}{% else %}inherit{% endif %} 
@@ -68,6 +69,7 @@ Verify VRF {{ vrf_name }} Leaked external Prefix {{ prefix.prefix }}
 Verify VRF {{ vrf_name }} Leaked External Prefix {{ prefix.prefix }} Destination {{ destination.tenant }} {{ vrf_name }}
     ${prefix}=   Set Variable   $..leakRoutes.children[?(@.leakExternalPrefix.attributes.ip=='{{ prefix.prefix }}')].leakExternalPrefix
     ${dest}=   Set Variable   ${prefix}.children[?(@.leakTo.attributes.ctxName=='{{ vrf_name }}' & @.leakTo.attributes.tenantName=='{{ destination.tenant }}')].leakTo
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.descr   {{ destination.description | default("") }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.ctxName   {{ vrf_name }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.tenantName   {{ destination.tenant }}
 

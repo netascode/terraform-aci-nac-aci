@@ -94,6 +94,7 @@
                                                     "leakTo": {
                                                         "attributes": {
                                                             "annotation": "orchestrator:aac",
+                                                            "descr": "{{ destination.description | default("") }}",
                                                             "ctxName": "{{ vrf_name }}",
                                                             "tenantName": "{{ destination.tenant }}",
                                                             "scope": "{% if destination.public is defined %}{% if destination.public %}public{% else %}private{% endif %}{% else %}inherit{% endif %}"
@@ -123,6 +124,7 @@
                                                     "leakTo": {
                                                         "attributes": {
                                                             "annotation": "orchestrator:aac",
+                                                            "descr": "{{ destination.description | default("") }}",
                                                             "ctxName": "{{ vrf_name }}",
                                                             "tenantName": "{{ destination.tenant }}"
                                                         }
