@@ -52,6 +52,8 @@ apic:
                   - CON3
                 providers:
                   - CON3
+                imported_consumers:
+                  - IMPORTED-CON1
                 masters:
                   - application_profile: AP1
                     endpoint_security_group: ESG2

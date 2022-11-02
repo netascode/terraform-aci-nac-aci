@@ -40,6 +40,15 @@ Verify Endpoint Security Group {{ esg_name }} Contract Consumers {{ contract_nam
 
 {% endfor %}
 
+{% for contract in esg.contracts.imported_consumers | default([]) %}
+{% set contract_name = contract ~ defaults.apic.tenants.imported_contracts.name_suffix %}
+
+Verify Endpoint Security Group {{ esg_name }} Imported Contract {{ contract_name }}
+    ${con}=   Set Variable   $..fvESg.children[?(@.fvRsConsIf.attributes.tnVzCPIfName=='{{ contract_name }}')]
+    Should Be Equal Value Json String   ${r.json()}   ${con}..fvRsConsIf.attributes.tnVzCPIfName   {{ contract_name }}
+
+{% endfor %}
+
 {% for master in esg.contracts.masters | default([]) %}
 {% set ap_name = master.application_profile | default(ap.name) ~ defaults.apic.tenants.application_profiles.name_suffix %}
 {% set esg_name = master.endpoint_security_group ~ defaults.apic.tenants.application_profiles.endpoint_security_groups.name_suffix %}

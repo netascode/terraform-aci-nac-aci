@@ -66,6 +66,17 @@
                                         }
                                     }
                                     {%- endfor %}
+                                    {%- for contract in esg.contracts.imported_consumers | default([]) %}{{ comma3() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.imported_contracts.name_suffix %}
+                                    {
+                                        "fvRsConsIf": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tnVzCPIfName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
                                     {%- for master in esg.contracts.masters | default([]) %}{{ comma3() }}
                                     {% set ap_name = master.application_profile | default(ap.name) ~ defaults.apic.tenants.application_profiles.name_suffix %}
                                     {% set esg_name = master.endpoint_security_group ~ defaults.apic.tenants.application_profiles.endpoint_security_groups.name_suffix %}

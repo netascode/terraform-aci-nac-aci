@@ -20,3 +20,5 @@ apic:
             - name: SUB1
         - name: CON2
           scope: global
+        - name: CON3
+          scope: global

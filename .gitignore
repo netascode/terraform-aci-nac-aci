@@ -420,5 +420,7 @@ pubhub/
 .pabotsuitenames
 
 # Test logs
-apic_*.*_log.html
-mso_log.html
+apic_*.html
+mso_*.html
+apic_*.xml
+mso_*.xml

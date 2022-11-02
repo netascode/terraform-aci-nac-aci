@@ -21,6 +21,7 @@
 - BREAKING CHANGE APIC: Rename `destination_port_to` attribute of Access SPAN filter group to `destination_to_port`
 - APIC: Add support for L4-L7 device logical interfaces without encap
 - APIC: Add support for virtual (VMM Domain) L4-L7 devices
+- APIC: Add support for imported consumers (contract interface) to ESGs
 
 #### Ansible (ansible-aac)
 
@@ -44,6 +45,7 @@
 - BREAKING CHANGE APIC: Rename `destination_port_to` attribute of Access SPAN filter group to `destination_to_port`
 - APIC: Add support for L4-L7 device logical interfaces without encap
 - APIC: Add support for virtual (VMM Domain) L4-L7 devices
+- APIC: Add support for imported consumers (contract interface) to ESGs
 
 #### Terraform (terraform-aac)
 
@@ -120,6 +122,7 @@
 - APIC: Add `policy_group` attribute to access spine switch profiles
 - APIC: Add support for L4-L7 device logical interfaces without paths
 - APIC: Add support for virtual (VMM Domain) L4-L7 devices
+- APIC: Add support for imported consumers (contract interface) to ESGs
 
 ## 0.4.0 <small>April 25, 2022</small>
 

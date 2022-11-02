@@ -138,7 +138,7 @@ Verify Endpoint Group {{ epg_name }} Contract Consumers {{ contract_name }}
 {% endfor %}
 
 {% for contract in epg.contracts.imported_consumers | default([]) %}
-{% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
+{% set contract_name = contract ~ defaults.apic.tenants.imported_contracts.name_suffix %}
 
 Verify Endpoint Group {{ epg_name }} Imported Contract {{ contract_name }}
     ${con}=   Set Variable   $..fvAEPg.children[?(@.fvRsConsIf.attributes.tnVzCPIfName=='{{ contract_name }}')]

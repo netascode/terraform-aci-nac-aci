@@ -517,6 +517,9 @@ apic:
         - name: IMPORT-CON2
           tenant: DEF
           contract: CON2
+        - name: IMPORT-CON3
+          tenant: DEF
+          contract: CON3
       filters:
         - name: FILTER1
           alias: ABC-FILTER1
