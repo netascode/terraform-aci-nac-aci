@@ -57,7 +57,7 @@ Verify VRF {{ vrf_name }} Leaked Internal Prefix {{ prefix.prefix }} Destination
 
 {% for prefix in vrf.leaked_external_prefixes | default([]) %}
 
-Verify VRF {{ vrf_name }} Leaked external Prefix {{ prefix.prefix }}
+Verify VRF {{ vrf_name }} Leaked External Prefix {{ prefix.prefix }}
     ${prefix}=   Set Variable   $..leakRoutes.children[?(@.leakExternalPrefix.attributes.ip=='{{ prefix.prefix }}')].leakExternalPrefix
     Should Be Equal Value Json String   ${r.json()}   ${prefix}.attributes.ip   {{ prefix.prefix }}
     Should Be Equal Value Json String   ${r.json()}   ${prefix}.attributes.le   {{ prefix.to_prefix_length | default('unspecified') }}
