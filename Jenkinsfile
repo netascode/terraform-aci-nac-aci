@@ -29,11 +29,11 @@ pipeline {
 
     stages {
         stage('Pipeline') {
-            when {
-                branch "master"
-            }
             parallel {
                 stage('Documentation') {
+                    when {
+                        branch "master"
+                    }
                     steps {
                         sh 'pip install --upgrade mkdocs mkdocs-material mkdocs-mermaid2-plugin'
                         sh 'python3 docs/aac-doc.py'
