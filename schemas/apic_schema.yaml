@@ -1419,6 +1419,7 @@ ten_ap_endpoint_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Consumers) @ref_name(Contract)
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Providers) @ref_name(Contract)
   imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Imported Consumers) @ref_name(Contract)
+  intra_epgs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Intra-EPG) @ref_name(Contract)
 
 ten_ap_endpoint_security_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1436,6 +1437,7 @@ ten_ap_endpoint_security_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Consumers) @ref_name(Contract)
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Providers) @ref_name(Contract)
   imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Imported Consumers) @ref_name(Contract)
+  intra_esgs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Intra-ESG) @ref_name(Contract)
   masters: list(include('ten_ap_endpoint_security_groups_contracts_masters'), required=False) # @name(ESG Contract Masters) @ref_name(Contract)
 
 ten_ap_endpoint_security_groups_contracts_masters:

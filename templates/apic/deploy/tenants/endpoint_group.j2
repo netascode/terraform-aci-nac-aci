@@ -305,6 +305,17 @@
                                         }
                                     }
                                     {%- endfor %}
+                                    {%- for contract in epg.contracts.intra_epgs | default([]) %}{{ comma3() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
+                                    {
+                                        "fvRsIntraEpg": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tnVzBrCPName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
                                     {%- for subnet in epg.subnets | default([]) %}{{ comma3() }}
                                     {% set scope = [] %}
                                     {% if subnet.private | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.private) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("private")] %}{% endif %}

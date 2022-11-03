@@ -146,6 +146,15 @@ Verify Endpoint Group {{ epg_name }} Imported Contract {{ contract_name }}
 
 {% endfor %}
 
+{% for contract in epg.contracts.intra_epgs | default([]) %}
+{% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
+
+Verify Endpoint Group {{ epg_name }} Intra-EPG Contract {{ contract_name }}
+    ${con}=   Set Variable   $..fvAEPg.children[?(@.fvRsIntraEpg.attributes.tnVzBrCPName=='{{ contract_name }}')]
+    Should Be Equal Value Json String   ${r.json()}   ${con}..fvRsIntraEpg.attributes.tnVzBrCPName   {{ contract_name }}
+
+{% endfor %}
+
 {% for pd in epg.physical_domains | default([]) %}
 {% set domain_name = pd ~ defaults.apic.access_policies.physical_domains.name_suffix %}
 

@@ -433,6 +433,9 @@ apic:
                 imported_consumers:
                   - IMPORT-CON1
                   - IMPORT-CON2
+                intra_epgs:
+                  - CON1
+                  - CON2
               subnets:
                 - ip: 5.50.5.1/30
                   description: My Desc

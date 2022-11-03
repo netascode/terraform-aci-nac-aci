@@ -23,6 +23,8 @@
 - APIC: Add support for virtual (VMM Domain) L4-L7 devices
 - APIC: Add support for imported consumers (contract interface) to ESGs
 - APIC: Add support for leaked internal and external prefixes to VRF
+- APIC: Add support for intra-EPG contracts
+- APIC: Add support for intra-ESG contracts
 
 #### Ansible (ansible-aac)
 
@@ -48,6 +50,8 @@
 - APIC: Add support for virtual (VMM Domain) L4-L7 devices
 - APIC: Add support for imported consumers (contract interface) to ESGs
 - APIC: Add support for leaked internal and external prefixes to VRF
+- APIC: Add support for intra-EPG contracts
+- APIC: Add support for intra-ESG contracts
 
 #### Terraform (terraform-aac)
 
@@ -126,6 +130,8 @@
 - APIC: Add support for virtual (VMM Domain) L4-L7 devices
 - APIC: Add support for imported consumers (contract interface) to ESGs
 - APIC: Add support for leaked internal and external prefixes to VRF
+- APIC: Add support for intra-EPG contracts
+- APIC: Add support for intra-ESG contracts
 
 ## 0.4.0 <small>April 25, 2022</small>
 

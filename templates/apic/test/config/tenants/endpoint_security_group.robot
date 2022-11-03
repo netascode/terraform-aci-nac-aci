@@ -49,6 +49,15 @@ Verify Endpoint Security Group {{ esg_name }} Imported Contract {{ contract_name
 
 {% endfor %}
 
+{% for contract in esg.contracts.intra_esgs | default([]) %}
+{% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
+
+Verify Endpoint Security Group {{ esg_name }} Intra-ESG Contract {{ contract_name }}
+    ${con}=   Set Variable   $..fvESg.children[?(@.fvRsIntraEpg.attributes.tnVzBrCPName=='{{ contract_name }}')]
+    Should Be Equal Value Json String   ${r.json()}   ${con}..fvRsIntraEpg.attributes.tnVzBrCPName   {{ contract_name }}
+
+{% endfor %}
+
 {% for master in esg.contracts.masters | default([]) %}
 {% set ap_name = master.application_profile | default(ap.name) ~ defaults.apic.tenants.application_profiles.name_suffix %}
 {% set esg_name = master.endpoint_security_group ~ defaults.apic.tenants.application_profiles.endpoint_security_groups.name_suffix %}

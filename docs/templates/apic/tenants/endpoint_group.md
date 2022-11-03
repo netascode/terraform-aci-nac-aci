@@ -86,6 +86,8 @@ apic:
                   - CON1
                 imported_consumers:
                   - IMPORT-CON1
+                intra_epgs:
+                  - CON1
               subnets:
                 - ip: 5.50.5.1/30
                   description: My Desc
