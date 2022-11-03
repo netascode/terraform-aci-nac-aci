@@ -266,7 +266,7 @@ Verify VRF {{ vrf.name }} Inter-VRF Multicast Tenant {{ pol.tenant}} VRF {{ vrf_
 {% endif %}
 
 {% if vrf.pim.igmp_context_ssm_translate_policies is defined %}
-{% for pol in vrf.pim.igmp_ssm_translate_policies | default([]) %}
+{% for pol in vrf.pim.igmp_context_ssm_translate_policies | default([]) %}
 Verify VRF {{ vrf.name }} IGMP Context SSM Tranlation policies {{ pol.group_prefix }}-{{ pol.source_address }}
     ${igmp_ssn}=   Set Variable   $..fvCtx.children..igmpCtxP.children[?(@.igmpSSMXlateP.attributes.descr=='{{ pol.group_prefix }}-{{ pol.source_address }}')].igmpSSMXlateP
     Should Be Equal Value Json String   ${r.json()}   ${igmp_ssn}.attributes.grpPfx   {{ pol.group_prefix }}

@@ -611,7 +611,7 @@
                                 },
                                 "children": [
                                     {%- set comma2 = joiner(",") %}
-                                    {%- for pol in vrf.pim.igmp_ssm_translate_policies | default([]) %}{{ comma2() }}
+                                    {%- for pol in vrf.pim.igmp_context_ssm_translate_policies | default([]) %}{{ comma2() }}
                                     {
                                         "igmpSSMXlateP": {
                                             "attributes": {
