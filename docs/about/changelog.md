@@ -25,6 +25,7 @@
 - APIC: Add support for leaked internal and external prefixes to VRF
 - APIC: Add support for intra-EPG contracts
 - APIC: Add support for intra-ESG contracts
+- APIC: Add `name` and `protocol` attributes to syslog destinations
 
 #### Ansible (ansible-aac)
 
@@ -52,6 +53,7 @@
 - APIC: Add support for leaked internal and external prefixes to VRF
 - APIC: Add support for intra-EPG contracts
 - APIC: Add support for intra-ESG contracts
+- APIC: Add `name` and `protocol` attributes to syslog destinations
 
 #### Terraform (terraform-aac)
 
@@ -132,6 +134,7 @@
 - APIC: Add support for leaked internal and external prefixes to VRF
 - APIC: Add support for intra-EPG contracts
 - APIC: Add support for intra-ESG contracts
+- APIC: Add `name` and `protocol` attributes to syslog destinations
 
 ## 0.4.0 <small>April 25, 2022</small>
 

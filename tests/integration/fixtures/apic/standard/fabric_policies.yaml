@@ -282,6 +282,8 @@ apic:
           console_severity: alerts
           destinations:
             - hostname_ip: 2.2.2.2
+              name: dest1
+              # protocol: tcp # not support in ACI simulator 5.2.1
               port: 1234
               admin_state: false
               facility: local0

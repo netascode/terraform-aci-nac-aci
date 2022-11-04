@@ -20,7 +20,11 @@ Verify Syslog Policy {{ policy_name }}
 
 Verify Syslog Policy {{ policy_name }} Destination {{ dest.hostname_ip }}
     ${dest}=   Set Variable   $..syslogGroup.children[?(@.syslogRemoteDest.attributes.host=='{{ dest.hostname_ip }}')]
+    Should Be Equal Value Json String   ${r.json()}    ${dest}..syslogRemoteDest.attributes.name   {{ dest.name | default() }}
     Should Be Equal Value Json String   ${r.json()}    ${dest}..syslogRemoteDest.attributes.host   {{ dest.hostname_ip }}
+{% if dest.protocol is defined %}
+    Should Be Equal Value Json String   ${r.json()}    ${dest}..syslogRemoteDest.attributes.protocol   {{ dest.protocol | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.protocol) }}
+{% endif %}
     Should Be Equal Value Json String   ${r.json()}    ${dest}..syslogRemoteDest.attributes.port   {{ dest.port | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.port) }}
     Should Be Equal Value Json String   ${r.json()}    ${dest}..syslogRemoteDest.attributes.adminState   {{ dest.admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.admin_state) | cisco.aac.aac_bool("enabled") }}
     Should Be Equal Value Json String   ${r.json()}    ${dest}..syslogRemoteDest.attributes.format   {{ syslog.format | default(defaults.apic.fabric_policies.monitoring.syslogs.format) }}

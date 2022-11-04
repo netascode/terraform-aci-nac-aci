@@ -41,6 +41,8 @@ apic:
           console_severity: alerts
           destinations:
             - hostname_ip: 2.2.2.2
+              name: dest1
+              protocol: tcp
               port: 1234
               admin_state: false
               facility: local0

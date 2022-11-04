@@ -26,7 +26,11 @@
                             "syslogRemoteDest": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
+                                    "name": "{{ dest.name | default() }}",
                                     "host": "{{ dest.hostname_ip }}",
+                                    {% if dest.protocol is defined %}
+                                    "protocol": "{{ dest.protocol | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.protocol) }}",
+                                    {% endif %}
                                     "port": "{{ dest.port | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.port) }}",
                                     "adminState": "{{ dest.admin_state | default(defaults.apic.fabric_policies.monitoring.syslogs.destinations.admin_state) | cisco.aac.aac_bool("enabled") }}",
                                     "format": "{{ syslog.format | default(defaults.apic.fabric_policies.monitoring.syslogs.format) }}",
