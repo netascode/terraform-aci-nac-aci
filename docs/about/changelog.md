@@ -135,6 +135,9 @@
 - APIC: Add support for intra-EPG contracts
 - APIC: Add support for intra-ESG contracts
 - APIC: Add `name` and `protocol` attributes to syslog destinations
+- APIC: Add QoS attributes to contract
+- APIC: Add `managed` flag to tenant (default value `true`) to indicate if a tenant should be created/modified/deleted or is assumed to exist already and just acts a container for other objects
+- APIC: Add `managed` flag to application profile
 
 ## 0.4.0 <small>April 25, 2022</small>
 

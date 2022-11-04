@@ -1178,6 +1178,7 @@ ip_interface_sub_ports:
 
 tenant:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  managed: bool(required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   vrfs: list(include('ten_vrf'), required=False) # @ref_name(VRF)
@@ -1320,6 +1321,7 @@ ten_bridge_domain_subnets:
 
 ten_application_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  managed: bool(required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   endpoint_groups: list(include('ten_ap_endpoint_groups'), required=False) # @ref_name(Endpoint Group)
