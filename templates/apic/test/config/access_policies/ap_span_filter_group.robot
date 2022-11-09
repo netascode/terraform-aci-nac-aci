@@ -6,7 +6,7 @@ Resource        ../../apic_common.resource
 
 *** Test Cases ***
 {% macro get_protocol_from_port(name) -%}
-    {% set ports = {0:"unspecified",20:"ftpData",25:"smtp",53:"dns",110:"pop3",554:"rtsp",80:"http",443:"https"} %}
+    {% set ports = {0:"unspecified",20:"ftpData",25:"smtp",53:"dns",110:"pop3",554:"rtsp",80:"http",443:"https",22:"ssh"} %}
     {{ ports[name] | default(name)}}
 {% endmacro %}
 {% for filter_ in apic.access_policies.span.filter_groups | default([]) %}

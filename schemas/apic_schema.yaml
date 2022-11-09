@@ -803,10 +803,10 @@ ap_span_filter_groups_entries:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   source_ip: ip()
   destination_ip: ip()
-  source_from_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp'), required=False)
-  source_to_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp'), required=False)
-  destination_from_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp'), required=False)
-  destination_to_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp'), required=False)
+  source_from_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp', 'ssh'), required=False)
+  source_to_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp', 'ssh'), required=False)
+  destination_from_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp', 'ssh'), required=False)
+  destination_to_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp', 'ssh'), required=False)
   ip_protocol: any(int(min=0, max=255), enum('unspecified', 'icmp', 'igmp', 'tcp', 'egp', 'igp', 'udp', 'icmpv6', 'eigrp', 'ospfigp', 'pim', 'l2tp'), required=False)
 
 ap_vspan:
@@ -1516,10 +1516,10 @@ ten_filters_entries:
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   ethertype: enum('unspecified', 'ipv4', 'trill', 'arp', 'ipv6', 'mpls_ucast', 'mac_security', 'fcoe', 'ip', required=False)
   protocol: any(int(min=0, max=255), enum('unspecified', 'icmp', 'igmp', 'tcp', 'egp', 'igp', 'udp', 'icmpv6', 'eigrp', 'ospfigp', 'pim', 'l2tp'), required=False)
-  source_from_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp'), required=False)
-  source_to_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp'), required=False)
-  destination_from_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp'), required=False)
-  destination_to_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp'), required=False)
+  source_from_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp', 'ssh'), required=False)
+  source_to_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp', 'ssh'), required=False)
+  destination_from_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp', 'ssh'), required=False)
+  destination_to_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp', 'ssh'), required=False)
   stateful: any(bool(), enum('yes', 'no'), required=False)
 
 ten_l3outs:

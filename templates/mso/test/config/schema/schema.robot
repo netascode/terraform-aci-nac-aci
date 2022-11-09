@@ -164,7 +164,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Filter {{ filter_na
 {% set entry_name = entry.name ~ defaults.mso.schemas.templates.filters.entries.name_suffix %}
 
 {% macro get_protocol_from_port(name) -%}
-    {% set ports = {0:"unspecified",20:"ftpData",25:"smtp",53:"dns",110:"pop3",554:"rtsp",80:"http",443:"https"} %}
+    {% set ports = {0:"unspecified",20:"ftpData",25:"smtp",53:"dns",110:"pop3",554:"rtsp",80:"http",443:"https",22:"ssh"} %}
     {{ ports[name] | default(name)}}
 {% endmacro %}
 
