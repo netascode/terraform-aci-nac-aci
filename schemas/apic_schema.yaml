@@ -1,5 +1,7 @@
 ---
 apic: include('apic', required=False)
+defaults: any(required=False)
+modules: any(required=False)
 ---
 apic:
   bootstrap: include('bootstrap', required=False)
