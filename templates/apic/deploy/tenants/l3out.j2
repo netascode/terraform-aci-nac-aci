@@ -339,6 +339,7 @@
                                                         {% else %}
                                                             {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
                                                             {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
+                                                            {% if node2 < node %}{% set node_tmp = node %}{% set node = node2 %}{% set node2 = node_tmp %}{% endif %}
                                                         {% endif %}
                                                     {% endif %}
                                                 {% endif %}
@@ -887,6 +888,7 @@
                                                         {% else %}
                                                             {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
                                                             {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
+                                                            {% if node2 < node %}{% set node_tmp = node %}{% set node = node2 %}{% set node2 = node_tmp %}{% endif %}
                                                         {% endif %}
                                                     {% endif %}
                                                 {% endif %}

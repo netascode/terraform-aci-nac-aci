@@ -194,6 +194,7 @@ Verify L3out {{ l3out_name }} Node {{ node.node_id }} Interface {{ loop.index }}
 {% else %}
     {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
     {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
+    {% if node2 < node_ %}{% set node_tmp = node_ %}{% set node_ = node2 %}{% set node2 = node_tmp %}{% endif %}
 {% endif %}
 {% endif %}
 {% endif %}
@@ -476,6 +477,7 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
 {% else %}
     {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
     {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
+    {% if node2 < node_ %}{% set node_tmp = node_ %}{% set node_ = node2 %}{% set node2 = node_tmp %}{% endif %}
 {% endif %}
 {% endif %}
 {% endif %}

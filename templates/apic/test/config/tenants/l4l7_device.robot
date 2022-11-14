@@ -76,6 +76,7 @@ Verify L4L7 Device {{ dev_name }} Concrete Device {{ cd_name }} Interface {{ int
 {% else %}
     {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
     {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
+    {% if node2 < node %}{% set node_tmp = node %}{% set node = node2 %}{% set node2 = node_tmp %}{% endif %}
 {% endif %}
     Should Be Equal Value Json String   ${r.json()}   ${con}..vnsRsCIfPathAtt.attributes.tDn   topology/pod-{{ pod }}/protpaths-{{ node }}-{{ node2 }}/pathep-[{{ policy_group_name }}]
 {% else %}

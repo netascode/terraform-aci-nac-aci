@@ -70,6 +70,7 @@ Verify SPAN Source Group {{ span_name }} Source {{ source_name }}
             {% else %}
                 {% set query = "nodes[?interfaces[?sub_ports[?policy_group==`" ~ path.channel ~ "`]]].id" %}
                 {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
+                {% if node2 < node %}{% set node_tmp = node %}{% set node = node2 %}{% set node2 = node_tmp %}{% endif %}
             {% endif %}
     ${path}=   Set Variable   ${source}.children[?(@.spanRsSrcToPathEp.attributes.tDn=='topology/pod-{{ pod }}/protpaths-{{ node }}-{{ node2 }}/pathep-[{{ policy_group_name }}]')].spanRsSrcToPathEp
     Should Be Equal Value Json String   ${r.json()}    ${path}.attributes.tDn   topology/pod-{{ pod }}/protpaths-{{ node }}-{{ node2 }}/pathep-[{{ policy_group_name }}]
@@ -92,6 +93,7 @@ Verify SPAN Source Group {{ span_name }} Source {{ source_name }}
             {% else %}
                 {% set query = "nodes[?interfaces[?policy_group==`" ~ path.channel ~ "`]].id" %}
                 {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
+                {% if node2 < node %}{% set node_tmp = node %}{% set node = node2 %}{% set node2 = node_tmp %}{% endif %}
             {% endif %}
     ${path}=   Set Variable   ${source}.children[?(@.spanRsSrcToPathEp.attributes.tDn=='topology/pod-{{ pod }}/protpaths-{{ node }}-{{ node2 }}/pathep-[{{ policy_group_name }}]')].spanRsSrcToPathEp
     Should Be Equal Value Json String   ${r.json()}    ${path}.attributes.tDn   topology/pod-{{ pod }}/protpaths-{{ node }}-{{ node2 }}/pathep-[{{ policy_group_name }}]
