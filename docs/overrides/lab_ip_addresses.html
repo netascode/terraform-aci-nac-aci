@@ -4,6 +4,21 @@
 {% block content %}
 {{ super() }}
 
-<script src="../../overrides/lab_ips.js"></script>
+<table>
+    <thead>
+        <tr>
+            <th>Host</th>
+            <th>Owner</th>
+            <th>IP</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <script src="../../overrides/lab_ips_bru.js"></script>
+
+        <script src="../../overrides/lab_ips_ron.js"></script>
+
+    </tbody>
+</table>
 
 {% endblock %}
