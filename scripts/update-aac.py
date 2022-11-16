@@ -66,7 +66,7 @@ ANSIBLE_FILES = [
 TERRAFORM_DIRS = [
     {
         "src": "../validation/rules",
-        "dest": "./terraform-aac/validation/rules",
+        "dest": "./terraform-aac/.rules",
     },
     {
         "src": "../templates/apic/test",
@@ -81,7 +81,7 @@ TERRAFORM_DIRS = [
 TERRAFORM_FILES = [
     {
         "src": "../schemas/apic_schema.yaml",
-        "dest": "./terraform-aac/validation/apic_schema.yaml",
+        "dest": "./terraform-aac/.schema.yaml",
     },
     {
         "src": "../defaults/apic_defaults.yaml",
@@ -92,7 +92,7 @@ TERRAFORM_FILES = [
 TF_DEMO_DIRS = [
     {
         "src": "../validation/rules",
-        "dest": "./aac-tf-demo/validation/rules",
+        "dest": "./aac-tf-demo/.rules",
     },
     {
         "src": "../templates/apic/test",
@@ -107,7 +107,7 @@ TF_DEMO_DIRS = [
 TF_DEMO_FILES = [
     {
         "src": "../schemas/apic_schema.yaml",
-        "dest": "./aac-tf-demo/validation/apic_schema.yaml",
+        "dest": "./aac-tf-demo/.schema.yaml",
     },
     {
         "src": "../defaults/apic_defaults.yaml",
