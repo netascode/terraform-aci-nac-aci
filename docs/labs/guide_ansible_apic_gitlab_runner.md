@@ -219,36 +219,22 @@ aci:
 
 Note: as this lab guide focuses only on APIC, you can comment out the MSO section (see screenshot above).
 
-### 6B) Change aci.yaml file
+### 6B) Change bootstrap.yaml file
 
-We need to change the `aci.yaml` file which can be found in the `aac-inventory/data/lab` folder. Make the following changes:
+We need to change the `bootstrap.yaml` file which can be found in the `aac-inventory/data/lab/host_vars/apic1` folder.
 
-A. For simplicity we will use a simple APIC password. Add the `apic_password` password of the `ansible` user and comment out the `apic_private_key` and `apic_public_cert` section. You should have something similar to below example:
+Make the following changes so that the admin password mathces the APIC password for the lab. You should have something similar to below example:
 
-```
+```yaml
 ---
-apic_mode: only_changed
-apic_username: ansible
-apic_password: C1sco123
-# apic_private_key: !vault |
-# ...
-# apic_public_cert: |
-# ...
+apic:
+  bootstrap:
+    admin_username: admin
+    admin_password: cisco123
+    config_passphrase: C1sco123C1sco123
 ```
 
-Note: as this lab guide focuses only on APIC, you can comment out the MSO and NEA relevant parts in the rest of the file. These include:
-
-- mso_mode
-- apic_mso_username and apic_mso_password
-- mso_test_username and mso_test_password
-- mso_option_render
-- mso_option_configure
-- mso_option_delete
-- mso_option_deploy
-- nae_host
-- nae_username
-- nae_password
-- nae_ignore_smart_events
+The `admin_password` variable must be specified in order for the AAC Bootstrap functionality to work later in this lab guide. If bootstrap is done manually, then the `admin_username` and `admin_password` configuration can be removed alltogether.
 
 ### 6C) Remove mso1 directory file
 
