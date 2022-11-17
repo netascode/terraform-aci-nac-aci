@@ -350,6 +350,8 @@ objects:
     paths:
       - apic.node_policies.nodes.oob_address
       - apic.node_policies.nodes.oob_gateway
+      - apic.node_policies.nodes.oob_v6_address
+      - apic.node_policies.nodes.oob_v6_gateway
     diff_paths:
       - apic.node_policies.oob_endpoint_group
       - apic.node_policies.nodes.pod
@@ -363,6 +365,8 @@ objects:
     paths:
       - apic.node_policies.nodes.inb_address
       - apic.node_policies.nodes.inb_gateway
+      - apic.node_policies.nodes.inb_v6_address
+      - apic.node_policies.nodes.inb_v6_gateway
     diff_paths:
       - apic.node_policies.inb_endpoint_group
       - apic.node_policies.nodes.pod
