@@ -2,6 +2,7 @@
 
 - Marcin Bedkowski (mbedkows@cisco.com)
 - Michael Berger (bermicha@cisco.com)
+- Justyna Chowaniec (juchowan@cisco.com)
 - Artur Cieszkowski (acieszko@cisco.com)
 - Rostyslav Davydenko (rdavyden@cisco.com)
 - Martin Ehlers (marehler@cisco.com)
