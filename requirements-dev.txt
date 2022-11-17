@@ -4,7 +4,7 @@ black
 click
 filelock
 flake8
-iac-validate>=0.1.6
+iac-validate>=0.1.8
 iac-test>=0.1.5
 jmespath
 jsonpath_ng
@@ -12,7 +12,7 @@ mkdocs
 mkdocs-material
 mkdocs-mermaid2-plugin
 molecule
-nexus-pcv>=0.1.0
+nexus-pcv>=0.1.2
 pyopenssl
 pytest
 pytest-mock

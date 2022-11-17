@@ -1,10 +1,10 @@
 ansible-core>=2.12
 filelock
-iac-validate>=0.1.6
+iac-validate>=0.1.8
 iac-test>=0.1.5
 jmespath
 jsonpath_ng
-nexus-pcv>=0.1.0
+nexus-pcv>=0.1.2
 pyopenssl
 python-dateutil
 requests
