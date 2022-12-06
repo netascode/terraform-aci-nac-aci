@@ -1,5 +1,18 @@
 # External Endpoint Group
 
+The following table maps the subnet flags to the corresponding GUI terminology:
+
+|Subnet Flag|GUI Terminology|
+|---|---|
+|`import_security`|`External Subnets for External EPG`|
+|`shared_security`|`Shared Security Import Subnet`|
+|`import_route_control`|`Import Route Control Subnet`|
+|`export_route_control`|`Export Route Control Subnet`|
+|`shared_route_control`|`Shared Route Control Subnet`|
+|`aggregate_import_route_control`|`Aggregate Export`|
+|`aggregate_export_route_control`|`Aggregate Import`|
+|`aggregate_shared_route_control`|`Aggregate Shared Routes`|
+
 Location in GUI:
 `Tenants` » `XXX` » `Networking` » `L3outs` » `XXX` » `External EPGs`
 
