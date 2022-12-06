@@ -20,6 +20,7 @@ apic:
       opflex_authentication: true
       disable_remote_endpoint_learn: true
       overlapping_vlan_validation: true
-      remote_leaf_direct: false
+      remote_leaf_direct: true
+      reallocate_gipo: true
 
 ```
