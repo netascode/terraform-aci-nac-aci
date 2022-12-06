@@ -122,7 +122,7 @@ Semantic validation is about verifying specific data model related constraints l
 To perform syntactic and semantic validation, [iac-validate](https://github.com/netascode/iac-validate) can be used.
 
 ```shell
-iac-validate --schema ./validation/apic_schema.yaml --rules ./validation/rules/ ./data/
+iac-validate ./data/
 ```
 
 ## NAE/NDI Integration
