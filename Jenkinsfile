@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'danischm/aac:0.4.2'
+            image 'danischm/aac:0.5.0'
             label 'emear-sio-slv01 || emear-sio-slv02 || emear-sio-slv03 || emear-sio-slv04 || emear-sio-slv05'
             args '-u root'
         }
