@@ -138,6 +138,21 @@
 - APIC: Add QoS attributes to contract
 - APIC: Add `managed` flag to tenant (default value `true`) to indicate if a tenant should be created/modified/deleted or is assumed to exist already and just acts a container for other objects
 - APIC: Add `managed` flag to application profile
+- APIC: Add option to configure individual vPC group name
+- APIC: Add `type` attribute to pod profile selector
+- APIC: Add `management_access_policy` option to pod policy groups
+- APIC: Add syslog policy flags and `minimum_severity`
+- APIC: Add reallocate GIPO fabric-wide setting
+- APIC: Fix auto-generated pod profile selector name
+- APIC: Add support for `auto_generate_pod_profiles`, `auto_generate_access_leaf_switch_interface_profiles`, `auto_generate_access_spine_switch_interface_profiles`, `auto_generate_fabric_leaf_switch_interface_profiles` and `auto_generate_fabric_spine_switch_interface_profiles` flags
+- APIC: Remove option to specify tenant for EPG selectors under an ESG
+- APIC: Normalize filter `protocol` and `port` values
+- APIC: Allow escaping character in ESG tag selectors
+- APIC: Add `qos_class` attribute to EPG
+- APIC: Allow OSPF area IDs in dotted decimal format
+- APIC: Add spine switch policy group module
+- APIC: Add colon to allowed characters of leaf interface selector names
+- APIC: Normalize access SPAN filter `protocol` and `port` values
 
 ## 0.4.0 <small>April 25, 2022</small>
 
