@@ -1205,8 +1205,8 @@ ten_vrf:
   enforcement_direction: enum('ingress', 'egress', required=False)
   enforcement_preference: enum('enforced', 'unenforced', required=False)
   preferred_group: any(bool(), enum('enabled', 'disabled'), required=False)
-  leaked_internal_prefixes: list(include('ten_vrf_leaked_internal_prefixes'), required=False)
-  leaked_external_prefixes: list(include('ten_vrf_leaked_external_prefixes'), required=False)
+  leaked_internal_prefixes: list(include('ten_vrf_leaked_internal_prefixes'), required=False) # @name(VRF Leaked Internal Prefixes) @ref_name(Leaked Internal Prefix)
+  leaked_external_prefixes: list(include('ten_vrf_leaked_external_prefixes'), required=False) # @name(VRF Leaked External Prefixes) @ref_name(Leaked External Prefix)
   contracts: include('ten_vrf_contracts', required=False) # @flatten()
   bgp: include('ten_vrf_bgp', required=False)
   dns_labels: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF DNS Labels) @ref_name(DNS Label)
@@ -1215,7 +1215,7 @@ ten_vrf:
 ten_vrf_leaked_internal_prefixes:
   prefix: ip()
   public: bool(required=False)
-  destinations: list(include('ten_vrf_leaked_internal_prefixes_destinations'), required=False)
+  destinations: list(include('ten_vrf_leaked_internal_prefixes_destinations'), required=False) # @name(VRF Leaked Int Pr Destinations)
 
 ten_vrf_leaked_internal_prefixes_destinations:
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -1227,7 +1227,7 @@ ten_vrf_leaked_external_prefixes:
   prefix: ip()
   from_prefix_length: int(min=1, max=128, required=False)
   to_prefix_length: int(min=1, max=128, required=False)
-  destinations: list(include('ten_vrf_leaked_external_prefixes_destinations'), required=False)
+  destinations: list(include('ten_vrf_leaked_external_prefixes_destinations'), required=False) # @name(VRF Leaked Ext Pr Destinations)
 
 ten_vrf_leaked_external_prefixes_destinations:
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
