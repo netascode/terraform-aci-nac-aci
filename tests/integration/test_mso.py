@@ -183,7 +183,7 @@ def test_mso(data_paths, vm_name, snapshot_name, mso_url, mso_backup_id, tmpdir)
     # Revert MSO config
     mso_inst.post_or_put("backups/{}/restore".format(mso_backup_id), "", "PUT")
 
-    # Configure ACI simulator
+    # Configure MSO
     error = mso_deploy_config(mso_inst, tmpdir.strpath)
     if error:
         pytest.fail(error)

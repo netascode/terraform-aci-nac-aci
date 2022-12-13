@@ -65,4 +65,4 @@ class Vsphere:
         # WaitForTask(snap_obj[0].snapshot.RevertToSnapshot_Task())
 
         snap_obj[0].snapshot.RevertToSnapshot_Task()
-        time.sleep(10)
+        time.sleep(20)
