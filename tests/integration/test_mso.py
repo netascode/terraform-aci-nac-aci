@@ -71,7 +71,7 @@ def mso_login(mso_url):
     mso_inst = Mso(mso_url, str(username), str(password))
     r = mso_inst.login()
     if r:
-        return "MSO login failed: {}.".format(r), None
+        return r, None
     return "", mso_inst
 
 
