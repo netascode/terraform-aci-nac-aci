@@ -2,11 +2,11 @@
 
 # Copyright: (c) 2022, Daniel Schmidt <danischm@cisco.com>
 
-import errorhandler
 import os
 
-from vmware import Vsphere
+import errorhandler
 from iac_test.robot_writer import RobotWriter
+from vmware import Vsphere
 
 error_handler = errorhandler.ErrorHandler()
 

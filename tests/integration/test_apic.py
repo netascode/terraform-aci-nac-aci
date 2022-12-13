@@ -2,13 +2,13 @@
 
 # Copyright: (c) 2022, Daniel Schmidt <danischm@cisco.com>
 
-import pytest
-import tftest
 import os
-import errorhandler
 import shutil
 
+import errorhandler
 import iac_test.pabot
+import pytest
+import tftest
 from aci import Apic
 from util import render_templates, revert_snapshot
 

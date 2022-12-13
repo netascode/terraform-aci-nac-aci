@@ -2,9 +2,8 @@
 
 # Copyright: (c) 2022, Daniel Schmidt <danischm@cisco.com>
 
-import pytest
 import errorhandler
-
+import pytest
 from iac_validate.validator import Validator
 
 pytestmark = pytest.mark.integration

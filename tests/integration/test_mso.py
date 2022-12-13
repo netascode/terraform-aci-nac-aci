@@ -2,14 +2,14 @@
 
 # Copyright: (c) 2022, Daniel Schmidt <danischm@cisco.com>
 
-import pytest
 import os
-import errorhandler
 import re
-import sys
-import iac_test.pabot
 import shutil
+import sys
 
+import errorhandler
+import iac_test.pabot
+import pytest
 from mso import Mso
 from util import render_templates, revert_snapshot
 

@@ -2,12 +2,12 @@
 
 # Copyright: (c) 2022, Daniel Schmidt <danischm@cisco.com>
 
-import requests
 import json
-import urllib3
-import sys
 import re
+import sys
 
+import requests
+import urllib3
 
 API_ENDPOINT_MAPPINGS = {
     "platform/remote-locations": {
