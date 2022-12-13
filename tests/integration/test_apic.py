@@ -54,7 +54,7 @@ def apic_render_run_tests(apic_url, data_paths, output_path):
         pytest.fail(error)
     os.environ["ACI_URL"] = apic_url
     try:
-        iac_test.pabot.run_pabot(output_path, "", "")
+        iac_test.pabot.run_pabot(output_path)
     except SystemExit as e:
         if e.code != 0:
             return "Robot testing failed."

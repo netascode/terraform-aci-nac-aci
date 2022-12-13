@@ -139,7 +139,7 @@ def mso_render_run_tests(mso_inst, mso_url, data_paths, output_path):
 
     os.environ["MSO_URL"] = mso_url
     try:
-        iac_test.pabot.run_pabot(output_path, "", "")
+        iac_test.pabot.run_pabot(output_path)
     except SystemExit as e:
         if e.code != 0:
             return "Robot testing failed."
