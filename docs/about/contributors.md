@@ -7,6 +7,7 @@
 - Rostyslav Davydenko (rdavyden@cisco.com)
 - Martin Ehlers (marehler@cisco.com)
 - Rasmus Ekman (raekman@cisco.com)
+- Nathan Hemingway (nhemingw@cisco.com)
 - Haytham Ibrahim (hayibrah@cisco.com)
 - Daniel Schmidt (danischm@cisco.com)
 - Ivan Sinyagovski (isinyago@cisco.com)
