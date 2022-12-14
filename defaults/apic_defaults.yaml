@@ -316,6 +316,11 @@ defaults:
             span_drop: false
             access_paths:
               module: 1
+      smart_licensing:
+        mode: 'smart-licensing'
+        url: 'https://tools.cisco.com/its/service/oddce/services/DDCEService'
+        proxy:
+          port: '443'
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"

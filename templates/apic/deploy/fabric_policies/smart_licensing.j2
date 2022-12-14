@@ -1,0 +1,25 @@
+{% if apic.fabric_policies.smart_licensing.mode is defined %}
+{
+    "licenseLicPolicy": {
+        "attributes": {
+            "annotation": "orchestrator:aac",
+            "dn": "uni/fabric/licensepol",
+            "mode": "{{ apic.fabric_policies.smart_licensing.mode | default(defaults.apic.fabric_policies.smart_licensing.mode) }}",
+            {% if apic.fabric_policies.smart_licensing.mode == "proxy" %}
+            "ipAddr": "{{ apic.fabric_policies.smart_licensing.proxy.hostname_ip }}",
+            "port": "{{ apic.fabric_policies.smart_licensing.proxy.port }}",
+            "regTokenId": "{{ apic.fabric_policies.smart_licensing.registration_token }}"
+            "url": "{{ defaults.apic.fabric_policies.smart_licensing.url }}
+            {% elif apic.fabric_policies.smart_licensing.mode == "satellite" or apic.fabric_policies.smart_licensing.mode == "cslu"%}
+            "url": "{{ apic.fabric_policies.smart_licensing.url }}"
+            {% elif apic.fabric_policies.smart_licensing.mode == "smart-licensing" %}
+            "regTokenId": "{{apic.fabric_policies.smart_licensing.registration_token | default("") }}"
+            {% elif apic.fabric_policies.smart_licensing.mode == "smart-transport-gateway" %}
+            "url": "{{ apic.fabric_policies.smart_licensing.url }}",
+            "regTokenId": "{{apic.fabric_policies.smart_licensing.registration_token }}"
+            {% endif %}
+            "regAdminState": "register"
+        }
+    }
+}
+{% endif %}

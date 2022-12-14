@@ -79,6 +79,7 @@ fabric_policies:
   config_exports: list(include('fp_config_exports'), required=False) # @ref_name(Config Export)
   monitoring: include('fp_monitoring', required=False)
   span: include('fp_span', required=False) # @name(Fabric SPAN)
+  smart_licensing: include('fp_smart_licensing', required=False)
 
 fp_banners:
   apic_gui_alias: str(required=False)
@@ -630,6 +631,16 @@ fp_span_destination_groups:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+fp_smart_licensing:
+  mode: enum('cslu', 'smart-licensing', 'offline', 'plr', 'proxy', 'satellite', 'transport-gateway', required=False)
+  registration_token: str(min=1, max=512, required=False)
+  url: str(min=1, max=512, required=False)
+  proxy: include('fp_smart_licensing_proxy', required=False)
+
+fp_smart_licensing_proxy:
+  hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip(), required=False)
+  port: int(min=0, max=65535, required=False)
 
 access_policies:
   leaf_switch_profile_name: str(min=1, max=64, required=False)

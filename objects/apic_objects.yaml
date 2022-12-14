@@ -1004,6 +1004,14 @@ objects:
       - apic.tenants.name
       - apic.tenants.alias
       - apic.tenants.description
+  - name: Smart Licensing
+    template: smart_licensing
+    folder: fabric_policies
+    delete: false
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.smart_licensing
 
 spine_objects:
   - name: Access Spine Interface Selector

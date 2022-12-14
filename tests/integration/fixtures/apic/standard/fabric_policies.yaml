@@ -595,3 +595,10 @@ apic:
           ip: 2.2.2.2
           source_prefix: 4.5.6.7/32
         - name: DST_GRP3
+
+    smart_licensing:
+      mode: proxy
+      registration_token: ABCDEFG
+      proxy:
+        hostname_ip: 1.1.1.1
+        port: 80
