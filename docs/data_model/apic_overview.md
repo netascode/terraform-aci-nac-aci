@@ -8,7 +8,7 @@ The APIC configuration is divided into six high level sections:
 - `access_policies`: Configurations applied to external facing (downlink) interfaces (e.g., VLAN pools)
 - `pod_policies`: Configurations applied at the pod level (e.g., TEP pool addresses)
 - `node_policies`: Configurations applied at the node level (e.g., OOB node management address)
-- `interface_policies`: Configurations applied at the interface level (e.g., assigning interface policy groups to pyhsical ports)
+- `interface_policies`: Configurations applied at the interface level (e.g., assigning interface policy groups to physical ports)
 - `tenants`: Configurations applied at the tenant level (e.g., VRFs and Bridge Domains)
 
 The data model is organized in a way that configurations are grouped around where the actual configuration (policy) is applied. Given the following example:
@@ -121,3 +121,7 @@ apic:
     pod_profile_name: "pod-\\g<id>"
     pod_profile_pod_selector_name: "pod-\\g<id>"
 ```
+
+## Additional Resources
+
+The ACI-as-Code Data Model describes how to create resources but not what functional purpose they serve within ACI. For more information about ACI please visit [ACI Developer Docs](https://developer.cisco.com/docs/aci/) or the [ACI Fundamentals Guide](https://www.cisco.com/c/en/us/td/docs/dcn/aci/apic/5x/aci-fundamentals/cisco-aci-fundamentals-52x.html).
