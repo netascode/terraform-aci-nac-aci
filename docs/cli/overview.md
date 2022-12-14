@@ -13,7 +13,7 @@ The [aac-tool](https://wwwin-github.cisco.com/netascode/aac-tool) CLI applicatio
 
 The tool can be consumed in different ways:
 
-* Consumed as a service using [this](https://aide-tools.cisco.com/datacenter/aci/aac--aac-tool) frontend
+* Consumed as a service using [this](https://caf.cisco.com/aci/aac-tool) frontend
 * Installed and managed using the *Cisco CX AIDE Toolkit* ([CAT](https://cisco.sharepoint.com/sites/AIDE/SitePages/CX-AIDE-Toolkit.aspx)) application
 * Using a ready-to-use container image
 * Installed locally as a CLI application
