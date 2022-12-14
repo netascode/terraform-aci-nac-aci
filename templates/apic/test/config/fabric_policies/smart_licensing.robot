@@ -11,7 +11,7 @@ Verify Smart Licensing
 {% if apic.fabric_policies.smart_licensing.mode == "proxy" %}
     Should Be Equal Value Json String   ${r.json()}    $..licenseLicPolicy.attributes.ipAddr   {{ apic.fabric_policies.smart_licensing.proxy.hostname_ip }}
     Should Be Equal Value Json String   ${r.json()}    $..licenseLicPolicy.attributes.port   {{ apic.fabric_policies.smart_licensing.proxy.port | default(defaults.apic.fabric_policies.smart_licensing.proxy.port) }}
-    Should Be Equal Value Json String   ${r.json()}    $..licenseLicPolicy.attributes.url   {{ default(defaults.apic.fabric_policies.smart_licensing.url) }}
+    Should Be Equal Value Json String   ${r.json()}    $..licenseLicPolicy.attributes.url   {{ defaults.apic.fabric_policies.smart_licensing.url }}
 {% elif apic.fabric_policies.smart_licensing.mode == "satellite" or apic.fabric_policies.smart_licensing.mode == "cslu" or apic.fabric_policies.smart_licensing.mode == "smart-transport-gateway" %}
     Should Be Equal Value Json String   ${r.json()}    $..licenseLicPolicy.attributes.url   {{ apic.fabric_policies.smart_licensing.url }}
 {% endif %}
