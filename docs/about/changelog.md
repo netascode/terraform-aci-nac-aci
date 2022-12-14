@@ -1,6 +1,8 @@
 # Changelog
 
-## 0.4.1 (unreleased)
+## 0.5.0 <small>December 14, 2022</small>
+
+Tested versions: [link](./tested_versions.md#release-050)
 
 #### CLI (aac-tool)
 
@@ -26,6 +28,7 @@
 - APIC: Add support for intra-EPG contracts
 - APIC: Add support for intra-ESG contracts
 - APIC: Add `name` and `protocol` attributes to syslog destinations
+- Hosted version available at <https://caf.cisco.com/aci/aac-tool>
 
 #### Ansible (ansible-aac)
 

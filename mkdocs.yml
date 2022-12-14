@@ -279,5 +279,6 @@ nav:
       - Lab IPs: labs/ip_addresses.md
   - About:
       - Changelog: about/changelog.md
+      - Tested Versions: about/tested_versions.md
       - Support: about/support.md
       - Contributors: about/contributors.md
