@@ -405,6 +405,7 @@ defaults:
           name_suffix: ''
           vlan_scope: global
           qinq: disabled
+          reflective_relay: false
         mcp_policies:
           name_suffix: ''
         storm_control_policies:

@@ -998,6 +998,7 @@ ap_l2_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   vlan_scope: enum('portlocal', 'global', required=False)
   qinq: enum('disabled', 'edgePort', 'corePort', 'doubleQtagPort', required=False)
+  reflective_relay: bool(required=False)
 
 ap_storm_control_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

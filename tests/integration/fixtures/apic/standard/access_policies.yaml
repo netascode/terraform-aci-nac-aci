@@ -307,6 +307,7 @@ apic:
           vlan_scope: portlocal
           qinq: disabled
         - name: GLOBAL
+          reflective_relay: true
       storm_control_policies:
         - name: 10P
           description: My Desc
