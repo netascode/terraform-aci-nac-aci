@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.1 (unreleased)
+
+#### CLI (aac-tool)
+
+- APIC: Add support for reflective relay option
+
+#### Ansible (ansible-aac)
+
+- APIC: Add support for reflective relay option
+
+#### Terraform (terraform-aac)
+
 ## 0.5.0 <small>December 14, 2022</small>
 
 Tested versions: [link](./tested_versions.md#release-050)
