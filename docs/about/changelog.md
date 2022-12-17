@@ -12,6 +12,8 @@
 
 #### Terraform (terraform-aac)
 
+- APIC: Add support for reflective relay option
+
 ## 0.5.0 <small>December 14, 2022</small>
 
 Tested versions: [link](./tested_versions.md#release-050)
