@@ -13,6 +13,7 @@
 #### Terraform (terraform-aac)
 
 - APIC: Add support for reflective relay option
+- APIC: Fix VRF leaked internal prefix destination public default value
 
 ## 0.5.0 <small>December 14, 2022</small>
 
