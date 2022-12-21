@@ -5,7 +5,7 @@ RUN echo "dash dash/sh boolean false" | debconf-set-selections
 RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
 
 RUN apt-get update \
-    && apt-get install python3 python3-venv pip git rsync wget unzip curl -y
+    && apt-get install python3 python3-venv pip git rsync wget unzip curl jq -y
 
 COPY ./requirements-dev.txt ./
 RUN pip install --upgrade pip setuptools pre-commit \
