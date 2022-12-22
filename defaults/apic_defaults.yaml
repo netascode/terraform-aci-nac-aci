@@ -653,6 +653,7 @@ defaults:
       bridge_domains:
         name_suffix: ''
         mac: 00:22:BD:F8:19:FF
+        ep_move_detection: false
         arp_flooding: true
         ip_dataplane_learning: true
         limit_ip_learn_to_subnets: true

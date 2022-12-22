@@ -13,7 +13,7 @@ Resource        ../../../apic_common.resource
 
 Verify Bridge Domain {{ bd_name }}
 {%- set bd_move_detection = "" %}
-{%- if bd.ep_move_detection is defined and bd.ep_move_detection | cisco.aac.aac_bool("enabled") == "enabled" %}
+{%- if bd.ep_move_detection | default(defaults.local.apic.tenants.bridge_domains.ep_move_detection) | cisco.aac.aac_bool("enabled") == "enabled" %}
 {%- set bd_move_detection = "garp" %}
 {%- endif %}
     ${r}=   GET On Session   apic   /api/node/mo/uni/tn-{{ tenant.name }}/BD-{{ bd_name }}.json   params=rsp-subtree=full
