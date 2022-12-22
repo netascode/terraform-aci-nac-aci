@@ -15,7 +15,7 @@
                     "attributes": {
                         "annotation": "orchestrator:aac",
                         "name": "{{ bgp_peer_prefix_name }}",
-                        "descr": "{{ bpp.action | default() }}",
+                        "descr": "{{ bpp.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/bgpPfxP-{{ bgp_peer_prefix_name }}",
                         "action": "{{ bpp.action | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.action) }}",
                         "maxPfx": "{{ bpp.max_prefixes | default(defaults.apic.tenants.policies.bgp_peer_prefix_policies.max_prefixes) }}",
