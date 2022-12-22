@@ -2131,7 +2131,7 @@ ten_igmp_interface_policies:
   startup_query_interval: int(min=1, max=18000, required=False)
   version: enum('v2', 'v3', required=False)
   max_mcast_entries: any(int(min=1, max=4294967295), enum('unlimited'), required=False)
-  reserved_mcast_entries: any(int(min=0, max=4294967295), enum('unlimited'), required=False)
+  reserved_mcast_entries: any(int(min=0, max=4294967295), enum('undefined'), required=False)
   state_limit_multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   report_policy_multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   static_report_multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)

@@ -1051,8 +1051,8 @@ defaults:
           startup_query_count: 2
           startup_query_interval: 31
           version: 'v2'
-          max_mcast_entries: 4294967295
-          reserved_mcast_entries: 0
+          max_mcast_entries: unlimited
+          reserved_mcast_entries: undefined
         qos:
           name_suffix: ''
           dscp_priority_maps:
