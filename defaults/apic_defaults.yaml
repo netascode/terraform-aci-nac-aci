@@ -644,9 +644,9 @@ defaults:
           auto_rp_listen_updates: false
           fast_convergence: false
           strict_rfc: false
-          max_multicast_entries: 4294967295
+          max_multicast_entries: unlimited
           reserved_multicast_entries: undefined
-          asm_sg_expiry: 180
+          asm_sg_expiry: default-timeout
           asm_traffic_registry_max_rate: 65535
           asm_traffic_registry_source_ip: '0.0.0.0'
         preferred_group: false
