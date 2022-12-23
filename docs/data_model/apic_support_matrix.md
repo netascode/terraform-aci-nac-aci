@@ -46,7 +46,7 @@ Description | CLI | Ansible | Terraform | Reverse
 [Monitoring Policy](./apic/fabric_policies/monitoring_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [CA Certificate](./apic/fabric_policies/ca_cert.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Keyring](./apic/fabric_policies/keyring.md) | :material-check: | :material-check: | :material-check: | :material-check:
-[Health Score Evaluation](./apic/fabric_policies/health_score_evaluation.md) | :material-check: | :material-check: | |
+[Health Score Evaluation](./apic/fabric_policies/health_score_evaluation.md) | :material-check: | :material-check: | :material-check: |
 [Date and Time Policy](./apic/fabric_policies/date_time_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [BGP Policy](./apic/fabric_policies/bgp_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Fabric Leaf Switch Profile](./apic/fabric_policies/fp_leaf_switch_profile.md) | :material-check: | :material-check: | :material-check: | :material-check:
@@ -102,7 +102,7 @@ Description | CLI | Ansible | Terraform | Reverse
 [Access SPAN Destination Group](./apic/access_policies/ap_span_destination_group.md) | :material-check: | :material-check: | :material-check: |
 [Access SPAN Filter Group](./apic/access_policies/ap_span_filter_group.md) | :material-check: | :material-check: | :material-check: |
 [Access SPAN Source Group](./apic/access_policies/ap_span_source_group.md) | :material-check: | :material-check: | :material-check: |
-[Access VSPAN Destination Group](./apic/access_policies/vspan_destination_group.md) | :material-check: | :material-check: | |
+[Access VSPAN Destination Group](./apic/access_policies/vspan_destination_group.md) | :material-check: | :material-check: | :material-check: |
 [Access VSPAN Session](./apic/access_policies/vspan_session.md) | :material-check: | :material-check: | |
 
 ### Pod Policies
@@ -153,11 +153,11 @@ Description | CLI | Ansible | Terraform | Reverse
 [Multicast Route Map](./apic/tenants/multicast_route_map.md) | :material-check: | :material-check: | |
 [Set Rule](./apic/tenants/set_rule.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [BGP Timer Policy](./apic/tenants/bgp_timer_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
-[BGP Peer Prefix Policy](./apic/tenants/bgp_peer_prefix_policy.md) | :material-check: | :material-check: | |
-[BGP Best Path Policy](./apic/tenants/bgp_best_path_policy.md) | :material-check: | :material-check: | |
+[BGP Peer Prefix Policy](./apic/tenants/bgp_peer_prefix_policy.md) | :material-check: | :material-check: | :material-check: |
+[BGP Best Path Policy](./apic/tenants/bgp_best_path_policy.md) | :material-check: | :material-check: | :material-check: |
 [BGP Address Family Context Policy](./apic/tenants/bgp_address_family_context_policy.md) | :material-check: | :material-check: | :material-check: |
 [PIM Policy](./apic/tenants/pim_policy.md) | :material-check: | :material-check: | |
-[IGMP Snooping Policy](./apic/tenants/igmp_snooping_policy.md) | :material-check: | :material-check: | |
+[IGMP Snooping Policy](./apic/tenants/igmp_snooping_policy.md) | :material-check: | :material-check: | :material-check: |
 [IGMP Interface Policy](./apic/tenants/igmp_interface_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [IP SLA Policy](./apic/tenants/ip_sla_policy.md) | :material-check: | :material-check: | :material-check: |
 [Tenant SPAN Source Group](./apic/tenants/tenant_span_source_group.md) | :material-check: | :material-check: | |
