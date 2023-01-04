@@ -17,7 +17,7 @@ Description | CLI | Ansible | Terraform | Reverse
 
 Description | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
-[Global Passphrase](./apic/fabric_policies/global_passphrase.md) | :material-check: | :material-check: | |
+[Config Passphrase](./apic/fabric_policies/config_passphrase.md) | :material-check: | :material-check: | |
 [Date and Time Format](./apic/fabric_policies/date_time_format.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [APIC Connectivity Preference](./apic/fabric_policies/apic_connectivity_pref.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [GUI and CLI Banner](./apic/fabric_policies/banner.md) | :material-check: | :material-check: | :material-check: | :material-check:

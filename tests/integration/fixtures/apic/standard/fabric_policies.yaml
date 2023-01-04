@@ -10,7 +10,7 @@ apic:
     pod_profile_name: "POD\\g<id>"
     pod_profile_pod_selector_name: "POD\\g<id>"
 
-    global_passphrase: Cisco123!Cisco123!
+    config_passphrase: Cisco123!Cisco123!
 
     apic_conn_pref: ooband
 

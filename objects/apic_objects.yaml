@@ -7,12 +7,12 @@ bootstrap_objects:
       - apic.bootstrap
 
 objects:
-  - name: Global Passphrase
-    template: global_passphrase
+  - name: Config Passphrase
+    template: config_passphrase
     folder: fabric_policies
     delete: false
     paths:
-      - apic.fabric_policies.global_passphrase
+      - apic.fabric_policies.config_passphrase
   - name: Date and Time Format
     template: date_time_format
     folder: fabric_policies

@@ -22,7 +22,6 @@ apic:
 bootstrap:
   admin_username: str(required=False)
   admin_password: str()
-  config_passphrase: str()
   snapshot_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   objects_to_delete: list(include('t_objects_to_delete'), required=False)
 
@@ -39,7 +38,7 @@ fabric_policies:
   spine_interface_profile_name: str(min=1, max=64, required=False)
   pod_profile_name: str(min=1, max=64, required=False)
   pod_profile_pod_selector_name: str(min=1, max=64, required=False)
-  global_passphrase: str(min=0, max=32, required=False)
+  config_passphrase: str(min=0, max=32, required=False)
   apic_conn_pref: enum('inband', 'ooband', required=False)
   banners: include('fp_banners', required=False)
   ep_loop_protection: include('fp_ep_loop_protection', required=False)
