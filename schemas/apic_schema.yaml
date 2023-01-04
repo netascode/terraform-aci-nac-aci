@@ -39,6 +39,7 @@ fabric_policies:
   spine_interface_profile_name: str(min=1, max=64, required=False)
   pod_profile_name: str(min=1, max=64, required=False)
   pod_profile_pod_selector_name: str(min=1, max=64, required=False)
+  global_passphrase: str(min=0, max=32, required=False)
   apic_conn_pref: enum('inband', 'ooband', required=False)
   banners: include('fp_banners', required=False)
   ep_loop_protection: include('fp_ep_loop_protection', required=False)

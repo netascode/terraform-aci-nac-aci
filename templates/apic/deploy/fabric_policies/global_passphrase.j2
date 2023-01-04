@@ -1,0 +1,12 @@
+{% if apic.fabric_policies.global_passphrase is defined %}
+{
+    "pkiExportEncryptionKey": {
+        "attributes": {
+            "annotation": "orchestrator:aac",
+            "dn": "uni/exportcryptkey",
+            "strongEncryptionEnabled": "true",
+            "passphrase": "{{ apic.fabric_policies.global_passphrase }}"
+        }
+    }
+}
+{% endif %}

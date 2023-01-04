@@ -71,6 +71,7 @@ nav:
           - Bootstrap:
               - Bootstrap: data_model/apic/bootstrap/bootstrap.md
           - Fabric Policies:
+              - Global Passphrase: data_model/apic/fabric_policies/global_passphrase.md
               - Date and Time Format: data_model/apic/fabric_policies/date_time_format.md
               - APIC Connectivity Preference: data_model/apic/fabric_policies/apic_connectivity_pref.md
               - GUI and CLI Banner: data_model/apic/fabric_policies/banner.md
