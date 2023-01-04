@@ -4,8 +4,8 @@ FROM ubuntu:20.04
 RUN echo "dash dash/sh boolean false" | debconf-set-selections
 RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
 
-RUN apt-get update \
-    && apt-get install python3 python3-venv pip git rsync wget unzip curl jq -y
+RUN apt-get -y update \
+    && apt-get -y install python3 python3-venv pip git rsync wget unzip curl jq
 
 COPY ./requirements-dev.txt ./
 RUN pip install --upgrade pip setuptools pre-commit \
