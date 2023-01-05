@@ -65,8 +65,8 @@ These are the default credentials provisioned:
 
 These are the default URLs to access the applications:
 
-- **ACI simulator**: [https://\<SIMULATOR_IP\>]()
-- **Control VM GitLab**: [https://\<CONTROL_VM_IP\>]()
-- **Control VM Drone**: [http://\<CONTROL_VM_IP\>:30080]()
-- **Control VM Jenkins**: [http://\<CONTROL_VM_IP\>:30088]()
-- **Nexus Dashboard**: [https://\<NEXUS_DASHBOARD_IP\>]()
+- **ACI simulator**: [https://<SIMULATOR_IP\>]()
+- **Control VM GitLab**: [https://<CONTROL_VM_IP\>]()
+- **Control VM Drone**: [http://<CONTROL_VM_IP\>:30080]()
+- **Control VM Jenkins**: [http://<CONTROL_VM_IP\>:30088]()
+- **Nexus Dashboard**: [https://<NEXUS_DASHBOARD_IP\>]()
