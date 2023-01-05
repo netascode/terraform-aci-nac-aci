@@ -37,7 +37,7 @@ Component | Version
 [iac-test](https://github.com/netascode/iac-test) | 0.2.2
 [nexus-pcv](https://github.com/netascode/nexus-pcv) | 0.1.3
 
-### Container Image for interal use
+### Container Image for internal use
 
 Component | Version
 ---|---
