@@ -12,7 +12,7 @@ PODs are dynamically created based on a flavor that has to be selected when inst
 - `standalone-control-vm`: this will create a Control VM running a GitLab server
 - `standalone-nd`: this will create a Nexus Dashboard instance with NDO installed
 
-When create a Control VM, Drone and/or Jenkins can be added as well by enabling the respective flags (disabled by default).
+When creating a Control VM, Drone and/or Jenkins can be added as well by enabling the respective flags (disabled by default).
 
 ## Adding a new POD
 
