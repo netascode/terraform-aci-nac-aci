@@ -40,7 +40,7 @@ pipeline {
     
     post {
         always {
-            sh "BUILD_STATUS=${currentBuild.currentResult} python .ci/webex-notification-jenkins.py"
+            sh "BUILD_STATUS=${currentBuild.currentResult} python3 .ci/webex-notification-jenkins.py"
         }
     }
 }
