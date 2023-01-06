@@ -182,9 +182,12 @@ def test_mso(data_paths, vm_name, snapshot_name, mso_url, mso_backup_id, tmpdir)
         pytest.fail(error)
 
     # Revert MSO config
-    mso_inst.post_or_put("backups/{}/restore".format(mso_backup_id), "", "PUT")
+    error = mso_inst.post_or_put("backups/{}/restore".format(mso_backup_id), "", "PUT")
+    if error:
+        pytest.fail(error)
 
-    time.sleep(30)
+    # Enable retries
+    mso_inst.enable_retries()
 
     # Configure MSO
     error = mso_deploy_config(mso_inst, tmpdir.strpath)

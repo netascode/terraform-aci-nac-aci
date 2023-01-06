@@ -107,6 +107,12 @@ class Mso:
         self.username = username
         self.password = password
         urllib3.disable_warnings()
+        self.session = requests.Session()
+        self.session.verify = False
+        self.session.headers["Content-Type"] = "application/json"
+        self.lookup_cache = {}
+
+    def enable_retries(self):
         retry_strategy = Retry(
             total=5,
             backoff_factor=5,
@@ -114,11 +120,7 @@ class Mso:
             method_whitelist=["GET", "PUT", "POST", "DELETE"],
         )
         adapter = HTTPAdapter(max_retries=retry_strategy)
-        self.session = requests.Session()
         self.session.mount("https://", adapter)
-        self.session.verify = False
-        self.session.headers["Content-Type"] = "application/json"
-        self.lookup_cache = {}
 
     def login(self):
         """MSO login"""
