@@ -9,6 +9,9 @@ import sys
 import requests
 import urllib3
 
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+
 API_ENDPOINT_MAPPINGS = {
     "platform/remote-locations": {
         "container": "remoteLocations",
@@ -104,7 +107,15 @@ class Mso:
         self.username = username
         self.password = password
         urllib3.disable_warnings()
+        retry_strategy = Retry(
+            total=5,
+            backoff_factor=5,
+            status_forcelist=[429, 500, 502, 503, 504],
+            method_whitelist=["GET", "PUT", "POST", "DELETE"],
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
         self.session = requests.Session()
+        self.session.mount("https://", adapter)
         self.session.verify = False
         self.session.headers["Content-Type"] = "application/json"
         self.lookup_cache = {}
