@@ -612,10 +612,10 @@ fp_span_source_groups_sources:
   fabric_paths: list(include('fp_span_source_groups_sources_access_paths'), required=False) # @name(Fabric SPAN SG Sources Paths)
 
 fp_span_source_groups_sources_access_paths:
-  node_id: int(min=1, max=4000, required=False)
+  node_id: int(min=1, max=4000)
   pod_id: int(min=1, max=255, required=False)
   module: int(min=1, max=9, required=False)
-  port: int(min=1, max=127, required=False)
+  port: int(min=1, max=127)
 
 fp_span_destination_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
