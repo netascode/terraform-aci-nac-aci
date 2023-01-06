@@ -110,7 +110,7 @@ class Mso:
         retry_strategy = Retry(
             total=5,
             backoff_factor=5,
-            status_forcelist=[429, 500, 502, 503, 504],
+            status_forcelist=[400, 429, 500, 502, 503, 504],
             method_whitelist=["GET", "PUT", "POST", "DELETE"],
         )
         adapter = HTTPAdapter(max_retries=retry_strategy)
