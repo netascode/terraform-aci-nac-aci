@@ -9,19 +9,18 @@ mso:
       type: informational
       message: My Message New
       state: active
-  # disable for now as test fails in Jenkins pipeline
-  # remote_locations:
-  #   - name: APIC2
-  #     description: APIC2 SCP
-  #     hostname_ip: 10.51.77.63
-  #     port: 22
-  #     protocol: scp
-  #     path: /
-  #     authentication: password
-  #     username: admin
-  #     password: C1sco123
-  #     ssh_key:
-  #     passphrase:
+  remote_locations:
+    - name: APIC2
+      description: APIC2 SCP
+      hostname_ip: 10.51.77.63
+      port: 22
+      protocol: scp
+      path: /
+      authentication: password
+      username: admin
+      password: C1sco123
+      ssh_key:
+      passphrase:
   tacacs_providers:
     - hostname_ip: 2.2.2.2
       description: My Desc
