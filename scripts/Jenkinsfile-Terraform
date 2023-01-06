@@ -1,0 +1,46 @@
+pipeline {
+    agent {
+        docker {
+            image 'danischm/aac:0.5.0'
+            label 'emear-sio-slv04 || emear-sio-slv05'
+            args '-u root'
+        }
+    }
+
+    environment { 
+        ACI_USERNAME = credentials('ACI_USERNAME')
+        ACI_PASSWORD = credentials('ACI_PASSWORD')
+        VMWARE_HOST = credentials('VMWARE_HOST')
+        VMWARE_USER = credentials('VMWARE_USER')
+        VMWARE_PASSWORD = credentials('VMWARE_PASSWORD')
+        WEBEX_TOKEN = credentials('WEBEX_TOKEN')
+        WEBEX_ROOM_ID = "Y2lzY29zcGFyazovL3VzL1JPT00vNTFmMGNmODAtYjI0My0xMWU5LTljZjUtNWY0NGQ2ZTlmYWY0"
+        GIT_COMMIT_MESSAGE = "${sh(returnStdout: true, script: 'git log -1 --pretty=%B ${GIT_COMMIT}').trim()}"
+        GIT_COMMIT_AUTHOR = "${sh(returnStdout: true, script: 'git show -s --pretty=%an').trim()}"
+        GIT_EVENT = "${(env.CHANGE_ID != null) ? 'Pull Request' : 'Push'}"
+    }
+
+    options {
+        disableConcurrentBuilds()
+    }
+
+    stages {
+        stage('Test APIC 5.2 Terraform') {
+            steps {
+                sh 'pytest -m "apic_52 and terraform"'
+            }
+            post {
+                always {
+                    junit 'apic_tf_5.2_xunit.xml'
+                    archiveArtifacts 'apic_tf_5.2_*.html, apic_tf_5.2_*.xml'
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            sh "BUILD_STATUS=${currentBuild.currentResult} python .ci/webex-notification-jenkins.py"
+        }
+    }
+}
