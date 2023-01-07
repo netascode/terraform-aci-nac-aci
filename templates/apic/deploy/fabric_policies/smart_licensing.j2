@@ -1,4 +1,12 @@
-{% if apic.fabric_policies.smart_licensing.mode is defined %}
+{% if apic.access_policies.smart_licensing.mode is not defined %}
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        }
+    }
+}
+{% else %}
 {
     "licenseLicPolicy": {
         "attributes": {
