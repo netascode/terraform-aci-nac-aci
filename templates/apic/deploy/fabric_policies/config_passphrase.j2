@@ -1,4 +1,12 @@
-{% if apic.fabric_policies.config_passphrase is defined %}
+{% if apic.access_policies.config_passphrase is not defined %}
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        }
+    }
+}
+{% else %}
 {
     "pkiExportEncryptionKey": {
         "attributes": {
