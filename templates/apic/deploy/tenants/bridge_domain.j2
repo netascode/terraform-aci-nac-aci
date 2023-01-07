@@ -11,7 +11,7 @@
             {%- for bd in tenant.bridge_domains | default([]) %}{{ comma1() }}
             {%- set bd_name = bd.name ~ defaults.apic.tenants.bridge_domains.name_suffix  %}
             {%- set bd_move_detection = "" %}
-            {%- if bd.ep_move_detection | default(defaults.local.apic.tenants.bridge_domains.ep_move_detection) | cisco.aac.aac_bool("enabled") == "enabled" %}
+            {%- if bd.ep_move_detection | default(defaults.apic.tenants.bridge_domains.ep_move_detection) | cisco.aac.aac_bool("enabled") == "enabled" %}
                 {%- set bd_move_detection = "garp" %}
             {%- endif %}
             {
