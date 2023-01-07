@@ -15,7 +15,7 @@
                         "dn": "uni/infra/l2IfP-{{ l2_policy_name }}",
                         "vlanScope": "{{ policy.vlan_scope | default(defaults.apic.access_policies.interface_policies.l2_policies.vlan_scope) }}",
                         "qinq": "{{ policy.qinq | default(defaults.apic.access_policies.interface_policies.l2_policies.qinq) }}",
-                        "vepa": "{% if policy.reflective_relay == true %}enabled{% else %}disabled{% endif %}"
+                        "vepa": "{% if policy.reflective_relay | default(defaults.apic.access_policies.interface_policies.l2_policies.reflective_relay) == true %}enabled{% else %}disabled{% endif %}"
                     }
                 }
             }
