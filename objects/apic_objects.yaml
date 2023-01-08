@@ -1171,6 +1171,7 @@ tenant_objects:
   - name: Endpoint Security Group
     template: endpoint_security_group
     folder: tenants
+    min_version: 5.0.0
     aci_classes:
       - fvESg
     scope:

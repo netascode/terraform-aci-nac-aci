@@ -4,6 +4,7 @@ defaults: any(required=False)
 modules: any(required=False)
 ---
 apic:
+  version: str(required=False)
   bootstrap: include('bootstrap', required=False)
   fabric_policies: include('fabric_policies', required=False)
   access_policies: include('access_policies', required=False)
