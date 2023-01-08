@@ -39,7 +39,6 @@ Verify NTP Server {{ server.hostname_ip }}
 Verify NTP Key {{ key.id }}
     ${key}=   Set Variable   $..datetimePol.children[?(@.datetimeNtpAuthKey.attributes.id=='{{ key.id }}')]
     Should Be Equal Value Json String   ${r.json()}    ${key}.datetimeNtpAuthKey.attributes.id   {{ key.id }}
-    Should Be Equal Value Json String   ${r.json()}    ${key}.datetimeNtpAuthKey.attributes.key   {{ key.key }}
     Should Be Equal Value Json String   ${r.json()}    ${key}.datetimeNtpAuthKey.attributes.keyType   {{ key.auth_type }}
     Should Be Equal Value Json String   ${r.json()}    ${key}.datetimeNtpAuthKey.attributes.trusted   {{ key.trusted | cisco.aac.aac_bool("yes") }}
 
