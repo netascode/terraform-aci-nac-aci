@@ -57,6 +57,7 @@ Variable | Mandatory | Default | Description
 Variable | Mandatory | Default | Description
 ---|---|---|---
 **mso_mode** | No | "only_provided" | - ```only_provided``` limits the list of objects to those configured as per inventory <br> - ```only_changed``` limits the list of objects to those that have changed compared to previous snapshot of the inventory (```previous_inventory``` is thr path to previous inventory files) <br> - ```all``` unconditionally includes all objects
+**mso_platform** | No | "nd" | - ```standalone``` refers to a standalone MSO installation <br> - ```nd``` refers to a Nexus Dashboard installation
 **mso_username** | Yes | | The username for a local user created as part of the ```mso_bootstrap``` role and subsequently used by ```mso_deploy``` roles
 **mso_password** | Yes | | The password used for ```mso_username``` user
 **mso_login_domain** | No | local | The login domain used for ```mso_username``` user
