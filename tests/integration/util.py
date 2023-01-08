@@ -38,7 +38,7 @@ def revert_snapshot(vm_name, snapshot_name):
 
 class TimeoutHTTPAdapter(HTTPAdapter):
     def __init__(self, *args, **kwargs):
-        self.timeout = 30  # default timeout
+        self.timeout = 60  # default timeout
         if "timeout" in kwargs:
             self.timeout = kwargs["timeout"]
             del kwargs["timeout"]
