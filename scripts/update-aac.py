@@ -34,6 +34,14 @@ ANSIBLE_DIRS = [
         "src": "../templates/mso/test/config",
         "dest": "./ansible-aac/roles/test_mso_deploy/templates/config",
     },
+    {
+        "src": "../tests/integration/fixtures/apic/standard",
+        "dest": "./ansible-aac/roles/apic_deploy/molecule/01_standard/data/host_vars/apic1",
+    },
+    {
+        "src": "../tests/integration/fixtures/mso/standard",
+        "dest": "./ansible-aac/roles/mso_deploy/molecule/01_standard/data/host_vars/mso1",
+    },
 ]
 
 ANSIBLE_FILES = [
@@ -60,6 +68,10 @@ ANSIBLE_FILES = [
     {
         "src": "../objects/mso_objects.yaml",
         "dest": "./ansible-aac/roles/mso_common/vars/mso_objects.yaml",
+    },
+    {
+        "src": "../tests/integration/fixtures/apic/standard_42/fabric_policies.yaml",
+        "dest": "./ansible-aac/roles/apic_deploy/molecule/01_standard/data/host_vars/apic1/fabric_policies_42.yaml",
     },
 ]
 
