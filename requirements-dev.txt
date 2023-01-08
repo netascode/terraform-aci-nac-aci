@@ -17,7 +17,7 @@ pyopenssl
 pytest
 pytest-mock
 python-dateutil
-PyVmomi
+pyvmomi>=6.7,<8
 requests
 requests-toolbelt
 ruamel.yaml
