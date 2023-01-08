@@ -8,6 +8,7 @@ import requests
 import urllib3
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+from util import TimeoutHTTPAdapter
 
 
 class Apic:
@@ -22,7 +23,7 @@ class Apic:
             allowed_methods=["GET", "POST", "DELETE"],
             backoff_factor=5,
         )
-        adapter = HTTPAdapter(max_retries=retry_strategy)
+        adapter = TimeoutHTTPAdapter(max_retries=retry_strategy)
         urllib3.disable_warnings()
         self.session = requests.Session()
         self.session.mount("https://", adapter)

@@ -8,7 +8,7 @@ import time
 from pyVim.connect import Disconnect, SmartConnect
 from pyVmomi import vim
 
-# from pyVim.task import WaitForTask
+from pyVim.task import WaitForTask
 
 
 class Vsphere:
@@ -61,8 +61,4 @@ class Vsphere:
             vm.snapshot.rootSnapshotList, snapshot_name
         )
 
-        # WaitForTask is broken in pyvmomi 8.0, https://github.com/vmware/pyvmomi/issues/993
-        # WaitForTask(snap_obj[0].snapshot.RevertToSnapshot_Task())
-
-        snap_obj[0].snapshot.RevertToSnapshot_Task()
-        time.sleep(20)
+        WaitForTask(snap_obj[0].snapshot.RevertToSnapshot_Task())

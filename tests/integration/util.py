@@ -7,6 +7,7 @@ import os
 import errorhandler
 from iac_test.robot_writer import RobotWriter
 from vmware import Vsphere
+from requests.adapters import HTTPAdapter
 
 error_handler = errorhandler.ErrorHandler()
 
@@ -33,3 +34,18 @@ def revert_snapshot(vm_name, snapshot_name):
     else:
         vpshere = Vsphere(host, user, password)
     vpshere.vmware_revert_snapshot(vm_name, snapshot_name)
+
+
+class TimeoutHTTPAdapter(HTTPAdapter):
+    def __init__(self, *args, **kwargs):
+        self.timeout = 30  # default timeout
+        if "timeout" in kwargs:
+            self.timeout = kwargs["timeout"]
+            del kwargs["timeout"]
+        super().__init__(*args, **kwargs)
+
+    def send(self, request, **kwargs):
+        timeout = kwargs.get("timeout")
+        if timeout is None:
+            kwargs["timeout"] = self.timeout
+        return super().send(request, **kwargs)

@@ -11,6 +11,7 @@ import urllib3
 
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+from util import TimeoutHTTPAdapter
 
 API_ENDPOINT_MAPPINGS = {
     "platform/remote-locations": {
@@ -119,7 +120,7 @@ class Mso:
             status_forcelist=[400, 429, 500, 502, 503, 504],
             method_whitelist=["GET", "PUT", "POST", "DELETE"],
         )
-        adapter = HTTPAdapter(max_retries=retry_strategy)
+        adapter = TimeoutHTTPAdapter(max_retries=retry_strategy)
         self.session.mount("https://", adapter)
 
     def login(self):
