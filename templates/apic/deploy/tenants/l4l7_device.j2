@@ -30,7 +30,8 @@
                         "childAction": "deleteNonPresent"
                     },
                     "children": [
-                        {% if dev.physical_domain is defined and dev.type | default(defaults.apic.tenants.services.l4l7_devices.type) == 'PHYSICAL' %}
+                        {%- set comma2 = joiner(",") %}
+                        {%- if dev.physical_domain is defined and dev.type | default(defaults.apic.tenants.services.l4l7_devices.type) == 'PHYSICAL' %}{{ comma2() }}
                         {% set domain_name = dev.physical_domain ~ defaults.apic.access_policies.physical_domains.name_suffix %}
                         {
                             "vnsRsALDevToPhysDomP": {
@@ -39,9 +40,9 @@
                                     "tDn": "uni/phys-{{ domain_name }}"
                                 }
                             }
-                        },
+                        }
                         {% endif %}
-                        {% if dev.vmware_vmm_domain is defined and dev.type | default(defaults.apic.tenants.services.l4l7_devices.type) == 'VIRTUAL' %}
+                        {%- if dev.vmware_vmm_domain is defined and dev.type | default(defaults.apic.tenants.services.l4l7_devices.type) == 'VIRTUAL' %}{{ comma2() }}
                         {% set domain_name = dev.vmware_vmm_domain ~ defaults.apic.fabric_policies.vmware_vmm_domains.name_suffix %}
                         {
                             "vnsRsALDevToDomP": {
@@ -50,9 +51,8 @@
                                     "tDn": "uni/vmmp-VMware/dom-{{ domain_name }}"
                                 }
                             }
-                        },
+                        }
                         {% endif %}
-                        {%- set comma2 = joiner(",") %}
                         {%- for cd in dev.concrete_devices | default([]) %}{{ comma2() }}
                         {% set cd_name = cd.name ~ defaults.apic.tenants.services.l4l7_devices.concrete_devices.name_suffix %}
                         {
