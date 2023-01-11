@@ -2079,7 +2079,7 @@ ten_bfd_interface_policies:
 ten_multicast_route_maps:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  multicast_route_map_entries: list(include('ten_multicast_route_map_entries'), required=False) # @name(Multicast Route Map Entries)
+  entries: list(include('ten_multicast_route_map_entries'), required=False) # @name(Multicast Route Map Entries)
 
 ten_multicast_route_map_entries:
   order: int(min=0, max=9999)

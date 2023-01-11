@@ -16,15 +16,15 @@ Verify Multicast Route Map Policy {{ policy_name }}
     Should Be Equal Value Json String   ${r.json()}   $..pimRouteMapPol.attributes.name   {{ policy_name }}
     Should Be Equal Value Json String   ${r.json()}   $..pimRouteMapPol.attributes.descr   {{ mrm.description | default("") }}
 
-{% for route_map_entry in policy.multicast_route_map_entries | default([]) %}
+{% for route_map_entry in policy.entries | default([]) %}
 
 Verify Multicast Route Map Policy {{ policy_name }} entry {{ route_map_entry.order }}
     ${entry}=   Set Variable   $..pimRouteMapPol.children[?(@.pimRouteMapEntry.attributes.order=='{{ route_map_entry.order }}')]
     Should Be Equal Value Json String   ${r.json()}    ${entry}..attributes.order    {{ route_map_entry.order }}
-    Should Be Equal Value Json String   ${r.json()}    ${entry}..attributes.src    {{ route_map_entry.source_ip  | default(defaults.apic.tenants.policies.multicast_route_maps.multicast_route_map_entries.source_ip) }}
-    Should Be Equal Value Json String   ${r.json()}    ${entry}..attributes.grp    {{ route_map_entry.group_ip | default(defaults.apic.tenants.policies.multicast_route_maps.multicast_route_map_entries.group_ip) }}
-    Should Be Equal Value Json String   ${r.json()}    ${entry}..attributes.rp    {{ route_map_entry.rp_ip | default(defaults.apic.tenants.policies.multicast_route_maps.multicast_route_map_entries.rp_ip) }}
-    Should Be Equal Value Json String   ${r.json()}    ${entry}..attributes.action    {{ route_map_entry.action | default(defaults.apic.tenants.policies.multicast_route_maps.multicast_route_map_entries.action) }}
+    Should Be Equal Value Json String   ${r.json()}    ${entry}..attributes.src    {{ route_map_entry.source_ip  | default(defaults.apic.tenants.policies.multicast_route_maps.entries.source_ip) }}
+    Should Be Equal Value Json String   ${r.json()}    ${entry}..attributes.grp    {{ route_map_entry.group_ip | default(defaults.apic.tenants.policies.multicast_route_maps.entries.group_ip) }}
+    Should Be Equal Value Json String   ${r.json()}    ${entry}..attributes.rp    {{ route_map_entry.rp_ip | default(defaults.apic.tenants.policies.multicast_route_maps.entries.rp_ip) }}
+    Should Be Equal Value Json String   ${r.json()}    ${entry}..attributes.action    {{ route_map_entry.action | default(defaults.apic.tenants.policies.multicast_route_maps.entries.action) }}
 {% endfor %}
 
 {% endfor %}

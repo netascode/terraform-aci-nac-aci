@@ -21,16 +21,16 @@
                     },
                     "children": [
                         {%- set comma2 = joiner(",") %}
-                        {%- for mrm_route_entry in mrm.multicast_route_map_entries | default([]) %}{{ comma2() }}
+                        {%- for mrm_route_entry in mrm.entries | default([]) %}{{ comma2() }}
                         {
                             "pimRouteMapEntry": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
-                                    "action": "{{ mrm_route_entry.action | default(defaults.apic.tenants.policies.multicast_route_maps.multicast_route_map_entries.action) }}",
-                                    "grp": "{{ mrm_route_entry.group_ip | default(defaults.apic.tenants.policies.multicast_route_maps.multicast_route_map_entries.group_ip) }}",
+                                    "action": "{{ mrm_route_entry.action | default(defaults.apic.tenants.policies.multicast_route_maps.entries.action) }}",
+                                    "grp": "{{ mrm_route_entry.group_ip | default(defaults.apic.tenants.policies.multicast_route_mapsentries.group_ip) }}",
                                     "order": "{{ mrm_route_entry.order }}",
-                                    "rp": "{{ mrm_route_entry.rp_ip | default(defaults.apic.tenants.policies.multicast_route_maps.multicast_route_map_entries.rp_ip) }}",
-                                    "src": "{{ mrm_route_entry.source_ip | default(defaults.apic.tenants.policies.multicast_route_maps.multicast_route_map_entries.source_ip) }}"
+                                    "rp": "{{ mrm_route_entry.rp_ip | default(defaults.apic.tenants.policies.multicast_route_maps.entries.rp_ip) }}",
+                                    "src": "{{ mrm_route_entry.source_ip | default(defaults.apic.tenants.policies.multicast_route_maps.entries.source_ip) }}"
                                 }
                             }
                         }
