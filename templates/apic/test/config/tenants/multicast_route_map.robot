@@ -14,6 +14,7 @@ Verify Multicast Route Map Policy {{ policy_name }}
     ${r}=   GET On Session   apic   /api/node/mo/uni/tn-{{ tenant.name }}/rtmap-{{ policy_name }}.json   params=rsp-subtree=full
     Set Suite Variable   ${r}
     Should Be Equal Value Json String   ${r.json()}   $..pimRouteMapPol.attributes.name   {{ policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..pimRouteMapPol.attributes.descr   {{ mrm.description | default("") }}
 
 {% for route_map_entry in policy.multicast_route_map_entries | default([]) %}
 

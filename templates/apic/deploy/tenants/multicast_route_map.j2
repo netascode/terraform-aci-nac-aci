@@ -15,6 +15,7 @@
                     "attributes": {
                         "annotation": "orchestrator:aac",
                         "name": "{{ mrm_policy_name }}",
+                        "descr": "{{ mrm.description | default("") }}",
                         "dn": "uni/tn-{{ tenant.name }}/rtmap-{{ mrm_policy_name }}",
                         "childAction": "deleteNonPresent"
                     },
