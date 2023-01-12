@@ -199,7 +199,7 @@ fp_snmp_policy_client_entry:
 
 fp_management_access_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   ssh: include('fp_management_access_policy_ssh', required=False)
   telnet: include('fp_management_access_policy_telnet', required=False)
@@ -339,7 +339,7 @@ fp_external_connectivity_policy:
 
 fp_external_connectivity_policy_routing_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   subnets: list (ip(), required=False)
 
 fp_infra_dscp_translation_policy:
@@ -358,7 +358,7 @@ fp_infra_dscp_translation_policy:
 fp_vmware_vmm_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   access_mode: enum('read-only', 'read-write', required=False)
-  delimiter: regex('^[^a-zA-Z0-9;>"-*`,-.;\[\]/\\{}:?\s&<]$', required=False)
+  delimiter: regex('^[^a-zA-Z0-9;>"-*`,-.;\[\]/\\\\{}:?\s&<]$', required=False)
   tag_collection: any(bool(), enum('yes', 'no'), required=False)
   vlan_pool: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   vswitch: include('fp_vmware_vmm_domains_vswitch', required=False) # @flatten()
@@ -380,7 +380,7 @@ fp_vmware_vmm_domains_vswitch_elag:
 
 fp_vmware_vmm_domains_credential_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  username: regex('[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$')
+  username: regex('[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$')
   password: str()
 
 fp_vmware_vmm_domains_vcenters:
@@ -411,7 +411,7 @@ fp_aaa:
 
 fp_aaa_tacacs_providers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   port: int(min=0, max=65535, required=False)
   protocol: enum('pap', 'chap', 'mschap', required=False)
   key: str(required=False)
@@ -430,7 +430,7 @@ fp_aaa_users:
   phone: str(min=1, max=16, required=False)
   email: regex('^(?!.{64,})[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+$', required=False)
   certificate_name: str(min=1, max=128, required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   status: enum('active', 'inactive', 'blocked', required=False)
   expires: any(bool(), enum('yes', 'no'), required=False)
   expire_date: any(enum('never'), timestamp(), required=False)
@@ -457,7 +457,7 @@ fp_aaa_users_ssh_keys:
 fp_aaa_login_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   realm: enum('local', 'tacacs')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   tacacs_providers: list(include('fp_aaa_login_domains_tacacs_providers'), required=False) # @name(Login Domain TACACS Providers)
 
 fp_aaa_login_domains_tacacs_providers:
@@ -466,12 +466,12 @@ fp_aaa_login_domains_tacacs_providers:
 
 fp_ca_certificate:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   certificate_chain: regex('^[a-zA-Z0-9=\n\r/+ _.@-]{1,16384}$', required=False)
 
 fp_key_ring:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   certificate: regex('^[a-zA-Z0-9=\n\r/+ _.@-]{1,16384}$', required=False)
   modulus: enum('mod512', 'mod1024', 'mod2048', required=False)
   ca_certificate: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -482,43 +482,43 @@ fp_geolocation:
 
 fp_geolocation_sites:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   buildings: list(include('fp_geolocation_sites_buildings'), required=False) # @name(Geolocation Buildings) @ref_name(Building)
 
 fp_geolocation_sites_buildings:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   floors: list(include('fp_geolocation_sites_buildings_floors'), required=False) # @name(Geolocation Floors) @ref_name(Floor)
 
 fp_geolocation_sites_buildings_floors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   rooms: list(include('fp_geolocation_sites_buildings_floors_rooms'), required=False) # @name(Geolocation Rooms) @ref_name(Room)
 
 fp_geolocation_sites_buildings_floors_rooms:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   rows: list(include('fp_geolocation_sites_buildings_floors_rooms_rows'), required=False) # @name(Geolocation Rows) @ref_name(Row)
 
 fp_geolocation_sites_buildings_floors_rooms_rows:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   racks: list(include('fp_geolocation_sites_buildings_floors_rooms_rows_racks'), required=False) # @name(Geolocation Racks) @ref_name(Rack)
 
 fp_geolocation_sites_buildings_floors_rooms_rows_racks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   nodes: list(int(min=1, max=4000), required=False) # @name(Geolocation Nodes) @ref_name(Node ID)
 
 fp_remote_locations:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
   protocol: enum('ftp', 'sftp', 'scp')
   path: str(min=0, max=512, required=False)
   port: int(min=0, max=65535, required=False)
   auth_type: enum('password', 'ssh_keys', required=False)
-  username: regex('^[a-zA-Z0-9][a-zA-Z0-9_.@\\-]{0,31}$')
+  username: regex('^[a-zA-Z0-9][a-zA-Z0-9_.@\\\\-]{0,31}$')
   password: str(required=False)
   ssh_public_key: str(required=False)
   ssh_private_key: str(required=False)
@@ -527,7 +527,7 @@ fp_remote_locations:
 
 fp_schedulers:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   recurring_windows: list(include('fp_schedulers_recurring_windows'), required=False) # @name(Scheduler Recurring Windows)
 
 fp_schedulers_recurring_windows:
@@ -538,7 +538,7 @@ fp_schedulers_recurring_windows:
 
 fp_config_exports:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   format: enum('json', 'xml', required=False)
   remote_location: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   scheduler: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -549,7 +549,7 @@ fp_monitoring:
 
 fp_monitoring_snmp_traps:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   destinations: list(include('fp_monitoring_snmp_traps_destinations'), required=False) # @name(SNMP Trap Destinations)
 
 fp_monitoring_snmp_traps_destinations:
@@ -562,7 +562,7 @@ fp_monitoring_snmp_traps_destinations:
 
 fp_monitoring_syslogs:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   audit: any(bool(), enum('yes', 'no'), required=False)
   events: any(bool(), enum('yes', 'no'), required=False)
   faults: any(bool(), enum('yes', 'no'), required=False)
@@ -593,18 +593,18 @@ fp_span:
 
 fp_span_source_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
   sources: list(include('fp_span_source_groups_sources'), required=False) # @name(Fabric SPAN SG Sources) @ref_name(Fabric SPAN Source Group Source)
   destination: include('fp_span_source_groups_destination') # @name(Fabric SPAN SG Destinations)
 
 fp_span_source_groups_destination:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 fp_span_source_groups_sources:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   direction: enum('in', 'out', 'both', required=False)
   span_drop: any(bool(), enum('yes', 'no'), required=False)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -620,7 +620,7 @@ fp_span_source_groups_sources_access_paths:
 
 fp_span_destination_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   ip: ip(required=False)
   source_prefix: str(required=False)
   dscp: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63), required=False)
@@ -678,7 +678,7 @@ access_policies:
 
 ap_vlan_pool:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   allocation: enum('static', 'dynamic', required=False)
   ranges: list(include('ap_vlan_pool_range'), required=False) # @name(Vlan Pool Ranges)
 
@@ -687,7 +687,7 @@ ap_vlan_pool_range:
   to: int(min=1, max=4096, required=False)
   allocation: enum('inherit', 'static', 'dynamic', required=False)
   role: enum('external', 'internal', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ap_physical_domain:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -754,7 +754,7 @@ ap_span:
 
 ap_span_destination_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   node_id: int(min=1, max=4000, required=False)
   pod_id: int(min=1, max=255, required=False)
   sub_port: int(min=1, max=16, required=False)
@@ -775,19 +775,19 @@ ap_span_destination_groups:
 
 ap_span_source_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
   sources: list(include('ap_span_source_groups_sources'), required=False) # @name(Access SPAN SG Sources) @ref_name(Source Group Source)
   destination: include('ap_span_source_groups_destination') # @flatten()
-  filter_group: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  filter_group: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ap_span_source_groups_destination:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(Destination Name)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Destination Description)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Destination Description)
 
 ap_span_source_groups_sources:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   direction: enum('in', 'out', 'both', required=False)
   span_drop: any(bool(), enum('yes', 'no'), required=False)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -810,7 +810,7 @@ ap_span_source_groups_sources_access_paths:
 
 ap_span_filter_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   entries: list(include('ap_span_filter_groups_entries'), required=False) # @name(Access SPAN FG Entries)
 
 ap_span_filter_groups_entries:
@@ -829,14 +829,14 @@ ap_vspan:
 
 ap_vspan_sessions:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
   sources: list(include('ap_vspan_sessions_sources'), required=False)
   destination: include('ap_vspan_sessions_destination')
 
 ap_vspan_sessions_sources:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   direction: enum('in', 'out', 'both')
   access_paths: list(include('ap_vspan_sessions_sources_access_paths'), required=False)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -855,16 +855,16 @@ ap_vspan_sessions_sources_access_paths:
 
 ap_vspan_sessions_destination:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ap_vspan_destination_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   destinations: list(include('ap_vspan_destination_groups_destinations'), required=False)
 
 ap_vspan_destination_groups_destinations:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -889,7 +889,7 @@ ap_leaf_interface_profiles_selectors:
 
 ap_leaf_interface_profiles_selectors_port_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   from_module: int(min=1, max=9, required=False)
   from_port: int(min=1, max=127)
   to_module: int(min=1, max=9, required=False)
@@ -897,7 +897,7 @@ ap_leaf_interface_profiles_selectors_port_blocks:
 
 ap_leaf_interface_profiles_selectors_sub_port_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   from_module: int(min=1, max=9, required=False)
   from_port: int(min=1, max=127)
   to_module: int(min=1, max=9, required=False)
@@ -918,7 +918,7 @@ ap_fex_interface_profiles_selectors:
 
 ap_fex_interface_profiles_selectors_port_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   from_module: int(min=1, max=9, required=False)
   from_port: int(min=1, max=127)
   to_module: int(min=1, max=9, required=False)
@@ -937,7 +937,7 @@ ap_spine_interface_profiles_selectors:
 
 ap_spine_interface_profiles_selectors_port_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   from_module: int(min=1, max=9, required=False)
   from_port: int(min=1, max=127)
   to_module: int(min=1, max=9, required=False)
@@ -1003,7 +1003,7 @@ ap_l2_policy:
 
 ap_storm_control_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   broadcast_burst_pps: any(int(min=1, max=4882812), enum('unspecified'), required=False)
   broadcast_burst_rate: any(num(min=0, max=100), regex('^(100|[1-9]?[0-9])(\.\d+)?$'), enum('defaultValue'), required=False)
@@ -1021,7 +1021,7 @@ ap_storm_control_policy:
 
 ap_leaf_interface_policy_group:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   type: enum('access', 'vpc', 'pc', 'breakout')
   map: enum('none', '10g-4x', '25g-4x', '100g-2x', '50g-8', '100g-4x', required=False)
   link_level_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1171,13 +1171,13 @@ ip_fex:
 
 ip_fex_interface:
   port: int(min=1, max=127)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   module: int(min=1, max=9, required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ip_interface:
   port: int(min=1, max=127)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   module: int(min=1, max=9, required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   fex_id: int(min=101, max=199, required=False)
@@ -1186,7 +1186,7 @@ ip_interface:
 
 ip_interface_sub_ports:
   port: int(min=1, max=127)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   module: int(min=1, max=9, required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   fex_id: int(min=101, max=199, required=False)
@@ -1195,7 +1195,7 @@ tenant:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   managed: bool(required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   vrfs: list(include('ten_vrf'), required=False) # @ref_name(VRF)
   bridge_domains: list(include('ten_bridge_domains'), required=False) # @ref_name(Bridge Domain)
   application_profiles: list(include('ten_application_profiles'), required=False) # @ref_name(Application Profile)
@@ -1213,7 +1213,7 @@ tenant:
 ten_vrf:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   data_plane_learning: any(bool(), enum('enabled', 'disabled'), required=False)
   enforcement_direction: enum('ingress', 'egress', required=False)
   enforcement_preference: enum('enforced', 'unenforced', required=False)
@@ -1231,7 +1231,7 @@ ten_vrf_leaked_internal_prefixes:
   destinations: list(include('ten_vrf_leaked_internal_prefixes_destinations'), required=False) # @name(VRF Leaked Int Pr Destinations)
 
 ten_vrf_leaked_internal_prefixes_destinations:
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   public: bool(required=False)
@@ -1243,7 +1243,7 @@ ten_vrf_leaked_external_prefixes:
   destinations: list(include('ten_vrf_leaked_external_prefixes_destinations'), required=False) # @name(VRF Leaked Ext Pr Destinations)
 
 ten_vrf_leaked_external_prefixes_destinations:
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$')
 
@@ -1301,7 +1301,7 @@ ten_vrf_inter_vrf_policies:
 ten_bridge_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   arp_flooding: any(bool(), enum('yes', 'no'), required=False)
   advertise_host_routes: any(bool(), enum('yes', 'no'), required=False)
   ip_dataplane_learning: any(bool(), enum('yes', 'no'), required=False)
@@ -1323,7 +1323,7 @@ ten_bridge_domains:
   igmp_snooping_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_bridge_domain_subnets:
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   ip: ip()
   primary_ip: any(bool(), enum('yes', 'no'), required=False)
   public: any(bool(), enum('yes', 'no'), required=False)
@@ -1338,14 +1338,14 @@ ten_application_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   managed: bool(required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   endpoint_groups: list(include('ten_ap_endpoint_groups'), required=False) # @ref_name(Endpoint Group)
   endpoint_security_groups: list(include('ten_ap_endpoint_security_groups'), required=False) # @ref_name(Endpoint Security Group)
 
 ten_ap_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   flood_in_encap: any(bool(), enum('disabled', 'enabled'), required=False)
   intra_epg_isolation: any(bool(), enum('enforced', 'unenforced'), required=False)
   preferred_group: any(bool(), enum('include', 'exclude'), required=False)
@@ -1394,7 +1394,7 @@ ten_ap_endpoint_groups_static_endpoints:
 ten_ap_endpoint_groups_vmware_vmm_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   u_segmentation: any(bool(), enum('yes', 'no'), required=False)
-  delimiter: regex('^[^a-zA-Z0-9;>"-*`,-.;\[\]/\\{}:?\s&<]$', required=False)
+  delimiter: regex('^[^a-zA-Z0-9;>"-*`,-.;\[\]/\\\\{}:?\s&<]$', required=False)
   vlan: int(min=1, max=4096, required=False)
   primary_vlan: int(min=1, max=4096, required=False)
   secondary_vlan: int(min=1, max=4096, required=False)
@@ -1409,7 +1409,7 @@ ten_ap_endpoint_groups_vmware_vmm_domains:
   standby_uplinks: regex('^(\d+(,\d+)*)?$', required=False)
 
 ten_ap_endpoint_groups_subnets:
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   ip: ip()
   public: any(bool(), enum('yes', 'no'), required=False)
   private: any(bool(), enum('yes', 'no'), required=False)
@@ -1442,7 +1442,7 @@ ten_ap_endpoint_groups_contracts:
 
 ten_ap_endpoint_security_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   shutdown: bool(required=False)
   intra_esg_isolation: bool(required=False)
@@ -1467,21 +1467,21 @@ ten_ap_endpoint_security_groups_tag_selectors:
   key: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   operator: enum('contains', 'equals', 'regex', required=False)
   value: regex('^[a-zA-Z0-9_.,:^$\[\](){}|+*-]{1,128}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ten_ap_endpoint_security_groups_epg_selectors:
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ten_ap_endpoint_security_groups_ip_subnet_selectors:
   value: ip()
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ten_contracts:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   scope: enum('application-profile', 'tenant', 'context', 'global', required=False)
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
   target_dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7', 'unspecified'), int(min=0, max=63), required=False)
@@ -1490,7 +1490,7 @@ ten_contracts:
 ten_contracts_subjects:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
   target_dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7', 'unspecified'), int(min=0, max=63), required=False)
   service_graph: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1506,14 +1506,14 @@ ten_contracts_subjects_filters:
 ten_oob_contracts:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   scope: enum('application-profile', 'tenant', 'context', 'global', required=False)
   subjects: list(include('ten_oob_contracts_subjects'), required=False) # @name(OOB Contract Subjects) @ref_name(Subject)
 
 ten_oob_contracts_subjects:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   service_graph: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   filters: list(include('ten_oob_contracts_subjects_filters'), required=False) # @name(OOB Contract Subject Filters)
 
@@ -1523,7 +1523,7 @@ ten_oob_contracts_subjects_filters:
 ten_filters:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   entries: list(include('ten_filters_entries'), required=False) # @name(Filter Entries)
 
 ten_filters_entries:
@@ -1540,7 +1540,7 @@ ten_filters_entries:
 ten_l3outs:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   target_dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7', 'unspecified'), int(min=0, max=63), required=False)
   vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   domain: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1576,7 +1576,7 @@ ten_l3outs_ospf:
 ten_l3outs_bgp_peers:
   ip: ip()
   remote_as: int(min=0, max=4294967295)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   allow_self_as: any(bool(), enum('yes', 'no'), required=False)
   as_override: any(bool(), enum('yes', 'no'), required=False)
   disable_peer_as_check: any(bool(), enum('yes', 'no'), required=False)
@@ -1611,7 +1611,7 @@ ten_l3outs_nodes:
   interfaces: list(include('ten_l3outs_nodes_interfaces'), required=False) # @name(L3out Node Interfaces) @ref_name(Interface) @key(node_id;port;module;channel;vlan)
 
 ten_l3outs_nodes_static_routes:
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   prefix: ip()
   preference: int(min=1, max=255, required=False)
   bfd: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -1623,7 +1623,7 @@ ten_l3outs_nodes_static_routes_next_hops:
   type: enum('prefix', 'none', required=False)
 
 ten_l3outs_nodes_interfaces:
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   node_id: int(min=1, max=4000, required=False)
   node2_id: int(min=1, max=4000, required=False)
   port: int(min=1, max=127, required=False)
@@ -1644,7 +1644,7 @@ ten_l3outs_nodes_interfaces:
 ten_l3outs_nodes_interfaces_bgp_peers:
   ip: ip()
   remote_as: int(min=0, max=4294967295)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   allow_self_as: any(bool(), enum('yes', 'no'), required=False)
   as_override: any(bool(), enum('yes', 'no'), required=False)
   disable_peer_as_check: any(bool(), enum('yes', 'no'), required=False)
@@ -1682,7 +1682,7 @@ ten_l3outs_node_profiles:
 ten_l3outs_node_profiles_bgp_peers:
   ip: ip()
   remote_as: int(min=0, max=4294967295)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   allow_self_as: any(bool(), enum('yes', 'no'), required=False)
   as_override: any(bool(), enum('yes', 'no'), required=False)
   disable_peer_as_check: any(bool(), enum('yes', 'no'), required=False)
@@ -1716,7 +1716,7 @@ ten_l3outs_node_profiles_nodes:
   static_routes: list(include('ten_l3outs_node_profiles_nodes_static_routes'), required=False) # @name(L3out Node Profile Static Route) @ref_name(Static Route)
 
 ten_l3outs_node_profiles_nodes_static_routes:
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   prefix: ip()
   preference: int(min=1, max=255, required=False)
   bfd: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -1745,7 +1745,7 @@ ten_l3outs_node_profiles_interface_profiles_ospf:
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_node_profiles_interface_profiles_interfaces:
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   node_id: int(min=1, max=4000, required=False)
   node2_id: int(min=1, max=4000, required=False)
   pod_id: int(min=1, max=255, required=False)
@@ -1767,7 +1767,7 @@ ten_l3outs_node_profiles_interface_profiles_interfaces:
 ten_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers:
   ip: ip()
   remote_as: int(min=0, max=4294967295)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   allow_self_as: any(bool(), enum('yes', 'no'), required=False)
   as_override: any(bool(), enum('yes', 'no'), required=False)
   disable_peer_as_check: any(bool(), enum('yes', 'no'), required=False)
@@ -1799,7 +1799,7 @@ ten_l3outs_node_profiles_interface_profiles_interfaces_paths:
 ten_l3outs_external_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   preferred_group: any(bool(), enum('exclude', 'include'), required=False)
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
   target_dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7', 'unspecified'), int(min=0, max=63), required=False)
@@ -1825,12 +1825,12 @@ ten_l3outs_external_endpoint_groups_contracts:
   imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out ExtEPG Imported Consumers) @ref_name(Contract)
 
 ten_l3outs_import_route_map:
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Import Route Map Description)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Import Route Map Description)
   type: enum('combinable', 'global', required=False) # @name(Import Route Map Type)
   contexts: list(include('ten_l3outs_route_map_context'), required=False) # @name(Import Route Map Contexts)
 
 ten_l3outs_export_route_map:
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Export Route Map Description)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Export Route Map Description)
   type: enum('combinable', 'global', required=False) # @name(Export Route Map Type)
   contexts: list(include('ten_l3outs_route_map_context'), required=False) # @name(Export Route Map Contexts)
 
@@ -1846,7 +1846,7 @@ ten_l3outs_redistribution_route_maps:
 
 ten_l3outs_route_map_context:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   action: enum('permit', 'deny', required=False)
   order: int(min=0, max=9, required=False)
   match_rule: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1889,7 +1889,7 @@ ten_imported_contracts:
 
 ten_ap_endpoint_groups_l4l7_virtual_ips:
   ip: ip()
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ten_ap_endpoint_groups_l4l7_address_pools:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1920,7 +1920,7 @@ ten_policies:
 
 ten_ospf_interface_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   cost: int(min=0, max=65535, required=False)
   passive_interface: any(bool(), enum('yes', 'no'), required=False)
   mtu_ignore: any(bool(), enum('yes', 'no'), required=False)
@@ -1935,7 +1935,7 @@ ten_ospf_interface_policies:
 
 ten_bgp_peer_prefix_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   action: enum('reject', 'log', 'shut', 'restart', required=False)
   max_prefixes: int(min=1, max=300000, required=False)
   threshold: int(min=1, max=100, required=False)
@@ -1943,7 +1943,7 @@ ten_bgp_peer_prefix_policies:
 
 ten_bgp_timer_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   keepalive_interval: int(min=0, max=3600, required=False)
   hold_interval: any(int(min=3, max=3600), int(0), required=False)
   stale_interval: any(int(min=1, max=3600), enum('default'), required=False)
@@ -1952,12 +1952,12 @@ ten_bgp_timer_policy:
 
 ten_bgp_best_path_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   control_type: enum('default', 'multi-path-relax', required=False)
 
 ten_bgp_address_family_context_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   ebgp_distance: int(min=1, max=255, required=False)
   ibgp_distance: int(min=1, max=255, required=False)
   local_distance: int(min=1, max=255, required=False)
@@ -1968,12 +1968,12 @@ ten_bgp_address_family_context_policy:
 
 ten_dhcp_relay_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   providers: list(include('ten_dhcp_provider'), required=False) # @name(DHCP Relay Policy Providers)
 
 ten_dhcp_option_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   options: list(include('ten_dhcp_options'), required=False) # @name(DHCP Option Policy Options)
 
 ten_dhcp_provider:
@@ -1988,16 +1988,16 @@ ten_dhcp_provider:
 ten_dhcp_options:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   id: int(min=1, max=255, required=False)
-  data: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
+  data: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
 
 ten_route_control_route_maps:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   contexts: list(include('ten_route_control_route_maps_contexts'), required=False) # @name(Route Control Route Map Context)
 
 ten_route_control_route_maps_contexts:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   action: enum('deny', 'permit', required=False)
   order: int(min=0, max=9, required=False)
   set_rule: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -2005,7 +2005,7 @@ ten_route_control_route_maps_contexts:
 
 ten_match_rule:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   regex_community_terms: list(include('ten_match_rule_regex_community_terms'), required=False) # @name(Match Rule Regex Comm Terms)
   community_terms: list(include('ten_match_rule_community_terms'), required=False) # @name(Match Rule Comm Terms) @ref_name(Match Rule Community Term)
   prefixes: list(include('ten_match_rule_prefixes'), required=False) # @name(Match Rule Prefixes)
@@ -2014,28 +2014,28 @@ ten_match_rule_regex_community_terms:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   regex: str(min=0, max=64)
   type: enum('regular', 'extended', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ten_match_rule_community_terms:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   factors: list(include('ten_match_rule_community_terms_factors'), required=False) # @name(Match Rule Comm Term Factors)
 
 ten_match_rule_community_terms_factors:
   community: str()
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   scope: enum('transitive', 'non-transitive', required=False)
 
 ten_match_rule_prefixes:
   ip: ip()
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   aggregate: any(bool(), enum('yes', 'no'), required=False)
   from_length: int(min=0, max=128, required=False)
   to_length: int(min=0, max=128, required=False)
 
 ten_set_rule:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   community_mode: enum('append', 'replace', required=False)
   community: str(required=False)
   tag: int(min=0, max=4294967295, required=False)
@@ -2058,7 +2058,7 @@ ten_set_rule_dampening:
 
 ten_set_rule_additional_communities:
   community: str()
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ten_set_rule_set_as_path:
   criteria: enum('prepend', 'prepend-last-as', required=False)
@@ -2068,7 +2068,7 @@ ten_set_rule_set_as_path:
 
 ten_bfd_interface_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   subinterface_optimization: any(bool(), enum('enabled', 'disabled'), required=False)
   detection_multiplier: int(min=1, max=50, required=False)
   echo_admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -2078,8 +2078,8 @@ ten_bfd_interface_policies:
 
 ten_multicast_route_maps:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  entries: list(include('ten_multicast_route_map_entries'), required=False) # @name(Multicast Route Map Entries)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  multicast_route_map_entries: list(include('ten_multicast_route_map_entries'), required=False) # @name(Multicast Route Map Entries)
 
 ten_multicast_route_map_entries:
   order: int(min=0, max=9999)
@@ -2105,7 +2105,7 @@ ten_pim_policies:
 
 ten_igmp_snooping_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
   last_member_query_interval: int(min=1, max=25, required=False)
   query_interval: int(min=1, max=18000, required=False)
@@ -2117,7 +2117,7 @@ ten_igmp_snooping_policies:
 
 ten_igmp_interface_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   grp_timeout: int(min=3, max=65535, required=False)
   allow_v3_asm: any(bool(), enum('yes', 'no'), required=False)
   fast_leave: any(bool(), enum('yes', 'no'), required=False)
@@ -2139,7 +2139,7 @@ ten_igmp_interface_policies:
 
 ten_ip_sla_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   frequency: int(min=1, max=300, required=False)
   multiplier: int(min=1, max=100, required=False)
   sla_type: enum('icmp', 'tcp', 'l2ping', required=False)
@@ -2147,7 +2147,7 @@ ten_ip_sla_policies:
 
 ten_qos:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   dscp_priority_maps: list(include('ten_qos_dscp_priority_map'), required=False) # @name(QoS Policy DSCP Priority Maps)
   dot1p_classifiers: list(include('ten_qos_dot1p_classifiers'), required=False) # @name(QoS Policy Dot1p Classifiers)
@@ -2168,7 +2168,7 @@ ten_qos_dot1p_classifiers:
 
 ten_trust_control_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   dhcp_v4_server: any(bool(), enum('yes', 'no'), required=False)
   dhcp_v6_server: any(bool(), enum('yes', 'no'), required=False)
   ipv6_router: any(bool(), enum('yes', 'no'), required=False)
@@ -2182,7 +2182,7 @@ ten_span:
 
 ten_span_destination_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   ip: ip()
   source_prefix: str()
   dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63), required=False)
@@ -2197,14 +2197,14 @@ ten_span_destination_groups:
 
 ten_span_source_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   admin_state: enum('enabled', 'disabled', 'l2ping', required=False)
   destination: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   sources: list(include('ten_span_source_groups_sources'), required=False) # @name(Tenant SPAN Src Group Sources)
 
 ten_span_source_groups_sources:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   direction: enum('in', 'both', 'out', required=False)
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -2244,7 +2244,7 @@ ten_ser_l4l7_devices_concrete_devices:
 ten_ser_l4l7_devices_concrete_devices_interfaces:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  vnic_name: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$', required=False)
+  vnic_name: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$', required=False)
   node_id: int(min=1, max=4000, required=False)
   node2_id: int(min=1, max=4000, required=False)
   pod_id: int(min=1, max=255, required=False)
@@ -2266,7 +2266,7 @@ ten_ser_l4l7_devices_logical_interfaces_concrete_interfaces:
 ten_ser_redirect_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   anycast: any(bool(), enum('enabled', 'disabled'), required=False)
   type: enum('L3', 'L2', 'L1', required=False)
   hashing: enum('sip-dip-prototype', 'sip', 'dip', required=False)
@@ -2282,11 +2282,11 @@ ten_ser_redirect_policies:
 
 ten_ser_redirect_backup_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   l3_destinations: list(include('ten_ser_redirect_backup_policies_l3_destinations'), required=False) # @name(Redirect Backup Policy L3 Dest)
 
 ten_ser_redirect_backup_policies_l3_destinations:
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   ip: ip()
   ip_2: ip(required=False)
   destination_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -2294,7 +2294,7 @@ ten_ser_redirect_backup_policies_l3_destinations:
   redirect_health_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_ser_redirect_policies_l3_destinations:
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   ip: ip()
   ip_2: ip(required=False)
   mac: mac()
@@ -2303,17 +2303,17 @@ ten_ser_redirect_policies_l3_destinations:
 
 ten_ser_service_epg_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   preferred_group: any(bool(), enum('include', 'exclude'), required=False)
 
 ten_ser_redirect_health_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ten_ser_service_graph_templates:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   template_type: enum('FW_TRANS', 'FW_ROUTED', 'ADC_ONE_ARM', 'ADC_TWO_ARM', 'OTHER', 'CLOUD_NATIVE_LB', 'CLOUD_VENDOR_LB', 'CLOUD_NATIVE_FW', 'CLOUD_VENDOR_FW', required=False)
   redirect: any(bool(), enum('enabled', 'disabled'), required=False)
   share_encapsulation: any(bool(), enum('enabled', 'disabled'), required=False)
