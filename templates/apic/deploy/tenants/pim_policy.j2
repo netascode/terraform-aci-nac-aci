@@ -29,9 +29,9 @@
                         "jpInterval": "{{ pim_pol.join_prune_interval |  default(defaults.apic.tenants.policies.pim_policies.join_prune_interval) }}"
                     },
                     "children": [
-                        {% set comma2 = joiner(",") %} 
-                        {%- if pim_pol.join_prune_filter_policy_in is defined %}{{ comma2() }}
-                        {%- set join_prune_filter_policy_in_name = pim_pol.join_prune_filter_policy_in ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix %}
+                        {% set comma2 = joiner(",") %}
+                        {%- if pim_pol.neighbor_filter_policy is defined %}{{ comma2() }}
+                        {%- set neighbor_filter_policy_name = pim_pol.neighbor_filter_policy ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix %}
                         {
                             "pimNbrFilterPol": {
                                 "attributes": {
@@ -43,7 +43,7 @@
                                         "rtdmcRsFilterToRtMapPol": {
                                             "attributes": {
                                                 "annotation": "orchestrator:aac",
-                                                "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ join_prune_filter_policy_in_name }}"
+                                                "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ neighbor_filter_policy_name }}"
                                             }
                                         }
                                     }
@@ -72,8 +72,8 @@
                             }
                         }
                         {%- endif %}
-                        {%- if pim_pol.neighbor_filter_policy is defined %}{{ comma2() }}
-                        {%- set neighbor_filter_policy_name = pim_pol.neighbor_filter_policy ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix %}
+                        {%- if pim_pol.join_prune_filter_policy_in is defined %}{{ comma2() }}
+                        {%- set join_prune_filter_policy_in_name = pim_pol.join_prune_filter_policy_in ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix %}
                         {
                             "pimJPInbFilterPol": {
                                 "attributes": {
@@ -85,7 +85,7 @@
                                         "rtdmcRsFilterToRtMapPol": {
                                             "attributes": {
                                                 "annotation": "orchestrator:aac",
-                                                "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ neighbor_filter_policy_name }}"
+                                                "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ join_prune_filter_policy_in_name }}"
                                             }
                                         }
                                     }
