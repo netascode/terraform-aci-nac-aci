@@ -542,6 +542,7 @@ fp_config_exports:
   format: enum('json', 'xml', required=False)
   remote_location: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   scheduler: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  snapshot: any(bool(), enum('yes', 'no'), required=False)
 
 fp_monitoring:
   snmp_traps: list(include('fp_monitoring_snmp_traps'), required=False) # @ref_name(SNMP Trap)

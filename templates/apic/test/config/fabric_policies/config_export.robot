@@ -13,6 +13,7 @@ Verify Config Export {{ policy_name }}
     Should Be Equal Value Json String   ${r.json()}    $..configExportP.attributes.name   {{ policy_name }}
     Should Be Equal Value Json String   ${r.json()}    $..configExportP.attributes.descr   {{ policy.description | default() }}
     Should Be Equal Value Json String   ${r.json()}    $..configExportP.attributes.format   {{ policy.format | default(defaults.apic.fabric_policies.config_exports.format) }}
+    Should Be Equal Value Json String   ${r.json()}    $..configExportP.attributes.snapshot   {{ policy.snapshot | default(defaults.apic.fabric_policies.config_exports.snapshot) | cisco.aac.aac_bool("yes") }}
 {% if policy.remote_location is defined %}
 {% set rl_name = policy.remote_location ~ defaults.apic.fabric_policies.remote_locations.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}    $..configRsRemotePath.attributes.tnFileRemotePathName   {{ rl_name }}

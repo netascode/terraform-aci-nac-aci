@@ -14,7 +14,8 @@
                         "dn": "uni/fabric/configexp-{{ policy_name }}",
                         "name": "{{ policy_name }}",
                         "descr": "{{ policy.description | default() }}",
-                        "format": "{{ policy.format | default(defaults.apic.fabric_policies.config_exports.format) }}"
+                        "format": "{{ policy.format | default(defaults.apic.fabric_policies.config_exports.format) }}",
+                        "snapshot": "{{ policy.snapshot | default(defaults.apic.fabric_policies.config_exports.snapshot) | cisco.aac.aac_bool("yes") }}"
                     },
                     "children": [
                         {%- set comma2 = joiner(",") %}

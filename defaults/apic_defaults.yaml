@@ -271,6 +271,7 @@ defaults:
       config_exports:
         name_suffix: ''
         format: 'json'
+        snapshot: false
       monitoring:
         snmp_traps:
           name_suffix: ''
