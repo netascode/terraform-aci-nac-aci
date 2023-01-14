@@ -66,8 +66,8 @@ Description | CLI | Ansible | Terraform | Reverse
 [Vmware VMM Domain](./apic/fabric_policies/vmw_vmm_domain.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Geolocation Policy](./apic/fabric_policies/geolocation.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Interface type](./apic/fabric_policies/interface_type.md) | :material-check: | :material-check: | :material-check: |
-[Fabric SPAN Source Group](./apic/fabric_policies/fp_span_source_group.md) | :material-check: | :material-check: | |
-[Fabric SPAN Destination Group](./apic/fabric_policies/fp_span_destination_group.md) | :material-check: | :material-check: | |
+[Fabric SPAN Source Group](./apic/fabric_policies/fp_span_source_group.md) | :material-check: | :material-check: | :material-check: |
+[Fabric SPAN Destination Group](./apic/fabric_policies/fp_span_destination_group.md) | :material-check: | :material-check: | :material-check: |
 
 ### Access Policies
 
@@ -104,7 +104,7 @@ Description | CLI | Ansible | Terraform | Reverse
 [Access SPAN Filter Group](./apic/access_policies/ap_span_filter_group.md) | :material-check: | :material-check: | :material-check: |
 [Access SPAN Source Group](./apic/access_policies/ap_span_source_group.md) | :material-check: | :material-check: | :material-check: |
 [Access VSPAN Destination Group](./apic/access_policies/vspan_destination_group.md) | :material-check: | :material-check: | :material-check: |
-[Access VSPAN Session](./apic/access_policies/vspan_session.md) | :material-check: | :material-check: | |
+[Access VSPAN Session](./apic/access_policies/vspan_session.md) | :material-check: | :material-check: | :material-check: |
 
 ### Pod Policies
 
@@ -151,23 +151,23 @@ Description | CLI | Ansible | Terraform | Reverse
 [DHCP Option Policy](./apic/tenants/dhcp_option_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Route Control Route Map](./apic/tenants/route_control_route_map.md) | :material-check: | :material-check: | :material-check: |
 [Match Rule](./apic/tenants/match_rule.md) | :material-check: | :material-check: | :material-check: | :material-check:
-[Multicast Route Map](./apic/tenants/multicast_route_map.md) | :material-check: | :material-check: | |
+[Multicast Route Map](./apic/tenants/multicast_route_map.md) | :material-check: | :material-check: | :material-check: |
 [Set Rule](./apic/tenants/set_rule.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [BGP Timer Policy](./apic/tenants/bgp_timer_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [BGP Peer Prefix Policy](./apic/tenants/bgp_peer_prefix_policy.md) | :material-check: | :material-check: | :material-check: |
 [BGP Best Path Policy](./apic/tenants/bgp_best_path_policy.md) | :material-check: | :material-check: | :material-check: |
 [BGP Address Family Context Policy](./apic/tenants/bgp_address_family_context_policy.md) | :material-check: | :material-check: | :material-check: |
-[PIM Policy](./apic/tenants/pim_policy.md) | :material-check: | :material-check: | |
+[PIM Policy](./apic/tenants/pim_policy.md) | :material-check: | :material-check: | :material-check: |
 [IGMP Snooping Policy](./apic/tenants/igmp_snooping_policy.md) | :material-check: | :material-check: | :material-check: |
 [IGMP Interface Policy](./apic/tenants/igmp_interface_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [IP SLA Policy](./apic/tenants/ip_sla_policy.md) | :material-check: | :material-check: | :material-check: |
-[Tenant SPAN Source Group](./apic/tenants/tenant_span_source_group.md) | :material-check: | :material-check: | |
-[Tenant SPAN Destination Group](./apic/tenants/tenant_span_destination_group.md) | :material-check: | :material-check: | |
-[Trust Control Policy](./apic/tenants/trust_control_policy.md) | :material-check: | :material-check: | |
+[Tenant SPAN Source Group](./apic/tenants/tenant_span_source_group.md) | :material-check: | :material-check: | :material-check: |
+[Tenant SPAN Destination Group](./apic/tenants/tenant_span_destination_group.md) | :material-check: | :material-check: | :material-check: |
+[Trust Control Policy](./apic/tenants/trust_control_policy.md) | :material-check: | :material-check: | :material-check: |
 [QoS Policy](./apic/tenants/qos_policy.md) | :material-check: | :material-check: | :material-check: |
 [Redirect Policy](./apic/tenants/redirect_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
-[Redirect Backup Policy](./apic/tenants/redirect_backup_policy.md) | :material-check: | :material-check: | |
-[Service EPG Policy](./apic/tenants/service_epg_policy.md) | :material-check: | :material-check: | |
+[Redirect Backup Policy](./apic/tenants/redirect_backup_policy.md) | :material-check: | :material-check: | :material-check: |
+[Service EPG Policy](./apic/tenants/service_epg_policy.md) | :material-check: | :material-check: | :material-check: |
 [Redirect Health Group](./apic/tenants/redirect_health_group.md) | :material-check: | :material-check: | :material-check: |
 [L4L7 Device](./apic/tenants/l4l7_device.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Service Graph Template](./apic/tenants/service_graph_template.md) | :material-check: | :material-check: | :material-check: | :material-check:
