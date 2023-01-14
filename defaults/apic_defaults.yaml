@@ -1,19 +1,5 @@
 ---
 defaults:
-  aci:
-    apic_delete_mode: aac
-    apic_use_proxy: no
-    apic_validate_certs: no
-    apic_option_render: True
-    apic_option_configure: True
-    apic_option_delete: False
-    ignore_annotations:
-      - orchestrator:msc
-  nae:
-    nae_port: 443
-    nae_ignore_smart_events:
-      - APP_EPG_NOT_DEPLOYED
-      - APP_EPG_HAS_NO_CONTRACT_IN_ENFORCED_VRF
   apic:
     version: '5.2.1g'
     auto_generate_switch_pod_profiles: false

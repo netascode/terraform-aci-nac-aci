@@ -1,13 +1,7 @@
 ---
 defaults:
-  aci:
-    mso_validate_certs: no
-    mso_option_render: True
-    mso_option_configure: True
-    mso_option_delete: False
-    mso_option_deploy: True
   mso:
-    version: "3.1.1h"
+    version: '3.1.1h'
     bootstrap:
       admin_username: admin
       ansible_user_username: ansible
