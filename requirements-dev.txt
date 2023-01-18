@@ -4,7 +4,7 @@ black
 click
 filelock
 flake8
-iac-validate>=0.2.1
+iac-validate>=0.2.2
 iac-test>=0.2.2
 jmespath
 jsonpath_ng

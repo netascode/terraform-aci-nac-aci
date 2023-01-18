@@ -11,10 +11,10 @@ COPY ./requirements-dev.txt ./
 RUN pip install --upgrade pip setuptools pre-commit \
     && pip install -r requirements-dev.txt
 
-RUN wget --quiet https://releases.hashicorp.com/terraform/1.3.6/terraform_1.3.6_linux_amd64.zip \
-    && unzip terraform_1.3.6_linux_amd64.zip \
+RUN wget --quiet https://releases.hashicorp.com/terraform/1.3.7/terraform_1.3.7_linux_amd64.zip \
+    && unzip terraform_1.3.7_linux_amd64.zip \
     && mv terraform /usr/local/bin \
-    && rm terraform_1.3.6_linux_amd64.zip
+    && rm terraform_1.3.7_linux_amd64.zip
 
 RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 
