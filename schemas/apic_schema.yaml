@@ -2255,7 +2255,7 @@ ten_ser_l4l7_devices_concrete_devices_interfaces:
   channel: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_ser_l4l7_devices_logical_interfaces:
-  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  name: regex('^[a-zA-Z0-9_.:-]{1,16}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   vlan: int(min=1, max=4096, required=False)
   concrete_interfaces: list(include('ten_ser_l4l7_devices_logical_interfaces_concrete_interfaces'), required=False) # @name(L4L7 Logical Int Concrete Int)
