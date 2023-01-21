@@ -119,10 +119,7 @@ def full_apic_terraform_test(
     try:
         tf = tftest.TerraformTest(terraform_path)
         tf.setup(cleanup_on_exit=False, upgrade="upgrade")
-        try:
-            tf.apply()
-        except:
-            tf.apply()
+        tf.apply()
     finally:
         state_path = os.path.join(terraform_path, "terraform.tfstate")
         state_backup_path = os.path.join(terraform_path, "terraform.tfstate.backup")
@@ -152,9 +149,7 @@ def full_apic_terraform_test(
         "apic_tf_{}_xunit.xml".format(version),
     )
     if error:
-        # Ignore errors for now as we don't have feature parity with CLI/Ansible
-        # pytest.fail(error)
-        pass
+        pytest.fail(error)
 
 
 @pytest.mark.apic_42
