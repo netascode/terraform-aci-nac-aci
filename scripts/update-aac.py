@@ -2,251 +2,254 @@
 
 # Copyright: (c) 2021, Daniel Schmidt <danischm@cisco.com>
 
+import os
 import shutil
 import subprocess
+import tempfile
 
-ANSIBLE_DIRS = [
+REPOS = [
     {
-        "src": "../validation/rules",
-        "dest": "./ansible-aac/roles/apic_validate/files/rules",
+        "url": "https://wwwin-github.cisco.com/netascode/ansible-aac.git",
+        "commit_message": "Aac updates",
+        "directories": [
+            {
+                "src": "../validation/rules",
+                "dst": "./roles/apic_validate/files/rules",
+            },
+            {
+                "src": "../templates/apic/deploy",
+                "dst": "./roles/apic_deploy/templates",
+            },
+            {
+                "src": "../templates/mso/deploy",
+                "dst": "./roles/mso_deploy/templates",
+            },
+            {
+                "src": "../templates/apic/test/config",
+                "dst": "./roles/test_apic_deploy/templates/config",
+            },
+            {
+                "src": "../templates/apic/test/health",
+                "dst": "./roles/test_apic_deploy/templates/health",
+            },
+            {
+                "src": "../templates/apic/test/operational",
+                "dst": "./roles/test_apic_deploy/templates/operational",
+            },
+            {
+                "src": "../templates/mso/test/config",
+                "dst": "./roles/test_mso_deploy/templates/config",
+            },
+            {
+                "src": "../tests/integration/fixtures/apic/standard",
+                "dst": "./roles/apic_deploy/molecule/01_standard/data/host_vars/apic1",
+            },
+            {
+                "src": "../tests/integration/fixtures/mso/standard",
+                "dst": "./roles/mso_deploy/molecule/01_standard/data/host_vars/mso1",
+            },
+        ],
+        "files": [
+            {
+                "src": "../schemas/apic_schema.yaml",
+                "dst": "./roles/apic_validate/files/apic_schema.yaml",
+            },
+            {
+                "src": "../schemas/mso_schema.yaml",
+                "dst": "./roles/mso_validate/files/mso_schema.yaml",
+            },
+            {
+                "src": "../defaults/apic_defaults.yaml",
+                "dst": "./roles/apic_common/vars/apic_defaults.yaml",
+            },
+            {
+                "src": "../defaults/mso_defaults.yaml",
+                "dst": "./roles/mso_common/vars/mso_defaults.yaml",
+            },
+            {
+                "src": "../objects/apic_objects.yaml",
+                "dst": "./roles/apic_common/vars/apic_objects.yaml",
+            },
+            {
+                "src": "../objects/mso_objects.yaml",
+                "dst": "./roles/mso_common/vars/mso_objects.yaml",
+            },
+            {
+                "src": "../tests/integration/fixtures/apic/standard_42/fabric_policies.yaml",
+                "dst": "./roles/apic_deploy/molecule/01_standard/data/host_vars/apic1/fabric_policies_42.yaml",
+            },
+        ],
     },
     {
-        "src": "../templates/apic/deploy",
-        "dest": "./ansible-aac/roles/apic_deploy/templates",
+        "url": "https://wwwin-github.cisco.com/netascode/terraform-aac.git",
+        "commit_message": "Aac updates",
+        "directories": [
+            {
+                "src": "../validation/rules",
+                "dst": "./.rules",
+            },
+            {
+                "src": "../templates/apic/test",
+                "dst": "./tests/templates",
+            },
+            {
+                "src": "../jinja_filters",
+                "dst": "./tests/filters",
+            },
+        ],
+        "files": [
+            {
+                "src": "../schemas/apic_schema.yaml",
+                "dst": "./.schema.yaml",
+            },
+            {
+                "src": "../defaults/apic_defaults.yaml",
+                "dst": "./defaults/defaults.yaml",
+            },
+        ],
     },
     {
-        "src": "../templates/mso/deploy",
-        "dest": "./ansible-aac/roles/mso_deploy/templates",
+        "url": "https://wwwin-github.cisco.com/danischm/aac-tf-demo.git",
+        "commit_message": "Aac updates",
+        "directories": [
+            {
+                "src": "../validation/rules",
+                "dst": "./.rules",
+            },
+            {
+                "src": "../templates/apic/test",
+                "dst": "./tests/templates",
+            },
+            {
+                "src": "../jinja_filters",
+                "dst": "./tests/filters",
+            },
+        ],
+        "files": [
+            {
+                "src": "../schemas/apic_schema.yaml",
+                "dst": "./.schema.yaml",
+            },
+            {
+                "src": "../defaults/apic_defaults.yaml",
+                "dst": "./defaults/defaults.yaml",
+            },
+        ],
     },
     {
-        "src": "../templates/apic/test/config",
-        "dest": "./ansible-aac/roles/test_apic_deploy/templates/config",
+        "url": "https://wwwin-github.cisco.com/netascode/aac-tool.git",
+        "commit_message": "Aac updates",
+        "directories": [
+            {
+                "src": "../defaults",
+                "dst": "./aac_tool/schemas",
+            },
+            {
+                "src": "../schemas",
+                "dst": "./aac_tool/schemas",
+            },
+            {
+                "src": "../templates/apic/deploy",
+                "dst": "./aac_tool/templates/apic/deploy",
+            },
+            {
+                "src": "../templates/mso/deploy",
+                "dst": "./aac_tool/templates/mso/deploy",
+            },
+            {
+                "src": "../templates/apic/test",
+                "dst": "./aac_tool/templates/apic/test",
+            },
+            {
+                "src": "../templates/mso/test",
+                "dst": "./aac_tool/templates/mso/test",
+            },
+        ],
+        "files": [
+            {
+                "src": "../objects/apic_objects.yaml",
+                "dst": "./aac_tool/schemas/apic_objects.yaml",
+            },
+            {
+                "src": "../objects/mso_objects.yaml",
+                "dst": "./aac_tool/schemas/mso_objects.yaml",
+            },
+        ],
     },
     {
-        "src": "../templates/apic/test/health",
-        "dest": "./ansible-aac/roles/test_apic_deploy/templates/health",
+        "url": "https://github.com/netascode/terraform-aci-nac-access-policies.git",
+        "commit_message": "Defaults updates",
+        "files": [
+            {
+                "src": "../defaults/apic_defaults.yaml",
+                "dst": "./defaults/defaults.yaml",
+            },
+        ],
     },
     {
-        "src": "../templates/apic/test/operational",
-        "dest": "./ansible-aac/roles/test_apic_deploy/templates/operational",
+        "url": "https://github.com/netascode/terraform-aci-nac-fabric-policies.git",
+        "commit_message": "Defaults updates",
+        "files": [
+            {
+                "src": "../defaults/apic_defaults.yaml",
+                "dst": "./defaults/defaults.yaml",
+            },
+        ],
     },
     {
-        "src": "../templates/mso/test/config",
-        "dest": "./ansible-aac/roles/test_mso_deploy/templates/config",
+        "url": "https://github.com/netascode/terraform-aci-nac-interface-policies.git",
+        "commit_message": "Defaults updates",
+        "files": [
+            {
+                "src": "../defaults/apic_defaults.yaml",
+                "dst": "./defaults/defaults.yaml",
+            },
+        ],
     },
     {
-        "src": "../tests/integration/fixtures/apic/standard",
-        "dest": "./ansible-aac/roles/apic_deploy/molecule/01_standard/data/host_vars/apic1",
+        "url": "https://github.com/netascode/terraform-aci-nac-node-policies.git",
+        "commit_message": "Defaults updates",
+        "files": [
+            {
+                "src": "../defaults/apic_defaults.yaml",
+                "dst": "./defaults/defaults.yaml",
+            },
+        ],
     },
     {
-        "src": "../tests/integration/fixtures/mso/standard",
-        "dest": "./ansible-aac/roles/mso_deploy/molecule/01_standard/data/host_vars/mso1",
+        "url": "https://github.com/netascode/terraform-aci-nac-tenant.git",
+        "commit_message": "Defaults updates",
+        "files": [
+            {
+                "src": "../defaults/apic_defaults.yaml",
+                "dst": "./defaults/defaults.yaml",
+            },
+        ],
     },
 ]
 
-ANSIBLE_FILES = [
-    {
-        "src": "../schemas/apic_schema.yaml",
-        "dest": "./ansible-aac/roles/apic_validate/files/apic_schema.yaml",
-    },
-    {
-        "src": "../schemas/mso_schema.yaml",
-        "dest": "./ansible-aac/roles/mso_validate/files/mso_schema.yaml",
-    },
-    {
-        "src": "../defaults/apic_defaults.yaml",
-        "dest": "./ansible-aac/roles/apic_common/vars/apic_defaults.yaml",
-    },
-    {
-        "src": "../defaults/mso_defaults.yaml",
-        "dest": "./ansible-aac/roles/mso_common/vars/mso_defaults.yaml",
-    },
-    {
-        "src": "../objects/apic_objects.yaml",
-        "dest": "./ansible-aac/roles/apic_common/vars/apic_objects.yaml",
-    },
-    {
-        "src": "../objects/mso_objects.yaml",
-        "dest": "./ansible-aac/roles/mso_common/vars/mso_objects.yaml",
-    },
-    {
-        "src": "../tests/integration/fixtures/apic/standard_42/fabric_policies.yaml",
-        "dest": "./ansible-aac/roles/apic_deploy/molecule/01_standard/data/host_vars/apic1/fabric_policies_42.yaml",
-    },
-]
 
-TERRAFORM_DIRS = [
-    {
-        "src": "../validation/rules",
-        "dest": "./terraform-aac/.rules",
-    },
-    {
-        "src": "../templates/apic/test",
-        "dest": "./terraform-aac/tests/templates",
-    },
-    {
-        "src": "../jinja_filters",
-        "dest": "./terraform-aac/tests/filters",
-    },
-]
-
-TERRAFORM_FILES = [
-    {
-        "src": "../schemas/apic_schema.yaml",
-        "dest": "./terraform-aac/.schema.yaml",
-    },
-    {
-        "src": "../defaults/apic_defaults.yaml",
-        "dest": "./terraform-aac/defaults/defaults.yaml",
-    },
-]
-
-TF_DEMO_DIRS = [
-    {
-        "src": "../validation/rules",
-        "dest": "./aac-tf-demo/.rules",
-    },
-    {
-        "src": "../templates/apic/test",
-        "dest": "./aac-tf-demo/tests/templates",
-    },
-    {
-        "src": "../jinja_filters",
-        "dest": "./aac-tf-demo/tests/filters",
-    },
-]
-
-TF_DEMO_FILES = [
-    {
-        "src": "../schemas/apic_schema.yaml",
-        "dest": "./aac-tf-demo/.schema.yaml",
-    },
-    {
-        "src": "../defaults/apic_defaults.yaml",
-        "dest": "./aac-tf-demo/defaults/defaults.yaml",
-    },
-]
-
-AAC_TOOL_DIRS = [
-    {
-        "src": "../defaults",
-        "dest": "./aac-tool/aac_tool/schemas",
-    },
-    {
-        "src": "../schemas",
-        "dest": "./aac-tool/aac_tool/schemas",
-    },
-    {
-        "src": "../templates/apic/deploy",
-        "dest": "./aac-tool/aac_tool/templates/apic/deploy",
-    },
-    {
-        "src": "../templates/mso/deploy",
-        "dest": "./aac-tool/aac_tool/templates/mso/deploy",
-    },
-    {
-        "src": "../templates/apic/test",
-        "dest": "./aac-tool/aac_tool/templates/apic/test",
-    },
-    {
-        "src": "../templates/mso/test",
-        "dest": "./aac-tool/aac_tool/templates/mso/test",
-    },
-]
-
-AAC_TOOL_FILES = [
-    {
-        "src": "../objects/apic_objects.yaml",
-        "dest": "./aac-tool/aac_tool/schemas/apic_objects.yaml",
-    },
-    {
-        "src": "../objects/mso_objects.yaml",
-        "dest": "./aac-tool/aac_tool/schemas/mso_objects.yaml",
-    },
-]
-
-
-def update_ansible():
-    shutil.rmtree("./ansible-aac", ignore_errors=True)
-    subprocess.run(
-        ["git", "clone", "https://wwwin-github.cisco.com/netascode/ansible-aac.git"]
-    )
-    # copy files and dirs
-    for dir in ANSIBLE_DIRS:
-        shutil.copytree(dir["src"], dir["dest"], dirs_exist_ok=True)
-    for file in ANSIBLE_FILES:
-        shutil.copyfile(file["src"], file["dest"])
-    cwd = "./ansible-aac"
-    subprocess.run(["git", "add", "--all"], cwd=cwd)
-    p = subprocess.run(["git", "diff", "--cached", "--exit-code"], cwd=cwd)
-    if p.returncode > 0:
-        subprocess.run(["git", "commit", "-m", "Aac updates"], cwd=cwd)
-        subprocess.run(["git", "push"], cwd=cwd)
-    shutil.rmtree("./ansible-aac", ignore_errors=True)
-
-
-def update_terraform():
-    shutil.rmtree("./terraform-aac", ignore_errors=True)
-    subprocess.run(
-        ["git", "clone", "https://wwwin-github.cisco.com/netascode/terraform-aac.git"]
-    )
-    # copy files and dirs
-    for dir in TERRAFORM_DIRS:
-        shutil.copytree(dir["src"], dir["dest"], dirs_exist_ok=True)
-    for file in TERRAFORM_FILES:
-        shutil.copyfile(file["src"], file["dest"])
-    cwd = "./terraform-aac"
-    subprocess.run(["git", "add", "--all"], cwd=cwd)
-    p = subprocess.run(["git", "diff", "--cached", "--exit-code"], cwd=cwd)
-    if p.returncode > 0:
-        subprocess.run(["git", "commit", "-m", "Aac updates"], cwd=cwd)
-        subprocess.run(["git", "push"], cwd=cwd)
-    shutil.rmtree("./terraform-aac", ignore_errors=True)
-
-
-def update_tf_demo():
-    shutil.rmtree("./aac-tf-demo", ignore_errors=True)
-    subprocess.run(
-        ["git", "clone", "https://wwwin-github.cisco.com/danischm/aac-tf-demo.git"]
-    )
-    # copy files and dirs
-    for dir in TF_DEMO_DIRS:
-        shutil.copytree(dir["src"], dir["dest"], dirs_exist_ok=True)
-    for file in TF_DEMO_FILES:
-        shutil.copyfile(file["src"], file["dest"])
-    cwd = "./aac-tf-demo"
-    subprocess.run(["git", "add", "--all"], cwd=cwd)
-    p = subprocess.run(["git", "diff", "--cached", "--exit-code"], cwd=cwd)
-    if p.returncode > 0:
-        subprocess.run(["git", "commit", "-m", "Aac updates"], cwd=cwd)
-        subprocess.run(["git", "push"], cwd=cwd)
-    shutil.rmtree("./aac-tf-demo", ignore_errors=True)
-
-
-def update_aac_tool():
-    shutil.rmtree("./aac-tool", ignore_errors=True)
-    subprocess.run(
-        ["git", "clone", "https://wwwin-github.cisco.com/netascode/aac-tool.git"]
-    )
-    # copy files and dirs
-    for dir in AAC_TOOL_DIRS:
-        shutil.copytree(dir["src"], dir["dest"], dirs_exist_ok=True)
-    for file in AAC_TOOL_FILES:
-        shutil.copyfile(file["src"], file["dest"])
-    cwd = "./aac-tool"
-    subprocess.run(["git", "add", "--all"], cwd=cwd)
-    p = subprocess.run(["git", "diff", "--cached", "--exit-code"], cwd=cwd)
-    if p.returncode > 0:
-        subprocess.run(["git", "commit", "-m", "Aac updates"], cwd=cwd)
-        subprocess.run(["git", "push"], cwd=cwd)
-    shutil.rmtree("./aac-tool", ignore_errors=True)
+def update_repo(repo):
+    with tempfile.TemporaryDirectory() as dirname:
+        subprocess.run(["git", "clone", repo["url"], dirname])
+        # copy files and dirs
+        for dir in repo.get("directories", []):
+            shutil.copytree(
+                dir["src"], os.path.join(dirname, dir["dst"]), dirs_exist_ok=True
+            )
+        for file in repo.get("files", []):
+            shutil.copyfile(file["src"], os.path.join(dirname, file["dst"]))
+        cwd = dirname
+        subprocess.run(["git", "add", "--all"], cwd=cwd)
+        p = subprocess.run(["git", "diff", "--cached", "--exit-code"], cwd=cwd)
+        if p.returncode > 0:
+            subprocess.run(["git", "commit", "-m", repo["commit_message"]], cwd=cwd)
+            subprocess.run(["git", "push"], cwd=cwd)
 
 
 def update_aac():
-    update_ansible()
-    update_terraform()
-    update_tf_demo()
-    update_aac_tool()
+    for repo in REPOS:
+        update_repo(repo)
 
 
 if __name__ == "__main__":
