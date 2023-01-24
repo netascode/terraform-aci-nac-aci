@@ -14,5 +14,6 @@ Location in GUI:
 ```yaml
 apic:
   fabric_policies:
-    ptp_admin_state: false
+    ptp: 
+      admin_state: false
 ```
