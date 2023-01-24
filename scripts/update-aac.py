@@ -102,10 +102,6 @@ REPOS = [
                 "src": "../schemas/apic_schema.yaml",
                 "dst": "./.schema.yaml",
             },
-            {
-                "src": "../defaults/apic_defaults.yaml",
-                "dst": "./defaults/defaults.yaml",
-            },
         ],
     },
     {
@@ -129,10 +125,6 @@ REPOS = [
             {
                 "src": "../schemas/apic_schema.yaml",
                 "dst": "./.schema.yaml",
-            },
-            {
-                "src": "../defaults/apic_defaults.yaml",
-                "dst": "./defaults/defaults.yaml",
             },
         ],
     },
@@ -226,6 +218,16 @@ REPOS = [
             },
         ],
     },
+    {
+        "url": "https://github.com/netascode/terraform-utils-nac-merge.git",
+        "commit_message": "Defaults updates",
+        "files": [
+            {
+                "src": "../defaults/apic_defaults.yaml",
+                "dst": "./defaults/defaults.yaml",
+            },
+        ],
+    },
 ]
 
 
@@ -249,6 +251,7 @@ def update_repo(repo):
 
 def update_aac():
     for repo in REPOS:
+        print("\n-> Updating repo {}\n".format(repo["url"]))
         update_repo(repo)
 
 
