@@ -45,7 +45,8 @@ apic:
       delay: 130
       min_links: 1
 
-    ptp_admin_state: false
+    ptp:
+      admin_state: false
 
     ip_aging: false
 

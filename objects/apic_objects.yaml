@@ -94,7 +94,7 @@ objects:
     test_types:
       - config
     paths:
-      - apic.fabric_policies.ptp_admin_state
+      - apic.fabric_policies.ptp
   - name: Fabric ISIS Redistribute Metric
     template: isis_policy
     folder: fabric_policies

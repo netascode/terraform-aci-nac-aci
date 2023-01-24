@@ -49,7 +49,14 @@ defaults:
         admin_state: true
         delay: 120
         min_links: 0
-      ptp_admin_state: false
+      ptp:
+        admin_state: false
+        global_domain: 0
+        profile: aes67
+        announce_interval: 1
+        announce_timeout: 3
+        sync_interval: -3
+        delay_interval: -2
       ip_aging: true
       ignore_acked_faults: false
       use_infra_gipo: false

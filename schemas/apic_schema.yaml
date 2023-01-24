@@ -46,7 +46,7 @@ fabric_policies:
   rogue_ep_control: include('fp_rogue_ep_control', required=False)
   global_settings: include('fp_global_settings', required=False)
   port_tracking: include('fp_port_tracking', required=False)
-  ptp_admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
+  ptp: include('fp_ptp', required=False)
   ip_aging: any(bool(), enum('enabled', 'disabled'), required=False)
   ignore_acked_faults: any(bool(), enum('yes', 'no'), required=False)
   use_infra_gipo: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -114,6 +114,15 @@ fp_port_tracking:
   admin_state: any(bool(), enum('on', 'off'), required=False)
   delay: int(min=1, max=300, required=False)
   min_links: int(min=0, max=48, required=False)
+
+fp_ptp:
+  admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
+  global_domain: int(min=0, max=128, required=False)
+  profile: enum('aes67', 'default', 'smpte', 'telecom_full_path', required=False)
+  announce_interval: int(min=-3, max=4, required=False)
+  announce_timeout: int(min=2, max=10, required=False)
+  sync_interval: int(min=-7, max=1, required=False)
+  delay_interval: int(min=-7, max=5, required=False)
 
 fp_date_time_format:
   display_format: enum('local', 'utc', required=False)
