@@ -1,19 +1,74 @@
 # Changelog
 
-## 0.5.1 (unreleased)
+## 0.6.0 (unreleased)
+
+Tested versions: [link](./tested_versions.md#release-060)
 
 #### CLI (aac-tool)
 
 - APIC: Add support for reflective relay option
+- APIC: Add support for smart licensing
+- BREAKING CHANGE: APIC: Move config passphrase configuration from bootstrap to fabric policies
+- BREAKING CHANGE: APIC: Rename `multicast_route_map_entries` attribute to `entries`
+- APIC: Fix syntax validation of backslash characters in values
+- APIC: Add `snapshot` attribute to config exports
+- APIC: Allow a pod ID of `0` for standalone APICs
+- BREAKING CHANGE: APIC: Introduce new PTP configuration options and move `ptp_admin_state` attribute under new `ptp` section
 
 #### Ansible (ansible-aac)
 
 - APIC: Add support for reflective relay option
+- APIC: Add support for smart licensing
+- BREAKING CHANGE: APIC: Move config passphrase configuration from bootstrap to fabric policies
+- MSO: Introduce `mso_plattform` group variable to choose between `standalone` and `nd` deployments
+- BREAKING CHANGE: APIC: Rename `multicast_route_map_entries` attribute to `entries`
+- APIC: Fix syntax validation of backslash characters in values
+- APIC: Add `snapshot` attribute to config exports
+- APIC: Allow a pod ID of `0` for standalone APICs
+- BREAKING CHANGE: APIC: Introduce new PTP configuration options and move `ptp_admin_state` attribute under new `ptp` section
 
 #### Terraform (terraform-aac)
 
 - APIC: Add support for reflective relay option
 - APIC: Fix VRF leaked internal prefix destination public default value
+- APIC: Add support for smart licensing
+- APIC: Add support for config passphrase
+- APIC: Fix syntax validation of backslash characters in values
+- APIC: Add `snapshot` attribute to config exports
+- APIC: Allow a pod ID of `0` for standalone APICs
+- BREAKING CHANGE: APIC: Introduce new PTP configuration options and move `ptp_admin_state` attribute under new `ptp` section
+- APIC: There is no longer a requirement to provide all default values to NaC modules, instead the default values are already embedded into the module and only the ones that should be overwritten need to be provided as part of the `model` variable.
+- BREAKING CHANGE: APIC: `depends_o`n can no longer be used to express explicit dependencies between NaC modules. The variable `dependencies` and the output `critical_resources_done` can be used instead, to ensure a certain order of operations.
+- APIC: Add support for access VSPAN destination group
+- APIC: Add support for access VSPAN session
+- APIC: Add support for health score evaluation policy
+- APIC: Add support for enhanced LAGs and uplink configuration for VMware VMM domains
+- APIC: Add support for fabric SPAN destination group
+- APIC: Add support for fabric SPAN source group
+- APIC: Fix dependency between keyrings and CA certificates
+- APIC: Fix VRF leaked internal prefix destination public default value
+- APIC: Add support for BGP peer prefix policy
+- APIC: Add support for BGP best path policy
+- APIC: Add support for IGMP interface policy
+- APIC: Add support for IGMP snooping policy
+- APIC: Add `virtual_mac` and `ep_move_detection` attributes to bridge domain
+- APIC: Add `pim` attributes to VRF
+- APIC: Add support for PIM policy
+- APIC: Add VRF BGP IPv4/IPv6 import/export route targets
+- APIC: Add support for service EPG policy
+- APIC: Add support for trust control policy
+- APIC: Add support for redirect backup policy
+- APIC: Add service EPG policy reference to device selection policy
+- APIC: Add custom QoS policy to device selection policy
+- APIC: Add support for multicast route map
+- APIC: Add support for static endpoints to EPG
+- APIC: Add support for tags to EPG
+- APIC: Add option to specify trust control policy from EPG
+- APIC: Add support for L4L7 virtual IPs to EPG
+- APIC: Add support for L4L7 address pools to EPG
+- APIC: Add support for tenant SPAN destination group
+- APIC: Add support for tenant SPAN source group
+- APIC: Add `elag`, `active_uplinks_order` and `standby_uplinks` attributes to VMware VMM domain EPG associations
 
 ## 0.5.0 <small>December 14, 2022</small>
 
