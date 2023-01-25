@@ -11,7 +11,7 @@ This table provides an overview of which object is supported in combination with
 
 Description | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
-[Bootstrap](./apic/bootstrap/bootstrap.md) | :material-check: | :material-check: | |
+[Bootstrap](./apic/bootstrap/bootstrap.md) | | :material-check: | |
 
 ### Fabric Policies
 
