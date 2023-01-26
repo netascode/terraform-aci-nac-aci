@@ -27,7 +27,6 @@ ANNOTATIONS = [
 APIC_SCHEMA_PATH = "./schemas/apic_schema.yaml"
 APIC_OBJECTS_PATH = "./objects/apic_objects.yaml"
 APIC_DEFAULTS_PATH = "./defaults/apic_defaults.yaml"
-APIC_SUPPORT_MATRIX_PATH = "./docs/data_model/apic_support_matrix.md"
 
 MSO_SCHEMA_PATH = "./schemas/mso_schema.yaml"
 MSO_OBJECTS_PATH = "./objects/mso_objects.yaml"
@@ -449,18 +448,11 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
 
     for item in (
         objects["objects"]
-        + objects.get("bootstrap_objects", [])
         + objects.get("leaf_objects", [])
         + objects.get("spine_objects", [])
         + objects.get("tenant_objects", [])
     ):
         if pubhub:
-            with open(APIC_SUPPORT_MATRIX_PATH, "r") as file:
-                matrix = file.read()
-            regex = r".*\/" + item["template"] + r"\.md.*?\|.*?\|.*?\|(.*?)\|.*"
-            entry = re.search(regex, matrix)
-            if entry and not entry.group(1).strip():
-                continue
             i = {
                 "title": item["name"],
                 "content": os.path.join(item["folder"], item["template"] + ".md"),
