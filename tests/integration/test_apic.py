@@ -120,6 +120,36 @@ def full_apic_terraform_test(
         tf = tftest.TerraformTest(terraform_path)
         tf.setup(cleanup_on_exit=False, upgrade="upgrade")
         tf.apply()
+
+        # check idempotency
+        output = tf.apply()
+        if "No changes. Your infrastructure matches the configuration." not in output:
+            pytest.fail(output)
+
+        # Run tests
+        error = apic_render_run_tests(
+            apic_url, data_paths, os.path.join(tmpdir, "results/")
+        )
+        shutil.copy(
+            os.path.join(tmpdir, "results/", "log.html"),
+            "apic_tf_{}_log.html".format(version),
+        )
+        shutil.copy(
+            os.path.join(tmpdir, "results/", "report.html"),
+            "apic_tf_{}_report.html".format(version),
+        )
+        shutil.copy(
+            os.path.join(tmpdir, "results/", "output.xml"),
+            "apic_tf_{}_output.xml".format(version),
+        )
+        shutil.copy(
+            os.path.join(tmpdir, "results/", "xunit.xml"),
+            "apic_tf_{}_xunit.xml".format(version),
+        )
+        if error:
+            pytest.fail(error)
+        # do not test destroy for now, due to some errors when removing the full config
+        # tf.destroy()
     finally:
         state_path = os.path.join(terraform_path, "terraform.tfstate")
         state_backup_path = os.path.join(terraform_path, "terraform.tfstate.backup")
@@ -127,29 +157,6 @@ def full_apic_terraform_test(
             os.remove(state_path)
         if os.path.exists(state_backup_path):
             os.remove(state_backup_path)
-
-    # Run tests
-    error = apic_render_run_tests(
-        apic_url, data_paths, os.path.join(tmpdir, "results/")
-    )
-    shutil.copy(
-        os.path.join(tmpdir, "results/", "log.html"),
-        "apic_tf_{}_log.html".format(version),
-    )
-    shutil.copy(
-        os.path.join(tmpdir, "results/", "report.html"),
-        "apic_tf_{}_report.html".format(version),
-    )
-    shutil.copy(
-        os.path.join(tmpdir, "results/", "output.xml"),
-        "apic_tf_{}_output.xml".format(version),
-    )
-    shutil.copy(
-        os.path.join(tmpdir, "results/", "xunit.xml"),
-        "apic_tf_{}_xunit.xml".format(version),
-    )
-    if error:
-        pytest.fail(error)
 
 
 @pytest.mark.apic_42
