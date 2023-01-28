@@ -4,6 +4,10 @@ terraform {
       source  = "CiscoDevNet/aci"
       version = ">= 2.6.0"
     }
+    local = {
+      source  = "hashicorp/local"
+      version = ">= 2.3.0"
+    }
   }
 }
 
@@ -58,4 +62,9 @@ module "tenant" {
   for_each    = { for tenant in try(module.merge.model.apic.tenants, []) : tenant.name => tenant }
   model       = module.merge.model
   tenant_name = each.value.name
+}
+
+resource "local_sensitive_file" "defaults" {
+  content  = yamlencode(module.merge.defaults)
+  filename = "${path.module}/defaults.yaml"
 }

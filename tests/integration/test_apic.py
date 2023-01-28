@@ -127,6 +127,7 @@ def full_apic_terraform_test(
             pytest.fail(output)
 
         # Run tests
+        data_paths.append(os.path.join(terraform_path, "defaults.yaml"))
         error = apic_render_run_tests(
             apic_url, data_paths, os.path.join(tmpdir, "results/")
         )
@@ -210,7 +211,6 @@ def test_apic_52(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir):
             [
                 "tests/integration/fixtures/apic/standard/",
                 "tests/integration/fixtures/apic/standard_52/",
-                "defaults/",
             ],
             "tests/integration/fixtures/apic/terraform_52",
             "BUILD1-ACISIM3",
