@@ -24,11 +24,11 @@ apic:
             - DNS2
           contracts:
             consumers:
-              - CON1
-              - CON2
+              - CON3
+              - CON4
             providers:
-              - CON1
-              - CON2
+              - CON3
+              - CON4
             imported_consumers:
               - IMPORT-CON1
               - IMPORT-CON2
@@ -497,6 +497,7 @@ apic:
         - name: CON1
           alias: CON1-ALIAS
           description: My Desc
+          scope: application_profile
           qos_class: level3
           target_dscp: AF13
           subjects:
