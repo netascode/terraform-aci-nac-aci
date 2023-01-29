@@ -62,6 +62,11 @@ module "tenant" {
   for_each    = { for tenant in try(module.merge.model.apic.tenants, []) : tenant.name => tenant }
   model       = module.merge.model
   tenant_name = each.value.name
+
+  dependencies = [
+    module.access_policies.critical_resources_done,
+    module.fabric_policies.critical_resources_done,
+  ]
 }
 
 resource "local_sensitive_file" "defaults" {

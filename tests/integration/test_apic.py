@@ -149,8 +149,8 @@ def full_apic_terraform_test(
         )
         if error:
             pytest.fail(error)
-        # do not test destroy for now, due to some errors when removing the full config
-        # tf.destroy()
+
+        tf.destroy()
     finally:
         state_path = os.path.join(terraform_path, "terraform.tfstate")
         state_backup_path = os.path.join(terraform_path, "terraform.tfstate.backup")

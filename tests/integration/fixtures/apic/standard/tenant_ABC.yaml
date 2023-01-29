@@ -497,7 +497,6 @@ apic:
         - name: CON1
           alias: CON1-ALIAS
           description: My Desc
-          scope: global
           qos_class: level3
           target_dscp: AF13
           subjects:
