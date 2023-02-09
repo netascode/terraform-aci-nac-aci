@@ -13,7 +13,7 @@ Description | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
 [Bootstrap](./mso/bootstrap/bootstrap.md) | | :material-check: | |
 
-### MSO
+### System
 
 Description | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
