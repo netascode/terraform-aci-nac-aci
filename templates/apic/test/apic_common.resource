@@ -3,9 +3,11 @@ Library   pabot.PabotLib
 Library   RequestsLibrary
 Library   JSONLibrary
 Library   Collections
+Library   OperatingSystem
 
 *** Variables ***
 ${login_json}   {"aaaUser" : {"attributes" : {"name" : "%{ACI_USERNAME}", "pwd" : "%{ACI_PASSWORD}"}}}
+${state_path}   tests/state/
 
 *** Keywords ***
 Get APIC Token
@@ -21,6 +23,7 @@ Login APIC
     Run Keyword If   "${apic_token}"=="${EMPTY}"   Get APIC Token
     Release Lock   login
     Create Session   apic   %{ACI_URL}   headers={"Cookie": "APIC-cookie=${apic_token}"}
+    Set Global Variable   ${STATE_PATH}   ${state_path}
 
 Should Be Equal Value Json String
     [Arguments]    ${json}    ${json_path}   ${value}=${EMPTY}
