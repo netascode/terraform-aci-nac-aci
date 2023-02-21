@@ -34,7 +34,8 @@ apic:
           data_plane_learning: false
           enforcement_direction: egress
           enforcement_preference: unenforced
-          bgp_timer_policy: BGP-TIMER1
+          bgp:
+            timer_policy: BGP-TIMER1
           dns_labels:
             - DNS1
           contracts:
