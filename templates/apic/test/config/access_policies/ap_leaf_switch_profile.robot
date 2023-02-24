@@ -50,21 +50,24 @@ Verify Access Leaf Switch Profile {{ leaf_switch_profile_name }}
 {% set leaf_switch_selector_name = sel.name ~ defaults.apic.access_policies.leaf_switch_profiles.selectors.name_suffix %}
 
 Verify Access Leaf Switch Profile {{ leaf_switch_profile_name }} Selector {{ leaf_switch_selector_name }}
-    Should Be Equal Value Json String   ${r.json()}    $..infraLeafS.attributes.name   {{ leaf_switch_selector_name }}
+    ${sel}=   Set Variable   $..infraNodeP.children[?(@.infraLeafS.attributes.name=='{{ leaf_switch_selector_name }}')]
+    Should Be Equal Value Json String   ${r.json()}    ${sel}..infraLeafS.attributes.name   {{ leaf_switch_selector_name }}
 
 {% if sel.policy is defined %}
 {% set policy_group_name = sel.policy ~ defaults.apic.access_policies.leaf_switch_policy_groups.name_suffix %}
-Verify Access Leaf Switch Profile {{ leaf_switch_profile_name }} Policy
-    Should Be Equal Value Json String   ${r.json()}    $..infraRsAccNodePGrp.attributes.tDn   uni/infra/funcprof/accnodepgrp-{{ policy_group_name }}
+Verify Access Leaf Switch Profile {{ leaf_switch_profile_name }} Selector {{ leaf_switch_selector_name }} Policy
+    ${sel}=   Set Variable   $..infraNodeP.children[?(@.infraLeafS.attributes.name=='{{ leaf_switch_selector_name }}')]
+    Should Be Equal Value Json String   ${r.json()}    ${sel}..infraRsAccNodePGrp.attributes.tDn   uni/infra/funcprof/accnodepgrp-{{ policy_group_name }}
 {% endif %}
 
 {% for blk in sel.node_blocks | default([]) %}
 {% set block_name = blk.name ~ defaults.apic.access_policies.leaf_switch_profiles.selectors.node_blocks.name_suffix %}
 
 Verify Access Leaf Switch Profile {{ leaf_switch_profile_name }} Selector {{ leaf_switch_selector_name }} Node Block {{ block_name }}
-    Should Be Equal Value Json String   ${r.json()}    $..infraNodeBlk.attributes.from_   {{ blk.from }}
-    Should Be Equal Value Json String   ${r.json()}    $..infraNodeBlk.attributes.name   {{ block_name }}
-    Should Be Equal Value Json String   ${r.json()}    $..infraNodeBlk.attributes.to_   {{ blk.to | default(blk.from) }}
+    ${block}=   Set Variable   $..infraNodeP.children[?(@.infraLeafS.attributes.name=='{{ leaf_switch_selector_name }}')].infraLeafS.children[?(@.infraNodeBlk.attributes.name=='{{ block_name }}')]
+    Should Be Equal Value Json String   ${r.json()}    ${block}..infraNodeBlk.attributes.from_   {{ blk.from }}
+    Should Be Equal Value Json String   ${r.json()}    ${block}..infraNodeBlk.attributes.name   {{ block_name }}
+    Should Be Equal Value Json String   ${r.json()}    ${block}..infraNodeBlk.attributes.to_   {{ blk.to | default(blk.from) }}
 
 {% endfor %}
 {% endfor %}

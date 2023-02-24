@@ -50,21 +50,24 @@ Verify Fabric Leaf Switch Profile {{ leaf_switch_profile_name }}
 {% set leaf_switch_selector_name = sel.name ~ defaults.apic.fabric_policies.leaf_switch_profiles.selectors.name_suffix %}
 
 Verify Fabric Leaf Switch Profile {{ leaf_switch_profile_name }} Selector {{ leaf_switch_selector_name }}
-    Should Be Equal Value Json String   ${r.json()}    $..fabricLeafS.attributes.name   {{ leaf_switch_selector_name }}
+    ${sel}=   Set Variable   $..fabricLeafP.children[?(@.fabricLeafS.attributes.name=='{{ leaf_switch_selector_name }}')]
+    Should Be Equal Value Json String   ${r.json()}    ${sel}..fabricLeafS.attributes.name   {{ leaf_switch_selector_name }}
 
 {% if sel.policy is defined %}
 {% set policy_group_name = sel.policy ~ defaults.apic.fabric_policies.leaf_switch_policy_groups.name_suffix %}
-Verify Fabric Leaf Switch Profile {{ leaf_switch_profile_name }} Policy
-    Should Be Equal Value Json String   ${r.json()}    $..fabricRsLeNodePGrp.attributes.tDn   uni/fabric/funcprof/lenodepgrp-{{ policy_group_name }}
+Verify Fabric Leaf Switch Profile {{ leaf_switch_profile_name }} Selector {{ leaf_switch_selector_name }} Policy
+    ${sel}=   Set Variable   $..fabricLeafP.children[?(@.fabricLeafS.attributes.name=='{{ leaf_switch_selector_name }}')]
+    Should Be Equal Value Json String   ${r.json()}    ${sel}..fabricRsLeNodePGrp.attributes.tDn   uni/fabric/funcprof/lenodepgrp-{{ policy_group_name }}
 {% endif %}
 
 {% for blk in sel.node_blocks | default([]) %}
 {% set block_name = blk.name ~ defaults.apic.fabric_policies.leaf_switch_profiles.selectors.node_blocks.name_suffix %}
 
 Verify Fabric Leaf Switch Profile {{ leaf_switch_profile_name }} Selector {{ leaf_switch_selector_name }} Node Block {{ block_name }}
-    Should Be Equal Value Json String   ${r.json()}    $..fabricNodeBlk.attributes.from_   {{ blk.from }}
-    Should Be Equal Value Json String   ${r.json()}    $..fabricNodeBlk.attributes.name   {{ block_name }}
-    Should Be Equal Value Json String   ${r.json()}    $..fabricNodeBlk.attributes.to_   {{ blk.to | default(blk.from) }}
+    ${block}=   Set Variable   $..fabricLeafP.children[?(@.fabricLeafS.attributes.name=='{{ leaf_switch_selector_name }}')].fabricLeafS.children[?(@.fabricNodeBlk.attributes.name=='{{ block_name }}')]
+    Should Be Equal Value Json String   ${r.json()}    ${block}..fabricNodeBlk.attributes.from_   {{ blk.from }}
+    Should Be Equal Value Json String   ${r.json()}    ${block}..fabricNodeBlk.attributes.name   {{ block_name }}
+    Should Be Equal Value Json String   ${r.json()}    ${block}..fabricNodeBlk.attributes.to_   {{ blk.to | default(blk.from) }}
 
 {% endfor %}
 
