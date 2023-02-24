@@ -418,6 +418,8 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} BGP Peer {{ peer.
 
 {% endfor %}
 
+{% endfor %}
+
 {% for ip in np.interface_profiles | default([]) %}
 {% set l3out_ip_name = ip.name ~ defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix %}
 
@@ -592,8 +594,6 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
     ${import_rc}=   Set Variable   ${peer}..children[?(@.bgpRsPeerToProfile.attributes.direction=='import')]
     Should Be Equal Value Json String   ${r.json()}   ${import_rc}..bgpRsPeerToProfile.attributes.tDn   uni/tn-{{ tenant.name}}/prof-{{ import_route_control_name }}
 {% endif %}
-
-{% endfor %}
 
 {% endfor %}
 
