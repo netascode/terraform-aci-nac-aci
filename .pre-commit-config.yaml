@@ -1,0 +1,17 @@
+---
+repos:
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.62.3
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_tflint
+
+  - repo: https://github.com/terraform-docs/terraform-docs
+    rev: v0.16.0
+    hooks:
+      - id: terraform-docs-system
+        args: ["./examples/vlan_pool_yaml"]
+      - id: terraform-docs-system
+        args: ["./examples/banner_hcl"]
+      - id: terraform-docs-system
+        args: ["."]

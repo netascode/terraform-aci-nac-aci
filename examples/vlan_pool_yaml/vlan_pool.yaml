@@ -1,0 +1,7 @@
+apic:
+  access_policies:
+    vlan_pools:
+      - name: VLAN_POOL_1
+        ranges:
+          - from: 1000
+            to: 1099

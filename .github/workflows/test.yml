@@ -1,0 +1,67 @@
+name: Tests
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  static:
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency: testing_environment
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Python Setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Tflint Setup
+        uses: terraform-linters/setup-tflint@v3
+
+      - name: Terraform Docs Setup
+        run: |
+          mkdir terraform-docs && cd terraform-docs
+          curl -sSLo terraform-docs.tar.gz https://terraform-docs.io/dl/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz
+          tar -xzf terraform-docs.tar.gz
+          chmod +x terraform-docs
+          echo "$GITHUB_WORKSPACE/terraform-docs" >> $GITHUB_PATH
+
+      - name: Pre-commit Checks
+        uses: pre-commit/action@v3.0.0
+
+      - name: Terraform Test
+        id: test
+        env:
+          ACI_USERNAME: ${{ secrets.ACI_USERNAME }}
+          ACI_PASSWORD: ${{ secrets.ACI_PASSWORD }}
+          ACI_URL: ${{ secrets.ACI_URL }}
+        run: terraform test -junit-xml=test-report.xml
+
+      - name: Publish Integration Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          junit_files: test-report.xml
+          check_name: 'Integration Test Results'
+
+      - name: Webex Notification
+        if: always()
+        uses: qsnyder/action-wxt@master
+        env:
+          TOKEN: ${{ secrets.WEBEX_TOKEN }}
+          ROOMID: ${{ secrets.WEBEX_ROOM_ID }}
+          MESSAGE: |
+            [**[${{ job.status }}] ${{ github.repository }} #${{ github.run_number }}**](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            * Commit: [${{ github.event.head_commit.message }}](${{ github.event.head_commit.url }})[${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})
+            * Author: ${{ github.event.sender.login }}
+            * Branch: ${{ github.ref }} ${{ github.head_ref }}
+            * Event: ${{ github.event_name }}

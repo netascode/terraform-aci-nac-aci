@@ -1,0 +1,28 @@
+version: ">= 0.14.0"
+
+formatter: markdown table
+
+content: |-
+  # VLAN Pool Example
+  To run this example you need to execute:
+  ```bash
+  $ terraform init
+  $ terraform plan
+  $ terraform apply
+  ```
+  Note that this example will create resources. Resources can be destroyed with `terraform destroy`.
+
+  #### `vlan_pool.yaml`
+
+  ```hcl
+  {{ include "./vlan_pool.yaml" }}
+  ```
+
+  #### `main.tf`
+
+  ```hcl
+  {{ include "./main.tf" }}
+  ```
+output:
+  file: README.md
+  mode: replace

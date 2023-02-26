@@ -1,0 +1,1154 @@
+---
+defaults:
+  apic:
+    version: '5.2.1g'
+    auto_generate_switch_pod_profiles: false
+    auto_generate_pod_profiles: false
+    auto_generate_fabric_leaf_switch_interface_profiles: false
+    auto_generate_fabric_spine_switch_interface_profiles: false
+    auto_generate_access_leaf_switch_interface_profiles: false
+    auto_generate_access_spine_switch_interface_profiles: false
+    bootstrap:
+      admin_username: admin
+    fabric_policies:
+      leaf_switch_profile_name: "LEAF\\g<id>"
+      leaf_interface_profile_name: "LEAF\\g<id>"
+      leaf_switch_selector_name: "LEAF\\g<id>"
+      leaf_interface_selector_name: "ETH\\g<mod>-\\g<port>"
+      spine_switch_profile_name: "SPINE\\g<id>"
+      spine_interface_profile_name: "SPINE\\g<id>"
+      spine_switch_selector_name: "SPINE\\g<id>"
+      spine_interface_selector_name: "ETH\\g<mod>-\\g<port>"
+      pod_profile_name: "POD\\g<id>"
+      pod_profile_pod_selector_name: "POD\\g<id>"
+      apic_conn_pref: inband
+      banners:
+        apic_gui_alias: ''
+        apic_gui_banner_url: ''
+        apic_cli_banner: ''
+        switch_cli_banner: ''
+      ep_loop_protection:
+        admin_state: false
+        detection_interval: 60
+        detection_multiplier: 4
+        action: bd-learn-disable
+      rogue_ep_control:
+        admin_state: true
+        detection_interval: 30
+        detection_multiplier: 10
+        hold_interval: 1800
+      global_settings:
+        domain_validation: true
+        enforce_subnet_check: true
+        opflex_authentication: false
+        disable_remote_endpoint_learn: false
+        overlapping_vlan_validation: true
+        remote_leaf_direct: true
+        reallocate_gipo: false
+      port_tracking:
+        admin_state: true
+        delay: 120
+        min_links: 0
+      ptp:
+        admin_state: false
+        global_domain: 0
+        profile: aes67
+        announce_interval: 1
+        announce_timeout: 3
+        sync_interval: -3
+        delay_interval: -2
+      ip_aging: true
+      ignore_acked_faults: false
+      use_infra_gipo: false
+      fabric_isis_redistribute_metric: 60
+      fabric_isis_bfd: true
+      fabric_bgp_rr:
+        pod_id: 1
+      fabric_bgp_ext_rr:
+        pod_id: 1
+      date_time_format:
+        display_format: local
+        timezone: p0_UTC
+        show_offset: true
+      dns_policies:
+        name_suffix: ''
+        mgmt_epg: inb
+        mgmt_epg_oob: default
+        providers:
+          preferred: false
+        domains:
+          default: true
+      err_disabled_recovery:
+        interval: 300
+        mcp_loop: false
+        ep_move: false
+        bpdu_guard: false
+      coop_group_policy: strict
+      l2_port_mtu: 9000
+      pod_policy_groups:
+        name_suffix: ''
+      pod_profiles:
+        name_suffix: ''
+        selectors:
+          type: range
+          name_suffix: ''
+          pod_blocks:
+            name_suffix: ''
+      pod_policies:
+        date_time_policies:
+          name_suffix: ''
+          ntp_admin_state: true
+          ntp_auth_state: false
+          apic_ntp_server_state: false
+          apic_ntp_server_master_mode: false
+          apic_ntp_server_master_stratum: 8
+          ntp_servers:
+            preferred: true
+            mgmt_epg: inb
+        snmp_policies:
+          name_suffix: ''
+          admin_state: true
+          location: ''
+          contact: ''
+          users:
+            authorization_type: hmac-sha1-96
+            privacy_type: aes-128
+          trap_forwarders:
+            port: 162
+          clients:
+            name_suffix: ''
+        management_access_policies:
+          name_suffix: ''
+          telnet:
+            admin_state: false
+            port: 23
+          ssh:
+            admin_state: true
+            port: 22
+            password_auth: true
+            aes128_ctr: true
+            aes128_gcm: true
+            aes192_ctr: true
+            aes256_ctr: true
+            chacha: true
+            hmac_sha1: true
+            hmac_sha2_256: true
+            hmac_sha2_512: true
+          https:
+            admin_state: true
+            client_cert_auth_state: false
+            dh: 'none'
+            port: 443
+            key_ring: default
+            tlsv1: false
+            tlsv1_1: true
+            tlsv1_2: true
+          http:
+            admin_state: false
+            port: 80
+      switch_policies:
+        node_control_policies:
+          name_suffix: ''
+          telemetry: telemetry
+          dom: true
+        psu_policies:
+          name_suffix: ''
+      leaf_switch_policy_groups:
+        name_suffix: ''
+      spine_switch_policy_groups:
+        name_suffix: ''
+      leaf_switch_profiles:
+        name_suffix: ''
+        selectors:
+          name_suffix: ''
+          node_blocks:
+            name_suffix: ''
+      spine_switch_profiles:
+        name_suffix: ''
+        selectors:
+          name_suffix: ''
+          node_blocks:
+            name_suffix: ''
+      leaf_interface_profiles:
+        name_suffix: ''
+      spine_interface_profiles:
+        name_suffix: ''
+      external_connectivity_policy:
+        name_suffix: ''
+        fabric_id: 1
+        site_id: 1
+        route_target: extended:as2-nn4:5:16
+        routing_profiles:
+          name_suffix: ''
+      infra_dscp_translation_policy:
+        admin_state: false
+        control_plane: CS7
+        level_1: EF
+        level_2: CS3
+        level_3: CS0
+        level_4: AF11
+        level_5: AF21
+        level_6: AF31
+        policy_plane: CS4
+        span: CS1
+        traceroute: CS2
+      vmware_vmm_domains:
+        name_suffix: ''
+        access_mode: read-write
+        delimiter: ''
+        tag_collection: false
+        vswitch:
+          enhanced_lags:
+            name_suffix: ''
+            mode: active
+            lb_mode: src-dst-ip
+            num_links: 2
+        credential_policies:
+          name_suffix: ''
+        vcenters:
+          name_suffix: ''
+          mgmt_epg: inb
+          dvs_version: unmanaged
+          statistics: false
+      aaa:
+        remote_user_login_policy: no-login
+        default_fallback_check: false
+        default_realm: local
+        console_realm: local
+        tacacs_providers:
+          protocol: pap
+          monitoring: false
+          port: 49
+          retries: 1
+          timeout: 5
+          mgmt_epg: inb
+        login_domains:
+          tacacs_providers:
+            priority: 0
+        users:
+          status: active
+          expires: false
+          domains:
+            roles:
+              privilege_type: write
+        ca_certificates:
+          name_suffix: ''
+        key_rings:
+          name_suffix: ''
+          modulus: 'mod2048'
+      remote_locations:
+        name_suffix: ''
+        auth_type: password
+        path: '/'
+        mgmt_epg: inb
+      geolocation:
+        sites:
+          name_suffix: ''
+          buildings:
+            name_suffix: ''
+            floors:
+              name_suffix: ''
+              rooms:
+                name_suffix: ''
+                rows:
+                  name_suffix: ''
+                  racks:
+                    name_suffix: ''
+      schedulers:
+        name_suffix: ''
+        recurring_windows:
+          name_suffix: ''
+          day: 'every-day'
+          hour: 0
+          minute: 0
+      config_exports:
+        name_suffix: ''
+        format: 'json'
+        snapshot: false
+      monitoring:
+        snmp_traps:
+          name_suffix: ''
+          destinations:
+            port: 162
+            version: v2c
+            security: priv
+            mgmt_epg: inb
+        syslogs:
+          name_suffix: ''
+          audit: true
+          events: true
+          faults: true
+          session: false
+          minimum_severity: warnings
+          format: aci
+          show_millisecond: false
+          admin_state: true
+          local_admin_state: true
+          local_severity: information
+          console_admin_state: true
+          console_severity: alerts
+          destinations:
+            port: 514
+            facility: local7
+            severity: warnings
+            admin_state: true
+            mgmt_epg: inb
+      span:
+        destination_groups:
+          name_suffix: ''
+          mtu: 1518
+          dscp: unspecified
+          flow_id: 1
+          ttl: 64
+          version: 2
+          enforce_version: false
+        source_groups:
+          name_suffix: ''
+          admin_state: true
+          sources:
+            name_suffix: ''
+            direction: both
+            span_drop: false
+            access_paths:
+              module: 1
+      smart_licensing:
+        mode: 'smart-licensing'
+        url: 'https://tools.cisco.com/its/service/oddce/services/DDCEService'
+        proxy:
+          port: '443'
+
+    access_policies:
+      leaf_switch_profile_name: "LEAF\\g<id>"
+      leaf_interface_profile_name: "LEAF\\g<id>"
+      leaf_switch_selector_name: "LEAF\\g<id>"
+      leaf_interface_selector_name: "ETH\\g<mod>-\\g<port>"
+      leaf_interface_selector_sub_port_name: "ETH\\g<mod>-\\g<port>-\\g<sport>"
+      fex_profile_name: "LEAF\\g<id>-FEX\\g<fex>"
+      fex_interface_selector_name: "ETH\\g<mod>-\\g<port>"
+      spine_switch_profile_name: "SPINE\\g<id>"
+      spine_interface_profile_name: "SPINE\\g<id>"
+      spine_switch_selector_name: "SPINE\\g<id>"
+      spine_interface_selector_name: "ETH\\g<mod>-\\g<port>"
+      vpc_group_name: "VPC\\g<switch1_id>-\\g<switch2_id>"
+      vlan_pools:
+        name_suffix: ''
+        allocation: static
+        ranges:
+          allocation: inherit
+          role: external
+      physical_domains:
+        name_suffix: ''
+        allocation: static
+      routed_domains:
+        name_suffix: ''
+        allocation: static
+      aaeps:
+        name_suffix: ''
+        infra_vlan: false
+        endpoint_groups:
+          mode: regular
+          deployment_immediacy: lazy
+      switch_policies:
+        vpc_policies:
+          name_suffix: ''
+          peer_dead_interval: 200
+        forwarding_scale_policies:
+          name_suffix: ''
+          profile: dual-stack
+        mst_policies:
+          name_suffix: ''
+      spine_switch_policy_groups:
+        name_suffix: ''
+      leaf_switch_policy_groups:
+        name_suffix: ''
+      leaf_switch_profiles:
+        name_suffix: ''
+        selectors:
+          name_suffix: ''
+          node_blocks:
+            name_suffix: ''
+      spine_switch_profiles:
+        name_suffix: ''
+        selectors:
+          name_suffix: ''
+          node_blocks:
+            name_suffix: ''
+      interface_policies:
+        cdp_policies:
+          name_suffix: ''
+        lldp_policies:
+          name_suffix: ''
+        link_level_policies:
+          name_suffix: ''
+          speed: inherit
+          auto: true
+          fec_mode: inherit
+        port_channel_policies:
+          name_suffix: ''
+          min_links: 1
+          max_links: 16
+          suspend_individual: true
+          graceful_convergence: true
+          fast_select_standby: true
+          load_defer: false
+          symmetric_hash: false
+        port_channel_member_policies:
+          name_suffix: ''
+          priority: 32768
+          rate: normal
+        l2_policies:
+          name_suffix: ''
+          vlan_scope: global
+          qinq: disabled
+          reflective_relay: false
+        mcp_policies:
+          name_suffix: ''
+        storm_control_policies:
+          name_suffix: ''
+          broadcast_burst_pps: unspecified
+          broadcast_pps: unspecified
+          broadcast_burst_rate: '100.000000'
+          broadcast_rate: '100.000000'
+          multicast_burst_pps: unspecified
+          multicast_pps: unspecified
+          multicast_burst_rate: '100.000000'
+          multicast_rate: '100.000000'
+          unknown_unicast_burst_pps: unspecified
+          unknown_unicast_pps: unspecified
+          unknown_unicast_burst_rate: '100.000000'
+          unknown_unicast_rate: '100.000000'
+          action: drop
+        spanning_tree_policies:
+          name_suffix: ''
+          bpdu_guard: false
+          bpdu_filter: false
+      leaf_interface_policy_groups:
+        name_suffix: ''
+        map: none
+      spine_interface_policy_groups:
+        name_suffix: ''
+      spine_interface_profiles:
+        name_suffix: ''
+        selectors:
+          name_suffix: ''
+          port_blocks:
+            name_suffix: ''
+            from_module: 1
+      leaf_interface_profiles:
+        name_suffix: ''
+        selectors:
+          name_suffix: ''
+          port_blocks:
+            name_suffix: ''
+            from_module: 1
+          sub_port_blocks:
+            name_suffix: ''
+            from_module: 1
+      fex_interface_profiles:
+        name_suffix: ''
+        selectors:
+          name_suffix: ''
+          port_blocks:
+            name_suffix: ''
+            from_module: 1
+      mcp:
+        admin_state: true
+        per_vlan: true
+        action: true
+        key: cisco
+        loop_detection: 3
+        initial_delay: 180
+        frequency_sec: 2
+        frequency_msec: 0
+      qos:
+        preserve_cos: false
+        qos_classes:
+          - level: 1
+            admin_state: true
+            mtu: 9216
+            scheduling: wrr
+            bandwidth_percent: 20
+            congestion_algorithm: tail-drop
+            minimum_buffer: 0
+            pfc_state: false
+            no_drop_cos: ''
+            pfc_scope: tor
+            ecn: false
+            forward_non_ecn: false
+            wred_max_threshold: 100
+            wred_min_threshold: 0
+            wred_probability: 0
+            weight: 0
+          - level: 2
+            admin_state: true
+            mtu: 9216
+            scheduling: wrr
+            bandwidth_percent: 20
+            congestion_algorithm: tail-drop
+            minimum_buffer: 0
+            pfc_state: false
+            no_drop_cos: ''
+            pfc_scope: tor
+            ecn: false
+            forward_non_ecn: false
+            wred_max_threshold: 100
+            wred_min_threshold: 0
+            wred_probability: 0
+            weight: 0
+          - level: 3
+            admin_state: true
+            mtu: 9216
+            scheduling: wrr
+            bandwidth_percent: 20
+            congestion_algorithm: tail-drop
+            minimum_buffer: 0
+            pfc_state: false
+            no_drop_cos: ''
+            pfc_scope: tor
+            ecn: false
+            forward_non_ecn: false
+            wred_max_threshold: 100
+            wred_min_threshold: 0
+            wred_probability: 0
+            weight: 0
+          - level: 4
+            admin_state: true
+            mtu: 9216
+            scheduling: wrr
+            bandwidth_percent: 0
+            congestion_algorithm: tail-drop
+            minimum_buffer: 0
+            pfc_state: false
+            no_drop_cos: ''
+            pfc_scope: tor
+            ecn: false
+            forward_non_ecn: false
+            wred_max_threshold: 100
+            wred_min_threshold: 0
+            wred_probability: 0
+            weight: 0
+          - level: 5
+            admin_state: true
+            mtu: 9216
+            scheduling: wrr
+            bandwidth_percent: 0
+            congestion_algorithm: tail-drop
+            minimum_buffer: 0
+            pfc_state: false
+            no_drop_cos: ''
+            pfc_scope: tor
+            ecn: false
+            forward_non_ecn: false
+            wred_max_threshold: 100
+            wred_min_threshold: 0
+            wred_probability: 0
+            weight: 0
+          - level: 6
+            admin_state: true
+            mtu: 9216
+            scheduling: wrr
+            bandwidth_percent: 0
+            congestion_algorithm: tail-drop
+            minimum_buffer: 0
+            pfc_state: false
+            no_drop_cos: ''
+            pfc_scope: tor
+            ecn: false
+            forward_non_ecn: false
+            wred_max_threshold: 100
+            wred_min_threshold: 0
+            wred_probability: 0
+            weight: 0
+      span:
+        destination_groups:
+          name_suffix: ''
+          mtu: 1518
+          module: 1
+          dscp: unspecified
+          flow_id: 1
+          ttl: 64
+          version: 2
+          enforce_version: false
+        source_groups:
+          name_suffix: ''
+          admin_state: true
+          sources:
+            name_suffix: ''
+            direction: 'both'
+            span_drop: false
+            access_paths:
+              module: 1
+        filter_groups:
+          name_suffix: ''
+          entries:
+            name_suffix: ''
+            destination_from_port: unspecified
+            source_from_port: unspecified
+            ip_protocol: unspecified
+      vspan:
+        destination_groups:
+          name_suffix: ''
+          destinations:
+            name_suffix: ''
+            mtu: 1518
+            flow_id: 1
+            ttl: 64
+            dscp: unspecified
+        sessions:
+          name_suffix: ''
+          admin_state: true
+          sources:
+            name_suffix: ''
+            direction: both
+            access_paths:
+              module: 1
+    node_policies:
+      oob_endpoint_group: default
+      inb_endpoint_group: default
+      update_groups:
+        name_suffix: ''
+        scheduler: default
+      vpc_groups:
+        mode: explicit
+      nodes:
+        pod: 1
+
+    interface_policies:
+      nodes:
+        interfaces:
+          from_module: 1
+          module: 1
+        fexes:
+          interfaces:
+            from_module: 1
+
+    tenants:
+      managed: true
+      vrfs:
+        name_suffix: ''
+        data_plane_learning: true
+        enforcement_direction: ingress
+        enforcement_preference: enforced
+        leaked_internal_prefixes:
+          public: false
+        pim:
+          mtu: 1500
+          bsr_forward_updates: false
+          bsr_listen_updates: false
+          auto_rp_forward_updates: false
+          auto_rp_listen_updates: false
+          fast_convergence: false
+          strict_rfc: false
+          max_multicast_entries: unlimited
+          reserved_multicast_entries: undefined
+          asm_sg_expiry: default-timeout
+          asm_traffic_registry_max_rate: 65535
+          asm_traffic_registry_source_ip: '0.0.0.0'
+        preferred_group: false
+      bridge_domains:
+        name_suffix: ''
+        mac: 00:22:BD:F8:19:FF
+        ep_move_detection: false
+        arp_flooding: true
+        ip_dataplane_learning: true
+        limit_ip_learn_to_subnets: true
+        multi_destination_flooding: bd-flood
+        unknown_unicast: flood
+        unknown_ipv4_multicast: flood
+        unknown_ipv6_multicast: flood
+        unicast_routing: true
+        advertise_host_routes: false
+        l3_multicast: false
+        subnets:
+          primary_ip: false
+          public: false
+          private: true
+          shared: false
+          virtual: false
+          igmp_querier: false
+          nd_ra_prefix: true
+          no_default_gateway: false
+      l3outs:
+        name_suffix: ''
+        target_dscp: unspecified
+        qos_class: unspecified
+        ospf:
+          auth_key_id: 1
+          auth_type: none
+          area_cost: 1
+          area_type: regular
+        bgp_peers:
+          allow_self_as: false
+          as_override: false
+          disable_peer_as_check: false
+          next_hop_self: false
+          send_community: false
+          send_ext_community: false
+          allowed_self_as_count: 3
+          ttl: 1
+          weight: 0
+          bfd: false
+          disable_connected_check: false
+          remove_all_private_as: false
+          remove_private_as: false
+          replace_private_as_with_local_as: false
+          unicast_address_family: true
+          multicast_address_family: true
+          admin_state: true
+          as_propagate: none
+        redistribution_route_maps:
+          source: static
+        nodes:
+          pod: 1
+          router_id_as_loopback: true
+          static_routes:
+            preference: 1
+            bfd: false
+            next_hops:
+              preference: 1
+              type: prefix
+          interfaces:
+            pod: 1
+            module: 1
+            svi: false
+            floating_svi: false
+            ip: 0.0.0.0
+            mac: 00:22:BD:F8:19:FF
+            mtu: inherit
+            bgp_peers:
+              allow_self_as: false
+              as_override: false
+              disable_peer_as_check: false
+              next_hop_self: false
+              send_community: false
+              send_ext_community: false
+              allowed_self_as_count: 3
+              ttl: 1
+              weight: 0
+              bfd: false
+              disable_connected_check: false
+              remove_all_private_as: false
+              remove_private_as: false
+              replace_private_as_with_local_as: false
+              unicast_address_family: true
+              multicast_address_family: true
+              admin_state: true
+              as_propagate: none
+        node_profiles:
+          name_suffix: ''
+          bgp_peers:
+            allow_self_as: false
+            as_override: false
+            disable_peer_as_check: false
+            next_hop_self: false
+            send_community: false
+            send_ext_community: false
+            allowed_self_as_count: 3
+            ttl: 1
+            weight: 0
+            bfd: false
+            disable_connected_check: false
+            remove_all_private_as: false
+            remove_private_as: false
+            replace_private_as_with_local_as: false
+            unicast_address_family: true
+            multicast_address_family: true
+            admin_state: true
+            as_propagate: none
+          nodes:
+            pod: 1
+            router_id_as_loopback: true
+            static_routes:
+              preference: 1
+              bfd: false
+              next_hops:
+                preference: 1
+                type: prefix
+          interface_profiles:
+            name_suffix: ''
+            target_dscp: unspecified
+            qos_class: unspecified
+            ospf:
+              auth_key_id: 1
+              auth_type: none
+            interfaces:
+              pod: 1
+              module: 1
+              svi: false
+              floating_svi: false
+              ip: 0.0.0.0
+              mac: 00:22:BD:F8:19:FF
+              mtu: inherit
+              bgp_peers:
+                allow_self_as: false
+                as_override: false
+                disable_peer_as_check: false
+                next_hop_self: false
+                send_community: false
+                send_ext_community: false
+                allowed_self_as_count: 3
+                ttl: 1
+                weight: 0
+                bfd: false
+                disable_connected_check: false
+                remove_all_private_as: false
+                remove_private_as: false
+                replace_private_as_with_local_as: false
+                unicast_address_family: true
+                multicast_address_family: true
+                admin_state: true
+                as_propagate: none
+        external_endpoint_groups:
+          name_suffix: ''
+          preferred_group: false
+          qos_class: unspecified
+          target_dscp: unspecified
+          subnets:
+            import_route_control: false
+            export_route_control: false
+            shared_route_control: false
+            import_security: true
+            shared_security: false
+            aggregate_import_route_control: false
+            aggregate_export_route_control: false
+            aggregate_shared_route_control: false
+            bgp_route_summarization: false
+        import_route_map:
+          type: global
+          contexts:
+            name_suffix: ''
+            action: permit
+            order: 0
+        export_route_map:
+          type: global
+          contexts:
+            name_suffix: ''
+            action: permit
+            order: 0
+        default_route_leak_policy:
+          always: false
+          criteria: 'only'
+          context_scope: false
+          outside_scope: true
+        l3_multicast_ipv4: false
+      application_profiles:
+        name_suffix: ''
+        managed: true
+        endpoint_groups:
+          name_suffix: ''
+          flood_in_encap: false
+          intra_epg_isolation: false
+          preferred_group: false
+          qos_class: unspecified
+          vmware_vmm_domains:
+            name_suffix: ''
+            u_segmentation: false
+            delimiter: ''
+            netflow: false
+            deployment_immediacy: lazy
+            resolution_immediacy: pre-provision
+            allow_promiscuous: reject
+            forged_transmits: reject
+            mac_changes: reject
+          static_ports:
+            module: 1
+            mode: regular
+            deployment_immediacy: lazy
+          static_endpoints:
+            name_suffix: ''
+            ip: '0.0.0.0'
+            module: 1
+          subnets:
+            primary_ip: false
+            public: false
+            private: true
+            shared: false
+            igmp_querier: false
+            nd_ra_prefix: true
+            no_default_gateway: false
+            virtual: false
+            nlb_group: 0.0.0.0
+            nlb_mac: 00:00:00:00:00:00
+            ip_pools:
+              name_suffix: ''
+              start_ip: 0.0.0.0
+              end_ip: 0.0.0.0
+        endpoint_security_groups:
+          name_suffix: ''
+          shutdown: false
+          intra_esg_isolation: false
+          preferred_group: false
+          tag_selectors:
+            operator: equals
+      inb_endpoint_groups:
+        name_suffix: ''
+      oob_endpoint_groups:
+        name_suffix: ''
+        name: default
+      ext_mgmt_instances:
+        name_suffix: ''
+      contracts:
+        name_suffix: ''
+        scope: context
+        qos_class: unspecified
+        target_dscp: unspecified
+        subjects:
+          name_suffix: ''
+          qos_class: unspecified
+          target_dscp: unspecified
+          filters:
+            action: permit
+            priority: default
+            log: false
+            no_stats: false
+      imported_contracts:
+        name_suffix: ''
+      oob_contracts:
+        name_suffix: ''
+        scope: context
+        subjects:
+          name_suffix: ''
+      filters:
+        name_suffix: ''
+        entries:
+          name_suffix: ''
+          ethertype: ip
+          protocol: tcp
+          source_from_port: unspecified
+          destination_from_port: unspecified
+          stateful: false
+      policies:
+        custom_qos:
+          name_suffix: ''
+        ospf_interface_policies:
+          name_suffix: ''
+          cost: unspecified
+          passive_interface: false
+          mtu_ignore: false
+          advertise_subnet: false
+          bfd: false
+          hello_interval: 10
+          dead_interval: 40
+          network_type: p2p
+          priority: 1
+          lsa_retransmit_interval: 5
+          lsa_transmit_delay: 1
+        bgp_best_path_policies:
+          name_suffix: ''
+          control_type: ''
+        bgp_timer_policies:
+          name_suffix: ''
+          keepalive_interval: 60
+          hold_interval: 180
+          stale_interval: default
+          graceful_restart_helper: true
+          maximum_as_limit: 0
+        bgp_peer_prefix_policies:
+          name_suffix: ''
+          action: 'reject'
+          max_prefixes: 20000
+          threshold: 75
+          restart_time: 65534
+        bgp_address_family_context_policies:
+          name_suffix: ''
+          ebgp_distance: 20
+          ibgp_distance: 200
+          local_distance: 220
+          ebgp_max_ecmp: 16
+          ibgp_max_ecmp: 16
+          enable_host_route_leak: false
+        dhcp_relay_policies:
+          name_suffix: ''
+        dhcp_option_policies:
+          name_suffix: ''
+          options:
+            name_suffix: ''
+        route_control_route_maps:
+          name_suffix: ''
+          contexts:
+            name_suffix: ''
+            action: 'permit'
+            order: 0
+        match_rules:
+          name_suffix: ''
+          regex_community_terms:
+            name_suffix: ''
+            type: 'regular'
+          community_terms:
+            name_suffix: ''
+            factors:
+              scope: 'transitive'
+          prefixes:
+            aggregate: false
+            from_length: 0
+            to_length: 0
+        set_rules:
+          name_suffix: ''
+          community_mode: 'append'
+          dampening:
+            half_life: 15
+            max_suppress_time: 60
+            reuse_limit: 750
+            suppress_limit: 2000
+          set_as_path:
+            criteria: 'prepend'
+            count: 1
+            order: 0
+          next_hop_propagation: false
+          multipath: false
+        bfd_interface_policies:
+          name_suffix: ''
+          subinterface_optimization: false
+          detection_multiplier: 3
+          echo_admin_state: true
+          echo_rx_interval: 50
+          min_rx_interval: 50
+          min_tx_interval: 50
+        igmp_snooping_policies:
+          name_suffix: ''
+          admin_state: true
+          last_member_query_interval: 1
+          query_interval: 125
+          query_response_interval: 10
+          start_query_count: 2
+          start_query_interval: 31
+          fast_leave: false
+          querier: false
+        multicast_route_maps:
+          name_suffix: ''
+          entries:
+            source_ip: '0.0.0.0'
+            group_ip: '0.0.0.0'
+            rp_ip: '0.0.0.0'
+            action: 'permit'
+        pim_policies:
+          name_suffix: ''
+          auth_type: 'none'
+          designated_router_delay: 3
+          designated_router_priority: 1
+          hello_interval: 30000
+          join_prune_interval: 60
+          mcast_dom_boundary: false
+          passive: false
+          strict_rfc: false
+        igmp_interface_policies:
+          name_suffix: ''
+          grp_timeout: 260
+          allow_v3_asm: false
+          fast_leave: false
+          report_link_local_groups: false
+          last_member_count: 2
+          last_member_response_time: 1
+          querier_timeout: 255
+          query_interval: 125
+          robustness_variable: 2
+          query_response_interval: 25
+          startup_query_count: 2
+          startup_query_interval: 31
+          version: 'v2'
+          max_mcast_entries: unlimited
+          reserved_mcast_entries: undefined
+        qos:
+          name_suffix: ''
+          dscp_priority_maps:
+            priority: level3
+            dscp_target: unspecified
+            cos_target: unspecified
+          dot1p_classifiers:
+            priority: level3
+            dscp_target: unspecified
+            cos_target: unspecified
+        ip_sla_policies:
+          name_suffix: ''
+          multiplier: 3
+          frequency: 60
+          sla_type: icmp
+          port: 0
+        trust_control_policies:
+          name_suffix: ''
+          dhcp_v4_server: false
+          dhcp_v6_server: false
+          ipv6_router: false
+          arp: false
+          nd: false
+          ra: false
+        span:
+          source_groups:
+            name_suffix: ''
+            admin_state: false
+            sources:
+              direction: both
+          destination_groups:
+            name_suffix: ''
+            dscp: unspecified
+            flow_id: 1
+            mtu: 1518
+            ttl: 64
+            version: 2
+            enforce_version: false
+      services:
+        l4l7_devices:
+          name_suffix: ''
+          context_aware: single-Context
+          type: PHYSICAL
+          function: GoTo
+          copy_device: false
+          managed: false
+          promiscuous_mode: false
+          service_type: FW
+          trunking: false
+          concrete_devices:
+            name_suffix: ''
+            interfaces:
+              name_suffix: ''
+              module: 1
+          logical_interfaces:
+            name_suffix: ''
+            concrete_interfaces:
+              name_suffix: ''
+        redirect_policies:
+          name_suffix: ''
+          type: L3
+          anycast: false
+          hashing: sip-dip-prototype
+          threshold: false
+          max_threshold: 0
+          min_threshold: 0
+          threshold_down_action: permit
+          resilient_hashing: false
+          pod_aware: false
+          l3_destinations:
+            pod: 1
+        redirect_backup_policies:
+          name_suffix: ''
+          l3_destinations:
+            ip_2: '0.0.0.0'
+        service_epg_policies:
+          name_suffix: ''
+          preferred_group: false
+        redirect_health_groups:
+          name_suffix: ''
+        service_graph_templates:
+          name_suffix: ''
+          template_type: FW_ROUTED
+          redirect: false
+          share_encapsulation: false
+        device_selection_policies:
+          consumer:
+            l3_destination: true
+            permit_logging: false
+            external_endpoint_group:
+              redistribute:
+                bgp: false
+                ospf: false
+                connected: false
+                static: false
+          provider:
+            l3_destination: true
+            permit_logging: false
+            external_endpoint_group:
+              redistribute:
+                bgp: false
+                ospf: false
+                connected: false
+                static: false
