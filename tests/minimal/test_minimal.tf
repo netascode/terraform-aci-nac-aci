@@ -25,6 +25,7 @@ module "main" {
 
   model = {
     apic = {
+      auto_generate_switch_pod_profiles = true
       access_policies = {
         vlan_pools = [
           {
@@ -53,9 +54,10 @@ module "main" {
           }]
         }
         nodes = [{
-          id   = 101
-          name = "LEAF101"
-          role = "leaf"
+          id            = 101
+          name          = "LEAF101"
+          serial_number = "1234567"
+          role          = "leaf"
         }]
       }
       interface_policies = {
