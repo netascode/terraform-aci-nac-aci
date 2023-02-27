@@ -1130,7 +1130,7 @@ locals {
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : [
         for epg in try(l3out.external_endpoint_groups, []) : {
-          key                         = format("%s/%s", tenant.name, l3out.name)
+          key                         = format("%s/%s/%s", tenant.name, l3out.name, epg.name)
           tenant                      = tenant.name
           l3out                       = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
           name                        = "${epg.name}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}"
