@@ -54,15 +54,15 @@ module "main" {
           }]
         }
         nodes = [{
-          id            = 101
-          name          = "LEAF101"
+          id            = 1451
+          name          = "LEAF1451"
           serial_number = "1234567"
           role          = "leaf"
         }]
       }
       interface_policies = {
         nodes = [{
-          id = 101
+          id = 1451
           fexes = [{
             id = 101
           }]
@@ -159,7 +159,7 @@ resource "test_assertions" "fabricExplicitGEp" {
 }
 
 data "aci_rest_managed" "infraFexP" {
-  dn = "uni/infra/fexprof-LEAF101-FEX101"
+  dn = "uni/infra/fexprof-LEAF1451-FEX101"
 
   depends_on = [module.main]
 }
@@ -170,7 +170,7 @@ resource "test_assertions" "infraFexP" {
   equal "name" {
     description = "name"
     got         = data.aci_rest_managed.infraFexP.content.name
-    want        = "LEAF101-FEX101"
+    want        = "LEAF1451-FEX101"
   }
 }
 
