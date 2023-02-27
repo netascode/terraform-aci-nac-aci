@@ -31,6 +31,6 @@ data "utils_yaml_merge" "defaults" {
 
 resource "local_sensitive_file" "defaults" {
   count    = var.write_default_values_file != "" ? 1 : 0
-  content  = yamlencode(data.utils_yaml_merge.defaults.output)
+  content  = data.utils_yaml_merge.defaults.output
   filename = var.write_default_values_file
 }
