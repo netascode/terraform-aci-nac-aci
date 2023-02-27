@@ -1421,7 +1421,7 @@ module "aci_bgp_timer_policy" {
   version = "0.1.0"
 
   for_each                = { for pol in local.bgp_timer_policies : pol.key => pol if try(local.modules.aci_bgp_timer_policy, true) && var.manage_tenants }
-  tenant                  = each.value.tenant.name
+  tenant                  = each.value.tenant
   name                    = each.value.name
   description             = each.value.description
   graceful_restart_helper = each.value.graceful_restart_helper
