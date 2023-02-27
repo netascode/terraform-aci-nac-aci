@@ -522,7 +522,7 @@ module "aci_endpoint_security_group" {
 locals {
   inband_endpoint_groups = flatten([
     for tenant in local.tenants : [
-      for epg in try(tenant.inband_endpoint_groups, []) : {
+      for epg in try(tenant.inb_endpoint_groups, []) : {
         key                         = format("%s/%s", tenant.name, epg.name)
         name                        = "${epg.name}${local.defaults.apic.tenants.inb_endpoint_groups.name_suffix}"
         vlan                        = epg.vlan
