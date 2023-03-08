@@ -4,7 +4,7 @@ site_description: Manage ACI following Infrastructure as Code principles. Codify
 repo_name: aac
 repo_url: https://wwwin-github.cisco.com/netascode/aac
 site_author: Daniel Schmidt
-copyright: Copyright &copy; 2018 - 2022 Daniel Schmidt
+copyright: Copyright &copy; 2018 - 2023 Daniel Schmidt
 theme:
   name: material
   features:
@@ -16,14 +16,14 @@ theme:
     - search.suggest
   custom_dir: docs/overrides
   palette:
-    - media: '(prefers-color-scheme: light)'
+    - media: "(prefers-color-scheme: light)"
       scheme: default
       toggle:
         icon: material/toggle-switch-off-outline
         name: Switch to dark mode
       primary: teal
       accent: orange
-    - media: '(prefers-color-scheme: dark)'
+    - media: "(prefers-color-scheme: dark)"
       scheme: slate
       toggle:
         icon: material/toggle-switch
@@ -34,13 +34,7 @@ extra_css:
   - stylesheets/extra.css
 plugins:
   - search
-  - mermaid2:
-      arguments:
-        theme: |
-          ^(JSON.parse(__md_get("__palette").index == 1)) ? 'dark' : 'neutral'
-        securityLevel: 'loose'
 extra_javascript:
-  - https://unpkg.com/mermaid/dist/mermaid.min.js
   - extra/refresh_on_toggle_dark_light.js
 markdown_extensions:
   - md_in_html
@@ -60,7 +54,7 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:mermaid2.fence_mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 nav:
   - Home: index.md
   - Data Model:

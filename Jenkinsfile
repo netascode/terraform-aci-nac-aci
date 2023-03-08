@@ -35,7 +35,7 @@ pipeline {
                         branch "master"
                     }
                     steps {
-                        sh 'pip install --upgrade mkdocs mkdocs-material mkdocs-mermaid2-plugin'
+                        sh 'pip install --upgrade mkdocs mkdocs-material'
                         sh 'python3 docs/aac-doc.py'
                         sh 'mkdocs build'
                         sshagent(credentials: ['AAC_HOST_SSH']) {

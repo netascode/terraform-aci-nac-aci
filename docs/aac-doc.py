@@ -378,7 +378,7 @@ def get_rename_mappings(class_paths):
 def render_diagram(schema, defaults, class_paths, paths):
     output = "### Diagram\n\n"
     output += "<figure markdown>\n"
-    output += "```mermaid\n%%{init: {'themeVariables': {'nodeBorder': '#009688', 'lineColor': '#009688', 'fontSize': '14px', 'fontFamily': 'Roboto'}}}%%\nclassDiagram\n"
+    output += "```mermaid\nclassDiagram\n"
     rendered_paths = []
     mappings = get_rename_mappings(class_paths)
     # Move apic element to the end to fix mermaid rendering
