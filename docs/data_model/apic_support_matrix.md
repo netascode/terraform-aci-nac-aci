@@ -9,13 +9,13 @@ This table provides an overview of which object is supported in combination with
 
 ### Bootstrap
 
-<span style="display: inline-block; width:200px">Description</span> | CLI | Ansible | Terraform | Reverse
+<span style="display: inline-block; width:250px">Description</span> | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
 [Bootstrap](./apic/bootstrap/bootstrap.md) | | :material-check: | |
 
 ### Fabric Policies
 
-<span style="display: inline-block; width:200px">Description</span> | CLI | Ansible | Terraform | Reverse
+<span style="display: inline-block; width:250px">Description</span> | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
 [Config Passphrase](./apic/fabric_policies/config_passphrase.md) | :material-check: | :material-check: | :material-check: |
 [Date and Time Format](./apic/fabric_policies/date_time_format.md) | :material-check: | :material-check: | :material-check: | :material-check:
@@ -71,7 +71,7 @@ This table provides an overview of which object is supported in combination with
 
 ### Access Policies
 
-<span style="display: inline-block; width:200px">Description</span> | CLI | Ansible | Terraform | Reverse
+<span style="display: inline-block; width:250px">Description</span> | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
 [MCP Global Instance](./apic/access_policies/mcp.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [QoS Class](./apic/access_policies/qos.md) | :material-check: | :material-check: | :material-check: | :material-check:
@@ -108,13 +108,13 @@ This table provides an overview of which object is supported in combination with
 
 ### Pod Policies
 
-<span style="display: inline-block; width:200px">Description</span> | CLI | Ansible | Terraform | Reverse
+<span style="display: inline-block; width:250px">Description</span> | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
 [Pod Setup](./apic/pod_policies/pod_setup.md) | :material-check: | :material-check: | :material-check: | :material-check:
 
 ### Node Policies
 
-<span style="display: inline-block; width:200px">Description</span> | CLI | Ansible | Terraform | Reverse
+<span style="display: inline-block; width:250px">Description</span> | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
 [Node Registration](./apic/node_policies/node_registration.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
 [OOB Node Address](./apic/node_policies/oob_node_address.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
@@ -125,7 +125,7 @@ This table provides an overview of which object is supported in combination with
 
 ### Interface Policies
 
-<span style="display: inline-block; width:200px">Description</span> | CLI | Ansible | Terraform | Reverse
+<span style="display: inline-block; width:250px">Description</span> | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
 [Access Spine Interface Selector](./apic/interface_policies/spine_interface_selector.md) | :material-check: | :material-check: | :material-check: |
 [Access Leaf Interface Selector](./apic/interface_policies/leaf_interface_selector.md) | :material-check: | :material-check: | :material-check: |
@@ -133,7 +133,7 @@ This table provides an overview of which object is supported in combination with
 
 ### Tenant
 
-<span style="display: inline-block; width:200px">Description</span> | CLI | Ansible | Terraform | Reverse
+<span style="display: inline-block; width:250px">Description</span> | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
 [Tenant](./apic/tenants/tenant.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [VRF](./apic/tenants/vrf.md) | :material-check: | :material-check: | :material-check: | :material-check:

@@ -9,13 +9,13 @@ This table provides an overview of which object is supported in combination with
 
 ### Bootstrap
 
-<span style="display: inline-block; width:200px">Description</span> | CLI | Ansible | Terraform | Reverse
+<span style="display: inline-block; width:250px">Description</span> | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
 [Bootstrap](./mso/bootstrap/bootstrap.md) | | :material-check: | |
 
 ### System
 
-<span style="display: inline-block; width:200px">Description</span> | CLI | Ansible | Terraform | Reverse
+<span style="display: inline-block; width:250px">Description</span> | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
 [System Config](./mso/mso/system_config.md) | | :material-check: | |
 [TACACS Provider](./mso/mso/tacacs_provider.md) | | :material-check: | |
@@ -31,7 +31,7 @@ This table provides an overview of which object is supported in combination with
 
 ### Schema
 
-<span style="display: inline-block; width:200px">Description</span> | CLI | Ansible | Terraform | Reverse
+<span style="display: inline-block; width:250px">Description</span> | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
 [Schema](./mso/schema/schema.md) | | :material-check: | |
 Deploy Schema | | :material-check: | |
