@@ -53,6 +53,10 @@ module "aci_access_leaf_interface_selector_auto" {
   policy_group          = each.value.policy_group
   policy_group_type     = each.value.policy_group_type
   port_blocks           = each.value.port_blocks
+
+  depends_on = [
+    module.aci_access_leaf_interface_profile_auto
+  ]
 }
 
 locals {
@@ -95,6 +99,10 @@ module "aci_access_leaf_interface_selector_sub_auto" {
   policy_group          = each.value.policy_group
   policy_group_type     = each.value.policy_group_type
   sub_port_blocks       = each.value.sub_port_blocks
+
+  depends_on = [
+    module.aci_access_leaf_interface_profile_auto
+  ]
 }
 
 locals {
@@ -131,6 +139,10 @@ module "aci_access_fex_interface_selector_auto" {
   policy_group      = each.value.policy_group
   policy_group_type = each.value.policy_group_type
   port_blocks       = each.value.port_blocks
+
+  depends_on = [
+    module.aci_access_fex_interface_profile_auto
+  ]
 }
 
 locals {
@@ -163,4 +175,8 @@ module "aci_access_spine_interface_selector_auto" {
   interface_profile = each.value.interface_profile
   policy_group      = each.value.policy_group
   port_blocks       = each.value.port_blocks
+
+  depends_on = [
+    module.aci_access_spine_interface_profile_auto
+  ]
 }
