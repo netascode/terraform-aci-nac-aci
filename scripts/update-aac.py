@@ -169,6 +169,16 @@ REPOS = [
         ],
     },
     {
+        "url": "https://github.com/netascode/terraform-aci-nac-aci.git",
+        "commit_message": "Defaults updates",
+        "files": [
+            {
+                "src": "../defaults/apic_defaults.yaml",
+                "dst": "./defaults/defaults.yaml",
+            },
+        ],
+    },
+    {
         "url": "https://github.com/netascode/terraform-aci-nac-access-policies.git",
         "commit_message": "Defaults updates",
         "files": [
