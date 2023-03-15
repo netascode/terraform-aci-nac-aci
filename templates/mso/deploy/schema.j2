@@ -583,17 +583,20 @@
                                 {%- set comma4 = joiner(",") %}
                                 {%- for sp in site.static_ports | default([]) %}{{ comma4() }}
                                 {
-                                    "type": "{{ sp.type | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) }}",
+                                    
                                     {% if sp.type | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) == 'port' %}
+                                    "type": "{{ sp.type | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) }}",
                                     {% if sp.fex is defined %}
                                     "path": "topology/pod-{{ sp.pod | default(1) }}/paths-{{ sp.node }}/extpaths-{{ sp.fex }}/pathep-[eth{{ sp.module | default(1) }}/{{ sp.port }}]",
                                     {% else %}
                                     "path": "topology/pod-{{ sp.pod | default(1) }}/paths-{{ sp.node }}/pathep-[eth{{ sp.module | default(1) }}/{{ sp.port }}]",
                                     {% endif %}
                                     {% elif sp.type | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) == 'pc' %}
+                                    "type": "dpc",
                                     {% set policy_group_name = sp.channel ~ defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.leaf_interface_policy_group_suffix %}
                                     "path": "topology/pod-{{ sp.pod | default(1) }}/paths-{{ sp.node }}/pathep-[{{ policy_group_name }}]",
                                     {% elif sp.type | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) == 'vpc' %}
+                                    "type": "{{ sp.type | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) }}",
                                     {% set policy_group_name = sp.channel ~ defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.leaf_interface_policy_group_suffix %}
                                     "path": "topology/pod-{{ sp.pod | default(1) }}/protpaths-{{ sp.node_1 }}-{{ sp.node_2 }}/pathep-[{{ policy_group_name }}]",
                                     {% endif %}

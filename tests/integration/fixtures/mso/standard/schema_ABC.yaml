@@ -68,6 +68,11 @@ mso:
                           node_1: 101
                           node_2: 102
                           vlan: 234
+                        - type: pc
+                          channel: VPC1
+                          deployment_immediacy: immediate
+                          node: 101
+                          vlan: 234
                       static_leafs:
                         - pod: 1
                           node: 102
