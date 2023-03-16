@@ -311,6 +311,7 @@ t_ap_epg_sites_static_ports:
   node_1: int(min=1, max=4000, required=False)
   node_2: int(min=1, max=4000, required=False)
   port: int(min=1, max=127, required=False)
+  sub_port: int(min=1, max=16, required=False)
   module: int(min=1, max=9, required=False)
   channel: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   vlan: int(min=1, max=4096)

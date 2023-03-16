@@ -59,6 +59,14 @@ mso:
                           deployment_immediacy: lazy
                           mode: regular
                         - type: port
+                          deployment_immediacy: immediate
+                          port: 20
+                          mode: native
+                          sub_port: 1
+                          pod: 1
+                          node: 101
+                          vlan: 234
+                        - type: port
                           node: 101
                           fex: 101
                           port: 20

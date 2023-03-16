@@ -586,7 +586,9 @@
                                     
                                     {% if sp.type | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) == 'port' %}
                                     "type": "{{ sp.type | default(defaults.mso.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) }}",
-                                    {% if sp.fex is defined %}
+                                    {% if sp.sub_port is defined %}
+                                    "path": "topology/pod-{{ sp.pod | default(1) }}/paths-{{ sp.node }}/pathep-[eth{{ sp.module  | default(1) }}/{{ sp.port }}/{{ sp.sub_port }}]",
+                                    {% elif sp.fex is defined %}
                                     "path": "topology/pod-{{ sp.pod | default(1) }}/paths-{{ sp.node }}/extpaths-{{ sp.fex }}/pathep-[eth{{ sp.module | default(1) }}/{{ sp.port }}]",
                                     {% else %}
                                     "path": "topology/pod-{{ sp.pod | default(1) }}/paths-{{ sp.node }}/pathep-[eth{{ sp.module | default(1) }}/{{ sp.port }}]",
