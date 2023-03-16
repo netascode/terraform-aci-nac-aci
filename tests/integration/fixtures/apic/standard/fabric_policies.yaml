@@ -605,3 +605,7 @@ apic:
       proxy:
         hostname_ip: 1.1.1.1
         port: 80
+
+    l2_mtu_policies:
+      - name: L2_8950
+        port_mtu_size: 8950

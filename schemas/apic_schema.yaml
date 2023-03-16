@@ -81,6 +81,7 @@ fabric_policies:
   monitoring: include('fp_monitoring', required=False)
   span: include('fp_span', required=False) # @name(Fabric SPAN)
   smart_licensing: include('fp_smart_licensing', required=False)
+  l2_mtu_policies: list(include('fp_l2_mtu_policies'), required=False) 
 
 fp_banners:
   apic_gui_alias: str(required=False)
@@ -380,6 +381,8 @@ fp_vmware_vmm_domains_vswitch:
   lldp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(vSwitch LLDP Policy)
   port_channel_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(vSwitch Port Channel Policy)
   enhanced_lags: list(include('fp_vmware_vmm_domains_vswitch_elag'), required=False) # @name(vSwitch eLAGs)
+  mtu_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(vSwitch MTU Policy)
+
 
 fp_vmware_vmm_domains_vswitch_elag:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -652,6 +655,10 @@ fp_smart_licensing:
 fp_smart_licensing_proxy:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip(), required=False)
   port: int(min=0, max=65535, required=False)
+
+fp_l2_mtu_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  port_mtu_size: int(min=0, max=9216, required=False)
 
 access_policies:
   leaf_switch_profile_name: str(min=1, max=64, required=False)

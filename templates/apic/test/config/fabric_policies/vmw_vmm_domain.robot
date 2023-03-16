@@ -26,6 +26,10 @@ Verify VMware VMM Domain {{ vmm_name }}
 {% set port_channel_policy_name = vmm.vswitch.port_channel_policy ~ defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}    $..vmmRsVswitchOverrideLacpPol.attributes.tDn   uni/infra/lacplagp-{{ port_channel_policy_name }}
 {% endif %}
+{% if vmm.vswitch.mtu_policy is defined %}
+{% set mtu_policy_name = vmm.vswitch.mtu_policy ~ defaults.apic.fabric_policies.l2_mtu_policies.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}    $..vmmRsVswitchOverrideMtuPol.attributes.tDn   uni/fabric/l2pol-{{ mtu_policy_name }}
+{% endif %}
 
 {% for elag in vmm.vswitch.enhanced_lags | default([]) %}
 {% set elag_name = elag.name ~ defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.name_suffix %}

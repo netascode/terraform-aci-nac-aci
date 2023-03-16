@@ -70,6 +70,17 @@
                                         }
                                     }
                                     {%- endif %}
+                                    {%- if vmm.vswitch.mtu_policy is defined %}{{ comma2() }}
+                                    {% set mtu_policy_name = vmm.vswitch.mtu_policy ~ defaults.apic.fabric_policies.l2_mtu_policies.name_suffix %}
+                                    {
+                                        "vmmRsVswitchOverrideMtuPol": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tDn": "uni/fabric/l2pol-{{ mtu_policy_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
                                     {%- for elag in vmm.vswitch.enhanced_lags | default([]) %}{{ comma2() }}
                                         {% set elag_name = elag.name ~ defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.name_suffix %}
                                         {

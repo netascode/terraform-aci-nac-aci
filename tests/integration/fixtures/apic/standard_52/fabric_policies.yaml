@@ -1,0 +1,13 @@
+apic:
+  fabric_policies:
+    vmware_vmm_domains: 
+      - name: VMM1
+        access_mode: read-write
+        delimiter: '='
+        tag_collection: true
+        vlan_pool: VMM1
+        vswitch:
+          cdp_policy: CDP-ENABLED
+          lldp_policy: LLDP-ENABLED
+          port_channel_policy: LACP-ACTIVE
+          mtu_policy: L2_8950

@@ -316,6 +316,9 @@ defaults:
         url: 'https://tools.cisco.com/its/service/oddce/services/DDCEService'
         proxy:
           port: '443'
+      l2_mtu_policies:
+        name_suffix: ''
+        port_mtu_size: 9000
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"

@@ -1,10 +1,36 @@
 {
-    "l2InstPol": {
+    "fabricInst": {
         "attributes": {
-            "annotation": "orchestrator:aac",
-            "dn": "uni/fabric/l2pol-default",
-            "name": "default",
-            "fabricMtu": "{{ apic.fabric_policies.l2_port_mtu | default(defaults.apic.fabric_policies.l2_port_mtu) }}"
-        }
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {
+                "l2InstPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/fabric/l2pol-default",
+                        "name": "default",
+                        "fabricMtu": "{{ apic.fabric_policies.l2_port_mtu | default(defaults.apic.fabric_policies.l2_port_mtu) }}"
+                    }
+                }
+            }
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.fabric_policies.l2_mtu_policies | default([]) %}{{ comma1() }}
+            {%- if policy.name != 'default' %}{{ comma1() }}
+            {% set mtu_policy_name = policy.name ~ defaults.apic.fabric_policies.l2_mtu_policies.name_suffix %}
+            {
+                "l2InstPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/fabric/l2pol-{{ mtu_policy_name }}",
+                        "name": "{{ mtu_policy_name }}",
+                        "fabricMtu": "{{ policy.port_mtu_size | default(defaults.apic.fabric_policies.l2_mtu_policies.port_mtu_size) }}"
+                    }
+                }
+            }
+            {%- endif %}
+            {%- endfor %}
+            
+        ]
     }
 }
