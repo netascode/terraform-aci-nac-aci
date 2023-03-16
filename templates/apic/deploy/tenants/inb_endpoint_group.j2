@@ -62,6 +62,17 @@
                                             }
                                         }
                                     }
+                                    {%- endfor %}
+                                    {%- for prefix in epg.static_routes | default([]) %}{{ comma2() }}
+                                    {
+                                        "mgmtStaticRoute": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "dn": "uni/tn-mgmt/mgmtp-default/inb-{{epg_name}}/staticroute-[{{prefix}}]",
+                                                "prefix": "{{prefix}}"
+                                            }
+                                        }
+                                    }
                                     {%- endfor %}{{ comma2() }}
                                     {% set bd_name = epg.bridge_domain ~ defaults.apic.tenants.bridge_domains.name_suffix %}
                                     {

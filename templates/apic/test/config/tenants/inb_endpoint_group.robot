@@ -45,4 +45,10 @@ Verify Inband Endpoint Group {{ epg_name }} Imported Contract {{ contract_name }
 
 {% endfor %}
 
+{% for prefix in epg.static_routes | default([]) %}
+Verify Inband Endpoint Group {{ epg_name }} Static Route {{ prefix }}
+    ${con}=   Set Variable   $..mgmtInB.children[?(@.mgmtStaticRoute.attributes.prefix=='{{ prefix }}')]
+    Should Be Equal Value Json String   ${r.json()}   ${con}..mgmtStaticRoute.attributes.prefix   {{ prefix }}
+{% endfor %} 
+
 {% endfor %}
