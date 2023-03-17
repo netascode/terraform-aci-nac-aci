@@ -146,6 +146,7 @@ objects:
       - config
     paths:
       - apic.fabric_policies.l2_port_mtu
+      - apic.fabric_policies.l2_mtu_policies
   - name: Infra DSCP Translation Policy
     template: infra_dscp_translation_policy
     folder: fabric_policies
@@ -190,9 +191,9 @@ objects:
       - aaaUser
     delete_ignore:
       - admin
-      - '{{ apic_username }}'
-      - '{{ apic_test_username | default() }}'
-      - '{{ apic_mso_username | default() }}'
+      - "{{ apic_username }}"
+      - "{{ apic_test_username | default() }}"
+      - "{{ apic_mso_username | default() }}"
     paths:
       - apic.fabric_policies.aaa.users
   - name: Login Domain
