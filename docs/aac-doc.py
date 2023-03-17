@@ -448,11 +448,14 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
 
     for item in (
         objects["objects"]
+        + objects.get("bootstrap_objects", [])
         + objects.get("leaf_objects", [])
         + objects.get("spine_objects", [])
         + objects.get("tenant_objects", [])
     ):
         if pubhub:
+            if item["name"] == "Bootstrap":
+                continue
             i = {
                 "title": item["name"],
                 "content": os.path.join(item["folder"], item["template"] + ".md"),
