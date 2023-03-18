@@ -108,7 +108,7 @@ apic:
           description: descr
           port: 4949
           protocol: chap
-          key: '123'
+          key: "123"
           timeout: 2
           retries: 2
           mgmt_epg: oob
@@ -123,7 +123,7 @@ apic:
           expires: false
           first_name: cisco
           last_name: cisco
-          phone: '1234567'
+          phone: "1234567"
           email: cisco@cisco.com
           certificate_name: cisco
           description: descr
@@ -230,7 +230,7 @@ apic:
         description: desc1
         hostname_ip: 1.2.3.4
         protocol: scp
-        path: '/path'
+        path: "/path"
         port: 22
         auth_type: password
         username: cisco
@@ -489,7 +489,7 @@ apic:
     vmware_vmm_domains:
       - name: VMM1
         access_mode: read-write
-        delimiter: '='
+        delimiter: "="
         tag_collection: true
         vlan_pool: VMM1
         vswitch:
