@@ -621,6 +621,9 @@ locals {
         domain      = "${l3out.domain}${local.defaults.apic.access_policies.routed_domains.name_suffix}"
         vrf         = "${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}"
         bgp = anytrue([
+          anytrue([
+            for np in try(l3out.node_profiles, []) : try(np.bgp_peers, null) != null
+          ]),
           anytrue(
             flatten([for np in try(l3out.node_profiles, []) : [
               for ip in try(np.interface_profiles, []) : [
@@ -628,6 +631,7 @@ locals {
               ]
             ]])
           ),
+          try(l3out.bgp_peers, null) != null,
           anytrue(
             flatten([for node in try(l3out.nodes, []) : [
               for int in try(node.interfaces, []) : try(int.bgp_peers, null) != null
