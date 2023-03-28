@@ -347,7 +347,7 @@ objects:
       - apic.node_policies.nodes.id
       - apic.node_policies.nodes.pod
       - apic.node_policies.nodes.type
-      - apic.node_policies.nodes.rl_tep_pool_id
+      - apic.node_policies.nodes.remote_pool_id
   - name: OOB Node Address
     template: oob_node_address
     folder: node_policies
