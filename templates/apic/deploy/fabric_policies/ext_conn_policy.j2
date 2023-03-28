@@ -70,6 +70,17 @@
                                             }
                                         }
                                     }
+                                    {%- if pod.unicast_tep is defined %},
+                                    {
+                                        "fvExtRoutableUcastConnP": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "addr": "{{ pod.unicast_tep }}"
+                                            }
+                                        }
+                                    }
+                                    {% endif %}
+
                                 ]
                             }
                         }

@@ -485,6 +485,10 @@ apic:
           subnets:
             - 11.2.0.0/16
             - 11.3.0.0/16
+        - name: RLEAF
+          subnets:
+            - 13.13.13.1/24
+            - 13.13.14.1/24
 
     vmware_vmm_domains:
       - name: VMM1

@@ -52,3 +52,27 @@ apic:
         role: apic
         oob_address: 10.51.77.61/24
         oob_gateway: 10.51.77.254
+      - id: 301
+        pod: 1
+        role: leaf
+        type: remote-leaf-wan
+        serial_number: TEP-1-301
+        name: RLEAF301
+        oob_address: 10.51.77.95/24
+        oob_gateway: 10.51.77.254
+        inb_address: 1.1.1.11/24
+        inb_gateway: 1.1.1.254
+        update_group: MG1
+        fabric_policy_group: ALL_LEAFS
+        access_policy_group: ALL_LEAFS
+        remote_pool_id: 1
+      - id: 302
+        pod: 1
+        role: leaf
+        type: remote-leaf-wan
+        serial_number: TEP-1-302
+        name: RLEAF302
+        oob_address: 10.51.77.96/24
+        oob_gateway: 10.51.77.254
+        remote_pool_id: 2
+      

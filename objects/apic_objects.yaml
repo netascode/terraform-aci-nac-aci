@@ -347,6 +347,7 @@ objects:
       - apic.node_policies.nodes.id
       - apic.node_policies.nodes.pod
       - apic.node_policies.nodes.type
+      - apic.node_policies.nodes.rl_tep_pool_id
   - name: OOB Node Address
     template: oob_node_address
     folder: node_policies
@@ -640,6 +641,16 @@ objects:
       - health
     paths:
       - apic.fabric_policies.span.destination_groups
+  - name: Remote Leaf Pools
+    template: remote_pools
+    folder: pod_policies
+    aci_classes:
+      - fabricExtSetupP
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.pod_policies.pods
   - name: Interface Type
     template: interface_type
     folder: fabric_policies

@@ -3,8 +3,23 @@ apic:
   pod_policies:
     pods:
       - id: 1
-        data_plane_tep: 1.2.3.4
+        data_plane_tep: 192.168.0.1
+        unicast_tep: 172.16.11.2
         policy: POD1
+        external_tep_pools:
+          - prefix: 172.16.18.0/24
+            reserved_address_count: 4
+          - prefix: 172.16.17.0/24
+            reserved_address_count: 2
+        remote_pools:
+          - id: 1
+            remote_pool: 10.191.200.0/24
+          - id: 2
+            remote_pool: 10.191.202.0/24
       - id: 2
         tep_pool: 10.1.0.0/16
-        data_plane_tep: 1.2.3.5
+        data_plane_tep: 192.168.1.1
+        unicast_tep: 172.16.12.2
+        external_tep_pools:
+          - prefix: 172.16.19.0/24
+            reserved_address_count: 2

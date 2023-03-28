@@ -91,7 +91,7 @@
                                                     }
                                                 }
                                                 {%- endfor %}
-                                                {%- if tenant.name == 'infra' %}{{ comma4() }}
+                                                {%- if ( tenant.name == 'infra' ) and ( l3out.multipod | default(defaults.apic.tenants.l3outs.multipod) ) and not ( l3out.remote_leaf | default(defaults.apic.tenants.l3outs.remote_leaf) ) %}{{ comma4() }}
                                                 {
                                                     "l3extInfraNodeP": {
                                                         "attributes": {
@@ -462,6 +462,9 @@
                                                             {%- for peer in int.bgp_peers | default([]) %}
                                                             {%- set ns.bgp = true %}{{ comma5() }}
                                                             {% set ctrl = [] %}
+                                                            {% if l3out.remote_leaf | default(defaults.apic.tenants.l3outs.remote_leaf) %}
+                                                            {% set ctrl = [("allow-self-as")] %}
+                                                            {% else %}
                                                             {% if peer.allow_self_as | default(defaults.apic.tenants.l3outs.nodes.interfaces.bgp_peers.allow_self_as) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("allow-self-as")] %}{% endif %}
                                                             {% if peer.as_override | default(defaults.apic.tenants.l3outs.nodes.interfaces.bgp_peers.as_override) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("as-override")] %}{% endif %}
                                                             {% if peer.disable_peer_as_check | default(defaults.apic.tenants.l3outs.nodes.interfaces.bgp_peers.disable_peer_as_check) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("dis-peer-as-check")] %}{% endif %}
@@ -475,9 +478,10 @@
                                                             {% if peer.remove_all_private_as | default(defaults.apic.tenants.l3outs.nodes.interfaces.bgp_peers.remove_all_private_as) | cisco.aac.aac_bool("yes") == "yes" %}{% set priv_as_ctrl = priv_as_ctrl + [("remove-all")] %}{% endif %}
                                                             {% if peer.remove_private_as | default(defaults.apic.tenants.l3outs.nodes.interfaces.bgp_peers.remove_private_as) | cisco.aac.aac_bool("yes") == "yes" %}{% set priv_as_ctrl = priv_as_ctrl + [("remove-exclusive")] %}{% endif %}
                                                             {% if peer.replace_private_as_with_local_as | default(defaults.apic.tenants.l3outs.nodes.interfaces.bgp_peers.replace_private_as_with_local_as) | cisco.aac.aac_bool("yes") == "yes" %}{% set priv_as_ctrl = priv_as_ctrl + [("replace-as")] %}{% endif %}
+                                                            {% endif %}
                                                             {% set af = [] %}
                                                             {% if peer.unicast_address_family | default(defaults.apic.tenants.l3outs.nodes.interfaces.bgp_peers.unicast_address_family) | cisco.aac.aac_bool("yes") == "yes" %}{% set af = af + [("af-ucast")] %}{% endif %}
-                                                            {% if peer.multicast_address_family | default(defaults.apic.tenants.l3outs.nodes.interfaces.bgp_peers.multicast_address_family) | cisco.aac.aac_bool("yes") == "yes" %}{% set af = af + [("af-mcast")] %}{% endif %}
+                                                            {% if ( peer.multicast_address_family | default(defaults.apic.tenants.l3outs.nodes.interfaces.bgp_peers.multicast_address_family) | cisco.aac.aac_bool("yes") == "yes" ) and  ( l3out.remote_leaf is false | default(defaults.apic.tenants.l3outs.remote_leaf) is false ) %}{% set af = af + [("af-mcast")] %}{% endif %}                            
                                                             {
                                                                 "bgpPeerP": {
                                                                     "attributes": {
@@ -495,6 +499,9 @@
                                                                         "privateASctrl": "{{ priv_as_ctrl | join(',') }}",
                                                                         "addrTCtrl": "{{ af | join(',') }}",
                                                                         "adminSt": "{{ peer.admin_state | default(defaults.apic.tenants.l3outs.nodes.interfaces.bgp_peers.admin_state) | cisco.aac.aac_bool("enabled") }}",
+                                                                        {% if l3out.remote_leaf | default(defaults.apic.tenants.l3outs.remote_leaf) %}
+                                                                        "connectivityType": "multipod,multisite",
+                                                                        {% endif %}
                                                                         "childAction": "deleteNonPresent"
                                                                     },
                                                                     "children": [
@@ -639,7 +646,7 @@
                                                     }
                                                 }
                                                 {%- endfor %}
-                                                {%- if tenant.name == 'infra' %}{{ comma4() }}
+                                                {%- if ( tenant.name == 'infra' ) and ( l3out.multipod | default(defaults.apic.tenants.l3outs.multipod) ) and not ( l3out.remote_leaf | default(defaults.apic.tenants.l3outs.remote_leaf) ) %}{{ comma4() }}
                                                 {
                                                     "l3extInfraNodeP": {
                                                         "attributes": {
@@ -1011,6 +1018,9 @@
                                                             {%- for peer in int.bgp_peers | default([]) %}
                                                             {%- set ns.bgp = true %}{{ comma5() }}
                                                             {% set ctrl = [] %}
+                                                            {% if l3out.remote_leaf | default(defaults.apic.tenants.l3outs.remote_leaf) %}
+                                                            {% set ctrl = [("allow-self-as")] %}
+                                                            {% else %}
                                                             {% if peer.allow_self_as | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.allow_self_as) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("allow-self-as")] %}{% endif %}
                                                             {% if peer.as_override | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.as_override) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("as-override")] %}{% endif %}
                                                             {% if peer.disable_peer_as_check | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.disable_peer_as_check) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("dis-peer-as-check")] %}{% endif %}
@@ -1024,9 +1034,10 @@
                                                             {% if peer.remove_all_private_as | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.remove_all_private_as) | cisco.aac.aac_bool("yes") == "yes" %}{% set priv_as_ctrl = priv_as_ctrl + [("remove-all")] %}{% endif %}
                                                             {% if peer.remove_private_as | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.remove_private_as) | cisco.aac.aac_bool("yes") == "yes" %}{% set priv_as_ctrl = priv_as_ctrl + [("remove-exclusive")] %}{% endif %}
                                                             {% if peer.replace_private_as_with_local_as | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.replace_private_as_with_local_as) | cisco.aac.aac_bool("yes") == "yes" %}{% set priv_as_ctrl = priv_as_ctrl + [("replace-as")] %}{% endif %}
+                                                            {% endif %}
                                                             {% set af = [] %}
                                                             {% if peer.unicast_address_family | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.unicast_address_family) | cisco.aac.aac_bool("yes") == "yes" %}{% set af = af + [("af-ucast")] %}{% endif %}
-                                                            {% if peer.multicast_address_family | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.multicast_address_family) | cisco.aac.aac_bool("yes") == "yes" %}{% set af = af + [("af-mcast")] %}{% endif %}
+                                                            {% if ( peer.multicast_address_family | default(defaults.apic.tenants.l3outs.nodes.interfaces.bgp_peers.multicast_address_family) | cisco.aac.aac_bool("yes") == "yes" ) and ( l3out.remote_leaf is false | default(defaults.apic.tenants.l3outs.remote_leaf) is false ) %}{% set af = af + [("af-mcast")] %}{% endif %}
                                                             {
                                                                 "bgpPeerP": {
                                                                     "attributes": {
@@ -1044,6 +1055,9 @@
                                                                         "privateASctrl": "{{ priv_as_ctrl | join(',') }}",
                                                                         "addrTCtrl": "{{ af | join(',') }}",
                                                                         "adminSt": "{{ peer.admin_state | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.admin_state) | cisco.aac.aac_bool("enabled") }}",
+                                                                        {% if l3out.remote_leaf | default(defaults.apic.tenants.l3outs.remote_leaf) %}
+                                                                        "connectivityType": "multipod,multisite",
+                                                                        {% endif %}
                                                                         "childAction": "deleteNonPresent"
                                                                     },
                                                                     "children": [

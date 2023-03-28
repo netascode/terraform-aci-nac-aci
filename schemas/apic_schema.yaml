@@ -1130,7 +1130,18 @@ pp_pod:
   id: int(min=1, max=255)
   tep_pool: ip(required=False)
   data_plane_tep: ip(required=False)
+  unicast_tep: ip(required=False)
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  external_tep_pools: list(include('pp_pod_external_tep_pools'), required=False)
+  remote_pools: list(include('pp_pod_remote_pools'), required=False)
+
+pp_pod_external_tep_pools:
+  prefix: ip()
+  reserved_address_count: int(min=1, max=4294967295, required=False)
+
+pp_pod_remote_pools:
+  id: int(min=1, max=255)
+  remote_pool: ip()
 
 node_policies:
   inb_endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1172,6 +1183,7 @@ np_node:
   update_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   fabric_policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   access_policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  remote_pool_id: int(min=1, max=255, required=False)
 
 interface_policies:
   nodes: list(include('ip_node'), required=False) # @name(Interface Policy Nodes) @ref_name(Node ID) @key(id)
@@ -1578,6 +1590,8 @@ ten_l3outs:
   igmp_interface_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
   custom_qos_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  multipod: bool(required=False)
+  remote_leaf: bool(required=False)
 
 ten_l3outs_ospf:
   ospf_interface_profile_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)

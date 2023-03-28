@@ -16,22 +16,17 @@
                             "fabricSetupP": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
-                                    "dn": "uni/controller/setuppol/setupp-{{ pod.id }}",
-                                    "podId": "{{ pod.id }}",
-                                    "podType": "physical"
-                                    {%- if pod.id != 1 %},
-                                    "tepPool": "{{ pod.tep_pool }}"
-                                    {% endif %} 
+                                    "dn": "uni/controller/setuppol/setupp-{{ pod.id }}"
                                 },
                                 "children": [
                                     {%- set comma2 = joiner(",") %}
-                                    {%- for extpool in pod.external_tep_pools %}{{ comma2() }}
+                                    {%- for rlpool in pod.remote_pools %}{{ comma2() }}
                                     {
-                                        "fabricExtRoutablePodSubnet": {
+                                        "fabricExtSetupP": {
                                             "attributes": {
                                                 "annotation": "orchestrator:aac",
-                                                "pool": "{{ extpool.prefix }}",
-                                                "reserveAddressCount": "{{ extpool.reserved_address_count }}"
+                                                "extPoolId": "{{ rlpool.id }}",
+                                                "tepPool": "{{ rlpool.remote_pool }}"
                                             }
                                         }
                                     }

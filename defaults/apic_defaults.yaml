@@ -834,6 +834,8 @@ defaults:
           context_scope: false
           outside_scope: true
         l3_multicast_ipv4: false
+        multipod: true
+        remote_leaf: false
       application_profiles:
         name_suffix: ''
         managed: true

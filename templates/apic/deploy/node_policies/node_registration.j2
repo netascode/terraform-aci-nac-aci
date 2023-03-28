@@ -25,6 +25,9 @@
                                     {%- if node.role == "leaf" and node.type is defined %},
                                     "nodeType": "{{ node.type }}"
                                     {%- endif %}
+                                    {%- if node.type == "remote-leaf-wan" %},
+                                    "extPoolId": "{{ node.remote_pool_id }}"
+                                    {%- endif %}
 
                                 }
                             }

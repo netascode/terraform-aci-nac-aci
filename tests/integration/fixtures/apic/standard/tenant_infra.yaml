@@ -4,6 +4,7 @@ apic:
     - name: infra
       l3outs:
         - name: IPN
+          multipod: true
           vrf: overlay-1
           domain: ANS-L3
           ospf:
@@ -19,6 +20,26 @@ apic:
                   vlan: 4
                 - port: 2
                   ip: 11.11.12.1/24
+                  vlan: 4
+          external_endpoint_groups:
+            - name: ALL
+        - name: RL-L3OUT-OSPF
+          remote_leaf: true
+          vrf: overlay-1
+          domain: ANS-L3
+          ospf:
+            area: backbone
+            area_type: regular
+            policy: IPN1
+          nodes:
+            - node_id: 301
+              router_id: 31.31.31.1
+              interfaces:
+                - port: 1
+                  ip: 13.13.13.1/24
+                  vlan: 4
+                - port: 2
+                  ip: 13.13.14.1/24
                   vlan: 4
           external_endpoint_groups:
             - name: ALL
