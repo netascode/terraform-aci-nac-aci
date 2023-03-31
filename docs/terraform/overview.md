@@ -162,7 +162,7 @@ A failed non-critical test does not impact the overall test result in contrast t
 export ACI_URL="https://10.1.1.100"
 export ACI_USERNAME=admin
 export ACI_PASSWORD=password
-iac-test --data ./data --data ./defaults --templates ./tests/templates --filters ./tests/filters --output ./tests/results/aci
+iac-test --data ./data --data ./defaults.yaml --templates ./tests/templates --filters ./tests/filters --output ./tests/results/aci
 ```
 
 After applying  changes with `terraform apply`, a subsequent `terraform plan` (using the same infrastructure code) is expected to return with no changes.
