@@ -1569,7 +1569,7 @@ locals {
 
 module "aci_route_control_route_map" {
   source  = "netascode/route-control-route-map/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
   for_each    = { for rm in local.route_control_route_maps : rm.key => rm if try(local.modules.aci_route_control_route_map, true) && var.manage_tenants }
   tenant      = each.value.tenant
