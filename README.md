@@ -239,7 +239,7 @@ Additional example repositories:
 | <a name="module_aci_mcp_policy"></a> [aci\_mcp\_policy](#module\_aci\_mcp\_policy) | netascode/mcp-policy/aci | 0.1.0 |
 | <a name="module_aci_monitoring_policy"></a> [aci\_monitoring\_policy](#module\_aci\_monitoring\_policy) | netascode/monitoring-policy/aci | 0.2.1 |
 | <a name="module_aci_mst_policy"></a> [aci\_mst\_policy](#module\_aci\_mst\_policy) | netascode/mst-policy/aci | 0.2.0 |
-| <a name="module_aci_multicast_route_map"></a> [aci\_multicast\_route\_map](#module\_aci\_multicast\_route\_map) | netascode/multicast-route-map/aci | 0.1.1 |
+| <a name="module_aci_multicast_route_map"></a> [aci\_multicast\_route\_map](#module\_aci\_multicast\_route\_map) | netascode/multicast-route-map/aci | 0.1.2 |
 | <a name="module_aci_node_control_policy"></a> [aci\_node\_control\_policy](#module\_aci\_node\_control\_policy) | netascode/node-control-policy/aci | 0.1.0 |
 | <a name="module_aci_node_registration"></a> [aci\_node\_registration](#module\_aci\_node\_registration) | netascode/node-registration/aci | 0.1.0 |
 | <a name="module_aci_oob_contract"></a> [aci\_oob\_contract](#module\_aci\_oob\_contract) | netascode/oob-contract/aci | 0.2.0 |

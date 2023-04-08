@@ -2111,7 +2111,7 @@ locals {
 
 module "aci_multicast_route_map" {
   source  = "netascode/multicast-route-map/aci"
-  version = "0.1.1"
+  version = "0.1.2"
 
   for_each    = { for pol in local.multicast_route_maps : pol.key => pol if try(local.modules.aci_multicast_route_map, true) && var.manage_tenants }
   tenant      = each.value.tenant
