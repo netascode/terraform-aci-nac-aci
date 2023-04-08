@@ -148,7 +148,7 @@ Additional example repositories:
 | <a name="module_aci_access_leaf_switch_policy_group"></a> [aci\_access\_leaf\_switch\_policy\_group](#module\_aci\_access\_leaf\_switch\_policy\_group) | netascode/access-leaf-switch-policy-group/aci | 0.1.0 |
 | <a name="module_aci_access_leaf_switch_profile_auto"></a> [aci\_access\_leaf\_switch\_profile\_auto](#module\_aci\_access\_leaf\_switch\_profile\_auto) | netascode/access-leaf-switch-profile/aci | 0.2.0 |
 | <a name="module_aci_access_leaf_switch_profile_manual"></a> [aci\_access\_leaf\_switch\_profile\_manual](#module\_aci\_access\_leaf\_switch\_profile\_manual) | netascode/access-leaf-switch-profile/aci | 0.2.0 |
-| <a name="module_aci_access_span_destination_group"></a> [aci\_access\_span\_destination\_group](#module\_aci\_access\_span\_destination\_group) | netascode/access-span-destination-group/aci | 0.1.2 |
+| <a name="module_aci_access_span_destination_group"></a> [aci\_access\_span\_destination\_group](#module\_aci\_access\_span\_destination\_group) | netascode/access-span-destination-group/aci | 0.1.3 |
 | <a name="module_aci_access_span_filter_group"></a> [aci\_access\_span\_filter\_group](#module\_aci\_access\_span\_filter\_group) | netascode/access-span-filter-group/aci | 0.1.2 |
 | <a name="module_aci_access_span_source_group"></a> [aci\_access\_span\_source\_group](#module\_aci\_access\_span\_source\_group) | netascode/access-span-source-group/aci | 0.1.0 |
 | <a name="module_aci_access_spine_interface_policy_group"></a> [aci\_access\_spine\_interface\_policy\_group](#module\_aci\_access\_spine\_interface\_policy\_group) | netascode/access-spine-interface-policy-group/aci | 0.1.0 |

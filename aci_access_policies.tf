@@ -645,7 +645,7 @@ locals {
 
 module "aci_access_span_destination_group" {
   source  = "netascode/access-span-destination-group/aci"
-  version = "0.1.2"
+  version = "0.1.3"
 
   for_each            = { for group in local.access_span_destination_groups : group.name => group if try(local.modules.aci_access_span_destination_group, true) && var.manage_access_policies }
   name                = each.value.name
