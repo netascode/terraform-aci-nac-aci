@@ -256,7 +256,7 @@ Additional example repositories:
 | <a name="module_aci_psu_policy"></a> [aci\_psu\_policy](#module\_aci\_psu\_policy) | netascode/psu-policy/aci | 0.1.0 |
 | <a name="module_aci_ptp"></a> [aci\_ptp](#module\_aci\_ptp) | netascode/ptp/aci | 0.1.1 |
 | <a name="module_aci_qos"></a> [aci\_qos](#module\_aci\_qos) | netascode/qos/aci | 0.2.1 |
-| <a name="module_aci_qos_policy"></a> [aci\_qos\_policy](#module\_aci\_qos\_policy) | netascode/qos-policy/aci | 0.1.2 |
+| <a name="module_aci_qos_policy"></a> [aci\_qos\_policy](#module\_aci\_qos\_policy) | netascode/qos-policy/aci | 0.1.3 |
 | <a name="module_aci_redirect_backup_policy"></a> [aci\_redirect\_backup\_policy](#module\_aci\_redirect\_backup\_policy) | netascode/redirect-backup-policy/aci | 0.1.0 |
 | <a name="module_aci_redirect_health_group"></a> [aci\_redirect\_health\_group](#module\_aci\_redirect\_health\_group) | netascode/redirect-health-group/aci | 0.1.0 |
 | <a name="module_aci_redirect_policy"></a> [aci\_redirect\_policy](#module\_aci\_redirect\_policy) | netascode/redirect-policy/aci | 0.2.1 |

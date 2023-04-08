@@ -1816,7 +1816,7 @@ locals {
 
 module "aci_qos_policy" {
   source  = "netascode/qos-policy/aci"
-  version = "0.1.2"
+  version = "0.1.3"
 
   for_each           = { for pol in local.qos_policies : pol.key => pol if try(local.modules.aci_qos_policy, true) && var.manage_tenants }
   tenant             = each.value.tenant
