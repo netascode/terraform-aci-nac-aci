@@ -199,7 +199,7 @@ Additional example repositories:
 | <a name="module_aci_fabric_pod_profile_auto"></a> [aci\_fabric\_pod\_profile\_auto](#module\_aci\_fabric\_pod\_profile\_auto) | netascode/fabric-pod-profile/aci | 0.2.1 |
 | <a name="module_aci_fabric_pod_profile_manual"></a> [aci\_fabric\_pod\_profile\_manual](#module\_aci\_fabric\_pod\_profile\_manual) | netascode/fabric-pod-profile/aci | 0.2.1 |
 | <a name="module_aci_fabric_scheduler"></a> [aci\_fabric\_scheduler](#module\_aci\_fabric\_scheduler) | netascode/fabric-scheduler/aci | 0.2.0 |
-| <a name="module_aci_fabric_span_destination_group"></a> [aci\_fabric\_span\_destination\_group](#module\_aci\_fabric\_span\_destination\_group) | netascode/fabric-span-destination-group/aci | 0.1.0 |
+| <a name="module_aci_fabric_span_destination_group"></a> [aci\_fabric\_span\_destination\_group](#module\_aci\_fabric\_span\_destination\_group) | netascode/fabric-span-destination-group/aci | 0.1.1 |
 | <a name="module_aci_fabric_span_source_group"></a> [aci\_fabric\_span\_source\_group](#module\_aci\_fabric\_span\_source\_group) | netascode/fabric-span-source-group/aci | 0.1.1 |
 | <a name="module_aci_fabric_spine_interface_profile_auto"></a> [aci\_fabric\_spine\_interface\_profile\_auto](#module\_aci\_fabric\_spine\_interface\_profile\_auto) | netascode/fabric-spine-interface-profile/aci | 0.1.0 |
 | <a name="module_aci_fabric_spine_interface_profile_manual"></a> [aci\_fabric\_spine\_interface\_profile\_manual](#module\_aci\_fabric\_spine\_interface\_profile\_manual) | netascode/fabric-spine-interface-profile/aci | 0.1.0 |
