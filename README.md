@@ -173,7 +173,7 @@ Additional example repositories:
 | <a name="module_aci_cdp_policy"></a> [aci\_cdp\_policy](#module\_aci\_cdp\_policy) | netascode/cdp-policy/aci | 0.1.0 |
 | <a name="module_aci_config_export"></a> [aci\_config\_export](#module\_aci\_config\_export) | netascode/config-export/aci | 0.1.1 |
 | <a name="module_aci_config_passphrase"></a> [aci\_config\_passphrase](#module\_aci\_config\_passphrase) | netascode/config-passphrase/aci | 0.1.1 |
-| <a name="module_aci_contract"></a> [aci\_contract](#module\_aci\_contract) | netascode/contract/aci | 0.2.1 |
+| <a name="module_aci_contract"></a> [aci\_contract](#module\_aci\_contract) | netascode/contract/aci | 0.2.2 |
 | <a name="module_aci_coop_policy"></a> [aci\_coop\_policy](#module\_aci\_coop\_policy) | netascode/coop-policy/aci | 0.1.0 |
 | <a name="module_aci_date_time_format"></a> [aci\_date\_time\_format](#module\_aci\_date\_time\_format) | netascode/date-time-format/aci | 0.1.0 |
 | <a name="module_aci_date_time_policy"></a> [aci\_date\_time\_policy](#module\_aci\_date\_time\_policy) | netascode/date-time-policy/aci | 0.2.1 |

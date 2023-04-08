@@ -1267,7 +1267,7 @@ locals {
 
 module "aci_contract" {
   source  = "netascode/contract/aci"
-  version = "0.2.1"
+  version = "0.2.2"
 
   for_each    = { for contract in local.contracts : contract.key => contract if try(local.modules.aci_contract, true) && var.manage_tenants }
   tenant      = each.value.tenant
