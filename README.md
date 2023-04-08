@@ -212,7 +212,7 @@ Additional example repositories:
 | <a name="module_aci_forwarding_scale_policy"></a> [aci\_forwarding\_scale\_policy](#module\_aci\_forwarding\_scale\_policy) | netascode/forwarding-scale-policy/aci | 0.1.0 |
 | <a name="module_aci_geolocation"></a> [aci\_geolocation](#module\_aci\_geolocation) | netascode/geolocation/aci | 0.2.0 |
 | <a name="module_aci_health_score_evaluation_policy"></a> [aci\_health\_score\_evaluation\_policy](#module\_aci\_health\_score\_evaluation\_policy) | netascode/health-score-evaluation-policy/aci | 0.1.0 |
-| <a name="module_aci_igmp_interface_policy"></a> [aci\_igmp\_interface\_policy](#module\_aci\_igmp\_interface\_policy) | netascode/igmp-interface-policy/aci | 0.1.0 |
+| <a name="module_aci_igmp_interface_policy"></a> [aci\_igmp\_interface\_policy](#module\_aci\_igmp\_interface\_policy) | netascode/igmp-interface-policy/aci | 0.1.1 |
 | <a name="module_aci_igmp_snooping_policy"></a> [aci\_igmp\_snooping\_policy](#module\_aci\_igmp\_snooping\_policy) | netascode/igmp-snooping-policy/aci | 0.1.0 |
 | <a name="module_aci_imported_contract"></a> [aci\_imported\_contract](#module\_aci\_imported\_contract) | netascode/imported-contract/aci | 0.1.0 |
 | <a name="module_aci_inband_endpoint_group"></a> [aci\_inband\_endpoint\_group](#module\_aci\_inband\_endpoint\_group) | netascode/inband-endpoint-group/aci | 0.1.1 |

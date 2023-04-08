@@ -1928,7 +1928,7 @@ locals {
 
 module "aci_igmp_interface_policy" {
   source  = "netascode/igmp-interface-policy/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
   for_each                          = { for pol in local.igmp_interface_policies : pol.key => pol if try(local.modules.aci_igmp_interface_policy, true) && var.manage_tenants }
   tenant                            = each.value.tenant
