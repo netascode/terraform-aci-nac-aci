@@ -27,15 +27,15 @@ apic | xls | robot | Create ROBOT Framework test suites from an AAC Excel workbo
 apic | yaml | xls | Create an AAC Excel workbook from AAC YAML inventory files
 apic | yaml | json | Create APIC JSON configuration from AAC YAML inventory files
 apic | yaml | robot | Create ROBOT Framework test suites from AAC YAML inventory files
-mso | xls | yaml | Create AAC YAML inventory files from an AAC Excel workbook
-mso | yaml | xls | Create an AAC Excel workbook from AAC YAML inventory files
+ndo | xls | yaml | Create AAC YAML inventory files from an AAC Excel workbook
+ndo | yaml | xls | Create an AAC Excel workbook from AAC YAML inventory files
 generic | xls | yaml | Create a YAML inventory file from an Excel workbook
 generic | yaml | xls | Create an Excel workbook from YAML inventory files
 
 CLI usage:
 
 ```
-$ aac-tool {DATA_MODEL} {FROM_FORMAT} {TO_FORMAT} [ARGS]...
+aac-tool {DATA_MODEL} {FROM_FORMAT} {TO_FORMAT} [ARGS]...
 ```
 
 ### Examples
@@ -43,23 +43,23 @@ $ aac-tool {DATA_MODEL} {FROM_FORMAT} {TO_FORMAT} [ARGS]...
 Create a DAFE Excel workbook from a configuration backup:
 
 ```
-$ aac-tool apic json dafe --input "/tmp/config_backup.json" --output "/tmp/nip.xlsx"
+aac-tool apic json dafe --input "/tmp/config_backup.json" --output "/tmp/nip.xlsx"
 ```
 
 Create AAC inventory files from a configuration backup:
 
 ```
-$ aac-tool apic xml yaml --input "/tmp/config_backup.xml" --output "/tmp"
+aac-tool apic xml yaml --input "/tmp/config_backup.xml" --output "/tmp"
 ```
 
 Create an empty AAC Excel workbook:
 
 ```
-$ aac-tool apic yaml xls --output "/tmp/template.xlsx"
+aac-tool apic yaml xls --output "/tmp/template.xlsx"
 ```
 
-Create AAC MSO YAML inventory files from an AAC MSO Excel workbook:
+Create AAC NDO YAML inventory files from an AAC NDO Excel workbook:
 
 ```
-$ aac-tool mso xls yaml --input "/tmp/aac.xlsx" --output "/tmp/aac/"
+aac-tool ndo xls yaml --input "/tmp/aac.xlsx" --output "/tmp/aac/"
 ```

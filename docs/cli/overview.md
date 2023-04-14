@@ -37,5 +37,5 @@ Options:
 Commands:
   apic     Conversion using the AAC APIC Data Model
   generic  Conversion using a provided schema
-  mso      Conversion using the AAC MSO Data Model
+  ndo      Conversion using the AAC NDO Data Model
 ```
