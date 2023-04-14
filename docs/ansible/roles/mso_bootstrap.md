@@ -24,4 +24,4 @@ This role is typically run after the initial setup of MSO instances has been com
 
 Class | Type | Example
 -------|------|--------
-Bootstrap | bootstrap | [link](../../data_model/mso/bootstrap/bootstrap.md)
+Bootstrap | bootstrap | [link](../../data_model/ndo/bootstrap/bootstrap.md)
