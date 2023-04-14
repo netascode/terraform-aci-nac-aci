@@ -4,7 +4,7 @@ This role is typically run after the initial setup of APICs has been completed. 
 
 - Creates a user, to be used by 'apic_deploy' role to apply configuration changes. This user has admin privileges and a public certificate configured, to allow signature-based authentications.
 - Creates a user (read-only privileges) for testing
-- Creates a user (admin privileges) to be used my MSO
+- Creates a user (admin privileges) to be used my NDO
 - Configures an encryption passphrase to ensure that secrets are exported in backups
 - Resets the 'admin' password
 

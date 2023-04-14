@@ -1,19 +1,19 @@
-# mso_deploy
+# ndo_deploy
 
-This role adds/modifies/deletes MSO objects.
+This role adds/modifies/deletes NDO objects.
 
 ## Sample Playbook
 
 ```yaml
 ---
-- name: Deploy MSO
-  hosts: mso
+- name: Deploy NDO
+  hosts: ndo
   gather_facts: no
  
   tasks:
-    - name: MSO Deploy
+    - name: NDO Deploy
       ansible.builtin.include_role:
-        name: cisco.aac.mso_deploy
+        name: cisco.aac.ndo_deploy
 ```
 
 ## Classes

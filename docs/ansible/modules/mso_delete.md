@@ -1,6 +1,6 @@
 # mso_delete
 
-This module is used to compare a list of object keys (from the inventory) with the currently configured objects within MSO. If an object is configured within MSO but missing from the provided list of object keys it will be deleted subsequently. There are certain module options to define attributes/values which would indicate that the object should not be considered for deletion.
+This module is used to compare a list of object keys (from the inventory) with the currently configured objects within NDO. If an object is configured within NDO but missing from the provided list of object keys it will be deleted subsequently. There are certain module options to define attributes/values which would indicate that the object should not be considered for deletion.
 
 ## Parameters
 

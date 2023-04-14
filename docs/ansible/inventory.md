@@ -1,6 +1,6 @@
 # Inventory
 
-The ```hosts.yaml``` file is the main inventory which defines the used hosts and groups. It only includes the APIC/MSO IP addresses everything else is defined in the respective ```host_vars``` and ```group_vars``` folders.
+The ```hosts.yaml``` file is the main inventory which defines the used hosts and groups. It only includes the APIC/NDO IP addresses everything else is defined in the respective ```host_vars``` and ```group_vars``` folders.
 
 ```yaml
 ---
@@ -11,10 +11,10 @@ aci:
         apic1:
           apic_host: 10.51.77.64
           ansible_connection: local
-    mso:
+    ndo:
       hosts:
-        mso1:
-          mso_host: 10.51.77.229
+        ndo1:
+          ndo_host: 10.51.77.229
           ansible_connection: local
 ```
 
@@ -43,8 +43,8 @@ Variable | Mandatory | Default | Description
 **apic_public_cert** | No | | The certificate used for signature based authnetication
 **apic_test_username** | No | | The username for a local user created as part of the ```apic_bootstrap``` role and used by ```test_apic_deploy``` role. If not defined ```apic_username``` is used instead.
 **apic_test_password** | No | | The password used for ```apic_test_username``` user.  If not defined ```apic_password``` is used instead.
-**apic_mso_username** | No | | The username for a local user created as part of the ```apic_bootstrap``` role and used by ```mso_deploy``` roles to configure ACI.
-**apic_mso_password** | No | | The password used for ```apic_mso_username``` user
+**apic_ndo_username** | No | | The username for a local user created as part of the ```apic_bootstrap``` role and used by ```ndo_deploy``` roles to configure ACI.
+**apic_ndo_password** | No | | The password used for ```apic_ndo_username``` user
 **apic_admin_password** | No | | Is used to update the 'admin' user password after running ```apic_bootstrap``` role
 **apic_use_proxy** | No | No | If yes, uses a proxy defined as environment variable (see [aci_rest](https://docs.ansible.com/ansible/latest/collections/cisco/aci/aci_rest_module.html) Ansible module)
 **apic_validate_certs** | No | No | If yes, validates the certificate presented by APIC (see [aci_rest](https://docs.ansible.com/ansible/latest/collections/cisco/aci/aci_rest_module.html) Ansible module)
@@ -52,23 +52,23 @@ Variable | Mandatory | Default | Description
 **apic_option_configure** | No | Yes | Enable or disable the configure stage
 **apic_option_delete** | No | No | Enable or disable the delete stage
 
-### MSO
+### NDO
 
 Variable | Mandatory | Default | Description
 ---|---|---|---
-**mso_mode** | No | "only_provided" | - ```only_provided``` limits the list of objects to those configured as per inventory <br> - ```only_changed``` limits the list of objects to those that have changed compared to previous snapshot of the inventory (```previous_inventory``` is thr path to previous inventory files) <br> - ```all``` unconditionally includes all objects
-**mso_platform** | No | "nd" | - ```standalone``` refers to a standalone MSO installation <br> - ```nd``` refers to a Nexus Dashboard installation
-**mso_username** | Yes | | The username for a local user created as part of the ```mso_bootstrap``` role and subsequently used by ```mso_deploy``` roles
-**mso_password** | Yes | | The password used for ```mso_username``` user
-**mso_login_domain** | No | local | The login domain used for ```mso_username``` user
-**mso_test_username** | No | | The username for a local user created as part of the ```mso_bootstrap``` role and used by ```test_mso_deploy``` roles. If not defined ```mso_username``` is used instead.
-**mso_test_password** | No | | The password used for ```mso_test_username``` user. If not defined ```mso_password``` is used instead.
-**mso_test_login_domain** | No | local | The login domain used for ```mso_test_username``` user
-**mso_validate_certs** | No | No | If yes, validates the certificate presented by MSO
-**mso_option_render** | No | Yes | Enable or disable the render stage
-**mso_option_configure** | No | Yes | Enable or disable the configure stage
-**mso_option_delete** | No | No | Enable or disable the delete stage
-**mso_option_deploy** | No | Yes | If True all templates will be deployed to configured sites
+**ndo_mode** | No | "only_provided" | - ```only_provided``` limits the list of objects to those configured as per inventory <br> - ```only_changed``` limits the list of objects to those that have changed compared to previous snapshot of the inventory (```previous_inventory``` is thr path to previous inventory files) <br> - ```all``` unconditionally includes all objects
+**ndo_platform** | No | "nd" | - ```standalone``` refers to a standalone MSO installation <br> - ```nd``` refers to a Nexus Dashboard installation
+**ndo_username** | Yes | | The username for a local user created as part of the ```ndo_bootstrap``` role and subsequently used by ```ndo_deploy``` roles
+**ndo_password** | Yes | | The password used for ```ndo_username``` user
+**ndo_login_domain** | No | local | The login domain used for ```ndo_username``` user
+**ndo_test_username** | No | | The username for a local user created as part of the ```ndo_bootstrap``` role and used by ```test_ndo_deploy``` roles. If not defined ```ndo_username``` is used instead.
+**ndo_test_password** | No | | The password used for ```ndo_test_username``` user. If not defined ```ndo_password``` is used instead.
+**ndo_test_login_domain** | No | local | The login domain used for ```ndo_test_username``` user
+**ndo_validate_certs** | No | No | If yes, validates the certificate presented by NDO
+**ndo_option_render** | No | Yes | Enable or disable the render stage
+**ndo_option_configure** | No | Yes | Enable or disable the configure stage
+**ndo_option_delete** | No | No | Enable or disable the delete stage
+**ndo_option_deploy** | No | Yes | If True all templates will be deployed to configured sites
 
 ### NAE
 

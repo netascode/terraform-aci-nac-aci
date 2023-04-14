@@ -264,12 +264,12 @@ nav:
           - apic_deploy: ansible/roles/apic_deploy.md
           - test_apic_bootstrap: ansible/roles/test_apic_bootstrap.md
           - test_apic_deploy: ansible/roles/test_apic_deploy.md
-          - mso_validate: ansible/roles/mso_validate.md
-          - mso_common: ansible/roles/mso_common.md
-          - mso_bootstrap: ansible/roles/mso_bootstrap.md
-          - mso_deploy: ansible/roles/mso_deploy.md
-          - test_mso_bootstrap: ansible/roles/test_mso_bootstrap.md
-          - test_mso_deploy: ansible/roles/test_mso_deploy.md
+          - ndo_validate: ansible/roles/ndo_validate.md
+          - ndo_common: ansible/roles/ndo_common.md
+          - ndo_bootstrap: ansible/roles/ndo_bootstrap.md
+          - ndo_deploy: ansible/roles/ndo_deploy.md
+          - test_ndo_bootstrap: ansible/roles/test_ndo_bootstrap.md
+          - test_ndo_deploy: ansible/roles/test_ndo_deploy.md
       - Development:
           - Testing: ansible/development/testing.md
           - Extend Functionality: ansible/development/add_class.md
