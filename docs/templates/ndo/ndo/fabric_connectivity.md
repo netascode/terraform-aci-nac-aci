@@ -11,7 +11,7 @@ Location in GUI:
 ndo:
   sites:
     - name: APIC1
-      multisite: enabled
+      multisite: true
       multicast_tep: 5.6.7.8
       bgp:
         as: 65009
@@ -25,10 +25,10 @@ ndo:
           network_type: point-to-point
           priority: 1
           interface_cost: 0
-          passive_interface: disabled
-          mtu_ignore: disabled
-          advertise_subnet: disabled
-          bfd: disabled
+          passive_interface: false
+          mtu_ignore: false
+          advertise_subnet: false
+          bfd: false
           hello_interval: 10
           dead_interval: 40
           retransmit_interval: 5
@@ -39,8 +39,8 @@ ndo:
           spines:
             - id: 1001
               name: SPINE1001
-              bgp_peering: enabled
-              bgp_route_reflector: disabled
+              bgp_peering: true
+              bgp_route_reflector: false
               control_plane_tep: 100.100.100.1
               interfaces:
                 - port: 1
@@ -59,5 +59,5 @@ ndo:
       keepalive_interval: 30
       hold_interval: 90
       stale_interval: 180
-      graceful_restart: disabled
+      graceful_restart: false
 ```

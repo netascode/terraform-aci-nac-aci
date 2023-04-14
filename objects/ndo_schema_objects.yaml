@@ -1,0 +1,54 @@
+---
+schema_objects:
+  - name: Template
+    template: template
+    folder: schema
+    paths:
+      - ndo.schemas.templates.name
+      - ndo.schemas.templates.tenant
+      - ndo.schemas.templates.sites
+  - name: Application Profile
+    template: application_profile
+    folder: schema
+    paths:
+      - ndo.schemas.templates.application_profiles.name
+  - name: Endpoint Group
+    template: endpoint_group
+    folder: schema
+    paths:
+      - ndo.schemas.templates.application_profiles.endpoint_groups
+  - name: VRF
+    template: vrf
+    folder: schema
+    paths:
+      - ndo.schemas.templates.vrfs
+  - name: Bridge Domain
+    template: bridge_domain
+    folder: schema
+    paths:
+      - ndo.schemas.templates.bridge_domains
+  - name: Filter
+    template: filter
+    folder: schema
+    paths:
+      - ndo.schemas.templates.filters
+  - name: Contract
+    template: contract
+    folder: schema
+    paths:
+      - ndo.schemas.templates.contracts
+  - name: L3out
+    template: l3out
+    folder: schema
+    paths:
+      - ndo.schemas.templates.l3outs
+  - name: External Endpoint Group
+    template: external_endpoint_group
+    folder: schema
+    paths:
+      - ndo.schemas.templates.external_endpoint_groups
+  - name: Service Graph
+    template: service_graph
+    folder: schema
+    paths:
+      - ndo.schemas.templates.service_graphs

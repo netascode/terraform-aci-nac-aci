@@ -30,6 +30,7 @@ APIC_DEFAULTS_PATH = "./defaults/apic_defaults.yaml"
 
 NDO_SCHEMA_PATH = "./schemas/ndo_schema.yaml"
 NDO_OBJECTS_PATH = "./objects/ndo_objects.yaml"
+NDO_SCHEMA_OBJECTS_PATH = "./objects/ndo_schema_objects.yaml"
 NDO_DEFAULTS_PATH = "./defaults/ndo_defaults.yaml"
 
 
@@ -449,11 +450,12 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
         shutil.rmtree(pubhub_path, ignore_errors=True)
 
     for item in (
-        objects["objects"]
+        objects.get("objects", [])
         + objects.get("bootstrap_objects", [])
         + objects.get("leaf_objects", [])
         + objects.get("spine_objects", [])
         + objects.get("tenant_objects", [])
+        + objects.get("schema_objects", [])
     ):
         if pubhub:
             if item["name"] == "Bootstrap":
@@ -498,7 +500,7 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
             if not os.path.exists(os.path.dirname(rendered_path)):
                 os.makedirs(os.path.dirname(rendered_path))
 
-            paths = item.get("paths")
+            paths = item.get("doc_paths", item.get("paths"))
             paths = expand_paths(schema, paths)
             class_paths = extract_class_paths(schema, paths)
             output = ""
@@ -553,6 +555,7 @@ def main():
     else:
         render_doc("apic", APIC_SCHEMA_PATH, APIC_OBJECTS_PATH, APIC_DEFAULTS_PATH)
         render_doc("ndo", NDO_SCHEMA_PATH, NDO_OBJECTS_PATH, NDO_DEFAULTS_PATH)
+        render_doc("ndo", NDO_SCHEMA_PATH, NDO_SCHEMA_OBJECTS_PATH, NDO_DEFAULTS_PATH)
 
 
 if __name__ == "__main__":

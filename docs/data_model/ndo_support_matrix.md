@@ -34,4 +34,14 @@ This table provides an overview of which object is supported in combination with
 <span style="display: inline-block; width:250px">Description</span> | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
 [Schema](./ndo/schema/schema.md) | | :material-check: | |
-Deploy Schema | | :material-check: | |
+[Template](./ndo/schema/template.md) | | :material-check: | |
+[Application Profile](./ndo/schema/application_profile.md) | | :material-check: | |
+[Endpoint Group](./ndo/schema/endpoint_group.md) | | :material-check: | |
+[VRF](./ndo/schema/vrf.md) | | :material-check: | |
+[Bridge Domain](./ndo/schema/bridge_domain.md) | | :material-check: | |
+[Filter](./ndo/schema/filter.md) | | :material-check: | |
+[Contract](./ndo/schema/contract.md) | | :material-check: | |
+[L3out](./ndo/schema/l3out.md) | | :material-check: | |
+[External Endpoint Group](./ndo/schema/external_endpoint_group.md) | | :material-check: | |
+[Service Graph](./ndo/schema/service_graph.md) | | :material-check: | |
+Deploy Template | | :material-check: | |

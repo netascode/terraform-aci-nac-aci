@@ -224,6 +224,16 @@ nav:
               - DHCP Option Policy: data_model/ndo/ndo/dhcp_option.md
           - Schema:
               - Schema: data_model/ndo/schema/schema.md
+              - Template: data_model/ndo/schema/template.md
+              - Application Profile: data_model/ndo/schema/application_profile.md
+              - Endpoint Group: data_model/ndo/schema/endpoint_group.md
+              - VRF: data_model/ndo/schema/vrf.md
+              - Bridge Domain: data_model/ndo/schema/bridge_domain.md
+              - Filter: data_model/ndo/schema/filter.md
+              - Contract: data_model/ndo/schema/contract.md
+              - L3out: data_model/ndo/schema/l3out.md
+              - External Endpoint Group: data_model/ndo/schema/external_endpoint_group.md
+              - Service Graph: data_model/ndo/schema/service_graph.md
   - CLI:
       - Overview: cli/overview.md
       - Installation: cli/installation.md

@@ -151,6 +151,8 @@ objects:
     platforms:
       - standalone
       - nd
+    doc_paths:
+      - ndo.schemas.name
   - name: DHCP Relay Policy
     template: dhcp_relay
     api_path: policies/dhcp/relay
