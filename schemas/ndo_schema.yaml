@@ -99,7 +99,7 @@ sites:
   password: any(str(), null())
   id: int(min=1, required=False)
   location: include('sites_location', required=False) # @flatten()
-  multisite: enum('enabled', 'disabled', required=False)
+  multisite: any(bool(), enum('enabled', 'disabled'), required=False)
   multicast_tep: ip(required=False)
   bgp: include('sites_bgp', required=False) # @flatten()
   ospf: include('sites_ospf', required=False) # @flatten()
@@ -124,10 +124,10 @@ sites_ospf_policies:
   network_type: enum('point-to-point', 'broadcast', required=False)
   priority: int(min=0, max=255, required=False)
   interface_cost: int(min=0, max=65535, required=False)
-  passive_interface: enum('enabled', 'disabled', required=False)
-  mtu_ignore: enum('enabled', 'disabled', required=False)
-  advertise_subnet: enum('enabled', 'disabled', required=False)
-  bfd: enum('enabled', 'disabled', required=False)
+  passive_interface: any(bool(), enum('enabled', 'disabled'), required=False)
+  mtu_ignore: any(bool(), enum('enabled', 'disabled'), required=False)
+  advertise_subnet: any(bool(), enum('enabled', 'disabled'), required=False)
+  bfd: any(bool(), enum('enabled', 'disabled'), required=False)
   hello_interval: int(min=1, max=65535, required=False)
   dead_interval: int(min=1, max=65535, required=False)
   retransmit_interval: int(min=1, max=65535, required=False)
@@ -141,8 +141,8 @@ sites_pods:
 sites_pods_spines:
   id: int(min=1, max=4000)
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  bgp_peering: enum('enabled', 'disabled', required=False)
-  bgp_route_reflector: enum('enabled', 'disabled', required=False)
+  bgp_peering: any(bool(), enum('enabled', 'disabled'), required=False)
+  bgp_route_reflector: any(bool(), enum('enabled', 'disabled'), required=False)
   control_plane_tep: ip(required=False)
   interfaces: list(include('sites_pods_spines_interfaces'), required=False)
 
@@ -169,7 +169,7 @@ fc_bgp:
   keepalive_interval: int(min=0, max=3600, required=False) # @name(BGP Keepalive Interval)
   hold_interval: int(min=0, max=3600, required=False) # @name(BGP Hold Interval)
   stale_interval: int(min=1, max=3600, required=False) # @name(BGP Stale Interval)
-  graceful_restart: enum('enabled', 'disabled', required=False) # @name(BGP Graceful Restart)
+  graceful_restart: any(bool(), enum('enabled', 'disabled'), required=False) # @name(BGP Graceful Restart)
 
 tenants:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -239,10 +239,10 @@ t_application_profiles:
 
 t_ap_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  useg: enum('enabled', 'disabled', required=False)
-  intra_epg_isolation: enum('enabled', 'disabled', required=False)
-  proxy_arp: enum('enabled', 'disabled', required=False)
-  preferred_group: enum('enabled', 'disabled', required=False)
+  useg: any(bool(), enum('enabled', 'disabled'), required=False)
+  intra_epg_isolation: any(bool(), enum('enabled', 'disabled'), required=False)
+  proxy_arp: any(bool(), enum('enabled', 'disabled'), required=False)
+  preferred_group: any(bool(), enum('enabled', 'disabled'), required=False)
   bridge_domain: include('t_ap_epg_bridge_domain', required=False) # @flatten() @description(Required for On-Premises)
   vrf: include('t_ap_epg_vrf', required=False) # @flatten() @description(Required for Cloud)
   subnets: list(include('t_ap_epg_subnets'), required=False) # @name(EPG Subnets) @ref_name(Subnet)
@@ -262,9 +262,9 @@ t_ap_epg_vrf:
 t_ap_epg_subnets:
   ip: ip()
   scope: enum('private', 'public', required=False)
-  shared: enum('enabled', 'disabled', required=False)
-  no_default_gateway: enum('enabled', 'disabled', required=False)
-  primary: enum('enabled', 'disabled', required=False)
+  shared: any(bool(), enum('enabled', 'disabled'), required=False)
+  no_default_gateway: any(bool(), enum('enabled', 'disabled'), required=False)
+  primary: any(bool(), enum('enabled', 'disabled'), required=False)
 
 t_ap_epg_contracts:
   consumers: list(include('t_ap_epg_contracts_consumers'), required=False) # @name(EPG Consumers)
@@ -300,7 +300,7 @@ t_ap_epg_sites_vmware_vmm_domains:
   resolution_immediacy: enum('immediate', 'lazy', 'pre-provision', required=False)
   vlan_mode: enum('static', 'dynamic', required=False)
   vlan: int(min=1, max=4096, required=False)
-  u_segmentation: enum('enabled', 'disabled', required=False)
+  u_segmentation: any(bool(), enum('enabled', 'disabled'), required=False)
   useg_vlan: int(min=1, max=4096, required=False)
 
 t_ap_epg_sites_static_ports:
@@ -328,9 +328,9 @@ t_ap_epg_sites_subnets:
   ip: ip()
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
   scope: enum('private', 'public', required=False)
-  shared: enum('enabled', 'disabled', required=False)
-  no_default_gateway: enum('enabled', 'disabled', required=False)
-  primary: enum('enabled', 'disabled', required=False)
+  shared: any(bool(), enum('enabled', 'disabled'), required=False)
+  no_default_gateway: any(bool(), enum('enabled', 'disabled'), required=False)
+  primary: any(bool(), enum('enabled', 'disabled'), required=False)
 
 t_ap_epg_sites_selectors:
   name: str()
@@ -343,9 +343,9 @@ t_ap_epg_sites_selectors_expressions:
 
 t_vrfs:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  l3_multicast: enum('enabled', 'disabled', required=False)
-  vzany: enum('enabled', 'disabled', required=False)
-  preferred_group: enum('enabled', 'disabled', required=False)
+  l3_multicast: any(bool(), enum('enabled', 'disabled'), required=False)
+  vzany: any(bool(), enum('enabled', 'disabled'), required=False)
+  preferred_group: any(bool(), enum('enabled', 'disabled'), required=False)
   sites: list(include('t_vrf_sites'), required=False) # @name(VRF Sites) @ref_name(Site)
   contracts: include('t_vrfs_contracts', required=False) # @flatten()
 
@@ -369,10 +369,10 @@ t_vrf_sites:
 
 t_vrf_sites_regions:
   name: str()
-  hub_network: enum('enabled', 'disabled', required=False)
+  hub_network: any(bool(), enum('enabled', 'disabled'), required=False)
   hub_network_name: str(required=False)
   hub_network_tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @ref_table(ndo.tenants)
-  vpn_gateway: enum('enabled', 'disabled', required=False)
+  vpn_gateway: any(bool(), enum('enabled', 'disabled'), required=False)
   cidrs: list(include('t_vrf_sites_regions_cidrs'), required=False) # @name(VRF Region CIDRs) @ref_name(CIDR)
 
 t_vrf_sites_regions_cidrs:
@@ -387,12 +387,12 @@ t_vrf_sites_regions_cidrs_subnets:
 t_bridge_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   l2_unknown_unicast: enum('proxy', 'flood', required=False)
-  intersite_bum_traffic: enum('enabled', 'disabled', required=False)
-  optimize_wan_bandwidth: enum('enabled', 'disabled', required=False)
-  l2_stretch: enum('enabled', 'disabled', required=False)
-  unicast_routing: enum('enabled', 'disabled', required=False)
-  arp_flooding: enum('enabled', 'disabled', required=False)
-  l3_multicast: enum('enabled', 'disabled', required=False)
+  intersite_bum_traffic: any(bool(), enum('enabled', 'disabled'), required=False)
+  optimize_wan_bandwidth: any(bool(), enum('enabled', 'disabled'), required=False)
+  l2_stretch: any(bool(), enum('enabled', 'disabled'), required=False)
+  unicast_routing: any(bool(), enum('enabled', 'disabled'), required=False)
+  arp_flooding: any(bool(), enum('enabled', 'disabled'), required=False)
+  l3_multicast: any(bool(), enum('enabled', 'disabled'), required=False)
   vrf: include('t_bd_vrf') # @flatten()
   subnets: list(include('t_bd_subnets'), required=False) # @name(Bridge Domain Subnets)
   sites: list(include('t_bd_sites'), required=False) # @name(Bridge Domain Sites) @ref_name(Site)
@@ -408,9 +408,9 @@ t_bd_vrf:
 t_bd_subnets:
   ip: ip()
   scope: enum('private', 'public', required=False)
-  shared: enum('enabled', 'disabled', required=False)
-  querier: enum('enabled', 'disabled', required=False)
-  primary: enum('enabled', 'disabled', required=False)
+  shared: any(bool(), enum('enabled', 'disabled'), required=False)
+  querier: any(bool(), enum('enabled', 'disabled'), required=False)
+  primary: any(bool(), enum('enabled', 'disabled'), required=False)
 
 t_bd_dhcp_policies:
   dhcp_relay_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @ref_table(policies.dhcp_relays)
@@ -418,7 +418,7 @@ t_bd_dhcp_policies:
 
 t_bd_sites:
   name: str() # @ref_table(ndo.sites)
-  advertise_host_routes: enum('enabled', 'disabled', required=False)
+  advertise_host_routes: any(bool(), enum('enabled', 'disabled'), required=False)
   subnets: list(include('t_bd_subnets'), required=False) # @name(Bridge Domain Site Subnets)
   l3outs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Bridge Domain Site L3outs) @ref_name(L3out) # @ref_table(schemas_templates.l3outs)
   mac: mac(required=False)
@@ -435,7 +435,7 @@ t_filters_entries:
   source_to_port: any(int(min=0, max=65535), enum('unspecified'), required=False)
   destination_from_port: any(int(min=0, max=65535), enum('unspecified'), required=False)
   destination_to_port: any(int(min=0, max=65535), enum('unspecified'), required=False)
-  stateful: enum('enabled', 'disabled', required=False)
+  stateful: any(bool(), enum('enabled', 'disabled'), required=False)
 
 t_l3outs:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -449,7 +449,7 @@ t_l3outs_vrf:
 t_external_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   type: enum('on-premise', 'cloud', required=False)
-  preferred_group: enum('enabled', 'disabled', required=False)
+  preferred_group: any(bool(), enum('enabled', 'disabled'), required=False)
   vrf: include('t_eepg_vrf') # @flatten()
   l3out: include('t_eepg_l3out', required=False) # @flatten()
   application_profile: include('t_eepg_ap', required=False) # @flatten()
@@ -475,14 +475,14 @@ t_eepg_ap:
 
 t_eepg_subnet:
   prefix: ip()
-  import_route_control: enum('yes', 'no', required=False)
-  export_route_control: enum('yes', 'no', required=False)
-  shared_route_control: enum('yes', 'no', required=False)
-  import_security: enum('yes', 'no', required=False)
-  shared_security: enum('yes', 'no', required=False)
-  aggregate_import: enum('yes', 'no', required=False)
-  aggregate_export: enum('yes', 'no', required=False)
-  aggregate_shared: enum('yes', 'no', required=False)
+  import_route_control: any(bool(), enum('yes', 'no'), required=False)
+  export_route_control: any(bool(), enum('yes', 'no'), required=False)
+  shared_route_control: any(bool(), enum('yes', 'no'), required=False)
+  import_security: any(bool(), enum('yes', 'no'), required=False)
+  shared_security: any(bool(), enum('yes', 'no'), required=False)
+  aggregate_import: any(bool(), enum('yes', 'no'), required=False)
+  aggregate_export: any(bool(), enum('yes', 'no'), required=False)
+  aggregate_shared: any(bool(), enum('yes', 'no'), required=False)
 
 t_eepg_contracts:
   consumers: list(include('t_eepg_contracts_consumers'), required=False) # @name(External EPG Consumers)
@@ -526,7 +526,7 @@ t_contracts_filters:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @ref_table(schemas_templates.filters)
   schema: str(required=False) # @ref_table(ndo.schemas)
   template: str(required=False) # @ref_table(schemas.templates)
-  log: enum('enabled', 'disabled', required=False)
+  log: any(bool(), enum('enabled', 'disabled'), required=False)
 
 t_contracts_service_graph:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(Service Graph Name)

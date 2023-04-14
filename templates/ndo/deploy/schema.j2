@@ -56,21 +56,21 @@
                                 {
                                     "ip": "{{ subnet.ip }}",
                                     "scope": "{{ subnet.scope | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.scope) }}",
-                                    "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.shared) == "enabled" %}true{% else %}false{% endif %},
-                                    "noDefaultGateway": {% if subnet.no_default_gateway | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.no_default_gateway) == "enabled" %}true{% else %}false{% endif %}
+                                    "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.shared) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                                    "noDefaultGateway": {% if subnet.no_default_gateway | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.no_default_gateway) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
                                     {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %},
-                                    "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.primary) == "enabled" %}true{% else %}false{% endif %}
+                                    "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.primary) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
                                     {%- endif %}
                                     
                                 }
                                 {%- endfor %}
 
                             ],
-                            "uSegEpg": {% if epg.useg | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.useg) == "enabled" %}true{% else %}false{% endif %},
+                            "uSegEpg": {% if epg.useg | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.useg) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                             "uSegAttrs": [],
-                            "intraEpg": {% if epg.proxy_arp | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.proxy_arp) == "enabled" %}"enforced"{% else %}"unenforced"{% endif %},
-                            "proxyArp": {% if epg.proxy_arp | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.proxy_arp) == "enabled" %}true{% else %}false{% endif %},
-                            "preferredGroup": {% if epg.preferred_group | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.preferred_group) == "enabled" %}true{% else %}false{% endif %},
+                            "intraEpg": {% if epg.intra_epg_isolation | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.intra_epg_isolation) | cisco.aac.aac_bool(True) %}"enforced"{% else %}"unenforced"{% endif %},
+                            "proxyArp": {% if epg.proxy_arp | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.proxy_arp) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                            "preferredGroup": {% if epg.preferred_group | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.preferred_group) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                             {% if epg.bridge_domain.name is defined %}
                             {% set bd_name = epg.bridge_domain.name ~ defaults.ndo.schemas.templates.bridge_domains.name_suffix %}
                             {% if epg.bridge_domain.schema | default(schema.name) == schema.name %}
@@ -103,9 +103,9 @@
                 {
                     "name": "{{ vrf_name }}",
                     "displayName": "{{ vrf_name }}",
-                    "preferredGroup": {% if vrf.preferred_group | default(defaults.ndo.schemas.templates.vrfs.preferred_group) == "enabled" %}true{% else %}false{% endif %},
-                    "l3MCast": {% if vrf.l3_multicast | default(defaults.ndo.schemas.templates.vrfs.l3_multicast) == "enabled" %}true{% else %}false{% endif %},
-                    "vzAnyEnabled": {% if vrf.vzany | default(defaults.ndo.schemas.templates.vrfs.vzany) == "enabled" %}true{% else %}false{% endif %},
+                    "preferredGroup": {% if vrf.preferred_group | default(defaults.ndo.schemas.templates.vrfs.preferred_group) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                    "l3MCast": {% if vrf.l3_multicast | default(defaults.ndo.schemas.templates.vrfs.l3_multicast) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                    "vzAnyEnabled": {% if vrf.vzany | default(defaults.ndo.schemas.templates.vrfs.vzany) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     "vzAnyConsumerContracts": [
                         {% set comma3 = joiner(",") %}
                         {%- for contract in vrf.contracts.consumers | default([]) %}{{ comma3() }}
@@ -142,26 +142,26 @@
                     "name": "{{ bd_name }}",
                     "displayName": "{{ bd_name }}",
                     "l2UnknownUnicast": "{{ bd.l2_unknown_unicast | default(defaults.ndo.schemas.templates.bridge_domains.l2_unknown_unicast)}}",
-                    "intersiteBumTrafficAllow": {% if bd.intersite_bum_traffic | default(defaults.ndo.schemas.templates.bridge_domains.intersite_bum_traffic) == "enabled" %}true{% else %}false{% endif %},
-                    "optimizeWanBandwidth": {% if bd.optimize_wan_bandwidth | default(defaults.ndo.schemas.templates.bridge_domains.optimize_wan_bandwidth) == "enabled" %}true{% else %}false{% endif %},
-                    "l2Stretch": {% if bd.l2_stretch | default(defaults.ndo.schemas.templates.bridge_domains.l2_stretch) == "enabled" %}true{% else %}false{% endif %},
+                    "intersiteBumTrafficAllow": {% if bd.intersite_bum_traffic | default(defaults.ndo.schemas.templates.bridge_domains.intersite_bum_traffic) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                    "optimizeWanBandwidth": {% if bd.optimize_wan_bandwidth | default(defaults.ndo.schemas.templates.bridge_domains.optimize_wan_bandwidth) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                    "l2Stretch": {% if bd.l2_stretch | default(defaults.ndo.schemas.templates.bridge_domains.l2_stretch) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     {% if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %}
-                    "unicastRouting": {% if bd.unicast_routing | default(defaults.ndo.schemas.templates.bridge_domains.unicast_routing) == "enabled" %}true{% else %}false{% endif %},
+                    "unicastRouting": {% if bd.unicast_routing | default(defaults.ndo.schemas.templates.bridge_domains.unicast_routing) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     {% endif %}
                     {% if ndo.version | default(defaults.ndo.version) is version('3.1.1g', '>=') %}
-                    "arpFlood": {% if bd.arp_flooding | default(defaults.ndo.schemas.templates.bridge_domains.arp_flooding) == "enabled" %}true{% else %}false{% endif %},
+                    "arpFlood": {% if bd.arp_flooding | default(defaults.ndo.schemas.templates.bridge_domains.arp_flooding) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     {% endif %}
-                    "l3MCast": {% if bd.l3_multicast | default(defaults.ndo.schemas.templates.bridge_domains.l3_multicast) == "enabled" %}true{% else %}false{% endif %},
+                    "l3MCast": {% if bd.l3_multicast | default(defaults.ndo.schemas.templates.bridge_domains.l3_multicast) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     "subnets": [
                         {%- set comma3 = joiner(",") %}
                         {%- for subnet in bd.subnets | default([]) %}{{ comma3() }}
                         {
                             "ip": "{{ subnet.ip }}",
                             "scope": "{{ subnet.scope | default(defaults.ndo.schemas.templates.bridge_domains.subnets.scope) }}",
-                            "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.bridge_domains.subnets.shared) == "enabled" %}true{% else %}false{% endif %},
-                            "querier": {% if subnet.querier | default(defaults.ndo.schemas.templates.bridge_domains.subnets.querier) == "enabled" %}true{% else %}false{% endif %}
+                            "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.bridge_domains.subnets.shared) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                            "querier": {% if subnet.querier | default(defaults.ndo.schemas.templates.bridge_domains.subnets.querier) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
                             {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %},
-                            "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.bridge_domains.subnets.primary) == "enabled" %}true{% else %}false{% endif %}
+                            "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.bridge_domains.subnets.primary) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
                             {%- endif %}
 
                         }
@@ -232,7 +232,7 @@
                             "filterRef": "/schemas/%%schemas%{{ filter.schema | default(schema.name) }}%%/templates/{{ filter.template | default(template.name) }}/filters/{{ filter_name }}",
                             {% endif %}
                             "directives": [
-                                {% if filter.log | default(defaults.ndo.schemas.templates.contracts.filters.log) == "enabled" %}
+                                {% if filter.log | default(defaults.ndo.schemas.templates.contracts.filters.log) | cisco.aac.aac_bool(True) %}
                                 "log"
                                 {% else %}
                                 "none"
@@ -255,7 +255,7 @@
                             "filterRef": "/schemas/%%schemas%{{ filter.schema | default(schema.name) }}%%/templates/{{ filter.template | default(template.name) }}/filters/{{ filter_name }}",
                             {% endif %}
                             "directives": [
-                                {% if filter.log | default(defaults.ndo.schemas.templates.contracts.filters.log) == "enabled" %}"log"{% else %}"none"{% endif %}
+                                {% if filter.log | default(defaults.ndo.schemas.templates.contracts.filters.log) | cisco.aac.aac_bool(True) %}"log"{% else %}"none"{% endif %}
 
                             ]
                         }
@@ -273,7 +273,7 @@
                             "filterRef": "/schemas/%%schemas%{{ filter.schema | default(schema.name) }}%%/templates/{{ filter.template | default(template.name) }}/filters/{{ filter_name }}",
                             {% endif %}
                             "directives": [
-                                {% if filter.log | default(defaults.ndo.schemas.templates.contracts.filters.log) == "enabled" %}"log"{% else %}"none"{% endif %}
+                                {% if filter.log | default(defaults.ndo.schemas.templates.contracts.filters.log) | cisco.aac.aac_bool(True) %}"log"{% else %}"none"{% endif %}
 
                             ]
                         }
@@ -349,7 +349,7 @@
                             "ipProtocol": "unspecified",
                             {% endif %}
                             "matchOnlyFragments": false,
-                            "stateful": {% if entry.stateful | default(defaults.ndo.schemas.templates.filters.entries.stateful) == "enabled" %}true{% else %}false{% endif %},
+                            "stateful": {% if entry.stateful | default(defaults.ndo.schemas.templates.filters.entries.stateful) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                             "sourceFrom": "{{ entry.source_from_port | default(defaults.ndo.schemas.templates.filters.entries.source_from_port) }}",
                             "sourceTo": "{{ entry.source_to_port | default(entry.source_from_port | default(defaults.ndo.schemas.templates.filters.entries.source_from_port)) }}",
                             "destinationFrom": "{{ entry.destination_from_port | default(defaults.ndo.schemas.templates.filters.entries.destination_from_port) }}",
@@ -383,15 +383,15 @@
                         {%- set comma3 = joiner(",") %}
                         {%- for subnet in epg.subnets | default([]) %}{{ comma3() }}
                         {% set scope = [] %}
-                        {% if subnet.export_route_control | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.export_route_control) == "yes" %}{% set scope = scope + [('"export-rtctrl"')] %}{% endif %}
-                        {% if subnet.import_route_control | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.import_route_control) == "yes" %}{% set scope = scope + [('"import-rtctrl"')] %}{% endif %}
-                        {% if subnet.import_security | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.import_security) == "yes" %}{% set scope = scope + [('"import-security"')] %}{% endif %}
-                        {% if subnet.shared_route_control | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.shared_route_control) == "yes" %}{% set scope = scope + [('"shared-rtctrl"')] %}{% endif %}
-                        {% if subnet.shared_security | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.shared_security) == "yes" %}{% set scope = scope + [('"shared-security"')] %}{% endif %}
+                        {% if subnet.export_route_control | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.export_route_control) | cisco.aac.aac_bool(True) %}{% set scope = scope + [('"export-rtctrl"')] %}{% endif %}
+                        {% if subnet.import_route_control | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.import_route_control) | cisco.aac.aac_bool(True) %}{% set scope = scope + [('"import-rtctrl"')] %}{% endif %}
+                        {% if subnet.import_security | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.import_security) | cisco.aac.aac_bool(True) %}{% set scope = scope + [('"import-security"')] %}{% endif %}
+                        {% if subnet.shared_route_control | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.shared_route_control) | cisco.aac.aac_bool(True) %}{% set scope = scope + [('"shared-rtctrl"')] %}{% endif %}
+                        {% if subnet.shared_security | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.shared_security) | cisco.aac.aac_bool(True) %}{% set scope = scope + [('"shared-security"')] %}{% endif %}
                         {% set aggregate = [] %}
-                        {% if subnet.aggregate_export | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.aggregate_export) == "yes" %}{% set aggregate = aggregate + [('"export-rtctrl"')] %}{% endif %}
-                        {% if subnet.aggregate_import | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.aggregate_import) == "yes" %}{% set aggregate = aggregate + [('"import-rtctrl"')] %}{% endif %}
-                        {% if subnet.aggregate_shared | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.aggregate_shared) == "yes" %}{% set aggregate = aggregate + [('"shared-rtctrl"')] %}{% endif %}
+                        {% if subnet.aggregate_export | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.aggregate_export) | cisco.aac.aac_bool(True) %}{% set aggregate = aggregate + [('"export-rtctrl"')] %}{% endif %}
+                        {% if subnet.aggregate_import | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.aggregate_import) | cisco.aac.aac_bool(True) %}{% set aggregate = aggregate + [('"import-rtctrl"')] %}{% endif %}
+                        {% if subnet.aggregate_shared | default(defaults.ndo.schemas.templates.external_endpoint_groups.subnets.aggregate_shared) | cisco.aac.aac_bool(True) %}{% set aggregate = aggregate + [('"shared-rtctrl"')] %}{% endif %}
                         {
                             "ip": "{{ subnet.prefix }}",
                             "scope": [
@@ -430,7 +430,7 @@
                         {%- endfor %}
 
                     ],
-                    "preferredGroup": {% if epg.preferred_group | default(defaults.ndo.schemas.templates.external_endpoint_groups.preferred_group) == "enabled" %}true{% else %}false{% endif %},
+                    "preferredGroup": {% if epg.preferred_group | default(defaults.ndo.schemas.templates.external_endpoint_groups.preferred_group) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     {% if epg.l3out.name is defined %}
                     {% set l3out_name = epg.l3out.name ~ defaults.ndo.schemas.templates.l3outs.name_suffix %}
                     {% if epg.l3out.schema | default(schema.name) == schema.name %}
@@ -565,14 +565,14 @@
                                         "vlanType": "vlan",
                                         "vlan": {{ vmm.vlan }}
                                     },
-                                    {% if vmm.u_segmentation | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.u_segmentation) == "enabled" %}
+                                    {% if vmm.u_segmentation | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.u_segmentation) | cisco.aac.aac_bool(True) %}
                                     "microSegVlan": {
                                         "vlanType": "vlan",
                                         "vlan": {{ vmm.useg_vlan }}
                                     },
                                     {% endif %}
                                     {% endif %}
-                                    "allowMicroSegmentation": {% if vmm.u_segmentation | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.u_segmentation) == "enabled" %}true{% else %}false{% endif %},
+                                    "allowMicroSegmentation": {% if vmm.u_segmentation | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.u_segmentation) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                                     "switchType": "default",
                                     "switchingMode": "native"
                                 }
@@ -630,10 +630,10 @@
                                     "ip": "{{ subnet.ip }}",
                                     "description": "{{ subnet.description | default() }}",
                                     "scope": "{{ subnet.scope | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.scope) }}",
-                                    "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.shared) == "enabled" %}true{% else %}false{% endif %},
-                                    "noDefaultGateway": {% if subnet.no_default_gateway | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.no_default_gateway) == "enabled" %}true{% else %}false{% endif %}
+                                    "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.shared) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                                    "noDefaultGateway": {% if subnet.no_default_gateway | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.no_default_gateway) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
                                     {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %}
-                                    "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.primary) == "enabled" %}true{% else %}false{% endif %}
+                                    "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.primary) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
                                     {%- endif %}
 
                                 }
@@ -703,14 +703,14 @@
                                 {%- endfor %}
 
                             ],
-                            {% if region.hub_network | default(defaults.ndo.schemas.templates.vrfs.sites.regions.hub_network) == "enabled" %}
+                            {% if region.hub_network | default(defaults.ndo.schemas.templates.vrfs.sites.regions.hub_network) | cisco.aac.aac_bool(True) %}
                             "cloudRsCtxProfileToGatewayRouterP": {
                                 "name": "{{ region.hub_network_name }}",
                                 "tenantName": "{{ region.hub_network_tenant }}"
                             },
                             {% endif %}
-                            "isVpnGatewayRouter": {% if region.vpn_gateway | default(defaults.ndo.schemas.templates.vrfs.sites.regions.vpn_gateway) == "enabled" %}true{% else %}false{% endif %},
-                            "isTGWAttachment": {% if region.hub_network | default(defaults.ndo.schemas.templates.vrfs.sites.regions.hub_network) == "enabled" %}true{% else %}false{% endif %},
+                            "isVpnGatewayRouter": {% if region.vpn_gateway | default(defaults.ndo.schemas.templates.vrfs.sites.regions.vpn_gateway) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                            "isTGWAttachment": {% if region.hub_network | default(defaults.ndo.schemas.templates.vrfs.sites.regions.hub_network) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                             "hubnetworkPeering": false
                         }
                         {%- endfor %}
@@ -736,10 +736,10 @@
                         {
                             "ip": "{{ subnet.ip }}",
                             "scope": "{{ subnet.scope | default(defaults.ndo.schemas.templates.bridge_domains.subnets.scope) }}",
-                            "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.bridge_domains.subnets.shared) == "enabled" %}true{% else %}false{% endif %},
-                            "querier": {% if subnet.querier | default(defaults.ndo.schemas.templates.bridge_domains.subnets.querier) == "enabled" %}true{% else %}false{% endif %}
+                            "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.bridge_domains.subnets.shared) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                            "querier": {% if subnet.querier | default(defaults.ndo.schemas.templates.bridge_domains.subnets.querier) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
                             {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %},
-                            "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.bridge_domains.subnets.primary) == "enabled" %}true{% else %}false{% endif %}
+                            "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.bridge_domains.subnets.primary) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
                             {%- endif %}
 
                         }
@@ -754,7 +754,7 @@
                         {%- endfor %}
 
                     ],
-                    "hostBasedRouting": {% if site.advertise_host_routes | default(defaults.ndo.schemas.templates.bridge_domains.sites.advertise_host_routes) == "enabled" %}true{% else %}false{% endif %}
+                    "hostBasedRouting": {% if site.advertise_host_routes | default(defaults.ndo.schemas.templates.bridge_domains.sites.advertise_host_routes) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
                     {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %},
                     "mac": {{ site.mac | default(defaults.ndo.schemas.templates.bridge_domains.sites.mac) }}
                     {%- endif %}

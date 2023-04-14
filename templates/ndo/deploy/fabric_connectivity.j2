@@ -1,6 +1,6 @@
 {% set ns = namespace(sites = 0) %}
 {% for site in ndo.sites | default([]) %}
-    {% if site.multisite | default(defaults.ndo.sites.multisite) == "enabled" %}
+    {% if site.multisite | default(defaults.ndo.sites.multisite) | cisco.aac.aac_bool(True) %}
         {% set ns.sites = ns.sites + 1 %}
     {% endif %}
 {% endfor %}
@@ -12,20 +12,20 @@
         "keepAliveInterval": {{ ndo.fabric_connectivity.bgp.keepalive_interval | default(defaults.ndo.fabric_connectivity.bgp.keepalive_interval) }},
         "holdInterval": {{ ndo.fabric_connectivity.bgp.hold_interval | default(defaults.ndo.fabric_connectivity.bgp.hold_interval) }},
         "staleInterval": {{ ndo.fabric_connectivity.bgp.stale_interval | default(defaults.ndo.fabric_connectivity.bgp.stale_interval) }},
-        "gracefulRestartEnabled": {% if ndo.fabric_connectivity.bgp.graceful_restart | default(defaults.ndo.fabric_connectivity.bgp.graceful_restart) == "enabled" %}true{% else %}false{% endif %},
+        "gracefulRestartEnabled": {% if ndo.fabric_connectivity.bgp.graceful_restart | default(defaults.ndo.fabric_connectivity.bgp.graceful_restart) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
         "maxAsLimit": {{ ndo.fabric_connectivity.bgp.max_as | default(defaults.ndo.fabric_connectivity.bgp.max_as) }}
     },
     "sites": [
         {%- set comma1 = joiner(",") %}
         {%- for site in ndo.sites | default([]) %}{{ comma1() }}
-        {% if site.multisite | default(defaults.ndo.sites.multisite) == "enabled" %}
+        {% if site.multisite | default(defaults.ndo.sites.multisite) | cisco.aac.aac_bool(True) %}
         {% set routed_domain_name = site.routed_domain | default() ~ defaults.ndo.sites.routed_domain_suffix %}
         {
             "id": "%%sites%{{ site.name }}%%",
             "apicSiteId": {{ site.id }},
             "platform": "on-premise",
             "fabricId": 1,
-            "msiteEnabled": {% if site.multisite | default(defaults.ndo.sites.multisite) == "enabled" %}true{% else %}false{% endif %},
+            "msiteEnabled": {% if site.multisite | default(defaults.ndo.sites.multisite) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
             "msiteDataPlaneMulticastTep": "{{ site.multicast_tep | default() }}",
             "bgpAsn": {{ site.bgp.as | default() }},
             "bgpPassword": "{{ site.bgp.password | default() }}",
@@ -36,10 +36,10 @@
                 {%- set comma2 = joiner(",") %}
                 {%- for pol in site.ospf_policies | default([]) %}{{ comma2() }}
                 {% set ctrl = [] %}
-                {% if pol.advertise_subnet | default(defaults.ndo.sites.ospf_policies.advertise_subnet) == "enabled" %}{% set ctrl = ctrl + [('"advertise-subnet"')] %}{% endif %}
-                {% if pol.bfd | default(defaults.ndo.sites.ospf_policies.bfd) == "enabled" %}{% set ctrl = ctrl + [('"bfd"')] %}{% endif %}
-                {% if pol.mtu_ignore | default(defaults.ndo.sites.ospf_policies.mtu_ignore) == "enabled" %}{% set ctrl = ctrl + [('"mtu-ignore"')] %}{% endif %}
-                {% if pol.passive_interface | default(defaults.ndo.sites.ospf_policies.passive_interface) == "enabled" %}{% set ctrl = ctrl + [('"passive-participation"')] %}{% endif %}
+                {% if pol.advertise_subnet | default(defaults.ndo.sites.ospf_policies.advertise_subnet) | cisco.aac.aac_bool(True) %}{% set ctrl = ctrl + [('"advertise-subnet"')] %}{% endif %}
+                {% if pol.bfd | default(defaults.ndo.sites.ospf_policies.bfd) | cisco.aac.aac_bool(True) %}{% set ctrl = ctrl + [('"bfd"')] %}{% endif %}
+                {% if pol.mtu_ignore | default(defaults.ndo.sites.ospf_policies.mtu_ignore) | cisco.aac.aac_bool(True) %}{% set ctrl = ctrl + [('"mtu-ignore"')] %}{% endif %}
+                {% if pol.passive_interface | default(defaults.ndo.sites.ospf_policies.passive_interface) | cisco.aac.aac_bool(True) %}{% set ctrl = ctrl + [('"passive-participation"')] %}{% endif %}
                 {% set pol_name = pol.name ~ defaults.ndo.sites.ospf_policies.name_suffix %}
                 {
                     "name": "{{ pol_name }}",
@@ -84,9 +84,9 @@
                                 {%- endfor %}
 
                             ],
-                            "bgpPeeringEnabled": {% if spine.bgp_peering | default(defaults.ndo.sites.pods.spines.bgp_peering) == "enabled" %}true{% else %}false{% endif %},
+                            "bgpPeeringEnabled": {% if spine.bgp_peering | default(defaults.ndo.sites.pods.spines.bgp_peering) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                             "msiteControlPlaneTep": "{{ spine.control_plane_tep }}",
-                            "routeReflectorEnabled": {% if spine.bgp_route_reflector | default(defaults.ndo.sites.pods.spines.bgp_route_reflector) == "enabled" %}true{% else %}false{% endif %},
+                            "routeReflectorEnabled": {% if spine.bgp_route_reflector | default(defaults.ndo.sites.pods.spines.bgp_route_reflector) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                             "faults": []
                         }
                         {%- endfor %}

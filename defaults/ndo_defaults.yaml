@@ -40,7 +40,7 @@ defaults:
       location:
         long: 0
         lat: 0
-      multisite: enabled
+      multisite: true
       routed_domain_suffix: ""
       ospf:
         area_id: 0
@@ -50,10 +50,10 @@ defaults:
         network_type: point-to-point
         priority: 1
         interface_cost: 0
-        advertise_subnet: disabled
-        bfd: disabled
-        mtu_ignore: disabled
-        passive_interface: disabled
+        advertise_subnet: false
+        bfd: false
+        mtu_ignore: false
+        passive_interface: false
         hello_interval: 10
         dead_interval: 40
         retransmit_interval: 5
@@ -61,8 +61,8 @@ defaults:
       pods:
         id: 1
         spines:
-          bgp_peering: enabled
-          bgp_route_reflector: disabled
+          bgp_peering: true
+          bgp_route_reflector: false
           interfaces:
             module: 1
             mtu: inherit
@@ -76,7 +76,7 @@ defaults:
         keepalive_interval: 60
         hold_interval: 180
         stale_interval: 300
-        graceful_restart: enabled
+        graceful_restart: true
         max_as: 0
     policies:
       dhcp_relays:
@@ -94,14 +94,14 @@ defaults:
             name_suffix: ""
             physical_domain_name_suffix: ""
             vmm_domain_name_suffix: ""
-            useg: disabled
-            proxy_arp: disabled
-            preferred_group: disabled
+            useg: false
+            proxy_arp: false
+            preferred_group: false
             subnets:
               scope: private
-              shared: disabled
-              no_default_gateway: disabled
-              primary: disabled
+              shared: false
+              no_default_gateway: false
+              primary: false
             sites:
               physical_domains:
                 deployment_immediacy: lazy
@@ -110,7 +110,7 @@ defaults:
                 deployment_immediacy: lazy
                 resolution_immediacy: pre-provision
                 vlan_mode: dynamic
-                u_segmentation: disabled
+                u_segmentation: false
               static_ports:
                 type: port
                 deployment_immediacy: lazy
@@ -118,34 +118,34 @@ defaults:
                 leaf_interface_policy_group_suffix: ""
               subnets:
                 scope: private
-                shared: disabled
-                no_default_gateway: disabled
-                primary: disabled
+                shared: false
+                no_default_gateway: false
+                primary: false
         vrfs:
           name_suffix: ""
-          preferred_group: disabled
-          l3_multicast: disabled
-          vzany: disabled
+          preferred_group: false
+          l3_multicast: false
+          vzany: false
           sites:
             regions:
-              vpn_gateway: disabled
-              hub_network: disabled
+              vpn_gateway: false
+              hub_network: false
         bridge_domains:
           name_suffix: ""
           l2_unknown_unicast: proxy
-          intersite_bum_traffic: disabled
-          optimize_wan_bandwidth: disabled
-          unicast_routing: enabled
-          arp_flooding: disabled
-          l2_stretch: enabled
-          l3_multicast: disabled
+          intersite_bum_traffic: false
+          optimize_wan_bandwidth: false
+          unicast_routing: true
+          arp_flooding: false
+          l2_stretch: true
+          l3_multicast: false
           subnets:
             scope: private
-            shared: disabled
-            querier: disabled
-            primary: disabled
+            shared: false
+            querier: false
+            primary: false
           sites:
-            advertise_host_routes: disabled
+            advertise_host_routes: false
             mac: 00:22:BD:F8:19:FF
         filters:
           name_suffix: ""
@@ -153,22 +153,22 @@ defaults:
             name_suffix: ""
             ethertype: ip
             protocol: tcp
-            stateful: disabled
+            stateful: false
             source_from_port: unspecified
             destination_from_port: unspecified
         external_endpoint_groups:
           name_suffix: ""
           type: on-premise
-          preferred_group: disabled
+          preferred_group: false
           subnets:
-            import_route_control: "no"
-            export_route_control: "no"
-            shared_route_control: "no"
-            import_security: "yes"
-            shared_security: "no"
-            aggregate_import: "no"
-            aggregate_export: "no"
-            aggregate_shared: "no"
+            import_route_control: false
+            export_route_control: false
+            shared_route_control: false
+            import_security: true
+            shared_security: false
+            aggregate_import: false
+            aggregate_export: false
+            aggregate_shared: false
           sites:
             route_reachability: internet
         l3outs:
@@ -178,7 +178,7 @@ defaults:
           scope: context
           type: bothWay
           filters:
-            log: disabled
+            log: false
         service_graphs:
           name_suffix: ""
           device_name_suffix: ""
