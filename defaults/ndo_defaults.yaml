@@ -2,15 +2,6 @@
 defaults:
   ndo:
     version: "3.1.1h"
-    bootstrap:
-      admin_username: admin
-      ansible_user_username: ansible
-      ansible_user_first_name: Ansible
-      ansible_user_last_name: User
-      ansible_user_email: "ansible@no.domain"
-      test_user_first_name: Test
-      test_user_last_name: User
-      test_user_email: "test@no.domain"
     tacacs_providers:
       port: 49
       protocol: "pap"
