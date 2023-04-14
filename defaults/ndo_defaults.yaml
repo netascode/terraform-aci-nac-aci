@@ -95,6 +95,7 @@ defaults:
             physical_domain_name_suffix: ""
             vmm_domain_name_suffix: ""
             useg: false
+            intra_epg_isolation: false
             proxy_arp: false
             preferred_group: false
             subnets:
