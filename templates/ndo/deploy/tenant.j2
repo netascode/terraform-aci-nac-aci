@@ -1,0 +1,57 @@
+{# iterate_list_folder ndo.tenants name item #}
+{% set query = "tenants[?name==`" ~ item ~ "`]" %}
+{% set tenant = (ndo | community.general.json_query(query))[0] %}
+{
+    "name": "{{ tenant.name }}",
+    "displayName": "{{ tenant.name }}",
+    "siteAssociations": [
+        {%- set comma1 = joiner(",") %}
+        {%- for site in tenant.sites | default([]) %}{{ comma1() }}
+        {
+            "siteId": "%%sites%{{ site.name }}%%",
+            "securityDomains": []
+            {%- if site.azure_subscription_id is defined %},
+            "cloudAccount": "uni/tn-{{ site.azure_shared_tenant | default(tenant.name) }}/act-[{{ site.azure_subscription_id }}]-vendor-azure",
+            "azureAccount": [
+                {% if site.azure_shared_tenant is not defined %}
+                {
+                    "cloudSubscription": {
+                        "cloudSubscriptionId": "{{ site.azure_subscription_id }}",
+                        "cloudApplicationId": null
+                    },
+                    "cloudApplication": [],
+                    "cloudActiveDirectory": [],
+                    "securityDomains": null,
+                    "accessType": "managed",
+                    "vendor": "azure"
+                }
+                {% endif %}
+            ],
+            "awsAccount": null,
+            "gatewayRouter": []
+            {% endif %}
+        }
+        {%- endfor %}
+
+    ],
+    "userAssociations": [
+        {%- set comma1 = joiner(",") %}
+        {%- if ndo_username is defined and ndo_username != 'admin' %}{{ comma1() }}
+        {
+            "userId": "%%tenants/allowed-users%{{ ndo_login_domain | default('Local') }}/{{ ndo_username }}%%"
+        }
+        {%- endif %}
+        {%- if ndo_test_username is defined and ndo_test_username != 'admin' %}{{ comma1() }}
+        {
+            "userId": "%%tenants/allowed-users%{{ ndo_test_login_domain | default('Local') }}/{{ ndo_test_username }}%%"
+        }
+        {%- endif %}
+        {%- for user in tenant.users | default([]) %}{{ comma1() }}
+        {
+            "userId": "%%tenants/allowed-users%{{ user.domain | default('Local') }}/{{ user.name }}%%"
+        }
+        {%- endfor %}
+
+    ],
+    "description": "{{ tenant.description | default() }}"
+}

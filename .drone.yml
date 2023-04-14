@@ -7,8 +7,8 @@ concurrency:
   limit: 1
 
 environment:
-  PY_COLORS: '1'
-  ANSIBLE_FORCE_COLOR: '1'
+  PY_COLORS: "1"
+  ANSIBLE_FORCE_COLOR: "1"
 
 trigger:
   branch:
@@ -65,7 +65,7 @@ steps:
     depends_on:
       - Clone Repo
 
-  - name: Test MSO
+  - name: Test NDO
     image: danischm/aac:0.5.3
     environment:
       VMWARE_HOST:
@@ -79,7 +79,7 @@ steps:
       MSO_PASSWORD:
         from_secret: MSO_PASSWORD
     commands:
-      - pytest -m mso
+      - pytest -m ndo
     depends_on:
       - Clone Repo
 
@@ -96,14 +96,14 @@ steps:
           sources:
             - apic_4.2_log.html
             - apic_5.2_log.html
-            - mso_log.html
+            - ndo_log.html
     when:
       status: [changed, failure, success]
     depends_on:
       - Test Validate
       - Test APIC 4.2
       - Test APIC 5.2
-      - Test MSO
+      - Test NDO
 
   - name: Build Documentation
     image: danischm/aac:0.5.3
@@ -142,7 +142,7 @@ steps:
     environment:
       WEBEX_TOKEN:
         from_secret: SPARK_ACCESS_TOKEN
-      WEBEX_ROOM_ID: 'Y2lzY29zcGFyazovL3VzL1JPT00vNTFmMGNmODAtYjI0My0xMWU5LTljZjUtNWY0NGQ2ZTlmYWY0'
+      WEBEX_ROOM_ID: "Y2lzY29zcGFyazovL3VzL1JPT00vNTFmMGNmODAtYjI0My0xMWU5LTljZjUtNWY0NGQ2ZTlmYWY0"
     commands:
       - python3 .ci/webex-notification-drone.py
     when:

@@ -21,8 +21,8 @@ REPOS = [
                 "dst": "./roles/apic_deploy/templates",
             },
             {
-                "src": "../templates/mso/deploy",
-                "dst": "./roles/mso_deploy/templates",
+                "src": "../templates/ndo/deploy",
+                "dst": "./roles/ndo_deploy/templates",
             },
             {
                 "src": "../templates/apic/test/config",
@@ -37,16 +37,16 @@ REPOS = [
                 "dst": "./roles/test_apic_deploy/templates/operational",
             },
             {
-                "src": "../templates/mso/test/config",
-                "dst": "./roles/test_mso_deploy/templates/config",
+                "src": "../templates/ndo/test/config",
+                "dst": "./roles/test_ndo_deploy/templates/config",
             },
             {
                 "src": "../tests/integration/fixtures/apic/standard",
                 "dst": "./roles/apic_deploy/molecule/01_standard/data/host_vars/apic1",
             },
             {
-                "src": "../tests/integration/fixtures/mso/standard",
-                "dst": "./roles/mso_deploy/molecule/01_standard/data/host_vars/mso1",
+                "src": "../tests/integration/fixtures/ndo/standard",
+                "dst": "./roles/ndo_deploy/molecule/01_standard/data/host_vars/ndo1",
             },
         ],
         "files": [
@@ -55,24 +55,24 @@ REPOS = [
                 "dst": "./roles/apic_validate/files/apic_schema.yaml",
             },
             {
-                "src": "../schemas/mso_schema.yaml",
-                "dst": "./roles/mso_validate/files/mso_schema.yaml",
+                "src": "../schemas/ndo_schema.yaml",
+                "dst": "./roles/ndo_validate/files/ndo_schema.yaml",
             },
             {
                 "src": "../defaults/apic_defaults.yaml",
                 "dst": "./roles/apic_common/vars/apic_defaults.yaml",
             },
             {
-                "src": "../defaults/mso_defaults.yaml",
-                "dst": "./roles/mso_common/vars/mso_defaults.yaml",
+                "src": "../defaults/ndo_defaults.yaml",
+                "dst": "./roles/ndo_common/vars/ndo_defaults.yaml",
             },
             {
                 "src": "../objects/apic_objects.yaml",
                 "dst": "./roles/apic_common/vars/apic_objects.yaml",
             },
             {
-                "src": "../objects/mso_objects.yaml",
-                "dst": "./roles/mso_common/vars/mso_objects.yaml",
+                "src": "../objects/ndo_objects.yaml",
+                "dst": "./roles/ndo_common/vars/ndo_objects.yaml",
             },
             {
                 "src": "../tests/integration/fixtures/apic/standard_42/fabric_policies.yaml",
@@ -145,16 +145,16 @@ REPOS = [
                 "dst": "./aac_tool/templates/apic/deploy",
             },
             {
-                "src": "../templates/mso/deploy",
-                "dst": "./aac_tool/templates/mso/deploy",
+                "src": "../templates/ndo/deploy",
+                "dst": "./aac_tool/templates/ndo/deploy",
             },
             {
                 "src": "../templates/apic/test",
                 "dst": "./aac_tool/templates/apic/test",
             },
             {
-                "src": "../templates/mso/test",
-                "dst": "./aac_tool/templates/mso/test",
+                "src": "../templates/ndo/test",
+                "dst": "./aac_tool/templates/ndo/test",
             },
         ],
         "files": [
@@ -163,8 +163,8 @@ REPOS = [
                 "dst": "./aac_tool/schemas/apic_objects.yaml",
             },
             {
-                "src": "../objects/mso_objects.yaml",
-                "dst": "./aac_tool/schemas/mso_objects.yaml",
+                "src": "../objects/ndo_objects.yaml",
+                "dst": "./aac_tool/schemas/ndo_objects.yaml",
             },
         ],
     },

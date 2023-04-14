@@ -1,0 +1,8 @@
+{# iterate_list_folder ndo.ca_certificates name item #}
+{% set query = "ca_certificates[?name==`" ~ item ~ "`]" %}
+{% set cert = (ndo | community.general.json_query(query))[0] %}
+{
+    "name": "{{ cert.name }}",
+    "description": "{{ cert.description | default() }}",
+    "publicKey": "{{ cert.public_key }}"
+}

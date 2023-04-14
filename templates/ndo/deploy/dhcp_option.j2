@@ -1,0 +1,23 @@
+{# iterate_list_folder ndo.policies.dhcp_options name item #}
+{% set query = "policies.dhcp_options[?name==`" ~ item ~ "`]" %}
+{% set pol = (ndo | community.general.json_query(query))[0] %}
+{% set pol_name = pol.name ~ defaults.ndo.policies.dhcp_options.name_suffix %}
+{
+    "name": "{{ pol_name }}",
+    "policyType": "dhcp",
+    "policySubtype": "option",
+    "desc": "{{ pol.description | default() }}",
+    "tenantId": "%%tenants%{{ pol.tenant }}%%",
+    "dhcpOption": [
+        {%- set comma1 = joiner(",") %}
+        {%- for opt in pol.options | default([]) %}{{ comma1() }}
+        {% set opt_name = opt.name ~ defaults.ndo.policies.dhcp_options.options.name_suffix %}
+        {
+            "name": "{{ opt_name }}",
+            "id": "{{ opt.id | default(defaults.ndo.schemas.templates.policies.dhcp_options.options.id) }}",
+            "data": "{{ opt.data | default() }}"
+        }
+        {%- endfor %}
+
+    ]
+}

@@ -74,14 +74,14 @@ pipeline {
                         }
                     }
                 }
-                stage('Test MSO') {
+                stage('Test NDO') {
                     steps {
-                        sh 'pytest -m mso'
+                        sh 'pytest -m ndo'
                     }
                     post {
                         always {
-                            junit 'mso_xunit.xml'
-                            archiveArtifacts 'mso_*.html, mso_*.xml'
+                            junit 'ndo_xunit.xml'
+                            archiveArtifacts 'ndo_*.html, ndo_*.xml'
                         }
                     }
                 }

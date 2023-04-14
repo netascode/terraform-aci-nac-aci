@@ -424,6 +424,6 @@ pubhub/
 
 # Test logs
 apic_*.html
-mso_*.html
+ndo_*.html
 apic_*.xml
-mso_*.xml
+ndo_*.xml

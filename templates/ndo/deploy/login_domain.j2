@@ -1,0 +1,20 @@
+{# iterate_list_folder ndo.login_domains name item #}
+{% set query = "login_domains[?name==`" ~ item ~ "`]" %}
+{% set domain = (ndo | community.general.json_query(query))[0] %}
+{
+    "name": "{{ domain.name }}",
+    "description": "{{ domain.description | default() }}",
+    "realm": "{{ domain.realm }}",
+    "status": "{{ domain.status | default(defaults.ndo.login_domains.status) }}",
+    "isDefault": {% if domain.default | default(defaults.ndo.login_domains.default) == True %}true{% else %}false{% endif %},
+    "providerAssociations": [
+        {%- set comma1 = joiner(",") %}
+        {%- for provider in domain.providers | default([]) %}{{ comma1() }}
+        {
+            "providerId": "%%auth/providers/{{ domain.realm }}%{{ provider.hostname_ip }}%%",
+            "priority": {{ provider.priority | default(defaults.ndo.login_domains.providers.priority) }}
+        }
+        {%- endfor %}
+
+    ]
+}

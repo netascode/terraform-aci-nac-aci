@@ -28,9 +28,9 @@ APIC_SCHEMA_PATH = "./schemas/apic_schema.yaml"
 APIC_OBJECTS_PATH = "./objects/apic_objects.yaml"
 APIC_DEFAULTS_PATH = "./defaults/apic_defaults.yaml"
 
-MSO_SCHEMA_PATH = "./schemas/mso_schema.yaml"
-MSO_OBJECTS_PATH = "./objects/mso_objects.yaml"
-MSO_DEFAULTS_PATH = "./defaults/mso_defaults.yaml"
+NDO_SCHEMA_PATH = "./schemas/ndo_schema.yaml"
+NDO_OBJECTS_PATH = "./objects/ndo_objects.yaml"
+NDO_DEFAULTS_PATH = "./defaults/ndo_defaults.yaml"
 
 
 def load_yaml_file(path):
@@ -552,7 +552,7 @@ def main():
         )
     else:
         render_doc("apic", APIC_SCHEMA_PATH, APIC_OBJECTS_PATH, APIC_DEFAULTS_PATH)
-        render_doc("mso", MSO_SCHEMA_PATH, MSO_OBJECTS_PATH, MSO_DEFAULTS_PATH)
+        render_doc("ndo", NDO_SCHEMA_PATH, NDO_OBJECTS_PATH, NDO_DEFAULTS_PATH)
 
 
 if __name__ == "__main__":

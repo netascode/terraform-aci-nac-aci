@@ -1,0 +1,14 @@
+{
+    "baseLockoutTime": {{ ndo.system_config.lockout_time | default(defaults.ndo.system_config.lockout_time) }},
+    "allowedConsecutiveAttempts": {{ ndo.system_config.allowed_consecutive_attempts | default(defaults.ndo.system_config.allowed_consecutive_attempts) }},
+    "bannerConfig": [
+        {
+            "alias": "{{ ndo.system_config.banner.alias | default() }}",
+            "banner": {
+                "bannerType": "{{ ndo.system_config.banner.type | default(defaults.ndo.system_config.banner.type) }}",
+                "message": "{{ ndo.system_config.banner.message | default() }}",
+                "bannerState": "{{ ndo.system_config.banner.state | default(defaults.ndo.system_config.banner.state) }}"
+            }
+        }
+    ]
+}

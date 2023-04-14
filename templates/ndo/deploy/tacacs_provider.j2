@@ -1,0 +1,12 @@
+{# iterate_list_folder ndo.tacacs_providers hostname_ip item #}
+{% set query = "tacacs_providers[?hostname_ip==`" ~ item ~ "`]" %}
+{% set tacacs = (ndo | community.general.json_query(query))[0] %}
+{
+    "host": "{{ tacacs.hostname_ip }}",
+    "description": "{{ tacacs.description | default() }}",
+    "sharedSecret": "{{ tacacs.shared_secret | default() }}",
+    "port": {{ tacacs.port | default(defaults.ndo.tacacs_providers.port) }},
+    "protocol": "{{ tacacs.protocol | default(defaults.ndo.tacacs_providers.protocol) }}",
+    "timeoutInSeconds": {{ tacacs.timeout | default(defaults.ndo.tacacs_providers.timeout) }},
+    "retries": {{ tacacs.retries | default(defaults.ndo.tacacs_providers.retries) }}
+}

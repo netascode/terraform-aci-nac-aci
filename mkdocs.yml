@@ -206,24 +206,24 @@ nav:
               - OOB Endpoint Group: data_model/apic/tenants/oob_endpoint_group.md
               - OOB External Management Instance: data_model/apic/tenants/oob_ext_mgmt_instance.md
               - OOB Contract: data_model/apic/tenants/oob_contract.md
-      - MSO:
-          - Support Matrix: data_model/mso_support_matrix.md
+      - NDO:
+          - Support Matrix: data_model/ndo_support_matrix.md
           - Bootstrap:
-              - Bootstrap: data_model/mso/bootstrap/bootstrap.md
+              - Bootstrap: data_model/ndo/bootstrap/bootstrap.md
           - System:
-              - System Config: data_model/mso/mso/system_config.md
-              - TACACS Provider: data_model/mso/mso/tacacs_provider.md
-              - Login Domain: data_model/mso/mso/login_domain.md
-              - Remote Location: data_model/mso/mso/remote_location.md
-              - User: data_model/mso/mso/user.md
-              - CA Certificate: data_model/mso/mso/ca_certificate.md
-              - Site: data_model/mso/mso/site.md
-              - Site Fabric Connectivity: data_model/mso/mso/fabric_connectivity.md
-              - Tenant: data_model/mso/mso/tenant.md
-              - DHCP Relay Policy: data_model/mso/mso/dhcp_relay.md
-              - DHCP Option Policy: data_model/mso/mso/dhcp_option.md
+              - System Config: data_model/ndo/ndo/system_config.md
+              - TACACS Provider: data_model/ndo/ndo/tacacs_provider.md
+              - Login Domain: data_model/ndo/ndo/login_domain.md
+              - Remote Location: data_model/ndo/ndo/remote_location.md
+              - User: data_model/ndo/ndo/user.md
+              - CA Certificate: data_model/ndo/ndo/ca_certificate.md
+              - Site: data_model/ndo/ndo/site.md
+              - Site Fabric Connectivity: data_model/ndo/ndo/fabric_connectivity.md
+              - Tenant: data_model/ndo/ndo/tenant.md
+              - DHCP Relay Policy: data_model/ndo/ndo/dhcp_relay.md
+              - DHCP Option Policy: data_model/ndo/ndo/dhcp_option.md
           - Schema:
-              - Schema: data_model/mso/schema/schema.md
+              - Schema: data_model/ndo/schema/schema.md
   - CLI:
       - Overview: cli/overview.md
       - Installation: cli/installation.md

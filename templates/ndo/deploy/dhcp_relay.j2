@@ -1,0 +1,30 @@
+{# iterate_list_folder ndo.policies.dhcp_relays name item #}
+{% set query = "policies.dhcp_relays[?name==`" ~ item ~ "`]" %}
+{% set pol = (ndo | community.general.json_query(query))[0] %}
+{% set pol_name = pol.name ~ defaults.ndo.policies.dhcp_relays.name_suffix %}
+{
+    "name": "{{ pol_name }}",
+    "policyType": "dhcp",
+    "policySubtype": "relay",
+    "desc": "{{ pol.description | default() }}",
+    "tenantId": "%%tenants%{{ pol.tenant }}%%",
+    "provider": [
+        {%- set comma1 = joiner(",") %}
+        {%- for prov in pol.providers | default([]) %}{{ comma1() }}
+        {
+            "addr": "{{ prov.ip }}",
+            {% if prov.endpoint_group is defined %}
+            {% set ap_name = prov.application_profile ~ defaults.ndo.schemas.templates.application_profiles.name_suffix %}
+            {% set epg_name = prov.endpoint_group ~ defaults.ndo.schemas.templates.application_profiles.endpoint_groups.name_suffix %}
+            "epgRef": "/schemas/%%schemas%{{ prov.schema }}%%/templates/{{ prov.template }}/anps/{{ ap_name }}/epgs/{{ epg_name }}",
+            {% else %}
+            {% set ext_epg_name = prov.external_endpoint_group ~ defaults.ndo.schemas.templates.external_endpoint_groups.name_suffix %}
+            "externalEpgRef": "/schemas/%%schemas%{{ prov.schema }}%%/templates/{{ prov.template }}/externalEpgs/{{ ext_epg_name }}",
+            {% endif %}
+            "l3Ref": "",
+            "tenantId": "%%tenants%{{ prov.tenant }}%%"
+        }
+        {%- endfor %}
+
+    ]
+}

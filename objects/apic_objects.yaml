@@ -193,7 +193,7 @@ objects:
       - admin
       - "{{ apic_username }}"
       - "{{ apic_test_username | default() }}"
-      - "{{ apic_mso_username | default() }}"
+      - "{{ apic_ndo_username | default() }}"
     paths:
       - apic.fabric_policies.aaa.users
   - name: Login Domain
