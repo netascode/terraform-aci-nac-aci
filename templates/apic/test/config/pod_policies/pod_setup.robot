@@ -13,12 +13,12 @@ Verify Pod {{ pod.id }} Setup
 {% if pod.id != 1 %}
     Should Be Equal Value Json String   ${r.json()}    $..fabricSetupP.attributes.tepPool   {{ pod.tep_pool }}
 {% endif %}
-{% for rlpool in pod.remote_pools %}
+{% for rlpool in pod.remote_pools | default([]) %}
     ${rl}=    Set Variable    $..fabricSetupP.children[?(@.fabricExtSetupP.attributes.extPoolId=={{ rlpool.id }})]
     Should Be Equal Value Json String   ${r.json()}    ${rl}..fabricExtSetupP.attributes.extPoolId   {{ rlpool.id }}
     Should Be Equal Value Json String   ${r.json()}    ${rl}..fabricExtSetupP.attributes.tepPool   {{ rlpool.remote_pool }}
 {% endfor %}
-{% for extpool in pod.external_tep_pools %}
+{% for extpool in pod.external_tep_pools | default([]) %}
     ${el}=    Set Variable    $..fabricSetupP.children[?(@.fabricExtRoutablePodSubnet.attributes.pool=="{{ extpool.prefix }}")]
     Should Be Equal Value Json String   ${r.json()}    ${el}..fabricExtRoutablePodSubnet.attributes.pool   {{ extpool.prefix }}
     Should Be Equal Value Json String   ${r.json()}    ${el}..fabricExtRoutablePodSubnet.attributes.reserveAddressCount   {{ extpool.reserved_address_count }}

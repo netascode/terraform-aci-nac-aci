@@ -25,13 +25,24 @@
                                 },
                                 "children": [
                                     {%- set comma2 = joiner(",") %}
-                                    {%- for extpool in pod.external_tep_pools %}{{ comma2() }}
+                                    {%- for extpool in pod.external_tep_pools | default([]) %}{{ comma2() }}
                                     {
                                         "fabricExtRoutablePodSubnet": {
                                             "attributes": {
                                                 "annotation": "orchestrator:aac",
                                                 "pool": "{{ extpool.prefix }}",
                                                 "reserveAddressCount": "{{ extpool.reserved_address_count }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for rlpool in pod.remote_pools | default([]) %}{{ comma2() }}
+                                    {
+                                        "fabricExtSetupP": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "extPoolId": "{{ rlpool.id }}",
+                                                "tepPool": "{{ rlpool.remote_pool }}"
                                             }
                                         }
                                     }

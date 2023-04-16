@@ -17,7 +17,7 @@ Verify Node {{ node.id }} Registration
 {% if node.role == "leaf" and node.type is defined %}
     Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.nodeType   {{ node.type }}
 {% endif %}
-{% if node.type == "remote-leaf-wan" %}
+{% if node.type | default() == "remote-leaf-wan" %}
     Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.extPoolId   {{ node.remote_pool_id }}
 {% endif %}
 
