@@ -95,8 +95,8 @@ users_roles:
 sites:
   name: str()
   apic_urls: list(str()) # @ref_name(URL)
-  username: str()
-  password: any(str(), null())
+  username: str(required=False)
+  password: any(str(), null(), required=False)
   id: int(min=1, required=False)
   location: include('sites_location', required=False) # @flatten()
   multisite: any(bool(), enum('enabled', 'disabled'), required=False)
