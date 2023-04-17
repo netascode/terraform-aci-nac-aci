@@ -756,9 +756,8 @@
                     ],
                     "hostBasedRouting": {% if site.advertise_host_routes | default(defaults.ndo.schemas.templates.bridge_domains.sites.advertise_host_routes) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
                     {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %},
-                    "mac": "{{ site.mac | default(defaults.ndo.schemas.templates.bridge_domains.sites.mac) }}"
+                    "mac": {{ site.mac | default(defaults.ndo.schemas.templates.bridge_domains.sites.mac) }}
                     {%- endif %}
-
                 }
                 {%- endif %}
                 {%- endfor %}
@@ -843,14 +842,10 @@
                 {
                     "externalEpgRef": "/templates/{{ template.name }}/externalEpgs/{{ epg_name }}",
                     {% if epg.type | default(defaults.ndo.schemas.templates.external_endpoint_groups.type) == "on-premise" %}
-                    {% if site.l3out.name is defined %}
-                    {% set l3out_name = site.l3out.name ~ defaults.ndo.schemas.templates.l3outs.name_suffix %}
-                    {% if site.l3out.schema | default(schema.name) == schema.name %}
-                    "l3outRef": "/templates/{{ site.l3out.template | default(template.name) }}/l3outs/{{ l3out_name }}",
+                    {% set l3out_name = site.l3out ~ defaults.ndo.schemas.templates.l3outs.name_suffix %}
+                    "l3outDn": "uni/tn-{{ site.tenant | default(template.tenant) }}/out-{{ l3out_name }}",
                     {% else %}
-                    "l3outRef": "/schemas/%%schemas%{{ site.l3out.schema | default(schema.name) }}%%/templates/{{ site.l3out.template | default(template.name) }}/l3outs/{{ l3out_name }}",
-                    {% endif %}
-                    {% endif %}
+                    "l3outDn": "",
                     {% endif %}
                     "subnets": [
                         {%- set comma3 = joiner(",") %}
