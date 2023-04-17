@@ -10,9 +10,8 @@ jmespath
 jsonpath_ng
 mkdocs
 mkdocs-material
-mkdocs-mermaid2-plugin
 molecule
-nexus-pcv>=0.1.3
+nexus-pcv>=0.1.5
 pyopenssl
 pytest
 pytest-mock
