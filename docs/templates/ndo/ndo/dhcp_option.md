@@ -1,5 +1,7 @@
 # DHCP Option Policy
 
+This policy is only supported up to NDO version 3.7.
+
 Location in GUI:
 `Application Management` » `Policies`
 
