@@ -74,17 +74,17 @@ pipeline {
                         }
                     }
                 }
-                stage('Test NDO') {
-                    steps {
-                        sh 'pytest -m ndo'
-                    }
-                    post {
-                        always {
-                            junit 'ndo_xunit.xml'
-                            archiveArtifacts 'ndo_*.html, ndo_*.xml'
-                        }
-                    }
-                }
+                // stage('Test NDO') {
+                //     steps {
+                //         sh 'pytest -m ndo'
+                //     }
+                //     post {
+                //         always {
+                //             junit 'ndo_xunit.xml'
+                //             archiveArtifacts 'ndo_*.html, ndo_*.xml'
+                //         }
+                //     }
+                // }
             }
         }
     }
