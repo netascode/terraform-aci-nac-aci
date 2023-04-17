@@ -1,7 +1,7 @@
 ---
 defaults:
   ndo:
-    version: "3.1.1h"
+    version: "3.7.2h"
     tacacs_providers:
       port: 49
       protocol: "pap"
