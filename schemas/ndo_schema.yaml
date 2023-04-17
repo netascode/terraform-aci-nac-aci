@@ -3,30 +3,13 @@ ndo: include('ndo', required=False)
 ---
 ndo:
   version: str(required=False)
-  bootstrap: include('bootstrap', required=False)
   system_config: include('system_config', required=False)
   remote_locations: list(include('remote_locations'), required=False)
-  tacacs_providers: list(include('tacacs_providers'), required=False)
-  login_domains: list(include('login_domains'), required=False) # @ref_name(Login Domain)
-  ca_certificates: list(include('ca_certificates'), required=False)
-  users: list(include('users'), required=False) # @ref_name(User) @key(username)
   sites: list(include('sites'), required=False) # @ref_name(Site)
   fabric_connectivity: include('fabric_connectivity', required=False)
   tenants: list(include('tenants'), required=False) # @ref_name(Tenant)
   policies: include('policies', required=False)
   schemas: list(include('schemas'), required=False) # @ref_name(Schema)
-
-bootstrap:
-  admin_username: str(required=False)
-  admin_password: any(str(), null())
-  keyring: include('bootstrap_keyring', required=False)
-
-bootstrap_keyring:
-  name: str()
-  description: str(required=False)
-  ca_name: str(required=False)
-  certificate: str()
-  private_key: str()
 
 system_config:
   lockout_time: int(min=0, required=False)
@@ -51,46 +34,6 @@ remote_locations:
   password: any(str(), null(), required=False)
   ssh_key: any(str(), null(), required=False)
   passphrase: any(str(), null(), required=False)
-
-tacacs_providers:
-  hostname_ip: str()
-  description: str(required=False)
-  shared_secret: any(str(), null(), required=False)
-  port: int(min=0, max=65535, required=False)
-  protocol: enum('pap', 'chap', required=False)
-  timeout: int(min=0, required=False)
-  retries: int(min=0, required=False)
-
-login_domains:
-  name: str()
-  description: str(required=False)
-  realm: enum('tacacs', 'local')
-  status: enum('active', 'inactive', required=False)
-  default: bool(required=False)
-  providers: list(include('login_domains_provider'), required=False) # @name(Login Domain Providers)
-
-login_domains_provider:
-  hostname_ip: str()
-  priority: int(min=0, required=False)
-
-ca_certificates:
-  name: str()
-  description: str(required=False)
-  public_key: str()
-
-users:
-  username: str()
-  password: any(str(), null())
-  first_name: str()
-  last_name: str()
-  email_address: str()
-  phone_number: str(min=10, max=20, required=False)
-  status: enum('active', 'inactive', required=False)
-  roles: list(include('users_roles'), required=False) # @name(User Roles) @ref_name(Role)
-
-users_roles:
-  role: str()
-  access: enum('readWrite', 'readOnly', required=False)
 
 sites:
   name: str()
@@ -505,9 +448,15 @@ t_eepg_selectors:
 t_eepg_sites:
   name: str() # @ref_table(ndo.sites)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @ref_table(ndo.tenants)
-  l3out: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @ref_table(schemas_templates.l3outs)
+  l3out: include('t_eepg_sites_l3out', required=False) # @flatten()
   route_reachability: enum('internet', 'site-ext', required=False)
   selectors: list(include('t_eepg_sites_selectors'), required=False) # @name(External EPG Site Selectors) @ref_name(Selector)
+
+t_eepg_sites_l3out:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(L3out Name) # @ref_table(schemas_templates.l3outs)
+  tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @ref_table(ndo.tenants)
+  schema: str(required=False) # @name(L3out Schema) @ref_table(ndo.schemas)
+  template: str(required=False) # @name(L3out Template) @ref_table(schemas.templates)
 
 t_eepg_sites_selectors:
   name: str()
