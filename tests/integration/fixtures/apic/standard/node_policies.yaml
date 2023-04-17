@@ -75,4 +75,3 @@ apic:
         oob_address: 10.51.77.96/24
         oob_gateway: 10.51.77.254
         remote_pool_id: 2
-      
