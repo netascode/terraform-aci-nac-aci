@@ -2,20 +2,17 @@
 {% set query = "sites[?name==`" ~ item ~ "`]" %}
 {% set site = (ndo | community.general.json_query(query))[0] %}
 {
-    "name": "{{ site.name }}",
-    "urls": [
-        {%- set comma1 = joiner(",") %}
-        {%- for url in site.apic_urls | default([]) %}{{ comma1() }}
-        "{{ url }}"
-        {%- endfor %}
+    "common": {
+        "name": "{{ site.name }}",
+        "displayName": "{{ site.name }}",
+        "urls": [
+            {%- set comma1 = joiner(",") %}
+            {%- for url in site.apic_urls | default([]) %}{{ comma1() }}
+            "{{ url }}"
+            {%- endfor %}
 
-    ],
-    "username": "{{ site.username }}",
-    "password": "{{ site.password }}",
-    "apicSiteId": "{{ site.id }}",
-    "labels": [],
-    "location": {
-        "long": {{ site.location.long | default(defaults.ndo.sites.location.long) }},
-        "lat": {{ site.location.lat | default(defaults.ndo.sites.location.lat) }}
+        ],
+        "platformType": "Apic",
+        "siteId": "{{ site.id }}"
     }
 }
