@@ -216,15 +216,15 @@ ndo:
                     template: TEMPLATE1
               sites:
                 - name: BUILD1-ACISIM2
-                  tenant: MSO1
-                  l3out: ANS-L3OUT
+                  l3out:
+                    name: ANS-L3OUT
             - name: EXT-EPG2
               vrf:
                 name: VRF2
               sites:
                 - name: BUILD1-ACISIM2
-                  tenant: MSO1
-                  l3out: ANS-L3OUT
+                  l3out:
+                    name: ANS-L3OUT
           contracts:
             - name: CONTRACT1
               scope: context

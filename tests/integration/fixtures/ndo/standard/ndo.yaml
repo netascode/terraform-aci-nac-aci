@@ -21,50 +21,6 @@ ndo:
       password: C1sco123
       ssh_key:
       passphrase:
-  tacacs_providers:
-    - hostname_ip: 2.2.2.2
-      description: My Desc
-      shared_secret: cisco
-      port: 49
-      protocol: pap
-      timeout: 5
-      retries: 3
-    - hostname_ip: 2.2.2.3
-  login_domains:
-    - name: TACACS1
-      description: My Desc
-      realm: tacacs
-      status: active
-      default: false
-      providers:
-        - hostname_ip: 2.2.2.2
-        - hostname_ip: 2.2.2.3
-          priority: 2
-  ca_certificates:
-    - name: CERT1
-      description: My Desc
-      public_key: -----BEGIN CERTIFICATE-----\nMIIB8TCCAVoCCQC1fWFVBBN/BDANBgkqhkiG9w0BAQsFADA8MRAwDgYDVQQDDAdh\nbnNpYmxlMQ4wDAYDVQQKDAVDaXNjbzELMAkGA1UECwwCQ1gxCzAJBgNVBAYTAlVT\nMCAXDTE5MDUxNDE4Mzc0NVoYDzIxMTkwNDIwMTgzNzQ1WjA8MRAwDgYDVQQDDAdh\nbnNpYmxlMQ4wDAYDVQQKDAVDaXNjbzELMAkGA1UECwwCQ1gxCzAJBgNVBAYTAlVT\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDU5ZySFa/ToZgF53wwlgl8CRzX\nbkHsNSxAnaWdBda4Hw9+qp+IbZcJB93Y1c4BprvEXU0FRkvqoe7r4Yy/qKme85If\nmYbEcXYqxJEA1z28nQJKIplVo8LNB746FkcA8+An9e0jUM3MqHsW4kQUBRvoiv55\n4/VUfxJ6LNN4lokX1wIDAQABMA0GCSqGSIb3DQEBCwUAA4GBAFVPScMEESle01WX\nGASnupBAgX3NnJuSKo/ReOzagFjZj4RqmaE2XgoHfMjb7/wHfNsuDB3aZ/6gg22c\nARrqj23UtwyWtgVjzLipaqmfDLXtQe54qO81rMsd6wnhy9AUZwPbnELe4tcrQrlM\nkhsvmhqSFHxtVsIzJgwUs4kGU39i\n-----END CERTIFICATE-----
-    - name: CERT2
-      public_key: -----BEGIN CERTIFICATE-----\nMIIB8TCCAVoCCQC1fWFVBBN/BDANBgkqhkiG9w0BAQsFADA8MRAwDgYDVQQDDAdh\nbnNpYmxlMQ4wDAYDVQQKDAVDaXNjbzELMAkGA1UECwwCQ1gxCzAJBgNVBAYTAlVT\nMCAXDTE5MDUxNDE4Mzc0NVoYDzIxMTkwNDIwMTgzNzQ1WjA8MRAwDgYDVQQDDAdh\nbnNpYmxlMQ4wDAYDVQQKDAVDaXNjbzELMAkGA1UECwwCQ1gxCzAJBgNVBAYTAlVT\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDU5ZySFa/ToZgF53wwlgl8CRzX\nbkHsNSxAnaWdBda4Hw9+qp+IbZcJB93Y1c4BprvEXU0FRkvqoe7r4Yy/qKme85If\nmYbEcXYqxJEA1z28nQJKIplVo8LNB746FkcA8+An9e0jUM3MqHsW4kQUBRvoiv55\n4/VUfxJ6LNN4lokX1wIDAQABMA0GCSqGSIb3DQEBCwUAA4GBAFVPScMEESle01WX\nGASnupBAgX3NnJuSKo/ReOzagFjZj4RqmaE2XgoHfMjb7/wHfNsuDB3aZ/6gg22c\nARrqj23UtwyWtgVjzLipaqmfDLXtQe54qO81rMsd6wnhy9AUZwPbnELe4tcrQrlM\nkhsvmhqSFHxtVsIzJgwUs4kGU39i\n-----END CERTIFICATE-----
-  users:
-    - username: USER1
-      password: Cisco123456!
-      first_name: first
-      last_name: last
-      email_address: aa.aa@aa.aa
-      phone_number: "12345678910"
-      status: active
-      roles:
-        - role: powerUser
-          access: readWrite
-    - username: USER2
-      password: Cisco123456!
-      first_name: first2
-      last_name: last2
-      email_address: aaa.aaa@aaa.aaa
-      roles:
-        - role: powerUser
-          access: readWrite
   sites:
     - name: BUILD1-ACISIM2
       apic_urls:
