@@ -685,7 +685,7 @@ module "aci_l3out" {
   source  = "netascode/l3out/aci"
   version = "0.2.1"
 
-  for_each                                = { for l3out in local.l3outs : l3out.name => l3out if try(local.modules.aci_l3out, true) && var.manage_tenants }
+  for_each                                = { for l3out in local.l3outs : l3out.key => l3out if try(local.modules.aci_l3out, true) && var.manage_tenants }
   tenant                                  = each.value.tenant
   name                                    = each.value.name
   alias                                   = each.value.alias
