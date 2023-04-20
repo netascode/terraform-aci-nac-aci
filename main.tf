@@ -36,12 +36,12 @@ locals {
       type = pg.type
       node_ids = [
         for node in try(local.interface_policies.nodes, []) :
-        node.id if length([for int in node.interfaces : try(int.policy_group, null) if try(int.policy_group, null) == pg.name]) > 0
+        node.id if length([for int in try(node.interfaces, []) : try(int.policy_group, null) if try(int.policy_group, null) == pg.name]) > 0
       ]
       fex_ids = flatten([
         for node in try(local.interface_policies.nodes, []) : [
           for fex in try(node.fexes, []) :
-          fex.id if length([for int in fex.interfaces : try(int.policy_group, null) if try(int.policy_group, null) == pg.name]) > 0
+          fex.id if length([for int in try(fex.interfaces, []) : try(int.policy_group, null) if try(int.policy_group, null) == pg.name]) > 0
         ]
       ])
     }
