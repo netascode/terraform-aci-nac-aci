@@ -2,8 +2,6 @@
 ndo:
   version: "2.2.4e"
   system_config:
-    lockout_time: 5
-    allowed_consecutive_attempts: 5
     banner:
       alias: My Banner New
       type: informational
