@@ -183,6 +183,7 @@ t_ap_endpoint_groups:
   useg: any(bool(), enum('enabled', 'disabled'), required=False)
   intra_epg_isolation: any(bool(), enum('enabled', 'disabled'), required=False)
   proxy_arp: any(bool(), enum('enabled', 'disabled'), required=False)
+  preferred_group: any(bool(), enum('enabled', 'disabled'), required=False)
   bridge_domain: include('t_ap_epg_bridge_domain', required=False) # @flatten() @description(Required for On-Premises)
   vrf: include('t_ap_epg_vrf', required=False) # @flatten() @description(Required for Cloud)
   subnets: list(include('t_ap_epg_subnets'), required=False) # @name(EPG Subnets) @ref_name(Subnet)
@@ -285,7 +286,6 @@ t_vrfs:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   l3_multicast: any(bool(), enum('enabled', 'disabled'), required=False)
   vzany: any(bool(), enum('enabled', 'disabled'), required=False)
-  preferred_group: any(bool(), enum('enabled', 'disabled'), required=False)
   sites: list(include('t_vrf_sites'), required=False) # @name(VRF Sites) @ref_name(Site)
   contracts: include('t_vrfs_contracts', required=False) # @flatten()
 

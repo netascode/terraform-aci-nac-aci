@@ -36,6 +36,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
     Should Be Equal Value Json Boolean   ${r.json()}   ${epg}.uSegEpg   {% if epg.useg | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.useg) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
     Should Be Equal Value Json String   ${r.json()}   ${epg}.intraEpg   {% if epg.intra_epg_isolation | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.intra_epg_isolation) | cisco.aac.aac_bool(True) %}"enforced"{% else %}unenforced{% endif %} 
     Should Be Equal Value Json Boolean   ${r.json()}   ${epg}.proxyArp   {% if epg.proxy_arp | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.proxy_arp) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
+    Should Be Equal Value Json Boolean   ${r.json()}   ${epg}.preferredGroup   {% if epg.preferred_group | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.preferred_group) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
 {% if epg.bridge_domain.name is defined %}
 {% set bd_name = epg.bridge_domain.name ~ defaults.ndo.schemas.templates.bridge_domains.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${epg}.bdRef   /schemas/%%schemas%{{ epg.bridge_domain.schema | default(schema.name) }}%%/templates/{{ epg.bridge_domain.template | default(template.name) }}/bds/{{ bd_name }}
@@ -69,7 +70,6 @@ Verify Schema {{ schema.name }} Template {{ template.name }} VRF {{ vrf_name }}
     ${vrf}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].vrfs[?(@.name=='{{ vrf_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${vrf}.name   {{ vrf_name }}
     Should Be Equal Value Json String   ${r.json()}   ${vrf}.displayName   {{ vrf_name }}
-    Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.preferredGroup   {% if vrf.preferred_group | default(defaults.ndo.schemas.templates.vrfs.preferred_group) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
     Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.l3MCast   {% if vrf.l3_multicast | default(defaults.ndo.schemas.templates.vrfs.l3_multicast) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
     Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.vzAnyEnabled   {% if vrf.vzany | default(defaults.ndo.schemas.templates.vrfs.vzany) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
 {% for contract in vrf.contracts.consumers | default([]) %}
