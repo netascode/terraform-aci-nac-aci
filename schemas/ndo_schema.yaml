@@ -12,8 +12,6 @@ ndo:
   schemas: list(include('schemas'), required=False) # @ref_name(Schema)
 
 system_config:
-  lockout_time: int(min=0, required=False)
-  allowed_consecutive_attempts: int(min=0, required=False)
   banner: include('sc_banner', required=False)
 
 sc_banner:

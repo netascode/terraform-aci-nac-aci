@@ -1,6 +1,6 @@
 {
-    "baseLockoutTime": {{ ndo.system_config.lockout_time | default(defaults.ndo.system_config.lockout_time) }},
-    "allowedConsecutiveAttempts": {{ ndo.system_config.allowed_consecutive_attempts | default(defaults.ndo.system_config.allowed_consecutive_attempts) }},
+    "baseLockoutTime": 5,
+    "allowedConsecutiveAttempts": 5,
     "bannerConfig": [
         {
             "alias": "{{ ndo.system_config.banner.alias | default() }}",

@@ -105,6 +105,16 @@ REPOS = [
         ],
     },
     {
+        "url": "https://wwwin-github.cisco.com/netascode/terraform-ndo-aac.git",
+        "commit_message": "Aac updates",
+        "files": [
+            {
+                "src": "../schemas/ndo_schema.yaml",
+                "dst": "./.schema.yaml",
+            },
+        ],
+    },
+    {
         "url": "https://wwwin-github.cisco.com/danischm/aac-tf-demo.git",
         "commit_message": "Aac updates",
         "directories": [
@@ -174,6 +184,16 @@ REPOS = [
         "files": [
             {
                 "src": "../defaults/apic_defaults.yaml",
+                "dst": "./defaults/defaults.yaml",
+            },
+        ],
+    },
+    {
+        "url": "https://github.com/netascode/terraform-mso-nac-ndo.git",
+        "commit_message": "Defaults updates",
+        "files": [
+            {
+                "src": "../defaults/ndo_defaults.yaml",
                 "dst": "./defaults/defaults.yaml",
             },
         ],

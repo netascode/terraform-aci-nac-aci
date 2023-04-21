@@ -8,8 +8,6 @@ Resource        ../../ndo_common.resource
 Verify System Config
     ${r}=   GET On Session   ndo   /api/v1/platform/systemConfig
     Set Suite Variable   ${r}
-    Should Be Equal Value Json Integer   ${r.json()}   $.systemConfigs.baseLockoutTime   {{ ndo.system_config.lockout_time | default(defaults.ndo.system_config.lockout_time) }}
-    Should Be Equal Value Json Integer   ${r.json()}   $.systemConfigs.allowedConsecutiveAttempts   {{ ndo.system_config.allowed_consecutive_attempts | default(defaults.ndo.system_config.allowed_consecutive_attempts) }}
 {% if ndo.system_config.banner.alias is defined %}
     Should Be Equal Value Json String   ${r.json()}   $.systemConfigs.bannerConfig[0].alias   {{ ndo.system_config.banner.alias | default() }}
 {% endif %}
