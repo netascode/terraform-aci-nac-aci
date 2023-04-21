@@ -18,7 +18,6 @@ ndo:
           vrfs:
             - name: VRF1
               l3_multicast: true
-              preferred_group: false
 ```
 
 ### Azure VRF

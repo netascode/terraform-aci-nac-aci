@@ -113,7 +113,6 @@ defaults:
                 primary: false
         vrfs:
           name_suffix: ""
-          preferred_group: false
           l3_multicast: false
           vzany: false
           sites:

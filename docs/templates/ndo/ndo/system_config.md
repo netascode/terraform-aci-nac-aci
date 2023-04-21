@@ -10,8 +10,6 @@ Location in GUI:
 ```yaml
 ndo:
   system_config:
-    lockout_time: 5
-    allowed_consecutive_attempts: 5
     banner:
       alias: Banner New
       type: informational

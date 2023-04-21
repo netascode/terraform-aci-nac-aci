@@ -103,7 +103,6 @@
                 {
                     "name": "{{ vrf_name }}",
                     "displayName": "{{ vrf_name }}",
-                    "preferredGroup": {% if vrf.preferred_group | default(defaults.ndo.schemas.templates.vrfs.preferred_group) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     "l3MCast": {% if vrf.l3_multicast | default(defaults.ndo.schemas.templates.vrfs.l3_multicast) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     "vzAnyEnabled": {% if vrf.vzany | default(defaults.ndo.schemas.templates.vrfs.vzany) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     "vzAnyConsumerContracts": [

@@ -114,7 +114,6 @@ ndo:
             - name: VRF1
             - name: VRF2
               l3_multicast: true
-              preferred_group: false
               vzany: true
               contracts:
                 consumers:

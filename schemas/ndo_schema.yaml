@@ -183,7 +183,6 @@ t_ap_endpoint_groups:
   useg: any(bool(), enum('enabled', 'disabled'), required=False)
   intra_epg_isolation: any(bool(), enum('enabled', 'disabled'), required=False)
   proxy_arp: any(bool(), enum('enabled', 'disabled'), required=False)
-  preferred_group: any(bool(), enum('enabled', 'disabled'), required=False)
   bridge_domain: include('t_ap_epg_bridge_domain', required=False) # @flatten() @description(Required for On-Premises)
   vrf: include('t_ap_epg_vrf', required=False) # @flatten() @description(Required for Cloud)
   subnets: list(include('t_ap_epg_subnets'), required=False) # @name(EPG Subnets) @ref_name(Subnet)
