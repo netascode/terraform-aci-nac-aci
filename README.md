@@ -225,8 +225,8 @@ Additional example repositories:
 | <a name="module_aci_l2_mtu_policy"></a> [aci\_l2\_mtu\_policy](#module\_aci\_l2\_mtu\_policy) | netascode/l2-mtu-policy/aci | 0.1.0 |
 | <a name="module_aci_l2_policy"></a> [aci\_l2\_policy](#module\_aci\_l2\_policy) | netascode/l2-policy/aci | 0.1.1 |
 | <a name="module_aci_l3out"></a> [aci\_l3out](#module\_aci\_l3out) | netascode/l3out/aci | 0.2.2 |
-| <a name="module_aci_l3out_interface_profile_auto"></a> [aci\_l3out\_interface\_profile\_auto](#module\_aci\_l3out\_interface\_profile\_auto) | netascode/l3out-interface-profile/aci | 0.2.6 |
-| <a name="module_aci_l3out_interface_profile_manual"></a> [aci\_l3out\_interface\_profile\_manual](#module\_aci\_l3out\_interface\_profile\_manual) | netascode/l3out-interface-profile/aci | 0.2.6 |
+| <a name="module_aci_l3out_interface_profile_auto"></a> [aci\_l3out\_interface\_profile\_auto](#module\_aci\_l3out\_interface\_profile\_auto) | netascode/l3out-interface-profile/aci | 0.2.7 |
+| <a name="module_aci_l3out_interface_profile_manual"></a> [aci\_l3out\_interface\_profile\_manual](#module\_aci\_l3out\_interface\_profile\_manual) | netascode/l3out-interface-profile/aci | 0.2.7 |
 | <a name="module_aci_l3out_node_profile_auto"></a> [aci\_l3out\_node\_profile\_auto](#module\_aci\_l3out\_node\_profile\_auto) | netascode/l3out-node-profile/aci | 0.2.6 |
 | <a name="module_aci_l3out_node_profile_manual"></a> [aci\_l3out\_node\_profile\_manual](#module\_aci\_l3out\_node\_profile\_manual) | netascode/l3out-node-profile/aci | 0.2.6 |
 | <a name="module_aci_l4l7_device"></a> [aci\_l4l7\_device](#module\_aci\_l4l7\_device) | netascode/l4l7-device/aci | 0.2.3 |
