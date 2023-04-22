@@ -38,14 +38,15 @@ module "aci_vpc_group" {
 
 module "aci_node_registration" {
   source  = "netascode/node-registration/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
-  for_each      = { for node in try(local.node_policies.nodes, []) : node.id => node if contains(["leaf", "spine"], node.role) && try(local.modules.aci_node_registration, true) && var.manage_node_policies }
-  name          = each.value.name
-  node_id       = each.value.id
-  pod_id        = try(each.value.pod, local.defaults.apic.node_policies.nodes.pod)
-  serial_number = each.value.serial_number
-  type          = try(each.value.type, "unspecified")
+  for_each       = { for node in try(local.node_policies.nodes, []) : node.id => node if contains(["leaf", "spine"], node.role) && try(local.modules.aci_node_registration, true) && var.manage_node_policies }
+  name           = each.value.name
+  node_id        = each.value.id
+  pod_id         = try(each.value.pod, local.defaults.apic.node_policies.nodes.pod)
+  serial_number  = each.value.serial_number
+  type           = try(each.value.type, "unspecified")
+  remote_pool_id = try(each.value.remote_pool_id, 0)
 }
 
 module "aci_inband_node_address" {
