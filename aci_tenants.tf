@@ -620,6 +620,7 @@ locals {
         name        = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
         alias       = try(l3out.alias, "")
         description = try(l3out.description, "")
+        multipod    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
         domain      = "${l3out.domain}${local.defaults.apic.access_policies.routed_domains.name_suffix}"
         vrf         = "${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}"
         bgp = anytrue([
@@ -685,13 +686,14 @@ locals {
 
 module "aci_l3out" {
   source  = "netascode/l3out/aci"
-  version = "0.2.1"
+  version = "0.2.2"
 
   for_each                                = { for l3out in local.l3outs : l3out.key => l3out if try(local.modules.aci_l3out, true) && var.manage_tenants }
   tenant                                  = each.value.tenant
   name                                    = each.value.name
   alias                                   = each.value.alias
   description                             = each.value.description
+  multipod                                = each.value.multipod
   routed_domain                           = each.value.domain
   vrf                                     = each.value.vrf
   bgp                                     = each.value.bgp
@@ -732,10 +734,12 @@ locals {
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : [
         for np in try(l3out.node_profiles, []) : {
-          key    = format("%s/%s/%s", tenant.name, l3out.name, np.name)
-          tenant = tenant.name
-          l3out  = l3out.name
-          name   = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
+          key         = format("%s/%s/%s", tenant.name, l3out.name, np.name)
+          tenant      = tenant.name
+          l3out       = l3out.name
+          name        = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
+          multipod    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
+          remote_leaf = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
           nodes = [for node in try(np.nodes, []) : {
             node_id               = node.node_id
             pod_id                = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
@@ -790,14 +794,16 @@ locals {
 
 module "aci_l3out_node_profile_manual" {
   source  = "netascode/l3out-node-profile/aci"
-  version = "0.2.5"
+  version = "0.2.6"
 
-  for_each  = { for np in local.node_profiles_manual : np.key => np if try(local.modules.aci_l3out_node_profile, true) && var.manage_tenants }
-  tenant    = each.value.tenant
-  l3out     = each.value.l3out
-  name      = each.value.name
-  nodes     = each.value.nodes
-  bgp_peers = each.value.bgp_peers
+  for_each    = { for np in local.node_profiles_manual : np.key => np if try(local.modules.aci_l3out_node_profile, true) && var.manage_tenants }
+  tenant      = each.value.tenant
+  l3out       = each.value.l3out
+  name        = each.value.name
+  multipod    = each.value.multipod
+  remote_leaf = each.value.remote_leaf
+  nodes       = each.value.nodes
+  bgp_peers   = each.value.bgp_peers
 
   depends_on = [
     module.aci_tenant,
@@ -809,10 +815,12 @@ locals {
   node_profiles_auto = flatten([
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : {
-        key    = format("%s/%s", tenant.name, l3out.name)
-        tenant = tenant.name
-        l3out  = l3out.name
-        name   = l3out.name
+        key         = format("%s/%s", tenant.name, l3out.name)
+        tenant      = tenant.name
+        l3out       = l3out.name
+        name        = l3out.name
+        multipod    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
+        remote_leaf = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
         nodes = [for node in try(l3out.nodes, []) : {
           node_id               = node.node_id
           pod_id                = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.nodes.pod)
@@ -866,14 +874,16 @@ locals {
 
 module "aci_l3out_node_profile_auto" {
   source  = "netascode/l3out-node-profile/aci"
-  version = "0.2.5"
+  version = "0.2.6"
 
-  for_each  = { for np in local.node_profiles_auto : np.key => np if try(local.modules.aci_l3out_node_profile, true) && var.manage_tenants }
-  tenant    = each.value.tenant
-  l3out     = each.value.l3out
-  name      = each.value.name
-  nodes     = each.value.nodes
-  bgp_peers = each.value.bgp_peers
+  for_each    = { for np in local.node_profiles_auto : np.key => np if try(local.modules.aci_l3out_node_profile, true) && var.manage_tenants }
+  tenant      = each.value.tenant
+  l3out       = each.value.l3out
+  name        = each.value.name
+  multipod    = each.value.multipod
+  remote_leaf = each.value.remote_leaf
+  nodes       = each.value.nodes
+  bgp_peers   = each.value.bgp_peers
 
   depends_on = [
     module.aci_tenant,
@@ -892,6 +902,8 @@ locals {
             l3out                       = l3out.name
             node_profile                = np.name
             name                        = "${ip.name}${local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix}"
+            multipod                    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
+            remote_leaf                 = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
             bfd_policy                  = try("${ip.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
             ospf_interface_profile_name = try(ip.ospf.ospf_interface_profile_name, "")
             ospf_authentication_key     = try(ip.ospf.auth_key, "")
@@ -962,13 +974,15 @@ locals {
 
 module "aci_l3out_interface_profile_manual" {
   source  = "netascode/l3out-interface-profile/aci"
-  version = "0.2.5"
+  version = "0.2.6"
 
   for_each                    = { for ip in local.interface_profiles_manual : ip.key => ip if try(local.modules.aci_l3out_interface_profile, true) && var.manage_tenants }
   tenant                      = each.value.tenant
   l3out                       = each.value.l3out
   node_profile                = each.value.node_profile
   name                        = each.value.name
+  multipod                    = each.value.multipod
+  remote_leaf                 = each.value.remote_leaf
   bfd_policy                  = each.value.bfd_policy
   ospf_interface_profile_name = each.value.ospf_interface_profile_name
   ospf_authentication_key     = each.value.ospf_authentication_key
@@ -1016,6 +1030,8 @@ locals {
         l3out                       = l3out.name
         node_profile                = l3out.name
         name                        = l3out.name
+        multipod                    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
+        remote_leaf                 = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
         bfd_policy                  = try("${l3out.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
         ospf_interface_profile_name = try(l3out.ospf.ospf_interface_profile_name, l3out.name)
         ospf_authentication_key     = try(l3out.ospf.auth_key, "")
@@ -1086,13 +1102,15 @@ locals {
 
 module "aci_l3out_interface_profile_auto" {
   source  = "netascode/l3out-interface-profile/aci"
-  version = "0.2.5"
+  version = "0.2.6"
 
   for_each                    = { for ip in local.interface_profiles_auto : ip.key => ip if try(local.modules.aci_l3out_interface_profile, true) && var.manage_tenants }
   tenant                      = each.value.tenant
   l3out                       = each.value.l3out
   node_profile                = each.value.node_profile
   name                        = each.value.name
+  multipod                    = each.value.multipod
+  remote_leaf                 = each.value.remote_leaf
   bfd_policy                  = each.value.bfd_policy
   ospf_interface_profile_name = each.value.ospf_interface_profile_name
   ospf_authentication_key     = each.value.ospf_authentication_key
