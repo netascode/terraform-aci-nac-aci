@@ -222,6 +222,7 @@ Additional example repositories:
 | <a name="module_aci_ip_aging"></a> [aci\_ip\_aging](#module\_aci\_ip\_aging) | netascode/ip-aging/aci | 0.1.0 |
 | <a name="module_aci_ip_sla_policy"></a> [aci\_ip\_sla\_policy](#module\_aci\_ip\_sla\_policy) | netascode/ip-sla-policy/aci | 0.1.0 |
 | <a name="module_aci_keyring"></a> [aci\_keyring](#module\_aci\_keyring) | netascode/keyring/aci | 0.1.1 |
+| <a name="module_aci_l2_mtu_policy"></a> [aci\_l2\_mtu\_policy](#module\_aci\_l2\_mtu\_policy) | netascode/l2-mtu-policy/aci | 0.1.0 |
 | <a name="module_aci_l2_policy"></a> [aci\_l2\_policy](#module\_aci\_l2\_policy) | netascode/l2-policy/aci | 0.1.1 |
 | <a name="module_aci_l3out"></a> [aci\_l3out](#module\_aci\_l3out) | netascode/l3out/aci | 0.2.1 |
 | <a name="module_aci_l3out_interface_profile_auto"></a> [aci\_l3out\_interface\_profile\_auto](#module\_aci\_l3out\_interface\_profile\_auto) | netascode/l3out-interface-profile/aci | 0.2.5 |

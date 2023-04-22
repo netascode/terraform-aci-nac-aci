@@ -160,6 +160,15 @@ module "aci_date_time_format" {
   show_offset    = try(local.fabric_policies.date_time_format.show_offset, local.defaults.apic.fabric_policies.date_time_format.show_offset)
 }
 
+module "aci_l2_mtu_policy" {
+  source  = "netascode/l2-mtu-policy/aci"
+  version = "0.1.0"
+
+  for_each      = { for policy in try(local.fabric_policies.l2_mtu_policies, []) : policy.name => policy if try(local.modules.aci_l2_mtu_policy, true) && var.manage_fabric_policies }
+  name          = "${each.value.name}${local.defaults.apic.fabric_policies.l2_mtu_policies.name_suffix}"
+  port_mtu_size = try(each.value.port_mtu_size, local.defaults.apic.fabric_policies.l2_mtu_policies.port_mtu_size)
+}
+
 module "aci_dns_policy" {
   source  = "netascode/dns-policy/aci"
   version = "0.2.0"
