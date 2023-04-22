@@ -495,7 +495,7 @@ module "aci_fabric_spine_interface_profile_manual" {
 
 module "aci_external_connectivity_policy" {
   source  = "netascode/external-connectivity-policy/aci"
-  version = "0.2.0"
+  version = "0.2.1"
 
   count        = try(local.fabric_policies.external_connectivity_policy.name, null) != null && try(local.modules.aci_external_connectivity_policy, true) && var.manage_fabric_policies ? 1 : 0
   name         = "${local.fabric_policies.external_connectivity_policy.name}${local.defaults.apic.fabric_policies.external_connectivity_policy.name_suffix}"
@@ -512,6 +512,10 @@ module "aci_external_connectivity_policy" {
     pod_id = pod.id
     ip     = try(pod.data_plane_tep, null)
   } if try(pod.data_plane_tep, null) != null]
+  unicast_teps = [for pod in try(local.pod_policies.pods, []) : {
+    pod_id = pod.id
+    ip     = try(pod.unicast_tep, null)
+  } if try(pod.unicast_tep, null) != null]
 }
 
 module "aci_infra_dscp_translation_policy" {

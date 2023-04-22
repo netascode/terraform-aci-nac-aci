@@ -185,7 +185,7 @@ Additional example repositories:
 | <a name="module_aci_endpoint_loop_protection"></a> [aci\_endpoint\_loop\_protection](#module\_aci\_endpoint\_loop\_protection) | netascode/endpoint-loop-protection/aci | 0.1.0 |
 | <a name="module_aci_endpoint_security_group"></a> [aci\_endpoint\_security\_group](#module\_aci\_endpoint\_security\_group) | netascode/endpoint-security-group/aci | 0.2.5 |
 | <a name="module_aci_error_disabled_recovery"></a> [aci\_error\_disabled\_recovery](#module\_aci\_error\_disabled\_recovery) | netascode/error-disabled-recovery/aci | 0.1.0 |
-| <a name="module_aci_external_connectivity_policy"></a> [aci\_external\_connectivity\_policy](#module\_aci\_external\_connectivity\_policy) | netascode/external-connectivity-policy/aci | 0.2.0 |
+| <a name="module_aci_external_connectivity_policy"></a> [aci\_external\_connectivity\_policy](#module\_aci\_external\_connectivity\_policy) | netascode/external-connectivity-policy/aci | 0.2.1 |
 | <a name="module_aci_external_endpoint_group"></a> [aci\_external\_endpoint\_group](#module\_aci\_external\_endpoint\_group) | netascode/external-endpoint-group/aci | 0.2.1 |
 | <a name="module_aci_fabric_isis_bfd"></a> [aci\_fabric\_isis\_bfd](#module\_aci\_fabric\_isis\_bfd) | netascode/fabric-isis-bfd/aci | 0.1.0 |
 | <a name="module_aci_fabric_isis_policy"></a> [aci\_fabric\_isis\_policy](#module\_aci\_fabric\_isis\_policy) | netascode/fabric-isis-policy/aci | 0.1.0 |
