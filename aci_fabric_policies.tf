@@ -525,7 +525,7 @@ module "aci_infra_dscp_translation_policy" {
 
 module "aci_vmware_vmm_domain" {
   source  = "netascode/vmware-vmm-domain/aci"
-  version = "0.2.3"
+  version = "0.2.4"
 
   for_each                    = { for vmm in try(local.fabric_policies.vmware_vmm_domains, []) : vmm.name => vmm if try(local.modules.aci_vmware_vmm_domain, true) && var.manage_fabric_policies }
   name                        = "${each.value.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.name_suffix}"
@@ -536,6 +536,7 @@ module "aci_vmware_vmm_domain" {
   vswitch_cdp_policy          = try(each.value.vswitch.cdp_policy, "")
   vswitch_lldp_policy         = try(each.value.vswitch.lldp_policy, "")
   vswitch_port_channel_policy = try(each.value.vswitch.port_channel_policy, "")
+  vswitch_mtu_policy          = try(each.value.vswitch.mtu_policy, "")
   credential_policies = [for cp in try(each.value.credential_policies, []) : {
     name     = "${cp.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.credential_policies.name_suffix}"
     username = cp.username
