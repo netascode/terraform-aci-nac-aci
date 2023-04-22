@@ -1,8 +1,16 @@
 module "aci_pod_setup" {
   source  = "netascode/pod-setup/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
   for_each = { for pod in try(local.pod_policies.pods, []) : pod.id => pod if try(local.modules.aci_pod_setup, true) && var.manage_pod_policies }
   pod_id   = each.value.id
   tep_pool = try(each.value.tep_pool, null)
+  external_tep_pools = [for pool in try(each.value.external_tep_pools, []) : {
+    prefix                 = pool.prefix
+    reserved_address_count = pool.reserved_address_count
+  }]
+  remote_pools = [for pool in try(each.value.remote_pools, []) : {
+    id          = pool.id
+    remote_pool = pool.remote_pool
+  }]
 }

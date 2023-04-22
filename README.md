@@ -250,7 +250,7 @@ Additional example repositories:
 | <a name="module_aci_ospf_interface_policy"></a> [aci\_ospf\_interface\_policy](#module\_aci\_ospf\_interface\_policy) | netascode/ospf-interface-policy/aci | 0.1.0 |
 | <a name="module_aci_physical_domain"></a> [aci\_physical\_domain](#module\_aci\_physical\_domain) | netascode/physical-domain/aci | 0.1.0 |
 | <a name="module_aci_pim_policy"></a> [aci\_pim\_policy](#module\_aci\_pim\_policy) | netascode/pim-policy/aci | 0.1.1 |
-| <a name="module_aci_pod_setup"></a> [aci\_pod\_setup](#module\_aci\_pod\_setup) | netascode/pod-setup/aci | 0.1.0 |
+| <a name="module_aci_pod_setup"></a> [aci\_pod\_setup](#module\_aci\_pod\_setup) | netascode/pod-setup/aci | 0.1.1 |
 | <a name="module_aci_port_channel_member_policy"></a> [aci\_port\_channel\_member\_policy](#module\_aci\_port\_channel\_member\_policy) | netascode/port-channel-member-policy/aci | 0.1.0 |
 | <a name="module_aci_port_channel_policy"></a> [aci\_port\_channel\_policy](#module\_aci\_port\_channel\_policy) | netascode/port-channel-policy/aci | 0.1.0 |
 | <a name="module_aci_port_tracking"></a> [aci\_port\_tracking](#module\_aci\_port\_tracking) | netascode/port-tracking/aci | 0.1.0 |
