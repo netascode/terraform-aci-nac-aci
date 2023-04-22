@@ -1137,7 +1137,7 @@ pp_pod:
 
 pp_pod_external_tep_pools:
   prefix: ip()
-  reserved_address_count: int(min=1, max=4294967295, required=False)
+  reserved_address_count: int(min=1, max=4294967295)
 
 pp_pod_remote_pools:
   id: int(min=1, max=255)
