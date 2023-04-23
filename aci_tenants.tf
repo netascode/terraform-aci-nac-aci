@@ -974,7 +974,7 @@ locals {
 
 module "aci_l3out_interface_profile_manual" {
   source  = "netascode/l3out-interface-profile/aci"
-  version = "0.2.7"
+  version = "0.2.8"
 
   for_each                    = { for ip in local.interface_profiles_manual : ip.key => ip if try(local.modules.aci_l3out_interface_profile, true) && var.manage_tenants }
   tenant                      = each.value.tenant
@@ -1102,7 +1102,7 @@ locals {
 
 module "aci_l3out_interface_profile_auto" {
   source  = "netascode/l3out-interface-profile/aci"
-  version = "0.2.7"
+  version = "0.2.8"
 
   for_each                    = { for ip in local.interface_profiles_auto : ip.key => ip if try(local.modules.aci_l3out_interface_profile, true) && var.manage_tenants }
   tenant                      = each.value.tenant
