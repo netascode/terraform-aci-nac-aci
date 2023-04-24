@@ -47,6 +47,11 @@ module "aci_node_registration" {
   serial_number  = each.value.serial_number
   type           = try(each.value.type, "unspecified")
   remote_pool_id = try(each.value.remote_pool_id, 0)
+
+  depends_on = [
+    module.aci_l3out_interface_profile_auto, # Remote leafs need to be removed before infra l3out
+    module.aci_l3out_interface_profile_manual,
+  ]
 }
 
 module "aci_inband_node_address" {
