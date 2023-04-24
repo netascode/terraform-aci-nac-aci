@@ -726,6 +726,7 @@ module "aci_l3out" {
     module.aci_bfd_interface_policy,
     module.aci_set_rule,
     module.aci_match_rule,
+    module.aci_node_registration, # Remote leafs need to be removed before infra l3out
   ]
 }
 
