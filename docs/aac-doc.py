@@ -445,10 +445,6 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
     defaults = load_yaml_file(defaults_path)[0]
     pubhub_items = {}
 
-    if pubhub:
-        pubhub_path = os.path.join(".", "pubhub")
-        shutil.rmtree(pubhub_path, ignore_errors=True)
-
     for item in (
         objects.get("objects", [])
         + objects.get("bootstrap_objects", [])
@@ -470,12 +466,14 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
             rendered_image_path = os.path.join(
                 ".",
                 "pubhub",
+                system,
                 item["folder"],
                 item["template"] + ".svg",
             )
             rendered_path = os.path.join(
                 ".",
                 "pubhub",
+                system,
                 item["folder"],
                 item["template"] + ".md",
             )
@@ -537,7 +535,7 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
                 file.write(cleaned_data)
     if pubhub:
         for file in pubhub_items:
-            path = os.path.join(".", "pubhub", file + "-config.json")
+            path = os.path.join(".", "pubhub", system, file + "-config.json")
             with open(path, "w") as f:
                 json.dump(pubhub_items[file], f, indent=4)
 
@@ -549,8 +547,19 @@ def main():
     )
     args = parser.parse_args()
     if args.pubhub:
+        shutil.rmtree(os.path.join(".", "pubhub"), ignore_errors=True)
         render_doc(
             "apic", APIC_SCHEMA_PATH, APIC_OBJECTS_PATH, APIC_DEFAULTS_PATH, pubhub=True
+        )
+        render_doc(
+            "ndo", NDO_SCHEMA_PATH, NDO_OBJECTS_PATH, NDO_DEFAULTS_PATH, pubhub=True
+        )
+        render_doc(
+            "ndo",
+            NDO_SCHEMA_PATH,
+            NDO_SCHEMA_OBJECTS_PATH,
+            NDO_DEFAULTS_PATH,
+            pubhub=True,
         )
     else:
         render_doc("apic", APIC_SCHEMA_PATH, APIC_OBJECTS_PATH, APIC_DEFAULTS_PATH)
