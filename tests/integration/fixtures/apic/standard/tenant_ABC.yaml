@@ -185,6 +185,7 @@ apic:
                   mtu: 'inherit'
                 - channel: VPC1
                   svi: true
+                  autostate: true
                   vlan: 301
                   ip_a: 14.14.14.1/24
                   ip_b: 14.14.14.2/24
@@ -211,6 +212,7 @@ apic:
                     - ip: 14.14.14.15
                       remote_as: 65010
                 - floating_svi: true
+                  autostate: true
                   vlan: 302
                   ip: 24.24.24.24/24
                   paths:

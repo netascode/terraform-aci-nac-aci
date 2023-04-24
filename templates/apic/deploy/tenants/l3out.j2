@@ -349,7 +349,7 @@
                                                         "attributes": {
                                                             "annotation": "orchestrator:aac",
                                                             "addr": "{{ defaults.apic.tenants.l3outs.nodes.interfaces.ip if type == 'vpc' else int.ip }}",
-                                                            "autostate": "disabled",
+                                                            "autostate": "{{ 'enabled' if int.autostate | default(defaults.apic.tenants.l3outs.nodes.interfaces.autostate) else 'disabled'}}",
                                                             "descr": "{{ int.description | default() }}",
                                                             "encapScope": "local",
                                                             {% if int.vlan is defined %}
@@ -378,7 +378,7 @@
                                                         "attributes": {
                                                             "annotation": "orchestrator:aac",
                                                             "addr": "{{ int.ip }}",
-                                                            "autostate": "disabled",
+                                                            "autostate": "{{ 'enabled' if int.autostate | default(defaults.apic.tenants.l3outs.nodes.interfaces.autostate) else 'disabled'}}",
                                                             "descr": "{{ int.description | default() }}",
                                                             "encapScope": "local",
                                                             "ifInstT": "ext-svi",
@@ -905,7 +905,7 @@
                                                         "attributes": {
                                                             "annotation": "orchestrator:aac",
                                                             "addr": "{{ defaults.apic.tenants.l3outs.nodes.interfaces.ip if type == 'vpc' else int.ip }}",
-                                                            "autostate": "disabled",
+                                                            "autostate": "{{ 'enabled' if int.autostate | default(defaults.apic.tenants.l3outs.nodes.interfaces.autostate) else 'disabled'}}",
                                                             "descr": "{{ int.description | default() }}",
                                                             "encapScope": "local",
                                                             {% if int.vlan is defined %}
@@ -934,7 +934,7 @@
                                                         "attributes": {
                                                             "annotation": "orchestrator:aac",
                                                             "addr": "{{ int.ip }}",
-                                                            "autostate": "disabled",
+                                                            "autostate": "{{ 'enabled' if int.autostate | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.autostate) else 'disabled'}}",
                                                             "descr": "{{ int.description | default() }}",
                                                             "encapScope": "local",
                                                             "ifInstT": "ext-svi",

@@ -712,6 +712,7 @@ defaults:
             pod: 1
             module: 1
             svi: false
+            autostate: false
             floating_svi: false
             ip: 0.0.0.0
             mac: 00:22:BD:F8:19:FF
@@ -776,6 +777,7 @@ defaults:
               pod: 1
               module: 1
               svi: false
+              autostate: false
               floating_svi: false
               ip: 0.0.0.0
               mac: 00:22:BD:F8:19:FF
