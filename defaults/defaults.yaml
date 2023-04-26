@@ -712,6 +712,7 @@ defaults:
             pod: 1
             module: 1
             svi: false
+            autostate: false
             floating_svi: false
             ip: 0.0.0.0
             mac: 00:22:BD:F8:19:FF
@@ -776,6 +777,7 @@ defaults:
               pod: 1
               module: 1
               svi: false
+              autostate: false
               floating_svi: false
               ip: 0.0.0.0
               mac: 00:22:BD:F8:19:FF
@@ -841,6 +843,7 @@ defaults:
           name_suffix: ""
           flood_in_encap: false
           intra_epg_isolation: false
+          proxy_arp: false
           preferred_group: false
           qos_class: unspecified
           vmware_vmm_domains:
