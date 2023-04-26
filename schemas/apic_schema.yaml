@@ -1702,7 +1702,9 @@ ten_l3outs_nodes_interfaces_bgp_peers:
   import_route_control: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_nodes_interfaces_paths:
-  physical_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  physical_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$',required=False)
+  vmware_vmm_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$',required=False)
+  elag: regex('^[a-zA-Z0-9_.:-]{1,64}$',required=False)
   floating_ip: ip()
 
 ten_l3outs_node_profiles:
@@ -1826,7 +1828,9 @@ ten_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers:
   import_route_control: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_node_profiles_interface_profiles_interfaces_paths:
-  physical_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  physical_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$',required=False)
+  vmware_vmm_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$',required=False)
+  elag: regex('^[a-zA-Z0-9_.:-]{1,64}$',required=False)
   floating_ip: ip()
 
 ten_l3outs_external_endpoint_groups:

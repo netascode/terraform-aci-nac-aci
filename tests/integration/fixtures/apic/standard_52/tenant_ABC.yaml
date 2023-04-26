@@ -68,3 +68,20 @@ apic:
               vrf: VRF2
             - name: ESG3
               vrf: VRF2
+      l3outs:
+        - name: L3OUT_SVI
+          vrf: VRF1
+          domain: ROUTED1
+          nodes:
+            - node_id: 101
+              router_id: 5.5.5.5
+              router_id_as_loopback: false
+              interfaces:
+                - floating_svi: true
+                  node_id: 101
+                  ip: 1.1.1.2/24
+                  vlan: 134
+                  paths:
+                    - floating_ip: 1.1.1.1/24
+                      vmware_vmm_domain: VMM1
+                      elag: ELAGDefault

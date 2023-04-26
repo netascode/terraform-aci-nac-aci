@@ -209,8 +209,13 @@ apic:
         ranges:
           - from: 2000
             to: 2099
+          - from: 134
+            to: 134
+            allocation: static
       - name: ROUTED1
         ranges:
+          - from: 134
+            to: 134
           - from: 300
             to: 305
       - name: ROUTED2

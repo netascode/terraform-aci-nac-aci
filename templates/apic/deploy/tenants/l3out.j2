@@ -448,13 +448,38 @@
                                                             {%- endif %}
                                                             {%- if int.floating_svi | default(defaults.apic.tenants.l3outs.nodes.interfaces.floating_svi) | cisco.aac.aac_bool("yes")  == 'yes' %}
                                                             {%- for path in int.paths | default([]) %}{{ comma5() }}
+                                                            {%- if path.physical_domain | default ("") %}
+                                                            {%- set floating_l3domain = "phys-" ~ path.physical_domain %}
+                                                            {%- elif path.vmware_vmm_domain | default("") %}
+                                                            {%- set floating_l3domain = "vmmp-VMware/dom-" ~ path.vmware_vmm_domain %}
+                                                            {%- else %}
+                                                            {%- endif %}
                                                             {
                                                                 "l3extRsDynPathAtt": {
                                                                     "attributes": {
                                                                         "annotation": "orchestrator:aac",
                                                                         "floatingAddr": "{{ path.floating_ip }}",
-                                                                        "tDn": "uni/phys-{{ path.physical_domain }}"
-                                                                    }
+                                                                        "tDn": "uni/{{floating_l3domain}}"
+                                                                    }{% if path.elag is defined and path.vmware_vmm_domain %},
+                                                                    "children":[
+                                                                        {
+                                                                            "l3extVirtualLIfPLagPolAtt": {
+                                                                                "attributes":{
+                                                                                    "annotation": "orchestrator:aac"
+                                                                                },
+                                                                                "children":[
+                                                                                    {
+                                                                                        "l3extRsVSwitchEnhancedLagPol": {
+                                                                                            "attributes":{
+                                                                                                "annotation": "orchestrator:aac",
+                                                                                                "tDn": "uni/vmmp-VMware/dom-{{ path.vmware_vmm_domain }}/vswitchpolcont/enlacplagp-{{ path.elag }}"
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    ]{% endif %}
                                                                 }
                                                             }
                                                             {%- endfor %}
@@ -1004,13 +1029,38 @@
                                                             {%- endif %}
                                                             {%- if int.floating_svi | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.floating_svi) | cisco.aac.aac_bool("yes") == 'yes' %}
                                                             {%- for path in int.paths | default([]) %}{{ comma5() }}
+                                                            {%- if path.physical_domain | default ("") %}
+                                                            {%- set floating_l3domain = "phys-" ~ path.physical_domain %}
+                                                            {%- elif path.vmware_vmm_domain | default("") %}
+                                                            {%- set floating_l3domain = "vmmp-VMware/dom-" ~ path.vmware_vmm_domain %}
+                                                            {%- else %}
+                                                            {%- endif %}
                                                             {
                                                                 "l3extRsDynPathAtt": {
                                                                     "attributes": {
                                                                         "annotation": "orchestrator:aac",
                                                                         "floatingAddr": "{{ path.floating_ip }}",
-                                                                        "tDn": "uni/phys-{{ path.physical_domain }}"
-                                                                    }
+                                                                        "tDn": "uni/{{floating_l3domain}}"
+                                                                    }{% if path.elag and path.vmware_vmm_domain %},
+                                                                    "children":[
+                                                                        {
+                                                                            "l3extVirtualLIfPLagPolAtt": {
+                                                                                "attributes":{
+                                                                                    "annotation": "orchestrator:aac"
+                                                                                },
+                                                                                "children":[
+                                                                                    {
+                                                                                        "l3extRsVSwitchEnhancedLagPol": {
+                                                                                            "attributes":{
+                                                                                                "annotation": "orchestrator:aac",
+                                                                                                "tDn": "uni/vmmp-VMware/dom-{{ path.vmware_vmm_domain }}/vswitchpolcont/enlacplagp-{{ path.elag }}"
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    ]{% endif %}
                                                                 }
                                                             }
                                                             {%- endfor %}
