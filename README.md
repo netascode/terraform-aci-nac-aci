@@ -215,7 +215,7 @@ Additional example repositories:
 | <a name="module_aci_igmp_interface_policy"></a> [aci\_igmp\_interface\_policy](#module\_aci\_igmp\_interface\_policy) | netascode/igmp-interface-policy/aci | 0.1.1 |
 | <a name="module_aci_igmp_snooping_policy"></a> [aci\_igmp\_snooping\_policy](#module\_aci\_igmp\_snooping\_policy) | netascode/igmp-snooping-policy/aci | 0.1.0 |
 | <a name="module_aci_imported_contract"></a> [aci\_imported\_contract](#module\_aci\_imported\_contract) | netascode/imported-contract/aci | 0.1.0 |
-| <a name="module_aci_inband_endpoint_group"></a> [aci\_inband\_endpoint\_group](#module\_aci\_inband\_endpoint\_group) | netascode/inband-endpoint-group/aci | 0.1.1 |
+| <a name="module_aci_inband_endpoint_group"></a> [aci\_inband\_endpoint\_group](#module\_aci\_inband\_endpoint\_group) | netascode/inband-endpoint-group/aci | 0.1.2 |
 | <a name="module_aci_inband_node_address"></a> [aci\_inband\_node\_address](#module\_aci\_inband\_node\_address) | netascode/inband-node-address/aci | 0.2.0 |
 | <a name="module_aci_infra_dscp_translation_policy"></a> [aci\_infra\_dscp\_translation\_policy](#module\_aci\_infra\_dscp\_translation\_policy) | netascode/infra-dscp-translation-policy/aci | 0.1.0 |
 | <a name="module_aci_interface_type"></a> [aci\_interface\_type](#module\_aci\_interface\_type) | netascode/interface-type/aci | 0.1.0 |

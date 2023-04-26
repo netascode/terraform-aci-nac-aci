@@ -534,6 +534,7 @@ locals {
         contract_consumers          = try([for contract in epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
         contract_providers          = try([for contract in epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
         contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
+        static_routes               = try(epg.static_routes, [])
       }
     ] if tenant.name == "mgmt"
   ])
@@ -541,7 +542,7 @@ locals {
 
 module "aci_inband_endpoint_group" {
   source  = "netascode/inband-endpoint-group/aci"
-  version = "0.1.1"
+  version = "0.1.2"
 
   for_each                    = { for epg in local.inband_endpoint_groups : epg.key => epg if try(local.modules.aci_inband_endpoint_group, true) && var.manage_tenants }
   name                        = each.value.name
@@ -550,6 +551,7 @@ module "aci_inband_endpoint_group" {
   contract_consumers          = each.value.contract_consumers
   contract_providers          = each.value.contract_providers
   contract_imported_consumers = each.value.contract_imported_consumers
+  static_routes               = each.value.static_routes
 
   depends_on = [
     module.aci_tenant,
@@ -921,6 +923,7 @@ locals {
             interfaces = [for int in try(ip.interfaces, []) : {
               ip           = try(int.ip, "")
               svi          = try(int.svi, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.svi)
+              autostate    = try(int.autostate, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.autostate)
               floating_svi = try(int.floating_svi, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.floating_svi)
               vlan         = try(int.vlan, null)
               description  = try(int.description, "")
@@ -1003,6 +1006,7 @@ module "aci_l3out_interface_profile_manual" {
     ip           = int.ip
     svi          = int.svi
     floating_svi = int.floating_svi
+    autostate    = int.autostate
     vlan         = int.vlan
     description  = int.description
     type         = int.type
@@ -1052,6 +1056,7 @@ locals {
           for int in try(node.interfaces, []) : {
             ip           = try(int.ip, "")
             svi          = try(int.svi, local.defaults.apic.tenants.l3outs.nodes.interfaces.svi)
+            autostate    = try(int.autostate, local.defaults.apic.tenants.l3outs.nodes.interfaces.autostate)
             floating_svi = try(int.floating_svi, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.floating_svi)
             vlan         = try(int.vlan, null)
             description  = try(int.description, "")
@@ -1132,6 +1137,7 @@ module "aci_l3out_interface_profile_auto" {
   interfaces = [for int in try(each.value.interfaces, []) : {
     ip           = int.ip
     svi          = int.svi
+    autostate    = int.autostate
     floating_svi = int.floating_svi
     vlan         = int.vlan
     description  = int.description
