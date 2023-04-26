@@ -244,7 +244,7 @@ Additional example repositories:
 | <a name="module_aci_node_control_policy"></a> [aci\_node\_control\_policy](#module\_aci\_node\_control\_policy) | netascode/node-control-policy/aci | 0.1.0 |
 | <a name="module_aci_node_registration"></a> [aci\_node\_registration](#module\_aci\_node\_registration) | netascode/node-registration/aci | 0.1.1 |
 | <a name="module_aci_oob_contract"></a> [aci\_oob\_contract](#module\_aci\_oob\_contract) | netascode/oob-contract/aci | 0.2.0 |
-| <a name="module_aci_oob_endpoint_group"></a> [aci\_oob\_endpoint\_group](#module\_aci\_oob\_endpoint\_group) | netascode/oob-endpoint-group/aci | 0.1.0 |
+| <a name="module_aci_oob_endpoint_group"></a> [aci\_oob\_endpoint\_group](#module\_aci\_oob\_endpoint\_group) | netascode/oob-endpoint-group/aci | 0.1.1 |
 | <a name="module_aci_oob_external_management_instance"></a> [aci\_oob\_external\_management\_instance](#module\_aci\_oob\_external\_management\_instance) | netascode/oob-external-management-instance/aci | 0.1.0 |
 | <a name="module_aci_oob_node_address"></a> [aci\_oob\_node\_address](#module\_aci\_oob\_node\_address) | netascode/oob-node-address/aci | 0.1.3 |
 | <a name="module_aci_ospf_interface_policy"></a> [aci\_ospf\_interface\_policy](#module\_aci\_ospf\_interface\_policy) | netascode/ospf-interface-policy/aci | 0.1.0 |

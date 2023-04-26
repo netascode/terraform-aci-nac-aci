@@ -566,6 +566,7 @@ locals {
         key                    = format("%s/%s", tenant.name, epg.name)
         name                   = "${epg.name}${local.defaults.apic.tenants.oob_endpoint_groups.name_suffix}"
         oob_contract_providers = try([for contract in epg.oob_contracts.providers : "${contract}${local.defaults.apic.tenants.oob_contracts.name_suffix}"], [])
+        static_routes          = try(epg.static_routes, [])
       }
     ] if tenant.name == "mgmt"
   ])
@@ -573,11 +574,12 @@ locals {
 
 module "aci_oob_endpoint_group" {
   source  = "netascode/oob-endpoint-group/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
   for_each               = { for epg in local.oob_endpoint_groups : epg.key => epg if try(local.modules.aci_oob_endpoint_group, true) && var.manage_tenants }
   name                   = each.value.name
   oob_contract_providers = each.value.oob_contract_providers
+  static_routes          = each.value.static_routes
 
   depends_on = [
     module.aci_tenant,
