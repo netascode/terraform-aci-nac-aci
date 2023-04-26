@@ -843,6 +843,7 @@ defaults:
           name_suffix: ""
           flood_in_encap: false
           intra_epg_isolation: false
+          proxy_arp: false
           preferred_group: false
           qos_class: unspecified
           vmware_vmm_domains:
