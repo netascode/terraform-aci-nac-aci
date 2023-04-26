@@ -278,6 +278,7 @@ locals {
           description                 = try(epg.description, "")
           flood_in_encap              = try(epg.flood_in_encap, local.defaults.apic.tenants.application_profiles.endpoint_groups.flood_in_encap)
           intra_epg_isolation         = try(epg.intra_epg_isolation, local.defaults.apic.tenants.application_profiles.endpoint_groups.intra_epg_isolation)
+          proxy_arp                   = try(epg.proxy_arp, local.defaults.apic.tenants.application_profiles.endpoint_groups.proxy_arp)
           preferred_group             = try(epg.preferred_group, local.defaults.apic.tenants.application_profiles.endpoint_groups.preferred_group)
           qos_class                   = try(epg.qos_class, local.defaults.apic.tenants.application_profiles.endpoint_groups.qos_class)
           custom_qos_policy           = try("${epg.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
@@ -379,7 +380,7 @@ locals {
 
 module "aci_endpoint_group" {
   source  = "netascode/endpoint-group/aci"
-  version = "0.2.7"
+  version = "0.2.8"
 
   for_each                    = { for epg in local.endpoint_groups : epg.key => epg if try(local.modules.aci_endpoint_group, true) && var.manage_tenants }
   tenant                      = each.value.tenant
@@ -389,6 +390,7 @@ module "aci_endpoint_group" {
   description                 = each.value.description
   flood_in_encap              = each.value.flood_in_encap
   intra_epg_isolation         = each.value.intra_epg_isolation
+  proxy_arp                   = each.value.proxy_arp
   preferred_group             = each.value.preferred_group
   qos_class                   = each.value.qos_class
   custom_qos_policy           = each.value.custom_qos_policy
