@@ -963,8 +963,10 @@ locals {
                 import_route_control             = try("${peer.import_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
               }]
               paths = [for path in try(int.paths, []) : {
-                physical_domain = path.physical_domain
-                floating_ip     = path.floating_ip
+                physical_domain   = try(path.physical_domain, null)
+                vmware_vmm_domain = try(path.vmware_vmm_domain, null)
+                elag              = try(path.elag, null)
+                floating_ip       = path.floating_ip
               }]
             }]
           }
@@ -976,7 +978,7 @@ locals {
 
 module "aci_l3out_interface_profile_manual" {
   source  = "netascode/l3out-interface-profile/aci"
-  version = "0.2.8"
+  version = "0.2.9"
 
   for_each                    = { for ip in local.interface_profiles_manual : ip.key => ip if try(local.modules.aci_l3out_interface_profile, true) && var.manage_tenants }
   tenant                      = each.value.tenant
@@ -1092,8 +1094,10 @@ locals {
               import_route_control             = try("${peer.import_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
             }]
             paths = [for path in try(int.paths, []) : {
-              physical_domain = path.physical_domain
-              floating_ip     = path.floating_ip
+              physical_domain   = try(path.physical_domain, null)
+              vmware_vmm_domain = try(path.vmware_vmm_domain, null)
+              elag              = try(path.elag, null)
+              floating_ip       = path.floating_ip
             }]
           }
         ]])
@@ -1104,7 +1108,7 @@ locals {
 
 module "aci_l3out_interface_profile_auto" {
   source  = "netascode/l3out-interface-profile/aci"
-  version = "0.2.8"
+  version = "0.2.9"
 
   for_each                    = { for ip in local.interface_profiles_auto : ip.key => ip if try(local.modules.aci_l3out_interface_profile, true) && var.manage_tenants }
   tenant                      = each.value.tenant
