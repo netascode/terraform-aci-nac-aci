@@ -22,7 +22,7 @@ The following common tasks are defined, which are then used by the 'ndo_deploy' 
 - **ndo_config_stage.yaml**: This stage uses the previously rendered configurations and pushes them using the 'mso_rest' module.
 - **ndo_delete_stage.yaml**: This stage uses the 'mso_delete' module and deletes objects from NDO if they are not included in the data input files.
 
-The following common tasks are defined, which are then used by 'test_ndo_bootstrap' and 'test_ndo_deploy' roles:
+The following common tasks are defined, which are then used by the 'test_ndo_deploy' role:
 
 - **test_ndo_render_common.yaml**: This task renders the 'ndo_common.robot' template
 - **test_ndo_render_stage.yaml**: This stage renders the test suites for each object using the corresponding robot template and the provided data input files. The 'mso_resolve' module is used to resolve ID placeholders in a second step.

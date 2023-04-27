@@ -43,7 +43,7 @@ Variable | Mandatory | Default | Description
 **apic_public_cert** | No | | The certificate used for signature based authnetication
 **apic_test_username** | No | | The username for a local user created as part of the ```apic_bootstrap``` role and used by ```test_apic_deploy``` role. If not defined ```apic_username``` is used instead.
 **apic_test_password** | No | | The password used for ```apic_test_username``` user.  If not defined ```apic_password``` is used instead.
-**apic_ndo_username** | No | | The username for a local user created as part of the ```apic_bootstrap``` role and used by ```ndo_deploy``` roles to configure ACI.
+**apic_ndo_username** | No | | The username for a local user created as part of the ```apic_bootstrap``` role and used by the ```ndo_deploy``` roles to configure ACI.
 **apic_ndo_password** | No | | The password used for ```apic_ndo_username``` user
 **apic_admin_password** | No | | Is used to update the 'admin' user password after running ```apic_bootstrap``` role
 **apic_use_proxy** | No | No | If yes, uses a proxy defined as environment variable (see [aci_rest](https://docs.ansible.com/ansible/latest/collections/cisco/aci/aci_rest_module.html) Ansible module)
@@ -58,10 +58,10 @@ Variable | Mandatory | Default | Description
 ---|---|---|---
 **ndo_mode** | No | "only_provided" | - ```only_provided``` limits the list of objects to those configured as per inventory <br> - ```only_changed``` limits the list of objects to those that have changed compared to previous snapshot of the inventory (```previous_inventory``` is thr path to previous inventory files) <br> - ```all``` unconditionally includes all objects
 **ndo_platform** | No | "nd" | - ```standalone``` refers to a standalone MSO installation <br> - ```nd``` refers to a Nexus Dashboard installation
-**ndo_username** | Yes | | The username for a local user created as part of the ```ndo_bootstrap``` role and subsequently used by ```ndo_deploy``` roles
+**ndo_username** | Yes | | The username for a local user used by the ```ndo_deploy``` role
 **ndo_password** | Yes | | The password used for ```ndo_username``` user
 **ndo_login_domain** | No | local | The login domain used for ```ndo_username``` user
-**ndo_test_username** | No | | The username for a local user created as part of the ```ndo_bootstrap``` role and used by ```test_ndo_deploy``` roles. If not defined ```ndo_username``` is used instead.
+**ndo_test_username** | No | | The username for a local user used by the ```test_ndo_deploy``` role. If not defined ```ndo_username``` is used instead.
 **ndo_test_password** | No | | The password used for ```ndo_test_username``` user. If not defined ```ndo_password``` is used instead.
 **ndo_test_login_domain** | No | local | The login domain used for ```ndo_test_username``` user
 **ndo_validate_certs** | No | No | If yes, validates the certificate presented by NDO
