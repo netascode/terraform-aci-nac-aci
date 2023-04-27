@@ -19,9 +19,10 @@ Login NDO
     Create Session   ndo   %{MSO_URL}   headers={"Content-Type": "application/json", "Authorization": "Bearer ${ndo_token}"}
 
 Should Be Equal Value Json String
-    [Arguments]    ${json}    ${json_path}   ${value}=${EMPTY}
+    [Arguments]    ${json}    ${json_path}   ${value}=${EMPTY}   ${value2}=${EMPTY}
     ${r_value}=   Get Value From Json   ${json}   ${json_path}
-    Run Keyword If   "${value}" != "${EMPTY}"   Should Be Equal As Strings   ${r_value}[0]   ${value}
+    Run Keyword If   "${value}" != "${EMPTY}" and "${value2}" == "${EMPTY}"   Should Be Equal As Strings   ${r_value}[0]   ${value}
+    Run Keyword If   "${value}" != "${EMPTY}" and "${value2}" != "${EMPTY}"   Should Be True   "${r_value}[0]" == "${value}" or "${r_value}[0]" == "${value2}"
 
 Should Be Equal Value Json Boolean
     [Arguments]    ${json}    ${json_path}   ${value}=${EMPTY}
