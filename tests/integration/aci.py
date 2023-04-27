@@ -48,9 +48,9 @@ class Apic:
         self.cookie = {"APIC-Cookie": token}
         return ""
 
-    def post(self, data: str) -> str:
+    def post(self, data: str, url: str = "/api/mo/uni.json") -> str:
         """APIC POST"""
-        base_url = self.url + "/api/mo/uni.json"
+        base_url = self.url + url
         resp = self.session.post(base_url, data=data, cookies=self.cookie)
         if resp.status_code != 200:
             return "APIC POST failed, status code: {}, response: {}".format(

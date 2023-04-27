@@ -11,8 +11,9 @@ import time
 import errorhandler
 import iac_test.pabot
 import pytest
+from aci import Apic
 from ndo import Ndo
-from util import render_templates, revert_snapshot
+from util import render_templates
 
 pytestmark = pytest.mark.integration
 pytestmark = pytest.mark.ndo
@@ -28,27 +29,14 @@ TEMPLATE_MAPPINGS = {
     "system_config": {
         "api_path": "platform/systemConfig",
     },
-    "tacacs_provider": {
-        "api_path": "auth/providers/tacacs",
-    },
-    "login_domain": {
-        "api_path": "auth/domains",
-    },
     "remote_location": {
         "api_path": "platform/remote-locations",
     },
-    "user": {
-        "api_path": "users",
-    },
-    "ca_certificate": {
-        "api_path": "auth/security/certificates",
-    },
     "site": {
-        "api_path": "sites",
+        "api_path": "sites/manage",
     },
     "fabric_connectivity": {
         "api_path": "sites/fabric-connectivity",
-        "method": "put",
     },
     "tenant": {
         "api_path": "tenants",
@@ -63,6 +51,29 @@ TEMPLATE_MAPPINGS = {
         "api_path": "policies/dhcp/option",
     },
 }
+
+
+def apic_revert(apic_url, snapshot):
+    """Revert APIC to snapshot"""
+    username = os.getenv("ACI_USERNAME")
+    password = os.getenv("ACI_PASSWORD")
+    if not username:
+        return "APIC username must be specified with ACI_USERNAME environment variable."
+    if not password:
+        return "APIC password must be specified with ACI_PASSWORD environment variable."
+    apic = Apic(apic_url, username, password)
+    r = apic.login()
+    if r:
+        return "APIC login failed: {}.".format(r)
+    payload = (
+        '{"configImportP":{"attributes":{"dn":"uni/fabric/configimp-default","name":"default","snapshot":"true","adminSt":"triggered","fileName":"'
+        + snapshot
+        + '","importType":"replace","importMode":"atomic","rn":"configimp-default","status":"created,modified"},"children":[]}}'
+    )
+    r = apic.post(payload, url="/api/node/mo/uni/fabric/configimp-default.json")
+    if r:
+        return "Reverting to APIC snapshot failed."
+    return None
 
 
 def ndo_login(ndo_url):
@@ -84,9 +95,7 @@ def ndo_deploy_config(ndo_inst, config_path):
         if os.path.exists(file_path):
             with open(file_path, "r") as file:
                 data = file.read()
-                r = ndo_inst.post_or_put(
-                    params["api_path"], data, method=params.get("method", "")
-                )
+                r = ndo_inst.post_or_put(params["api_path"], data)
                 if r:
                     return "Deployment of {} failed: {}.".format(file_path, r)
         elif os.path.exists(folder_path):
@@ -95,9 +104,7 @@ def ndo_deploy_config(ndo_inst, config_path):
                     continue
                 with open(os.path.join(folder_path, filename), "r") as file:
                     data = file.read()
-                    r = ndo_inst.post_or_put(
-                        params["api_path"], data, method=params.get("method", "")
-                    )
+                    r = ndo_inst.post_or_put(params["api_path"], data)
                     if r:
                         return "Deployment of {} failed: {}.".format(file_path, r)
     return None
@@ -148,18 +155,18 @@ def ndo_render_run_tests(ndo_inst, ndo_url, data_paths, output_path):
 
 
 @pytest.mark.parametrize(
-    "data_paths, vm_name, snapshot_name, ndo_url, ndo_backup_id",
+    "data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id",
     [
         (
             ["tests/integration/fixtures/ndo/standard/", "defaults/"],
-            "BUILD1-ACISIM2",
-            "Day2",
+            "https://10.51.77.63",
+            "ce2_defaultOneTime-2023-04-27T09-13-37.tar.gz",
             "https://10.51.77.52",
-            "5f0491f42900009600dd040d",
+            "644a3e01532fc3f658849258",
         )
     ],
 )
-def test_ndo(data_paths, vm_name, snapshot_name, ndo_url, ndo_backup_id, tmpdir):
+def test_ndo(data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, tmpdir):
     """Deploy config to NDO instance and run tests"""
 
     # Render templates
@@ -173,8 +180,10 @@ def test_ndo(data_paths, vm_name, snapshot_name, ndo_url, ndo_backup_id, tmpdir)
     if error:
         pytest.fail(error)
 
-    # Revert ACI simulator snapshot
-    revert_snapshot(vm_name, snapshot_name)
+    # Revert APIC snapshot
+    error = apic_revert(apic_url, snapshot_name)
+    if error:
+        pytest.fail(error)
 
     # NDO login
     error, ndo_inst = ndo_login(ndo_url)
@@ -187,7 +196,7 @@ def test_ndo(data_paths, vm_name, snapshot_name, ndo_url, ndo_backup_id, tmpdir)
         pytest.fail(error)
 
     # Enable retries
-    ndo_inst.enable_retries()
+    # ndo_inst.enable_retries()
 
     # Configure NDO
     error = ndo_deploy_config(ndo_inst, tmpdir.strpath)

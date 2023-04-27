@@ -52,7 +52,15 @@ API_ENDPOINT_MAPPINGS = {
     "sites": {
         "container": "sites",
         "key": "name",
-        "has_id": "yes",
+        "has_id": True,
+    },
+    "sites/manage": {
+        "container": "sites",
+        "key": "name",
+        "has_id": True,
+        "method": "post",
+        "api_version": "v2",
+        "api_prefix": "mso/",
     },
     "tenants": {
         "container": "tenants",
@@ -73,6 +81,7 @@ API_ENDPOINT_MAPPINGS = {
         "container": "systemConfigs",
         "key": None,
         "has_id": True,
+        "method": "put",
     },
     "policies/dhcp/relay": {
         "container": "DhcpRelayPolicies",
@@ -93,6 +102,7 @@ API_ENDPOINT_MAPPINGS = {
         "container": None,
         "key": None,
         "has_id": False,
+        "method": "put",
     },
     "tenants/allowed-users": {
         "container": None,
@@ -254,7 +264,8 @@ class Ndo:
         # Query for existing object(s)
         lookup_path = path
         lookup_value = None
-        if lookup_path in API_ENDPOINT_MAPPINGS and method == "":
+        method = API_ENDPOINT_MAPPINGS.get(path, {}).get("method", method)
+        if lookup_path in API_ENDPOINT_MAPPINGS and method in ["put", "post_or_put"]:
             key = API_ENDPOINT_MAPPINGS.get(lookup_path, {}).get("key")
             has_id = API_ENDPOINT_MAPPINGS.get(lookup_path, {}).get("has_id")
             if key is not None:
@@ -264,11 +275,13 @@ class Ndo:
                 obj_id = existing_obj["id"]
                 payload["id"] = obj_id
                 path = path + "/{}".format(obj_id)
-                method = "PUT"
-            else:
-                method = "POST"
+                method = "put"
+            elif method == "post_or_put":
+                method = "post"
 
-        base_url = self.url + "/api/v1/" + path
+        api_version = API_ENDPOINT_MAPPINGS.get(path, {}).get("api_version", "v1")
+        api_prefix = API_ENDPOINT_MAPPINGS.get(path, {}).get("api_prefix", "")
+        base_url = "{}/{}api/{}/{}".format(self.url, api_prefix, api_version, path)
 
         if method.upper() == "PUT":
             resp = self.session.put(base_url, data=json.dumps(payload))
@@ -278,25 +291,26 @@ class Ndo:
         if resp.status_code not in [200, 201]:
             if "Cannot run program" in resp.text and resp.status_code == 400:
                 return ""
+            if "Site already managed" in resp.text and resp.status_code == 400:
+                return ""
             return "NDO {} failed, status code: {}, response: {}.".format(
                 method, resp.status_code, resp.text
             )
         return ""
 
+    def get(self, path: str) -> str:
+        """NDO GET"""
+        # update references in path
+        path_dict = {"path": path}
+        self._update_references(path_dict)
+        path = path_dict["path"]
 
-def get(self, path: str) -> str:
-    """NDO GET"""
-    # update references in path
-    path_dict = {"path": path}
-    self._update_references(path_dict)
-    path = path_dict["path"]
+        base_url = self.url + "/mso/api/v1/" + path
 
-    base_url = self.url + "/api/v1/" + path
+        resp = self.session.get(base_url)
 
-    resp = self.session.get(base_url)
-
-    if resp.status_code != 200:
-        return "NDO GET failed, status code: {}, response: {}.".format(
-            resp.status_code, resp.text
-        )
-    return ""
+        if resp.status_code != 200:
+            return "NDO GET failed, status code: {}, response: {}.".format(
+                resp.status_code, resp.text
+            )
+        return ""

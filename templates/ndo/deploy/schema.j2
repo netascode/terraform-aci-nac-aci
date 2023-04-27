@@ -631,7 +631,7 @@
                                     "scope": "{{ subnet.scope | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.scope) }}",
                                     "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.shared) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                                     "noDefaultGateway": {% if subnet.no_default_gateway | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.no_default_gateway) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
-                                    {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %}
+                                    {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %},
                                     "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.primary) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
                                     {%- endif %}
 
@@ -755,8 +755,9 @@
                     ],
                     "hostBasedRouting": {% if site.advertise_host_routes | default(defaults.ndo.schemas.templates.bridge_domains.sites.advertise_host_routes) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
                     {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %},
-                    "mac": {{ site.mac | default(defaults.ndo.schemas.templates.bridge_domains.sites.mac) }}
+                    "mac": "{{ site.mac | default(defaults.ndo.schemas.templates.bridge_domains.sites.mac) }}"
                     {%- endif %}
+
                 }
                 {%- endif %}
                 {%- endfor %}

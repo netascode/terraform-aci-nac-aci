@@ -4,7 +4,7 @@ ndo:
     - name: ABC
       templates:
         - name: TEMPLATE1
-          tenant: MSO1
+          tenant: NDO1
           application_profiles:
             - name: AP1
               endpoint_groups:
@@ -37,13 +37,13 @@ ndo:
                         schema: ABC
                         template: TEMPLATE1
                   sites:
-                    - name: BUILD1-ACISIM2
+                    - name: APIC1
                       physical_domains:
-                        - name: ANS-PHY
+                        - name: PHYSICAL1
                           deployment_immediacy: immediate
                           resolution_immediacy: immediate
                       vmware_vmm_domains:
-                        - name: ANS-VMM1
+                        - name: VMM1
                           deployment_immediacy: lazy
                           resolution_immediacy: immediate
                           vlan_mode: static
@@ -101,11 +101,11 @@ ndo:
                   bridge_domain:
                     name: BD2
                   sites:
-                    - name: BUILD1-ACISIM2
+                    - name: APIC1
                       physical_domains:
-                        - name: ANS-PHY
+                        - name: PHYSICAL1
                       vmware_vmm_domains:
-                        - name: ANS-VMM1
+                        - name: VMM1
                       static_ports:
                         - node: 101
                           port: 41
@@ -127,8 +127,8 @@ ndo:
               optimize_wan_bandwidth: false
               l2_stretch: true
               l3_multicast: false
-              dhcp_relay_policy: ANS-REL1
-              dhcp_option_policy: ANS-OPT1
+              # dhcp_relay_policy: ANS-REL1
+              # dhcp_option_policy: ANS-OPT1
               vrf:
                 name: VRF1
                 schema: ABC
@@ -144,24 +144,24 @@ ndo:
                   querier: false
                   primary: true
               sites:
-                - name: BUILD1-ACISIM2
+                - name: APIC1
                   mac: 00:22:BD:F8:19:EE
                   advertise_host_routes: true
                   l3outs:
                     - L3OUT
             - name: BD2
-              dhcp_relay_policy: ANS-REL2
+              # dhcp_relay_policy: ANS-REL2
               vrf:
                 name: VRF2
               sites:
-                - name: BUILD1-ACISIM2
+                - name: APIC1
             - name: BD3
               vrf:
                 name: VRF2
-              dhcp_policies:
-                - dhcp_relay_policy: ANS-REL1
-                  dhcp_option_policy: ANS-OPT1
-                - dhcp_relay_policy: ANS-REL2
+              # dhcp_policies:
+              #   - dhcp_relay_policy: ANS-REL1
+              #     dhcp_option_policy: ANS-OPT1
+              #   - dhcp_relay_policy: ANS-REL2
           filters:
             - name: FILTER1
               entries:
@@ -181,7 +181,7 @@ ndo:
                 - name: ANY
                   ethertype: unspecified
           l3outs:
-            - name: ANS-L3OUT
+            - name: L3OUT1
               vrf:
                 name: VRF1
                 schema: ABC
@@ -214,16 +214,16 @@ ndo:
                     schema: ABC
                     template: TEMPLATE1
               sites:
-                - name: BUILD1-ACISIM2
+                - name: APIC1
                   l3out:
-                    name: ANS-L3OUT
+                    name: L3OUT1
             - name: EXT-EPG2
               vrf:
                 name: VRF2
               sites:
-                - name: BUILD1-ACISIM2
+                - name: APIC1
                   l3out:
-                    name: ANS-L3OUT
+                    name: L3OUT1
           contracts:
             - name: CONTRACT1
               scope: context
@@ -240,17 +240,17 @@ ndo:
                     provider:
                       bridge_domain: BD1
                       sites:
-                        - name: BUILD1-ACISIM2
-                          device: ANS-DEV
+                        - name: APIC1
+                          device: DEV1
                           logical_interface: INT1
-                          redirect_policy: ANS-PBR
+                          redirect_policy: PBR1
                     consumer:
                       bridge_domain: BD1
                       sites:
-                        - name: BUILD1-ACISIM2
-                          device: ANS-DEV
+                        - name: APIC1
+                          device: DEV1
                           logical_interface: INT1
-                          redirect_policy: ANS-PBR
+                          redirect_policy: PBR1
             - name: CONTRACT2
               scope: context
               type: bothWay
@@ -265,9 +265,9 @@ ndo:
               nodes:
                 - name: FW1
                   sites:
-                    - name: BUILD1-ACISIM2
-                      device: ANS-DEV
+                    - name: APIC1
+                      device: DEV1
           sites:
-            - BUILD1-ACISIM2
+            - APIC1
         - name: TEMPLATE2
-          tenant: MSO1
+          tenant: NDO1

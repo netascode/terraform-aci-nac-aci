@@ -1,34 +1,29 @@
 ---
 ndo:
-  version: "2.2.4e"
+  version: "3.7.2h"
   system_config:
     banner:
       alias: My Banner New
       type: informational
       message: My Message New
       state: active
-  remote_locations:
-    - name: APIC2
-      description: APIC2 SCP
-      hostname_ip: 10.51.77.63
-      port: 22
-      protocol: scp
-      path: /
-      authentication: password
-      username: admin
-      password: C1sco123
-      ssh_key:
-      passphrase:
+  # remote_locations:
+  #   - name: APIC1
+  #     description: APIC1 SCP
+  #     hostname_ip: 10.51.77.63
+  #     port: 22
+  #     protocol: scp
+  #     path: /
+  #     authentication: password
+  #     username: admin
+  #     password: C1sco123
+  #     ssh_key:
+  #     passphrase:
   sites:
-    - name: BUILD1-ACISIM2
+    - name: APIC1
       apic_urls:
         - https://10.51.77.63
-      username: admin
-      password: C1sco123
       id: 1
-      location:
-        long: "50"
-        lat: "50"
       multisite: true
       multicast_tep: 5.6.7.8
       bgp:
@@ -93,36 +88,36 @@ ndo:
   tenants:
     - name: TEN1
     - name: TEN2
-    - name: MSO1
+    - name: NDO1
       description: My Desc
       sites:
-        - name: BUILD1-ACISIM2
+        - name: APIC1
   policies:
     dhcp_relays:
       - name: ANS-REL1
         description: My Desc
-        tenant: MSO1
+        tenant: NDO1
         providers:
           - ip: 1.2.3.4
-            tenant: MSO1
+            tenant: NDO1
             schema: ABC
             template: TEMPLATE1
             application_profile: AP1
             endpoint_group: EPG1
           - ip: 1.2.3.5
-            tenant: MSO1
+            tenant: NDO1
             schema: ABC
             template: TEMPLATE1
             external_endpoint_group: EXT-EPG1
       - name: ANS-REL2
-        tenant: MSO1
+        tenant: NDO1
     dhcp_options:
       - name: ANS-OPT1
         description: My Desc
-        tenant: MSO1
+        tenant: NDO1
         options:
           - name: OPT1
             id: 1
             data: DATA1
       - name: ANS-OPT2
-        tenant: MSO1
+        tenant: NDO1
