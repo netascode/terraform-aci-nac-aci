@@ -8,7 +8,8 @@ Resource        ../../ndo_common.resource
 {% for schema in ndo.schemas | default([]) %}
 
 Verify Schema {{ schema.name }}
-    ${r}=   GET On Session   ndo   /api/v1/schemas/%%schemas%{{ schema.name }}%%
+    ${schema_id}=   NDO Lookup   schemas   {{ schema.name }}
+    ${r}=   GET On Session   ndo   /api/v1/schemas/${schema_id}
     Set Suite Variable   ${r}
     Should Be Equal Value Json String   ${r.json()}   $.displayName   {{ schema.name }}
 
@@ -39,11 +40,13 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
     Should Be Equal Value Json Boolean   ${r.json()}   ${epg}.preferredGroup   {% if epg.preferred_group | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.preferred_group) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
 {% if epg.bridge_domain.name is defined %}
 {% set bd_name = epg.bridge_domain.name ~ defaults.ndo.schemas.templates.bridge_domains.name_suffix %}
-    Should Be Equal Value Json String   ${r.json()}   ${epg}.bdRef   /schemas/%%schemas%{{ epg.bridge_domain.schema | default(schema.name) }}%%/templates/{{ epg.bridge_domain.template | default(template.name) }}/bds/{{ bd_name }}
+    ${schema_id}=   NDO Lookup   schemas   {{ epg.bridge_domain.schema | default(schema.name) }}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.bdRef   /schemas/${schema_id}/templates/{{ epg.bridge_domain.template | default(template.name) }}/bds/{{ bd_name }}
 {% endif %}
 {% if epg.vrf.name is defined %}
 {% set vrf_name = epg.vrf.name ~ defaults.ndo.schemas.templates.vrfs.name_suffix %}
-    Should Be Equal Value Json String   ${r.json()}   ${epg}.vrfRef   /schemas/%%schemas%{{ epg.vrf.schema | default(schema.name) }}%%/templates/{{ epg.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}
+    ${schema_id}=   NDO Lookup   schemas   {{ epg.vrf.schema | default(schema.name) }}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.vrfRef   /schemas/${schema_id}/templates/{{ epg.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}
 {% endif %}
 
 {% for subnet in epg.subnets | default([]) %}
@@ -73,12 +76,14 @@ Verify Schema {{ schema.name }} Template {{ template.name }} VRF {{ vrf_name }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.l3MCast   {% if vrf.l3_multicast | default(defaults.ndo.schemas.templates.vrfs.l3_multicast) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
     Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.vzAnyEnabled   {% if vrf.vzany | default(defaults.ndo.schemas.templates.vrfs.vzany) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
 {% for contract in vrf.contracts.consumers | default([]) %}
-    ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].vrfs[?(@.name=='{{ vrf_name }}')].vzAnyConsumerContracts[?(@.contractRef=='/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}')]
-    Should Be Equal Value Json String   ${r.json()}   ${con}.contractRef   /schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}
+    ${schema_id}=   NDO Lookup   schemas   {{ contract.schema | default(schema.name) }}
+    ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].vrfs[?(@.name=='{{ vrf_name }}')].vzAnyConsumerContracts[?(@.contractRef=='/schemas/${schema_id}/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}')]
+    Should Be Equal Value Json String   ${r.json()}   ${con}.contractRef   /schemas/${schema_id}/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}
 {% endfor %}
 {% for contract in vrf.contracts.providers | default([]) %}
-    ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].vrfs[?(@.name=='{{ vrf_name }}')].vzAnyProviderContracts[?(@.contractRef=='/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}')]
-    Should Be Equal Value Json String   ${r.json()}   ${con}.contractRef   /schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}
+    ${schema_id}=   NDO Lookup   schemas   {{ contract.schema | default(schema.name) }}
+    ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].vrfs[?(@.name=='{{ vrf_name }}')].vzAnyProviderContracts[?(@.contractRef=='/schemas/${schema_id}/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}')]
+    Should Be Equal Value Json String   ${r.json()}   ${con}.contractRef   /schemas/${schema_id}/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}
 {% endfor %}                        
 {% endfor %}
 
@@ -197,11 +202,13 @@ Verify Schema {{ schema.name }} Template {{ template.name }} External EPG {{ epg
     Should Be Equal Value Json Boolean   ${r.json()}   ${epg}.preferredGroup   {% if epg.preferred_group | default() | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
 {% if epg.l3out.name is defined %}
 {% set l3out_name = epg.l3out.name ~ defaults.ndo.schemas.templates.l3outs.name_suffix %}
-    Should Be Equal Value Json String   ${r.json()}   ${epg}.l3outRef   /schemas/%%schemas%{{ epg.l3out.schema | default(schema.name) }}%%/templates/{{ epg.l3out.template | default(template.name) }}/l3outs/{{ l3out_name }}
+    ${schema_id}=   NDO Lookup   schemas   {{ epg.l3out.schema | default(schema.name) }}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.l3outRef   /schemas/${schema_id}/templates/{{ epg.l3out.template | default(template.name) }}/l3outs/{{ l3out_name }}
 {% endif %}
 {% if epg.application_profile.name is defined %}
 {% set ap_name = epg.application_profile.name ~ defaults.ndo.schemas.templates.application_profiles.name_suffix %}
-    Should Be Equal Value Json String   ${r.json()}   ${epg}.anpRef   /schemas/%%schemas%{{ epg.application_profile.schema | default(schema.name) }}%%/templates/{{ epg.application_profile.template | default(template.name) }}/anps/{{ ap_name }}
+    ${schema_id}=   NDO Lookup   schemas   {{ epg.application_profile.schema | default(schema.name) }}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.anpRef   /schemas/${schema_id}/templates/{{ epg.application_profile.template | default(template.name) }}/anps/{{ ap_name }}
 {% endif %}
 
 {% for subnet in epg.subnets | default([]) %}

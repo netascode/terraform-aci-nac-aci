@@ -31,8 +31,9 @@ Verify Fabric Connectivity
 {% set routed_domain_name = site.routed_domain | default() ~ defaults.ndo.sites.routed_domain_suffix %}
 
 Verify Fabric Connectivity Site {{ site.name }}
-    ${site}=   Set Variable   $.sites[?(@.id=='%%sites%{{ site.name }}%%')]
-    Should Be Equal Value Json String   ${r.json()}   ${site}.id   %%sites%{{ site.name }}%%
+    ${site_id}=   NDO Lookup   sites   {{ site.name }}
+    ${site}=   Set Variable   $.sites[?(@.id=='${site_id}')]
+    Should Be Equal Value Json String   ${r.json()}   ${site}.id   ${site_id}
     Should Be Equal Value Json Integer   ${r.json()}   ${site}.apicSiteId   {{ site.id }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${site}.msiteEnabled   {% if site.multisite | default(defaults.ndo.sites.multisite) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
     Should Be Equal Value Json String   ${r.json()}   ${site}.msiteDataPlaneMulticastTep   {{ site.multicast_tep | default() }}
@@ -50,7 +51,8 @@ Verify Fabric Connectivity Site {{ site.name }}
 {% set pol_name = pol.name ~ defaults.ndo.sites.ospf_policies.name_suffix %}
 
 Verify Fabric Connectivity Site {{ site.name }} OSPF Policy {{ pol_name }}
-    ${pol}=   Set Variable   $.sites[?(@.id=='%%sites%{{ site.name }}%%')].ospfPolicies[?(@.name=='{{ pol_name }}')]
+    ${site_id}=   NDO Lookup   sites   {{ site.name }}
+    ${pol}=   Set Variable   $.sites[?(@.id=='${site_id}')].ospfPolicies[?(@.name=='{{ pol_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${pol}.name   {{ pol_name }}
     Should Be Equal Value Json String   ${r.json()}   ${pol}.networkType   {{ pol.network_type | default(defaults.ndo.sites.ospf_policies.network_type) }}
     Should Be Equal Value Json Integer   ${r.json()}   ${pol}.priority   {{ pol.priority | default(defaults.ndo.sites.ospf_policies.priority) }}
@@ -67,7 +69,8 @@ Verify Fabric Connectivity Site {{ site.name }} OSPF Policy {{ pol_name }}
 {% for pod in site.pods | default([]) %}
 
 Verify Fabric Connectivity Site {{ site.name }} Pod {{ pod.id | default(defaults.sites.pods.id) }}
-    ${pod}=   Set Variable   $.sites[?(@.id=='%%sites%{{ site.name }}%%')].pods[?(@.podId=={{ pod.id | default(defaults.sites.pods.id) }})]
+    ${site_id}=   NDO Lookup   sites   {{ site.name }}
+    ${pod}=   Set Variable   $.sites[?(@.id=='${site_id}')].pods[?(@.podId=={{ pod.id | default(defaults.sites.pods.id) }})]
     Should Be Equal Value Json Integer   ${r.json()}   ${pod}.podId   {{ pod.id | default(defaults.sites.pods.id) }}
     Should Be Equal Value Json String   ${r.json()}   ${pod}.name   pod-{{ pod.id | default(defaults.sites.pods.id) }}
     Should Be Equal Value Json String   ${r.json()}   ${pod}.msiteDataPlaneUnicastTep   {{ pod.unicast_tep | default() }}
@@ -75,7 +78,8 @@ Verify Fabric Connectivity Site {{ site.name }} Pod {{ pod.id | default(defaults
 {% for spine in pod.spines | default([]) %}
 
 Verify Fabric Connectivity Site {{ site.name }} Pod {{ pod.id | default(defaults.sites.pods.id) }} Spine {{ spine.id }}
-    ${spine}=   Set Variable   $.sites[?(@.id=='%%sites%{{ site.name }}%%')].pods[?(@.podId=={{ pod.id | default(defaults.sites.pods.id) }})].spines[?(@.nodeId=={{ spine.id }})]
+    ${site_id}=   NDO Lookup   sites   {{ site.name }}
+    ${spine}=   Set Variable   $.sites[?(@.id=='${site_id}')].pods[?(@.podId=={{ pod.id | default(defaults.sites.pods.id) }})].spines[?(@.nodeId=={{ spine.id }})]
     Should Be Equal Value Json Integer   ${r.json()}   ${spine}.nodeId   {{ spine.id }}
     Should Be Equal Value Json String   ${r.json()}   ${spine}.name   {{ spine.name }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${spine}.bgpPeeringEnabled   {% if spine.bgp_peering | default(defaults.ndo.sites.pods.spines.bgp_peering) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
@@ -86,7 +90,8 @@ Verify Fabric Connectivity Site {{ site.name }} Pod {{ pod.id | default(defaults
 {% set pol_name = interface.ospf.policy ~ defaults.ndo.sites.ospf_policies.name_suffix %}
 
 Verify Fabric Connectivity Site {{ site.name }} Pod {{ pod.id | default(defaults.sites.pods.id) }} Spine {{ spine.id }} Interface {{ interface.module | default(defaults.ndo.sites.pods.spines.interfaces.module) }}/{{ interface.port }}
-    ${int}=   Set Variable   $.sites[?(@.id=='%%sites%{{ site.name }}%%')].pods[?(@.podId=={{ pod.id | default(defaults.sites.pods.id) }})].spines[?(@.nodeId=={{ spine.id }})].ports[?(@.portId=='{{ interface.module | default(defaults.ndo.sites.pods.spines.interfaces.module) }}/{{ interface.port }}')]
+    ${site_id}=   NDO Lookup   sites   {{ site.name }}
+    ${int}=   Set Variable   $.sites[?(@.id=='${site_id}')].pods[?(@.podId=={{ pod.id | default(defaults.sites.pods.id) }})].spines[?(@.nodeId=={{ spine.id }})].ports[?(@.portId=='{{ interface.module | default(defaults.ndo.sites.pods.spines.interfaces.module) }}/{{ interface.port }}')]
     Should Be Equal Value Json String   ${r.json()}   ${int}.portId   {{ interface.module | default(defaults.ndo.sites.pods.spines.interfaces.module) }}/{{ interface.port }}
     Should Be Equal Value Json String   ${r.json()}   ${int}.ipAddress   {{ interface.ip }}
     Should Be Equal Value Json String   ${r.json()}   ${int}.mtu   {{ interface.mtu | default(defaults.ndo.sites.pods.spines.interfaces.mtu) }}

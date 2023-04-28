@@ -2,6 +2,7 @@
 Library   RequestsLibrary
 Library   JSONLibrary
 Library   Collections
+Library   ./lib/Ndo.py   %{MSO_URL}   %{MSO_USERNAME}   %{MSO_PASSWORD}
 
 *** Variables ***
 ${login_json}   {"username" : "%{MSO_USERNAME}", "password" : "%{MSO_PASSWORD}"}

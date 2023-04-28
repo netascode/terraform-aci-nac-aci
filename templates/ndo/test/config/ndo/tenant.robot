@@ -20,8 +20,9 @@ Verify Tenant {{ tenant.name }}
 {% for site in tenant.sites | default([]) %}
 
 Verify Tenant {{ tenant.name }} Site {{ site.name }}
-    ${site}=   Set Variable   $..tenants[?(@.name=='{{ tenant.name }}')].siteAssociations[?(@.siteId=='%%sites%{{ site.name }}%%')]
-    Should Be Equal Value Json String   ${r.json()}   ${site}.siteId   %%sites%{{ site.name }}%%
+    ${site_id}=   NDO Lookup   sites   {{ site.name }}
+    ${site}=   Set Variable   $..tenants[?(@.name=='{{ tenant.name }}')].siteAssociations[?(@.siteId=='${site_id}')]
+    Should Be Equal Value Json String   ${r.json()}   ${site}.siteId   ${site_id}
 {% if site.azure_subscription_id is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${site}.cloudAccount   uni/tn-{{ site.azure_shared_tenant | default(tenant.name) }}/act-[{{ site.azure_subscription_id }}]-vendor-azure
 {% if site.azure_shared_tenant is not defined %}
@@ -34,8 +35,9 @@ Verify Tenant {{ tenant.name }} Site {{ site.name }}
 {% for user in tenant.users | default([]) %}
 
 Verify Tenant {{ tenant.name }} User {{ user }}
-    ${user}=   Set Variable   $..tenants[?(@.name=='{{ tenant.name }}')].userAssociations[?(@.userId=='%%tenants/allowed-users%{{ user.domain | default('Local') }}/{{ user.name }}%%')]
-    Should Be Equal Value Json String   ${r.json()}   ${user}.userId   %%tenants/allowed-users%{{ user.domain | default('Local') }}/{{ user.name }}%%
+    ${user_id}=   Ndo Lookup   tenants/allowed-users   {{ user.domain | default('Local') }}/{{ user.name }}
+    ${user}=   Set Variable   $..tenants[?(@.name=='{{ tenant.name }}')].userAssociations[?(@.userId=='${user_id}')]
+    Should Be Equal Value Json String   ${r.json()}   ${user}.userId   ${user_id}
 
 {% endfor %}
 

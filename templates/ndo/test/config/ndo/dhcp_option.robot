@@ -16,7 +16,8 @@ Verify DHCP Option Policy {{ pol_name }}
     ${pol}=   Set Variable   $..DhcpRelayPolicies[?(@.name=='{{ pol_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${pol}.name   {{ pol_name }}
     Should Be Equal Value Json String   ${r.json()}   ${pol}.desc   {{ pol.description | default() }}
-    Should Be Equal Value Json String   ${r.json()}   ${pol}.tenantId   %%tenants%{{ pol.tenant }}%%
+    ${tenant_id}=   NDO Lookup   tenants   {{ pol.tenant }}
+    Should Be Equal Value Json String   ${r.json()}   ${pol}.tenantId   ${tenant_id}
 
 {% for opt in pol.options | default([]) %}
 {% set opt_name = opt.name ~ defaults.ndo.policies.dhcp_options.options.name_suffix %}

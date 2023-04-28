@@ -107,6 +107,20 @@ REPOS = [
     {
         "url": "https://wwwin-github.cisco.com/netascode/terraform-ndo-aac.git",
         "commit_message": "Aac updates",
+        "directories": [
+            {
+                "src": "../templates/ndo/test",
+                "dst": "./tests/templates",
+            },
+            {
+                "src": "../jinja_filters",
+                "dst": "./tests/jinja_filters",
+            },
+            {
+                "src": "../jinja_tests",
+                "dst": "./tests/jinja_tests",
+            },
+        ],
         "files": [
             {
                 "src": "../schemas/ndo_schema.yaml",
