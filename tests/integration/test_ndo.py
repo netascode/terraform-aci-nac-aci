@@ -3,10 +3,7 @@
 # Copyright: (c) 2022, Daniel Schmidt <danischm@cisco.com>
 
 import os
-import re
 import shutil
-import sys
-import time
 
 import errorhandler
 import iac_test.pabot
@@ -111,22 +108,8 @@ def ndo_deploy_config(ndo_inst, config_path):
     return None
 
 
-def ndo_render_run_tests(ndo_inst, ndo_url, data_paths, output_path):
+def ndo_render_run_tests(ndo_url, data_paths, output_path):
     """Render NDO test suites and run them using iac-test"""
-
-    def update_references(data):
-        match_regex = "%%.*?%.*?%%"
-        m = re.search(match_regex, data)
-        while m is not None:
-            d = m.group().find("%", 2)
-            path = m.group()[2:d]
-            key = m.group()[d + 1 : -2]
-            id = ndo_inst._lookup(path, key).get("id")
-            if id is None:
-                sys.exit("Lookup failed for key '{}'".format(key))
-            data = re.sub(m.group(), id, data)
-            m = re.search(match_regex, data)
-        return data
 
     error = render_templates(
         data_paths,
@@ -137,14 +120,6 @@ def ndo_render_run_tests(ndo_inst, ndo_url, data_paths, output_path):
     )
     if error:
         pytest.fail(error)
-    for dir, subdir, files in sorted(os.walk(output_path)):
-        for filename in sorted(files):
-            if ".robot" in filename:
-                with open(os.path.join(dir, filename), "r") as file:
-                    data = file.read()
-                    data = update_references(data)
-                with open(os.path.join(dir, filename), "w") as file:
-                    file.write(data)
 
     os.environ["MSO_URL"] = ndo_url
     try:
@@ -205,9 +180,7 @@ def test_ndo(data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, tmpdir
         pytest.fail(error)
 
     # Render and run tests
-    error = ndo_render_run_tests(
-        ndo_inst, ndo_url, data_paths, os.path.join(tmpdir, "results/")
-    )
+    error = ndo_render_run_tests(ndo_url, data_paths, os.path.join(tmpdir, "results/"))
     shutil.copy(os.path.join(tmpdir, "results/", "log.html"), "ndo_log.html")
     shutil.copy(os.path.join(tmpdir, "results/", "report.html"), "ndo_report.html")
     shutil.copy(os.path.join(tmpdir, "results/", "output.xml"), "ndo_output.xml")
@@ -269,7 +242,7 @@ def test_ndo_terraform(
         data_paths.append(os.path.join(terraform_path, "defaults.yaml"))
         # Render and run tests
         error = ndo_render_run_tests(
-            ndo_inst, ndo_url, data_paths, os.path.join(tmpdir, "results/")
+            ndo_url, data_paths, os.path.join(tmpdir, "results/")
         )
         shutil.copy(os.path.join(tmpdir, "results/", "log.html"), "ndo_tf_log.html")
         shutil.copy(

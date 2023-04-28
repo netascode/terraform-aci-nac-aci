@@ -1,7 +1,7 @@
 ansible-core>=2.12
 filelock
 iac-validate>=0.2.3
-iac-test>=0.2.3
+iac-test>=0.2.4
 jmespath
 jsonpath_ng
 nexus-pcv>=0.1.5

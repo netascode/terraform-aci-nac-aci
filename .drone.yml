@@ -23,14 +23,14 @@ steps:
     pull: if-not-exists
 
   - name: Test Validate
-    image: danischm/aac:0.5.5
+    image: danischm/aac:0.5.6
     commands:
       - pytest -m validate
     depends_on:
       - Clone Repo
 
   - name: Test APIC 4.2
-    image: danischm/aac:0.5.5
+    image: danischm/aac:0.5.6
     environment:
       VMWARE_HOST:
         from_secret: VMWARE_HOST
@@ -48,7 +48,7 @@ steps:
       - Clone Repo
 
   - name: Test APIC 5.2
-    image: danischm/aac:0.5.5
+    image: danischm/aac:0.5.6
     environment:
       VMWARE_HOST:
         from_secret: VMWARE_HOST
@@ -66,7 +66,7 @@ steps:
       - Clone Repo
 
   - name: Test NDO
-    image: danischm/aac:0.5.5
+    image: danischm/aac:0.5.6
     environment:
       VMWARE_HOST:
         from_secret: VMWARE_HOST
@@ -106,7 +106,7 @@ steps:
       - Test NDO
 
   - name: Build Documentation
-    image: danischm/aac:0.5.5
+    image: danischm/aac:0.5.6
     commands:
       - pip install --upgrade mkdocs mkdocs-material mkdocs-mermaid2-plugin
       - python3 docs/aac-doc.py
@@ -138,7 +138,7 @@ steps:
       - Build Documentation
 
   - name: Notify
-    image: danischm/aac:0.5.5
+    image: danischm/aac:0.5.6
     environment:
       WEBEX_TOKEN:
         from_secret: SPARK_ACCESS_TOKEN
