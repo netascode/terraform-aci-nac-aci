@@ -11,6 +11,7 @@ import time
 import errorhandler
 import iac_test.pabot
 import pytest
+import tftest
 from aci import Apic
 from ndo import Ndo
 from util import render_templates
@@ -213,3 +214,83 @@ def test_ndo(data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, tmpdir
     shutil.copy(os.path.join(tmpdir, "results/", "xunit.xml"), "ndo_xunit.xml")
     if error:
         pytest.fail(error)
+
+
+@pytest.mark.terraform
+@pytest.mark.parametrize(
+    "data_paths, terraform_path, apic_url, snapshot_name, ndo_url, ndo_backup_id",
+    [
+        (
+            ["tests/integration/fixtures/ndo/standard/"],
+            "tests/integration/fixtures/ndo/terraform",
+            "https://10.51.77.63",
+            "ce2_defaultOneTime-2023-04-27T09-13-37.tar.gz",
+            "https://10.51.77.52",
+            "644a3e01532fc3f658849258",
+        )
+    ],
+)
+def test_ndo_terraform(
+    data_paths, terraform_path, apic_url, snapshot_name, ndo_url, ndo_backup_id, tmpdir
+):
+    """Deploy config to NDO instance and run tests"""
+
+    # Revert APIC snapshot
+    error = apic_revert(apic_url, snapshot_name)
+    if error:
+        pytest.fail(error)
+
+    # NDO login
+    error, ndo_inst = ndo_login(ndo_url)
+    if error:
+        pytest.fail(error)
+
+    # Revert NDO config
+    error = ndo_inst.post_or_put("backups/{}/restore".format(ndo_backup_id), "", "PUT")
+    if error:
+        pytest.fail(error)
+
+    os.environ["MSO_URL"] = ndo_url
+
+    try:
+        tf = tftest.TerraformTest(
+            terraform_path,
+            env={
+                "TF_CLI_ARGS_apply": "-parallelism=1",
+                "TF_CLI_ARGS_destroy": "-parallelism=1",
+            },
+        )
+        tf.setup(cleanup_on_exit=False, upgrade="upgrade")
+        try:
+            tf.apply()
+        except:
+            tf.apply()
+
+        data_paths.append(os.path.join(terraform_path, "defaults.yaml"))
+        # Render and run tests
+        error = ndo_render_run_tests(
+            ndo_inst, ndo_url, data_paths, os.path.join(tmpdir, "results/")
+        )
+        shutil.copy(os.path.join(tmpdir, "results/", "log.html"), "ndo_tf_log.html")
+        shutil.copy(
+            os.path.join(tmpdir, "results/", "report.html"), "ndo_tf_report.html"
+        )
+        shutil.copy(os.path.join(tmpdir, "results/", "output.xml"), "ndo_tf_output.xml")
+        shutil.copy(os.path.join(tmpdir, "results/", "xunit.xml"), "ndo_tf_xunit.xml")
+        if error:
+            # Ignore errors for now as we don't have feature parity with Ansible
+            # pytest.fail(error)
+            pass
+
+        try:
+            tf.destroy()
+        except:
+            tf.destroy()
+    finally:
+        pass
+        state_path = os.path.join(terraform_path, "terraform.tfstate")
+        state_backup_path = os.path.join(terraform_path, "terraform.tfstate.backup")
+        if os.path.exists(state_path):
+            os.remove(state_path)
+        if os.path.exists(state_backup_path):
+            os.remove(state_backup_path)

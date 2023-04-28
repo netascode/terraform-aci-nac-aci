@@ -15,8 +15,6 @@ ndo:
                   preferred_group: false
                   bridge_domain:
                     name: BD1
-                    schema: ABC
-                    template: TEMPLATE1
                   subnets:
                     - ip: 2.2.2.2/24
                       scope: private
@@ -30,12 +28,8 @@ ndo:
                   contracts:
                     consumers:
                       - name: CONTRACT1
-                        schema: ABC
-                        template: TEMPLATE1
                     providers:
                       - name: CONTRACT1
-                        schema: ABC
-                        template: TEMPLATE1
                   sites:
                     - name: APIC1
                       physical_domains:
@@ -118,8 +112,6 @@ ndo:
               contracts:
                 consumers:
                   - name: CONTRACT2
-                    schema: ABC
-                    template: TEMPLATE1
           bridge_domains:
             - name: BD1
               l2_unknown_unicast: proxy
@@ -131,8 +123,6 @@ ndo:
               # dhcp_option_policy: ANS-OPT1
               vrf:
                 name: VRF1
-                schema: ABC
-                template: TEMPLATE1
               subnets:
                 - ip: 1.1.1.1/24
                   scope: private
@@ -171,28 +161,26 @@ ndo:
                   protocol: tcp
                   source_from_port: unspecified
                   source_to_port: unspecified
-                  destination_from_port: 80
-                  destination_to_port: 80
+                  destination_from_port: http
+                  destination_to_port: http
                   stateful: true
             - name: FILTER2
               entries:
                 - name: HTTP
-                  destination_from_port: 80
+                  destination_from_port: http
                 - name: ANY
                   ethertype: unspecified
           l3outs:
             - name: L3OUT1
               vrf:
                 name: VRF1
-                schema: ABC
-                template: TEMPLATE1
           external_endpoint_groups:
             - name: EXT-EPG1
               preferred_group: false
               vrf:
                 name: VRF1
-                schema: ABC
-                template: TEMPLATE1
+              l3out:
+                name: L3OUT1
               subnets:
                 - prefix: 0.0.0.0/0
                   import_route_control: true
@@ -207,32 +195,19 @@ ndo:
               contracts:
                 consumers:
                   - name: CONTRACT1
-                    schema: ABC
-                    template: TEMPLATE1
                 providers:
                   - name: CONTRACT1
-                    schema: ABC
-                    template: TEMPLATE1
-              sites:
-                - name: APIC1
-                  l3out:
-                    name: L3OUT1
             - name: EXT-EPG2
               vrf:
-                name: VRF2
-              sites:
-                - name: APIC1
-                  l3out:
-                    name: L3OUT1
+                name: VRF1
+              l3out:
+                name: L3OUT1
           contracts:
             - name: CONTRACT1
               scope: context
               type: bothWay
               filters:
                 - name: FILTER1
-                  schema: ABC
-                  template: TEMPLATE1
-                  log: true
               service_graph:
                 name: SG1
                 nodes:
@@ -256,9 +231,6 @@ ndo:
               type: bothWay
               filters:
                 - name: FILTER1
-                  schema: ABC
-                  template: TEMPLATE1
-                  log: true
           service_graphs:
             - name: SG1
               description: My Desc

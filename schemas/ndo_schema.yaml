@@ -371,10 +371,10 @@ t_filters_entries:
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
   ethertype: enum('unspecified', 'ipv4', 'trill', 'arp', 'ipv6', 'mpls_ucast', 'mac_security', 'fcoe', 'ip', required=False)
   protocol: any(int(min=0, max=255), enum('unspecified', 'icmp', 'igmp', 'tcp', 'egp', 'igp', 'udp', 'icmpv6', 'eigrp', 'ospfigp', 'pim', 'l2tp'), required=False)
-  source_from_port: any(int(min=0, max=65535), enum('unspecified'), required=False)
-  source_to_port: any(int(min=0, max=65535), enum('unspecified'), required=False)
-  destination_from_port: any(int(min=0, max=65535), enum('unspecified'), required=False)
-  destination_to_port: any(int(min=0, max=65535), enum('unspecified'), required=False)
+  source_from_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp', 'ssh'), required=False)
+  source_to_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp', 'ssh'), required=False)
+  destination_from_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp', 'ssh'), required=False)
+  destination_to_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp', 'ssh'), required=False)
   stateful: any(bool(), enum('enabled', 'disabled'), required=False)
 
 t_l3outs:

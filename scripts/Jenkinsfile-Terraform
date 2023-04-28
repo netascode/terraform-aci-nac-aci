@@ -25,14 +25,29 @@ pipeline {
     }
 
     stages {
-        stage('Test APIC 5.2 Terraform') {
-            steps {
-                sh 'pytest -m "apic_52 and terraform"'
-            }
-            post {
-                always {
-                    junit 'apic_tf_5.2_xunit.xml'
-                    archiveArtifacts 'apic_tf_5.2_*.html, apic_tf_5.2_*.xml'
+        stage('Pipeline') {
+            parallel {
+                stage('Test APIC 5.2 Terraform') {
+                    steps {
+                        sh 'pytest -m "apic_52 and terraform"'
+                    }
+                    post {
+                        always {
+                            junit 'apic_tf_5.2_xunit.xml'
+                            archiveArtifacts 'apic_tf_5.2_*.html, apic_tf_5.2_*.xml'
+                        }
+                    }
+                }
+                stage('Test NDO 3.7 Terraform') {
+                    steps {
+                        sh 'pytest -m "ndo and terraform"'
+                    }
+                    post {
+                        always {
+                            junit 'ndo_tf_xunit.xml'
+                            archiveArtifacts 'ndo_tf_*.html, ndo_tf_*.xml'
+                        }
+                    }
                 }
             }
         }

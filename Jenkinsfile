@@ -76,7 +76,7 @@ pipeline {
                 }
                 stage('Test NDO') {
                     steps {
-                        sh 'pytest -m ndo'
+                        sh 'pytest -m "ndo and not terraform"'
                     }
                     post {
                         always {
