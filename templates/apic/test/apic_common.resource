@@ -18,7 +18,7 @@ Get APIC Token
     Set Suite Variable   ${apic_token}   ${r_token[0]}
 
 Login APIC
-    Wait Until Keyword Succeeds   5x   1 s   Acquire Lock   login
+    Wait Until Keyword Succeeds   10x   1 s   Acquire Lock   login
     ${apic_token}=   Get Parallel Value For Key   apic_token
     Run Keyword If   "${apic_token}"=="${EMPTY}"   Get APIC Token
     Release Lock   login

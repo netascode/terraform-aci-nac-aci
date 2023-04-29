@@ -1,23 +1,30 @@
 *** Settings ***
+Library   pabot.PabotLib
 Library   RequestsLibrary
 Library   JSONLibrary
 Library   Collections
+Library   OperatingSystem
 Library   ./lib/Ndo.py   %{MSO_URL}   %{MSO_USERNAME}   %{MSO_PASSWORD}
 
 *** Variables ***
 ${login_json}   {"username" : "%{MSO_USERNAME}", "password" : "%{MSO_PASSWORD}"}
+${state_path}   tests/state/
 
 *** Keywords ***
 Get NDO Token
     Create Session   login   %{MSO_URL}   headers={"Content-Type": "application/json"}
     ${response}=   POST On Session   login   /api/v1/auth/login   data=${login_json}
     ${r_token}=   Get Value From Json   ${response.json()}   $..token
+    Set Parallel Value For Key   ndo_token   ${r_token[0]}
     Set Suite Variable   ${ndo_token}   ${r_token[0]}
 
 Login NDO
-    ${ndo_token}=   Get Variable Value   ${token}
-    Run Keyword If   '${ndo_token}' == 'None'   Get NDO Token
+    Wait Until Keyword Succeeds   10x   1 s   Acquire Lock   login
+    ${ndo_token}=   Get Parallel Value For Key   ndo_token
+    Run Keyword If   "${ndo_token}"=="${EMPTY}"   Get NDO Token
+    Release Lock   login
     Create Session   ndo   %{MSO_URL}   headers={"Content-Type": "application/json", "Authorization": "Bearer ${ndo_token}"}
+    Set Global Variable   ${STATE_PATH}   ${state_path}
 
 Should Be Equal Value Json String
     [Arguments]    ${json}    ${json_path}   ${value}=${EMPTY}   ${value2}=${EMPTY}
