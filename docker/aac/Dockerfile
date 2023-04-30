@@ -1,20 +1,27 @@
-FROM ubuntu:22.04
+FROM ubuntu:20.04
+
+ARG DEBIAN_FRONTEND=noninteractive
 
 # make /bin/sh symlink to bash instead of dash:
 RUN echo "dash dash/sh boolean false" | debconf-set-selections
-RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+RUN dpkg-reconfigure dash
 
 RUN apt-get -y update \
-    && apt-get -y install python3 python3-venv pip git rsync wget unzip curl jq
+    && apt-get -y install software-properties-common \
+    && add-apt-repository -y ppa:deadsnakes/ppa \
+    && apt-get -y update \
+    && apt-get -y install python3.9 python3.9-venv pip git rsync wget unzip curl jq
+
+RUN unlink /usr/bin/python3 && ln -s /usr/bin/python3.9 /usr/bin/python3
 
 COPY ./requirements-dev.txt ./
 RUN pip install --upgrade pip setuptools pre-commit \
     && pip install -r requirements-dev.txt
 
-RUN wget --quiet https://releases.hashicorp.com/terraform/1.4.5/terraform_1.4.5_linux_amd64.zip \
-    && unzip terraform_1.4.5_linux_amd64.zip \
+RUN wget --quiet https://releases.hashicorp.com/terraform/1.4.6/terraform_1.4.6_linux_amd64.zip \
+    && unzip terraform_1.4.6_linux_amd64.zip \
     && mv terraform /usr/local/bin \
-    && rm terraform_1.4.5_linux_amd64.zip
+    && rm terraform_1.4.6_linux_amd64.zip
 
 RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 
