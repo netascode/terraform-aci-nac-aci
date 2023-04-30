@@ -138,7 +138,7 @@ def ndo_render_run_tests(ndo_url, data_paths, output_path):
             "https://10.51.77.63",
             "ce2_defaultOneTime-2023-04-27T09-13-37.tar.gz",
             "https://10.51.77.52",
-            "644a3e01532fc3f658849258",
+            "644da2b960f0ce75f8064a80",
         )
     ],
 )
@@ -199,7 +199,7 @@ def test_ndo(data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, tmpdir
             "https://10.51.77.63",
             "ce2_defaultOneTime-2023-04-27T09-13-37.tar.gz",
             "https://10.51.77.52",
-            "644a3e01532fc3f658849258",
+            "644da2b960f0ce75f8064a80",
         )
     ],
 )

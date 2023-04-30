@@ -19,6 +19,7 @@ python-dateutil
 pyvmomi>=6.7,<8
 requests
 requests-toolbelt
+urllib3>=1.26.0
 ruamel.yaml
 RESTinstance
 robotframework>=4.0
