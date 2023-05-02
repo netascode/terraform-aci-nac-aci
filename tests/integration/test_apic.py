@@ -223,6 +223,32 @@ def test_apic_60(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir):
     full_apic_test(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir)
 
 
+@pytest.mark.apic_42
+@pytest.mark.terraform
+@pytest.mark.parametrize(
+    "data_paths, terraform_path, vm_name, snapshot_name, apic_url, version",
+    [
+        (
+            [
+                "tests/integration/fixtures/apic/standard/",
+                "tests/integration/fixtures/apic/standard_42/",
+            ],
+            "tests/integration/fixtures/apic/terraform_42",
+            "BUILD1-ACISIM1",
+            "Clean",
+            "https://10.51.77.39",
+            "4.2",
+        ),
+    ],
+)
+def test_apic_terraform_42(
+    data_paths, terraform_path, vm_name, snapshot_name, apic_url, version, tmpdir
+):
+    full_apic_terraform_test(
+        data_paths, terraform_path, vm_name, snapshot_name, apic_url, version, tmpdir
+    )
+
+
 @pytest.mark.apic_52
 @pytest.mark.terraform
 @pytest.mark.parametrize(
@@ -242,6 +268,32 @@ def test_apic_60(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir):
     ],
 )
 def test_apic_terraform_52(
+    data_paths, terraform_path, vm_name, snapshot_name, apic_url, version, tmpdir
+):
+    full_apic_terraform_test(
+        data_paths, terraform_path, vm_name, snapshot_name, apic_url, version, tmpdir
+    )
+
+
+@pytest.mark.apic_60
+@pytest.mark.terraform
+@pytest.mark.parametrize(
+    "data_paths, terraform_path, vm_name, snapshot_name, apic_url, version",
+    [
+        (
+            [
+                "tests/integration/fixtures/apic/standard/",
+                "tests/integration/fixtures/apic/standard_52/",
+            ],
+            "tests/integration/fixtures/apic/terraform_60",
+            "BUILD1-ACISIM4",
+            "Clean",
+            "https://10.51.77.51",
+            "6.0",
+        ),
+    ],
+)
+def test_apic_terraform_60(
     data_paths, terraform_path, vm_name, snapshot_name, apic_url, version, tmpdir
 ):
     full_apic_terraform_test(

@@ -28,8 +28,19 @@ pipeline {
     }
 
     stages {
-        stage('Pipeline') {
+        stage('Tests') {
             parallel {
+                stage('Test APIC 4.2 Terraform') {
+                    steps {
+                        sh 'pytest -m "apic_42 and terraform"'
+                    }
+                    post {
+                        always {
+                            junit 'apic_tf_4.2_xunit.xml'
+                            archiveArtifacts 'apic_tf_4.2_*.html, apic_tf_4.2_*.xml'
+                        }
+                    }
+                }
                 stage('Test APIC 5.2 Terraform') {
                     steps {
                         sh 'pytest -m "apic_52 and terraform"'
@@ -38,6 +49,17 @@ pipeline {
                         always {
                             junit 'apic_tf_5.2_xunit.xml'
                             archiveArtifacts 'apic_tf_5.2_*.html, apic_tf_5.2_*.xml'
+                        }
+                    }
+                }
+                stage('Test APIC 6.0 Terraform') {
+                    steps {
+                        sh 'pytest -m "apic_60 and terraform"'
+                    }
+                    post {
+                        always {
+                            junit 'apic_tf_6.0_xunit.xml'
+                            archiveArtifacts 'apic_tf_6.0_*.html, apic_tf_6.0_*.xml'
                         }
                     }
                 }
