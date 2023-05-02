@@ -1495,7 +1495,7 @@ locals {
 
 module "aci_bgp_address_family_context_policy" {
   source  = "netascode/bgp-address-family-context-policy/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
   for_each               = { for pol in local.bgp_address_family_context_policies : pol.key => pol if try(local.modules.aci_bgp_address_family_context_policy, true) && var.manage_tenants }
   tenant                 = each.value.tenant

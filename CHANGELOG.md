@@ -28,3 +28,4 @@ List of changes:
 - Add `proxy_arp` option to EPGs
 - Add support for floating SVIs with VMware VMM domains
 - Support IPv6 address for smart licensing proxy
+- Fix issue with BGP address family context policy and ACI 4.2
