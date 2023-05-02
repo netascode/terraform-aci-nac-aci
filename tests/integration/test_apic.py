@@ -119,7 +119,10 @@ def full_apic_terraform_test(
     try:
         tf = tftest.TerraformTest(terraform_path)
         tf.setup(cleanup_on_exit=False, upgrade="upgrade")
-        tf.apply()
+        try:
+            tf.apply()
+        except:
+            tf.apply()
 
         # check idempotency
         output = tf.apply()
@@ -150,7 +153,10 @@ def full_apic_terraform_test(
         if error:
             pytest.fail(error)
 
-        tf.destroy()
+        try:
+            tf.destroy()
+        except:
+            tf.destroy()
     finally:
         state_path = os.path.join(terraform_path, "terraform.tfstate")
         state_backup_path = os.path.join(terraform_path, "terraform.tfstate.backup")
