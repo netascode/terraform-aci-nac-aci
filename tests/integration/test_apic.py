@@ -215,7 +215,7 @@ def test_apic_52(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir):
             "BUILD1-ACISIM4",
             "Clean",
             "https://10.51.77.51",
-            "5.2",
+            "6.0",
         ),
     ],
 )
