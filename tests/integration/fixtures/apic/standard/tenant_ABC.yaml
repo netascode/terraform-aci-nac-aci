@@ -59,9 +59,9 @@ apic:
             asm_traffic_registry_source_ip: 1.1.1.1
             ssm_group_range_multicast_route_map: TEST_MRM3
             igmp_context_ssm_translate_policies:
-              - group_prefix: '228.0.0.0/8'
+              - group_prefix: "228.0.0.0/8"
                 source_address: 3.3.3.3
-              - group_prefix: '229.0.0.0/8'
+              - group_prefix: "229.0.0.0/8"
                 source_address: 4.4.4.4
             inter_vrf_policies:
               - tenant: DEF
@@ -156,7 +156,7 @@ apic:
           interleak_route_map: ROUTE_MAP2
           default_route_leak_policy:
             always: false
-            criteria: 'in-addition'
+            criteria: "in-addition"
             context_scope: false
             outside_scope: false
           redistribution_route_maps:
@@ -176,13 +176,13 @@ apic:
                     - ip: 6.6.6.6
                       preference: 2
                       type: prefix
-                    - ip: 7.7.7.7
+                    - ip: 7.1.1.1
               interfaces:
                 - port: 10
                   description: My Desc
                   ip: 7.7.7.7/24
                   mac: 00:22:BD:F8:19:11
-                  mtu: 'inherit'
+                  mtu: "inherit"
                 - channel: VPC1
                   svi: true
                   autostate: true
@@ -369,7 +369,7 @@ apic:
               vmware_vmm_domains:
                 - name: VMM1
                   u_segmentation: true
-                  delimiter: '='
+                  delimiter: "="
                   primary_vlan: 100
                   secondary_vlan: 101
                   netflow: false
@@ -606,19 +606,19 @@ apic:
             contexts:
               - name: permit1
                 description: Permit context
-                action: 'permit'
+                action: "permit"
                 order: 1
                 match_rules:
                   - MATCH1
                   - MATCH2
                 set_rule: SET1
               - name: permit2
-                action: 'permit'
+                action: "permit"
                 order: 2
                 match_rules:
                   - MATCH3
               - name: deny5
-                action: 'deny'
+                action: "deny"
                 order: 5
                 set_rule: SET1
           - name: ROUTE_MAP2
@@ -645,12 +645,12 @@ apic:
           - name: MATCH3
             regex_community_terms:
               - name: REGEX1
-                regex: '[0-9]()$'
+                regex: "[0-9]()$"
                 description: My First Regex
               - name: REGEX2
-                regex: '[0-9]()'
+                regex: "[0-9]()"
                 description: My Second Regex
-                type: 'extended'
+                type: "extended"
           - name: MATCH4
             community_terms:
               - name: TERM1
@@ -678,7 +678,7 @@ apic:
             metric: 150
             metric_type: ospf-type1
             additional_communities:
-              - description: 'Additional Communities'
+              - description: "Additional Communities"
                 community: regular:as2-nn2:34:3456
             set_as_path:
               criteria: prepend-last-as
@@ -699,13 +699,13 @@ apic:
           - name: BGP-TIMER2
         bgp_peer_prefix_policies:
           - name: BGP_PP1
-            description: 'My BGP PP Policy 1'
-            action: 'shut'
+            description: "My BGP PP Policy 1"
+            action: "shut"
             threshold: 90
             max_prefixes: 10000
           - name: BGP_PP2
-            description: 'My BGP PP Policy 2'
-            action: 'restart'
+            description: "My BGP PP Policy 2"
+            action: "restart"
             restart_time: 5
           - name: BGP_PP3
         bgp_best_path_policies:
@@ -764,7 +764,7 @@ apic:
             neighbor_filter_policy: TEST_MRM1
         igmp_snooping_policies:
           - name: IGMP_SNOOP1
-            description: 'My Snooping Policy'
+            description: "My Snooping Policy"
             fast_leave: true
             querier: true
           - name: IGMP_SNOOP2

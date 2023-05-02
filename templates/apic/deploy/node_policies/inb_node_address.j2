@@ -25,10 +25,12 @@
                                     "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}",
                                     "name": "{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}"
+                                    {%- for tenant in apic.tenants | default([]) %}
                                     {%- for epg in tenant.inb_endpoint_groups | default([]) %}
                                     {%- if epg.name == apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) %},
                                     "encap": "vlan-{{ epg.vlan }}"
                                     {% endif %}
+                                    {% endfor %}
                                     {% endfor %}
                                 },
                                 "children": [

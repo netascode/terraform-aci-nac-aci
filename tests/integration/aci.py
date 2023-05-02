@@ -19,7 +19,7 @@ class Apic:
         self.cookie = None
         retry_strategy = Retry(
             total=4,
-            status_forcelist=[429, 500, 502, 503, 504],
+            status_forcelist=[404, 429, 500, 502, 503, 504],
             allowed_methods=["GET", "POST", "DELETE"],
             backoff_factor=5,
         )
