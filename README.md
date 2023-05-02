@@ -176,7 +176,7 @@ Additional example repositories:
 | <a name="module_aci_contract"></a> [aci\_contract](#module\_aci\_contract) | netascode/contract/aci | 0.2.2 |
 | <a name="module_aci_coop_policy"></a> [aci\_coop\_policy](#module\_aci\_coop\_policy) | netascode/coop-policy/aci | 0.1.0 |
 | <a name="module_aci_date_time_format"></a> [aci\_date\_time\_format](#module\_aci\_date\_time\_format) | netascode/date-time-format/aci | 0.1.0 |
-| <a name="module_aci_date_time_policy"></a> [aci\_date\_time\_policy](#module\_aci\_date\_time\_policy) | netascode/date-time-policy/aci | 0.2.1 |
+| <a name="module_aci_date_time_policy"></a> [aci\_date\_time\_policy](#module\_aci\_date\_time\_policy) | netascode/date-time-policy/aci | 0.2.2 |
 | <a name="module_aci_device_selection_policy"></a> [aci\_device\_selection\_policy](#module\_aci\_device\_selection\_policy) | netascode/device-selection-policy/aci | 0.1.1 |
 | <a name="module_aci_dhcp_option_policy"></a> [aci\_dhcp\_option\_policy](#module\_aci\_dhcp\_option\_policy) | netascode/dhcp-option-policy/aci | 0.2.0 |
 | <a name="module_aci_dhcp_relay_policy"></a> [aci\_dhcp\_relay\_policy](#module\_aci\_dhcp\_relay\_policy) | netascode/dhcp-relay-policy/aci | 0.2.0 |

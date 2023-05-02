@@ -29,3 +29,4 @@ List of changes:
 - Add support for floating SVIs with VMware VMM domains
 - Support IPv6 address for smart licensing proxy
 - Fix issue with BGP address family context policy and ACI 4.2
+- Fix idempotency issue with date time policy and ACI 6.0

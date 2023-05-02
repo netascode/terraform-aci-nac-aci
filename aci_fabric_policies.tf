@@ -200,7 +200,7 @@ module "aci_error_disabled_recovery" {
 
 module "aci_date_time_policy" {
   source  = "netascode/date-time-policy/aci"
-  version = "0.2.1"
+  version = "0.2.2"
 
   for_each                       = { for policy in try(local.fabric_policies.pod_policies.date_time_policies, []) : policy.name => policy if try(local.modules.aci_date_time_policy, true) && var.manage_fabric_policies }
   name                           = "${each.value.name}${local.defaults.apic.fabric_policies.pod_policies.date_time_policies.name_suffix}"
