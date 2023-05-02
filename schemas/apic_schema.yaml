@@ -652,7 +652,7 @@ fp_smart_licensing:
   proxy: include('fp_smart_licensing_proxy', required=False)
 
 fp_smart_licensing_proxy:
-  hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip(), required=False)
+  hostname_ip: any(regex('^[a-zA-Z0-9:\[][a-zA-Z0-9.:-\]]{0,254}$'), ip(), required=False)
   port: int(min=0, max=65535, required=False)
 
 fp_l2_mtu_policies:

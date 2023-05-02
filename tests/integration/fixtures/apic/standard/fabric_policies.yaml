@@ -607,7 +607,7 @@ apic:
       mode: proxy
       registration_token: ABCDEFG
       proxy:
-        hostname_ip: 1.1.1.1
+        hostname_ip: "[2001::1]"
         port: 80
 
     l2_mtu_policies:
