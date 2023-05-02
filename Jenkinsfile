@@ -74,7 +74,18 @@ pipeline {
                         }
                     }
                 }
-                stage('Test NDO') {
+                stage('Test APIC 6.0') {
+                    steps {
+                        sh 'pytest -m "apic_60 and not terraform"'
+                    }
+                    post {
+                        always {
+                            junit 'apic_6.0_xunit.xml'
+                            archiveArtifacts 'apic_6.0_*.html, apic_6.0_*.xml'
+                        }
+                    }
+                }
+                stage('Test NDO 3.7') {
                     steps {
                         sh 'pytest -m "ndo and not terraform"'
                     }

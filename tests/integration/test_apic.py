@@ -202,6 +202,27 @@ def test_apic_52(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir):
     full_apic_test(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir)
 
 
+@pytest.mark.apic_60
+@pytest.mark.parametrize(
+    "data_paths, vm_name, snapshot_name, apic_url, version",
+    [
+        (
+            [
+                "tests/integration/fixtures/apic/standard/",
+                "tests/integration/fixtures/apic/standard_52/",
+                "defaults/",
+            ],
+            "BUILD1-ACISIM4",
+            "Clean",
+            "https://10.51.77.51",
+            "5.2",
+        ),
+    ],
+)
+def test_apic_60(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir):
+    full_apic_test(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir)
+
+
 @pytest.mark.apic_52
 @pytest.mark.terraform
 @pytest.mark.parametrize(
