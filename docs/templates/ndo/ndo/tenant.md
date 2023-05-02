@@ -7,7 +7,7 @@ Location in GUI:
 
 ### Examples
 
-### On-premise Tenant
+On-premise Tenant:
 
 ```yaml
 ndo:
@@ -18,7 +18,7 @@ ndo:
         - APIC1
 ```
 
-### Azure Tenant
+Azure Tenant:
 
 ```yaml
 ndo:

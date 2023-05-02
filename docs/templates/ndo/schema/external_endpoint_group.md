@@ -7,7 +7,7 @@ Location in GUI:
 
 ### Examples
 
-### On-premise External Endpoint Group
+On-premise External Endpoint Group:
 
 ```yaml
 ndo:
@@ -48,7 +48,7 @@ ndo:
                   l3out: ANS-L3OUT
 ```
 
-### Azure External Endpoint Group
+Azure External Endpoint Group:
 
 ```yaml
 ndo:

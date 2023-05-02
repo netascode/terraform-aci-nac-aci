@@ -7,7 +7,7 @@ Location in GUI:
 
 ### Examples
 
-### On-premise VRF
+On-premise VRF:
 
 ```yaml
 ndo:
@@ -20,7 +20,7 @@ ndo:
               l3_multicast: true
 ```
 
-### Azure VRF
+Azure VRF:
 
 ```yaml
 ndo:

@@ -7,7 +7,7 @@ Location in GUI:
 
 ### Examples
 
-### On-premise Endpoint Group
+On-premise Endpoint Group:
 
 ```yaml
 ndo:
@@ -75,7 +75,7 @@ ndo:
                           no_default_gateway: false
 ```
 
-### Azure Endpoint Group
+Azure Endpoint Group:
 
 ```yaml
 ndo:
