@@ -212,66 +212,6 @@ REPOS = [
             },
         ],
     },
-    {
-        "url": "https://github.com/netascode/terraform-aci-nac-access-policies.git",
-        "commit_message": "Defaults updates",
-        "files": [
-            {
-                "src": "../defaults/apic_defaults.yaml",
-                "dst": "./defaults/defaults.yaml",
-            },
-        ],
-    },
-    {
-        "url": "https://github.com/netascode/terraform-aci-nac-fabric-policies.git",
-        "commit_message": "Defaults updates",
-        "files": [
-            {
-                "src": "../defaults/apic_defaults.yaml",
-                "dst": "./defaults/defaults.yaml",
-            },
-        ],
-    },
-    {
-        "url": "https://github.com/netascode/terraform-aci-nac-interface-policies.git",
-        "commit_message": "Defaults updates",
-        "files": [
-            {
-                "src": "../defaults/apic_defaults.yaml",
-                "dst": "./defaults/defaults.yaml",
-            },
-        ],
-    },
-    {
-        "url": "https://github.com/netascode/terraform-aci-nac-node-policies.git",
-        "commit_message": "Defaults updates",
-        "files": [
-            {
-                "src": "../defaults/apic_defaults.yaml",
-                "dst": "./defaults/defaults.yaml",
-            },
-        ],
-    },
-    {
-        "url": "https://github.com/netascode/terraform-aci-nac-tenant.git",
-        "commit_message": "Defaults updates",
-        "files": [
-            {
-                "src": "../defaults/apic_defaults.yaml",
-                "dst": "./defaults/defaults.yaml",
-            },
-        ],
-    },
-    {
-        "url": "https://github.com/netascode/terraform-utils-nac-merge.git",
-        "commit_message": "Defaults updates",
-        "files": [
-            {
-                "src": "../defaults/apic_defaults.yaml",
-                "dst": "./defaults/defaults.yaml",
-            },
-        ],
-    },
 ]
 
 
