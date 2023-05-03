@@ -2,16 +2,6 @@
 defaults:
   ndo:
     version: "3.7.2h"
-    tacacs_providers:
-      port: 49
-      protocol: "pap"
-      timeout: 5
-      retries: 3
-    login_domains:
-      status: "active"
-      default: False
-      providers:
-        priority: 1
     remote_locations:
       port: 22
       path: "/"
@@ -21,10 +11,6 @@ defaults:
       banner:
         type: "informational"
         state: "active"
-    users:
-      status: "active"
-      roles:
-        access: "readWrite"
     sites:
       location:
         long: 0
