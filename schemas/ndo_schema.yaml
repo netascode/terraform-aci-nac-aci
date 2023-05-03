@@ -57,7 +57,7 @@ sites_bgp:
   password: any(str(), null(), required=False) # @name(BGP Password)
 
 sites_ospf:
-  area_id: int(min=0, max=4294967295, required=False) # @name(OSPF Area ID)
+  area_id: any(int(min=0, max=4294967295), enum('backbone'), ip(), required=False) # @name(OSPF Area ID)
   area_type: enum('regular', 'stub', 'nssa', required=False) # @name(OSPF Area Type)
 
 sites_ospf_policies:
