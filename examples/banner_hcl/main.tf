@@ -1,6 +1,6 @@
 module "banner" {
-  source  = "netascode/aci/aci"
-  version = "0.1.0"
+  source  = "netascode/nac-aci/aci"
+  version = ">= 0.7.0"
 
   model = {
     apic = {
