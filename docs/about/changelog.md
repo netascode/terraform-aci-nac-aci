@@ -1,5 +1,72 @@
 # Changelog
 
+## 0.7.0 (unreleased)
+
+Tested versions: [link](./tested_versions.md#release-070)
+
+#### CLI (aac-tool)
+
+- BREAKING CHANGE NDO: Removing support for all MSO/NDO versions < 3.7
+- BREAKING CHANGE NDO: Rename everything previously named `mso` to `ndo`
+- BREAKING CHANGE NDO: Use boolean values in data model instead of `enabled`/`disabled`, `yes`/`no` and `on`/`off`
+- BREAKING CHANGE NDO: Update data model to allow referencing L3outs in other tenants/schemas under the site specific configuration of external EPGs
+- NDO: Fix issue with port-channel EPG static paths
+- APIC: Add support for custom L2 MTU policies
+- APIC: Add support for VMware VMM domain vSwitch MTU policy
+- APIC: Add support for static routes to inband EPGs
+- APIC: Add support for static routes to out-of-band EPGs
+- NDO: Add support for breakout ports to EPG static paths
+- APIC: Add support for external TEP pools
+- APIC: Add support for remote pools
+- APIC: Add support for pod unicast TEP
+- APIC: Add `multipod` and `remote_leaf` flags to L3outs
+- APIC: Fix issue with inband node addresses and ACI 6.x
+- APIC: Add `autostate` option to L3out SVI interfaces
+- APIC: Add `proxy_arp` option to EPGs
+- APIC: Add support for floating SVIs with VMware VMM domains
+- APIC: Support IPv6 address for smart licensing proxy
+
+#### Ansible (ansible-aac)
+
+- BREAKING CHANGE NDO: Removing support for all MSO/NDO versions < 3.7
+- BREAKING CHANGE NDO: Rename everything previously named `mso` to `ndo`
+- BREAKING CHANGE NDO: Use boolean values in data model instead of `enabled`/`disabled`, `yes`/`no` and `on`/`off`
+- BREAKING CHANGE NDO: Update data model to allow referencing L3outs in other tenants/schemas under the site specific configuration of external EPGs
+- APIC: Add support for custom L2 MTU policies
+- APIC: Add support for VMware VMM domain vSwitch MTU policy
+- APIC: Add support for static routes to inband EPGs
+- APIC: Add support for static routes to out-of-band EPGs
+- NDO: Add support for breakout ports to EPG static paths
+- APIC: Add support for external TEP pools
+- APIC: Add support for remote pools
+- APIC: Add support for pod unicast TEP
+- APIC: Add `multipod` and `remote_leaf` flags to L3outs
+- APIC: Fix issue with inband node addresses and ACI 6.x
+- APIC: Add `autostate` option to L3out SVI interfaces
+- APIC: Add `proxy_arp` option to EPGs
+- APIC: Add support for floating SVIs with VMware VMM domains
+- APIC: Support IPv6 address for smart licensing proxy
+
+#### Terraform (terraform-aac)
+
+- BREAKING CHANGE APIC: Migration to new unified module replacing the previous six high-level modules
+- NDO: Add initial support with `nac-ndo` module
+- APIC: Add support for custom L2 MTU policies
+- APIC: Add support for VMware VMM domain vSwitch MTU policy
+- APIC: Add support for static routes to inband EPGs
+- APIC: Add support for static routes to out-of-band EPGs
+- APIC: Add support for external TEP pools
+- APIC: Add support for remote pools
+- APIC: Add support for pod unicast TEP
+- APIC: Add `multipod` and `remote_leaf` flags to L3outs
+- APIC: Fix issue with inband node addresses and ACI 6.x
+- APIC: Add `autostate` option to L3out SVI interfaces
+- APIC: Add `proxy_arp` option to EPGs
+- APIC: Add support for floating SVIs with VMware VMM domains
+- APIC: Support IPv6 address for smart licensing proxy
+- APIC: Fix issue with BGP address family context policy and ACI 4.2
+- APIC: Fix idempotency issue with date time policy and ACI 6.0
+
 ## 0.6.0
 
 Tested versions: [link](./tested_versions.md#release-060)
