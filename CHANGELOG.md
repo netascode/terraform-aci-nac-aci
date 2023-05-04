@@ -6,12 +6,12 @@
 
 These are the changes compared to the previous releases of the following modules:
 
-- `terraform-aci-nac-tenant` v0.4.1
-- `terraform-aci-nac-access-policies` v0.4.0
-- `terraform-aci-nac-fabric-policies` v0.4.1
-- `terraform-aci-nac-pod-policies` v0.4.0
-- `terraform-aci-nac-node-policies` v0.4.0
-- `terraform-aci-nac-interface-policies` v0.4.0
+- `nac-tenant` v0.4.1
+- `nac-access-policies` v0.4.0
+- `nac-fabric-policies` v0.4.1
+- `nac-pod-policies` v0.4.0
+- `nac-node-policies` v0.4.0
+- `nac-interface-policies` v0.4.0
 
 List of changes:
 
