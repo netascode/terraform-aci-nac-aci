@@ -1,4 +1,4 @@
-## 0.7.0 (unreleased)
+## 0.7.0
 
 - Initial release
 
