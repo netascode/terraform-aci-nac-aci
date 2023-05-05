@@ -1,9 +1,9 @@
 # Overview
 
-The low-level Terraform ACI modules are open-sourced and freely available from the public Terraform registry. The high-level *ACI as Code* modules and various integrations for automated testing, NAE/NDI, etc. are part of a CX developed solution.
+All Terraform modules are open-sourced and freely available from the public Terraform registry. Various integrations for automated testing, NAE/NDI, etc. are part of a CX developed solution.
 
 <figure markdown>
-  ![Solution Overview](../assets/tf_solution_overview.png){ width="700" }
+  ![Solution Overview](../assets/tf_solution_overview.png){ width="800" }
 </figure>
 
 ## Structure
@@ -22,8 +22,7 @@ $ tree -L 2
 │   ├── node_1001.yaml
 │   ├── node_101.yaml
 │   ├── node_102.yaml
-│   └── tenant_PROD.yaml
-├── defaults
+│   ├── tenant_PROD.yaml
 │   └── defaults.yaml
 └── main.tf
 ```
@@ -71,24 +70,28 @@ module "aci_contract" {
 }
 ```
 
-## *ACI as Code* Modules
+## *Nexus-as-Code* Module
 
-The *ACI as Code* Terraform modules are responsible for mapping the data to the corresponding ACI modules. The follwing six main modules are being used:
+The *Nexus-as-Code* Terraform module is responsible for mapping the data to the corresponding ACI modules. The configuration is divided into six high level sections:
 
-- [Access Policies](https://wwwin-github.cisco.com/netascode/terraform-aci-access-policies)
-- [Fabric Policies](https://wwwin-github.cisco.com/netascode/terraform-aci-fabric-policies)
-- [Pod Policies](https://wwwin-github.cisco.com/netascode/terraform-aci-pod-policies)
-- [Node Policies](https://wwwin-github.cisco.com/netascode/terraform-aci-node-policies)
-- [Interface Policies](https://wwwin-github.cisco.com/netascode/terraform-aci-interface-policies)
-- [Tenant](https://wwwin-github.cisco.com/netascode/terraform-aci-tenant)
+- `fabric_policies`: Configurations applied at the fabric level (e.g., fabric BGP route reflectors)
+- `access_policies`: Configurations applied to external facing (downlink) interfaces (e.g., VLAN pools)
+- `pod_policies`: Configurations applied at the pod level (e.g., TEP pool addresses)
+- `node_policies`: Configurations applied at the node level (e.g., OOB node management address)
+- `interface_policies`: Configurations applied at the interface level (e.g., assigning interface policy groups to physical ports)
+- `tenants`: Configurations applied at the tenant level (e.g., VRFs and Bridge Domains)
 
-Instead of hardcoding or spreading the definition of default values across different modules, a single file [defaults.yaml](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/defaults/defaults.yaml) is used to define all default values in a central location.
+Instead of hardcoding or spreading the definition of default values across different modules, a single file [defaults.yaml](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/data/defaults.yaml) is used to define all default values in a central location.
 
 This file is typically customized to reflect the specific customer requirements and reduces the overall size of input files as optional parameters with a default value can be ommited. As some customers prefer to append suffixes to object names, such suffixes can be defined once in `defaults.yaml` and then consistently appended to all objects of a specific type including its references.
 
 ## CI/CD Integration
 
-A sample [Drone](https://www.drone.io/) pipeline covering all solution components can be found here: [link](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/.drone.yml)
+The following templates for various CI/CD platforms are provided:
+
+- [Jenkins](https://www.jenkins.io/): <https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/Jenkinsfile>
+- [GitLab](https://gitlab.com/): <https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/.gitlab-ci.yml>
+- [Drone](https://www.drone.io/): <https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/.drone.yml>
 
 ## Pre-Change Validation
 
@@ -125,20 +128,16 @@ To perform syntactic and semantic validation, [iac-validate](https://github.com/
 iac-validate ./data/
 ```
 
-## NAE/NDI Integration
+## NDI Integration
 
-Cisco NAE/NDI offers a feature called *Pre-Change Validation* which allows assessing the impact of a planned change before applying it to the infrastructure.
+Cisco NDI offers a feature called *Pre-Change Validation* which allows assessing the impact of a planned change before applying it to the infrastructure.
 
-A Python [script](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/.ci/nae-pcv.py) pushes the rendered JSON configuration of a planned change to NAE and waits until the Pre-Change Validation has been completed. The JSON configuration is rendered from the *Terraform Plan* output.
+A Python [tool](https://github.com/netascode/nexus-pcv) renders the JSON configuration of a planned change from the `terraform plan` output and pushes it to NDI to trigger a Pre-Change Validation.
 
 ```shell
-export NAE_HOSTNAME_IP="10.1.1.101"
-export NAE_USERNAME=admin
-export NAE_PASSWORD=password
-export NAE_ASSURANCE_GROUP=ACI1
 terraform plan -out=plan.tfplan
 terraform show -json plan.tfplan > plan.json
-python ./.ci/nae-pcv.py "My Terraform PCV" ./plan.json
+nexus-pcv --hostname-ip 10.0.0.1 --username admin --password Cisco123 --group <yoursitegroup> --site <yourfabric> --name pcv123 --nac-tf-plan plan.json --output-summary output-summary.txt --output-url output-url.txt
 ```
 
 ## Automated Testing
@@ -175,7 +174,7 @@ No changes. Infrastructure is up-to-date.
 
 ## ChatOps
 
-A sample integration with [Webex](https://www.webex.com/) and [Drone](https://www.drone.io/) can be found here: [link](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/.drone.yml)
+A sample integration with [Webex](https://www.webex.com/) can be found in the respective CI/CD pipeline templates.
 
 ## ACI to Code
 
