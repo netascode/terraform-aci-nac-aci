@@ -49,7 +49,7 @@ Tested versions: [link](./tested_versions.md#release-070)
 
 #### Terraform (terraform-aac)
 
-- BREAKING CHANGE APIC: Migration to new unified module replacing the previous six high-level modules
+- BREAKING CHANGE APIC: Migration to new unified module replacing the previous six high-level modules, see [migration guide](../terraform/migration.md)
 - NDO: Add initial support with `nac-ndo` module
 - APIC: Add support for custom L2 MTU policies
 - APIC: Add support for VMware VMM domain vSwitch MTU policy
