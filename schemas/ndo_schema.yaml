@@ -1,5 +1,6 @@
 ---
 ndo: include('ndo', required=False)
+defaults: any(required=False)
 ---
 ndo:
   version: str(required=False)
