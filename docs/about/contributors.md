@@ -2,6 +2,7 @@
 
 - Marcin Bedkowski (mbedkows@cisco.com)
 - Michael Berger (bermicha@cisco.com)
+- Andrew Byrne (andbyrne@cisco.com)
 - Justyna Chowaniec (juchowan@cisco.com)
 - Artur Cieszkowski (acieszko@cisco.com)
 - Rostyslav Davydenko (rdavyden@cisco.com)
@@ -9,6 +10,8 @@
 - Rasmus Ekman (raekman@cisco.com)
 - Nathan Hemingway (nhemingw@cisco.com)
 - Haytham Ibrahim (hayibrah@cisco.com)
+- Rob van der Kind (robvand@cisco.com)
+- Takuya Kishida (tkishida@cisco.com)
 - Balazs Novak-Bohak (balnovak@cisco.com)
 - Akini Ross (akinross@cisco.com)
 - Daniel Schmidt (danischm@cisco.com)
