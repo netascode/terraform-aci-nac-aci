@@ -2,7 +2,7 @@
 
 This list provides an overview of which version of components have been tested together for a specific release.
 
-## Release 0.7.0 (unreleased)
+## Release 0.7.0
 
 ### ACI
 

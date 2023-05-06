@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.7.0 (unreleased)
+## 0.7.0
 
 Tested versions: [link](./tested_versions.md#release-070)
 
