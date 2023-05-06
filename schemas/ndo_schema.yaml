@@ -452,7 +452,7 @@ t_eepg_sites:
 
 t_eepg_sites_l3out:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(L3out Name) # @ref_table(schemas_templates.l3outs)
-  tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @ref_table(ndo.tenants)
+  tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(L3out Tenant) @ref_table(ndo.tenants)
   schema: str(required=False) # @name(L3out Schema) @ref_table(ndo.schemas)
   template: str(required=False) # @name(L3out Template) @ref_table(schemas.templates)
 
