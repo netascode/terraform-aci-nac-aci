@@ -5,8 +5,8 @@
 import json
 
 import requests
-import urllib3
 from robot.api.deco import keyword
+import urllib3
 
 __version__ = "0.1.0"
 
