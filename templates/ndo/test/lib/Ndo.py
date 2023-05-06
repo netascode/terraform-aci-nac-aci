@@ -2,6 +2,8 @@
 
 # Copyright: (c) 2023, Daniel Schmidt <danischm@cisco.com>
 
+# mypy: ignore-errors
+
 import json
 
 import requests
