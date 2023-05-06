@@ -25,6 +25,7 @@ pipeline {
     options {
         disableConcurrentBuilds()
         newContainerPerStage()
+        timeout(time: 1, unit: 'HOURS')
     }
 
     stages {
