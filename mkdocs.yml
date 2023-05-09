@@ -274,8 +274,10 @@ nav:
   - Labs:
       - Quick Start: labs/quick_start.md
       - Guides:
-          - Ansible, APIC, GitLab and Drone: labs/guide_ansible_apic_gitlab_drone.md
-          - Ansible, APIC, GitLab and Gitlab CI: labs/guide_ansible_apic_gitlab_runner.md
+          - Run Ansible AAC manually: labs/guide_ansible_manual.md
+          - Run Ansible AAC with CI/CD: labs/guide_ansible_cicd.md
+          - Run Terraform AAC manually: labs/guide_terraform_manual.md
+          - Run Terraform AAC with CI/CD: labs/guide_terraform_cicd.md
       - Lab IPs: labs/ip_addresses.md
   - About:
       - Changelog: about/changelog.md
