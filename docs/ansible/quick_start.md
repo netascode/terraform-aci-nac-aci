@@ -6,7 +6,14 @@ There are two options to use the Ansible collection locally, either using the [r
 
 ## Ready-to-use Container
 
-A dedicated ansible docker image with all the necessary binaries and libraries is available [here](https://hub.docker.com/r/danischm/aac). The image is based on Ubuntu, it includes python 3, as well as all the necessary python modules, packages and configurations. The [Dockerfile](https://wwwin-github.cisco.com/netascode/aac/blob/master/docker/aac/Dockerfile) to create the image can be found in ```docker/aac/Dockerfile```.
+A dedicated ansible docker image with all the necessary binaries and libraries is available [here](https://hub.docker.com/r/danischm/aac/tags). The image is based on Ubuntu, it includes python 3, as well as all the necessary python modules, packages and configurations. The [Dockerfile](https://wwwin-github.cisco.com/netascode/aac/blob/master/docker/aac/Dockerfile) to create the image can be found in ```docker/aac/Dockerfile```.
+
+!!! note
+
+    The docker image doesn't have a `latest` tag and therefore an explicit tag needs to be specified when pulling the image. For example:
+    ```shell
+    $ docker pull danischm/aac:0.5.10
+    ```
 
 ## Local Installation
 

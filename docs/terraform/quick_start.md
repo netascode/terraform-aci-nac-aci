@@ -6,7 +6,14 @@ There are two options to run Terraform locally, either using the [ready-to-use c
 
 ## Ready-to-use Container
 
-A dedicated docker image with all the necessary binaries and libraries is available [here](https://hub.docker.com/r/danischm/aac). The image is based on Ubuntu, it includes Terraform, Python 3, as well as all the necessary dependencies. The Dockerfile to create the image can be found [here](https://wwwin-github.cisco.com/netascode/aac/blob/master/docker/aac/Dockerfile).
+A dedicated docker image with all the necessary binaries and libraries is available [here](https://hub.docker.com/r/danischm/aac/tags). The image is based on Ubuntu, it includes Terraform, Python 3, as well as all the necessary dependencies. The Dockerfile to create the image can be found [here](https://wwwin-github.cisco.com/netascode/aac/blob/master/docker/aac/Dockerfile).
+
+!!! note
+
+    The docker image doesn't have a `latest` tag and therefore an explicit tag needs to be specified when pulling the image. For example:
+    ```shell
+    $ docker pull danischm/aac:0.5.10
+    ```
 
 ## Local Installation
 
