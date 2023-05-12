@@ -2,7 +2,7 @@ module "aci_vlan_pool" {
   source  = "netascode/vlan-pool/aci"
   version = "0.2.2"
 
-  for_each    = { for vp in try(local.access_policies.vlan_pools, []) : vp.name => vp if try(local.modules.aci_vlan_pool, true) && var.manage_access_policies }
+  for_each    = { for vp in try(local.access_policies.vlan_pools, []) : vp.name => vp if local.modules.aci_vlan_pool && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.vlan_pools.name_suffix}"
   description = try(each.value.description, "")
   allocation  = try(each.value.allocation, local.defaults.apic.access_policies.vlan_pools.allocation)
@@ -19,7 +19,7 @@ module "aci_physical_domain" {
   source  = "netascode/physical-domain/aci"
   version = "0.1.0"
 
-  for_each             = { for pd in try(local.access_policies.physical_domains, []) : pd.name => pd if try(local.modules.aci_physical_domain, true) && var.manage_access_policies }
+  for_each             = { for pd in try(local.access_policies.physical_domains, []) : pd.name => pd if local.modules.aci_physical_domain && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.physical_domains.name_suffix}"
   vlan_pool            = "${each.value.vlan_pool}${local.defaults.apic.access_policies.vlan_pools.name_suffix}"
   vlan_pool_allocation = [for k, v in try(local.access_policies.vlan_pools, []) : try(v.allocation, local.defaults.apic.access_policies.vlan_pools.allocation) if v.name == each.value.vlan_pool][0]
@@ -33,7 +33,7 @@ module "aci_routed_domain" {
   source  = "netascode/routed-domain/aci"
   version = "0.1.0"
 
-  for_each             = { for rd in try(local.access_policies.routed_domains, []) : rd.name => rd if try(local.modules.aci_routed_domain, true) && var.manage_access_policies }
+  for_each             = { for rd in try(local.access_policies.routed_domains, []) : rd.name => rd if local.modules.aci_routed_domain && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.routed_domains.name_suffix}"
   vlan_pool            = "${each.value.vlan_pool}${local.defaults.apic.access_policies.vlan_pools.name_suffix}"
   vlan_pool_allocation = [for vp in try(local.access_policies.vlan_pools, []) : try(vp.allocation, local.defaults.apic.access_policies.vlan_pools.allocation) if vp.name == each.value.vlan_pool][0]
@@ -47,7 +47,7 @@ module "aci_aaep" {
   source  = "netascode/aaep/aci"
   version = "0.2.0"
 
-  for_each           = { for aaep in try(local.access_policies.aaeps, []) : aaep.name => aaep if try(local.modules.aci_aaep, true) && var.manage_access_policies }
+  for_each           = { for aaep in try(local.access_policies.aaeps, []) : aaep.name => aaep if local.modules.aci_aaep && var.manage_access_policies }
   name               = "${each.value.name}${local.defaults.apic.access_policies.aaeps.name_suffix}"
   infra_vlan         = try(each.value.infra_vlan, local.defaults.apic.access_policies.aaeps.infra_vlan) == true ? try(local.access_policies.infra_vlan, 0) : 0
   physical_domains   = [for dom in try(each.value.physical_domains, []) : "${dom}${local.defaults.apic.access_policies.physical_domains.name_suffix}"]
@@ -65,7 +65,7 @@ module "aci_mst_policy" {
   source  = "netascode/mst-policy/aci"
   version = "0.2.0"
 
-  for_each = { for mst in try(local.access_policies.switch_policies.mst_policies, []) : mst.name => mst if try(local.modules.aci_mst_policy, true) && var.manage_access_policies }
+  for_each = { for mst in try(local.access_policies.switch_policies.mst_policies, []) : mst.name => mst if local.modules.aci_mst_policy && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.mst_policies.name_suffix}"
   region   = each.value.region
   revision = each.value.revision
@@ -83,7 +83,7 @@ module "aci_vpc_policy" {
   source  = "netascode/vpc-policy/aci"
   version = "0.1.0"
 
-  for_each           = { for vpc in try(local.access_policies.switch_policies.vpc_policies, []) : vpc.name => vpc if try(local.modules.aci_vpc_policy, true) && var.manage_access_policies }
+  for_each           = { for vpc in try(local.access_policies.switch_policies.vpc_policies, []) : vpc.name => vpc if local.modules.aci_vpc_policy && var.manage_access_policies }
   name               = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.vpc_policies.name_suffix}"
   peer_dead_interval = try(each.value.peer_dead_interval, local.defaults.apic.access_policies.switch_policies.vpc_policies.peer_dead_interval)
 }
@@ -92,7 +92,7 @@ module "aci_forwarding_scale_policy" {
   source  = "netascode/forwarding-scale-policy/aci"
   version = "0.1.0"
 
-  for_each = { for fs in try(local.access_policies.switch_policies.forwarding_scale_policies, []) : fs.name => fs if try(local.modules.aci_forwarding_scale_policy, true) && var.manage_access_policies }
+  for_each = { for fs in try(local.access_policies.switch_policies.forwarding_scale_policies, []) : fs.name => fs if local.modules.aci_forwarding_scale_policy && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.forwarding_scale_policies.name_suffix}"
   profile  = try(each.value.profile, local.defaults.apic.access_policies.switch_policies.forwarding_scale_policies.profile)
 }
@@ -101,7 +101,7 @@ module "aci_access_leaf_switch_policy_group" {
   source  = "netascode/access-leaf-switch-policy-group/aci"
   version = "0.1.0"
 
-  for_each                = { for pg in try(local.access_policies.leaf_switch_policy_groups, []) : pg.name => pg if try(local.modules.aci_access_leaf_switch_policy_group, true) && var.manage_access_policies }
+  for_each                = { for pg in try(local.access_policies.leaf_switch_policy_groups, []) : pg.name => pg if local.modules.aci_access_leaf_switch_policy_group && var.manage_access_policies }
   name                    = "${each.value.name}${local.defaults.apic.access_policies.leaf_switch_policy_groups.name_suffix}"
   forwarding_scale_policy = try("${each.value.forwarding_scale_policy}${local.defaults.apic.access_policies.switch_policies.forwarding_scale_policies.name_suffix}", "")
 
@@ -114,7 +114,7 @@ module "aci_access_spine_switch_policy_group" {
   source  = "netascode/access-spine-switch-policy-group/aci"
   version = "0.1.0"
 
-  for_each    = { for pg in try(local.access_policies.spine_switch_policy_groups, []) : pg.name => pg if try(local.modules.aci_access_spine_switch_policy_group, true) && var.manage_access_policies }
+  for_each    = { for pg in try(local.access_policies.spine_switch_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_switch_policy_group && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.spine_switch_policy_groups.name_suffix}"
   lldp_policy = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
 
@@ -127,7 +127,7 @@ module "aci_access_leaf_switch_profile_auto" {
   source  = "netascode/access-leaf-switch-profile/aci"
   version = "0.2.0"
 
-  for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles)) && try(local.modules.aci_access_leaf_switch_profile, true) && var.manage_access_policies }
+  for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles)) && local.modules.aci_access_leaf_switch_profile && var.manage_access_policies }
   name               = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.leaf_switch_profile_name, local.defaults.apic.access_policies.leaf_switch_profile_name), "\\g<id>", "$id"), "\\g<name>", "$name"))
   interface_profiles = [replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.leaf_interface_profile_name, local.defaults.apic.access_policies.leaf_interface_profile_name), "\\g<id>", "$id"), "\\g<name>", "$name"))]
   selectors = [{
@@ -151,7 +151,7 @@ module "aci_access_leaf_switch_profile_manual" {
   source  = "netascode/access-leaf-switch-profile/aci"
   version = "0.2.0"
 
-  for_each = { for prof in try(local.access_policies.leaf_switch_profiles, []) : prof.name => prof if try(local.modules.aci_access_leaf_switch_profile, true) && var.manage_access_policies }
+  for_each = { for prof in try(local.access_policies.leaf_switch_profiles, []) : prof.name => prof if local.modules.aci_access_leaf_switch_profile && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.leaf_switch_profiles.name_suffix}"
   selectors = [for selector in try(each.value.selectors, []) : {
     name         = "${selector.name}${local.defaults.apic.access_policies.leaf_switch_profiles.selectors.name_suffix}"
@@ -175,7 +175,7 @@ module "aci_access_spine_switch_profile_auto" {
   source  = "netascode/access-spine-switch-profile/aci"
   version = "0.2.1"
 
-  for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_spine_switch_interface_profiles, local.defaults.apic.auto_generate_access_spine_switch_interface_profiles)) && try(local.modules.aci_access_spine_switch_profile, true) && var.manage_access_policies }
+  for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_spine_switch_interface_profiles, local.defaults.apic.auto_generate_access_spine_switch_interface_profiles)) && local.modules.aci_access_spine_switch_profile && var.manage_access_policies }
   name               = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.spine_switch_profile_name, local.defaults.apic.access_policies.spine_switch_profile_name), "\\g<id>", "$id"), "\\g<name>", "$name"))
   interface_profiles = [replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.spine_interface_profile_name, local.defaults.apic.access_policies.spine_interface_profile_name), "\\g<id>", "$id"), "\\g<name>", "$name"))]
   selectors = [{
@@ -198,7 +198,7 @@ module "aci_access_spine_switch_profile_manual" {
   source  = "netascode/access-spine-switch-profile/aci"
   version = "0.2.1"
 
-  for_each = { for prof in try(local.access_policies.spine_switch_profiles, []) : prof.name => prof if try(local.modules.aci_access_spine_switch_profile, true) && var.manage_access_policies }
+  for_each = { for prof in try(local.access_policies.spine_switch_profiles, []) : prof.name => prof if local.modules.aci_access_spine_switch_profile && var.manage_access_policies }
   name     = each.value.name
   selectors = [for selector in try(each.value.selectors, []) : {
     name         = "${selector.name}${local.defaults.apic.access_policies.spine_switch_profiles.selectors.name_suffix}"
@@ -221,7 +221,7 @@ module "aci_cdp_policy" {
   source  = "netascode/cdp-policy/aci"
   version = "0.1.0"
 
-  for_each    = { for cdp in try(local.access_policies.interface_policies.cdp_policies, []) : cdp.name => cdp if try(local.modules.aci_cdp_policy, true) && var.manage_access_policies }
+  for_each    = { for cdp in try(local.access_policies.interface_policies.cdp_policies, []) : cdp.name => cdp if local.modules.aci_cdp_policy && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}"
   admin_state = each.value.admin_state
 }
@@ -230,7 +230,7 @@ module "aci_lldp_policy" {
   source  = "netascode/lldp-policy/aci"
   version = "0.1.0"
 
-  for_each       = { for lldp in try(local.access_policies.interface_policies.lldp_policies, []) : lldp.name => lldp if try(local.modules.aci_lldp_policy, true) && var.manage_access_policies }
+  for_each       = { for lldp in try(local.access_policies.interface_policies.lldp_policies, []) : lldp.name => lldp if local.modules.aci_lldp_policy && var.manage_access_policies }
   name           = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}"
   admin_rx_state = each.value.admin_rx_state
   admin_tx_state = each.value.admin_tx_state
@@ -240,7 +240,7 @@ module "aci_link_level_policy" {
   source  = "netascode/link-level-policy/aci"
   version = "0.1.0"
 
-  for_each = { for llp in try(local.access_policies.interface_policies.link_level_policies, []) : llp.name => llp if try(local.modules.aci_link_level_policy, true) && var.manage_access_policies }
+  for_each = { for llp in try(local.access_policies.interface_policies.link_level_policies, []) : llp.name => llp if local.modules.aci_link_level_policy && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}"
   speed    = try(each.value.speed, local.defaults.apic.access_policies.interface_policies.link_level_policies.speed)
   auto     = try(each.value.auto, local.defaults.apic.access_policies.interface_policies.link_level_policies.auto)
@@ -251,7 +251,7 @@ module "aci_port_channel_policy" {
   source  = "netascode/port-channel-policy/aci"
   version = "0.1.0"
 
-  for_each             = { for pc in try(local.access_policies.interface_policies.port_channel_policies, []) : pc.name => pc if try(local.modules.aci_port_channel_policy, true) && var.manage_access_policies }
+  for_each             = { for pc in try(local.access_policies.interface_policies.port_channel_policies, []) : pc.name => pc if local.modules.aci_port_channel_policy && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix}"
   mode                 = each.value.mode
   min_links            = try(each.value.min_links, local.defaults.apic.access_policies.interface_policies.port_channel_policies.min_links)
@@ -268,7 +268,7 @@ module "aci_port_channel_member_policy" {
   source  = "netascode/port-channel-member-policy/aci"
   version = "0.1.0"
 
-  for_each = { for pcm in try(local.access_policies.interface_policies.port_channel_member_policies, []) : pcm.name => pcm if try(local.modules.aci_port_channel_member_policy, true) && var.manage_access_policies }
+  for_each = { for pcm in try(local.access_policies.interface_policies.port_channel_member_policies, []) : pcm.name => pcm if local.modules.aci_port_channel_member_policy && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}"
   priority = try(each.value.priority, local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.priority)
   rate     = try(each.value.rate, local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.rate)
@@ -278,7 +278,7 @@ module "aci_spanning_tree_policy" {
   source  = "netascode/spanning-tree-policy/aci"
   version = "0.1.0"
 
-  for_each    = { for stp in try(local.access_policies.interface_policies.spanning_tree_policies, []) : stp.name => stp if try(local.modules.aci_spanning_tree_policy, true) && var.manage_access_policies }
+  for_each    = { for stp in try(local.access_policies.interface_policies.spanning_tree_policies, []) : stp.name => stp if local.modules.aci_spanning_tree_policy && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.spanning_tree_policies.name_suffix}"
   bpdu_filter = try(each.value.bpdu_filter, local.defaults.apic.access_policies.interface_policies.spanning_tree_policies.bpdu_filter)
   bpdu_guard  = try(each.value.bpdu_guard, local.defaults.apic.access_policies.interface_policies.spanning_tree_policies.bpdu_guard)
@@ -288,7 +288,7 @@ module "aci_mcp_policy" {
   source  = "netascode/mcp-policy/aci"
   version = "0.1.0"
 
-  for_each    = { for mcp in try(local.access_policies.interface_policies.mcp_policies, []) : mcp.name => mcp if try(local.modules.aci_mcp_policy, true) && var.manage_access_policies }
+  for_each    = { for mcp in try(local.access_policies.interface_policies.mcp_policies, []) : mcp.name => mcp if local.modules.aci_mcp_policy && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}"
   admin_state = each.value.admin_state
 }
@@ -297,7 +297,7 @@ module "aci_l2_policy" {
   source  = "netascode/l2-policy/aci"
   version = "0.1.1"
 
-  for_each         = { for l2 in try(local.access_policies.interface_policies.l2_policies, []) : l2.name => l2 if try(local.modules.aci_l2_policy, true) && var.manage_access_policies }
+  for_each         = { for l2 in try(local.access_policies.interface_policies.l2_policies, []) : l2.name => l2 if local.modules.aci_l2_policy && var.manage_access_policies }
   name             = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.l2_policies.name_suffix}"
   vlan_scope       = try(each.value.vlan_scope, local.defaults.apic.access_policies.interface_policies.l2_policies.vlan_scope)
   qinq             = try(each.value.qinq, local.defaults.apic.access_policies.interface_policies.l2_policies.qinq)
@@ -308,7 +308,7 @@ module "aci_storm_control_policy" {
   source  = "netascode/storm-control-policy/aci"
   version = "0.1.0"
 
-  for_each                   = { for sc in try(local.access_policies.interface_policies.storm_control_policies, []) : sc.name => sc if try(local.modules.aci_storm_control_policy, true) && var.manage_access_policies }
+  for_each                   = { for sc in try(local.access_policies.interface_policies.storm_control_policies, []) : sc.name => sc if local.modules.aci_storm_control_policy && var.manage_access_policies }
   name                       = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}"
   alias                      = try(each.value.alias, "")
   description                = try(each.value.description, "")
@@ -331,7 +331,7 @@ module "aci_access_leaf_interface_policy_group" {
   source  = "netascode/access-leaf-interface-policy-group/aci"
   version = "0.1.4"
 
-  for_each                   = { for pg in try(local.access_policies.leaf_interface_policy_groups, []) : pg.name => pg if try(local.modules.aci_access_leaf_interface_policy_group, true) && var.manage_access_policies }
+  for_each                   = { for pg in try(local.access_policies.leaf_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_leaf_interface_policy_group && var.manage_access_policies }
   name                       = "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}"
   description                = try(each.value.description, "")
   type                       = each.value.type
@@ -365,7 +365,7 @@ module "aci_access_spine_interface_policy_group" {
   source  = "netascode/access-spine-interface-policy-group/aci"
   version = "0.1.0"
 
-  for_each          = { for pg in try(local.access_policies.spine_interface_policy_groups, []) : pg.name => pg if try(local.modules.aci_access_spine_interface_policy_group, true) && var.manage_access_policies }
+  for_each          = { for pg in try(local.access_policies.spine_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_interface_policy_group && var.manage_access_policies }
   name              = "${each.value.name}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}"
   link_level_policy = try("${each.value.link_level_policy}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}", "")
   cdp_policy        = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
@@ -382,7 +382,7 @@ module "aci_access_leaf_interface_profile_auto" {
   source  = "netascode/access-leaf-interface-profile/aci"
   version = "0.1.0"
 
-  for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles)) && try(local.modules.aci_access_leaf_interface_profile, true) && var.manage_access_policies }
+  for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles)) && local.modules.aci_access_leaf_interface_profile && var.manage_access_policies }
   name     = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.leaf_interface_profile_name, local.defaults.apic.access_policies.leaf_interface_profile_name), "\\g<id>", "$id"), "\\g<name>", "$name"))
 }
 
@@ -390,7 +390,7 @@ module "aci_access_leaf_interface_profile_manual" {
   source  = "netascode/access-leaf-interface-profile/aci"
   version = "0.1.0"
 
-  for_each = { for prof in try(local.access_policies.leaf_interface_profiles, []) : prof.name => prof if try(local.modules.aci_access_leaf_interface_profile, true) && var.manage_access_policies }
+  for_each = { for prof in try(local.access_policies.leaf_interface_profiles, []) : prof.name => prof if local.modules.aci_access_leaf_interface_profile && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_profiles.name_suffix}"
 }
 
@@ -434,7 +434,7 @@ module "aci_access_leaf_interface_selector_manual" {
   source  = "netascode/access-leaf-interface-selector/aci"
   version = "0.2.1"
 
-  for_each              = { for selector in local.leaf_interface_selectors_manual : selector.key => selector.value if try(local.modules.aci_access_leaf_interface_selector, true) && var.manage_access_policies }
+  for_each              = { for selector in local.leaf_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_leaf_interface_selector && var.manage_access_policies }
   interface_profile     = each.value.profile_name
   name                  = each.value.name
   fex_id                = each.value.fex_id
@@ -455,7 +455,7 @@ module "aci_access_fex_interface_profile_manual" {
   source  = "netascode/access-fex-interface-profile/aci"
   version = "0.1.0"
 
-  for_each = toset([for fex in try(local.access_policies.fex_interface_profiles, []) : fex.name if try(local.modules.aci_access_fex_interface_profile, true) && var.manage_access_policies])
+  for_each = toset([for fex in try(local.access_policies.fex_interface_profiles, []) : fex.name if local.modules.aci_access_fex_interface_profile && var.manage_access_policies])
   name     = "${each.value}${local.defaults.apic.access_policies.fex_interface_profiles.name_suffix}"
 }
 
@@ -487,7 +487,7 @@ module "aci_access_fex_interface_selector_manual" {
   source  = "netascode/access-fex-interface-selector/aci"
   version = "0.2.0"
 
-  for_each          = { for selector in local.fex_interface_selectors_manual : selector.key => selector.value if try(local.modules.aci_access_fex_interface_selector, true) && var.manage_access_policies }
+  for_each          = { for selector in local.fex_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_fex_interface_selector && var.manage_access_policies }
   interface_profile = each.value.profile_name
   name              = each.value.name
   policy_group      = each.value.policy_group
@@ -504,7 +504,7 @@ module "aci_access_spine_interface_profile_auto" {
   source  = "netascode/access-spine-interface-profile/aci"
   version = "0.1.0"
 
-  for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_spine_switch_interface_profiles, local.defaults.apic.auto_generate_access_spine_switch_interface_profiles)) && try(local.modules.aci_access_spine_interface_profile, true) && var.manage_access_policies }
+  for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_spine_switch_interface_profiles, local.defaults.apic.auto_generate_access_spine_switch_interface_profiles)) && local.modules.aci_access_spine_interface_profile && var.manage_access_policies }
   name     = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.spine_interface_profile_name, local.defaults.apic.access_policies.spine_interface_profile_name), "\\g<id>", "$id"), "\\g<name>", "$name"))
 }
 
@@ -512,7 +512,7 @@ module "aci_access_spine_interface_profile_manual" {
   source  = "netascode/access-spine-interface-profile/aci"
   version = "0.1.0"
 
-  for_each = { for prof in try(local.access_policies.spine_interface_profiles, []) : prof.name => prof if try(local.modules.aci_access_spine_interface_profile, true) && var.manage_access_policies }
+  for_each = { for prof in try(local.access_policies.spine_interface_profiles, []) : prof.name => prof if local.modules.aci_access_spine_interface_profile && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.spine_interface_profiles.name_suffix}"
 }
 
@@ -543,7 +543,7 @@ module "aci_access_spine_interface_selector_manual" {
   source  = "netascode/access-spine-interface-selector/aci"
   version = "0.2.0"
 
-  for_each          = { for selector in local.spine_interface_selectors_manual : selector.key => selector.value if try(local.modules.aci_access_spine_interface_selector, true) && var.manage_access_policies }
+  for_each          = { for selector in local.spine_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_spine_interface_selector && var.manage_access_policies }
   interface_profile = each.value.profile_name
   name              = each.value.name
   policy_group      = each.value.policy_group
@@ -560,7 +560,7 @@ module "aci_mcp" {
   source  = "netascode/mcp/aci"
   version = "0.1.1"
 
-  count               = try(local.modules.aci_mcp, true) == true && var.manage_access_policies ? 1 : 0
+  count               = local.modules.aci_mcp == true && var.manage_access_policies ? 1 : 0
   admin_state         = try(local.access_policies.mcp.admin_state, local.defaults.apic.access_policies.mcp.admin_state)
   per_vlan            = try(local.access_policies.mcp.per_vlan, local.defaults.apic.access_policies.mcp.per_vlan)
   initial_delay       = try(local.access_policies.mcp.initial_delay, local.defaults.apic.access_policies.mcp.initial_delay)
@@ -575,7 +575,7 @@ module "aci_qos" {
   source  = "netascode/qos/aci"
   version = "0.2.1"
 
-  count        = try(local.modules.aci_qos, true) == true && var.manage_access_policies ? 1 : 0
+  count        = local.modules.aci_qos == true && var.manage_access_policies ? 1 : 0
   preserve_cos = try(local.access_policies.qos.preserve_cos, local.defaults.apic.access_policies.qos.preserve_cos)
   qos_classes = [
     for class in try(local.access_policies.qos.qos_classes, []) : {
@@ -603,7 +603,7 @@ module "aci_access_span_filter_group" {
   source  = "netascode/access-span-filter-group/aci"
   version = "0.1.2"
 
-  for_each    = { for group in try(local.access_policies.span.filter_groups, []) : group.name => group if try(local.modules.aci_access_span_filter_group, true) && var.manage_access_policies }
+  for_each    = { for group in try(local.access_policies.span.filter_groups, []) : group.name => group if local.modules.aci_access_span_filter_group && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.span.filter_groups.name_suffix}"
   description = try(each.value.description, "")
   entries = [for entry in try(each.value.entries, []) : {
@@ -647,7 +647,7 @@ module "aci_access_span_destination_group" {
   source  = "netascode/access-span-destination-group/aci"
   version = "0.1.3"
 
-  for_each            = { for group in local.access_span_destination_groups : group.name => group if try(local.modules.aci_access_span_destination_group, true) && var.manage_access_policies }
+  for_each            = { for group in local.access_span_destination_groups : group.name => group if local.modules.aci_access_span_destination_group && var.manage_access_policies }
   name                = each.value.name
   description         = each.value.description
   pod_id              = each.value.pod_id != null ? each.value.pod_id : try([for node in local.node_policies.nodes : node.pod if node.id == each.value.pod_id][0], local.defaults.apic.node_policies.nodes.pod)
@@ -708,7 +708,7 @@ module "aci_access_span_source_group" {
   source  = "netascode/access-span-source-group/aci"
   version = "0.1.0"
 
-  for_each                = { for group in local.access_span_source_groups : group.name => group if try(local.modules.aci_access_span_source_group, true) && var.manage_access_policies }
+  for_each                = { for group in local.access_span_source_groups : group.name => group if local.modules.aci_access_span_source_group && var.manage_access_policies }
   name                    = each.value.name
   description             = each.value.description
   admin_state             = each.value.admin_state
@@ -743,7 +743,7 @@ module "aci_vspan_destination_group" {
   source  = "netascode/vspan-destination-group/aci"
   version = "0.1.1"
 
-  for_each    = { for group in try(local.access_policies.vspan.destination_groups, []) : group.name => group if try(local.modules.aci_vspan_destination_group, true) && var.manage_access_policies }
+  for_each    = { for group in try(local.access_policies.vspan.destination_groups, []) : group.name => group if local.modules.aci_vspan_destination_group && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.vspan.destination_groups.name_suffix}"
   description = try(each.value.description, "")
   destinations = [for dest in try(each.value.destinations, []) : {
@@ -797,7 +797,7 @@ module "aci_vspan_session" {
   source  = "netascode/vspan-session/aci"
   version = "0.1.0"
 
-  for_each                = { for session in local.vspan_sessions : session.name => session if try(local.modules.aci_vspan_session, true) && var.manage_access_policies }
+  for_each                = { for session in local.vspan_sessions : session.name => session if local.modules.aci_vspan_session && var.manage_access_policies }
   name                    = each.value.name
   description             = each.value.description
   admin_state             = each.value.admin_state

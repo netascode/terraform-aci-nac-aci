@@ -1,5 +1,4 @@
 locals {
-  modules            = try(local.model.modules, {})
   apic               = try(local.model.apic, {})
   access_policies    = try(local.apic.access_policies, {})
   fabric_policies    = try(local.apic.fabric_policies, {})

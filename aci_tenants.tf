@@ -2,7 +2,7 @@ module "aci_tenant" {
   source  = "netascode/tenant/aci"
   version = "0.1.0"
 
-  for_each    = { for tenant in local.tenants : tenant.name => tenant if try(tenant.managed, local.defaults.apic.tenants.managed, true) && try(local.modules.aci_tenant, true) && var.manage_tenants }
+  for_each    = { for tenant in local.tenants : tenant.name => tenant if try(tenant.managed, local.defaults.apic.tenants.managed, true) && local.modules.aci_tenant && var.manage_tenants }
   name        = each.value.name
   alias       = try(each.value.alias, "")
   description = try(each.value.description, "")
@@ -97,7 +97,7 @@ module "aci_vrf" {
   source  = "netascode/vrf/aci"
   version = "0.2.3"
 
-  for_each                                 = { for vrf in local.vrfs : vrf.key => vrf if try(local.modules.aci_vrf, true) && var.manage_tenants }
+  for_each                                 = { for vrf in local.vrfs : vrf.key => vrf if local.modules.aci_vrf && var.manage_tenants }
   tenant                                   = each.value.tenant
   name                                     = each.value.name
   alias                                    = each.value.alias
@@ -201,7 +201,7 @@ module "aci_bridge_domain" {
   source  = "netascode/bridge-domain/aci"
   version = "0.2.2"
 
-  for_each                   = { for bd in local.bridge_domains : bd.key => bd if try(local.modules.aci_bridge_domain, true) && var.manage_tenants }
+  for_each                   = { for bd in local.bridge_domains : bd.key => bd if local.modules.aci_bridge_domain && var.manage_tenants }
   tenant                     = each.value.tenant
   name                       = each.value.name
   alias                      = each.value.alias
@@ -253,7 +253,7 @@ module "aci_application_profile" {
   source  = "netascode/application-profile/aci"
   version = "0.1.0"
 
-  for_each    = { for ap in local.application_profiles : ap.key => ap if try(local.modules.aci_application_profile, true) && var.manage_tenants }
+  for_each    = { for ap in local.application_profiles : ap.key => ap if local.modules.aci_application_profile && var.manage_tenants }
   tenant      = each.value.tenant
   name        = each.value.name
   alias       = each.value.alias
@@ -382,7 +382,7 @@ module "aci_endpoint_group" {
   source  = "netascode/endpoint-group/aci"
   version = "0.2.8"
 
-  for_each                    = { for epg in local.endpoint_groups : epg.key => epg if try(local.modules.aci_endpoint_group, true) && var.manage_tenants }
+  for_each                    = { for epg in local.endpoint_groups : epg.key => epg if local.modules.aci_endpoint_group && var.manage_tenants }
   tenant                      = each.value.tenant
   application_profile         = each.value.application_profile
   name                        = each.value.name
@@ -496,7 +496,7 @@ module "aci_endpoint_security_group" {
   source  = "netascode/endpoint-security-group/aci"
   version = "0.2.5"
 
-  for_each                    = { for esg in local.endpoint_security_groups : esg.key => esg if try(local.modules.aci_endpoint_security_group, true) && var.manage_tenants }
+  for_each                    = { for esg in local.endpoint_security_groups : esg.key => esg if local.modules.aci_endpoint_security_group && var.manage_tenants }
   tenant                      = each.value.tenant
   application_profile         = each.value.application_profile
   name                        = each.value.name
@@ -544,7 +544,7 @@ module "aci_inband_endpoint_group" {
   source  = "netascode/inband-endpoint-group/aci"
   version = "0.1.2"
 
-  for_each                    = { for epg in local.inband_endpoint_groups : epg.key => epg if try(local.modules.aci_inband_endpoint_group, true) && var.manage_tenants }
+  for_each                    = { for epg in local.inband_endpoint_groups : epg.key => epg if local.modules.aci_inband_endpoint_group && var.manage_tenants }
   name                        = each.value.name
   vlan                        = each.value.vlan
   bridge_domain               = each.value.bridge_domain
@@ -578,7 +578,7 @@ module "aci_oob_endpoint_group" {
   source  = "netascode/oob-endpoint-group/aci"
   version = "0.1.1"
 
-  for_each               = { for epg in local.oob_endpoint_groups : epg.key => epg if try(local.modules.aci_oob_endpoint_group, true) && var.manage_tenants }
+  for_each               = { for epg in local.oob_endpoint_groups : epg.key => epg if local.modules.aci_oob_endpoint_group && var.manage_tenants }
   name                   = each.value.name
   oob_contract_providers = each.value.oob_contract_providers
   static_routes          = each.value.static_routes
@@ -606,7 +606,7 @@ module "aci_oob_external_management_instance" {
   source  = "netascode/oob-external-management-instance/aci"
   version = "0.1.0"
 
-  for_each               = { for ext in local.external_management_instances : ext.key => ext if try(local.modules.aci_oob_external_management_instance, true) && var.manage_tenants }
+  for_each               = { for ext in local.external_management_instances : ext.key => ext if local.modules.aci_oob_external_management_instance && var.manage_tenants }
   name                   = each.value.name
   subnets                = each.value.subnets
   oob_contract_consumers = each.value.oob_contract_consumers
@@ -694,7 +694,7 @@ module "aci_l3out" {
   source  = "netascode/l3out/aci"
   version = "0.2.2"
 
-  for_each                                = { for l3out in local.l3outs : l3out.key => l3out if try(local.modules.aci_l3out, true) && var.manage_tenants }
+  for_each                                = { for l3out in local.l3outs : l3out.key => l3out if local.modules.aci_l3out && var.manage_tenants }
   tenant                                  = each.value.tenant
   name                                    = each.value.name
   alias                                   = each.value.alias
@@ -802,7 +802,7 @@ module "aci_l3out_node_profile_manual" {
   source  = "netascode/l3out-node-profile/aci"
   version = "0.2.6"
 
-  for_each    = { for np in local.node_profiles_manual : np.key => np if try(local.modules.aci_l3out_node_profile, true) && var.manage_tenants }
+  for_each    = { for np in local.node_profiles_manual : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
   tenant      = each.value.tenant
   l3out       = each.value.l3out
   name        = each.value.name
@@ -882,7 +882,7 @@ module "aci_l3out_node_profile_auto" {
   source  = "netascode/l3out-node-profile/aci"
   version = "0.2.6"
 
-  for_each    = { for np in local.node_profiles_auto : np.key => np if try(local.modules.aci_l3out_node_profile, true) && var.manage_tenants }
+  for_each    = { for np in local.node_profiles_auto : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
   tenant      = each.value.tenant
   l3out       = each.value.l3out
   name        = each.value.name
@@ -985,7 +985,7 @@ module "aci_l3out_interface_profile_manual" {
   source  = "netascode/l3out-interface-profile/aci"
   version = "0.2.9"
 
-  for_each                    = { for ip in local.interface_profiles_manual : ip.key => ip if try(local.modules.aci_l3out_interface_profile, true) && var.manage_tenants }
+  for_each                    = { for ip in local.interface_profiles_manual : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
   tenant                      = each.value.tenant
   l3out                       = each.value.l3out
   node_profile                = each.value.node_profile
@@ -1117,7 +1117,7 @@ module "aci_l3out_interface_profile_auto" {
   source  = "netascode/l3out-interface-profile/aci"
   version = "0.2.9"
 
-  for_each                    = { for ip in local.interface_profiles_auto : ip.key => ip if try(local.modules.aci_l3out_interface_profile, true) && var.manage_tenants }
+  for_each                    = { for ip in local.interface_profiles_auto : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
   tenant                      = each.value.tenant
   l3out                       = each.value.l3out
   node_profile                = each.value.node_profile
@@ -1203,7 +1203,7 @@ module "aci_external_endpoint_group" {
   source  = "netascode/external-endpoint-group/aci"
   version = "0.2.1"
 
-  for_each                    = { for epg in local.external_endpoint_groups : epg.key => epg if try(local.modules.aci_external_endpoint_group, true) && var.manage_tenants }
+  for_each                    = { for epg in local.external_endpoint_groups : epg.key => epg if local.modules.aci_external_endpoint_group && var.manage_tenants }
   tenant                      = each.value.tenant
   l3out                       = each.value.l3out
   name                        = each.value.name
@@ -1255,7 +1255,7 @@ module "aci_filter" {
   source  = "netascode/filter/aci"
   version = "0.2.1"
 
-  for_each    = { for filter in local.filters : filter.key => filter if try(local.modules.aci_filter, true) && var.manage_tenants }
+  for_each    = { for filter in local.filters : filter.key => filter if local.modules.aci_filter && var.manage_tenants }
   tenant      = each.value.tenant
   name        = each.value.name
   alias       = each.value.alias
@@ -1303,7 +1303,7 @@ module "aci_contract" {
   source  = "netascode/contract/aci"
   version = "0.2.2"
 
-  for_each    = { for contract in local.contracts : contract.key => contract if try(local.modules.aci_contract, true) && var.manage_tenants }
+  for_each    = { for contract in local.contracts : contract.key => contract if local.modules.aci_contract && var.manage_tenants }
   tenant      = each.value.tenant
   name        = each.value.name
   alias       = each.value.alias
@@ -1345,7 +1345,7 @@ module "aci_oob_contract" {
   source  = "netascode/oob-contract/aci"
   version = "0.2.0"
 
-  for_each    = { for contract in local.oob_contracts : contract.key => contract if try(local.modules.aci_oob_contract, true) && var.manage_tenants }
+  for_each    = { for contract in local.oob_contracts : contract.key => contract if local.modules.aci_oob_contract && var.manage_tenants }
   name        = each.value.name
   alias       = each.value.alias
   description = each.value.description
@@ -1376,7 +1376,7 @@ module "aci_imported_contract" {
   source  = "netascode/imported-contract/aci"
   version = "0.1.0"
 
-  for_each        = { for contract in local.imported_contracts : contract.key => contract if try(local.modules.aci_imported_contract, true) && var.manage_tenants }
+  for_each        = { for contract in local.imported_contracts : contract.key => contract if local.modules.aci_imported_contract && var.manage_tenants }
   tenant          = each.value.tenant
   name            = each.value.name
   source_contract = each.value.source_contract
@@ -1415,7 +1415,7 @@ module "aci_ospf_interface_policy" {
   source  = "netascode/ospf-interface-policy/aci"
   version = "0.1.0"
 
-  for_each                = { for policy in local.ospf_interface_policies : policy.key => policy if try(local.modules.aci_ospf_interface_policy, true) && var.manage_tenants }
+  for_each                = { for policy in local.ospf_interface_policies : policy.key => policy if local.modules.aci_ospf_interface_policy && var.manage_tenants }
   tenant                  = each.value.tenant
   name                    = each.value.name
   description             = each.value.description
@@ -1458,7 +1458,7 @@ module "aci_bgp_timer_policy" {
   source  = "netascode/bgp-timer-policy/aci"
   version = "0.1.0"
 
-  for_each                = { for pol in local.bgp_timer_policies : pol.key => pol if try(local.modules.aci_bgp_timer_policy, true) && var.manage_tenants }
+  for_each                = { for pol in local.bgp_timer_policies : pol.key => pol if local.modules.aci_bgp_timer_policy && var.manage_tenants }
   tenant                  = each.value.tenant
   name                    = each.value.name
   description             = each.value.description
@@ -1497,7 +1497,7 @@ module "aci_bgp_address_family_context_policy" {
   source  = "netascode/bgp-address-family-context-policy/aci"
   version = "0.1.1"
 
-  for_each               = { for pol in local.bgp_address_family_context_policies : pol.key => pol if try(local.modules.aci_bgp_address_family_context_policy, true) && var.manage_tenants }
+  for_each               = { for pol in local.bgp_address_family_context_policies : pol.key => pol if local.modules.aci_bgp_address_family_context_policy && var.manage_tenants }
   tenant                 = each.value.tenant
   name                   = each.value.name
   description            = each.value.description
@@ -1540,7 +1540,7 @@ module "aci_dhcp_relay_policy" {
   source  = "netascode/dhcp-relay-policy/aci"
   version = "0.2.0"
 
-  for_each    = { for policy in local.dhcp_relay_policies : policy.key => policy if try(local.modules.aci_dhcp_relay_policy, true) && var.manage_tenants }
+  for_each    = { for policy in local.dhcp_relay_policies : policy.key => policy if local.modules.aci_dhcp_relay_policy && var.manage_tenants }
   tenant      = each.value.tenant
   name        = each.value.name
   description = each.value.description
@@ -1569,7 +1569,7 @@ module "aci_dhcp_option_policy" {
   source  = "netascode/dhcp-option-policy/aci"
   version = "0.2.0"
 
-  for_each    = { for policy in local.dhcp_option_policies : policy.key => policy if try(local.modules.aci_dhcp_option_policy, true) && var.manage_tenants }
+  for_each    = { for policy in local.dhcp_option_policies : policy.key => policy if local.modules.aci_dhcp_option_policy && var.manage_tenants }
   tenant      = each.value.tenant
   name        = each.value.name
   description = each.value.description
@@ -1605,7 +1605,7 @@ module "aci_route_control_route_map" {
   source  = "netascode/route-control-route-map/aci"
   version = "0.1.1"
 
-  for_each    = { for rm in local.route_control_route_maps : rm.key => rm if try(local.modules.aci_route_control_route_map, true) && var.manage_tenants }
+  for_each    = { for rm in local.route_control_route_maps : rm.key => rm if local.modules.aci_route_control_route_map && var.manage_tenants }
   tenant      = each.value.tenant
   name        = each.value.name
   description = each.value.description
@@ -1637,7 +1637,7 @@ module "aci_ip_sla_policy" {
   source  = "netascode/ip-sla-policy/aci"
   version = "0.1.0"
 
-  for_each    = { for policy in local.ip_sla_policies : policy.key => policy if try(local.modules.aci_ip_sla_policy, true) && var.manage_tenants }
+  for_each    = { for policy in local.ip_sla_policies : policy.key => policy if local.modules.aci_ip_sla_policy && var.manage_tenants }
   tenant      = each.value.tenant
   name        = each.value.name
   description = each.value.description
@@ -1690,7 +1690,7 @@ module "aci_match_rule" {
   source  = "netascode/match-rule/aci"
   version = "0.2.1"
 
-  for_each              = { for rule in local.match_rules : rule.key => rule if try(local.modules.aci_match_rule, true) && var.manage_tenants }
+  for_each              = { for rule in local.match_rules : rule.key => rule if local.modules.aci_match_rule && var.manage_tenants }
   tenant                = each.value.tenant
   name                  = each.value.name
   description           = each.value.description
@@ -1746,7 +1746,7 @@ module "aci_set_rule" {
   source  = "netascode/set-rule/aci"
   version = "0.2.2"
 
-  for_each                    = { for rule in local.set_rules : rule.key => rule if try(local.modules.aci_set_rule, true) && var.manage_tenants }
+  for_each                    = { for rule in local.set_rules : rule.key => rule if local.modules.aci_set_rule && var.manage_tenants }
   tenant                      = each.value.tenant
   name                        = each.value.name
   description                 = each.value.description
@@ -1800,7 +1800,7 @@ module "aci_bfd_interface_policy" {
   source  = "netascode/bfd-interface-policy/aci"
   version = "0.1.0"
 
-  for_each                  = { for pol in local.bfd_interface_policies : pol.key => pol if try(local.modules.aci_bfd_interface_policy, true) && var.manage_tenants }
+  for_each                  = { for pol in local.bfd_interface_policies : pol.key => pol if local.modules.aci_bfd_interface_policy && var.manage_tenants }
   tenant                    = each.value.tenant
   name                      = each.value.name
   description               = each.value.description
@@ -1852,7 +1852,7 @@ module "aci_qos_policy" {
   source  = "netascode/qos-policy/aci"
   version = "0.1.3"
 
-  for_each           = { for pol in local.qos_policies : pol.key => pol if try(local.modules.aci_qos_policy, true) && var.manage_tenants }
+  for_each           = { for pol in local.qos_policies : pol.key => pol if local.modules.aci_qos_policy && var.manage_tenants }
   tenant             = each.value.tenant
   name               = each.value.name
   description        = each.value.description
@@ -1886,7 +1886,7 @@ module "aci_bgp_peer_prefix_policy" {
   source  = "netascode/bgp-peer-prefix-policy/aci"
   version = "0.1.0"
 
-  for_each     = { for pol in local.bgp_peer_prefix_policies : pol.key => pol if try(local.modules.aci_bgp_peer_prefix_policy, true) && var.manage_tenants }
+  for_each     = { for pol in local.bgp_peer_prefix_policies : pol.key => pol if local.modules.aci_bgp_peer_prefix_policy && var.manage_tenants }
   tenant       = each.value.tenant
   name         = each.value.name
   description  = each.value.description
@@ -1918,7 +1918,7 @@ module "aci_bgp_best_path_policy" {
   source  = "netascode/bgp-best-path-policy/aci"
   version = "0.1.0"
 
-  for_each     = { for pol in local.bgp_best_path_policies : pol.key => pol if try(local.modules.aci_bgp_best_path_policy, true) && var.manage_tenants }
+  for_each     = { for pol in local.bgp_best_path_policies : pol.key => pol if local.modules.aci_bgp_best_path_policy && var.manage_tenants }
   tenant       = each.value.tenant
   name         = each.value.name
   description  = each.value.description
@@ -1964,7 +1964,7 @@ module "aci_igmp_interface_policy" {
   source  = "netascode/igmp-interface-policy/aci"
   version = "0.1.1"
 
-  for_each                          = { for pol in local.igmp_interface_policies : pol.key => pol if try(local.modules.aci_igmp_interface_policy, true) && var.manage_tenants }
+  for_each                          = { for pol in local.igmp_interface_policies : pol.key => pol if local.modules.aci_igmp_interface_policy && var.manage_tenants }
   tenant                            = each.value.tenant
   name                              = each.value.name
   description                       = each.value.description
@@ -2017,7 +2017,7 @@ module "aci_igmp_snooping_policy" {
   source  = "netascode/igmp-snooping-policy/aci"
   version = "0.1.0"
 
-  for_each                   = { for pol in local.igmp_snooping_policies : pol.key => pol if try(local.modules.aci_igmp_snooping_policy, true) && var.manage_tenants }
+  for_each                   = { for pol in local.igmp_snooping_policies : pol.key => pol if local.modules.aci_igmp_snooping_policy && var.manage_tenants }
   tenant                     = each.value.tenant
   name                       = each.value.name
   description                = each.value.description
@@ -2063,7 +2063,7 @@ module "aci_pim_policy" {
   source  = "netascode/pim-policy/aci"
   version = "0.1.1"
 
-  for_each                     = { for pol in local.pim_policies : pol.key => pol if try(local.modules.aci_pim_policy, true) && var.manage_tenants }
+  for_each                     = { for pol in local.pim_policies : pol.key => pol if local.modules.aci_pim_policy && var.manage_tenants }
   tenant                       = each.value.tenant
   name                         = each.value.name
   auth_key                     = each.value.auth_key
@@ -2107,7 +2107,7 @@ module "aci_trust_control_policy" {
   source  = "netascode/trust-control-policy/aci"
   version = "0.1.0"
 
-  for_each       = { for pol in local.trust_control_policies : pol.key => pol if try(local.modules.aci_trust_control_policy, true) && var.manage_tenants }
+  for_each       = { for pol in local.trust_control_policies : pol.key => pol if local.modules.aci_trust_control_policy && var.manage_tenants }
   tenant         = each.value.tenant
   name           = each.value.name
   description    = each.value.description
@@ -2147,7 +2147,7 @@ module "aci_multicast_route_map" {
   source  = "netascode/multicast-route-map/aci"
   version = "0.1.2"
 
-  for_each    = { for pol in local.multicast_route_maps : pol.key => pol if try(local.modules.aci_multicast_route_map, true) && var.manage_tenants }
+  for_each    = { for pol in local.multicast_route_maps : pol.key => pol if local.modules.aci_multicast_route_map && var.manage_tenants }
   tenant      = each.value.tenant
   name        = each.value.name
   description = each.value.description
@@ -2215,7 +2215,7 @@ module "aci_l4l7_device" {
   source  = "netascode/l4l7-device/aci"
   version = "0.2.3"
 
-  for_each         = { for device in local.l4l7_devices : device.key => device if try(local.modules.aci_l4l7_device, true) && var.manage_tenants }
+  for_each         = { for device in local.l4l7_devices : device.key => device if local.modules.aci_l4l7_device && var.manage_tenants }
   tenant           = each.value.tenant
   name             = each.value.name
   alias            = each.value.alias
@@ -2293,7 +2293,7 @@ module "aci_redirect_policy" {
   source  = "netascode/redirect-policy/aci"
   version = "0.2.1"
 
-  for_each               = { for policy in local.redirect_policies : policy.key => policy if try(local.modules.aci_redirect_policy, true) && var.manage_tenants }
+  for_each               = { for policy in local.redirect_policies : policy.key => policy if local.modules.aci_redirect_policy && var.manage_tenants }
   tenant                 = each.value.tenant
   name                   = each.value.name
   alias                  = each.value.alias
@@ -2341,7 +2341,7 @@ module "aci_redirect_backup_policy" {
   source  = "netascode/redirect-backup-policy/aci"
   version = "0.1.0"
 
-  for_each        = { for policy in local.redirect_backup_policies : policy.key => policy if try(local.modules.aci_redirect_backup_policy, true) && var.manage_tenants }
+  for_each        = { for policy in local.redirect_backup_policies : policy.key => policy if local.modules.aci_redirect_backup_policy && var.manage_tenants }
   tenant          = each.value.tenant
   name            = each.value.name
   description     = each.value.description
@@ -2369,7 +2369,7 @@ module "aci_redirect_health_group" {
   source  = "netascode/redirect-health-group/aci"
   version = "0.1.0"
 
-  for_each    = { for health_group in local.redirect_health_groups : health_group.key => health_group if try(local.modules.aci_redirect_health_group, true) && var.manage_tenants }
+  for_each    = { for health_group in local.redirect_health_groups : health_group.key => health_group if local.modules.aci_redirect_health_group && var.manage_tenants }
   tenant      = each.value.tenant
   name        = each.value.name
   description = each.value.description
@@ -2405,7 +2405,7 @@ module "aci_service_graph_template" {
   source  = "netascode/service-graph-template/aci"
   version = "0.1.0"
 
-  for_each            = { for sg_template in local.service_graph_templates : sg_template.key => sg_template if try(local.modules.aci_service_graph_template, true) && var.manage_tenants }
+  for_each            = { for sg_template in local.service_graph_templates : sg_template.key => sg_template if local.modules.aci_service_graph_template && var.manage_tenants }
   tenant              = each.value.tenant
   name                = each.value.name
   description         = each.value.description
@@ -2478,7 +2478,7 @@ module "aci_device_selection_policy" {
   source  = "netascode/device-selection-policy/aci"
   version = "0.1.1"
 
-  for_each                                                = { for pol in local.device_selection_policies : pol.key => pol if try(local.modules.aci_device_selection_policy, true) && var.manage_tenants }
+  for_each                                                = { for pol in local.device_selection_policies : pol.key => pol if local.modules.aci_device_selection_policy && var.manage_tenants }
   tenant                                                  = each.value.tenant
   contract                                                = each.value.contract
   service_graph_template                                  = each.value.service_graph_template
@@ -2548,7 +2548,7 @@ module "aci_service_epg_policy" {
   source  = "netascode/service-epg-policy/aci"
   version = "0.1.0"
 
-  for_each        = { for pol in local.service_epg_policies : pol.key => pol if try(local.modules.aci_service_epg_policy, true) && var.manage_tenants }
+  for_each        = { for pol in local.service_epg_policies : pol.key => pol if local.modules.aci_service_epg_policy && var.manage_tenants }
   tenant          = each.value.tenant
   name            = each.value.name
   description     = each.value.description
@@ -2587,7 +2587,7 @@ module "aci_tenant_span_destination_group" {
   source  = "netascode/tenant-span-destination-group/aci"
   version = "0.1.1"
 
-  for_each                        = { for span in local.tenant_span_destination_groups : span.key => span if try(local.modules.aci_tenant_span_destination_group, true) && var.manage_tenants }
+  for_each                        = { for span in local.tenant_span_destination_groups : span.key => span if local.modules.aci_tenant_span_destination_group && var.manage_tenants }
   tenant                          = each.value.tenant
   name                            = each.value.name
   description                     = each.value.description
@@ -2634,7 +2634,7 @@ module "aci_tenant_span_source_group" {
   source  = "netascode/tenant-span-source-group/aci"
   version = "0.1.0"
 
-  for_each    = { for span in local.tenant_span_source_groups : span.key => span if try(local.modules.aci_tenant_span_source_group, true) && var.manage_tenants }
+  for_each    = { for span in local.tenant_span_source_groups : span.key => span if local.modules.aci_tenant_span_source_group && var.manage_tenants }
   tenant      = each.value.tenant
   name        = each.value.name
   description = each.value.description

@@ -11,6 +11,8 @@ locals {
   ]
   user_defaults = { "defaults" : try(lookup(yamldecode(data.utils_yaml_merge.model.output), "defaults"), {}) }
   defaults      = lookup(yamldecode(data.utils_yaml_merge.defaults.output), "defaults")
+  user_modules  = { "modules" : try(lookup(yamldecode(data.utils_yaml_merge.model.output), "modules"), {}) }
+  modules       = lookup(yamldecode(data.utils_yaml_merge.modules.output), "modules")
   model         = length(keys(var.model)) == 0 ? yamldecode(data.utils_yaml_merge.model.output) : var.model
 }
 
@@ -27,6 +29,10 @@ data "utils_yaml_merge" "model" {
 
 data "utils_yaml_merge" "defaults" {
   input = [file("${path.module}/defaults/defaults.yaml"), yamlencode(local.user_defaults)]
+}
+
+data "utils_yaml_merge" "modules" {
+  input = [file("${path.module}/defaults/modules.yaml"), yamlencode(local.user_modules)]
 }
 
 resource "local_sensitive_file" "defaults" {
