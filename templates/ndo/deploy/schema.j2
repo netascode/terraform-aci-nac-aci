@@ -564,7 +564,7 @@
                                         "vlanType": "vlan",
                                         "vlan": {{ vmm.vlan }}
                                     },
-                                    {% if vmm.u_segmentation | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.u_segmentation) | cisco.aac.aac_bool(True) %}
+                                    {% if vmm.u_segmentation | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.u_segmentation) | cisco.aac.aac_bool(True) and vmm.vlan_mode | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.vlan_mode) == "static" %}
                                     "microSegVlan": {
                                         "vlanType": "vlan",
                                         "vlan": {{ vmm.useg_vlan }}
