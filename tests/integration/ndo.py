@@ -81,7 +81,7 @@ API_ENDPOINT_MAPPINGS = {
         "container": "systemConfigs",
         "key": None,
         "has_id": True,
-        "method": "put",
+        "method": "patch",
     },
     "policies/dhcp/relay": {
         "container": "DhcpRelayPolicies",
@@ -265,7 +265,11 @@ class Ndo:
         lookup_path = path
         lookup_value = None
         method = API_ENDPOINT_MAPPINGS.get(path, {}).get("method", method)
-        if lookup_path in API_ENDPOINT_MAPPINGS and method in ["put", "post_or_put"]:
+        if lookup_path in API_ENDPOINT_MAPPINGS and method in [
+            "put",
+            "post_or_put",
+            "patch",
+        ]:
             key = API_ENDPOINT_MAPPINGS.get(lookup_path, {}).get("key")
             has_id = API_ENDPOINT_MAPPINGS.get(lookup_path, {}).get("has_id")
             if key is not None:
@@ -273,9 +277,11 @@ class Ndo:
             existing_obj = self._lookup(lookup_path, lookup_value)
             if existing_obj and has_id:
                 obj_id = existing_obj["id"]
-                payload["id"] = obj_id
+                if method != "patch":
+                    payload["id"] = obj_id
                 path = path + "/{}".format(obj_id)
-                method = "put"
+                if method == "post_or_put":
+                    method = "put"
             elif method == "post_or_put":
                 method = "post"
 
@@ -285,10 +291,12 @@ class Ndo:
 
         if method.upper() == "PUT":
             resp = self.session.put(base_url, data=json.dumps(payload))
+        elif method.upper() == "PATCH":
+            resp = self.session.patch(base_url, data=json.dumps(payload))
         else:
             resp = self.session.post(base_url, data=json.dumps(payload))
 
-        if resp.status_code not in [200, 201]:
+        if resp.status_code not in [200, 201, 204]:
             if "Cannot run program" in resp.text and resp.status_code == 400:
                 return ""
             if "Site already managed" in resp.text and resp.status_code == 400:

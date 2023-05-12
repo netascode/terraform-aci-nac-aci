@@ -1,14 +1,16 @@
-{
-    "baseLockoutTime": 5,
-    "allowedConsecutiveAttempts": 5,
-    "bannerConfig": [
-        {
-            "alias": "{{ ndo.system_config.banner.alias | default() }}",
-            "banner": {
-                "bannerType": "{{ ndo.system_config.banner.type | default(defaults.ndo.system_config.banner.type) }}",
-                "message": "{{ ndo.system_config.banner.message | default() }}",
-                "bannerState": "{{ ndo.system_config.banner.state | default(defaults.ndo.system_config.banner.state) }}"
+[
+    {
+        "op": "replace",
+        "path": "/bannerConfig",
+        "value": [
+            {
+                "alias": "{{ ndo.system_config.banner.alias | default() }}",
+                "banner": {
+                    "bannerType": "{{ ndo.system_config.banner.type | default(defaults.ndo.system_config.banner.type) }}",
+                    "message": "{{ ndo.system_config.banner.message | default() }}",
+                    "bannerState": "{{ ndo.system_config.banner.state | default(defaults.ndo.system_config.banner.state) }}"
+                }
             }
-        }
-    ]
-}
+        ]
+    }
+]
