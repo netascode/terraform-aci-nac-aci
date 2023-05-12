@@ -35,7 +35,7 @@ Verify VSPAN Session {{ vspan_name }} Source {{ source_name }}
 {% if path.type is defined %}
     {% set type = path.type %}
 {% else %}
-    {% set type = (apic.access_policies | community.general.json_query(query))[0] %}
+    {% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if path.node2_id is defined else 'pc') %}
 {% endif %}
 {% if path.node_id is defined %}
     {% set node = path.node_id %}

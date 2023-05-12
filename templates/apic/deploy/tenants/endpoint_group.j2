@@ -245,7 +245,7 @@
                                                         {% else %}
                                                         {% set policy_group_name = st_ep.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
                                                         {% set query = "leaf_interface_policy_groups[?name==`" ~ st_ep.channel ~ "`].type" %}
-                                                        {% set type = (apic.access_policies | community.general.json_query(query))[0] %}
+                                                        {% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if st_ep.node2_id is defined else 'pc') %}
                                                         {% if st_ep.node_id is defined %}
                                                             {% set node = st_ep.node_id %}
                                                         {% else %}

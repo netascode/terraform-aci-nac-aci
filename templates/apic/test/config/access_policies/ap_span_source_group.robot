@@ -50,7 +50,7 @@ Verify SPAN Source Group {{ span_name }} Source {{ source_name }}
 {% else %}
     {% set policy_group_name = path.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
     {% set query = "leaf_interface_policy_groups[?name==`" ~ path.channel ~ "`].type" %}
-    {% set type = (apic.access_policies | community.general.json_query(query))[0] %}
+    {% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if path.node2_id is defined else 'pc') %}
     {% set query_sub_ports = "nodes[?interfaces[?sub_ports[?policy_group==`" ~ path.channel ~ "`]]].id" %}
     {% set id_sub_ports = (apic.interface_policies | default() | community.general.json_query(query_sub_ports)) %}
     {% set query_ports = "nodes[?interfaces[?policy_group==`" ~ path.channel ~ "`]].id" %}

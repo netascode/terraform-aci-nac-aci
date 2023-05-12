@@ -92,12 +92,12 @@ Verify Endpoint Group {{ epg_name }} Static Endpoint {{ st_ep.name }}
     {% else %}
     {% set policy_group_name = st_ep.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
     {% set query = "leaf_interface_policy_groups[?name==`" ~ st_ep.channel ~ "`].type" %}
-    {% set type = (apic.access_policies | community.general.json_query(query))[0] %}
+    {% set type = (apic.access_policies | default() | community.general.json_query(query))[0] | default('vpc' if st_ep.node2_id is defined else 'pc') %}
     {% if st_ep.node_id is defined %}
     {% set node = st_ep.node_id %}
     {% else %}
     {% set query = "nodes[?interfaces[?policy_group==`" ~ st_ep.channel ~ "`]].id" %}
-    {% set node = (apic.interface_policies | community.general.json_query(query))[0] %}
+    {% set node = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
     {% endif %}
     {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
     {% set pod = st_ep.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
@@ -106,7 +106,7 @@ Verify Endpoint Group {{ epg_name }} Static Endpoint {{ st_ep.name }}
     {% set node2 = st_ep.node2_id %}
     {% else %}
     {% set query = "nodes[?interfaces[?policy_group==`" ~ st_ep.channel ~ "`]].id" %}
-    {% set node2 = (apic.interface_policies | community.general.json_query(query))[1] %}
+    {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
     {% if node2 < node %}{% set node_tmp = node %}{% set node = node2 %}{% set node2 = node_tmp %}{% endif %}
     {% endif %}
     Should Be Equal Value Json String   ${r.json()}   ${con}.children..fvRsStCEpToPathEp.attributes.tDn   topology/pod-{{ pod }}/protpaths-{{ node }}-{{ node2 }}/pathep-[{{ policy_group_name }}]

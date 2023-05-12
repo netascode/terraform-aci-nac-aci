@@ -26,8 +26,6 @@ Verify SPAN Destination Group {{ span_name }}
     {% endif %}                                                    
 {% else %}
     {% set policy_group_name = span.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
-    {% set query = "leaf_interface_policy_groups[?name==`" ~ span.channel ~ "`].type" %}
-    {% set type = (apic.access_policies | community.general.json_query(query))[0] %}
     {% set query_sub_ports = "nodes[?interfaces[?sub_ports[?policy_group==`" ~ span.channel ~ "`]]].id" %}
     {% set id_sub_ports = (apic.interface_policies | default() | community.general.json_query(query_sub_ports)) %}
     {% set query_ports = "nodes[?interfaces[?policy_group==`" ~ span.channel ~ "`]].id" %}

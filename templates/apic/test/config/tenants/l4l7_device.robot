@@ -60,7 +60,7 @@ Verify L4L7 Device {{ dev_name }} Concrete Device {{ cd_name }} Interface {{ int
 {% endif %}
 {% else %}
 {% set query = "leaf_interface_policy_groups[?name==`" ~ int.channel ~ "`].type" %}
-{% set type = (apic.access_policies | community.general.json_query(query))[0] %}
+{% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if int.node2_id is defined else 'pc') %}
 {% if int.node_id is defined %}
     {% set node = int.node_id %}
 {% else %}
