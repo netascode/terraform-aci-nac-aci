@@ -13,7 +13,7 @@ module "aci_access_fex_interface_profile_auto" {
   source  = "netascode/access-fex-interface-profile/aci"
   version = "0.1.0"
 
-  for_each = { for profile in local.access_fex_interface_profiles : profile.key => profile if try(local.modules.aci_access_fex_interface_profile, true) && var.manage_interface_policies }
+  for_each = { for profile in local.access_fex_interface_profiles : profile.key => profile if local.modules.aci_access_fex_interface_profile && var.manage_interface_policies }
   name     = each.value.name
 }
 
@@ -45,7 +45,7 @@ module "aci_access_leaf_interface_selector_auto" {
   source  = "netascode/access-leaf-interface-selector/aci"
   version = "0.2.1"
 
-  for_each              = { for selector in local.access_leaf_interface_selectors : selector.key => selector if try(local.modules.aci_access_leaf_interface_selector, true) && var.manage_interface_policies }
+  for_each              = { for selector in local.access_leaf_interface_selectors : selector.key => selector if local.modules.aci_access_leaf_interface_selector && var.manage_interface_policies }
   name                  = each.value.name
   interface_profile     = each.value.interface_profile
   fex_id                = each.value.fex_id
@@ -91,7 +91,7 @@ module "aci_access_leaf_interface_selector_sub_auto" {
   source  = "netascode/access-leaf-interface-selector/aci"
   version = "0.2.1"
 
-  for_each              = { for selector in local.access_sub_interface_selectors : selector.key => selector if try(local.modules.aci_access_leaf_interface_selector, true) && var.manage_interface_policies }
+  for_each              = { for selector in local.access_sub_interface_selectors : selector.key => selector if local.modules.aci_access_leaf_interface_selector && var.manage_interface_policies }
   name                  = each.value.name
   interface_profile     = each.value.interface_profile
   fex_id                = each.value.fex_id
@@ -133,7 +133,7 @@ module "aci_access_fex_interface_selector_auto" {
   source  = "netascode/access-fex-interface-selector/aci"
   version = "0.2.0"
 
-  for_each          = { for selector in local.access_fex_interface_selectors : selector.key => selector if try(local.modules.aci_access_fex_interface_selector, true) && var.manage_interface_policies }
+  for_each          = { for selector in local.access_fex_interface_selectors : selector.key => selector if local.modules.aci_access_fex_interface_selector && var.manage_interface_policies }
   name              = each.value.name
   interface_profile = each.value.profile_name
   policy_group      = each.value.policy_group
@@ -170,7 +170,7 @@ module "aci_access_spine_interface_selector_auto" {
   source  = "netascode/access-spine-interface-selector/aci"
   version = "0.2.0"
 
-  for_each          = { for selector in local.access_spine_interface_selectors : selector.key => selector if try(local.modules.aci_access_spine_interface_selector, true) && var.manage_interface_policies }
+  for_each          = { for selector in local.access_spine_interface_selectors : selector.key => selector if local.modules.aci_access_spine_interface_selector && var.manage_interface_policies }
   name              = each.value.name
   interface_profile = each.value.interface_profile
   policy_group      = each.value.policy_group
