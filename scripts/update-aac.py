@@ -158,7 +158,7 @@ REPOS = [
         "directories": [
             {
                 "src": "../defaults",
-                "dst": "./aac_tool/schemas",
+                "dst": "./aac_tool/defaults",
             },
             {
                 "src": "../schemas",
@@ -180,15 +180,23 @@ REPOS = [
                 "src": "../templates/ndo/test",
                 "dst": "./aac_tool/templates/ndo/test",
             },
+            {
+                "src": "../templates/apic/documentation",
+                "dst": "./aac_tool/templates/apic/documentation",
+            },
+            {
+                "src": "../templates/ndo/documentation",
+                "dst": "./aac_tool/templates/ndo/documentation",
+            },
         ],
         "files": [
             {
                 "src": "../objects/apic_objects.yaml",
-                "dst": "./aac_tool/schemas/apic_objects.yaml",
+                "dst": "./aac_tool/objects/apic_objects.yaml",
             },
             {
                 "src": "../objects/ndo_objects.yaml",
-                "dst": "./aac_tool/schemas/ndo_objects.yaml",
+                "dst": "./aac_tool/objects/ndo_objects.yaml",
             },
         ],
     },
