@@ -220,6 +220,30 @@ REPOS = [
             },
         ],
     },
+    {
+        "url": "https://wwwin-github.cisco.com/netascode/onboarding-tool.git",
+        "commit_message": "Aac updates",
+        "directories": [
+            {
+                "src": "../validation/rules",
+                "dst": "./onboarding-data/aci/repository-template/.rules",
+            },
+            {
+                "src": "../templates/apic/test",
+                "dst": "./onboarding-data/aci/repository-template/tests/templates",
+            },
+            {
+                "src": "../jinja_filters",
+                "dst": "./onboarding-data/aci/repository-template/tests/filters",
+            },
+        ],
+        "files": [
+            {
+                "src": "../schemas/apic_schema.yaml",
+                "dst": "./onboarding-data/aci/repository-template/.schema.yaml",
+            },
+        ],
+    },
 ]
 
 
