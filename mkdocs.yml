@@ -272,6 +272,10 @@ nav:
       - Quick Start: terraform/quick_start.md
       - Development: terraform/development.md
       - Migration: terraform/migration.md
+  - Development:
+      - Overview: development/overview.md
+      - Terraform: development/terraform.md
+      - aac-tool: development/aac_tool.md
   - Labs:
       - Quick Start: labs/quick_start.md
       - Guides:
