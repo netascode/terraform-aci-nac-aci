@@ -195,8 +195,16 @@ REPOS = [
                 "dst": "./aac_tool/objects/apic_objects.yaml",
             },
             {
+                "src": "../objects/apic_doc_objects.yaml",
+                "dst": "./aac_tool/objects/apic_doc_objects.yaml",
+            },
+            {
                 "src": "../objects/ndo_objects.yaml",
                 "dst": "./aac_tool/objects/ndo_objects.yaml",
+            },
+            {
+                "src": "../objects/ndo_doc_objects.yaml",
+                "dst": "./aac_tool/objects/ndo_doc_objects.yaml",
             },
         ],
     },

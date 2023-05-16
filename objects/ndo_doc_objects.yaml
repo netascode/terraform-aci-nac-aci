@@ -1,0 +1,4 @@
+---
+objects:
+  - name: AS-Built
+    template: as_built
