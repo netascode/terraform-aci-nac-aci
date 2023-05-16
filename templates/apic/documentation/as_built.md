@@ -2,6 +2,7 @@
 
 This is a table of endpoint groups.
 
+<caption name="Endpoint Groups">
 Tenant | Application Profile | Endpoint Group | Bridge Domain
 ---|---|---|---
 {% for tenant in apic.tenants | default([]) %}
@@ -11,3 +12,4 @@ Tenant | Application Profile | Endpoint Group | Bridge Domain
 {% endfor %}
 {% endfor %}
 {% endfor %}
+</caption>
