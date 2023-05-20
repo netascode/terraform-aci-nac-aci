@@ -44,21 +44,6 @@ def load_yaml_file(path):
     return data
 
 
-def add_comments(schema, schema_comments):
-    for attr in schema.dict:
-        comment_item = schema_comments[0].ca.items.get(attr)
-        if comment_item:
-            schema.dict[attr].comment = comment_item[2].value[1:].strip()
-    for include in schema.includes:
-        item = schema_comments[1][include]
-        for attr in schema.includes[include].dict:
-            comment_item = item.ca.items.get(attr)
-            if comment_item:
-                schema.includes[include].dict[attr].comment = (
-                    comment_item[2].value[1:].strip()
-                )
-
-
 def load_schema(path):
     """Load a yamale schema and add annotations as attributes to schema elements."""
     schema = yamale.make_schema(path, parser="ruamel")
