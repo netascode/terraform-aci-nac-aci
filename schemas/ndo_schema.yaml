@@ -115,7 +115,7 @@ fc_bgp:
 
 tenants:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
   sites: list(include('tenants_sites'), required=False) # @name(Tenant Sites)
   users: list(include('tenants_users'), required=False) # @name(Tenant Users)
 
@@ -134,7 +134,7 @@ policies:
 
 policies_dhcp_relays:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @ref_table(ndo.tenants)
   providers: list(include('policies_dhcp_relays_providers'), required=False) # @name(DHCP Relay Policy Providers)
 
@@ -149,7 +149,7 @@ policies_dhcp_relays_providers:
 
 policies_dhcp_options:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @ref_table(ndo.tenants)
   options: list(include('policies_dhcp_options_options'), required=False) # @name(DHCP Option Policy Options)
 
@@ -268,7 +268,7 @@ t_ap_epg_sites_static_leafs:
 
 t_ap_epg_sites_subnets:
   ip: ip()
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
   scope: enum('private', 'public', required=False)
   shared: any(bool(), enum('enabled', 'disabled'), required=False)
   no_default_gateway: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -369,7 +369,7 @@ t_filters:
 
 t_filters_entries:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
   ethertype: enum('unspecified', 'ipv4', 'trill', 'arp', 'ipv6', 'mpls_ucast', 'mac_security', 'fcoe', 'ip', required=False)
   protocol: any(int(min=0, max=255), enum('unspecified', 'icmp', 'igmp', 'tcp', 'egp', 'igp', 'udp', 'icmpv6', 'eigrp', 'ospfigp', 'pim', 'l2tp'), required=False)
   source_from_port: any(int(min=0, max=65535), enum('unspecified', 'ftpData', 'smtp', 'dns', 'http', 'pop3', 'https', 'rtsp', 'ssh'), required=False)
@@ -514,7 +514,7 @@ t_contracts_service_graph_nodes_con_sites:
 
 t_service_graphs:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
   nodes: list(include('t_service_graphs_nodes')) # @name(Service Graph Nodes) @ref_name(Node)
 
 t_service_graphs_nodes:
