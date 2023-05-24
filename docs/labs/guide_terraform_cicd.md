@@ -1,4 +1,4 @@
-# Run Ansible AAC with CI/CD
+# Run Terraform AAC with CI/CD
 
 ## Goal
 
