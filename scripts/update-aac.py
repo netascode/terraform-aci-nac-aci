@@ -75,8 +75,8 @@ REPOS = [
                 "dst": "./roles/ndo_common/vars/ndo_objects.yaml",
             },
             {
-                "src": "../tests/integration/fixtures/apic/standard_42/fabric_policies.yaml",
-                "dst": "./roles/apic_deploy/molecule/01_standard/data/host_vars/apic1/fabric_policies_42.yaml",
+                "src": "../tests/integration/fixtures/apic/standard_42/fabric_policies.aac.yaml",
+                "dst": "./roles/apic_deploy/molecule/01_standard/data/host_vars/apic1/fabric_policies_42.aac.yaml",
             },
         ],
     },
@@ -161,10 +161,6 @@ REPOS = [
                 "dst": "./aac_tool/defaults",
             },
             {
-                "src": "../schemas",
-                "dst": "./aac_tool/schemas",
-            },
-            {
                 "src": "../templates/apic/deploy",
                 "dst": "./aac_tool/templates/apic/deploy",
             },
@@ -205,6 +201,14 @@ REPOS = [
             {
                 "src": "../objects/ndo_doc_objects.yaml",
                 "dst": "./aac_tool/objects/ndo_doc_objects.yaml",
+            },
+            {
+                "src": "../schemas/apic_schema.yaml",
+                "dst": "./aac_tool/schemas/apic_schema.yaml",
+            },
+            {
+                "src": "../schemas/ndo_schema.yaml",
+                "dst": "./aac_tool/schemas/ndo_schema.yaml",
             },
         ],
     },
@@ -252,6 +256,16 @@ REPOS = [
             },
         ],
     },
+    {
+        "url": "https://github.com/netascode/nac-validate.git",
+        "commit_message": "Schema updates",
+        "files": [
+            {
+                "src": "../schemas/schema.json",
+                "dst": "./schema.json",
+            },
+        ],
+    },
 ]
 
 
@@ -279,5 +293,11 @@ def update_aac():
         update_repo(repo)
 
 
+def update_json_schema():
+    print("\n-> Rendering JSON schema")
+    subprocess.run(["python", "json-schema.py"])
+
+
 if __name__ == "__main__":
+    update_json_schema()
     update_aac()

@@ -426,3 +426,6 @@ apic_*.html
 ndo_*.html
 apic_*.xml
 ndo_*.xml
+
+# json schema
+schemas/schema.json
