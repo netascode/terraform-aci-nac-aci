@@ -9,15 +9,16 @@ locals {
   yaml_strings_files = [
     for file in var.yaml_files : file(file)
   ]
+  model_strings = length(keys(var.model)) != 0 ? [yamlencode(var.model)] : []
   user_defaults = { "defaults" : try(lookup(yamldecode(data.utils_yaml_merge.model.output), "defaults"), {}) }
   defaults      = lookup(yamldecode(data.utils_yaml_merge.defaults.output), "defaults")
   user_modules  = { "modules" : try(lookup(yamldecode(data.utils_yaml_merge.model.output), "modules"), {}) }
   modules       = lookup(yamldecode(data.utils_yaml_merge.modules.output), "modules")
-  model         = length(keys(var.model)) == 0 ? yamldecode(data.utils_yaml_merge.model.output) : var.model
+  model         = yamldecode(data.utils_yaml_merge.model.output)
 }
 
 data "utils_yaml_merge" "model" {
-  input = concat(local.yaml_strings_directories, local.yaml_strings_files)
+  input = concat(local.yaml_strings_directories, local.yaml_strings_files, local.model_strings)
 
   lifecycle {
     precondition {
