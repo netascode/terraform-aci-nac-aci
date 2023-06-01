@@ -22,8 +22,8 @@ data "utils_yaml_merge" "model" {
 
   lifecycle {
     precondition {
-      condition     = ((length(var.yaml_directories) != 0 || length(var.yaml_files) != 0) && length(keys(var.model)) == 0) || (length(var.yaml_directories) == 0 && length(var.yaml_files) == 0 && length(keys(var.model)) != 0)
-      error_message = "Either `yaml_directories`/`yaml_files` or a non-empty `model` value must be provided."
+      condition     = length(var.yaml_directories) != 0 || length(var.yaml_files) != 0 || length(keys(var.model)) != 0
+      error_message = "Either `yaml_directories`,`yaml_files` or a non-empty `model` value must be provided."
     }
   }
 }
