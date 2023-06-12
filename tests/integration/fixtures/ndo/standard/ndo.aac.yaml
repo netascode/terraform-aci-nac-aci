@@ -22,7 +22,7 @@ ndo:
   sites:
     - name: APIC1
       apic_urls:
-        - https://10.51.77.63
+        - https://10.50.202.13
       id: 1
       multisite: true
       multicast_tep: 5.6.7.8
