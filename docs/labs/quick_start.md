@@ -16,7 +16,7 @@ When creating a Control VM, Drone and/or Jenkins can be added as well by enablin
 
 ## Adding a new POD
 
-In order to create a new POD, edit the [`active-labs.auto.tfvars`](https://wwwin-github.cisco.com/netascode/aac-lab-bru/edit/master/active-labs.auto.tfvars) file directly on GitHub. To add a POD, add an entry as follows below the existing PODs.
+In order to create a new POD, edit the [`active-labs.auto.tfvars`](https://wwwin-github.cisco.com/netascode/aac-lab-ron/edit/master/active-labs.auto.tfvars) file directly on GitHub. To add a POD, add an entry as follows below the existing PODs.
 
 An entry will have the following convention:
 
