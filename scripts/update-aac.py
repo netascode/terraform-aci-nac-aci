@@ -48,6 +48,10 @@ REPOS = [
                 "src": "../tests/integration/fixtures/ndo/standard",
                 "dst": "./roles/ndo_deploy/molecule/01_standard/data/host_vars/ndo1",
             },
+            {
+                "src": "../tests/integration/fixtures/apic/standard_52",
+                "dst": "./roles/apic_deploy/molecule/01_standard/data/host_vars/apic1",
+            },
         ],
         "files": [
             {
@@ -73,10 +77,6 @@ REPOS = [
             {
                 "src": "../objects/ndo_objects.yaml",
                 "dst": "./roles/ndo_common/vars/ndo_objects.yaml",
-            },
-            {
-                "src": "../tests/integration/fixtures/apic/standard_42/fabric_policies.aac.yaml",
-                "dst": "./roles/apic_deploy/molecule/01_standard/data/host_vars/apic1/fabric_policies_42.aac.yaml",
             },
         ],
     },
