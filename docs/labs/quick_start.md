@@ -28,6 +28,7 @@ An entry will have the following convention:
   flavor        = "<aci|ndo|...>"   # flavor you want to create: value can be either 'aci' or 'ndo'
   drone         = true              # Optionally install Drone CI/CD
   jenkins       = true              # Optionally install Jenkins CI/CD
+  netbox        = true              # Optionally install NetBox
 }
 ```
 
@@ -62,6 +63,7 @@ These are the default credentials provisioned:
 - **Control VM Linux**: lab/cisco123
 - **Control VM GitLab**: lab/cisco123
 - **Nexus Dashboard**: admin/cisco123
+- **NetBox**: admin/cisco123
 
 These are the default URLs to access the applications:
 
@@ -69,4 +71,5 @@ These are the default URLs to access the applications:
 - **Control VM GitLab**: [https://<CONTROL_VM_IP\>]()
 - **Control VM Drone**: [http://<CONTROL_VM_IP\>:30080]()
 - **Control VM Jenkins**: [http://<CONTROL_VM_IP\>:30088]()
+- **Control VM NetBox**: [http://<CONTROL_VM_IP\>:30081]()
 - **Nexus Dashboard**: [https://<NEXUS_DASHBOARD_IP\>]()
