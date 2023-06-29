@@ -412,7 +412,8 @@
                                                                         "addr": "{{ int.ip_a }}",
                                                                         "side": "A",
                                                                         "childAction": "deleteNonPresent"
-                                                                    },
+                                                                    }
+                                                                    {%- if int.ip_shared is defined %}{{ comma5() }}
                                                                     "children": [
                                                                         {
                                                                             "l3extIp": {
@@ -423,6 +424,8 @@
                                                                             }
                                                                         }
                                                                     ]
+                                                                    {%- endif %}
+
                                                                 }
                                                             },
                                                             {
@@ -432,7 +435,8 @@
                                                                         "addr": "{{ int.ip_b }}",
                                                                         "side": "B",
                                                                         "childAction": "deleteNonPresent"
-                                                                    },
+                                                                    }
+                                                                    {%- if int.ip_shared is defined %}{{ comma5() }}
                                                                     "children": [
                                                                         {
                                                                             "l3extIp": {
@@ -443,6 +447,8 @@
                                                                             }
                                                                         }
                                                                     ]
+                                                                    {%- endif %}
+
                                                                 }
                                                             }
                                                             {%- endif %}
@@ -993,7 +999,8 @@
                                                                         "addr": "{{ int.ip_a }}",
                                                                         "side": "A",
                                                                         "childAction": "deleteNonPresent"
-                                                                    },
+                                                                    }
+                                                                    {%- if int.ip_shared is defined %}{{ comma5() }}
                                                                     "children": [
                                                                         {
                                                                             "l3extIp": {
@@ -1004,6 +1011,8 @@
                                                                             }
                                                                         }
                                                                     ]
+                                                                    {%- endif %}
+
                                                                 }
                                                             },
                                                             {
@@ -1013,7 +1022,8 @@
                                                                         "addr": "{{ int.ip_b }}",
                                                                         "side": "B",
                                                                         "childAction": "deleteNonPresent"
-                                                                    },
+                                                                    }
+                                                                    {%- if int.ip_shared is defined %}{{ comma5() }}
                                                                     "children": [
                                                                         {
                                                                             "l3extIp": {
@@ -1024,6 +1034,8 @@
                                                                             }
                                                                         }
                                                                     ]
+                                                                    {%- endif %}
+
                                                                 }
                                                             }
                                                             {%- endif %}
