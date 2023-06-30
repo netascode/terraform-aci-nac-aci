@@ -21,7 +21,7 @@ This section describes the system wide configuration.
 
 | Properties | Value |
 |---|---|
-| Type: | {{apic.fabric_policies.apic_conn_pref | default(defaults.apic.fabric_policies.coop_group_policy)}} |
+| Type: | {{apic.fabric_policies.coop_group_policy | default(defaults.apic.fabric_policies.coop_group_policy)}} |
 </caption>
 
 ### Date and Time Format Policy
