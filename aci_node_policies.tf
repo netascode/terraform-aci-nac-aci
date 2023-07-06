@@ -23,7 +23,7 @@ module "aci_vpc_group" {
   count = local.modules.aci_vpc_group == true && var.manage_node_policies ? 1 : 0
   mode  = try(local.node_policies.vpc_groups.mode, local.defaults.apic.node_policies.vpc_groups.mode)
   groups = [for group in try(local.node_policies.vpc_groups.groups, []) : {
-    name     = try(group.name, replace("${group.id}:${group.switch_1}:${group.switch_2}", "/^(?P<id>.+):(?P<switch1_id>.+):(?P<switch2_id>.+)$/", replace(replace(replace(try(local.access_policies.vpc_group_name, local.defaults.apic.access_policies.vpc_group_name), "\\g<id>", "$id"), "\\g<switch1_id>", "$switch1_id"), "\\g<switch2_id>", "$switch2_id")))
+    name     = try(group.name, replace("${group.id}:${group.switch_1}:${group.switch_2}", "/^(?P<id>.+):(?P<switch1_id>.+):(?P<switch2_id>.+)$/", replace(replace(replace(try(local.access_policies.vpc_group_name, local.defaults.apic.access_policies.vpc_group_name), "\\g<id>", "$${id}"), "\\g<switch1_id>", "$${switch1_id}"), "\\g<switch2_id>", "$${switch2_id}")))
     id       = group.id
     policy   = try(group.policy, "")
     switch_1 = group.switch_1

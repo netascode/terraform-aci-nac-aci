@@ -278,9 +278,9 @@ module "aci_fabric_pod_profile_auto" {
   version = "0.2.1"
 
   for_each = { for pod in try(local.pod_policies.pods, []) : pod.id => pod if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_pod_profiles, local.defaults.apic.auto_generate_pod_profiles)) && local.modules.aci_fabric_pod_profile && var.manage_fabric_policies }
-  name     = replace(each.value.id, "/^(?P<id>.+)$/", replace(try(local.fabric_policies.pod_profile_name, local.defaults.apic.fabric_policies.pod_profile_name), "\\g<id>", "$id"))
+  name     = replace(each.value.id, "/^(?P<id>.+)$/", replace(try(local.fabric_policies.pod_profile_name, local.defaults.apic.fabric_policies.pod_profile_name), "\\g<id>", "$${id}"))
   selectors = [{
-    name         = replace(each.value.id, "/^(?P<id>.+)$/", replace(try(local.fabric_policies.pod_profile_pod_selector_name, local.defaults.apic.fabric_policies.pod_profile_pod_selector_name), "\\g<id>", "$id"))
+    name         = replace(each.value.id, "/^(?P<id>.+)$/", replace(try(local.fabric_policies.pod_profile_pod_selector_name, local.defaults.apic.fabric_policies.pod_profile_pod_selector_name), "\\g<id>", "$${id}"))
     policy_group = try("${each.value.policy}${local.defaults.apic.fabric_policies.pod_policy_groups.name_suffix}", null)
     pod_blocks = [{
       name = each.value.id
@@ -370,10 +370,10 @@ module "aci_fabric_leaf_switch_profile_auto" {
   version = "0.2.0"
 
   for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles)) && local.modules.aci_fabric_leaf_switch_profile && var.manage_fabric_policies }
-  name               = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_switch_profile_name, local.defaults.apic.fabric_policies.leaf_switch_profile_name), "\\g<id>", "$id"), "\\g<name>", "$name"))
-  interface_profiles = [replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_interface_profile_name, local.defaults.apic.fabric_policies.leaf_interface_profile_name), "\\g<id>", "$id"), "\\g<name>", "$name"))]
+  name               = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_switch_profile_name, local.defaults.apic.fabric_policies.leaf_switch_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
+  interface_profiles = [replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_interface_profile_name, local.defaults.apic.fabric_policies.leaf_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))]
   selectors = [{
-    name         = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_switch_selector_name, local.defaults.apic.fabric_policies.leaf_switch_selector_name), "\\g<id>", "$id"), "\\g<name>", "$name"))
+    name         = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_switch_selector_name, local.defaults.apic.fabric_policies.leaf_switch_selector_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
     policy_group = try("${each.value.fabric_policy_group}${local.defaults.apic.fabric_policies.leaf_switch_policy_groups.name_suffix}", null)
     node_blocks = [{
       name = each.value.id
@@ -418,10 +418,10 @@ module "aci_fabric_spine_switch_profile_auto" {
   version = "0.2.0"
 
   for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_spine_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_spine_switch_interface_profiles)) && local.modules.aci_fabric_spine_switch_profile && var.manage_fabric_policies }
-  name               = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.spine_switch_profile_name, local.defaults.apic.fabric_policies.spine_switch_profile_name), "\\g<id>", "$id"), "\\g<name>", "$name"))
-  interface_profiles = [replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.spine_interface_profile_name, local.defaults.apic.fabric_policies.spine_interface_profile_name), "\\g<id>", "$id"), "\\g<name>", "$name"))]
+  name               = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.spine_switch_profile_name, local.defaults.apic.fabric_policies.spine_switch_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
+  interface_profiles = [replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.spine_interface_profile_name, local.defaults.apic.fabric_policies.spine_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))]
   selectors = [{
-    name         = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.spine_switch_selector_name, local.defaults.apic.fabric_policies.spine_switch_selector_name), "\\g<id>", "$id"), "\\g<name>", "$name"))
+    name         = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.spine_switch_selector_name, local.defaults.apic.fabric_policies.spine_switch_selector_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
     policy_group = try("${each.value.fabric_policy_group}${local.defaults.apic.fabric_policies.spine_switch_policy_groups.name_suffix}", null)
     node_blocks = [{
       name = each.value.id
@@ -466,7 +466,7 @@ module "aci_fabric_leaf_interface_profile_auto" {
   version = "0.1.0"
 
   for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles)) && local.modules.aci_fabric_leaf_interface_profile && var.manage_fabric_policies }
-  name     = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_interface_profile_name, local.defaults.apic.fabric_policies.leaf_interface_profile_name), "\\g<id>", "$id"), "\\g<name>", "$name"))
+  name     = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_interface_profile_name, local.defaults.apic.fabric_policies.leaf_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
 }
 
 module "aci_fabric_leaf_interface_profile_manual" {
@@ -482,7 +482,7 @@ module "aci_fabric_spine_interface_profile_auto" {
   version = "0.1.0"
 
   for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_spine_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_spine_switch_interface_profiles)) && local.modules.aci_fabric_spine_interface_profile && var.manage_fabric_policies }
-  name     = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.spine_interface_profile_name, local.defaults.apic.fabric_policies.spine_interface_profile_name), "\\g<id>", "$id"), "\\g<name>", "$name"))
+  name     = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.spine_interface_profile_name, local.defaults.apic.fabric_policies.spine_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
 }
 
 module "aci_fabric_spine_interface_profile_manual" {

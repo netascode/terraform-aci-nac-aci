@@ -1,3 +1,7 @@
+## 0.7.1 (unreleased)
+
+- Fix replacement of placeholders in auto-generated objects
+
 ## 0.7.0
 
 - Initial release
