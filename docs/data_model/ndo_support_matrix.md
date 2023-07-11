@@ -12,7 +12,7 @@ This table provides an overview of which object is supported in combination with
 <span style="display: inline-block; width:250px">Description</span> | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
 [System Config](./ndo/ndo/system_config.md) | | :material-check: | :material-check: |
-[Remote Location](./ndo/ndo/remote_location.md) | | :material-check: | |
+[Remote Location](./ndo/ndo/remote_location.md) | | :material-check: | :material-check: |
 [Site](./ndo/ndo/site.md) | | :material-check: | :material-check: |
 [Site Fabric Connectivity](./ndo/ndo/fabric_connectivity.md) | | :material-check: | :material-check: |
 [Tenant](./ndo/ndo/tenant.md) | | :material-check: | :material-check: |
