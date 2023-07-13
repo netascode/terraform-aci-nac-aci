@@ -1065,7 +1065,7 @@ locals {
             mtu          = try(int.mtu, local.defaults.apic.tenants.l3outs.nodes.interfaces.mtu)
             node_id      = try(node.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == int.channel][0][0], null)
             node2_id     = try(int.node2_id, [for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == int.channel && pg.type == "vpc"][0], null)
-            pod_id       = try(int.pod_id, null)
+            pod_id       = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.nodes.interfaces.pod)
             module       = try(int.module, local.defaults.apic.tenants.l3outs.nodes.interfaces.module)
             port         = try(int.port, null)
             channel      = try("${int.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", null)
@@ -1146,7 +1146,7 @@ module "aci_l3out_interface_profile_auto" {
     mtu          = int.mtu
     node_id      = int.node_id
     node2_id     = int.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == int.channel][0][1] : int.node2_id
-    pod_id       = try(int.pod_id, [for node in local.node_policies.nodes : node.pod if node.id == int.node_id][0], local.defaults.apic.tenants.l3outs.nodes.interfaces.pod)
+    pod_id       = int.pod_id
     module       = int.module
     port         = int.port
     channel      = int.channel
