@@ -14,7 +14,7 @@ apic:
       policies:
         multicast_route_maps:
           - name: MRM1
-            multicast_route_map_entries:
+            entries:
               - order: 1
                 source_ip: 1.2.3.4/32
                 group_ip: 224.0.0.0/8
