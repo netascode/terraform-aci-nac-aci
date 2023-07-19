@@ -81,7 +81,7 @@ The *Nexus-as-Code* Terraform module is responsible for mapping the data to the 
 - `interface_policies`: Configurations applied at the interface level (e.g., assigning interface policy groups to physical ports)
 - `tenants`: Configurations applied at the tenant level (e.g., VRFs and Bridge Domains)
 
-Instead of hardcoding or spreading the definition of default values across different modules, a single file [defaults.yaml](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/data/defaults.yaml) is used to define all default values in a central location.
+Instead of hardcoding or spreading the definition of default values across different modules, a single file [defaults.yaml](https://wwwin-github.cisco.com/netascode/terraform-aac/blob/master/data/defaults.aac.yaml) is used to define all default values in a central location.
 
 This file is typically customized to reflect the specific customer requirements and reduces the overall size of input files as optional parameters with a default value can be ommited. As some customers prefer to append suffixes to object names, such suffixes can be defined once in `defaults.yaml` and then consistently appended to all objects of a specific type including its references.
 
