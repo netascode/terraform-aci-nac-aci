@@ -17,6 +17,10 @@ REPOS = [
                 "dst": "./roles/apic_validate/files/rules",
             },
             {
+                "src": "../validation/rules",
+                "dst": "./roles/ndo_validate/files/rules",
+            },
+            {
                 "src": "../templates/apic/deploy",
                 "dst": "./roles/apic_deploy/templates",
             },
@@ -108,6 +112,10 @@ REPOS = [
         "url": "https://wwwin-github.cisco.com/netascode/terraform-ndo-aac.git",
         "commit_message": "Aac updates",
         "directories": [
+            {
+                "src": "../validation/rules",
+                "dst": "./.rules",
+            },
             {
                 "src": "../templates/ndo/test",
                 "dst": "./tests/templates",
