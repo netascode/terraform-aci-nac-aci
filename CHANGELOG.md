@@ -1,6 +1,7 @@
 ## 0.7.1 (unreleased)
 
 - Fix replacement of placeholders in auto-generated objects
+- Fix error with sub-port static path bindings
 
 ## 0.7.0
 

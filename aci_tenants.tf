@@ -380,7 +380,7 @@ locals {
 
 module "aci_endpoint_group" {
   source  = "netascode/endpoint-group/aci"
-  version = "0.2.8"
+  version = "0.2.9"
 
   for_each                    = { for epg in local.endpoint_groups : epg.key => epg if local.modules.aci_endpoint_group && var.manage_tenants }
   tenant                      = each.value.tenant
