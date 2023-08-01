@@ -118,6 +118,7 @@ tenants:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
   sites: list(include('tenants_sites'), required=False) # @name(Tenant Sites)
   users: list(include('tenants_users'), required=False) # @name(Tenant Users)
+  orchestrator_only: bool(required=False)
 
 tenants_sites:
   name: str() # @ref_table(ndo.sites)
@@ -285,6 +286,8 @@ t_ap_epg_sites_selectors_expressions:
 
 t_vrfs:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  data_plane_learning: bool(required=False)
+  preferred_group: bool(required=False)
   l3_multicast: any(bool(), enum('enabled', 'disabled'), required=False)
   vzany: any(bool(), enum('enabled', 'disabled'), required=False)
   sites: list(include('t_vrf_sites'), required=False) # @name(VRF Sites) @ref_name(Site)
@@ -334,6 +337,10 @@ t_bridge_domains:
   unicast_routing: any(bool(), enum('enabled', 'disabled'), required=False)
   arp_flooding: any(bool(), enum('enabled', 'disabled'), required=False)
   l3_multicast: any(bool(), enum('enabled', 'disabled'), required=False)
+  virtual_mac: mac(required=False)
+  multi_destination_flooding: enum('bd-flood', 'encap-flood', 'drop', required=False)
+  unknown_ipv4_multicast: enum('flood', 'opt-flood', required=False)
+  unknown_ipv6_multicast: enum('flood', 'opt-flood', required=False)
   vrf: include('t_bd_vrf') # @flatten()
   subnets: list(include('t_bd_subnets'), required=False) # @name(Bridge Domain Subnets)
   sites: list(include('t_bd_sites'), required=False) # @name(Bridge Domain Sites) @ref_name(Site)

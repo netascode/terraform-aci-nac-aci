@@ -17,7 +17,13 @@ ndo:
         - name: TEMPLATE1
           vrfs:
             - name: VRF1
+              data_plane_learning: true
+              preferred_group: false
               l3_multicast: true
+              vzany: true
+              contracts:
+                consumers:
+                  - name: CONTRACT2
 ```
 
 Azure VRF:

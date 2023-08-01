@@ -61,6 +61,8 @@ defaults:
         options:
           name_suffix: ""
           id: 1
+    tenants:
+      orchestrator_only: true
     schemas:
       templates:
         application_profiles:
@@ -99,6 +101,8 @@ defaults:
                 primary: false
         vrfs:
           name_suffix: ""
+          data_plane_learning: true
+          preferred_group: false
           l3_multicast: false
           vzany: false
           sites:
@@ -114,6 +118,9 @@ defaults:
           arp_flooding: false
           l2_stretch: true
           l3_multicast: false
+          multi_destination_flooding: bd-flood
+          unknown_ipv4_multicast: flood
+          unknown_ipv6_multicast: flood
           subnets:
             scope: private
             shared: false

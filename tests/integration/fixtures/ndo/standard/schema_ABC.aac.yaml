@@ -107,6 +107,8 @@ ndo:
           vrfs:
             - name: VRF1
             - name: VRF2
+              data_plane_learning: true
+              preferred_group: false
               l3_multicast: true
               vzany: true
               contracts:
@@ -119,6 +121,10 @@ ndo:
               optimize_wan_bandwidth: false
               l2_stretch: true
               l3_multicast: false
+              virtual_mac: 00:22:BD:F8:19:AA
+              multi_destination_flooding: bd-flood
+              unknown_ipv4_multicast: flood
+              unknown_ipv6_multicast: flood
               # dhcp_relay_policy: ANS-REL1
               # dhcp_option_policy: ANS-OPT1
               vrf:

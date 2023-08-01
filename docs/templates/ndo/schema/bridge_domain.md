@@ -20,6 +20,10 @@ ndo:
               optimize_wan_bandwidth: false
               l2_stretch: true
               l3_multicast: false
+              virtual_mac: 00:22:BD:F8:19:AA
+              multi_destination_flooding: bd-flood
+              unknown_ipv4_multicast: flood
+              unknown_ipv6_multicast: flood
               dhcp_relay_policy: REL1
               dhcp_option_policy: OPT1
               vrf:

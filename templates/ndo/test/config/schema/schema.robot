@@ -73,6 +73,8 @@ Verify Schema {{ schema.name }} Template {{ template.name }} VRF {{ vrf_name }}
     ${vrf}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].vrfs[?(@.name=='{{ vrf_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${vrf}.name   {{ vrf_name }}
     Should Be Equal Value Json String   ${r.json()}   ${vrf}.displayName   {{ vrf_name }}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.ipDataPlaneLearning   {{ vrf.data_plane_learning | default(defaults.ndo.schemas.templates.vrfs.data_plane_learning) | cisco.aac.aac_bool("enabled") }}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.preferredGroup   {% if vrf.preferred_group | default(defaults.ndo.schemas.templates.vrfs.preferred_group) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
     Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.l3MCast   {% if vrf.l3_multicast | default(defaults.ndo.schemas.templates.vrfs.l3_multicast) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
     Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.vzAnyEnabled   {% if vrf.vzany | default(defaults.ndo.schemas.templates.vrfs.vzany) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %} 
 {% for contract in vrf.contracts.consumers | default([]) %}
@@ -104,6 +106,10 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
 {% endif %}
 
 {% if ndo.version | default(defaults.ndo.version) is version('3.1.1g', '>=') %}
+    Should Be Equal Value Json String   ${r.json()}   ${bd}.vmac   {{ bd.virtual_mac | default() }}
+    Should Be Equal Value Json String   ${r.json()}   ${bd}.multiDstPktAct   {{ bd.multi_destination_flooding | default(defaults.ndo.schemas.templates.bridge_domains.multi_destination_flooding) }}
+    Should Be Equal Value Json String   ${r.json()}   ${bd}.unkMcastAct   {{ bd.unknown_ipv4_multicast | default(defaults.ndo.schemas.templates.bridge_domains.unknown_ipv4_multicast) }}
+    Should Be Equal Value Json String   ${r.json()}   ${bd}.v6unkMcastAct   {{ bd.unknown_ipv6_multicast | default(defaults.ndo.schemas.templates.bridge_domains.unknown_ipv6_multicast) }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.arpFlood   {% if bd.arp_flooding | default(defaults.ndo.schemas.templates.bridge_domains.arp_flooding) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
 {% endif %}
 
