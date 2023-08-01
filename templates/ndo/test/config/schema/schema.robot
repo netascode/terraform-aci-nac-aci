@@ -106,7 +106,9 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
 {% endif %}
 
 {% if ndo.version | default(defaults.ndo.version) is version('3.1.1g', '>=') %}
-    Should Be Equal Value Json String   ${r.json()}   ${bd}.vmac   {{ bd.virtual_mac | default() }}
+{% if bd.virtual_mac is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${bd}.vmac   {{ bd.virtual_mac }}
+{% endif %}
     Should Be Equal Value Json String   ${r.json()}   ${bd}.multiDstPktAct   {{ bd.multi_destination_flooding | default(defaults.ndo.schemas.templates.bridge_domains.multi_destination_flooding) }}
     Should Be Equal Value Json String   ${r.json()}   ${bd}.unkMcastAct   {{ bd.unknown_ipv4_multicast | default(defaults.ndo.schemas.templates.bridge_domains.unknown_ipv4_multicast) }}
     Should Be Equal Value Json String   ${r.json()}   ${bd}.v6unkMcastAct   {{ bd.unknown_ipv6_multicast | default(defaults.ndo.schemas.templates.bridge_domains.unknown_ipv6_multicast) }}

@@ -151,7 +151,9 @@
                     {% endif %}
                     {% if ndo.version | default(defaults.ndo.version) is version('3.1.1g', '>=') %}
                     "arpFlood": {% if bd.arp_flooding | default(defaults.ndo.schemas.templates.bridge_domains.arp_flooding) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
-                    "vmac": "{{ bd.virtual_mac | default() }}",
+                    {%- if bd.virtual_mac is defined %}
+                    "vmac": "{{ bd.virtual_mac }}",
+                    {%- endif %}
                     "multiDstPktAct": "{{ bd.multi_destination_flooding | default(defaults.ndo.schemas.templates.bridge_domains.multi_destination_flooding) }}",
                     "unkMcastAct": "{{ bd.unknown_ipv4_multicast | default(defaults.ndo.schemas.templates.bridge_domains.unknown_ipv4_multicast) }}",
                     "v6unkMcastAct": "{{ bd.unknown_ipv6_multicast | default(defaults.ndo.schemas.templates.bridge_domains.unknown_ipv6_multicast) }}",
