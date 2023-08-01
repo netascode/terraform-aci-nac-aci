@@ -136,9 +136,9 @@ def ndo_render_run_tests(ndo_url, data_paths, output_path):
         (
             ["tests/integration/fixtures/ndo/standard/", "defaults/"],
             "https://10.50.202.13",
-            "ce2_defaultOneTime-2023-06-12T07-57-27.tar.gz",
+            "ce2_defaultOneTime-2023-08-01T07-21-01.tar.gz",
             "https://10.50.202.14",
-            "6486d1da16d47b35e12795ef",
+            "64c8b1bcd531074f897f1b11",
         )
     ],
 )
@@ -197,9 +197,9 @@ def test_ndo(data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, tmpdir
             ["tests/integration/fixtures/ndo/standard/"],
             "tests/integration/fixtures/ndo/terraform",
             "https://10.50.202.13",
-            "ce2_defaultOneTime-2023-06-12T07-57-27.tar.gz",
+            "ce2_defaultOneTime-2023-08-01T07-21-01.tar.gz",
             "https://10.50.202.14",
-            "6486d1da16d47b35e12795ef",
+            "64c8b1bcd531074f897f1b11",
         )
     ],
 )
