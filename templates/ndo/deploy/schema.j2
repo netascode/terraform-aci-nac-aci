@@ -485,10 +485,11 @@
                     "serviceNodes": [
                         {%- set comma3 = joiner(",") %}
                         {%- for node in sg.nodes | default([]) %}{{ comma3() }}
+                        {% set node_type = {"firewall": "0000ffff0000000000000051", "load-balancer": "0000ffff0000000000000052", "other": "0000ffff0000000000000053"}[node.type | default(defaults.ndo.schemas.templates.service_graphs.node_type)] %}
                         {
                             "name": "{{ node.name }}",
-                            "serviceNodeTypeId": "0000ffff0000000000000051",
-                            "index": 1
+                            "serviceNodeTypeId": "{{ node_type }}",
+                            "index": {{ node.index | default(1) }}
                         }
                         {%- endfor %}
 

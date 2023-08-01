@@ -159,3 +159,4 @@ defaults:
           device_name_suffix: ""
           logical_interface_name_suffix: ""
           redirect_policy_name_suffix: ""
+          node_type: "firewall"
