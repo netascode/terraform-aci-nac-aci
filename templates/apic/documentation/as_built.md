@@ -128,9 +128,9 @@ This section describes the system wide configuration.
 
 | Properties | Value |
 |---|---|
-| GUI Alias: | {{apic.fabric_policies.banner.apic_gui_alias | default(defaults.apic.fabric_policies.banner.apic_gui_alias)}} |
-| Controller CLI Banner: | {{apic.fabric_policies.banner.apic_cli_banner | default(defaults.apic.fabric_policies.banner.apic_cli_banner)}} |
-| Switch CLI Banner: | {{apic.fabric_policies.banner.switch_cli_banner | default(defaults.apic.fabric_policies.banner.switch_cli_banner)}} |
+| GUI Alias: | {{apic.fabric_policies.banners.apic_gui_alias | default(defaults.apic.fabric_policies.banners.apic_gui_alias) | replace("\n", "<br>")}} |
+| Controller CLI Banner: | {{apic.fabric_policies.banners.apic_cli_banner | default(defaults.apic.fabric_policies.banners.apic_cli_banner) | replace("\n", "<br>")}} |
+| Switch CLI Banner: | {{apic.fabric_policies.banners.switch_cli_banner | default(defaults.apic.fabric_policies.banners.switch_cli_banner) | replace("\n", "<br>")}} |
 | Application Banner: | |
 | Banner Severity: | |
 | Use Text Banner: | |
@@ -145,17 +145,17 @@ This section describes the Fabric configuration, including node registration and
 
 <caption name="Fabric Nodes">
 
-| Name | Node ID | Pod ID | Fabric ID | Serial Number | Role |
-|---|---|---|---|---|---|
+| Name | Node ID | Pod ID | Serial Number | Role |
+|---|---|---|---|---|
 {% for node in apic.node_policies.nodes %}
-| {{ node.name | default("") }} | {{ node.id }} | {{ node.pod | default(defaults.apic.node_policies.nodes.pod) }} | | {{node.serial_number}} | {{node.role}} |
+| {{ node.name | default("") }} | {{ node.id }} | {{ node.pod | default(defaults.apic.node_policies.nodes.pod) }} | {{node.serial_number}} | {{node.role}} |
 {% endfor %}
 </caption>
 
 ### Node Management OOB Addressing
 
 {% if apic.node_policies.nodes|length > 0 %}
-<caption name="Fabric Nodes">
+<caption name="Node Management OOB Addressing">
 
 | Name | Node ID | Pod ID | IPv4 Address | IPv4 Gateway | IPv6 Address | IPv6 Gateway |
 |---|---|---|---|---|---|---|
@@ -165,6 +165,21 @@ This section describes the Fabric configuration, including node registration and
 </caption>
 {% else %}
 No OOB Management addresses configured.
+{% endif %}
+
+### Node Management In-Band Addressing
+
+{% if apic.node_policies.nodes|length > 0 %}
+<caption name="Node Management In-Band Addressing">
+
+| Name | Node ID | Pod ID | IPv4 Address | IPv4 Gateway | IPv6 Address | IPv6 Gateway |
+|---|---|---|---|---|---|---|
+{% for node in apic.node_policies.nodes %}
+| {{ node.name | default("") }} | {{ node.id }} | {{ node.pod | default(defaults.apic.node_policies.nodes.pod) }} | {{node.inb_address | default("")}} | {{node.inb_gateway | default("")}} | {{node.inb_v6_address | default("")}} | {{node.inb_v6_gateway | default("")}} |
+{% endfor %}
+</caption>
+{% else %}
+No In-Band Management addresses configured.
 {% endif %}
 
 ## Fabric Policies
@@ -308,30 +323,68 @@ No SNMP policies configured.
 
 ### Pod Policy Group
 
-<caption name="Pod Policy Group">
+{% if apic.fabric_policies.pod_policy_groups|length > 0 %}
+{% for pg in apic.fabric_policies.pod_policy_groups | default([]) %}
+
+#### {{pg.name}}
+
+<caption name="Pod Policy Group: {{pg.name}}">
 
 | Properties | Value |
 |---|---|
-| Pod Policy Name | {{apic.fabric_policies.pod_policy_groups.name | default(defaults.apic.fabric_policies.pod_policy_groups.name)}} |
-| Date / Time Policy | {{ apic.fabric_policies.pod_policy_groups.date_time_policy | default("")}} |
+| Pod Policy Group Name | {{pg.name ~ defaults.apic.fabric_policies.pod_policy_groups.name_suffix}} |
+| Date / Time Policy | {{ pg.date_time_policy | default("")}} |
 | ISIS Policy | |
 | COOP Group Policy | |
 | BGP Route Reflector Policy | |
-| Mgmt Access Policy | {{ apic.fabric_policies.pod_policy_groups.management_access_policy | default("")}} |
-| SNMP Policy | {{ apic.fabric_policies.pod_policy_groups.snmp_policy | default("")}} |
+| Mgmt Access Policy | {{ pg.management_access_policy | default("")}} |
+| SNMP Policy | {{ pg.snmp_policy | default("")}} |
 | MACSec Policy | |
 </caption>
+{% endfor %}
+{% else %}
+No Pod Policy Groups configured.
+{% endif %}
 
 ### Pod Fabric Setup Policy
 
-<caption name="Pod Policy Group">
+<caption name="Pod Fabric Setup Policy">
 
-| Pod ID | Pod Type | TEP Pool |
-|---|---|---|
+| Pod ID | TEP Pool |
+|---|---|
 {% for pod in apic.pod_policies.pods | default([]) %}
-| {{pod.id}} | | {{pod.tep_pool}} |
+| {{pod.id}} | {{pod.tep_pool}} |
 {% endfor %}
 </caption>
+
+{% for pod in apic.pod_policies.pods | default([]) %}
+{% if pod.remote_pools|length>0 %}
+
+#### Pod {{pod.id}}: Remote Pools
+
+<caption name="Pod {{pod.id}}: Remote Pools">
+
+| Pod ID | Remote ID | Remote Pool |
+|---|---|---|
+{% for pool in pod.remote_pools | default([]) %}
+| {{pod.id}} | {{pool.id}} | {{pool.remote_pool}}
+{% endfor %}
+</caption>
+{% endif %}
+{% if pod.external_tep_pools|length>0 %}
+
+#### Pod {{pod.id}}: External TEP Pools
+
+<caption name="Pod {{pod.id}}: External TEP Pools">
+
+| Pod ID | IP | Reserved Address Count |
+|---|---|---|
+{% for pool in pod.external_tep_pools | default([]) %}
+| {{pod.id}} | {{pool.prefix}} | {{pool.reserved_address_count}}
+{% endfor %}
+</caption>
+{% endif %}
+{% endfor %}
 
 ### Fabric Leaf Switch Policy Groups
 
@@ -347,7 +400,7 @@ No SNMP policies configured.
 | TechSupport Export Policy: | |
 | Core Export Policy | |
 | Inventory Policy | |
-| Power Redundancy Policy {{ leaf_polgrp.psu_policy | default("")}} |
+| Power Redundancy Policy | {{ leaf_polgrp.psu_policy | default("")}} |
 | Analytics Policy | |
 | Node Control Policy | {{ leaf_polgrp.node_control_policy| default("")}} |
 | TWAMP Server Policy | |
@@ -361,11 +414,13 @@ No SNMP policies configured.
 
 | Name | Switch Association(s) | Block(s) | Policy Group |
 |---|---|---|---|
-{% if apic.fabric_policies.auto_generate_switch_pod_profiles | default(defaults.apic.fabric_policies.auto_generate_switch_pod_profiles) %}
+{% if apic.auto_generate_fabric_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles) or apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) %}
 {% for node in apic.node_policies.nodes | default([]) %}
+{% if node.role == "leaf" %}
 {% set leaf_switch_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.fabric_policies.leaf_switch_profile_name | default(defaults.apic.fabric_policies.leaf_switch_profile_name))) %}
 {% set leaf_switch_selector_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.fabric_policies.leaf_switch_selector_name | default(defaults.apic.fabric_policies.leaf_switch_selector_name))) %}
 | {{leaf_switch_profile_name}} | {{leaf_switch_selector_name}} | {{node.id}} | {{node.fabric_policy_group | default("")}} |
+{% endif %}
 {% endfor %}
 {% else %}
 {% for sw_prof in apic.fabric_policies.leaf_switch_profiles | default([])%}
@@ -384,110 +439,41 @@ No SNMP policies configured.
 {% endif %}
 </caption>
 
-## Access Policies
+### Fabric Spine Switch Policy Groups
 
-This section describes the Fabric Access Policies.
+{% for spine_polgrp in apic.fabric_policies.spine_switch_policy_groups | default([]) %}
 
-## Access Leaf Switch Profiles
-<caption name="Access Access Leaf Switch Profiles">
+### Policy: {{spine_polgrp.name ~ defaults.apic.fabric_policies.spine_switch_policy_groups.name_suffix}}
 
-| Name | Leaf Selector(s) | Block(s) | Policy Group | Interface Selector Profile(s) |
-|---|---|---|---|---|
-{% if apic.access_policies.auto_generate_switch_pod_profiles | default(defaults.apic.access_policies.auto_generate_switch_pod_profiles) %}
-{% for node in apic.node_policies.nodes | default([]) %}
-{% set leaf_switch_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_switch_profile_name | default(defaults.apic.access_policies.leaf_switch_profile_name))) %}
-{% set leaf_switch_selector_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_switch_selector_name | default(defaults.apic.access_policies.leaf_switch_selector_name))) %}
-{%- set leaf_interface_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_interface_profile_name | default(defaults.apic.access_policies.leaf_interface_profile_name))) %}
-| {{leaf_switch_profile_name}} | {{leaf_switch_selector_name}} | {{node.id}} | {{node.fabric_policy_group | default("")}} | {{leaf_switch_selector_name}} |
-{% endfor %}
-{% else %}
-{% for sw_prof in apic.access_policies.leaf_switch_profiles | default([])%}
-{% set ns = namespace(blocks = []) %}
-{% for sel in sw_prof.selectors | default([]) %}
-{% for block in sel.node_blocks | default([]) %}
-{% if block.to is not defined %}
-{% set _ = ns.blocks.append(block.from) %}
-{% else %}
-{% set _ = ns.blocks.append(block.from ~ "-" ~ block.to) %}
-{% endif %}
-{% endfor %}
-| {{ sw_prof.name ~ defaults.apic.access_policies.leaf_switch_profiles.name_suffix}} | {{sel.name ~ defaults.apic.access_policies.leaf_switch_profiles.selectors.name_suffix}} | {{ ns.blocks | join(", ")}} | {{ sel.policy | default("")}} | {{sw_prof.interface_profiles | default([]) | join(", ")}} |
-{% endfor %}
-{% endfor %}
-{% endif %}
+<caption name="Fabric Spine Switch Policy Groups: {{spine_polgrp.name ~ defaults.apic.fabric_policies.spine_switch_policy_groups.name_suffix}}">
+
+| Properties | Value |
+|---|---|
+| Monitoring Policy | |
+| TechSupport Export Policy: | |
+| Core Export Policy | |
+| Inventory Policy | |
+| Power Redundancy Policy | {{ spine_polgrp.psu_policy | default("")}} |
+| Analytics Policy | |
+| Node Control Policy | {{ spine_polgrp.node_control_policy| default("")}} |
+| TWAMP Server Policy | |
+| TWAMP Responder Policy | |
 </caption>
-
-### Leaf Access Interface Profiles
-
-<caption name="Leaf Access Interface Profiles">
-
-| Name | Block(s) | Description | Policy Group |
-|---|---|---|---|
-{% if apic.auto_generate_access_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_access_leaf_switch_interface_profiles) or apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) %}
-{% for node in apic.interface_policies.nodes | default([]) %}
-{% for port in node.interfaces | default([]) %}
-{% set leaf_switch_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_switch_profile_name | default(defaults.apic.access_policies.leaf_switch_profile_name))) %}
-{% set leaf_interface_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_interface_profile_name | default(defaults.apic.access_policies.leaf_interface_profile_name))) %}
-{% set leaf_switch_selector_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_switch_selector_name | default(defaults.apic.access_policies.leaf_switch_selector_name))) %}
-{% set leaf_interface_selector_name = (node.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) ~ ":" ~ int.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.leaf_interface_selector_name | default(defaults.apic.access_policies.leaf_interface_selector_name))) %}
-| {{leaf_switch_profile_name}} | {{leaf_interface_selector_name}} | {{port.description | default("")}} | {{port.policy_group | default("")}} |
 {% endfor %}
-{% endfor %}
-abc{% set leaf_interface_profile_name = (_node.id ~ ":" ~ _node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_interface_profile_name | default(defaults.apic.access_policies.leaf_interface_profile_name))) %}{{ comma1() }}
-{{ leaf_switch_profile_name }}
-{% else %}
-{% for node in apic.access_policies.leaf_interface_profiles | default([]) %}
-{% for selector in node.selectors | default([])%}
-{% for block in selector.port_blocks | default([])%}
-{% if block.to_port is defined %}
-| {{ node.name ~ apic.access_policies.leaf_interface_profiles.name_suffix }} | {{ block.from_module|default(defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module) ~"/"~block.from_port ~ "-" ~ block.from_module|default(defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)~"/"~block.to_port }} | {{block.description | default("")}} | {{selectors.policy_group | default("")}} |
-{% else %}
-| {{ node.name ~ apic.access_policies.leaf_interface_profiles.name_suffix  }} | {{ block.from_module|default(defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)~"/"~block.from_port }} | {{block.description | default("")}} | {{selectors.policy_group | default("")}} |
-{% endif %}
-{% endfor %}
-{% for block in selector.sub_port_blocks | default([])%}
-{% if block.to_port is defined %}
-| {{ node.name ~ apic.access_policies.leaf_interface_profiles.name_suffix }} | {{ block.from_module|default(defaults.apic.access_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module) ~"/"~block.from_port ~ "-" ~ block.from_module|default(defaults.apic.access_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module)~"/"~block.to_port }} | {{block.description | default("")}} | {{selectors.policy_group | default("")}} |
-{% else %}
-| {{ node.name ~ apic.access_policies.leaf_interface_profiles.name_suffix  }} | {{ block.from_module|default(defaults.apic.access_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module)~"/"~block.from_port }} | {{block.description | default("")}} | {{selectors.policy_group | default("")}} |
-{% endif %}
-{% endfor %}
-{% endfor %}
-{% endfor %}
-{% endif %}
-</caption>
 
-### Leaf Access Interface Policy Groups
+### Fabric Spine Switch Profiles
 
-<caption name="Leaf Access Interface Policy Groups">
-
-| Name | Link Level Policy | LACP Policy | CDP Policy | LLDP Policy | AAEP | Link Type |
-|---|---|---|---|---|---|---|
-{% for ipg in apic.access_policies.leaf_interface_policy_groups | default([]) %}
-{% set port_type = "" %}
-{% if ipg.type == "vpc"%}
-{% set port_type = "vPC"%}
-{% elif ipg.type == "pc" %}
-{% set port_type = "PC" %}
-{% elif port_type == "access"%}
-{% set port_type = "Access" %}
-{% else %}
-{% endif %}
-| {{ipg.name ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}} | {{ipg.link_level_policy | default("default")}} | {% if ipg.type == "access" %} {%else%}{{ipg.port_channel_policy | default("default")}}{%endif%} | {{ipg.cdp_policy | default("default")}} | {{ipg.lldp_policy | default("default")}} | {{ipg.aaep | default("default")}} | {{port_type}} |
-{% endfor %}
-</caption>
-
-### Spine Access Switch Profiles
-
-<caption name="Spine Access Switch Profiles">
+<caption name="Fabric Spine Switch Profiles">
 
 | Name | Switch Association(s) | Block(s) | Policy Group |
 |---|---|---|---|
-{% if apic.fabric_policies.auto_generate_switch_pod_profiles | default(defaults.apic.fabric_policies.auto_generate_switch_pod_profiles) %}
+{% if apic.auto_generate_fabric_spine_switch_interface_profiles | default(defaults.apic.auto_generate_fabric_spine_switch_interface_profiles) or apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) %}
 {% for node in apic.node_policies.nodes | default([]) %}
-{% set leaf_switch_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.fabric_policies.leaf_switch_profile_name | default(defaults.apic.fabric_policies.leaf_switch_profile_name))) %}
-{% set leaf_switch_selector_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.fabric_policies.leaf_switch_selector_name | default(defaults.apic.fabric_policies.leaf_switch_selector_name))) %}
-| {{leaf_switch_profile_name}} | {{leaf_switch_selector_name}} | {{node.id}} | {{node.fabric_policy_group | default("")}} |
+{% if node.role == "spine" %}
+{% set spine_switch_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.fabric_policies.spine_switch_profile_name | default(defaults.apic.fabric_policies.spine_switch_profile_name))) %}
+{% set spine_switch_selector_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.fabric_policies.spine_switch_selector_name | default(defaults.apic.fabric_policies.spine_switch_selector_name))) %}
+| {{spine_switch_profile_name}} | {{spine_switch_selector_name}} | {{node.id}} | {{node.fabric_policy_group | default("")}} |
+{% endif %}
 {% endfor %}
 {% else %}
 {% for sw_prof in apic.fabric_policies.spine_switch_profiles | default([])%}
@@ -506,34 +492,177 @@ abc{% set leaf_interface_profile_name = (_node.id ~ ":" ~ _node.name) | regex_re
 {% endif %}
 </caption>
 
-### Spine Access Interface Profiles
+## Access Policies
 
-<caption name="Spine Access Interface Profiles">
+This section describes the Fabric Access Policies.
+
+## Access Leaf Switch Profiles
+<caption name="Access Leaf Switch Profiles">
+
+| Name | Leaf Selector(s) | Block(s) | Policy Group | Interface Selector Profile(s) |
+|---|---|---|---|---|
+{% if apic.auto_generate_access_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_access_leaf_switch_interface_profiles) or apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) %}
+{% for node in apic.node_policies.nodes | default([]) %}
+{% if node.role == "leaf" %}
+{% set leaf_switch_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_switch_profile_name | default(defaults.apic.access_policies.leaf_switch_profile_name))) %}
+{% set leaf_switch_selector_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_switch_selector_name | default(defaults.apic.access_policies.leaf_switch_selector_name))) %}
+{%- set leaf_interface_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_interface_profile_name | default(defaults.apic.access_policies.leaf_interface_profile_name))) %}
+| {{leaf_switch_profile_name}} | {{leaf_switch_selector_name}} | {{node.id}} | {{node.access_policy_group | default("")}} | {{leaf_interface_profile_name}} |
+{% endif %}
+{% endfor %}
+{% else %}
+{% for sw_prof in apic.access_policies.leaf_switch_profiles | default([])%}
+{% set ns = namespace(blocks = []) %}
+{% for sel in sw_prof.selectors | default([]) %}
+{% for block in sel.node_blocks | default([]) %}
+{% if block.to is not defined %}
+{% set _ = ns.blocks.append(block.from) %}
+{% else %}
+{% set _ = ns.blocks.append(block.from ~ "-" ~ block.to) %}
+{% endif %}
+{% endfor %}
+| {{ sw_prof.name ~ defaults.apic.access_policies.leaf_switch_profiles.name_suffix}} | {{sel.name ~ defaults.apic.access_policies.leaf_switch_profiles.selectors.name_suffix}} | {{ ns.blocks | join(", ")}} | {{ sel.policy | default("")}} | {{sw_prof.interface_profiles | default([]) | join(", ")}} |
+{% endfor %}
+{% endfor %}
+{% endif %}
+</caption>
+
+### Access Leaf Interface Profiles
+
+<caption name="Access Leaf Interface Profiles">
 
 | Name | Block(s) | Description | Policy Group |
 |---|---|---|---|
 {% if apic.auto_generate_access_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_access_leaf_switch_interface_profiles) or apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) %}
 {% for node in apic.interface_policies.nodes | default([]) %}
+{% for node2 in apic.node_policies.nodes | default([]) %}
+{% if node2.id == node.id and node2.role == "leaf" %}
 {% for port in node.interfaces | default([]) %}
-{% set leaf_switch_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_switch_profile_name | default(defaults.apic.access_policies.leaf_switch_profile_name))) %}
-{% set leaf_interface_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_interface_profile_name | default(defaults.apic.access_policies.leaf_interface_profile_name))) %}
-{% set leaf_switch_selector_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_switch_selector_name | default(defaults.apic.access_policies.leaf_switch_selector_name))) %}
-{% set leaf_interface_selector_name = (node.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) ~ ":" ~ int.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.leaf_interface_selector_name | default(defaults.apic.access_policies.leaf_interface_selector_name))) %}
-| {{leaf_switch_profile_name}} | {{leaf_interface_selector_name}} | {{port.description | default("")}} | {{port.policy_group | default("")}} |
+{% set leaf_interface_profile_name = (node.id ~ ":" ~ node2.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_interface_profile_name | default(defaults.apic.access_policies.leaf_interface_profile_name))) %}
+{% set leaf_interface_selector_name = (node.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) ~ ":" ~ port.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.leaf_interface_selector_name | default(defaults.apic.access_policies.leaf_interface_selector_name))) %}
+| {{leaf_interface_profile_name}} | {{leaf_interface_selector_name}} | {{port.description | default("")}} | {{port.policy_group | default("")}} |
+{% endfor %}
+{% endif %}
 {% endfor %}
 {% endfor %}
-{%- set leaf_interface_profile_name = (_node.id ~ ":" ~ _node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_interface_profile_name | default(defaults.apic.access_policies.leaf_interface_profile_name))) %}{{ comma1() }}
-{{ leaf_switch_profile_name }}
 {% else %}
-{% for node in apic.access_policies.spine_interface_profiles | default([]) %}
-{% for selector in node.selectors | default([]) %}
-{% for block in selector.port_blocks | default([]) %}
-| {{node.name ~ defaults.apic.access_policies.spine_interface_profiles.name_suffix}} | {{block.from_module | default(defaults.apic.access_policies.spine_interface_profiles.selectors.port_blocks.from_module)}}/{{block.from_port}}{% if block.to_port is defined %}-{{block.to_port}}{%endif%} | {{selector.description | default("")}} | {{selector.policy_group | default("")}} |
+{% for node in apic.access_policies.leaf_interface_profiles | default([]) %}
+{% for selector in node.selectors | default([])%}
+{% for block in selector.port_blocks | default([])%}
+{% if block.to_port is defined %}
+| {{ node.name ~ apic.access_policies.leaf_interface_profiles.name_suffix }} | {{ block.from_module|default(defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module) ~"/"~block.from_port ~ "-" ~ block.from_module|default(defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)~"/"~block.to_port }} | {{block.description | default("")}} | {{selector.policy_group | default("")}} |
+{% else %}
+| {{ node.name ~ apic.access_policies.leaf_interface_profiles.name_suffix  }} | {{ block.from_module|default(defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)~"/"~block.from_port }} | {{block.description | default("")}} | {{selector.policy_group | default("")}} |
+{% endif %}
+{% endfor %}
+{% for block in selector.sub_port_blocks | default([])%}
+{% if block.to_port is defined %}
+| {{ node.name ~ apic.access_policies.leaf_interface_profiles.name_suffix }} | {{ block.from_module|default(defaults.apic.access_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module) ~"/"~block.from_port ~ "-" ~ block.from_module|default(defaults.apic.access_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module)~"/"~block.to_port }} | {{block.description | default("")}} | {{selector.policy_group | default("")}} |
+{% else %}
+| {{ node.name ~ apic.access_policies.leaf_interface_profiles.name_suffix  }} | {{ block.from_module|default(defaults.apic.access_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module)~"/"~block.from_port }} | {{block.description | default("")}} | {{selector.policy_group | default("")}} |
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% endfor %}
 {% endif %}
 </caption>
+
+### Access Leaf Interface Policy Groups
+
+<caption name="Access Leaf Interface Policy Groups">
+
+| Name | Link Level Policy | LACP Policy | CDP Policy | LLDP Policy | AAEP | Link Type |
+|---|---|---|---|---|---|---|
+{% for ipg in apic.access_policies.leaf_interface_policy_groups | default([]) %}
+{% set port_type = "" %}
+{% if ipg.type == "vpc"%}
+{% set port_type = "vPC"%}
+{% elif ipg.type == "pc" %}
+{% set port_type = "PC" %}
+{% elif ipg.type == "access"%}
+{% set port_type = "Access" %}
+{% else %}
+{% endif %}
+| {{ipg.name ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}} | {{ipg.link_level_policy | default("default")}} | {% if ipg.type == "access" %} {%else%}{{ipg.port_channel_policy | default("default")}}{%endif%} | {{ipg.cdp_policy | default("default")}} | {{ipg.lldp_policy | default("default")}} | {{ipg.aaep | default("default")}} | {{port_type}} |
+{% endfor %}
+</caption>
+
+### Access Spine Switch Profiles
+
+<caption name="Access Spine Switch Profiles">
+
+| Name | Spine Selector(s) | Block(s) | Policy Group | Interface Selector Profile(s) |
+|---|---|---|---|---|
+{% if apic.auto_generate_access_spine_switch_interface_profiles | default(defaults.apic.auto_generate_access_spine_switch_interface_profiles) or apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) %}
+{% for node in apic.node_policies.nodes | default([]) %}
+{% if node.role == "spine" %}
+{% set spine_switch_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.spine_switch_profile_name | default(defaults.apic.access_policies.spine_switch_profile_name))) %}
+{% set spine_switch_selector_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.spine_switch_selector_name | default(defaults.apic.access_policies.spine_switch_selector_name))) %}
+{%- set spine_interface_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.spine_interface_profile_name | default(defaults.apic.access_policies.spine_interface_profile_name))) %}
+| {{spine_switch_profile_name}} | {{spine_switch_selector_name}} | {{node.id}} | {{node.access_policy_group | default("")}} | {{spine_interface_profile_name}} |
+{% endif %}
+{% endfor %}
+{% else %}
+{% for sw_prof in apic.access_policies.spine_switch_profiles | default([])%}
+{% set ns = namespace(blocks = []) %}
+{% for sel in sw_prof.selectors | default([]) %}
+{% for block in sel.node_blocks | default([]) %}
+{% if block.to is not defined %}
+{% set _ = ns.blocks.append(block.from) %}
+{% else %}
+{% set _ = ns.blocks.append(block.from ~ "-" ~ block.to) %}
+{% endif %}
+{% endfor %}
+| {{ sw_prof.name ~ defaults.apic.access_policies.spine_switch_profiles.name_suffix}} | {{sel.name ~ defaults.apic.access_policies.spine_switch_profiles.selectors.name_suffix}} | {{ ns.blocks | join(", ")}} | {{ sel.policy | default("")}} | {{sw_prof.interface_profiles | default([]) | join(", ")}} |
+{% endfor %}
+{% endfor %}
+{% endif %}
+</caption>
+
+### Access Spine Interface Profiles
+
+<caption name="Access Spine Interface Profiles">
+
+| Name | Block(s) | Description | Policy Group |
+|---|---|---|---|
+{% if apic.auto_generate_access_spine_switch_interface_profiles | default(defaults.apic.auto_generate_access_spine_switch_interface_profiles) or apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) %}
+{% for node in apic.interface_policies.nodes | default([]) %}
+{% for node2 in apic.node_policies.nodes | default([]) %}
+{% if node2.id == node.id and node2.role == "spine" %}
+{% for port in node.interfaces | default([]) %}
+{% set spine_interface_profile_name = (node.id ~ ":" ~ node2.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.spine_interface_profile_name | default(defaults.apic.access_policies.spine_interface_profile_name))) %}
+{% set spine_interface_selector_name = (node.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) ~ ":" ~ port.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.spine_interface_selector_name | default(defaults.apic.access_policies.spine_interface_selector_name))) %}
+| {{spine_interface_profile_name}} | {{spine_interface_selector_name}} | {{port.description | default("")}} | {{port.policy_group | default("")}} |
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% else %}
+{% for node in apic.access_policies.spine_interface_profiles | default([]) %}
+{% for selector in node.selectors | default([]) %}
+{% for block in selector.port_blocks | default([]) %}
+{% if block.to_port is defined %}
+| {{ node.name ~ apic.access_policies.spine_interface_profiles.name_suffix }} | {{ block.from_module|default(defaults.apic.access_policies.spine_interface_profiles.selectors.port_blocks.from_module) ~"/"~block.from_port ~ "-" ~ block.from_module|default(defaults.apic.access_policies.spine_interface_profiles.selectors.port_blocks.from_module)~"/"~block.to_port }} | {{block.description | default("")}} | {{selector.policy_group | default("")}} |
+{% else %}
+| {{ node.name ~ apic.access_policies.spine_interface_profiles.name_suffix  }} | {{ block.from_module|default(defaults.apic.access_policies.spine_interface_profiles.selectors.port_blocks.from_module)~"/"~block.from_port }} | {{block.description | default("")}} | {{selector.policy_group | default("")}} |
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+</caption>
+
+### Access Spine Interface Policy Groups
+
+<caption name="Access Spine Interface Policy Groups">
+
+| Name | Link Level Policy | CDP Policy | AAEP |
+|---|---|---|---|
+{% for ipg in apic.access_policies.leaf_interface_policy_groups | default([]) %}
+| {{ipg.name ~ defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}} | {{ipg.link_level_policy | default("default")}} | {{ipg.cdp_policy | default("default")}} | {{ipg.aaep | default("default")}} |
+{% endfor %}
+</caption>
+
 
 ### Link Level Policies
 
@@ -709,11 +838,16 @@ No Virtual Port Channel Security Policy configured.
 
 <caption name="AAEP Associated Application EPGs">
 
-| AAEP | EPG | Encap | Mode | Trunk |
-|---|---|---|---|---|
+| AAEP | EPG | Encap | Primary Encap | Mode | Deployment Immediacy |
+|---|---|---|---|---|---|
 {% for aaep in apic.access_policies.aaeps | default([]) %}
 {% for epg in aaep.endpoint_groups | default([]) %}
-| {{aaep.name ~ defaults.apic.access_policies.aaeps.name_suffix}} | uni/tn-{{epg.tenan}}/ap-{{epg.application_profile}}/epg-{{epg.endpoint_group}} | vlan-{{epg.vlan}} | {{epg.mode | default(defaults.apic.access_policies.aaeps.endpoint_groups.mode)}} | {{epg.deployment_immediacy | default(defaults.apic.access_policies.aaeps.endpoint_groups.deployment_immediacy)}} |
+{% if epg.primary_vlan is defined %}
+{% set vlan = epg.secondary_vlan %}
+{% else %}
+{% set vlan = epg.vlan %}
+{% endif %}
+| {{aaep.name ~ defaults.apic.access_policies.aaeps.name_suffix}} | uni/tn-{{epg.tenant}}/ap-{{epg.application_profile ~ defaults.apic.tenants.application_profiles.name_suffix}}/epg-{{epg.endpoint_group ~ defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}} | vlan-{{vlan}} | {% if epg.primary_vlan is defined %}vlan-{{epg.primary_vlan}}{% endif %} | {{epg.mode | default(defaults.apic.access_policies.aaeps.endpoint_groups.mode)}} | {{epg.deployment_immediacy | default(defaults.apic.access_policies.aaeps.endpoint_groups.deployment_immediacy)}} |
 {% endfor %}
 {% endfor %}
 </caption>
@@ -743,7 +877,7 @@ No Virtual Port Channel Security Policy configured.
 |---|---|---|
 {% for pool in apic.access_policies.vlan_pools | default([]) %}
 {% for range in pool.ranges | default([]) %}
-| {{ pool.name ~ defaults.apic.access_policies.vlan_pools.name_suffix}} | {{pool.allocation | default(defaults.apic.access_policies.vlan_pools.allocation)}} | {{range.from}} |
+| {{ pool.name ~ defaults.apic.access_policies.vlan_pools.name_suffix}} | {{pool.allocation | default(defaults.apic.access_policies.vlan_pools.allocation)}} | {{range.from}}-{{range.to | default(range.from)}} ({{range.allocaton | default(defaults.apic.access_policies.vlan_pools.ranges.allocation)}}) |
 {% endfor %}
 {% endfor %}
 </caption>
