@@ -273,6 +273,10 @@ Additional example repositories:
 | <a name="module_aci_snmp_policy"></a> [aci\_snmp\_policy](#module\_aci\_snmp\_policy) | netascode/snmp-policy/aci | 0.2.2 |
 | <a name="module_aci_snmp_trap_policy"></a> [aci\_snmp\_trap\_policy](#module\_aci\_snmp\_trap\_policy) | netascode/snmp-trap-policy/aci | 0.2.1 |
 | <a name="module_aci_spanning_tree_policy"></a> [aci\_spanning\_tree\_policy](#module\_aci\_spanning\_tree\_policy) | netascode/spanning-tree-policy/aci | 0.1.0 |
+| <a name="module_aci_sr_mpls_external_endpoint_group"></a> [aci\_sr\_mpls\_external\_endpoint\_group](#module\_aci\_sr\_mpls\_external\_endpoint\_group) | netascode/external-endpoint-group/aci | 0.2.1 |
+| <a name="module_aci_sr_mpls_l3out"></a> [aci\_sr\_mpls\_l3out](#module\_aci\_sr\_mpls\_l3out) | netascode/l3out/aci | 0.2.2 |
+| <a name="module_aci_sr_mpls_l3out_interface_profile_manual"></a> [aci\_sr\_mpls\_l3out\_interface\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_interface\_profile\_manual) | netascode/l3out-interface-profile/aci | 0.2.9 |
+| <a name="module_aci_sr_mpls_l3out_node_profile_manual"></a> [aci\_sr\_mpls\_l3out\_node\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_node\_profile\_manual) | netascode/l3out-node-profile/aci | 0.2.6 |
 | <a name="module_aci_storm_control_policy"></a> [aci\_storm\_control\_policy](#module\_aci\_storm\_control\_policy) | netascode/storm-control-policy/aci | 0.1.0 |
 | <a name="module_aci_syslog_policy"></a> [aci\_syslog\_policy](#module\_aci\_syslog\_policy) | netascode/syslog-policy/aci | 0.2.1 |
 | <a name="module_aci_system_global_gipo"></a> [aci\_system\_global\_gipo](#module\_aci\_system\_global\_gipo) | netascode/system-global-gipo/aci | 0.1.0 |
