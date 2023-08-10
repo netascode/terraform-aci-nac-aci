@@ -1012,6 +1012,7 @@ objects:
       - apic.tenants.name
       - apic.tenants.alias
       - apic.tenants.description
+      - apic.tenants.managed
   - name: Smart Licensing
     template: smart_licensing
     folder: fabric_policies
@@ -1157,6 +1158,7 @@ tenant_objects:
       - apic.tenants.application_profiles.name
       - apic.tenants.application_profiles.alias
       - apic.tenants.application_profiles.description
+      - apic.tenants.application_profiles.managed
   - name: Endpoint Group
     template: endpoint_group
     folder: tenants
