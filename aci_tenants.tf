@@ -1014,7 +1014,7 @@ module "aci_l3out_interface_profile_manual" {
     mtu          = int.mtu
     node_id      = int.node_id
     node2_id     = int.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == int.channel][0][1] : int.node2_id
-    pod_id       = try(int.pod_id, [for node in local.node_policies.nodes : node.pod if node.id == int.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod)
+    pod_id       = int.pod_id == null ? try([for node in local.node_policies.nodes : node.pod if node.id == int.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) : int.pod_id
     module       = int.module
     port         = int.port
     channel      = int.channel
