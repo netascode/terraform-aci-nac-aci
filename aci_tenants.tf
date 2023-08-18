@@ -2190,7 +2190,7 @@ locals {
             node_id   = try(int.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == int.channel][0][0], null)
             # set node2_id to "vpc" if channel IPG is vPC, otherwise "null"
             node2_id = try(int.node2_id, [for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == int.channel && pg.type == "vpc"][0], null)
-            pod_id   = try(int.pod_id, [for node in local.node_policies.nodes : node.pod if node.id == int.node_id][0], local.defaults.apic.node_policies.nodes.pod)
+            pod_id   = try(int.pod_id, null)
             fex_id   = try(int.fex_id, null)
             module   = try(int.module, null)
             port     = try(int.port, null)
@@ -2242,7 +2242,7 @@ module "aci_l4l7_device" {
       vnic_name = int.vnic_name
       node_id   = int.node_id
       node2_id  = int.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == int.channel][0][1] : int.node2_id
-      pod_id    = int.pod_id
+      pod_id    = int.pod_id == null ? try([for node in local.node_policies.nodes : node.pod if node.id == int.node_id][0], local.defaults.apic.node_policies.nodes.pod) : int.pod_id
       fex_id    = int.fex_id
       module    = int.module
       port      = int.port
