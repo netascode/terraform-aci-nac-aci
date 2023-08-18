@@ -355,7 +355,7 @@ locals {
             node_id = try(se.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == se.channel][0][0], null)
             # set node2_id to "vpc" if channel IPG is vPC, otherwise "null"
             node2_id       = try(se.node2_id, [for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == se.channel && pg.type == "vpc"][0], null)
-            pod_id         = try(se.pod_id, 1)
+            pod_id         = try(se.pod_id, null)
             channel        = try("${se.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", null)
             port           = try(se.port, null)
             module         = try(se.module, 1)
@@ -409,7 +409,7 @@ module "aci_endpoint_group" {
     node2_id             = sp.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == sp.channel][0][1] : sp.node2_id
     fex_id               = sp.fex_id
     fex2_id              = sp.fex2_id
-    pod_id               = try(sp.pod_id, [for node in try(local.node_policies.nodes, []) : node.pod if node.id == sp.node_id][0], local.defaults.apic.node_policies.nodes.pod)
+    pod_id               = sp.pod_id == null ? try([for node in try(local.node_policies.nodes, []) : node.pod if node.id == sp.node_id][0], local.defaults.apic.node_policies.nodes.pod) : sp.pod_id
     channel              = sp.channel
     port                 = sp.port
     sub_port             = sp.sub_port
@@ -426,7 +426,7 @@ module "aci_endpoint_group" {
     type           = se.type
     node_id        = se.node_id
     node2_id       = se.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == se.channel][0][1] : se.node2_id
-    pod_id         = try(se.pod_id, [for node in try(local.node_policies.nodes, []) : node.pod if node.id == se.node_id][0], local.defaults.apic.node_policies.nodes.pod)
+    pod_id         = se.pod_id == null ? try([for node in try(local.node_policies.nodes, []) : node.pod if node.id == se.node_id][0], local.defaults.apic.node_policies.nodes.pod) : se.pod_id
     channel        = se.channel
     port           = se.port
     module         = se.module
