@@ -346,12 +346,12 @@ locals {
             deployment_immediacy = try(sp.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.deployment_immediacy)
             mode                 = try(sp.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.mode)
           }]
-          static_leafs = [for sp in try(epg.static_leafs, []) : {
-            pod_id               = try(sp.pod_id, null)
-            node_id              = try(sp.node_id, null)
-            vlan                 = try(sp.vlan, null)
-            mode                 = try(sp.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_leafs.mode)
-            deployment_immediacy = try(sp.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_leafs.deployment_immediacy)
+          static_leafs = [for sl in try(epg.static_leafs, []) : {
+            pod_id               = try(sl.pod_id, null)
+            node_id              = try(sl.node_id, null)
+            vlan                 = try(sl.vlan, null)
+            mode                 = try(sl.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_leafs.mode)
+            deployment_immediacy = try(sl.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_leafs.deployment_immediacy)
           }]
           static_endpoints = [for se in try(epg.static_endpoints, []) : {
             name    = "${se.name}${local.defaults.apic.tenants.application_profiles.endpoint_groups.static_endpoints.name_suffix}"
@@ -425,12 +425,12 @@ module "aci_endpoint_group" {
     deployment_immediacy = sp.deployment_immediacy
     mode                 = sp.mode
   }]
-  static_leafs = [for sp in try(each.value.static_leafs, []) : {
-    pod_id               = sp.pod_id
-    node_id              = sp.node_id
-    vlan                 = sp.vlan
-    mode                 = sp.mode
-    deployment_immediacy = sp.deployment_immediacy
+  static_leafs = [for sl in try(each.value.static_leafs, []) : {
+    pod_id               = sl.pod_id == null ? try([for node in try(local.node_policies.nodes, []) : node.pod if node.id == sl.node_id][0], local.defaults.apic.node_policies.nodes.pod) : sl.pod_id
+    node_id              = sl.node_id
+    vlan                 = sl.vlan
+    mode                 = sl.mode
+    deployment_immediacy = sl.deployment_immediacy
   }]
   static_endpoints = [for se in try(each.value.static_endpoints, []) : {
     name           = se.name
