@@ -71,6 +71,12 @@ apic:
                   vlan: 135
                   mode: regular
                   deployment_immediacy: lazy
+              static_leafs:
+                - pod_id: 1
+                  node_id: 101
+                  vlan: 135
+                  mode: regular
+                  deployment_immediacy: lazy
               static_endpoints:
                 - name: ST_EP1
                   mac: 00:00:00:00:00:01

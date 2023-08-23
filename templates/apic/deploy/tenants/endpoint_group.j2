@@ -202,6 +202,19 @@
                                         }
                                     }
                                     {%- endfor %}
+                                    {%- for sl in epg.static_leafs | default([]) %}{{ comma3() }}
+                                    {
+                                        "fvRsNodeAtt": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "encap": "vlan-{{ sl.vlan }}",
+                                                "instrImedcy": "{{ sl.deployment_immediacy | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_leafs.deployment_immediacy)  }}",
+                                                "mode": "{{ sl.mode | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_leafs.mode) }}",
+                                                "tDn": "topology/pod-{{ sl.pod_id }}/node-{{ sl.node_id }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
                                     {%- for st_ep in epg.static_endpoints | default([]) %}{{ comma3() }}
                                     {% set static_endpoint_name = st_ep.name ~ defaults.apic.tenants.application_profiles.endpoint_groups.static_endpoints.name_suffix %}
                                     {

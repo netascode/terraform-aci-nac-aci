@@ -1382,6 +1382,7 @@ ten_ap_endpoint_groups:
   physical_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Physical Domains) @ref_name(Physical Domain)
   vmware_vmm_domains: list(include('ten_ap_endpoint_groups_vmware_vmm_domains'), required=False) # @name(EPG VMware VMM Domains)
   static_ports: list(include('ten_ap_endpoint_groups_static_ports'), required=False) # @name(EPG Static Ports)
+  static_leafs: list(include('ten_ap_endpoint_groups_static_leafs'), required=False) # @name(EPG Static Leafs)
   static_endpoints: list(include('ten_ap_endpoint_groups_static_endpoints'), required=False)
   subnets: list(include('ten_ap_endpoint_groups_subnets'), required=False) # @name(EPG Subnets) @name(Subnet)
   contracts: include('ten_ap_endpoint_groups_contracts', required=False) # @flatten()
@@ -1401,6 +1402,13 @@ ten_ap_endpoint_groups_static_ports:
   port: int(min=1, max=127, required=False)
   sub_port: int(min=1, max=16, required=False)
   channel: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  vlan: int(min=1, max=4096)
+  deployment_immediacy: enum('immediate', 'lazy', required=False)
+  mode: enum('regular', 'native', 'untagged', required=False)
+
+ten_ap_endpoint_groups_static_leafs:
+  node_id: int(min=1, max=4000)
+  pod_id: int(min=1, max=255)
   vlan: int(min=1, max=4096)
   deployment_immediacy: enum('immediate', 'lazy', required=False)
   mode: enum('regular', 'native', 'untagged', required=False)
