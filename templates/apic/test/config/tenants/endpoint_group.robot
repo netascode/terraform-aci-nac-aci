@@ -69,6 +69,17 @@ Verify Endpoint Group {{ epg_name }} VMM Domain {{ vmm_name }}
 {% endif %}
 {% endfor %}
 
+{% for sl in epg.static_leafs | default([]) %}
+
+Verify Endpoint Group {{ epg_name }} Static Leaf {{ sl.node_id }}
+    ${sl}=   Set Variable   $..fvAEPg.children[?(@.fvRsNodeAtt.attributes.tDn=='topology/pod-{{ sl.pod_id }}/node-{{ sl.node_id }}')].fvRsNodeAtt
+    Should Be Equal Value Json String   ${r.json()}   ${sl}.attributes.encap   vlan-{{ sl.vlan }}
+    Should Be Equal Value Json String   ${r.json()}   ${sl}.attributes.instrImedcy   {{ sl.deployment_immediacy | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_leafs.deployment_immediacy) }}
+    Should Be Equal Value Json String   ${r.json()}   ${sl}.attributes.mode   {{ sl.mode | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_leafs.mode) }}
+    Should Be Equal Value Json String   ${r.json()}   ${sl}.attributes.tDn   topology/pod-{{ sl.pod_id }}/node-{{ sl.node_id }}
+
+{% endfor %}
+
 {% for st_ep in epg.static_endpoints | default([]) %}
 {% set static_endpoint_name = st_ep.name ~ defaults.apic.tenants.application_profiles.endpoint_groups.static_endpoints.name_suffix %}
 

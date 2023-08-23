@@ -400,8 +400,8 @@ apic:
                   vlan: 135
               static_leafs:
                 - pod_id: 1
-                  node_id: 101
-                  vlan: 135
+                  node_id: 102
+                  vlan: 136
                   mode: regular
                   deployment_immediacy: lazy
               static_endpoints:
