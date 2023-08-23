@@ -1408,7 +1408,7 @@ ten_ap_endpoint_groups_static_ports:
 
 ten_ap_endpoint_groups_static_leafs:
   node_id: int(min=1, max=4000)
-  pod_id: int(min=1, max=255)
+  pod_id: int(min=1, max=255, required=False)
   vlan: int(min=1, max=4096)
   deployment_immediacy: enum('immediate', 'lazy', required=False)
   mode: enum('regular', 'native', 'untagged', required=False)
