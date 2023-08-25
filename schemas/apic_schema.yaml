@@ -1249,10 +1249,14 @@ ten_vrf:
   enforcement_direction: enum('ingress', 'egress', required=False)
   enforcement_preference: enum('enforced', 'unenforced', required=False)
   preferred_group: any(bool(), enum('enabled', 'disabled'), required=False)
+  endpoint_retention_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  monitoring_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  transit_route_tag_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
   leaked_internal_prefixes: list(include('ten_vrf_leaked_internal_prefixes'), required=False) # @name(VRF Leaked Internal Prefixes) @ref_name(Leaked Internal Prefix)
   leaked_external_prefixes: list(include('ten_vrf_leaked_external_prefixes'), required=False) # @name(VRF Leaked External Prefixes) @ref_name(Leaked External Prefix)
   contracts: include('ten_vrf_contracts', required=False) # @flatten()
   bgp: include('ten_vrf_bgp', required=False)
+  ospf: include('ten_vrf_ospf', required=False) # @no_doc()
   dns_labels: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF DNS Labels) @ref_name(DNS Label)
   pim: include('ten_vrf_pim', required=False) # @name(VRF PIM)
 
@@ -1286,6 +1290,9 @@ ten_vrf_bgp:
   ipv4_export_route_target: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   ipv6_import_route_target: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   ipv6_export_route_target: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+ten_vrf_ospf:
+  timer_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
 
 ten_vrf_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF Consumers) @ref_name(Contract)
