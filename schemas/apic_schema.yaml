@@ -1149,6 +1149,7 @@ node_policies:
   update_groups: list(include('np_update_group'), required=False)
   vpc_groups: include('np_vpc_group', required=False) # @name(vPC)
   nodes: list(include('np_node'), required=False)
+  expected_state: map(required=False) # @no_external_doc()
 
 np_update_group:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
