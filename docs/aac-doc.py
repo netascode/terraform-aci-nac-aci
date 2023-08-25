@@ -22,6 +22,8 @@ ANNOTATIONS = [
     "key",
     "ref_table",
     "description",
+    "no_doc",
+    "no_external_doc",
 ]
 
 APIC_SCHEMA_PATH = "./schemas/apic_schema.yaml"
@@ -32,6 +34,8 @@ NDO_SCHEMA_PATH = "./schemas/ndo_schema.yaml"
 NDO_OBJECTS_PATH = "./objects/ndo_objects.yaml"
 NDO_SCHEMA_OBJECTS_PATH = "./objects/ndo_schema_objects.yaml"
 NDO_DEFAULTS_PATH = "./defaults/ndo_defaults.yaml"
+
+PUBHUB = False
 
 
 def load_yaml_file(path):
@@ -105,12 +109,16 @@ def expand_paths(schema, paths):
     for path in paths:
         element, _ = read_schema_path(schema, path)
         if element.tag == "include":
-            for item in schema.includes[element.include_name].dict:
-                new_paths.append(path + "." + item)
+            for key, value in schema.includes[element.include_name].dict.items():
+                if hasattr(value, "no_doc") or (hasattr(value, "no_external_doc") and PUBHUB):
+                    continue
+                new_paths.append(path + "." + key)
         if element.tag == "list":
             if element.validators[0].tag == "include":
-                for item in schema.includes[element.validators[0].include_name].dict:
-                    new_paths.append(path + "." + item)
+                for key, value in schema.includes[element.validators[0].include_name].dict.items():
+                    if hasattr(value, "no_doc") or (hasattr(value, "no_external_doc") and PUBHUB):
+                        continue
+                    new_paths.append(path + "." + key)
 
     if len(new_paths) > 0:
         new_paths = expand_paths(schema, new_paths)
@@ -302,7 +310,7 @@ def render_diagram_path(element, path, mappings={}):
         result = "{0} <-- {1}\n".format(parent, name)
         result += "{0} : {1}{2} (List)\n".format(parent, mandatory, name)
     elif element.tag == "map":
-        pass
+        result = "{0} : {1}{2} [Map]\n".format(parent, mandatory, name)
     elif element.tag == "ip":
         result = "{0} : {1}{2} [IP]\n".format(parent, mandatory, name)
     elif element.tag == "mac":
@@ -424,7 +432,7 @@ def extract_class_paths(schema, paths):
     return class_paths
 
 
-def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
+def render_doc(system, schema_path, objects_path, defaults_path):
     schema = load_schema(schema_path)
     objects = load_yaml_file(objects_path)[0]
     defaults = load_yaml_file(defaults_path)[0]
@@ -438,7 +446,7 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
         + objects.get("tenant_objects", [])
         + objects.get("schema_objects", [])
     ):
-        if pubhub:
+        if PUBHUB:
             if item["name"] == "Bootstrap":
                 continue
             i = {
@@ -487,7 +495,7 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
             paths = expand_paths(schema, paths)
             class_paths = extract_class_paths(schema, paths)
             output = ""
-            if pubhub:
+            if PUBHUB:
                 output += render_diagram_image(
                     schema,
                     defaults,
@@ -505,7 +513,7 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
 
             filedata = filedata.replace("{{ aac_doc }}", output)
 
-            if pubhub:
+            if PUBHUB:
                 cleaned_data = ""
                 for line in iter(filedata.splitlines(keepends=True)):
                     if line.startswith("### ") and not line.startswith("### Terraform"):
@@ -518,7 +526,7 @@ def render_doc(system, schema_path, objects_path, defaults_path, pubhub=False):
 
             with open(rendered_path, "w") as file:
                 file.write(cleaned_data)
-    if pubhub:
+    if PUBHUB:
         for file in pubhub_items:
             path = os.path.join(".", "pubhub", system, file + "-config.json")
             with open(path, "w") as f:
@@ -532,24 +540,12 @@ def main():
     )
     args = parser.parse_args()
     if args.pubhub:
+        global PUBHUB
+        PUBHUB = True
         shutil.rmtree(os.path.join(".", "pubhub"), ignore_errors=True)
-        render_doc(
-            "apic", APIC_SCHEMA_PATH, APIC_OBJECTS_PATH, APIC_DEFAULTS_PATH, pubhub=True
-        )
-        render_doc(
-            "ndo", NDO_SCHEMA_PATH, NDO_OBJECTS_PATH, NDO_DEFAULTS_PATH, pubhub=True
-        )
-        render_doc(
-            "ndo",
-            NDO_SCHEMA_PATH,
-            NDO_SCHEMA_OBJECTS_PATH,
-            NDO_DEFAULTS_PATH,
-            pubhub=True,
-        )
-    else:
-        render_doc("apic", APIC_SCHEMA_PATH, APIC_OBJECTS_PATH, APIC_DEFAULTS_PATH)
-        render_doc("ndo", NDO_SCHEMA_PATH, NDO_OBJECTS_PATH, NDO_DEFAULTS_PATH)
-        render_doc("ndo", NDO_SCHEMA_PATH, NDO_SCHEMA_OBJECTS_PATH, NDO_DEFAULTS_PATH)
+    render_doc("apic", APIC_SCHEMA_PATH, APIC_OBJECTS_PATH, APIC_DEFAULTS_PATH)
+    render_doc("ndo", NDO_SCHEMA_PATH, NDO_OBJECTS_PATH, NDO_DEFAULTS_PATH)
+    render_doc("ndo", NDO_SCHEMA_PATH, NDO_SCHEMA_OBJECTS_PATH, NDO_DEFAULTS_PATH)
 
 
 if __name__ == "__main__":

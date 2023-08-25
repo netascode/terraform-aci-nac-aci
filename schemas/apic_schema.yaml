@@ -1202,6 +1202,7 @@ ip_fex_interface:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   module: int(min=1, max=9, required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  expected_state: map(required=False) # @no_external_doc()
 
 ip_interface:
   port: int(min=1, max=127)
@@ -1211,6 +1212,7 @@ ip_interface:
   fex_id: int(min=101, max=199, required=False)
   type: enum('uplink', 'downlink', required=False)
   sub_ports: list(include('ip_interface_sub_ports'), required=False)
+  expected_state: map(required=False) # @no_external_doc()
 
 ip_interface_sub_ports:
   port: int(min=1, max=127)
@@ -1218,6 +1220,7 @@ ip_interface_sub_ports:
   module: int(min=1, max=9, required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   fex_id: int(min=101, max=199, required=False)
+  expected_state: map(required=False) # @no_external_doc()
 
 tenant:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
