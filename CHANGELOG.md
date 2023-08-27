@@ -2,6 +2,7 @@
 
 - Fix replacement of placeholders in auto-generated objects
 - Fix error with sub-port static path bindings
+- Add support for static leafs under an EPG
 
 ## 0.7.0
 
