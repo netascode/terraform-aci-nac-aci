@@ -862,7 +862,7 @@ defaults:
             deployment_immediacy: lazy
           static_leafs:
             mode: regular
-            deployment_immediacy: immediate
+            deployment_immediacy: lazy
           static_endpoints:
             name_suffix: ""
             ip: "0.0.0.0"
