@@ -121,8 +121,10 @@ def full_apic_terraform_test(
         tf.setup(cleanup_on_exit=False, upgrade="upgrade")
         try:
             tf.apply()
-        except:
-            tf.apply()
+        except Exception:
+            pass
+        # second apply to work around APIC API quirks
+        tf.apply()
 
         # check idempotency
         output = tf.apply()
