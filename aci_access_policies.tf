@@ -238,7 +238,7 @@ module "aci_lldp_policy" {
 
 module "aci_link_level_policy" {
   source  = "netascode/link-level-policy/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
   for_each = { for llp in try(local.access_policies.interface_policies.link_level_policies, []) : llp.name => llp if local.modules.aci_link_level_policy && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}"
