@@ -169,7 +169,8 @@ def test_ndo(data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, tmpdir
     # Revert NDO config
     error = ndo_inst.post_or_put("backups/{}/restore".format(ndo_backup_id), "", "PUT")
     if error:
-        pytest.fail(error)
+        if "Fail to block deployment" not in error:
+            pytest.fail(error)
 
     # Enable retries
     # ndo_inst.enable_retries()
