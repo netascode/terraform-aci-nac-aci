@@ -3,6 +3,7 @@
 import os
 import re
 import json
+import sys
 
 import ruamel.yaml
 import yamale
@@ -17,6 +18,8 @@ ANNOTATIONS = [
     "key",
     "ref_table",
     "description",
+    "no_doc",
+    "no_external_doc",
 ]
 
 WORD_MAPPINGS = {
@@ -320,6 +323,12 @@ def translate_schema_element(yamale_schema, path=[]):
             json_element = {"type": "string"}
             json_elements[name] = json_element
             description_helper += "\n- Timestamp"
+        elif element.tag == "map":
+            json_element = {"type": "object"}
+            json_elements[name] = json_element
+            description_helper += "\n- Map (key-value pairs)"
+        else:
+            sys.exit("Unknown tag: {}".format(element.tag))
 
         if name not in ["items", "anyOf"]:
             default_value = get_default_value(element_path)
