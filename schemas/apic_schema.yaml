@@ -981,7 +981,7 @@ ap_lldp_policy:
 
 ap_link_level_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  speed: enum('100M', '1G', '10G', '25G', '40G', '100G', '400G', 'inherit', required=False)
+  speed: enum('auto', '100M', '1G', '10G', '25G', '40G', '100G', '400G', 'inherit', required=False)
   auto: any(bool(), enum('on', 'off'), required=False)
   fec_mode: enum('inherit', 'cl91-rs-fec', 'cl74-fc-fec', 'ieee-rs-fec', 'cons16-rs-fec', 'disable-fec', required=False)
 
