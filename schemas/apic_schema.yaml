@@ -1167,6 +1167,7 @@ pp_pod:
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   external_tep_pools: list(include('pp_pod_external_tep_pools'), required=False)
   remote_pools: list(include('pp_pod_remote_pools'), required=False)
+  expected_state: map(required=False) # @no_external_doc()
 
 pp_pod_external_tep_pools:
   prefix: ip()
