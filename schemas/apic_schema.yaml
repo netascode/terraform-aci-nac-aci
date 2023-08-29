@@ -252,6 +252,10 @@ fp_pod_policy_groups:
   snmp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   date_time_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   management_access_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  isis_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  coop_group_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  bgp_route_reflector_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  macsec_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
 
 fp_pod_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
