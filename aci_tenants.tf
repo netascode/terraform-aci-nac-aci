@@ -2,10 +2,11 @@ module "aci_tenant" {
   source  = "netascode/tenant/aci"
   version = "0.1.0"
 
-  for_each    = { for tenant in local.tenants : tenant.name => tenant if try(tenant.managed, local.defaults.apic.tenants.managed, true) && local.modules.aci_tenant && var.manage_tenants }
-  name        = each.value.name
-  alias       = try(each.value.alias, "")
-  description = try(each.value.description, "")
+  for_each         = { for tenant in local.tenants : tenant.name => tenant if try(tenant.managed, local.defaults.apic.tenants.managed, true) && local.modules.aci_tenant && var.manage_tenants }
+  name             = each.value.name
+  alias            = try(each.value.alias, "")
+  description      = try(each.value.description, "")
+  security_domains = try(each.value.security_domains, [])
 }
 
 locals {
