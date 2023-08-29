@@ -181,6 +181,8 @@ def translate_schema_element(yamale_schema, path=[]):
     required_elements = []
     json_elements = {}
     for name, element in yamale_schema.dict.items():
+        if hasattr(element, "no_doc"):
+            continue
         element_path = path + [name]
         description_helper = ""
         description_type = ""

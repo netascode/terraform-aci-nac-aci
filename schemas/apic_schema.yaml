@@ -303,6 +303,12 @@ fp_leaf_switch_policy_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   psu_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   node_control_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  monitoring_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  tech_support_export_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  core_export_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  inventory_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  twamp_server_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  twamp_receiver_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
 
 fp_leaf_switch_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -323,6 +329,12 @@ fp_spine_switch_policy_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   psu_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   node_control_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  monitoring_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  tech_support_export_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  core_export_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  inventory_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  twamp_server_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  twamp_receiver_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
 
 fp_spine_switch_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
