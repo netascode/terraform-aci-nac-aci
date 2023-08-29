@@ -1185,6 +1185,7 @@ np_node:
   fabric_policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   access_policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   remote_pool_id: int(min=1, max=255, required=False)
+  expected_state: map(required=False) # @no_external_doc()
 
 interface_policies:
   nodes: list(include('ip_node'), required=False) # @name(Interface Policy Nodes) @ref_name(Node ID) @key(id)
