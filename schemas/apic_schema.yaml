@@ -570,6 +570,7 @@ fp_config_exports:
 fp_monitoring:
   snmp_traps: list(include('fp_monitoring_snmp_traps'), required=False) # @ref_name(SNMP Trap)
   syslogs: list(include('fp_monitoring_syslogs'), required=False) # @ref_name(Syslog)
+  policies: list(include('fp_monitoring_policies'), required=False) # @no_doc()
 
 fp_monitoring_snmp_traps:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -610,6 +611,9 @@ fp_monitoring_syslogs_destinations:
   facility: enum('local0', 'local1' ,'local2' ,'local3' ,'local4' ,'local5', 'local6', 'local7', required=False)
   severity: enum('emergencies', 'alerts', 'critical', 'errors', 'warnings', 'notifications', 'information', 'debugging', required=False)
   mgmt_epg: enum('inb', 'oob', required=False)
+
+fp_monitoring_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
 
 fp_span:
   source_groups: list(include('fp_span_source_groups'), required=False) # @name(Fabric SPAN Source Groups) @ref_name(Fabric SPAN Source Group)
