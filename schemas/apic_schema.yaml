@@ -1130,10 +1130,27 @@ ap_spine_switch_profiles_selectors_node_blocks:
 ap_spine_switch_policy_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   lldp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  coop_spine_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  bfd_ipv4_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  bfd_ipv6_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  cdp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
 
 ap_leaf_switch_policy_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   forwarding_scale_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  bfd_ipv4_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  bfd_ipv6_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  equipment_flash_config_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  fibre_channel_node_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  fibre_channel_san_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  8021x_node_authentication_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  coop_leaf_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  cdp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  lldp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  monitoring_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  netflow_node_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  poe_node_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  fast_link_failover_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
 
 pod_policies:
   pods: list(include('pp_pod'), required=False)
