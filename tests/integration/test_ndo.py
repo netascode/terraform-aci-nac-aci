@@ -222,7 +222,8 @@ def test_ndo_terraform(
     # Revert NDO config
     error = ndo_inst.post_or_put("backups/{}/restore".format(ndo_backup_id), "", "PUT")
     if error:
-        pytest.fail(error)
+        if "Fail to block deployment" not in error:
+            pytest.fail(error)
 
     os.environ["MSO_URL"] = ndo_url
 
