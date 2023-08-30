@@ -19,6 +19,7 @@ apic:
   auto_generate_access_leaf_switch_interface_profiles: any(bool(), enum('enabled', 'disabled'), required=False)
   auto_generate_access_spine_switch_interface_profiles: any(bool(), enum('enabled', 'disabled'), required=False)
   nae_assurance_group: str(required=False)
+  expected_state: include('expected_state', required=False) # @no_external_doc()
 
 bootstrap:
   admin_username: str(required=False)
@@ -164,6 +165,7 @@ fp_date_time_policy:
   apic_ntp_server_master_stratum: int(min=1, max=14, required=False)
   ntp_servers: list(include('fp_ntp_servers'), required=False)
   ntp_keys: list(include('fp_ntp_keys'), required=False)
+  expected_state: include('fp_date_time_policy_expected_state', required=False) # @no_external_doc()
 
 fp_ntp_servers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
@@ -176,6 +178,12 @@ fp_ntp_keys:
   key: str(min=0, max=40)
   auth_type: enum('md5', 'sha1')
   trusted: any(bool(), enum('yes', 'no'))
+
+fp_date_time_policy_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 fp_snmp_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -260,6 +268,7 @@ fp_pod_policy_groups:
 fp_pod_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   selectors: list(include('fp_pod_profiles_selectors'), required=False) # @name(Fabric Pod Profile Selectors) @ref_name(Selector)
+  expected_state: include('fp_pod_profiles_expected_state', required=False) # @no_external_doc()
 
 fp_pod_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -271,6 +280,12 @@ fp_pod_profiles_selectors_pod_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   from: int(min=1, max=255)
   to: int(min=1, max=255, required=False)
+
+fp_pod_profiles_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 fp_switch_policies:
   psu_policies: list(include('fp_switch_policies_psu_policies'), required=False)
@@ -287,10 +302,18 @@ fp_switch_policies_node_control_policies:
 
 fp_leaf_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  expected_state: include('fp_leaf_interface_profiles_expected_state', required=False) # @no_external_doc()
+
+fp_leaf_interface_profiles_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 fp_spine_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   selectors: list(include('fp_spine_interface_profiles_selectors'), required=False) # @name(Fabric Spine Int Prof Selectors) @ref_name(Selector)
+  expected_state: include('fp_spine_interface_profiles_expected_state', required=False) # @no_external_doc()
 
 fp_spine_interface_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -302,6 +325,12 @@ fp_spine_interface_profiles_selectors_port_blocks:
   from_port: int(min=1, max=127)
   to_module: int(min=1, max=9, required=False)
   to_port: int(min=1, max=127, required=False)
+
+fp_spine_interface_profiles_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 fp_leaf_switch_policy_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -318,6 +347,7 @@ fp_leaf_switch_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   selectors: list(include('fp_leaf_switch_profiles_selectors'), required=False) # @name(Fabric Leaf SW Prof Selectors) @ref_name(Selector)
   interface_profiles: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Fabric Leaf SW Prof Int Profs) @ref_name(Interface Profile)
+  expected_state: include('fp_leaf_switch_profiles_expected_state', required=False) # @no_external_doc()
 
 fp_leaf_switch_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -328,6 +358,12 @@ fp_leaf_switch_profiles_selectors_node_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   from: int(min=1, max=4000)
   to: int(min=1, max=4000, required=False)
+
+fp_leaf_switch_profiles_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 fp_spine_switch_policy_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -344,6 +380,7 @@ fp_spine_switch_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   selectors: list(include('fp_spine_switch_profiles_selectors'), required=False) # @name(Fabric Spine SW Pro Selectors) @ref_name(Selector)
   interface_profiles: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Fabric Spine SW Prof Int Profs) @ref_name(Interface Profile)
+  expected_state: include('fp_spine_switch_profiles_expected_state', required=False) # @no_external_doc()
 
 fp_spine_switch_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -355,6 +392,12 @@ fp_spine_switch_profiles_selectors_node_blocks:
   from: int(min=1, max=4000)
   to: int(min=1, max=4000, required=False)
 
+fp_spine_switch_profiles_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 fp_external_connectivity_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   fabric_id: int(min=0, max=1000, required=False)
@@ -362,11 +405,18 @@ fp_external_connectivity_policy:
   bgp_password: str(required=False)
   route_target: str(required=False)
   routing_profiles: list(include('fp_external_connectivity_policy_routing_profiles'), required=False) # @name(External Conn Policy Subnets)
+  expected_state: include('fp_external_connectivity_policy_expected_state', required=False) # @no_external_doc()
 
 fp_external_connectivity_policy_routing_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   subnets: list (ip(), required=False)
+
+fp_external_connectivity_policy_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 fp_infra_dscp_translation_policy:
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -391,6 +441,7 @@ fp_vmware_vmm_domains:
   credential_policies: list(include('fp_vmware_vmm_domains_credential_policies'), required=False) # @name(VMware VMM Dom Cred Policies)
   vcenters: list(include('fp_vmware_vmm_domains_vcenters'), required=False) # @name(VMware VMM vCenters)
   uplinks: list(include('fp_vmware_vmm_domains_uplinks'), required=False) # @name(VMware VMM Uplinks)
+  expected_state: include('fp_vmware_vmm_domains_expected_state', required=False) # @no_external_doc()
 
 fp_vmware_vmm_domains_vswitch:
   cdp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(vSwitch CDP Policy)
@@ -423,6 +474,12 @@ fp_vmware_vmm_domains_uplinks:
   id: int(min=1, max=32)
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
 
+fp_vmware_vmm_domains_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 fp_aaa:
   remote_user_login_policy: enum('assign-default-role', 'no-login', required=False)
   default_fallback_check: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -448,6 +505,13 @@ fp_aaa_tacacs_providers:
   monitoring: any(bool(), enum('enabled', 'disabled'), required=False)
   monitoring_username: regex('^[a-zA-Z0-9][a-zA-Z0-9_.@-]{0,31}$', required=False)
   monitoring_password: str(required=False)
+  expected_state: include('fp_aaa_tacacs_providers_expected_state', required=False) # @no_external_doc()
+
+fp_aaa_tacacs_providers_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 fp_aaa_users:
   username: regex('^[a-zA-Z0-9_.-]{1,31}$')
@@ -551,6 +615,13 @@ fp_remote_locations:
   ssh_private_key: str(required=False)
   ssh_passphrase: str(min=1, max=512, required=False)
   mgmt_epg: enum('inb', 'oob', required=False)
+  expected_state: include('fp_remote_locations_expected_state', required=False) # @no_external_doc()
+
+fp_remote_locations_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 fp_schedulers:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -570,6 +641,13 @@ fp_config_exports:
   remote_location: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   scheduler: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   snapshot: any(bool(), enum('yes', 'no'), required=False)
+  expected_state: include('fp_config_exports_expected_state', required=False) # @no_external_doc()
+
+fp_config_exports_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 fp_monitoring:
   snmp_traps: list(include('fp_monitoring_snmp_traps'), required=False) # @ref_name(SNMP Trap)
@@ -629,6 +707,7 @@ fp_span_source_groups:
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
   sources: list(include('fp_span_source_groups_sources'), required=False) # @name(Fabric SPAN SG Sources) @ref_name(Fabric SPAN Source Group Source)
   destination: include('fp_span_source_groups_destination') # @name(Fabric SPAN SG Destinations)
+  expected_state: include('fp_span_source_groups_expected_state', required=False) # @no_external_doc()
 
 fp_span_source_groups_destination:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -650,6 +729,12 @@ fp_span_source_groups_sources_access_paths:
   module: int(min=1, max=9, required=False)
   port: int(min=1, max=127)
 
+fp_span_source_groups_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 fp_span_destination_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -664,6 +749,13 @@ fp_span_destination_groups:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  expected_state: include('fp_span_destination_groups_expected_state', required=False) # @no_external_doc()
+
+fp_span_destination_groups_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 fp_smart_licensing:
   mode: enum('cslu', 'smart-licensing', 'offline', 'plr', 'proxy', 'satellite', 'transport-gateway', required=False)
@@ -728,10 +820,24 @@ ap_vlan_pool_range:
 ap_physical_domain:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   vlan_pool: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  expected_state: include(ap_physical_domain_expected_state', required=False) # @no_external_doc()
+
+ap_physical_domain_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ap_routed_domain:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   vlan_pool: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  expected_state: include('ap_routed_domain_expected_state', required=False) # @no_external_doc()
+
+ap_routed_domain_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ap_aaep:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -740,6 +846,7 @@ ap_aaep:
   routed_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(AAEP Routed Domains) @ref_name(Routed Domain)
   vmware_vmm_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(AAEP VMware VMM Domains) @ref_name(VMware VMM Domain)
   endpoint_groups: list(include('ap_aaep_endpoint_groups'), required=False) # @name(AAEP Endpoint Groups)
+  expected_state: include('ap_aaep_expected_state', required=False) # @no_external_doc()
 
 ap_aaep_endpoint_groups:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -750,6 +857,12 @@ ap_aaep_endpoint_groups:
   secondary_vlan: int(min=1, max=4096, required=False)
   mode: enum('regular', 'native', 'untagged', required=False)
   deployment_immediacy: enum('immediate', 'lazy', required=False)
+
+ap_aaep_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ap_mcp:
   action: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -808,6 +921,13 @@ ap_span_destination_groups:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  expected_state: include('ap_span_destination_groups_expected_state', required=False) # @no_external_doc()
+
+ap_span_destination_groups_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ap_span_source_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -816,6 +936,7 @@ ap_span_source_groups:
   sources: list(include('ap_span_source_groups_sources'), required=False) # @name(Access SPAN SG Sources) @ref_name(Source Group Source)
   destination: include('ap_span_source_groups_destination') # @flatten()
   filter_group: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  expected_state: include('ap_span_source_groups_expected_state', required=False) # @no_external_doc()
 
 ap_span_source_groups_destination:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(Destination Name)
@@ -844,6 +965,12 @@ ap_span_source_groups_sources_access_paths:
   channel: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   type: enum('access', 'vpc', 'pc', required=False)
 
+ap_span_source_groups_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ap_span_filter_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -869,6 +996,7 @@ ap_vspan_sessions:
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
   sources: list(include('ap_vspan_sessions_sources'), required=False)
   destination: include('ap_vspan_sessions_destination')
+  expected_state: include('ap_vspan_sessions_expected_state', required=False) # @no_external_doc()
 
 ap_vspan_sessions_sources:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -893,10 +1021,17 @@ ap_vspan_sessions_destination:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
+ap_vspan_sessions_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ap_vspan_destination_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   destinations: list(include('ap_vspan_destination_groups_destinations'), required=False)
+  expected_state: include('ap_vspan_destination_groups_expected_state', required=False) # @no_external_doc()
 
 ap_vspan_destination_groups_destinations:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -911,9 +1046,16 @@ ap_vspan_destination_groups_destinations:
   mtu: int(min=64, max=9216, required=False)
   ttl: int(min=1, max=255, required=False)
 
+ap_vspan_destination_groups_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ap_leaf_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   selectors: list(include('ap_leaf_interface_profiles_selectors'), required=False) # @name(Access Leaf Int Prof Selectors) @ref_name(Selector)
+  expected_state: include('ap_leaf_interface_profiles_expected_state', required=False) # @no_external_doc()
 
 ap_leaf_interface_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -941,9 +1083,16 @@ ap_leaf_interface_profiles_selectors_sub_port_blocks:
   from_sub_port: int(min=1, max=16)
   to_sub_port: int(min=1, max=16, required=False)
 
+ap_leaf_interface_profiles_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ap_fex_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   selectors: list(include('ap_fex_interface_profiles_selectors'), required=False) # @name(Access FEX Int Prof Selectors) @ref_name(Selector)
+  expected_state: include('ap_fex_interface_profiles_expected_state', required=False) # @no_external_doc()
 
 ap_fex_interface_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -960,9 +1109,16 @@ ap_fex_interface_profiles_selectors_port_blocks:
   to_module: int(min=1, max=9, required=False)
   to_port: int(min=1, max=127, required=False)
 
+ap_fex_interface_profiles_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ap_spine_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   selectors: list(include('ap_spine_interface_profiles_selectors'), required=False) # @name(Access Spine Int Prof Selectors) @ref_name(Selector)
+  expected_state: include('ap_spine_interface_profiles_expected_state', required=False) # @no_external_doc()
 
 ap_spine_interface_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -978,6 +1134,12 @@ ap_spine_interface_profiles_selectors_port_blocks:
   from_port: int(min=1, max=127)
   to_module: int(min=1, max=9, required=False)
   to_port: int(min=1, max=127, required=False)
+
+ap_spine_interface_profiles_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ap_interface_policies:
   cdp_policies: list(include('ap_cdp_policy'), required=False)
@@ -1109,6 +1271,7 @@ ap_leaf_switch_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   selectors: list(include('ap_leaf_switch_profiles_selectors'), required=False) # @name(Access Leaf SW Prof Selectors) @ref_name(Selector)
   interface_profiles: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Access Leaf SW Prof Int Prof) @ref_name(Interface Profile)
+  expected_state: include('ap_leaf_switch_profiles_expected_state', required=False) # @no_external_doc()
 
 ap_leaf_switch_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1120,10 +1283,17 @@ ap_leaf_switch_profiles_selectors_node_blocks:
   from: int(min=1, max=4000)
   to: int(min=1, max=4000, required=False)
 
+ap_leaf_switch_profiles_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ap_spine_switch_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   selectors: list(include('ap_spine_switch_profiles_selectors'), required=False) # @name(Access Spine SW Prof Selectors) @ref_name(Selector)
   interface_profiles: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Access Spine SW Prof Int Prof) @ref_name(Interface Profile)
+  expected_state: include('ap_spine_switch_profiles_expected_state', required=False) # @no_external_doc()
 
 ap_spine_switch_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1134,6 +1304,12 @@ ap_spine_switch_profiles_selectors_node_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   from: int(min=1, max=4000)
   to: int(min=1, max=4000, required=False)
+
+ap_spine_switch_profiles_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ap_spine_switch_policy_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1183,6 +1359,9 @@ pp_pod_remote_pools:
 
 pp_pod_expected_state:
   minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 node_policies:
   inb_endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1298,6 +1477,7 @@ tenant:
   imported_contracts: list(include('ten_imported_contracts'), required=False) # @ref_name(Imported Contract)
   policies: include('ten_policies', required=False) # @flatten()
   services: include('ten_services', required=False) # @flatten()
+  expected_state: include('ten_expected_state', required=False) # @no_external_doc()
 
 ten_vrf:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1317,6 +1497,7 @@ ten_vrf:
   ospf: include('ten_vrf_ospf', required=False) # @no_doc()
   dns_labels: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF DNS Labels) @ref_name(DNS Label)
   pim: include('ten_vrf_pim', required=False) # @name(VRF PIM)
+  expected_state: include('ten_vrf_expected_state', required=False) # @no_external_doc()
 
 ten_vrf_leaked_internal_prefixes:
   prefix: ip()
@@ -1394,6 +1575,12 @@ ten_vrf_inter_vrf_policies:
   vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
+ten_vrf_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ten_bridge_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1417,6 +1604,7 @@ ten_bridge_domains:
   dhcp_labels: list(include('ten_dhcp_labels'), required=False) # @name(Bridge Domain DHCP Labels)
   igmp_interface_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   igmp_snooping_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  expected_state: include('ten_bridge_domain_expected_state', required=False) # @no_external_doc()
 
 ten_bridge_domain_subnets:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -1430,6 +1618,12 @@ ten_bridge_domain_subnets:
   nd_ra_prefix: any(bool(), enum('yes', 'no'), required=False)
   no_default_gateway: any(bool(), enum('yes', 'no'), required=False)
 
+ten_bridge_domain_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ten_application_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   managed: bool(required=False)
@@ -1437,6 +1631,7 @@ ten_application_profiles:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   endpoint_groups: list(include('ten_ap_endpoint_groups'), required=False) # @ref_name(Endpoint Group)
   endpoint_security_groups: list(include('ten_ap_endpoint_security_groups'), required=False) # @ref_name(Endpoint Security Group)
+  expected_state: include('ten_ap_expected_state', required=False) # @no_external_doc()
 
 ten_ap_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1460,6 +1655,7 @@ ten_ap_endpoint_groups:
   trust_control_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   l4l7_virtual_ips: list(include('ten_ap_endpoint_groups_l4l7_virtual_ips'), required=False) # @name(EPG L4L7 VIPs)
   l4l7_address_pools: list(include('ten_ap_endpoint_groups_l4l7_address_pools'), required=False) # @name(EPG L4L7 Address Pools)
+  expected_state: include('ten_ap_endpoint_groups_expected_state', required=False) # @no_external_doc()
 
 ten_ap_endpoint_groups_static_ports:
   node_id: int(min=1, max=4000, required=False)
@@ -1545,6 +1741,12 @@ ten_ap_endpoint_groups_contracts:
   imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Imported Consumers) @ref_name(Contract)
   intra_epgs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Intra-EPG) @ref_name(Contract)
 
+ten_ap_endpoint_groups_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ten_ap_endpoint_security_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -1556,6 +1758,7 @@ ten_ap_endpoint_security_groups:
   tag_selectors: list(include('ten_ap_endpoint_security_groups_tag_selectors'), required=False) # @name(ESG Tag Selectors)
   epg_selectors: list(include('ten_ap_endpoint_security_groups_epg_selectors'), required=False) # @name(ESG EPG Selectors)
   ip_subnet_selectors: list(include('ten_ap_endpoint_security_groups_ip_subnet_selectors'), required=False) # @name(ESG IP Subnet Selectors)
+  expected_state: include('ten_ap_endpoint_security_groups_expected_state', required=False) # @no_external_doc()
 
 ten_ap_endpoint_security_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Consumers) @ref_name(Contract)
@@ -1583,6 +1786,18 @@ ten_ap_endpoint_security_groups_ip_subnet_selectors:
   value: ip()
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
+ten_ap_endpoint_security_groups_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
+ten_ap_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ten_contracts:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1591,6 +1806,7 @@ ten_contracts:
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
   target_dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7', 'unspecified'), int(min=0, max=63), required=False)
   subjects: list(include('ten_contracts_subjects'), required=False) # @name(Contract Subjects) @ref_name(Subject)
+  expected_state: include('ten_contracts_expected_state', required=False) # @no_external_doc()
 
 ten_contracts_subjects:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1608,12 +1824,19 @@ ten_contracts_subjects_filters:
   log: any(bool(), enum('yes', 'no'), required=False)
   no_stats: any(bool(), enum('yes', 'no'), required=False)
 
+ten_contracts_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ten_oob_contracts:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   scope: enum('application-profile', 'tenant', 'context', 'global', required=False)
   subjects: list(include('ten_oob_contracts_subjects'), required=False) # @name(OOB Contract Subjects) @ref_name(Subject)
+  expected_state: include('ten_oob_contracts_expected_state', required=False) # @no_external_doc()
 
 ten_oob_contracts_subjects:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1624,6 +1847,12 @@ ten_oob_contracts_subjects:
 
 ten_oob_contracts_subjects_filters:
   filter: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+
+ten_oob_contracts_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ten_filters:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1669,6 +1898,7 @@ ten_l3outs:
   custom_qos_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   multipod: bool(required=False)
   remote_leaf: bool(required=False)
+  expected_state: include('ten_l3outs_expected_state', required=False) # @no_external_doc()
 
 ten_l3outs_ospf:
   ospf_interface_profile_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1918,6 +2148,7 @@ ten_l3outs_external_endpoint_groups:
   target_dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7', 'unspecified'), int(min=0, max=63), required=False)
   subnets: list(include('ten_l3outs_external_endpoint_groups_subnets'), required=False) # @name(L3out External EPG Subnets)
   contracts: include('ten_l3outs_external_endpoint_groups_contracts', required=False) # @flatten()
+  expected_state: include('ten_l3outs_external_endpoint_groups_expected_state', required=False) # @no_external_doc()
 
 ten_l3outs_external_endpoint_groups_subnets:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1936,6 +2167,12 @@ ten_l3outs_external_endpoint_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out ExtEPG Consumers) @ref_name(Contract)
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out ExtEPG Providers) @ref_name(Contract)
   imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out ExtEPG Imported Consumers) @ref_name(Contract)
+
+ten_l3outs_external_endpoint_groups_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ten_l3outs_import_route_map:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Import Route Map Description)
@@ -1965,6 +2202,12 @@ ten_l3outs_route_map_context:
   match_rule: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   set_rule: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
+ten_l3outs_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ten_dhcp_labels:
   dhcp_relay_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   dhcp_option_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1975,27 +2218,48 @@ ten_inb_endpoint_groups:
   bridge_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   contracts: include('ten_inb_endpoint_groups_contracts', required=False) # @flatten()
   static_routes: list(ip(), required=False) # @name(INB EPG Static Routes)
+  expected_state: include('ten_inb_endpoint_groups_expected_state', required=False) # @no_external_doc()
 
 ten_inb_endpoint_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(INB EPG Consumers) @ref_name(Contract)
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(INB EPG Providers) @ref_name(Contract)
   imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(INB EPG Imported Consumers) @ref_name(Contract)
 
+ten_inb_endpoint_groups_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ten_oob_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   oob_contracts: include('ten_oob_endpoint_groups_oob_contracts', required=False) # @flatten()
   static_routes: list(ip(), required=False) # @name(OOB EPG Static Routes)
+  expected_state: include('ten_oob_endpoint_groups_expected_state', required=False) # @no_external_doc()
 
 ten_oob_endpoint_groups_oob_contracts:
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(OOB EPG Providers) @ref_name(Contract)
+
+ten_oob_endpoint_groups_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ten_ext_mgmt_instances:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   subnets: list(ip(), required=False) # @name(EXT MGMT Instance Subnets) @ref_name(Subnet)
   oob_contracts: include('ten_ext_mgmt_instances_oob_contracts', required=False) # @flatten()
+  expected_state: include('ten_ext_mgmt_instances_expected_state', required=False) # @no_external_doc()
 
 ten_ext_mgmt_instances_oob_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EXT MGMT Instance Providers) @ref_name(Contract)
+
+ten_ext_mgmt_instances_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ten_imported_contracts:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2195,6 +2459,7 @@ ten_multicast_route_maps:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   entries: list(include('ten_multicast_route_map_entries'), required=False) # @name(Multicast Route Map Entries)
+  expected_state: include('ten_multicast_route_maps_expected_state', required=False) # @no_external_doc()
 
 ten_multicast_route_map_entries:
   order: int(min=0, max=9999)
@@ -2202,6 +2467,12 @@ ten_multicast_route_map_entries:
   group_ip: ip(required=False)
   rp_ip: ip(required=False)
   action: enum('permit', 'deny', required=False)
+
+ten_multicast_route_maps_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ten_pim_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2229,6 +2500,13 @@ ten_igmp_snooping_policies:
   start_query_interval: int(min=1, max=18000, required=False)
   fast_leave: any(bool(), enum('yes', 'no'), required=False)
   querier: any(bool(), enum('yes', 'no'), required=False)
+  expected_state: include('ten_igmp_snooping_policies_expected_state', required=False) # @no_external_doc()
+
+ten_igmp_snooping_policies_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ten_igmp_interface_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2251,6 +2529,13 @@ ten_igmp_interface_policies:
   state_limit_multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   report_policy_multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   static_report_multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  expected_state: include('ten_igmp_interface_policies_expected_state', required=False) # @no_external_doc()
+
+ten_igmp_interface_policies_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ten_ip_sla_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2259,6 +2544,13 @@ ten_ip_sla_policies:
   multiplier: int(min=1, max=100, required=False)
   sla_type: enum('icmp', 'tcp', 'l2ping', required=False)
   port: int(min=1, max=65535, required=False)
+  expected_state: include('ten_ip_sla_policies_expected_state', required=False) # @no_external_doc()
+
+ten_ip_sla_policies_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ten_qos:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2309,6 +2601,13 @@ ten_span_destination_groups:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  expected_state: include('ten_span_destination_groups_expected_state', required=False) # @no_external_doc()
+
+ten_span_destination_groups_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ten_span_source_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2316,6 +2615,7 @@ ten_span_source_groups:
   admin_state: enum('enabled', 'disabled', 'l2ping', required=False)
   destination: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   sources: list(include('ten_span_source_groups_sources'), required=False) # @name(Tenant SPAN Src Group Sources)
+  expected_state: include('ten_span_source_groups_expected_state', required=False) # @no_external_doc()
 
 ten_span_source_groups_sources:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2323,6 +2623,12 @@ ten_span_source_groups_sources:
   direction: enum('in', 'both', 'out', required=False)
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+ten_span_source_groups_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ten_services:
   l4l7_devices: list(include('ten_ser_l4l7_devices'), required=False) # @ref_name(L4L7 Device)
@@ -2348,6 +2654,7 @@ ten_ser_l4l7_devices:
   vmware_vmm_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   concrete_devices: list(include('ten_ser_l4l7_devices_concrete_devices'), required=False) # @name(L4L7 Device Concrete Device) @ref_name(Concrete Device)
   logical_interfaces: list(include('ten_ser_l4l7_devices_logical_interfaces'), required=False) # @name(L4L7 Device Logical Interfaces) @ref_name(Logical Interface)
+  expected_state: include('ten_ser_l4l7_devices_expected_state', required=False) # @no_external_doc()
 
 ten_ser_l4l7_devices_concrete_devices:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2378,6 +2685,12 @@ ten_ser_l4l7_devices_logical_interfaces_concrete_interfaces:
   device: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   interface_name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
 
+ten_ser_l4l7_devices_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ten_ser_redirect_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -2394,19 +2707,7 @@ ten_ser_redirect_policies:
   threshold_down_action: enum('permit', 'deny', 'bypass', required=False)
   l3_destinations: list(include('ten_ser_redirect_policies_l3_destinations'), required=False) # @name(Redirect Policy Destinations)
   ip_sla_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-
-ten_ser_redirect_backup_policies:
-  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  l3_destinations: list(include('ten_ser_redirect_backup_policies_l3_destinations'), required=False) # @name(Redirect Backup Policy L3 Dest)
-
-ten_ser_redirect_backup_policies_l3_destinations:
-  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  ip: ip()
-  ip_2: ip(required=False)
-  destination_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  mac: mac()
-  redirect_health_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  expected_state: include('ten_ser_redirect_policies_expected_state', required=False) # @no_external_doc()
 
 ten_ser_redirect_policies_l3_destinations:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -2416,6 +2717,32 @@ ten_ser_redirect_policies_l3_destinations:
   pod: int(min=1, max=255, required=False)
   redirect_health_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
+ten_ser_redirect_policies_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
+ten_ser_redirect_backup_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  l3_destinations: list(include('ten_ser_redirect_backup_policies_l3_destinations'), required=False) # @name(Redirect Backup Policy L3 Dest)
+  expected_state: include('ten_ser_redirect_backup_policies_expected_state', required=False) # @no_external_doc()
+
+ten_ser_redirect_backup_policies_l3_destinations:
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  ip: ip()
+  ip_2: ip(required=False)
+  destination_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  mac: mac()
+  redirect_health_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+ten_ser_redirect_backup_policies_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
 ten_ser_service_epg_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -2424,6 +2751,13 @@ ten_ser_service_epg_policies:
 ten_ser_redirect_health_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  expected_state: include('ten_ser_redirect_health_groups_expected_state', required=False) # @no_external_doc()
+
+ten_ser_redirect_health_groups_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ten_ser_service_graph_templates:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2433,16 +2767,24 @@ ten_ser_service_graph_templates:
   redirect: any(bool(), enum('enabled', 'disabled'), required=False)
   share_encapsulation: any(bool(), enum('enabled', 'disabled'), required=False)
   device: include('ten_ser_service_graph_templates_device') # @flatten()
+  expected_state: include('ten_ser_service_graph_templates_expected_state', required=False) # @no_external_doc()
 
 ten_ser_service_graph_templates_device:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(Device Name)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(Device Tenant)
+
+ten_ser_service_graph_templates_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ten_ser_device_selection_policies:
   contract: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   service_graph_template: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   consumer: include('ten_ser_device_selection_policies_consumer_provider') # @name(Device Selection Pol Consumer)
   provider: include('ten_ser_device_selection_policies_consumer_provider') # @name(Device Selection Pol Provider)
+  expected_state: include('ten_ser_device_selection_policies_expected_state', required=False) # @no_external_doc()
 
 ten_ser_device_selection_policies_consumer_provider:
   l3_destination: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -2473,3 +2815,21 @@ ten_ser_device_selection_policies_consumer_provider_external_endpoint_group:
   ospf: any(bool(), enum('enabled', 'disabled'), required=False) # @name(External EPG Redistribute OSPF)
   connected: any(bool(), enum('enabled', 'disabled'), required=False) # @name(External EPG Redistribute Connected)
   static: any(bool(), enum('enabled', 'disabled'), required=False) # @name(External EPG Redistribute Static)
+
+ten_ser_device_selection_policies_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
+ten_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
+
+expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
