@@ -348,6 +348,8 @@ objects:
       - apic.node_policies.nodes.pod
       - apic.node_policies.nodes.type
       - apic.node_policies.nodes.remote_pool_id
+      - apic.node_policies.nodes.expected_state
+      - apic.node_policies.expected_state
   - name: OOB Node Address
     template: oob_node_address
     folder: node_policies
@@ -1129,6 +1131,7 @@ tenant_objects:
       - apic.tenants.l3outs.l3_multicast_ipv4
       - apic.tenants.l3outs.pim_policy
       - apic.tenants.l3outs.igmp_interface_policy
+      - apic.tenants.l3outs.expected_state
   - name: External Endpoint Group
     template: external_endpoint_group
     folder: tenants
@@ -1159,6 +1162,7 @@ tenant_objects:
       - apic.tenants.application_profiles.alias
       - apic.tenants.application_profiles.description
       - apic.tenants.application_profiles.managed
+      - apic.tenants.application_profiles.expected_state
   - name: Endpoint Group
     template: endpoint_group
     folder: tenants
