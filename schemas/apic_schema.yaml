@@ -1171,7 +1171,7 @@ pp_pod:
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   external_tep_pools: list(include('pp_pod_external_tep_pools'), required=False)
   remote_pools: list(include('pp_pod_remote_pools'), required=False)
-  expected_state: map(required=False) # @no_external_doc()
+  expected_state: include('pp_pod_expected_state', required=False) # @no_external_doc()
 
 pp_pod_external_tep_pools:
   prefix: ip()
@@ -1181,13 +1181,19 @@ pp_pod_remote_pools:
   id: int(min=1, max=255)
   remote_pool: ip()
 
+pp_pod_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+
 node_policies:
   inb_endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   oob_endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   update_groups: list(include('np_update_group'), required=False)
   vpc_groups: include('np_vpc_group', required=False) # @name(vPC)
   nodes: list(include('np_node'), required=False)
-  expected_state: map(required=False) # @no_external_doc()
+  expected_state: include('np_expected_state', required=False) # @no_external_doc()
+
+np_expected_state:
+  nodes_status: enum('active', 'inactive', 'disabled', 'unknown', 'undiscovered', required=False)
 
 np_update_group:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1223,7 +1229,10 @@ np_node:
   fabric_policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   access_policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   remote_pool_id: int(min=1, max=255, required=False)
-  expected_state: map(required=False) # @no_external_doc()
+  expected_state: include('np_node_expected_state', required=False) # @no_external_doc()
+
+np_node_expected_state:
+  psu_count: int(min=1, max=10, required=False)
 
 interface_policies:
   nodes: list(include('ip_node'), required=False) # @name(Interface Policy Nodes) @ref_name(Node ID) @key(id)
@@ -1242,7 +1251,10 @@ ip_fex_interface:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   module: int(min=1, max=9, required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  expected_state: map(required=False) # @no_external_doc()
+  expected_state: include('ip_fex_interface_expected_state', required=False) # @no_external_doc()
+
+ip_fex_interface_expected_state:
+  lldp_neighbor: str(required=False)
 
 ip_interface:
   port: int(min=1, max=127)
@@ -1252,7 +1264,10 @@ ip_interface:
   fex_id: int(min=101, max=199, required=False)
   type: enum('uplink', 'downlink', required=False)
   sub_ports: list(include('ip_interface_sub_ports'), required=False)
-  expected_state: map(required=False) # @no_external_doc()
+  expected_state: include('ip_interface_expected_state', required=False) # @no_external_doc()
+
+ip_interface_expected_state:
+  lldp_neighbor: str(required=False)
 
 ip_interface_sub_ports:
   port: int(min=1, max=127)
@@ -1260,7 +1275,10 @@ ip_interface_sub_ports:
   module: int(min=1, max=9, required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   fex_id: int(min=101, max=199, required=False)
-  expected_state: map(required=False) # @no_external_doc()
+  expected_state: include('ip_interface_sub_ports_expected_state', required=False) # @no_external_doc()
+
+ip_interface_sub_ports_expected_state:
+  lldp_neighbor: str(required=False)
 
 tenant:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
