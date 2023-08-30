@@ -820,7 +820,7 @@ ap_vlan_pool_range:
 ap_physical_domain:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   vlan_pool: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  expected_state: include(ap_physical_domain_expected_state', required=False) # @no_external_doc()
+  expected_state: include('ap_physical_domain_expected_state', required=False) # @no_external_doc()
 
 ap_physical_domain_expected_state:
   minimum_health: int(min=0, max=100, required=False)
