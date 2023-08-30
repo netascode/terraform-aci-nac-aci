@@ -1627,3 +1627,7 @@ tenant_objects:
       - health
     paths:
       - apic.tenants.oob_contracts
+
+test_objects:
+  - name: System
+    template: system
