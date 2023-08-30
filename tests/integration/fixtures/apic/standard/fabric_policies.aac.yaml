@@ -353,19 +353,19 @@ apic:
                 - name: NMS1
                   ip: 1.1.1.1
 
-      management_access_policies:
-        - name: MGMT1
-          telnet:
-            admin_state: true
-          ssh:
-            port: 22
-            hmac_sha1: false
-            chacha: false
-          https:
-            tlsv1: true
-          http:
-            admin_state: true
-            port: 8080
+      # management_access_policies:
+      #   - name: MGMT1
+      #     telnet:
+      #       admin_state: true
+      #     ssh:
+      #       port: 22
+      #       hmac_sha1: false
+      #       chacha: false
+      #     https:
+      #       tlsv1: true
+      #     http:
+      #       admin_state: true
+      #       port: 8080
 
     pod_policy_groups:
       - name: POD1
@@ -374,7 +374,7 @@ apic:
       - name: POD2
         snmp_policy: SNMP1
         date_time_policy: NTP1
-        management_access_policy: MGMT1
+        # management_access_policy: MGMT1
 
     pod_profiles:
       - name: PODX
