@@ -280,6 +280,7 @@ def render_diagram_path(element, path, mappings={}):
     path_elements = path.split(".")
     if path in mappings:
         name = mappings[path].split(".")[-1]
+        result += "class {}[\"{}\"]\n".format(name, path_elements[-1])
     else:
         name = path_elements[-1]
     if len(path_elements) > 1:
@@ -295,36 +296,36 @@ def render_diagram_path(element, path, mappings={}):
     else:
         mandatory = ""
     if element.tag == "str":
-        result = "{0} : {1}{2} [Str]\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} [Str]\n".format(parent, mandatory, name)
     elif element.tag == "int":
-        result = "{0} : {1}{2} [Int]\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} [Int]\n".format(parent, mandatory, name)
     elif element.tag == "num":
-        result = "{0} : {1}{2} [Num]\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} [Num]\n".format(parent, mandatory, name)
     elif element.tag == "bool":
-        result = "{0} : {1}{2} [Bool]\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} [Bool]\n".format(parent, mandatory, name)
     elif element.tag == "null":
-        result = "{0} : {1}{2} [Num]\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} [Num]\n".format(parent, mandatory, name)
     elif element.tag == "enum":
-        result = "{0} : {1}{2} [Enum]\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} [Enum]\n".format(parent, mandatory, name)
     elif element.tag == "list":
-        result = "{0} <-- {1}\n".format(parent, name)
+        result += "{0} <-- {1}\n".format(parent, name)
         result += "{0} : {1}{2} (List)\n".format(parent, mandatory, name)
     elif element.tag == "map":
-        result = "{0} : {1}{2} [Map]\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} [Map]\n".format(parent, mandatory, name)
     elif element.tag == "ip":
-        result = "{0} : {1}{2} [IP]\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} [IP]\n".format(parent, mandatory, name)
     elif element.tag == "mac":
-        result = "{0} : {1}{2} [MAC]\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} [MAC]\n".format(parent, mandatory, name)
     elif element.tag == "regex":
-        result = "{0} : {1}{2} [Str]\n".format(parent, mandatory, name)
+        result += "{0} : {1}{2} [Str]\n".format(parent, mandatory, name)
     elif element.tag == "include":
-        result = "{0} *-- {1}\n".format(parent, name)
+        result += "{0} *-- {1}\n".format(parent, name)
         result += "{0} : {1}{2} (Dict)\n".format(parent, mandatory, name)
     elif element.tag == "any":
         if element.validators[0].tag == "str":
-            result = "{0} : {1}{2} [Str]\n".format(parent, mandatory, name)
+            result += "{0} : {1}{2} [Str]\n".format(parent, mandatory, name)
         else:
-            result = "{0} : {1}{2} [Any]\n".format(parent, mandatory, name)
+            result += "{0} : {1}{2} [Any]\n".format(parent, mandatory, name)
     return result
 
 

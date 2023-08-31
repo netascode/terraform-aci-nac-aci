@@ -6,7 +6,6 @@ The data model formally defines the format of the data input files. The schema i
 
 - `*` before the member denotes a mandatory member
 - After the member typically the data type follows (eg. Str, Int, Enum, Dict, List, etc.)
-- As class names within the data model must be unique, if needed a suffix with a single digit (eg. `_1`) is added to the name
 
 ## Relationships
 
