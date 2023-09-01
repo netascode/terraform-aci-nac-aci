@@ -2207,6 +2207,14 @@ ten_l3outs_expected_state:
   maximum_critical_faults: int(min=0, required=False)
   maximum_major_faults: int(min=0, required=False)
   maximum_minor_faults: int(min=0, required=False)
+  learned_prefixes: list(include('ten_l3outs_expected_state_learned_prefixes'), required=False)
+
+ten_l3outs_expected_state_learned_prefixes:
+  prefix: ip()
+  route_type: enum('internal', 'external', required=False)
+  source_protocol: enum('bgp', 'ospf', 'eigrp', required=False)
+  administrative_distance: int(min=1, max=255, required=False)
+  learned_node_ids: list(int(min=1, max=4000), required=False)
 
 ten_dhcp_labels:
   dhcp_relay_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$')
