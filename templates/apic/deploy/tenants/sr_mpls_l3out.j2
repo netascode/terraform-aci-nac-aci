@@ -163,7 +163,7 @@
                                         }
                                     }
                                     {%- endfor %}
-                                    {%- if np.bfd_multihop_policy is defined %}{{ comma3() }}
+                                    {%- if np.bfd_multihop_node_policy is defined %}{{ comma3() }}
                                     {
                                         "bfdMhNodeP": {
                                             "attributes": {
@@ -176,7 +176,7 @@
                                                     "bfdRsMhNodePol": {
                                                         "attributes": {
                                                             "annotation": "orchestrator:aac",
-                                                            "tnBfdMhNodePolName": "{{ np.bfd_multihop_policy }}"
+                                                            "tnBfdMhNodePolName": "{{ np.bfd_multihop_node_policy }}"
                                                         }
                                                     }
                                                 }

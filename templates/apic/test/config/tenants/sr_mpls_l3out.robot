@@ -40,8 +40,8 @@ Verify SR MPLS L3out {{ l3out_name }} Node Profile {{ l3out_np_name }}
 {% if np.mpls_custom_qos_policy is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${np}..l3extRsLNodePMplsCustQosPol.attributes.tDn   uni/tn-infra/qosmplscustom-{{ np.mpls_custom_qos_policy }}
 {% endif %}
-{% if np.bfd_multihop_policy is defined %}
-    Should Be Equal Value Json String   ${r.json()}   ${np}..bfdRsMhNodePol.attributes.tnBfdMhNodePolName   {{ np.bfd_multihop_policy }}
+{% if np.bfd_multihop_node_policy is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${np}..bfdRsMhNodePol.attributes.tnBfdMhNodePolName   {{ np.bfd_multihop_node_policy }}
 {% endif %}
 
 {% for node in np.nodes | default([]) %}

@@ -21,7 +21,7 @@ apic:
           node_profiles:
             - name: SR_MPLS_NP
               mpls_custom_qos_policy: MPLS_QOS
-              bfd_multihop_policy: BFD_POL
+              bfd_multihop_node_policy: BFD_POL
               nodes: 
                 - node_id: 101
                   router_id: 126.126.126.126
