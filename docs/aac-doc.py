@@ -133,19 +133,19 @@ def parse_schema_type_constraint(element, name=""):
     if element.tag == "str":
         args = []
         for arg, value in element.kwargs.items():
-            args.append("{0}: {1}".format(arg, value))
+            args.append("{0}: `{1}`".format(arg, value))
         result_type = "String"
         result_constraint = ", ".join(args)
     elif element.tag == "int":
         args = []
         for arg, value in element.kwargs.items():
-            args.append("{0}: {1}".format(arg, value))
+            args.append("{0}: `{1}`".format(arg, value))
         result_type = "Integer"
         result_constraint = ", ".join(args)
     elif element.tag == "num":
         args = []
         for arg, value in element.kwargs.items():
-            args.append("{0}: {1}".format(arg, value))
+            args.append("{0}: `{1}`".format(arg, value))
         result_type = "Number"
         result_constraint = ", ".join(args)
     elif element.tag == "bool":
