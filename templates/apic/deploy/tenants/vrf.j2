@@ -141,6 +141,17 @@
                             }
                         }
                         {%- endif %}
+                        {%- if vrf.transit_route_tag_policy is defined %}{{ comma1() }}
+                        {% set transit_route_tag_policy_name = vrf.transit_route_tag_policy ~ defaults.apic.tenants.policies.route_tag_policies.name_suffix %}
+                        {
+                            "fvRsCtxToExtRouteTagPol": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "tnL3extRouteTagPolName": "{{ transit_route_tag_policy_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
                         {%- if vrf.bgp.timer_policy is defined %}{{ comma1() }}
                         {% set bgp_timer_name = vrf.bgp.timer_policy ~ defaults.apic.tenants.policies.bgp_timer_policies.name_suffix %}
                         {

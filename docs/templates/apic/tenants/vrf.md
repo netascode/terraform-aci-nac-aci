@@ -34,6 +34,7 @@ apic:
           data_plane_learning: false
           enforcement_direction: egress
           enforcement_preference: unenforced
+          transit_route_tag_policy: TRP1
           bgp:
             timer_policy: BGP-TIMER1
           dns_labels:

@@ -76,6 +76,14 @@ Verify VRF {{ vrf_name }} Leaked External Prefix {{ prefix.prefix }} Destination
 {% endfor %}
 {% endfor %}
 
+{% if vrf.transit_route_tag_policy is defined %}
+
+Verify Transit Route Tag Policy {{ vrf.transit_route_tag_policy }}
+{% set transit_route_tag_policy_name = vrf.transit_route_tag_policy ~ defaults.apic.tenants.policies.route_tag_policies.name_suffix %}
+    ${tag_entry}=   Set Variable   $..fvCtx.children[?(@.fvRsCtxToExtRouteTagPol.attributes.tnL3extRouteTagPolName=='{{ transit_route_tag_policy_name }}')].fvRsCtxToExtRouteTagPol
+    Should Be Equal Value Json String   ${r.json()}   ${tag_entry}.attributes.tnL3extRouteTagPolName   {{ transit_route_tag_policy_name }}
+{% endif %}
+
 {% if vrf.bgp.timer_policy is defined %}
 
 Verify BGP Timer Policy {{ vrf.bgp.timer_policy }}
