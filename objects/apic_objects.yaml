@@ -1298,6 +1298,17 @@ tenant_objects:
       - config
     paths:
       - apic.tenants.policies.dhcp_option_policies
+  - name: Route Tag Policies
+    template: route_tag_policy
+    folder: tenants
+    aci_classes:
+      - l3extRouteTagPol
+    match_dn: 'uni\/tn-%%TENANT%%\/rttag-.*'
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
   - name: Route Control Route Map
     template: route_control_route_map
     folder: tenants

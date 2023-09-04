@@ -1035,6 +1035,9 @@ defaults:
           name_suffix: ""
           options:
             name_suffix: ""
+        route_tag_policies:
+          name_suffix: ""
+          tag: 4294967295
         route_control_route_maps:
           name_suffix: ""
           contexts:

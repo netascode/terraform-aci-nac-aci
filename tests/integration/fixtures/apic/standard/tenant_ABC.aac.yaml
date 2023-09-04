@@ -607,6 +607,11 @@ apic:
                 id: 15
                 data: DATA2
           - name: DHCP-OPTION2
+        route_tag_policies:
+          - name: TAG1
+            description: "My Tag"
+            tag: 112233
+          - name: TAG2
         route_control_route_maps:
           - name: ROUTE_MAP1
             description: My first route map

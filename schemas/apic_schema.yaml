@@ -2443,6 +2443,7 @@ ten_policies:
   bgp_address_family_context_policies: list(include('ten_bgp_address_family_context_policy'), required=False) # @name(BGP Address Fam Context Policy)
   dhcp_relay_policies: list(include('ten_dhcp_relay_policy'), required=False) # @ref_name(DHCP Relay Policy)
   dhcp_option_policies: list(include('ten_dhcp_option_policy'), required=False) # @ref_name(DHCP Option Policy)
+  route_tag_policies: list(include('ten_route_tag_policies'), required=False)
   route_control_route_maps: list(include('ten_route_control_route_maps'), required=False) # @ref_name(Route Control Route Map)
   match_rules: list(include('ten_match_rule'), required=False) # @ref_name(Match Rule)
   set_rules: list(include('ten_set_rule'), required=False)
@@ -2529,6 +2530,11 @@ ten_dhcp_options:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   id: int(min=1, max=255, required=False)
   data: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
+
+ten_route_tag_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  tag: int(min=0, max=4294967295, required=False)
 
 ten_route_control_route_maps:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

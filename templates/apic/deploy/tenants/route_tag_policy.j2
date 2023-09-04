@@ -1,0 +1,28 @@
+{# iterate_list apic.tenants name item[2] #}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for route_tag in tenant.policies.route_tag_policies | default([]) %}{{ comma1() }}
+            {% set route_tag_name = route_tag.name ~ defaults.apic.tenants.policies.route_tag_policies.name_suffix %}
+            {
+                "l3extRouteTagPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "descr": "{{ route_tag.description | default () }}",
+                        "dn": "uni/tn-{{ tenant.name }}/rttag-{{ route_tag_name }}",
+                        "name": "{{ route_tag_name }}",
+                        "tag": "{{ route_tag.tag | default(defaults.apic.tenants.policies.route_tag_policies.tag) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

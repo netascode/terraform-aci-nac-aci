@@ -199,6 +199,7 @@ nav:
               - IP SLA Policy: data_model/apic/tenants/ip_sla_policy.md
               - Redirect Policy: data_model/apic/tenants/redirect_policy.md
               - Redirect Backup Policy: data_model/apic/tenants/redirect_backup_policy.md
+              - Route Tag Policy: data_model/apic/tenants/route_tag_policy.md
               - Service EPG Policy: data_model/apic/tenants/service_epg_policy.md
               - Redirect Health Group: data_model/apic/tenants/redirect_health_group.md
               - L4L7 Device: data_model/apic/tenants/l4l7_device.md
