@@ -1542,7 +1542,7 @@ ten_vrf:
   preferred_group: any(bool(), enum('enabled', 'disabled'), required=False)
   endpoint_retention_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
   monitoring_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
-  transit_route_tag_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  transit_route_tag_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   leaked_internal_prefixes: list(include('ten_vrf_leaked_internal_prefixes'), required=False) # @name(VRF Leaked Internal Prefixes) @ref_name(Leaked Internal Prefix)
   leaked_external_prefixes: list(include('ten_vrf_leaked_external_prefixes'), required=False) # @name(VRF Leaked External Prefixes) @ref_name(Leaked External Prefix)
   contracts: include('ten_vrf_contracts', required=False) # @flatten()
