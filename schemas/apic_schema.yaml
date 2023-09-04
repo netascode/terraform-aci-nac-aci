@@ -1952,6 +1952,8 @@ ten_l3outs:
   multipod: bool(required=False)
   remote_leaf: bool(required=False)
   expected_state: include('ten_l3outs_expected_state', required=False) # @no_external_doc()
+  import_route_control_enforcement: bool(required=False)
+  export_route_control_enforcement: bool(required=False)
 
 ten_l3outs_ospf:
   ospf_interface_profile_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)

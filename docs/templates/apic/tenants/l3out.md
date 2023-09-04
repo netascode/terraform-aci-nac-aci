@@ -87,6 +87,8 @@ apic:
           description: My Desc
           target_dscp: AF13
           qos_class: level3
+          import_route_control_enforcement: true
+          export_route_control_enforcement: true
           custom_qos_policy: QOS_POLICY
           vrf: VRF1
           domain: ROUTED1

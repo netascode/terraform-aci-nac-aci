@@ -13,6 +13,10 @@
             {% set l3out_name = l3out.name ~ defaults.apic.tenants.l3outs.name_suffix %}
             {% set l3out_np_name = l3out.name ~ defaults.apic.tenants.l3outs.node_profiles.name_suffix %}
             {% set l3out_ip_name = l3out.name ~ defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix %}
+            {% set route_control_enforcement = [] %}
+            {% if l3out.import_route_control_enforcement | default(defaults.apic.tenants.l3outs.import_route_control_enforcement) | cisco.aac.aac_bool("yes") == "yes" %}{% set route_control_enforcement = route_control_enforcement + [("import")] %}{% endif %}
+            {% if l3out.export_route_control_enforcement | default(defaults.apic.tenants.l3outs.export_route_control_enforcement) | cisco.aac.aac_bool("yes") == "yes" %}{% set route_control_enforcement = route_control_enforcement + [("export")] %}{% endif %}
+                        
             {
                 "l3extOut": {
                     "attributes": {
@@ -21,7 +25,8 @@
                         "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}",
                         "name": "{{ l3out_name }}",
                         "nameAlias": "{{ l3out.alias | default() }}",
-                        "targetDscp": "{{ l3out.target_dscp | default(defaults.apic.tenants.l3outs.target_dscp) }}"
+                        "targetDscp": "{{ l3out.target_dscp | default(defaults.apic.tenants.l3outs.target_dscp) }}",
+                        "enforceRtctrl": "{{ route_control_enforcement | join(',') }}"
                     },
                     "children": [
                         {%- set comma2 = joiner(",") %}

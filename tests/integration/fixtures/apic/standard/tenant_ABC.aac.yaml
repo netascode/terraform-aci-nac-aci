@@ -349,6 +349,8 @@ apic:
           pim_policy: PIM1
           igmp_interface_policy: IGMP_IF1
           l3_multicast_ipv4: true
+          import_route_control_enforcement: true
+          export_route_control_enforcement: true
           ospf:
             area: 10
       application_profiles:

@@ -698,6 +698,8 @@ defaults:
         name_suffix: ""
         target_dscp: unspecified
         qos_class: unspecified
+        import_route_control_enforcement: false
+        export_route_control_enforcement: true
         ospf:
           auth_key_id: 1
           auth_type: none

@@ -22,6 +22,9 @@ Resource        ../../../apic_common.resource
 {% set l3out_name = l3out.name ~ defaults.apic.tenants.l3outs.name_suffix %}
 {% set l3out_np_name = l3out.name ~ defaults.apic.tenants.l3outs.node_profiles.name_suffix %}
 {% set l3out_ip_name = l3out.name ~ defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix %}
+{% set route_control_enforcement = [] %}
+{% if l3out.export_route_control_enforcement | default(defaults.apic.tenants.l3outs.export_route_control_enforcement) | cisco.aac.aac_bool("yes") == "yes" %}{% set route_control_enforcement = route_control_enforcement + [("export")] %}{% endif %}
+{% if l3out.import_route_control_enforcement | default(defaults.apic.tenants.l3outs.import_route_control_enforcement) | cisco.aac.aac_bool("yes") == "yes" %}{% set route_control_enforcement = route_control_enforcement + [("import")] %}{% endif %}
 {% set domain_name = l3out.domain ~ defaults.apic.access_policies.routed_domains.name_suffix %}
 {% set vrf_name = l3out.vrf ~ ('' if l3out.vrf in ('inb', 'obb', 'overlay-1') else defaults.apic.tenants.vrfs.name_suffix) %}
 
@@ -32,6 +35,7 @@ Verify L3out {{ l3out_name }}
     Should Be Equal Value Json String   ${r.json()}   $..l3extOut.attributes.nameAlias   {{ l3out.alias  | default() }}
     Should Be Equal Value Json String   ${r.json()}   $..l3extOut.attributes.descr   {{ l3out.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   $..l3extOut.attributes.targetDscp   {{ l3out.target_dscp | default(defaults.apic.tenants.l3outs.target_dscp) }}
+    Should Be Equal Value Json String   ${r.json()}   $..l3extOut.attributes.enforceRtctrl   {{ route_control_enforcement | join(',') }}
     Should Be Equal Value Json String   ${r.json()}   $..l3extRsL3DomAtt.attributes.tDn   uni/l3dom-{{ domain_name }}
     Should Be Equal Value Json String   ${r.json()}   $..l3extRsEctx.attributes.tnFvCtxName   {{ vrf_name }}
 {% if l3out.ospf is defined %}
