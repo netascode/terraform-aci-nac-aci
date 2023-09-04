@@ -1294,13 +1294,13 @@ locals {
     for tenant in local.tenants : [
       for l3out in try(tenant.sr_mpls_l3outs, []) : [
         for np in try(l3out.node_profiles, []) : {
-          key                    = format("%s/%s/%s", tenant.name, l3out.name, np.name)
-          tenant                 = tenant.name
-          l3out                  = l3out.name
-          name                   = "${np.name}${local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.name_suffix}"
-          sr_mpls                = true
-          mpls_custom_qos_policy = try(np.mpls_custom_qos_policy, null)
-          bfd_multihop_policy    = try(np.bfd_multihop_policy, null)
+          key                      = format("%s/%s/%s", tenant.name, l3out.name, np.name)
+          tenant                   = tenant.name
+          l3out                    = l3out.name
+          name                     = "${np.name}${local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.name_suffix}"
+          sr_mpls                  = true
+          mpls_custom_qos_policy   = try(np.mpls_custom_qos_policy, null)
+          bfd_multihop_node_policy = try(np.bfd_multihop_node_policy, null)
           nodes = [for node in try(np.nodes, []) : {
             node_id                 = node.node_id
             pod_id                  = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
@@ -1334,15 +1334,15 @@ module "aci_sr_mpls_l3out_node_profile_manual" {
   source  = "netascode/l3out-node-profile/aci"
   version = "0.2.6"
 
-  for_each               = { for np in local.sr_mpls_node_profiles_manual : np.key => np if try(local.modules.aci_sr_mpls_l3out_node_profile, true) && var.manage_tenants }
-  tenant                 = each.value.tenant
-  l3out                  = each.value.l3out
-  name                   = each.value.name
-  sr_mpls                = each.value.sr_mpls
-  mpls_custom_qos_policy = each.value.mpls_custom_qos_policy
-  bfd_multihop_policy    = each.value.bfd_multihop_policy
-  nodes                  = each.value.nodes
-  bgp_infra_peers        = each.value.bgp_infra_peers
+  for_each                 = { for np in local.sr_mpls_node_profiles_manual : np.key => np if try(local.modules.aci_sr_mpls_l3out_node_profile, true) && var.manage_tenants }
+  tenant                   = each.value.tenant
+  l3out                    = each.value.l3out
+  name                     = each.value.name
+  sr_mpls                  = each.value.sr_mpls
+  mpls_custom_qos_policy   = each.value.mpls_custom_qos_policy
+  bfd_multihop_node_policy = each.value.bfd_multihop_node_policy
+  nodes                    = each.value.nodes
+  bgp_infra_peers          = each.value.bgp_infra_peers
 
   depends_on = [
     module.aci_tenant,
