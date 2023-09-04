@@ -681,10 +681,11 @@
             "vrfs": [
                 {%- set comma2 = joiner(",") %}
                 {%- for vrf in template.vrfs | default([]) %}
+                {% set vrf_name = vrf.name ~ defaults.ndo.schemas.templates.vrfs.name_suffix %}
                 {%- for site in vrf.sites | default([]) %}
                 {%- if current_site == site.name %}{{ comma2() }}
                 {
-                    "vrfRef": "/templates/{{ template.name }}/vrfs/{{ vrf.name }}",
+                    "vrfRef": "/templates/{{ template.name }}/vrfs/{{ vrf_name }}",
                     "regions": [
                         {%- set comma3 = joiner(",") %}
                         {%- for region in site.regions | default([]) %}{{ comma3() }}

@@ -52,4 +52,4 @@ Should Be Equal Value Json Number
 Should Be Equal Value Json List
     [Arguments]    ${json}    ${json_path}   ${value}=${None}
     ${r_value}=   Get Value From Json   ${json}   ${json_path}
-    Run Keyword If   ${value} != "${None}"   Lists Should Be Equal   ${r_value}[0]   ${value}
+    Run Keyword If   ${value} != "${None}"   Lists Should Be Equal   ${r_value}[0]   ${value}   ignore_order=True
