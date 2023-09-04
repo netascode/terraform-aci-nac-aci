@@ -181,7 +181,7 @@ objects:
     diff_paths:
       - apic.node_policies.oob_endpoint_group
       - apic.node_policies.inb_endpoint_group
-  - name: LDAP 
+  - name: LDAP
     template: ldap
     folder: fabric_policies
     test_types:
@@ -195,7 +195,7 @@ objects:
       - apic.fabric_policies.aaa.ldap
     diff_paths:
       - apic.node_policies.oob_endpoint_group
-      - apic.node_policies.inb_endpoint_group    
+      - apic.node_policies.inb_endpoint_group
   - name: User
     template: user
     folder: fabric_policies
@@ -1309,6 +1309,8 @@ tenant_objects:
       - mgmt
     test_types:
       - config
+    paths:
+      - apic.tenants.policies.route_tag_policies
   - name: Route Control Route Map
     template: route_control_route_map
     folder: tenants
