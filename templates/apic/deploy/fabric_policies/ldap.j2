@@ -1,0 +1,122 @@
+{
+    "aaaLdapEp": {
+        "attributes": {
+            "dn": "uni/userext/ldapext"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for prov in apic.fabric_policies.aaa.ldap.providers | default([]) %}{{ comma1() }}
+            {
+                "aaaLdapProvider": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "SSLValidationLevel": "{{ prov.ssl_validation_level | default(defaults.apic.fabric_policies.aaa.ldap.providers.ssl_validation_level) }}",
+                        "attribute": "{{ prov.attribute | default() }}",
+                        "basedn": "{{ prov.base_dn | default() }}",
+                        "descr": "{{ prov.description | default() }}",
+                        "enableSSL": "{{ prov.enable_ssl | default(defaults.apic.fabric_policies.aaa.ldap.providers.enable_ssl) | cisco.aac.aac_bool("yes") }}",
+                        "filter": "{{ prov.filter | default(defaults.apic.fabric_policies.aaa.ldap.providers.filter) }}",
+                        "key": "{{ prov.password | default() }}",
+                        "monitorServer": "{{ prov.server_monitoring | default(defaults.apic.fabric_policies.aaa.ldap.providers.server_monitoring) | cisco.aac.aac_bool("enabled") }}",
+                        {% if prov.monitoring | default(defaults.apic.fabric_policies.aaa.ldap.providers.server_monitoring) | cisco.aac.aac_bool("enabled") == "enabled" %}
+                        "monitoringUser": "{{ prov.monitoring_username | default(defaults.apic.fabric_policies.aaa.ldap.providers.monitoring_username) }}",
+                        "monitoringPassword": "{{ prov.monitoring_password | default() }}",
+                        {% endif %}
+                        "name": "{{ prov.hostname_ip }}",
+                        "port": "{{ prov.port | default(defaults.apic.fabric_policies.aaa.ldap.providers.port) }}",
+                        "retries": "{{ prov.retries | default(defaults.apic.fabric_policies.aaa.ldap.providers.retries) }}",
+                        "rootdn": "{{ prov.bind_dn | default() }}",
+                        "timeout": "{{ prov.timeout | default(defaults.apic.fabric_policies.aaa.ldap.providers.timeout) }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {
+                            "aaaRsSecProvToEpg": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    {% set mgmt_epg = prov.mgmt_epg | default(defaults.apic.fabric_policies.aaa.ldap.providers.mgmt_epg) %}
+                                    {% if mgmt_epg == "oob" %}
+                                    "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"
+                                    {% elif mgmt_epg == "inb" %}
+                                    "tDn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}"
+                                    {% endif %}
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+            {%- for rule in apic.fabric_policies.aaa.ldap.group_map_rules | default([]) %}{{ comma1() }}
+            {
+                "aaaLdapGroupMapRule": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "descr": "{{ rule.description | default() }}",
+                        "groupdn": "{{ rule.group_dn | default() }}",
+                        "name": "{{ rule.name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for dom in rule.security_domains | default([]) %}{{ comma2() }}
+                        {
+                            "aaaUserDomain": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "name": "{{ dom.name }}"
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [ 
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for role in dom.roles | default([]) %}{{ comma3() }}
+                                    {
+                                        "aaaUserRole": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "name": "{{ role.name }}",
+                                                "privType": "{% if role.privilege_type | default(defaults.apic.fabric_policies.aaa.ldap.group_map_rules.security_domains.roles.privilege_type) == "write" %}writePriv{% else %}readPriv{% endif %}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+                        
+                    ]
+                }
+            }
+            {%- endfor %}
+            {%- for group in apic.fabric_policies.aaa.ldap.group_maps | default([]) %}{{ comma1() }}
+            {
+                "aaaLdapGroupMap": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "descr": "{{ group.description | default() }}",
+                        "name": "{{ group.name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for rule in group.rules | default([]) %}{{ comma2() }}
+                        {
+                            "aaaLdapGroupMapRuleRef": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "name": "{{ rule.name }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

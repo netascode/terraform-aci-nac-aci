@@ -483,15 +483,16 @@ fp_vmware_vmm_domains_expected_state:
 fp_aaa:
   remote_user_login_policy: enum('assign-default-role', 'no-login', required=False)
   default_fallback_check: any(bool(), enum('enabled', 'disabled'), required=False)
-  default_realm: enum('local', 'tacacs', required=False)
+  default_realm: enum('local', 'tacacs', 'ldap', required=False)
   default_login_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  console_realm: enum('local', 'tacacs', required=False)
+  console_realm: enum('local', 'tacacs', 'ldap', required=False)
   console_login_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   tacacs_providers: list(include('fp_aaa_tacacs_providers'), required=False)
   users: list(include('fp_aaa_users'), required=False) # @ref_name(User) @key(username)
   login_domains: list(include('fp_aaa_login_domains'), required=False) # @ref_name(Login Domain)
   ca_certificates: list(include('fp_ca_certificate'), required=False)
   key_rings: list(include('fp_key_ring'), required=False)
+  ldap: include('fp_aaa_ldap', required=False)
 
 fp_aaa_tacacs_providers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
@@ -547,11 +548,18 @@ fp_aaa_users_ssh_keys:
 
 fp_aaa_login_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  realm: enum('local', 'tacacs')
+  realm: enum('local', 'tacacs', 'ldap')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  auth_choice: enum('CiscoAVPair', 'LdapGroupMap', required=False)
+  ldap_group_map: regex('^[a-zA-Z0-9_.:-]{1,31}$', required=False)
   tacacs_providers: list(include('fp_aaa_login_domains_tacacs_providers'), required=False) # @name(Login Domain TACACS Providers)
+  ldap_providers: list(include('fp_aaa_login_domains_ldap_providers'), required=False) # @name(Login Domain LDAP Providers)
 
 fp_aaa_login_domains_tacacs_providers:
+  hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
+  priority: int(min=0, max=16, required=False)
+
+fp_aaa_login_domains_ldap_providers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
   priority: int(min=0, max=16, required=False)
 
@@ -567,6 +575,50 @@ fp_key_ring:
   modulus: enum('mod512', 'mod1024', 'mod2048', required=False)
   ca_certificate: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   private_key: regex('^[a-zA-Z0-9=\n\r/+ _.@-]{1,16384}$', required=False)
+
+fp_aaa_ldap:
+  providers: list(include('fp_aa_ldap_providers'), required=False)
+  group_map_rules: list(include('fp_aa_ldap_group_map_rules'), required=False)
+  group_maps: list(include('fp_aa_ldap_group_maps'), required=False)
+
+fp_aa_ldap_providers:
+  hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  port: int(min=0, max=65535, required=False)
+  bind_dn: str(required=False)
+  base_dn: str(required=False)
+  password: str(required=False)
+  timeout: int(min=5, max=60, required=False)
+  retries: int(min=0, max=5, required=False)
+  enable_ssl: bool(required=False)
+  filter: str(required=False)
+  attribute: str(required=False)
+  ssl_validation_level: enum('permissive', 'strict', required=False)
+  mgmt_epg: enum('inb', 'oob', required=False)
+  server_monitoring: bool(required=False)
+  monitoring_username: regex('^[a-zA-Z0-9][a-zA-Z0-9_.@-]{0,31}$', required=False)
+  monitoring_password: str(required=False)
+
+fp_aa_ldap_group_map_rules:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  group_dn: str(required=False)
+  security_domains: list(include('fp_aa_ldap_group_map_rules_security_domains'), required=False)
+
+fp_aa_ldap_group_map_rules_security_domains:
+  name: regex('^[a-zA-Z0-9_.:-]{1,31}$')
+  roles: list(include('fp_aa_ldap_group_map_rules_security_domains_roles'), required=False)
+
+fp_aa_ldap_group_map_rules_security_domains_roles:
+  name: regex('^[a-zA-Z0-9_.-]{1,31}$')
+  privilege_type: enum('write', 'read', required=False)
+
+fp_aa_ldap_group_maps:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  rules: list(include('fp_aa_ldap_group_maps_rules'), required=False)
+
+fp_aa_ldap_group_maps_rules:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
 
 fp_geolocation:
   sites: list(include('fp_geolocation_sites'), required=False) # @name(Geolocation Sites) @ref_name(Site)

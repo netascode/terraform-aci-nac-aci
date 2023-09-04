@@ -22,4 +22,12 @@ apic:
           tacacs_providers:
             - hostname_ip: 1.1.1.1
               priority: 1
+        - name: ldap
+          realm: ldap
+          description: login domain ldap
+          auth_choice: LdapGroupMap
+          ldap_group_map: test-users-map
+          ldap_providers:
+            - hostname_ip: 2.2.2.2
+              priority: 1
 ```

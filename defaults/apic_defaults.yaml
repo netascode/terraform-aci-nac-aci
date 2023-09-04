@@ -221,8 +221,19 @@ defaults:
           timeout: 5
           mgmt_epg: inb
         login_domains:
+          auth_choice: CiscoAVPair
           tacacs_providers:
             priority: 0
+          ldap_providers:
+            priority: 0
+            port: 389
+            timeout: 30
+            retries: 1
+            enable_ssl: false 
+            monitoring_username: default
+            filter: cn=$userid
+            ssl_validation_level: strict
+            server_monitoring: disabled
         users:
           status: active
           expires: false
@@ -234,6 +245,20 @@ defaults:
         key_rings:
           name_suffix: ""
           modulus: "mod2048"
+        ldap:
+          providers:
+            enable_ssl: false 
+            monitoring_username: default
+            server_monitoring: false 
+            port: 389
+            retries: 1
+            ssl_validation_level: strict
+            timeout: 30
+            mgmt_epg: inb
+          group_map_rules:
+            security_domains:
+              roles:
+                privilege_type: write
       remote_locations:
         name_suffix: ""
         auth_type: password

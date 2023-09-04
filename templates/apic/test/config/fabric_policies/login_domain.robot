@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation   Verify Login Domain
 Suite Setup     Login APIC
-Default Tags    apic   day0   config   fabric_policies
+Default Tags    apic   day0   config   fabric_policies   ldap
 Resource        ../../apic_common.resource
 
 *** Test Cases ***
@@ -22,6 +22,24 @@ Verify Login Domain {{ login_domain.name }} TACACS Provider {{ prov.hostname_ip 
     Should Be Equal Value Json String   ${r.json()}    $..aaaProviderRef.attributes.order   {{ prov.priority | default(defaults.apic.fabric_policies.aaa.login_domains.tacacs_providers.priority) }}
 
 {% endfor %}
+{% elif login_domain.realm == 'ldap' %}
+
+Verify Login Domain {{ login_domain.name }} LDAP Provider Group
+    ${r}=   GET On Session   apic   api/node/mo/uni/userext/ldapext/ldapprovidergroup-{{ login_domain.name }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..aaaLdapProviderGroup.attributes.authChoice   {{ login_domain.auth_choice | default(defaults.apic.fabric_policies.aaa.login_domains.auth_choice) }}
+{% if login_domain.auth_choice == 'LdapGroupMap' and login_domain.ldap_group_map is defined %}
+    Should Be Equal Value Json String   ${r.json()}    $..aaaLdapProviderGroup.attributes.ldapGroupMapRef   {{ login_domain.ldap_group_map }}
+{% endif %}
+
+{% for prov in login_domain.ldap.providers | default([]) %}
+
+Verify Login Domain {{ login_domain.name }} LDAP Provider {{ prov.hostname_ip }}
+    ${r}=   GET On Session   apic   api/node/mo/uni/userext/ldapext/ldapprovidergroup-{{ login_domain.name }}/providerref-{{ prov.hostname_ip }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..aaaProviderRef.attributes.name   {{ prov.hostname_ip }}
+    Should Be Equal Value Json String   ${r.json()}    $..aaaProviderRef.attributes.order   {{ prov.priority | default(defaults.apic.fabric_policies.aaa.login_domains.tacacs_providers.priority) }}
+
+{% endfor %}
+
 {% endif %}
 
 {% endfor %}

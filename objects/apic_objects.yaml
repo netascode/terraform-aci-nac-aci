@@ -181,6 +181,21 @@ objects:
     diff_paths:
       - apic.node_policies.oob_endpoint_group
       - apic.node_policies.inb_endpoint_group
+  - name: LDAP 
+    template: ldap
+    folder: fabric_policies
+    test_types:
+      - config
+      - health
+    aci_classes:
+      - aaaLdapProvider
+      - aaaLdapGroupMapRule
+      - aaaLdapGroupMap
+    paths:
+      - apic.fabric_policies.aaa.ldap
+    diff_paths:
+      - apic.node_policies.oob_endpoint_group
+      - apic.node_policies.inb_endpoint_group    
   - name: User
     template: user
     folder: fabric_policies
@@ -204,6 +219,7 @@ objects:
     aci_classes:
       - aaaLoginDomain
       - aaaTacacsPlusProviderGroup
+      - aaaLdapProviderGroup
     delete_ignore: fallback
     paths:
       - apic.fabric_policies.aaa.login_domains

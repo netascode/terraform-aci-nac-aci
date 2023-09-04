@@ -116,6 +116,39 @@ apic:
           monitoring_username: user1
           monitoring_password: pass1
         - hostname_ip: 1.1.1.2
+      ldap:
+        providers:
+          - hostname_ip: 2.2.2.2
+            description: descr
+            port: 3389
+            bind_dn: CN=testuser,OU=Employees,OU=Cisco users,DC=cisco,DC=com
+            base_dn: OU=Employees,OU=Cisco users,DC=cisco,DC=com
+            password: test@1234
+            timeout: 10
+            retries: 4
+            enable_ssl: true 
+            filter: cn=$userid
+            attribute: memberOf
+            ssl_validation_level: permissive
+            mgmt_epg: oob
+            server_monitoring: true 
+            monitoring_username: user1
+            monitoring_password: pass1
+          - hostname_ip: 2.2.2.3
+        group_map_rules:
+          - name: test-users-rules
+            description: descr
+            group_dn: CN=test-users,OU=Cisco groups,DC=cisco,DC=com
+            security_domains:
+              - name: all
+                roles:
+                  - name: admin
+                    privilege_type: write
+              - name: common
+        group_maps:
+          - name: test-users-map
+            rules:
+              - name: test-users-rules
 
       users:
         - username: user1
@@ -224,6 +257,15 @@ apic:
         - name: local
           realm: local
           description: login domain local
+        - name: ldap
+          realm: ldap
+          description: login domain ldap
+          auth_choice: LdapGroupMap
+          ldap_group_map: test-users-map
+          ldap_providers:
+            - hostname_ip: 2.2.2.2
+              priority: 1
+            - hostname_ip: 2.2.2.3
 
     remote_locations:
       - name: remote1
