@@ -1,0 +1,30 @@
+{# iterate_list apic.tenants name item[2] #}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for bfd in tenant.policies.bfd_multihop_node_policies | default([]) %}{{ comma1() }}
+            {% set bfd_name = bfd.name ~ defaults.apic.tenants.policies.bfd_multihop_node_policies.name_suffix %}
+            {
+                "bfdMhNodePol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ bfd_name }}",
+                        "descr": "{{ bfd.description | default() }}",
+                        "dn": "uni/tn-{{ tenant.name }}/bfdMhNodePol-{{ bfd_name }}",
+                        "detectMult": "{{ bfd.detection_multiplier | default(defaults.apic.tenants.policies.bfd_multihop_node_policies.detection_multiplier) }}",
+                        "minRxIntvl": "{{ bfd.min_rx_interval | default(defaults.apic.tenants.policies.bfd_multihop_node_policies.min_rx_interval) }}",
+                        "minTxIntvl": "{{ bfd.min_tx_interval | default(defaults.apic.tenants.policies.bfd_multihop_node_policies.min_tx_interval) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

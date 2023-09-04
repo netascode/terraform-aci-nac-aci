@@ -85,3 +85,25 @@ apic:
                     - floating_ip: 1.1.1.1/24
                       vmware_vmm_domain: VMM1
                       elag: ELAGDefault
+      sr_mpls_l3outs:
+        - name: ABC_SR_MPLS_L3OUT 
+          vrf: VRF1
+          sr_mpls_infra_l3out: INFRA_SR_MPLS_L3
+          outbound_route_map: export-map
+          inbound_route_map: import-map
+          external_endpoint_groups:
+            - name: ext-epg
+              subnets:
+                - name: ALL
+                  prefix: 0.0.0.0/0
+                  route_leaking: true
+                  security: true
+                  aggregate_shared_route_control: true
+              contracts:
+                consumers:
+                  - CON1
+                providers:
+                  - CON1
+                imported_consumers:
+                  - IMPORT-CON1
+            - name: ext-epg2

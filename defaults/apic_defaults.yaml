@@ -896,6 +896,42 @@ defaults:
         name: default
       ext_mgmt_instances:
         name_suffix: ""
+      sr_mpls_l3outs:
+        name_suffix: ""
+        transport_data_plane: sr_mpls
+        node_profiles:
+          name_suffix: ""
+          evpn_connectivity:
+            allow_self_as: false
+            disable_peer_as_check: false
+            ttl: 2
+            bfd: false
+            admin_state: true
+            as_propagate: none
+          nodes:
+            pod_id: 1
+          interface_profiles:
+            name_suffix: ""
+            interfaces:
+              pod_id: 1
+              module: 1
+              mac: 00:22:BD:F8:19:FF
+              mtu: inherit
+              bgp_peers:
+                allow_self_as: false
+                send_community: false
+                send_ext_community: false
+                bfd: false
+                unicast_address_family: true
+                admin_state: true
+                as_propagate: none
+        external_endpoint_groups:
+          name_suffix: ""
+          preferred_group: false
+          subnets:
+            route_leaking: false
+            security: false
+            aggregate_shared_route_control: false
       contracts:
         name_suffix: ""
         scope: context
@@ -1095,6 +1131,20 @@ defaults:
             ttl: 64
             version: 2
             enforce_version: false
+        mpls_custom_qos_policies:
+          name_suffix: ''
+          ingress_rules:
+            priority: unspecified
+            dscp_target: unspecified
+            cos_target: unspecified
+          egress_rules:
+            cos_target: unspecified
+            exp_target: unspecified
+        bfd_multihop_node_policies:
+          name_suffix: ''
+          detection_multiplier: 3
+          min_rx_interval: 250
+          min_tx_interval: 250
       services:
         l4l7_devices:
           name_suffix: ""
@@ -1161,3 +1211,4 @@ defaults:
                 ospf: false
                 connected: false
                 static: false
+      

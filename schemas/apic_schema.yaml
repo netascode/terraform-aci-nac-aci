@@ -1471,6 +1471,7 @@ tenant:
   oob_endpoint_groups: list(include('ten_oob_endpoint_groups'), required=False) # @ref_name(OOB Endpoint Group)
   ext_mgmt_instances: list(include('ten_ext_mgmt_instances'), required=False) # @ref_name(EXT MGMT Instance)
   l3outs: list(include('ten_l3outs'), required=False) # @ref_name(L3out)
+  sr_mpls_l3outs: list(include('ten_sr_mpls_l3outs'), required=False)
   filters: list(include('ten_filters'), required=False) # @ref_name(Filter)
   contracts: list(include('ten_contracts'), required=False) # @ref_name(Contract)
   oob_contracts: list(include('ten_oob_contracts'), required=False) # @ref_name(OOB Contract)
@@ -2284,6 +2285,102 @@ ten_ap_endpoint_groups_l4l7_address_pools:
   from: ip(required=False)
   to: ip(required=False)
 
+ten_sr_mpls_l3outs:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  sr_mpls_infra_l3out: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  transport_data_plane: enum('sr_mpls', 'mpls', required=False)
+  node_profiles: list(include('ten_sr_mpls_l3outs_node_profiles'), required=False)
+  external_endpoint_groups: list(include('ten_sr_mpls_l3outs_external_endpoint_groups'), required=False)
+  inbound_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  outbound_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+ten_sr_mpls_l3outs_node_profiles:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  mpls_custom_qos_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  bfd_multihop_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  nodes: list(include('ten_sr_mpls_l3outs_node_profiles_nodes'), required=False)
+  interface_profiles: list(include('ten_sr_mpls_l3outs_node_profiles_interface_profiles'), required=False) 
+  evpn_connectivity: list(include('ten_sr_mpls_l3outs_node_profiles_evpn_connectivity'), required=False) 
+
+ten_sr_mpls_l3outs_node_profiles_nodes:
+  node_id: int(min=1, max=4000)
+  pod_id: int(min=1, max=255, required=False)
+  router_id: ip(required=False)
+  bgp_evpn_loopback: ip()
+  mpls_transport_loopback: ip()
+  segment_id_index: int(min=0, max=4294967295)
+
+ten_sr_mpls_l3outs_node_profiles_evpn_connectivity:
+  ip: ip()
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  remote_as: int(min=0, max=4294967295)
+  allow_self_as: any(bool(), enum('yes', 'no'), required=False)
+  disable_peer_as_check: any(bool(), enum('yes', 'no'), required=False)
+  ttl: int(min=1, max=255, required=False)
+  bfd: bool(required=False)
+  password: str(required=False)
+  peer_prefix_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  admin_state: bool(required=False)
+  local_as: int(min=0, max=4294967295, required=False)
+  as_propagate: enum('none', 'no-prepend', 'replace-as', 'dual-as', required=False)
+
+ten_sr_mpls_l3outs_node_profiles_interface_profiles:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  bfd_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  interfaces: list(include('ten_sr_mpls_l3outs_node_profiles_interface_profiles_interfaces'), required=False)
+
+ten_sr_mpls_l3outs_node_profiles_interface_profiles_interfaces:
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  node_id: int(min=1, max=4000, required=False)
+  pod_id: int(min=1, max=255, required=False)
+  module: int(min=1, max=9, required=False)
+  port: int(min=1, max=127, required=False)
+  channel: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  ip: ip(required=False)
+  vlan: int(min=1, max=4096, required=False)
+  mac: mac(required=False)
+  mtu: any(enum('inherit'), int(min=576, max=9216), required=False)
+  bgp_peers: list(include('ten_sr_mpls_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers'), required=False)
+
+ten_sr_mpls_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers:
+  ip: ip()
+  remote_as: int(min=0, max=4294967295)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  allow_self_as: bool(required=False)
+  send_community: bool(required=False)
+  send_ext_community: bool(required=False)
+  password: str(required=False)
+  bfd: bool(required=False)
+  unicast_address_family: bool(required=False)
+  admin_state: bool(required=False)
+  local_as: int(min=0, max=4294967295, required=False)
+  peer_prefix_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+ten_sr_mpls_l3outs_external_endpoint_groups:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  preferred_group: bool(required=False)
+  subnets: list(include('ten_sr_mpls_l3outs_external_endpoint_groups_subnets'), required=False)
+  contracts: include('ten_sr_mpls_l3outs_external_endpoint_groups_contracts', required=False) 
+
+ten_sr_mpls_l3outs_external_endpoint_groups_subnets:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  prefix: ip()
+  route_leaking: bool(required=False)
+  security: bool(required=False)
+  aggregate_shared_route_control: bool(required=False)
+
+ten_sr_mpls_l3outs_external_endpoint_groups_contracts:
+  consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) 
+  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) 
+  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) 
+
 ten_policies:
   ospf_interface_policies: list(include('ten_ospf_interface_policies'), required=False)
   bgp_timer_policies: list(include('ten_bgp_timer_policy'), required=False)
@@ -2304,6 +2401,8 @@ ten_policies:
   trust_control_policies: list(include('ten_trust_control_policies'), required=False) # @ref_name(Trust Control Policy)
   span: include('ten_span', required=False) # @flatten()
   qos: list(include('ten_qos'), required=False) # @name(QoS Policies) @ref_name(QoS Policy)
+  mpls_custom_qos_policies: list(include('ten_mpls_custom_qos_policies'), required=False) 
+  bfd_multihop_node_policies: list(include('ten_bfd_multihop_node_policies'), required=False)
 
 ten_ospf_interface_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2637,6 +2736,33 @@ ten_span_source_groups_expected_state:
   maximum_critical_faults: int(min=0, required=False)
   maximum_major_faults: int(min=0, required=False)
   maximum_minor_faults: int(min=0, required=False)
+
+ten_mpls_custom_qos_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  ingress_rules: list(include('ten_mpls_custom_qos_ingress_rules'), required=False) 
+  egress_rules: list(include('ten_mpls_custom_qos_egress_ruless'), required=False)
+
+ten_mpls_custom_qos_ingress_rules:
+  priority: enum('unspecified', 'level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'level7', required=False)
+  exp_from: any(enum('unspecified'), int(min=0, max=7))
+  exp_to: any(enum('unspecified'),  int(min=0, max=7))
+  dscp_target: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63), required=False)
+  cos_target: any(enum('unspecified'), int(min=0, max=7), required=False)
+
+ten_mpls_custom_qos_egress_ruless:
+  dscp_from: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63))
+  dscp_to: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63))
+  exp_target: any(enum('unspecified'), int(min=0, max=7), required=False)
+  cos_target: any(enum('unspecified'), int(min=0, max=7), required=False)
+
+ten_bfd_multihop_node_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  detection_multiplier: int(min=1, max=50, required=False)
+  min_rx_interval: int(min=50, max=999, required=False)
+  min_tx_interval: int(min=50, max=999, required=False)
 
 ten_services:
   l4l7_devices: list(include('ten_ser_l4l7_devices'), required=False) # @ref_name(L4L7 Device)

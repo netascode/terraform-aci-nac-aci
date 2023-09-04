@@ -1507,6 +1507,30 @@ tenant_objects:
       - config
     paths:
       - apic.tenants.policies.qos
+  - name: BFD Multihop Node Policy
+    template: bfd_multihop_node_policy
+    folder: tenants
+    aci_classes:
+      - bfdMhNodePol
+    scope:
+      - user
+      - mgmt
+      - infra
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.bfd_multihop_node_policies
+  - name: MPLS Custom QoS Policy
+    template: mpls_custom_qos_policy
+    folder: tenants
+    aci_classes:
+      - qosMplsCustomPol
+    scope:
+      - infra
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.mpls_custom_qos_policies
   - name: Service EPG Policy
     template: service_epg_policy
     folder: tenants
@@ -1632,6 +1656,56 @@ tenant_objects:
       - health
     paths:
       - apic.tenants.oob_contracts
+  - name: SR MPLS L3out
+    template: sr_mpls_l3out
+    folder: tenants
+    aci_classes:
+      - l3extOut
+      - l3extLNodeP
+      - bgpExtP
+      - l3extRsL3DomAtt
+      - l3extRsEctx
+      - l3extProvLbl
+      - l3extConsLbl
+    match_dn: 'uni\/tn-%%TENANT%%\/out-.*'
+    delete_ignore:
+      - uni/tn-common/out-default/rsectx
+    delete_ignore_attr:
+      - dn
+    scope:
+      - user
+      - mgmt
+      - infra
+    test_types:
+      - config
+      - health
+      - operational
+    paths:
+      - apic.tenants.sr_mpls_l3outs.name
+      - apic.tenants.sr_mpls_l3outs.alias
+      - apic.tenants.sr_mpls_l3outs.description
+      - apic.tenants.sr_mpls_l3outs.vrf
+      - apic.tenants.sr_mpls_l3outs.domain
+      - apic.tenants.sr_mpls_l3outs.transport_data_plane
+      - apic.tenants.sr_mpls_l3outs.node_profiles
+      - apic.tenants.sr_mpls_l3outs.inbound_route_map
+      - apic.tenants.sr_mpls_l3outs.outbound_route_map
+      - apic.tenants.sr_mpls_l3outs.sr_mpls_infra_l3out
+  - name: SR MPLS External Endpoint Group
+    template: sr_external_endpoint_group
+    folder: tenants
+    aci_classes:
+      - l3extInstP
+      - l3extConsLbl
+    scope:
+      - user
+      - mgmt
+      - infra
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.sr_mpls_l3outs.external_endpoint_groups
 
 test_objects:
   - name: System

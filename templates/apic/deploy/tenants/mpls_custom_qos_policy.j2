@@ -1,0 +1,61 @@
+{# iterate_list apic.tenants name item[2] #}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for qos_policy in tenant.policies.mpls_custom_qos_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = qos_policy.name ~ defaults.apic.tenants.policies.mpls_custom_qos_policies.name_suffix %}
+            {
+                "qosMplsCustomPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ policy_name }}",
+                        "descr": "{{ qos_policy.description | default() }}",
+                        "nameAlias": "{{ qos_policy.alias | default() }}",
+                        "dn": "uni/tn-{{ tenant.name }}/qosmplscustom-{{ policy_name }}",
+                        "childAction": "deleteNonPresent"
+                    }
+                    ,
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for ir in qos_policy.ingress_rules | default([]) %}{{ comma2() }}
+                        {
+                            "qosMplsIngressRule": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "from": "{{ ir.exp_from }}",
+                                    "prio": "{{ ir.priority | default(defaults.apic.tenants.policies.mpls_custom_qos_policies.ingress_rules.priority) }}",
+                                    "target": "{{ ir.dscp_target | default(defaults.apic.tenants.policies.mpls_custom_qos_policies.ingress_rules.dscp_target) }}",
+                                    "targetCos": "{{ ir.cos_target | default(defaults.apic.tenants.policies.mpls_custom_qos_policies.ingress_rules.cos_target) }}",
+                                    "to": "{{ ir.exp_to }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        {%- for er in qos_policy.egress_rules | default([]) %}{{ comma2() }}
+                        {
+                            "qosMplsEgressRule": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "from": "{{ er.dscp_from }}",
+                                    "targetExp": "{{ er.exp_target | default(defaults.apic.tenants.policies.mpls_custom_qos_policies.egress_rules.exp_target) }}",
+                                    "targetCos": "{{ er.cos_target | default(defaults.apic.tenants.policies.mpls_custom_qos_policies.egress_rules.cos_target) }}",
+                                    "to": "{{ er.dscp_to }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}
