@@ -670,6 +670,8 @@ locals {
         ospf_area_type                          = try(l3out.ospf.area_type, local.defaults.apic.tenants.l3outs.ospf.area_type)
         l3_multicast_ipv4                       = try(l3out.l3_multicast_ipv4, local.defaults.apic.tenants.l3outs.l3_multicast_ipv4)
         target_dscp                             = try(l3out.target_dscp, local.defaults.apic.tenants.l3outs.target_dscp)
+        import_route_control_enforcement        = try(l3out.import_route_control_enforcement, local.defaults.apic.tenants.l3outs.import_route_control_enforcement)
+        export_route_control_enforcement        = try(l3out.export_route_control_enforcement, local.defaults.apic.tenants.l3outs.export_route_control_enforcement)
         interleak_route_map                     = try("${l3out.interleak_route_map}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", "")
         dampening_ipv4_route_map                = try("${l3out.dampening_ipv4_route_map}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", "")
         dampening_ipv6_route_map                = try("${l3out.dampening_ipv6_route_map}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", "")
@@ -726,6 +728,8 @@ module "aci_l3out" {
   ospf_area_type                          = each.value.ospf_area_type
   l3_multicast_ipv4                       = each.value.l3_multicast_ipv4
   target_dscp                             = each.value.target_dscp
+  import_route_control_enforcement        = each.value.import_route_control_enforcement
+  export_route_control_enforcement        = each.value.export_route_control_enforcement
   interleak_route_map                     = each.value.interleak_route_map
   dampening_ipv4_route_map                = each.value.dampening_ipv4_route_map
   dampening_ipv6_route_map                = each.value.dampening_ipv6_route_map

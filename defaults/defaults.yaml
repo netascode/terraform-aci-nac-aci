@@ -1241,4 +1241,3 @@ defaults:
                 ospf: false
                 connected: false
                 static: false
-      
