@@ -5,6 +5,7 @@
 - Add support for static leafs under an EPG
 - Add `auto` to allowed values for `speed` in link level policies
 - Add support for tenant security domains
+- Add support for route tag policies
 
 ## 0.7.0
 

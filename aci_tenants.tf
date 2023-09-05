@@ -2174,6 +2174,35 @@ module "aci_multicast_route_map" {
 }
 
 locals {
+  route_tag_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.route_tag_policies, []) : {
+        key         = format("%s/%s", tenant.name, policy.name)
+        tenant      = tenant.name
+        name        = "${policy.name}${local.defaults.apic.tenants.policies.route_tag_policies.name_suffix}"
+        description = try(policy.description, "")
+        tag         = try(policy.tag, local.defaults.apic.tenants.policies.route_tag_policies.tag)
+      }
+    ]
+  ])
+}
+
+module "aci_route_tag_policy" {
+  source  = "netascode/route-tag-policy/aci"
+  version = "0.1.0"
+
+  for_each    = { for pol in local.route_tag_policies : pol.key => pol if local.modules.aci_route_tag_policy && var.manage_tenants }
+  tenant      = each.value.tenant
+  name        = each.value.name
+  description = each.value.description
+  tag         = each.value.tag
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
   l4l7_devices = flatten([
     for tenant in local.tenants : [
       for device in try(tenant.services.l4l7_devices, []) : {

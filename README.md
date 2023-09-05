@@ -265,6 +265,7 @@ Additional example repositories:
 | <a name="module_aci_remote_location"></a> [aci\_remote\_location](#module\_aci\_remote\_location) | netascode/remote-location/aci | 0.1.1 |
 | <a name="module_aci_rogue_endpoint_control"></a> [aci\_rogue\_endpoint\_control](#module\_aci\_rogue\_endpoint\_control) | netascode/rogue-endpoint-control/aci | 0.1.0 |
 | <a name="module_aci_route_control_route_map"></a> [aci\_route\_control\_route\_map](#module\_aci\_route\_control\_route\_map) | netascode/route-control-route-map/aci | 0.1.1 |
+| <a name="module_aci_route_tag_policy"></a> [aci\_route\_tag\_policy](#module\_aci\_route\_tag\_policy) | netascode/route-tag-policy/aci | 0.1.0 |
 | <a name="module_aci_routed_domain"></a> [aci\_routed\_domain](#module\_aci\_routed\_domain) | netascode/routed-domain/aci | 0.1.0 |
 | <a name="module_aci_service_epg_policy"></a> [aci\_service\_epg\_policy](#module\_aci\_service\_epg\_policy) | netascode/service-epg-policy/aci | 0.1.0 |
 | <a name="module_aci_service_graph_template"></a> [aci\_service\_graph\_template](#module\_aci\_service\_graph\_template) | netascode/service-graph-template/aci | 0.1.0 |
