@@ -19,4 +19,6 @@ apic:
     - name: ABC
       alias: ABC-ALIAS
       description: My Description
+      security_domains:
+        - SECURITY-DOMAIN1
 ```

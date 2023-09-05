@@ -1530,6 +1530,7 @@ tenant:
   imported_contracts: list(include('ten_imported_contracts'), required=False) # @ref_name(Imported Contract)
   policies: include('ten_policies', required=False) # @flatten()
   services: include('ten_services', required=False) # @flatten()
+  security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False)
   expected_state: include('ten_expected_state', required=False) # @no_external_doc()
 
 ten_vrf:

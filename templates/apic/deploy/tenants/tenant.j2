@@ -23,7 +23,22 @@
                         "dn": "uni/tn-{{ tenant.name }}",
                         "nameAlias": "{{ tenant.alias | default() }}",
                         "descr": "{{ tenant.description | default() }}"
-                    }
+                    },
+                    "children": [
+                            {%- set comma2 = joiner(",") %}
+                            {%- for sd in tenant.security_domains | default([]) %}{{ comma2() }}
+                            {
+                                "aaaDomainRef": {
+                                    "attributes": {
+                                        "annotation": "orchestrator:aac",
+                                        "name": "{{ sd }}",
+                                        "dn": "uni/tn-{{ tenant.name }}/domain-{{ sd }}"
+                                    }
+                                }
+                            }
+                            {%- endfor %}
+
+                        ]
                 }
             }
             {%- endfor %}

@@ -4,6 +4,9 @@ apic:
     - name: ABC
       alias: ABC-ALIAS
       description: My Description
+      security_domains:
+        - SECURITY-DOMAIN1
+        - SECURITY-DOMAIN2
       vrfs:
         - name: VRF1
           alias: VRF1-ALIAS
