@@ -1,6 +1,6 @@
 module "aci_tenant" {
   source  = "netascode/tenant/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
   for_each         = { for tenant in local.tenants : tenant.name => tenant if try(tenant.managed, local.defaults.apic.tenants.managed, true) && local.modules.aci_tenant && var.manage_tenants }
   name             = each.value.name

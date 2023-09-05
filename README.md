@@ -277,7 +277,7 @@ Additional example repositories:
 | <a name="module_aci_syslog_policy"></a> [aci\_syslog\_policy](#module\_aci\_syslog\_policy) | netascode/syslog-policy/aci | 0.2.1 |
 | <a name="module_aci_system_global_gipo"></a> [aci\_system\_global\_gipo](#module\_aci\_system\_global\_gipo) | netascode/system-global-gipo/aci | 0.1.0 |
 | <a name="module_aci_tacacs"></a> [aci\_tacacs](#module\_aci\_tacacs) | netascode/tacacs/aci | 0.1.1 |
-| <a name="module_aci_tenant"></a> [aci\_tenant](#module\_aci\_tenant) | netascode/tenant/aci | 0.1.0 |
+| <a name="module_aci_tenant"></a> [aci\_tenant](#module\_aci\_tenant) | netascode/tenant/aci | 0.1.1 |
 | <a name="module_aci_tenant_span_destination_group"></a> [aci\_tenant\_span\_destination\_group](#module\_aci\_tenant\_span\_destination\_group) | netascode/tenant-span-destination-group/aci | 0.1.1 |
 | <a name="module_aci_tenant_span_source_group"></a> [aci\_tenant\_span\_source\_group](#module\_aci\_tenant\_span\_source\_group) | netascode/tenant-span-source-group/aci | 0.1.0 |
 | <a name="module_aci_trust_control_policy"></a> [aci\_trust\_control\_policy](#module\_aci\_trust\_control\_policy) | netascode/trust-control-policy/aci | 0.1.0 |
