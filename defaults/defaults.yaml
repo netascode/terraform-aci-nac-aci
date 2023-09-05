@@ -699,8 +699,6 @@ defaults:
         target_dscp: unspecified
         qos_class: unspecified
         import_route_control_enforcement: false
-        export_route_control_enforcement: tru
-        import_route_control_enforcement: false
         export_route_control_enforcement: true
         ospf:
           auth_key_id: 1
