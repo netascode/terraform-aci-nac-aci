@@ -711,7 +711,7 @@ locals {
 
 module "aci_l3out" {
   source  = "netascode/l3out/aci"
-  version = "0.2.2"
+  version = "0.2.3"
 
   for_each                                = { for l3out in local.l3outs : l3out.key => l3out if local.modules.aci_l3out && var.manage_tenants }
   tenant                                  = each.value.tenant

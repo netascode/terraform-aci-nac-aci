@@ -7,6 +7,7 @@
 - Add support for tenant security domains
 - Add support for route tag policies
 - Add support for VRF transit route tag policies
+- Add support for L3out route control enforcement
 
 ## 0.7.0
 
