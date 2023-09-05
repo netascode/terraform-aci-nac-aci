@@ -25,6 +25,7 @@ locals {
         contract_providers                      = try([for contract in vrf.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
         contract_imported_consumers             = try([for contract in vrf.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
         preferred_group                         = try(vrf.preferred_group, local.defaults.apic.tenants.vrfs.preferred_group)
+        transit_route_tag_policy                = try(vrf.transit_route_tag_policy, null) != null ? "${vrf.transit_route_tag_policy}${local.defaults.apic.tenants.policies.route_tag_policies.name_suffix}" : ""
         bgp_timer_policy                        = try("${vrf.bgp.timer_policy}${local.defaults.apic.tenants.policies.bgp_timer_policies.name_suffix}", "")
         bgp_ipv4_address_family_context_policy  = try("${vrf.bgp.ipv4_address_family_context_policy}${local.defaults.apic.tenants.policies.bgp_address_family_context_policies.name_suffix}", "")
         bgp_ipv6_address_family_context_policy  = try("${vrf.bgp.ipv6_address_family_context_policy}${local.defaults.apic.tenants.policies.bgp_address_family_context_policies.name_suffix}", "")
@@ -96,7 +97,7 @@ locals {
 
 module "aci_vrf" {
   source  = "netascode/vrf/aci"
-  version = "0.2.3"
+  version = "0.2.4"
 
   for_each                                 = { for vrf in local.vrfs : vrf.key => vrf if local.modules.aci_vrf && var.manage_tenants }
   tenant                                   = each.value.tenant
@@ -110,6 +111,7 @@ module "aci_vrf" {
   contract_providers                       = each.value.contract_providers
   contract_imported_consumers              = each.value.contract_imported_consumers
   preferred_group                          = each.value.preferred_group
+  transit_route_tag_policy                 = each.value.transit_route_tag_policy
   bgp_timer_policy                         = each.value.bgp_timer_policy
   bgp_ipv4_address_family_context_policy   = each.value.bgp_ipv4_address_family_context_policy
   bgp_ipv6_address_family_context_policy   = each.value.bgp_ipv6_address_family_context_policy

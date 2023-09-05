@@ -287,7 +287,7 @@ Additional example repositories:
 | <a name="module_aci_vmware_vmm_domain"></a> [aci\_vmware\_vmm\_domain](#module\_aci\_vmware\_vmm\_domain) | netascode/vmware-vmm-domain/aci | 0.2.5 |
 | <a name="module_aci_vpc_group"></a> [aci\_vpc\_group](#module\_aci\_vpc\_group) | netascode/vpc-group/aci | 0.2.0 |
 | <a name="module_aci_vpc_policy"></a> [aci\_vpc\_policy](#module\_aci\_vpc\_policy) | netascode/vpc-policy/aci | 0.1.0 |
-| <a name="module_aci_vrf"></a> [aci\_vrf](#module\_aci\_vrf) | netascode/vrf/aci | 0.2.3 |
+| <a name="module_aci_vrf"></a> [aci\_vrf](#module\_aci\_vrf) | netascode/vrf/aci | 0.2.4 |
 | <a name="module_aci_vspan_destination_group"></a> [aci\_vspan\_destination\_group](#module\_aci\_vspan\_destination\_group) | netascode/vspan-destination-group/aci | 0.1.1 |
 | <a name="module_aci_vspan_session"></a> [aci\_vspan\_session](#module\_aci\_vspan\_session) | netascode/vspan-session/aci | 0.1.0 |
 <!-- END_TF_DOCS -->
