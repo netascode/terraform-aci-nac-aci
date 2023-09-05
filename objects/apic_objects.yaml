@@ -1032,6 +1032,7 @@ objects:
       - apic.tenants.description
       - apic.tenants.managed
       - apic.tenants.expected_state
+      - apic.tenants.security_domains
   - name: Smart Licensing
     template: smart_licensing
     folder: fabric_policies
