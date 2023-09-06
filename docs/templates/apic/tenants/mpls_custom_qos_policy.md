@@ -26,8 +26,8 @@ apic:
                 dscp_target: AF11
                 cos_target: 0
             egress_rules:
-              - dscp_from: af11
-                dscp_to: af12
+              - dscp_from: AF11
+                dscp_to: AF12
                 exp_target: 0
                 cos_target: 0
 ```
