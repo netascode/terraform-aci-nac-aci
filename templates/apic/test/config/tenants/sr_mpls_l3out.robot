@@ -122,7 +122,7 @@ Verify SR MPLS L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface
 {% set pod = int.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
 {% endif %}
 {% if type == 'ap' %}
-{% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.sr_mpls_l3outs.nodes.interfaces.pod) ~ "/paths-" ~ int.node_id ~ "/pathep-[eth" ~ int.module | default(defaults.apic.tenants.sr_mpls_l3outs.nodes.interfaces.module) ~ "/" ~ int.port ~ "]" %}
+{% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.sr_mpls_l3outs.nodes.interfaces.pod) ~ "/paths-" ~ int.node_id ~ "/pathep-[eth" ~ int.module | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.module) ~ "/" ~ int.port ~ "]" %}
 {% elif type == 'pc' %}
 {% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.sr_mpls_l3outs.nodes.interfaces.pod) ~ "/paths-" ~ node ~ "/pathep-[" ~ policy_group_name ~ "]" %}
 {% endif %}
