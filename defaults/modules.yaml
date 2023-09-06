@@ -115,6 +115,7 @@ modules:
   aci_remote_location: true
   aci_rogue_endpoint_control: true
   aci_route_control_route_map: true
+  aci_route_tag_policy: true
   aci_routed_domain: true
   aci_service_epg_policy: true
   aci_service_graph_template: true
