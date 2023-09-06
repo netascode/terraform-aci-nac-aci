@@ -22,7 +22,7 @@ apic:
             ingress_rules:
               - priority: level1
                 exp_from: 1
-                exp_from: 2
+                exp_to: 2
                 dscp_target: AF11
                 cos_target: 0
             egress_rules:
