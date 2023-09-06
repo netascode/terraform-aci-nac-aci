@@ -15,7 +15,7 @@
                         "basedn": "{{ prov.base_dn | default() }}",
                         "descr": "{{ prov.description | default() }}",
                         "enableSSL": "{{ prov.enable_ssl | default(defaults.apic.fabric_policies.aaa.ldap.providers.enable_ssl) | cisco.aac.aac_bool("yes") }}",
-                        "filter": "{{ prov.filter | default(defaults.apic.fabric_policies.aaa.ldap.providers.filter) }}",
+                        "filter": "{{ prov.filter | default() }}",
                         "key": "{{ prov.password | default() }}",
                         "monitorServer": "{{ prov.server_monitoring | default(defaults.apic.fabric_policies.aaa.ldap.providers.server_monitoring) | cisco.aac.aac_bool("enabled") }}",
                         {% if prov.monitoring | default(defaults.apic.fabric_policies.aaa.ldap.providers.server_monitoring) | cisco.aac.aac_bool("enabled") == "enabled" %}

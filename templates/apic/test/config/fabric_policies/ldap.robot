@@ -15,7 +15,7 @@ Verify LDAP Provider {{ prov.hostname_ip }}
     Should Be Equal Value Json String   ${r.json()}    $..aaaLdapProvider.attributes.basedn   {{ prov.base_dn | default() }}
     Should Be Equal Value Json String   ${r.json()}    $..aaaLdapProvider.attributes.descr   {{ prov.description | default() }}
     Should Be Equal Value Json String   ${r.json()}    $..aaaLdapProvider.attributes.enableSSL   {{ prov.enable_ssl | default(defaults.apic.fabric_policies.aaa.ldap.providers.enable_ssl) | cisco.aac.aac_bool("yes") }}
-    Should Be Equal Value Json String   ${r.json()}    $..aaaLdapProvider.attributes.filter   {{ prov.filter | default(defaults.apic.fabric_policies.aaa.ldap.providers.filter) }}
+    Should Be Equal Value Json String   ${r.json()}    $..aaaLdapProvider.attributes.filter   {{ prov.filter | default() }}
     Should Be Equal Value Json String   ${r.json()}    $..aaaLdapProvider.attributes.monitorServer   {{ prov.server_monitoring | default(defaults.apic.fabric_policies.aaa.ldap.providers.server_monitoring) | cisco.aac.aac_bool("enabled") }}
     Should Be Equal Value Json String   ${r.json()}    $..aaaLdapProvider.attributes.port   {{ prov.port | default(defaults.apic.fabric_policies.aaa.ldap.providers.port) }}
     Should Be Equal Value Json String   ${r.json()}    $..aaaLdapProvider.attributes.retries   {{ prov.retries | default(defaults.apic.fabric_policies.aaa.ldap.providers.retries) }}
