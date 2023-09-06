@@ -155,7 +155,7 @@ Verify SR MPLS L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface
 {% set peer_ctrl = [] %}
 {% if peer.bfd | default(defaults.apic.tenants.sr_mpls_l3outs.nodes.interfaces.bgp_peers.bfd) | cisco.aac.aac_bool("yes") == "yes" %}{% set peer_ctrl = peer_ctrl + [("bfd")] %}{% endif %}
 {% set af = ["af-label-ucast"] %}
-{% if peer.unicast_address_family | default(defaults.apic.tenants.sr_mpls_l3outs.nodes.interfaces.bgp_peers.unicast_address_family) | cisco.aac.aac_bool("yes") == "yes" %}{% set af = af + [("af-ucast")] %}{% endif %}
+{% if peer.unicast_address_family | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.unicast_address_family) | cisco.aac.aac_bool("yes") == "yes" %}{% set af = af + [("af-ucast")] %}{% endif %}
 
 Verify SR MPLS L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile {{ l3out_ip_name }} Interface {{ loop.index }} BGP Peer {{ peer.ip }}
     ${np}=   Set Variable   $..l3extOut.children[?(@.l3extLNodeP.attributes.name=='{{ l3out_np_name }}')]
