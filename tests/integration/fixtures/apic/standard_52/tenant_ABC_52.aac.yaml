@@ -86,7 +86,7 @@ apic:
                       vmware_vmm_domain: VMM1
                       elag: ELAGDefault
       sr_mpls_l3outs:
-        - name: ABC_SR_MPLS_L3OUT 
+        - name: ABC_SR_MPLS_L3OUT
           vrf: VRF1
           sr_mpls_infra_l3out: INFRA_SR_MPLS_L3
           outbound_route_map: export-map
