@@ -635,15 +635,21 @@ module "aci_user" {
 
 module "aci_login_domain" {
   source  = "netascode/login-domain/aci"
-  version = "0.2.0"
+  version = "0.2.1"
 
-  for_each    = { for dom in try(local.fabric_policies.aaa.login_domains, []) : dom.name => dom if local.modules.aci_login_domain && var.manage_fabric_policies }
-  name        = each.value.name
-  description = try(each.value.description, "")
-  realm       = try(each.value.realm, "")
+  for_each       = { for dom in try(local.fabric_policies.aaa.login_domains, []) : dom.name => dom if local.modules.aci_login_domain && var.manage_fabric_policies }
+  name           = each.value.name
+  description    = try(each.value.description, "")
+  realm          = try(each.value.realm, "")
+  auth_choice    = try(each.value.auth_choice, local.defaults.apic.fabric_policies.aaa.login_domains.auth_choice)
+  ldap_group_map = try(each.value.ldap_group_map, "")
   tacacs_providers = [for prov in try(each.value.tacacs_providers, []) : {
     hostname_ip = prov.hostname_ip
     priority    = try(prov.priority, local.defaults.apic.fabric_policies.aaa.login_domains.tacacs_providers.priority)
+  }]
+  ldap_providers = [for prov in try(each.value.ldap_providers, []) : {
+    hostname_ip = prov.hostname_ip
+    priority    = try(prov.priority, local.defaults.apic.fabric_policies.aaa.login_domains.ldap_providers.priority)
   }]
 
   depends_on = [
