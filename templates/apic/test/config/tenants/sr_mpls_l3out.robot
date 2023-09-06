@@ -8,7 +8,7 @@ Resource        ../../../apic_common.resource
 *** Test Cases ***
 {% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for l3out in tenant.sr_mpls_l3outs | default([]) %}
-{% if l3out.transport_data_plane == 'mpls' %}
+{% if l3out.transport_data_plane | default(defaults.apic.tenants.sr_mpls_l3outs.transport_data_plane) == 'mpls' %}
     {% set sr = false %}
 {% else %}
     {% set sr = true %}
