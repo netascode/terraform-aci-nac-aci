@@ -226,14 +226,6 @@ defaults:
             priority: 0
           ldap_providers:
             priority: 0
-            port: 389
-            timeout: 30
-            retries: 1
-            enable_ssl: false 
-            monitoring_username: default
-            filter: cn=$userid
-            ssl_validation_level: strict
-            server_monitoring: disabled
         users:
           status: active
           expires: false
@@ -247,9 +239,9 @@ defaults:
           modulus: "mod2048"
         ldap:
           providers:
-            enable_ssl: false 
+            enable_ssl: false
             monitoring_username: default
-            server_monitoring: false 
+            server_monitoring: false
             port: 389
             retries: 1
             ssl_validation_level: strict
@@ -1162,7 +1154,7 @@ defaults:
             version: 2
             enforce_version: false
         mpls_custom_qos_policies:
-          name_suffix: ''
+          name_suffix: ""
           ingress_rules:
             priority: unspecified
             dscp_target: unspecified
@@ -1171,7 +1163,7 @@ defaults:
             cos_target: unspecified
             exp_target: unspecified
         bfd_multihop_node_policies:
-          name_suffix: ''
+          name_suffix: ""
           detection_multiplier: 3
           min_rx_interval: 250
           min_tx_interval: 250
