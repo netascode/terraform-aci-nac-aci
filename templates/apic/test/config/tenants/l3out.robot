@@ -874,7 +874,7 @@ Verify SR MPLS L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface
     {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
     {% set node = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
 {% endif %}
-{% set query = "nodes[?id==`" ~ node_ ~ "`].pod" %}
+{% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
 {% set pod = int.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
 {% endif %}
 {% if type == 'ap' %}
