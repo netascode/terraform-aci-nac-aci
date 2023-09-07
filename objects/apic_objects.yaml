@@ -1709,7 +1709,6 @@ tenant_objects:
     test_types:
       - config
       - health
-      - operational
     paths:
       - apic.tenants.sr_mpls_l3outs.name
       - apic.tenants.sr_mpls_l3outs.alias

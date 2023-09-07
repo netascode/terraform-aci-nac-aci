@@ -10,6 +10,7 @@
                 "aaaLdapProvider": {
                     "attributes": {
                         "annotation": "orchestrator:aac",
+                        "dn": "uni/userext/ldapext/ldapprovider-{{ prov.hostname_ip }}",
                         "SSLValidationLevel": "{{ prov.ssl_validation_level | default(defaults.apic.fabric_policies.aaa.ldap.providers.ssl_validation_level) }}",
                         "attribute": "{{ prov.attribute | default() }}",
                         "basedn": "{{ prov.base_dn | default() }}",
@@ -52,6 +53,7 @@
                 "aaaLdapGroupMapRule": {
                     "attributes": {
                         "annotation": "orchestrator:aac",
+                        "dn": "uni/userext/ldapext/ldapgroupmaprule-{{ rule.name }}",
                         "descr": "{{ rule.description | default() }}",
                         "groupdn": "{{ rule.group_dn | default() }}",
                         "name": "{{ rule.name }}",
@@ -64,7 +66,7 @@
                             "aaaUserDomain": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
-                                    "name": "{{ dom.name }}"
+                                    "name": "{{ dom.name }}",
                                     "childAction": "deleteNonPresent"
                                 },
                                 "children": [ 
@@ -95,6 +97,7 @@
                 "aaaLdapGroupMap": {
                     "attributes": {
                         "annotation": "orchestrator:aac",
+                        "dn": "uni/userext/ldapext/ldapgroupmap-{{ group.name }}",
                         "descr": "{{ group.description | default() }}",
                         "name": "{{ group.name }}",
                         "childAction": "deleteNonPresent"

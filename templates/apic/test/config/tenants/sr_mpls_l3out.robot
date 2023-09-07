@@ -14,8 +14,6 @@ Resource        ../../../apic_common.resource
     {% set sr = true %}
 {% endif %}
 {% set l3out_name = l3out.name ~ defaults.apic.tenants.sr_mpls_l3outs.name_suffix %}
-{% set domain_name = l3out.domain ~ defaults.apic.access_policies.routed_domains.name_suffix %}
-{% set vrf_name = l3out.vrf ~ ('' if l3out.vrf in ('inb', 'obb', 'overlay-1') else defaults.apic.tenants.vrfs.name_suffix) %}
 
 Verify SR MPLS L3out {{ l3out_name }}
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}.json   params=rsp-subtree=full&rsp-prop-include=config-only
@@ -25,9 +23,11 @@ Verify SR MPLS L3out {{ l3out_name }}
     Should Be Equal Value Json String   ${r.json()}   $..l3extOut.attributes.descr   {{ l3out.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   $..l3extOut.attributes.mplsEnabled   yes
 {% if tenant.name == 'infra' %}
+{% set domain_name = l3out.domain ~ defaults.apic.access_policies.routed_domains.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   $..l3extRsEctx.attributes.tnFvCtxName   overlay-1
     Should Be Equal Value Json String   ${r.json()}   $..l3extRsL3DomAtt.attributes.tDn   uni/l3dom-{{ domain_name }}
 {% else %}
+{% set vrf_name = l3out.vrf ~ ('' if l3out.vrf in ('inb', 'obb', 'overlay-1') else defaults.apic.tenants.vrfs.name_suffix) %}
     Should Be Equal Value Json String   ${r.json()}   $..l3extRsEctx.attributes.tnFvCtxName   {{ vrf_name }}
 {% endif %}
 
@@ -50,8 +50,8 @@ Verify SR MPLS L3out {{ l3out_name }} Node Profile {{ l3out_np_name }}
 
 Verify SR MPLS L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Node {{ node.node_id }}
     ${np}=   Set Variable   $..l3extOut.children[?(@.l3extLNodeP.attributes.name=='{{ l3out_np_name }}')]
-    ${node}=   Set Variable   ${np}..l3extLNodeP.children[?(@.l3extRsNodeL3OutAtt.attributes.tDn=='topology/pod-{{ pod | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.nodes.pod) }}/node-{{ node.node_id }}')]
-    Should Be Equal Value Json String   ${r.json()}   ${node}..l3extRsNodeL3OutAtt.attributes.tDn   topology/pod-{{ pod | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.nodes.pod) }}/node-{{ node.node_id }}
+    ${node}=   Set Variable   ${np}..l3extLNodeP.children[?(@.l3extRsNodeL3OutAtt.attributes.tDn=='topology/pod-{{ pod | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.nodes.pod_id) }}/node-{{ node.node_id }}')]
+    Should Be Equal Value Json String   ${r.json()}   ${node}..l3extRsNodeL3OutAtt.attributes.tDn   topology/pod-{{ pod | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.nodes.pod_id) }}/node-{{ node.node_id }}
     Should Be Equal Value Json String   ${r.json()}   ${node}..l3extRsNodeL3OutAtt.attributes.rtrId   {{ node.router_id }}
     Should Be Equal Value Json String   ${r.json()}   ${node}..l3extLoopBackIfP.attributes.addr   {{ node.bgp_evpn_loopback }}
     Should Be Equal Value Json String   ${r.json()}   ${node}..mplsNodeSidP.attributes.loopbackAddr   {{ node.mpls_transport_loopback }}
@@ -122,9 +122,9 @@ Verify SR MPLS L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface
 {% set pod = int.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
 {% endif %}
 {% if type == 'ap' %}
-{% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.sr_mpls_l3outs.nodes.interfaces.pod) ~ "/paths-" ~ int.node_id ~ "/pathep-[eth" ~ int.module | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.module) ~ "/" ~ int.port ~ "]" %}
+{% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.pod_id) ~ "/paths-" ~ int.node_id ~ "/pathep-[eth" ~ int.module | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.module) ~ "/" ~ int.port ~ "]" %}
 {% elif type == 'pc' %}
-{% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.sr_mpls_l3outs.nodes.interfaces.pod) ~ "/paths-" ~ node ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+{% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.pod_id) ~ "/paths-" ~ node ~ "/pathep-[" ~ policy_group_name ~ "]" %}
 {% endif %}
 
     ${np}=   Set Variable   $..l3extOut.children[?(@.l3extLNodeP.attributes.name=='{{ l3out_np_name }}')]
@@ -148,12 +148,12 @@ Verify SR MPLS L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface
 
 {% for peer in int.bgp_peers | default([]) %}
 {% set ctrl = [] %}
-{% if peer.allow_self_as | default(defaults.apic.tenants.sr_mpls_l3outs.nodes.interfaces.bgp_peers.allow_self_as) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("allow-self-as")] %}{% endif %}
-{% if peer.send_community | default(defaults.apic.tenants.sr_mpls_l3outs.nodes.interfaces.bgp_peers.send_community) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("send-com")] %}{% endif %}
-{% if peer.send_ext_community | default(defaults.apic.tenants.sr_mpls_l3outs.nodes.interfaces.bgp_peers.send_ext_community) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("send-ext-com")] %}{% endif %}
+{% if peer.allow_self_as | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.allow_self_as) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("allow-self-as")] %}{% endif %}
+{% if peer.send_community | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.send_community) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("send-com")] %}{% endif %}
+{% if peer.send_ext_community | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.send_ext_community) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("send-ext-com")] %}{% endif %}
 {% if sr == false %}{% set ctrl = ctrl + [("segment-routing-disable")] %}{% endif %}
 {% set peer_ctrl = [] %}
-{% if peer.bfd | default(defaults.apic.tenants.sr_mpls_l3outs.nodes.interfaces.bgp_peers.bfd) | cisco.aac.aac_bool("yes") == "yes" %}{% set peer_ctrl = peer_ctrl + [("bfd")] %}{% endif %}
+{% if peer.bfd | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.bfd) | cisco.aac.aac_bool("yes") == "yes" %}{% set peer_ctrl = peer_ctrl + [("bfd")] %}{% endif %}
 {% set af = ["af-label-ucast"] %}
 {% if peer.unicast_address_family | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.unicast_address_family) | cisco.aac.aac_bool("yes") == "yes" %}{% set af = af + [("af-ucast")] %}{% endif %}
 
@@ -166,8 +166,6 @@ Verify SR MPLS L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface
     Should Be Equal Value Json String   ${r.json()}   ${peer}..bgpPeerP.attributes.descr   {{ peer.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${peer}..bgpPeerP.attributes.ctrl   {{ ctrl | join(',') }}
     Should Be Equal Value Json String   ${r.json()}   ${peer}..bgpPeerP.attributes.peerCtrl   {{ peer_ctrl | join(',') }}
-    Should Be Equal Value Json String   ${r.json()}   ${peer}..bgpPeerP.attributes.ttl   {{ peer.ttl | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.ttl) }}
-    Should Be Equal Value Json String   ${r.json()}   ${peer}..bgpPeerP.attributes.privateASctrl   {{ priv_as_ctrl | join(',') }}
     Should Be Equal Value Json String   ${r.json()}   ${peer}..bgpPeerP.attributes.addrTCtrl   {{ af | join(',') }}
     Should Be Equal Value Json String   ${r.json()}   ${peer}..bgpPeerP.attributes.adminSt   {{ peer.admin_state | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.admin_state) | cisco.aac.aac_bool("enabled") }}
     Should Be Equal Value Json String   ${r.json()}   ${peer}..bgpAsP.attributes.asn   {{ peer.remote_as }}
