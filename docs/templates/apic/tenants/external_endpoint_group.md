@@ -14,11 +14,13 @@ The following table maps the subnet flags to the corresponding GUI terminology:
 |`aggregate_shared_route_control`|`Aggregate Shared Routes`|
 
 Location in GUI:
-`Tenants` » `XXX` » `Networking` » `L3outs` » `XXX` » `External EPGs`
+
+- `Tenants` » `XXX` » `Networking` » `L3outs` » `XXX` » `External EPGs`
+- `Tenants` » `XXX` » `Networking` » `SR MPLS L3outs` » `XXX` » `External EPGs`
 
 ### Terraform modules
 
-* [External Endpoint Group](https://registry.terraform.io/modules/netascode/external-endpoint-group/aci/latest)
+- [External Endpoint Group](https://registry.terraform.io/modules/netascode/external-endpoint-group/aci/latest)
 
 {{ aac_doc }}
 
@@ -64,6 +66,31 @@ apic:
                   shared_route_control: false
                   import_security: true
                   shared_security: false
+              contracts:
+                consumers:
+                  - CON1
+                providers:
+                  - CON1
+                imported_consumers:
+                  - IMPORT-CON1
+```
+
+SR MPLS example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      sr_mpls_l3outs:
+        - name: ABC_SR_MPLS_L3OUT 
+          external_endpoint_groups:
+            - name: ext-epg
+              subnets:
+                - name: ALL
+                  prefix: 0.0.0.0/0
+                  route_leaking: true
+                  security: true
+                  aggregate_shared_route_control: true
               contracts:
                 consumers:
                   - CON1

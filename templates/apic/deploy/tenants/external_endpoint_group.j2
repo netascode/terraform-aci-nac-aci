@@ -115,6 +115,132 @@
                 }
             }
             {%- endfor %}
+            {%- for l3out in tenant.sr_mpls_l3outs | default([]) %}{{ comma1() }}
+            {% set l3out_name = l3out.name ~ defaults.apic.tenants.sr_mpls_l3outs.name_suffix %}
+            {
+                "l3extOut": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}",
+                        "name": "{{ l3out_name }}"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- if tenant.name == 'infra' %}{{ comma2() }}
+                        {
+                            "l3extInstP": {
+                                "attributes": { 
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/tn-infra/out-{{ l3out_name }}/instP-{{ l3out_name }}_mplsInstP",
+                                    "name": "{{ l3out_name }}_mplsInstP",
+                                    "childAction": "deleteNonPresent"
+                                }
+                            }
+                        }
+                        {% else %}
+                        {%- for epg in l3out.external_endpoint_groups | default([]) %}{{ comma2() }}
+                        {% set eepg_name = epg.name ~ defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.name_suffix %}
+                        {
+                            "l3extInstP": {
+                                "attributes": { 
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/instP-{{ eepg_name }}",
+                                    "descr": "{{ epg.description | default() }}",
+                                    "name": "{{ eepg_name }}",
+                                    "nameAlias": "{{ epg.alias | default() }}",
+                                    "prefGrMemb": "{{ epg.preferred_group | default(defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.preferred_group) | cisco.aac.aac_bool("include") }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for subnet in epg.subnets | default([]) %}{{ comma3() }}
+                                    {% set scope = ["import-security"] %}
+                                    {% if subnet.route_leaking | default(defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.subnets.route_leaking) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("shared-rtctrl")] %}{% endif %}
+                                    {% if subnet.security | default(defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.subnets.security) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("shared-security")] %}{% endif %}
+                                    {% set agg = [] %}
+                                    {% if subnet.aggregate_shared_route_control | default(defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.subnets.aggregate_shared_route_control) | cisco.aac.aac_bool("yes") == "yes" %}{% set agg = agg + [("shared-rtctrl")] %}{% endif %}
+                                    {
+                                        "l3extSubnet": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "aggregate": "{{ agg | join(',') }}",
+                                                "ip": "{{ subnet.prefix }}",
+                                                "name": "{{ subnet.name | default() }}",
+                                                "scope": "{{ scope | join(',') }}",
+                                                "childAction": "deleteNonPresent"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for contract in epg.contracts.providers | default([]) %}{{ comma3() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
+                                    {
+                                        "fvRsProv": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tnVzBrCPName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for contract in epg.contracts.consumers | default([]) %}{{ comma3() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
+                                    {
+                                        "fvRsCons": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tnVzBrCPName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- for contract in epg.contracts.imported_consumers | default([]) %}{{ comma3() }}
+                                    {% set contract_name = contract ~ defaults.apic.tenants.imported_contracts.name_suffix %}
+                                    {
+                                        "fvRsConsIf": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tnVzCPIfName": "{{ contract_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+                        {%- set infra_l3out_name = l3out.sr_mpls_infra_l3out ~ defaults.apic.tenants.sr_mpls_l3outs.name_suffix %}{{ comma2() }}
+                        {
+                            "l3extConsLbl": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/conslbl-{{ infra_l3out_name }}",
+                                    "name": "{{ infra_l3out_name }}"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for epg in l3out.external_endpoint_groups | default([]) %}{{ comma3() }}
+                                    {% set eepg_name = epg.name ~ defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.name_suffix %}
+                                    {
+                                        "l3extRsLblToInstP": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tDn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/instP-{{ eepg_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                        {%- endif %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
 
         ]
     }

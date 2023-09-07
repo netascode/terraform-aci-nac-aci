@@ -1470,6 +1470,443 @@
                 }
             }
             {%- endfor %}
+            {%- for l3out in tenant.sr_mpls_l3outs | default([]) %}{{ comma1() }}
+            {% if l3out.transport_data_plane | default(defaults.apic.tenants.sr_mpls_l3outs.transport_data_plane) == 'mpls' %}
+                {% set sr = false %}
+            {% else %}
+                {% set sr = true %}
+            {% endif %}
+            {% set l3out_name = l3out.name ~ defaults.apic.tenants.sr_mpls_l3outs.name_suffix %}
+            {
+                "l3extOut": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "descr": "{{ l3out.description | default() }}",
+                        "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}",
+                        "mplsEnabled": "yes",
+                        "name": "{{ l3out_name }}",
+                        "nameAlias": "{{ l3out.alias | default() }}"                        
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- if tenant.name == 'infra' %}{{ comma2() }}
+                        {
+                            "mplsExtP": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/tn-infra/out-{{ l3out_name }}/mplsextp"
+                                },
+                                "children": [
+                                   {
+                                        "mplsRsLabelPol": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tDn": "uni/tn-infra/mplslabelpol-default"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        {%- for np in l3out.node_profiles | default([]) %}
+                        {%- set l3out_np_name = np.name ~ defaults.apic.tenants.sr_mpls_l3outs.node_profiles.name_suffix %}{{ comma2() }}
+                        {
+                            "l3extLNodeP": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/tn-infra/out-{{ l3out_name }}/lnodep-{{ l3out_np_name }}",
+                                    "name": "{{ l3out_np_name }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for node in np.nodes | default([]) %}
+                                    {%- set query = "nodes[?id==`" ~ node.node_id ~ "`].pod" %}
+                                    {%- set pod = node.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}{{ comma3() }}
+                                    {
+                                        "l3extRsNodeL3OutAtt": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "rtrId": "{{ node.router_id }}",
+                                                "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.nodes.pod) }}/node-{{ node.node_id }}",
+                                                "childAction": "deleteNonPresent"
+                                            },
+                                            "children": [
+                                                {
+                                                    "l3extLoopBackIfP": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "addr": "{{ node.bgp_evpn_loopback }}"
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "mplsNodeSidP": {
+                                                                    "attributes": {
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "loopbackAddr": "{{ node.mpls_transport_loopback }}",
+                                                                        "sidoffset": "{{ node.segment_id }}"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- if np.mpls_custom_qos_policy is defined %}{{ comma3() }}
+                                    {
+                                        "l3extRsLNodePMplsCustQosPol": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "dn": "uni/tn-infra/out-{{ l3out_name }}/lnodep-{{ l3out_np_name }}/rslNodePMplsCustQosPol",
+                                                "tDn": "uni/tn-infra/qosmplscustom-{{ np.mpls_custom_qos_policy }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+                                    {%- for peer in np.evpn_connectivity | default([]) %}{{ comma3() }}
+                                    {% set ctrl = [] %}
+                                    {%- if peer.allow_self_as | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.allow_self_as) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("allow-self-as")] %}{% endif %}
+                                    {%- if peer.disable_peer_as_check | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.disable_peer_as_check) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("dis-peer-as-check")] %}{% endif %}
+                                    {% set ctrl = ctrl + [("send-com")] %}
+                                    {% set ctrl = ctrl + [("send-ext-com")] %}
+                                    {% set peer_ctrl = [] %}
+                                    {%- if peer.bfd | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.bfd) | cisco.aac.aac_bool("yes") == "yes" %}{% set peer_ctrl = peer_ctrl + [("bfd")] %}{% endif %}
+                                    {
+                                        "bgpInfraPeerP": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "addr": "{{ peer.ip }}",
+                                                "adminSt": "{{ peer.admin_state | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.admin_state) | cisco.aac.aac_bool("enabled") }}",
+                                                "ctrl": "{{ ctrl | join(',') }}",
+                                                "descr": "{{ peer.description | default() }}",
+                                                "peerCtrl": "{{ peer_ctrl | join(',') }}",
+                                                "peerT": "sr-mpls",
+                                                {% if peer.password is defined %}
+                                                "password": "{{ peer.password }}",
+                                                {% endif %}
+                                                "ttl": "{{ peer.ttl | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.ttl) }}",
+                                                "childAction": "deleteNonPresent"
+                                            },
+                                            "children": [
+                                                {
+                                                    "bgpAsP": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "asn": "{{ peer.remote_as }}"
+                                                        }
+                                                    }
+                                                }
+                                                {%- if peer.local_as is defined %},
+                                                {
+                                                    "bgpLocalAsnP": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "localAsn": "{{ peer.local_as }}",
+                                                            "asnPropagate" : "{{ peer.as_propagate | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.as_propagate) }}"
+                                                        }
+                                                    }
+                                                }
+                                                {%- endif %}
+                                                {%- if peer.peer_prefix_policy is defined %},
+                                                {% set peer_prefix_policy_name = peer.peer_prefix_policy ~ defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix %}
+                                                {
+                                                    "bgpRsPeerPfxPol": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "tnBgpPeerPfxPolName": "{{ peer_prefix_policy_name }}"
+                                                        }
+                                                    }
+                                                }
+                                                {%- endif %}                                                
+                                            ]
+                                        }
+                                    }
+                                    {%- endfor %}
+                                    {%- if np.bfd_multihop_node_policy is defined %}{{ comma3() }}
+                                    {
+                                        "bfdMhNodeP": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "dn": "uni/tn-infra/out-{{ l3out_name }}/lnodep-{{ l3out_np_name }}/bfdMhNodeP",
+                                                "childAction": "deleteNonPresent"
+                                            },
+                                            "children": [
+                                                {
+                                                    "bfdRsMhNodePol": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "tnBfdMhNodePolName": "{{ np.bfd_multihop_node_policy }}"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                    {%- endif %}
+                                    {%- for ip in np.interface_profiles | default([]) %}{{ comma3() }}
+                                    {% set l3out_ip_name = ip.name ~ defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.name_suffix %}
+                                    {
+                                        "l3extLIfP": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "name": "{{ l3out_ip_name }}",
+                                                "childAction": "deleteNonPresent"
+                                            },
+                                            "children": [
+                                                {%- set comma4 = joiner(",") %}
+                                                {%- if ip.bfd_policy is defined %}{{ comma4() }}
+                                                {% set bfd_name = ip.bfd_policy ~ defaults.apic.tenants.policies.bfd_interface_policies.name_suffix %}
+                                                {
+                                                    "bfdIfP": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "type": "none",
+                                                            "childAction": "deleteNonPresent"
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "bfdRsIfPol": {
+                                                                    "attributes": {
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tnBfdIfPolName": "{{ bfd_name }}"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                                {%- endif %}
+                                                {%- for int in ip.interfaces | default([]) %}{{ comma4() }}
+                                                {% if int.port is defined | cisco.aac.aac_bool("yes") == 'yes' %}
+                                                    {% set type = 'ap' %}
+                                                    {% set query = "nodes[?id==`" ~ int.node_id ~ "`].pod" %}
+                                                    {% set pod = int.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+                                                {% else %}
+                                                    {% set policy_group_name = int.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
+                                                    {% set query = "leaf_interface_policy_groups[?name==`" ~ int.channel ~ "`].type" %}
+                                                    {% set type = (apic.access_policies | community.general.json_query(query))[0] %}
+                                                    {% if int.node_id is defined %}
+                                                        {% set node = int.node_id %}
+                                                    {% else %}
+                                                        {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
+                                                        {% set node = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
+                                                    {% endif %}
+                                                    {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
+                                                    {% set pod = int.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+                                                {% endif %}
+                                                {
+                                                    "l3extRsPathL3OutAtt": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "addr": "{{ int.ip }}",
+                                                            "autostate": "disabled",
+                                                            "descr": "{{ int.description | default() }}",
+                                                            "encapScope": "local",
+                                                            {% if int.vlan is defined %}
+                                                            "ifInstT": "sub-interface",
+                                                            "encap": "vlan-{{ int.vlan }}",
+                                                            {% else %}
+                                                            "ifInstT": "l3-port",
+                                                            {% endif %}
+                                                            "ipv6Dad": "enabled",
+                                                            "llAddr": "::",
+                                                            "mac": "{{ int.mac | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.mac) }}",
+                                                            "mode": "regular",
+                                                            "mtu": "{{ int.mtu | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.mtu) }}",
+                                                            {% if type == 'ap' %}
+                                                            "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.pod) }}/paths-{{ int.node_id }}/pathep-[eth{{ int.module | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.module) }}/{{ int.port }}]",
+                                                            {% elif type == 'pc' %}
+                                                            "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.pod) }}/paths-{{ node }}/pathep-[{{ policy_group_name }}]",
+                                                            {% endif %}
+                                                            "childAction": "deleteNonPresent"
+                                                        },
+                                                        "children": [
+                                                            {%- for peer in int.bgp_peers | default([]) %}
+                                                            {%- set ctrl = [] %}
+                                                            {% if peer.allow_self_as | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.allow_self_as) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("allow-self-as")] %}{% endif %}
+                                                            {% if peer.send_community | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.send_community) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("send-com")] %}{% endif %}
+                                                            {% if peer.send_ext_community | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.send_ext_community) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("send-ext-com")] %}{% endif %}
+                                                            {% if sr == false %}{% set ctrl = ctrl + [("segment-routing-disable")] %}{% endif %}
+                                                            {% set peer_ctrl = [] %}
+                                                            {% if peer.bfd | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.bfd) | cisco.aac.aac_bool("yes") == "yes" %}{% set peer_ctrl = peer_ctrl + [("bfd")] %}{% endif %}
+                                                            {% set af = ["af-label-ucast"] %}
+                                                            {% if peer.unicast_address_family | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.unicast_address_family) | cisco.aac.aac_bool("yes") == "yes" %}{% set af = af + [("af-ucast")] %}{% endif %}
+                                                            {
+                                                                "bgpPeerP": {
+                                                                    "attributes": {
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "addr": "{{ peer.ip }}",
+                                                                        "addrTCtrl": "{{ af | join(',') }}",
+                                                                        "adminSt": "{{ peer.admin_state | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.admin_state) | cisco.aac.aac_bool("enabled") }}",
+                                                                        "descr": "{{ peer.description | default() }}",
+                                                                        "ctrl": "{{ ctrl | join(',') }}",
+                                                                        {% if peer.password is defined %}
+                                                                        "password": "{{ peer.password }}",
+                                                                        {% endif %}
+                                                                        "peerCtrl": "{{ peer_ctrl | join(',') }}",
+                                                                        "childAction": "deleteNonPresent"
+                                                                    },
+                                                                    "children": [
+                                                                        {
+                                                                            "bgpAsP": {
+                                                                                "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
+                                                                                    "asn": "{{ peer.remote_as }}"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        {%- if peer.local_as is defined %},
+                                                                        {
+                                                                            "bgpLocalAsnP": {
+                                                                                "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
+                                                                                    "localAsn": "{{ peer.local_as }}",
+                                                                                    "asnPropagate" : "{{ peer.as_propagate | default(defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.as_propagate) }}"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        {%- endif %}
+                                                                        {%- if peer.peer_prefix_policy is defined %},
+                                                                        {% set peer_prefix_policy_name = peer.peer_prefix_policy ~ defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix %}
+                                                                        {
+                                                                            "bgpRsPeerPfxPol": {
+                                                                                "attributes": {
+                                                                                    "annotation": "orchestrator:aac",
+                                                                                    "tnBgpPeerPfxPolName": "{{ peer_prefix_policy_name }}"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        {%- endif %}
+
+                                                                    ]
+                                                                }
+                                                            }
+                                                            {%- endfor %}
+
+                                                        ]
+                                                    }
+                                                }
+                                                {%- endfor %},
+                                                {
+                                                    "mplsIfP": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac"
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "mplsRsIfPol": {
+                                                                    "attributes": {
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tnMplsIfPolName": "default"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }  
+                                                }
+                                            ]
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        },
+                        {%- endfor %}
+
+                        {
+                            "bgpExtP": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/tn-infra/out-{{ l3out_name }}/bgpExtP"
+                                }
+                            }
+                        },
+                        {% set domain_name = l3out.domain ~ defaults.apic.access_policies.routed_domains.name_suffix %}
+                        {
+                            "l3extRsL3DomAtt": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/tn-infra/out-{{ l3out_name }}/rsl3DomAtt",
+                                    "tDn": "uni/l3dom-{{ domain_name }}"
+                                }
+                            }
+                        },
+                        {
+                            "l3extRsEctx": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/tn-infra/out-{{ l3out_name }}/rsectx",
+                                    "tnFvCtxName": "overlay-1"
+                                }
+                            }
+                        },
+                        {
+                            "l3extProvLbl": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/tn-infra/out-{{ l3out_name }}/provlbl-{{ l3out_name }}",
+                                    "name": "{{ l3out_name }}"
+                                }
+                            }
+                        }
+                        {%- else %}
+                        {%- set vrf_name = l3out.vrf ~ defaults.apic.tenants.vrfs.name_suffix %}
+                        {%- set infra_l3out_name = l3out.sr_mpls_infra_l3out ~ defaults.apic.tenants.sr_mpls_l3outs.name_suffix %}
+
+                        {
+                            "l3extRsEctx": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/rsectx",
+                                    "tnFvCtxName": "{{ vrf_name }}"
+                                }
+                            }
+                        },
+                        {
+                            "l3extConsLbl": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/conslbl-{{ infra_l3out_name }}",
+                                    "name": "{{ infra_l3out_name }}"
+                                },
+                                "children": [
+                                    {%- set comma6 = joiner(",") %}
+                                    {% if l3out.inbound_route_map is defined %}{{ comma6() }}
+                                    {
+                                        "l3extRsLblToProfile": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "direction": "import",
+                                                "tDn": "uni/tn-{{ tenant.name }}/prof-{{ l3out.inbound_route_map }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+                                    {%- if l3out.outbound_route_map is defined %}{{ comma6() }}
+                                    {
+                                        "l3extRsLblToProfile": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "direction": "export",
+                                                "tDn": "uni/tn-{{ tenant.name }}/prof-{{ l3out.outbound_route_map }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
+
+                                ]
+                            }
+                        }
+                        {%- endif %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
 
         ]
     }

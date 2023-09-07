@@ -209,8 +209,6 @@ nav:
               - OOB Endpoint Group: data_model/apic/tenants/oob_endpoint_group.md
               - OOB External Management Instance: data_model/apic/tenants/oob_ext_mgmt_instance.md
               - OOB Contract: data_model/apic/tenants/oob_contract.md
-              - SR MPLS L3out: data_model/apic/tenants/sr_mpls_l3out.md
-              - SR MPLS External Endpoint Group: data_model/apic/tenants/sr_external_endpoint_group.md
               - MPLS Custom QoS Policy: data_model/apic/tenants/mpls_custom_qos_policy.md
               - BFD Multihop Policy: data_model/apic/tenants/bfd_multihop_node_policy.md
       - NDO:
