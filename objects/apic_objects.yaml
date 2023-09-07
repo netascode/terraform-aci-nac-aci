@@ -1396,6 +1396,7 @@ tenant_objects:
     scope:
       - user
       - mgmt
+      - infra
     test_types:
       - config
     paths:
