@@ -13,7 +13,9 @@ ${state_path}   tests/state/
 *** Keywords ***
 Get NDO Token
     Create Session   login   %{MSO_URL}   headers={"Content-Type": "application/json"}
+    ${log_level}=   Set Log Level   NONE
     ${response}=   POST On Session   login   /api/v1/auth/login   data=${login_json}
+    Set Log Level   ${log_level}
     ${r_token}=   Get Value From Json   ${response.json()}   $..token
     Set Parallel Value For Key   ndo_token   ${r_token[0]}
     Set Suite Variable   ${ndo_token}   ${r_token[0]}

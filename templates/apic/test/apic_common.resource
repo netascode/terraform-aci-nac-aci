@@ -12,7 +12,9 @@ ${state_path}   tests/state/
 *** Keywords ***
 Get APIC Token
     Create Session   login   %{ACI_URL}
+    ${log_level}=   Set Log Level   NONE
     ${response}=   POST On Session   login   /api/aaaLogin.json   data=${login_json}
+    Set Log Level   ${log_level}
     ${r_token}=   Get Value From Json   ${response.json()}   $..token
     Set Parallel Value For Key   apic_token   ${r_token[0]}
     Set Suite Variable   ${apic_token}   ${r_token[0]}
