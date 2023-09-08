@@ -16,4 +16,10 @@ Verify Physical Domain {{ domain_name }}
     {% set allocation = (apic.access_policies | community.general.json_query(query))[0] | default(defaults.apic.access_policies.physical_domains.allocation) %}
     Should Be Equal Value Json String   ${r.json()}    $..infraRsVlanNs.attributes.tDn   uni/infra/vlanns-[{{ vlan_pool_name }}]-{{ allocation }}
 
+Verify Physical Domain {{ domain_name }} Security Domains
+    ${r}=   GET On Session   apic   /api/mo/uni/phys-{{ domain.name }}.json    params=query-target=children&target-subtree-class=aaaDomainRef
+{% for sd in domain.security_domains | default([]) %}
+    Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomainRef.attributes.name=='{{ sd }}')].aaaDomainRef.attributes.name   {{ sd }}
+{% endfor %}
+
 {% endfor %}

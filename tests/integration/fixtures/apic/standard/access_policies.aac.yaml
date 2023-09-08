@@ -223,14 +223,19 @@ apic:
     physical_domains:
       - name: PHY1
         vlan_pool: STATIC1
+        security_domains:
+          - SEC1
       - name: PHY2
         vlan_pool: STATIC2
 
     routed_domains:
       - name: ROUTED1
         vlan_pool: ROUTED1
+        security_domains:
+          - SEC1
       - name: ROUTED2
         vlan_pool: ROUTED2
+      
 
     aaeps:
       - name: AAEP1

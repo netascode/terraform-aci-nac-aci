@@ -24,6 +24,7 @@
                         "dn": "uni/l3dom-{{ domain_name }}"
                     },
                     "children": [
+                        {%- set comma2 = joiner(",") %}{{ comma2() }} 
                         {
                             "infraRsVlanNs": {
                                 "attributes": {
@@ -35,6 +36,18 @@
                                 }
                             }
                         }
+                        {%- for sd in domain.security_domains | default([]) %}{{ comma2() }}
+                        {
+                            "aaaDomainRef": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "name": "{{ sd }}",
+                                    "dn": "uni/l3dom-{{ domain_name }}/domain-{{ sd }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+                        
                     ]
                 }
             }
