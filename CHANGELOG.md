@@ -10,6 +10,7 @@
 - Add support for L3out route control enforcement
 - Add support for LDAP login domains
 - Add support for LDAP configuration
+- Add support for BFD multihop node policies
 
 ## 0.7.0
 

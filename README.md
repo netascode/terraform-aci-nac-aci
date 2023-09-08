@@ -164,6 +164,7 @@ Additional example repositories:
 | <a name="module_aci_application_profile"></a> [aci\_application\_profile](#module\_aci\_application\_profile) | netascode/application-profile/aci | 0.1.0 |
 | <a name="module_aci_banner"></a> [aci\_banner](#module\_aci\_banner) | netascode/banner/aci | 0.1.1 |
 | <a name="module_aci_bfd_interface_policy"></a> [aci\_bfd\_interface\_policy](#module\_aci\_bfd\_interface\_policy) | netascode/bfd-interface-policy/aci | 0.1.0 |
+| <a name="module_aci_bfd_multihop_node_policy"></a> [aci\_bfd\_multihop\_node\_policy](#module\_aci\_bfd\_multihop\_node\_policy) | netascode/bfd-multihop-node-policy/aci | 0.1.0 |
 | <a name="module_aci_bgp_address_family_context_policy"></a> [aci\_bgp\_address\_family\_context\_policy](#module\_aci\_bgp\_address\_family\_context\_policy) | netascode/bgp-address-family-context-policy/aci | 0.1.1 |
 | <a name="module_aci_bgp_best_path_policy"></a> [aci\_bgp\_best\_path\_policy](#module\_aci\_bgp\_best\_path\_policy) | netascode/bgp-best-path-policy/aci | 0.1.0 |
 | <a name="module_aci_bgp_peer_prefix_policy"></a> [aci\_bgp\_peer\_prefix\_policy](#module\_aci\_bgp\_peer\_prefix\_policy) | netascode/bgp-peer-prefix-policy/aci | 0.1.0 |

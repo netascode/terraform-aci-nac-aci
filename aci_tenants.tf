@@ -2209,6 +2209,39 @@ module "aci_route_tag_policy" {
 }
 
 locals {
+  bfd_multihop_node_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.bfd_multihop_node_policies, []) : {
+        key                  = format("%s/%s", tenant.name, policy.name)
+        tenant               = tenant.name
+        name                 = "${policy.name}${local.defaults.apic.tenants.policies.bfd_multihop_node_policies.name_suffix}"
+        description          = try(policy.description, "")
+        detection_multiplier = try(policy.detection_multiplier, local.defaults.apic.tenants.policies.bfd_multihop_node_policies.detection_multiplier)
+        min_rx_interval      = try(policy.min_rx_interval, local.defaults.apic.tenants.policies.bfd_multihop_node_policies.min_rx_interval)
+        min_tx_interval      = try(policy.min_tx_interval, local.defaults.apic.tenants.policies.bfd_multihop_node_policies.min_tx_interval)
+      }
+    ]
+  ])
+}
+
+module "aci_bfd_multihop_node_policy" {
+  source  = "netascode/bfd-multihop-node-policy/aci"
+  version = "0.1.0"
+
+  for_each             = { for pol in local.bfd_multihop_node_policies : pol.key => pol if local.modules.aci_bfd_multihop_node_policy && var.manage_tenants }
+  tenant               = each.value.tenant
+  name                 = each.value.name
+  description          = each.value.description
+  detection_multiplier = each.value.detection_multiplier
+  min_rx_interval      = each.value.min_rx_interval
+  min_tx_interval      = each.value.min_tx_interval
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
   l4l7_devices = flatten([
     for tenant in local.tenants : [
       for device in try(tenant.services.l4l7_devices, []) : {
