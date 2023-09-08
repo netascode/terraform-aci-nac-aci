@@ -2822,8 +2822,8 @@ ten_bfd_multihop_node_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   detection_multiplier: int(min=1, max=50, required=False)
-  min_rx_interval: int(min=50, max=999, required=False)
-  min_tx_interval: int(min=50, max=999, required=False)
+  min_rx_interval: int(min=250, max=999, required=False)
+  min_tx_interval: int(min=250, max=999, required=False)
 
 ten_services:
   l4l7_devices: list(include('ten_ser_l4l7_devices'), required=False) # @ref_name(L4L7 Device)
