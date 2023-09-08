@@ -110,13 +110,19 @@ def expand_paths(schema, paths):
         element, _ = read_schema_path(schema, path)
         if element.tag == "include":
             for key, value in schema.includes[element.include_name].dict.items():
-                if hasattr(value, "no_doc") or (hasattr(value, "no_external_doc") and PUBHUB):
+                if hasattr(value, "no_doc") or (
+                    hasattr(value, "no_external_doc") and PUBHUB
+                ):
                     continue
                 new_paths.append(path + "." + key)
         if element.tag == "list":
             if element.validators[0].tag == "include":
-                for key, value in schema.includes[element.validators[0].include_name].dict.items():
-                    if hasattr(value, "no_doc") or (hasattr(value, "no_external_doc") and PUBHUB):
+                for key, value in schema.includes[
+                    element.validators[0].include_name
+                ].dict.items():
+                    if hasattr(value, "no_doc") or (
+                        hasattr(value, "no_external_doc") and PUBHUB
+                    ):
                         continue
                     new_paths.append(path + "." + key)
 
@@ -307,8 +313,13 @@ def render_diagram_path(element, path, mappings={}):
     elif element.tag == "enum":
         result += "`{0}` : {1}{2} [Enum]\n".format(parent, mandatory, name)
     elif element.tag == "list":
-        result += "`{0}` <-- `{1}`\n".format(parent, name)
-        result += "`{0}` : {1}{2} (List)\n".format(parent, mandatory, name)
+        if element.validators[0].tag == "include":
+            result += "`{0}` <-- `{1}`\n".format(parent, name)
+            result += "`{0}` : {1}{2} (List)\n".format(parent, mandatory, name)
+        else:
+            result += "`{0}` : {1}{2} (List[{3}])\n".format(
+                parent, mandatory, name, element.validators[0].tag
+            )
     elif element.tag == "map":
         result += "`{0}` : {1}{2} [Map]\n".format(parent, mandatory, name)
     elif element.tag == "ip":
@@ -352,7 +363,7 @@ def get_rename_mappings(class_paths):
     def next_name(c):
         index = 1
         while True:
-            new_name = "{}{}".format(c, ' '*index)
+            new_name = "{}{}".format(c, " " * index)
             if new_name not in classes:
                 return new_name
             index += 1
