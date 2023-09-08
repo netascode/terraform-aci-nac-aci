@@ -966,7 +966,7 @@ module "aci_ldap" {
     attribute            = try(prov.attribute, "")
     ssl_validation_level = try(prov.ssl_validation_level, local.defaults.apic.fabric_policies.aaa.ldap.providers.ssl_validation_level)
     mgmt_epg_type        = try(prov.mgmt_epg, local.defaults.apic.fabric_policies.aaa.ldap.providers.mgmt_epg)
-    mgmt_epg_name        = try(each.value.mgmt_epg, local.defaults.apic.fabric_policies.aaa.ldap.providers.mgmt_epg) == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
+    mgmt_epg_name        = try(prov.mgmt_epg, local.defaults.apic.fabric_policies.aaa.ldap.providers.mgmt_epg) == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
     monitoring           = try(prov.server_monitoring, local.defaults.apic.fabric_policies.aaa.ldap.providers.server_monitoring)
     monitoring_username  = try(prov.monitoring_username, local.defaults.apic.fabric_policies.aaa.ldap.providers.monitoring_username)
     monitoring_password  = try(prov.monitoring_password, "")
