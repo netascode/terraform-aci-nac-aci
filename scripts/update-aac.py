@@ -118,7 +118,11 @@ REPOS = [
             },
             {
                 "src": "../templates/ndo/test",
-                "dst": "./tests/templates",
+                "dst": "./tests/templates/ndo",
+            },
+            {
+                "src": "../templates/apic/test",
+                "dst": "./tests/templates/apic",
             },
             {
                 "src": "../jinja_filters",
@@ -132,7 +136,11 @@ REPOS = [
         "files": [
             {
                 "src": "../schemas/ndo_schema.yaml",
-                "dst": "./.schema.yaml",
+                "dst": "./.schema-ndo.yaml",
+            },
+            {
+                "src": "../schemas/apic_schema.yaml",
+                "dst": "./.schema-apic.yaml",
             },
         ],
     },
