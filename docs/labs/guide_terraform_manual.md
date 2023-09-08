@@ -2,7 +2,7 @@
 
 ## Goal
 
-Get familar with Terraform AAC and be able to run it manually against an ACI Simulator
+Get familiar with Terraform AAC and be able to run it manually against an ACI Simulator
 
 ## Pre-requisites
 
@@ -59,7 +59,7 @@ and should only be used temporarily.
 
 ## Customize Terraform backend
 
-The `terraform-aac` repository we are using is pre-configured to use Terraform Cloud to store the statefile. As we will be using a local statefile in this lab, must the `main.tf` file edited and have the following section removed.
+The `terraform-aac` repository we are using is pre-configured to use Terraform Cloud to store the statefile. As we will be using a local statefile in this lab, the `main.tf` file must be edited and have the following section removed.
 
 ```hcl
   cloud {
@@ -184,7 +184,7 @@ The python packages we just installed will be used to run the pre- and post-depl
 
 ## Terraform Initialization
 
-In addition to install the Python packages in the previous step, we also need to initialize the Terraform working directory, which includes installing the required Terraform modules and providers. This is done using the `terraform init` command.
+In addition to installing the Python packages in the previous step, we also need to initialize the Terraform working directory, which includes installing the required Terraform modules and providers. This is done using the `terraform init` command.
 
 ```sh
 root@terraform-aac:/terraform-aac# terraform init
@@ -252,27 +252,27 @@ With Terraform initialized it is time to start using ACI as Code. The first task
 - terraform fmt
 - iac-validate
 
-Terraform fmt verfiies the format and syntax of the Terraform scripts and can be used to either re-format the scripts on the fly or simply highligt any diviation from best practice. We will be using the latter in this lab.
+Terraform fmt verifies the format and syntax of the Terraform scripts and can be used to either re-format the scripts on the fly or simply highlight any deviation from best practice. We will be using the latter in this lab.
 
 ```sh
 root@terraform-aac:/terraform-aac# terraform fmt -check -recursive -diff
 root@terraform-aac:/terraform-aac#
 ```
 
-If the command returns an empty output as above does it mean that no diviation from best practice was found.
+If the command returns an empty output as above does it mean that no deviation from best practice was found.
 
-The `iac-validate` tool runs the ACI as Code syntax and semantics checks as this can not be done using Terraform. `iac-validate` is a publicly available tool written by Cisco CX, but it can not be used for anything without the cooresponding schema and validation rules. In this lab are we storing the schema and validation rules withing the `terraform-aac` repository.
+The `iac-validate` tool runs the ACI as Code syntax and semantics checks as this can not be done using Terraform. `iac-validate` is a publicly available tool written by Cisco CX, but it can not be used for anything without the corresponding schema and validation rules. In this lab we are storing the schema and validation rules within the `terraform-aac` repository.
 
 ```sh
 root@terraform-aac:/terraform-aac# iac-validate ./data/
 root@terraform-aac:/terraform-aac#
 ```
 
-Again, if no output are provided by the tool does it mean that no syntax or scemantic issues where found.
+Again, if no output is provided by the tool it means that no syntax or semantic issues where found.
 
 ## ACI as Code Plan Stage
 
-With the desired configuration validated in the previous step are we ready to execute a `terraform plan`, which indicates the objects that will be added/removed from the ACI fabric in order for its configuration to match the desired configuration.
+With the desired configuration validated in the previous step we are ready to execute a `terraform plan`, which indicates the objects that will be added/removed from the ACI fabric in order for its configuration to match the desired configuration.
 
 But before doing this is it required to define a number of environment variables that defines the IP address of the APIC, credentials to use, etc.
 
@@ -282,7 +282,7 @@ root@terraform-aac:/terraform-aac# export ACI_USERNAME=<Username on ACI Simulato
 root@terraform-aac:/terraform-aac# export ACI_PASSWORD=<Password on ACI Simulator>
 ````
 
-At this stage will no configuration changes be made to the ACI fabric, but the APIC will be queried to refresh the state entries in the Terraform statefile (if any).
+At this stage no configuration changes will be made to the ACI fabric, but the APIC will be queried to refresh the state entries in the Terraform statefile (if any).
 
 ```sh
 root@terraform-aac:/terraform-aac# terraform plan -out=plan.tfplan -input=false
@@ -369,9 +369,9 @@ To perform exactly these actions, run the following command to apply:
     terraform apply "plan.tfplan"
 ```
 
-Your output will likely differ from the sample output above, but you will at the end of the output see a summary of the number of objects that will be added, change, or deleted.
+Your output will likely differ from the sample output above, but at the end of the output you will see a summary with the number of objects that will be added, changed, or deleted.
 
-As we ran the terraform command with the `-out=plan.tfplan` flag was the derived plan writting to the `plan.tfplan` file. In the next section will we use this file as input when executing `terraform apply`.
+As we ran the terraform command with the `-out=plan.tfplan` flag, the derived plan will be written to the `plan.tfplan` file. In the next section we will use this file as an input when executing `terraform apply`.
 
 ## ACI as Code Apply Stage
 
@@ -400,11 +400,11 @@ module.tenant["infra"].module.aci_l3out_interface_profile_auto["IPN"].aci_rest_m
 Apply complete! Resources: 295 added, 0 changed, 0 destroyed.
 ```
 
-Once the configuration changes have been applied to the ACI fabric, this can then be verified through using the APIC GUI.
+Once the configuration changes have been applied to the ACI fabric, this can then be verified using the APIC GUI.
 
-With Terrafrom are only the configuration elements described in the desired configuration and/or present in the Terraform statefile added, changed, or removed when executing `terraform apply`.
+With Terrafrom only the configuration elements are described in the desired configuration and/or present in the Terraform statefile added, changed, or removed when executing `terraform apply`.
 
-As we in this lab are using the local filesystem for the Terraform state file `terraform.tfstate` will this file just been created/modified.
+As in this lab we are using the local filesystem for the Terraform state file `terraform.tfstate` this file will just be created/modified.
 
 ```sh
 root@terraform-aac:/terraform-aac# ls -la terraform.tfstate
@@ -413,9 +413,9 @@ root@terraform-aac:/terraform-aac# ls -la terraform.tfstate
 
 ## ACI as Code Testing Stage
 
-Using manual verification of configuration changes are naturally not a scalable solution, which is why automated testing is available in ACI as code.
+Using manual verification of configuration changes is naturally not a scalable solution, which is why automated testing is available in ACI as code.
 
-In the Terraform flavor of AAC will we use the `iac-test` tool to render the test templates against the desired configuration and then executes the tests.
+In the Terraform flavor of AAC we will use the `iac-test` tool to render the test templates against the desired configuration and then execute the tests.
 
 ```sh
 root@terraform-aac:/terraform-aac# iac-test --data ./data --data ./defaults --templates ./tests/templates --filters ./tests/filters --output ./tests/results/aci |& tee test_output.txt
@@ -458,10 +458,10 @@ Total testing: 2 minutes 32.70 seconds
 Elapsed time:  41.77 seconds
 ```
 
-Like the tool we used for validation are the `iac-test` a publicly available tool written by Cisco CX, but it can not be used for anything without the test templates. In this lab are these templates stored withing the `terraform-aac` repository.
+Like the tool we used for validation the `iac-test` is a publicly available tool written by Cisco CX, but it can not be used for anything without the test templates. In this lab these templates are stored within the `terraform-aac` repository.
 
 ## Lab Summary
 
-If you have followed the steps outline in this lab guide have you successfully used Terraform AAC to modify the configuratons of your ACI simulator.
+If you have followed the steps outlined in this lab guide, you have successfully used Terraform AAC to modify the configurations of your ACI simulator.
 
-In the next lab will we integrate these steps into a CI/CD pipeline in order to eliminate manual tasks.
+In the next lab we will integrate these steps into a CI/CD pipeline in order to eliminate manual tasks.
