@@ -9,6 +9,7 @@
 - Add support for VRF transit route tag policies
 - Add support for L3out route control enforcement
 - Add support for LDAP login domains
+- Add support for LDAP configuration
 
 ## 0.7.0
 

@@ -947,3 +947,44 @@ module "aci_fabric_span_source_group" {
   destination_name        = "${each.value.destination.name}${local.defaults.apic.fabric_policies.span.destination_groups.name_suffix}"
   destination_description = try(each.value.destination.description, "")
 }
+
+module "aci_ldap" {
+  source  = "netascode/ldap/aci"
+  version = "0.1.0"
+
+  ldap_providers = [for prov in try(local.fabric_policies.aaa.ldap.providers, []) : {
+    hostname_ip          = prov.hostname_ip
+    description          = try(prov.description, "")
+    port                 = try(prov.port, local.defaults.apic.fabric_policies.aaa.ldap.providers.port)
+    bind_dn              = try(prov.bind_dn, "")
+    base_dn              = try(prov.base_dn, "")
+    password             = try(prov.password, "")
+    timeout              = try(prov.timeout, local.defaults.apic.fabric_policies.aaa.ldap.providers.timeout)
+    retries              = try(prov.retries, local.defaults.apic.fabric_policies.aaa.ldap.providers.retries)
+    enable_ssl           = try(prov.enable_ssl, local.defaults.apic.fabric_policies.aaa.ldap.providers.enable_ssl)
+    filter               = try(prov.filter, "")
+    attribute            = try(prov.attribute, "")
+    ssl_validation_level = try(prov.ssl_validation_level, local.defaults.apic.fabric_policies.aaa.ldap.providers.ssl_validation_level)
+    mgmt_epg_type        = try(prov.description, "")
+    mgmt_epg_name        = try(prov.description, "")
+    monitoring           = try(prov.server_monitoring, local.defaults.apic.fabric_policies.aaa.ldap.providers.server_monitoring)
+    monitoring_username  = try(prov.monitoring_username, local.defaults.apic.fabric_policies.aaa.ldap.providers.monitoring_username)
+    monitoring_password  = try(prov.monitoring_password, "")
+  }]
+  group_map_rules = [for rule in try(local.fabric_policies.aaa.ldap.group_map_rules, []) : {
+    name        = rule.name
+    description = try(rule.description, "")
+    group_dn    = try(rule.group_dn, "")
+    security_domains = [for dom in try(rule.security_domains, []) : {
+      name = dom.name
+      roles = [for role in try(dom.roles, []) : {
+        name           = role.name
+        privilege_type = try(role.privilege_type, local.defaults.apic.fabric_policies.aaa.ldap.group_map_rules.security_domains.roles.privilege_type)
+      }]
+    }]
+  }]
+  group_maps = [for map in try(local.fabric_policies.aaa.ldap.group_maps, []) : {
+    name  = map.name
+    rules = map.rules
+  }]
+}
