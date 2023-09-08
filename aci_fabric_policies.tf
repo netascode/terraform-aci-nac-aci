@@ -585,6 +585,11 @@ module "aci_aaa" {
   default_login_domain     = try(local.fabric_policies.aaa.default_login_domain, "")
   console_realm            = try(local.fabric_policies.aaa.console_realm, local.defaults.apic.fabric_policies.aaa.console_realm)
   console_login_domain     = try(local.fabric_policies.aaa.console_login_domain, "")
+  security_domains = [for sd in try(local.fabric_policies.aaa.security_domains, []) : {
+    name                   = sd.name
+    description            = try(sd.description, "")
+    restricted_rbac_domain = try(sd.restricted_rbac_domain, false)
+  }]
 }
 
 module "aci_tacacs" {
