@@ -1498,7 +1498,6 @@ module "aci_sr_mpls_external_endpoint_group" {
   contract_providers          = each.value.contract_providers
   contract_imported_consumers = each.value.contract_imported_consumers
   subnets                     = each.value.subnets
-  sr_mpls                     = each.value.sr_mpls
   sr_mpls_infra_l3out         = each.value.sr_mpls_infra_l3out
 
   depends_on = [
