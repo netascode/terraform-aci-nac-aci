@@ -11,6 +11,7 @@
 - Add support for LDAP login domains
 - Add support for LDAP configuration
 - Add support for BFD multihop node policies
+- Add support for security domains to physical and routed domains
 
 ## 0.7.0
 

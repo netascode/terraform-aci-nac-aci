@@ -251,7 +251,7 @@ Additional example repositories:
 | <a name="module_aci_oob_external_management_instance"></a> [aci\_oob\_external\_management\_instance](#module\_aci\_oob\_external\_management\_instance) | netascode/oob-external-management-instance/aci | 0.1.0 |
 | <a name="module_aci_oob_node_address"></a> [aci\_oob\_node\_address](#module\_aci\_oob\_node\_address) | netascode/oob-node-address/aci | 0.1.3 |
 | <a name="module_aci_ospf_interface_policy"></a> [aci\_ospf\_interface\_policy](#module\_aci\_ospf\_interface\_policy) | netascode/ospf-interface-policy/aci | 0.1.0 |
-| <a name="module_aci_physical_domain"></a> [aci\_physical\_domain](#module\_aci\_physical\_domain) | netascode/physical-domain/aci | 0.1.0 |
+| <a name="module_aci_physical_domain"></a> [aci\_physical\_domain](#module\_aci\_physical\_domain) | netascode/physical-domain/aci | 0.1.1 |
 | <a name="module_aci_pim_policy"></a> [aci\_pim\_policy](#module\_aci\_pim\_policy) | netascode/pim-policy/aci | 0.1.1 |
 | <a name="module_aci_pod_setup"></a> [aci\_pod\_setup](#module\_aci\_pod\_setup) | netascode/pod-setup/aci | 0.1.1 |
 | <a name="module_aci_port_channel_member_policy"></a> [aci\_port\_channel\_member\_policy](#module\_aci\_port\_channel\_member\_policy) | netascode/port-channel-member-policy/aci | 0.1.0 |
@@ -268,7 +268,7 @@ Additional example repositories:
 | <a name="module_aci_rogue_endpoint_control"></a> [aci\_rogue\_endpoint\_control](#module\_aci\_rogue\_endpoint\_control) | netascode/rogue-endpoint-control/aci | 0.1.0 |
 | <a name="module_aci_route_control_route_map"></a> [aci\_route\_control\_route\_map](#module\_aci\_route\_control\_route\_map) | netascode/route-control-route-map/aci | 0.1.1 |
 | <a name="module_aci_route_tag_policy"></a> [aci\_route\_tag\_policy](#module\_aci\_route\_tag\_policy) | netascode/route-tag-policy/aci | 0.1.0 |
-| <a name="module_aci_routed_domain"></a> [aci\_routed\_domain](#module\_aci\_routed\_domain) | netascode/routed-domain/aci | 0.1.0 |
+| <a name="module_aci_routed_domain"></a> [aci\_routed\_domain](#module\_aci\_routed\_domain) | netascode/routed-domain/aci | 0.1.1 |
 | <a name="module_aci_service_epg_policy"></a> [aci\_service\_epg\_policy](#module\_aci\_service\_epg\_policy) | netascode/service-epg-policy/aci | 0.1.0 |
 | <a name="module_aci_service_graph_template"></a> [aci\_service\_graph\_template](#module\_aci\_service\_graph\_template) | netascode/service-graph-template/aci | 0.1.0 |
 | <a name="module_aci_set_rule"></a> [aci\_set\_rule](#module\_aci\_set\_rule) | netascode/set-rule/aci | 0.2.2 |

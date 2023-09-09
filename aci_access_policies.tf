@@ -17,7 +17,7 @@ module "aci_vlan_pool" {
 
 module "aci_physical_domain" {
   source  = "netascode/physical-domain/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
   for_each             = { for pd in try(local.access_policies.physical_domains, []) : pd.name => pd if local.modules.aci_physical_domain && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.physical_domains.name_suffix}"
@@ -32,7 +32,7 @@ module "aci_physical_domain" {
 
 module "aci_routed_domain" {
   source  = "netascode/routed-domain/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
   for_each             = { for rd in try(local.access_policies.routed_domains, []) : rd.name => rd if local.modules.aci_routed_domain && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.routed_domains.name_suffix}"
