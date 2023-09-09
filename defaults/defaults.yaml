@@ -855,6 +855,42 @@ defaults:
         l3_multicast_ipv4: false
         multipod: true
         remote_leaf: false
+      sr_mpls_l3outs:
+        name_suffix: ""
+        transport_data_plane: sr_mpls
+        node_profiles:
+          name_suffix: ""
+          evpn_connectivity:
+            allow_self_as: false
+            disable_peer_as_check: false
+            ttl: 2
+            bfd: false
+            admin_state: true
+            as_propagate: none
+          nodes:
+            pod_id: 1
+          interface_profiles:
+            name_suffix: ""
+            interfaces:
+              pod_id: 1
+              module: 1
+              mac: 00:22:BD:F8:19:FF
+              mtu: inherit
+              bgp_peers:
+                allow_self_as: false
+                send_community: false
+                send_ext_community: false
+                bfd: false
+                unicast_address_family: true
+                admin_state: true
+                as_propagate: none
+        external_endpoint_groups:
+          name_suffix: ""
+          preferred_group: false
+          subnets:
+            route_leaking: false
+            security: false
+            aggregate_shared_route_control: false
       application_profiles:
         name_suffix: ""
         managed: true

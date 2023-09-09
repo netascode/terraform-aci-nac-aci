@@ -1272,6 +1272,245 @@ locals {
   ])
 }
 
+locals {
+  sr_mpls_l3outs = flatten([
+    for tenant in local.tenants : [
+      for l3out in try(tenant.sr_mpls_l3outs, []) : {
+        key                  = format("%s/%s", tenant.name, l3out.name)
+        tenant               = tenant.name
+        name                 = "${l3out.name}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
+        alias                = try(l3out.alias, "")
+        description          = try(l3out.description, "")
+        domain               = try("${l3out.domain}${local.defaults.apic.access_policies.routed_domains.name_suffix}", "")
+        vrf                  = try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
+        transport_data_plane = try(l3out.transport_data_plane, local.defaults.apic.tenants.sr_mpls_l3outs.transport_data_plane)
+        sr_mpls              = true
+        sr_mpls_infra_l3out  = try(l3out.sr_mpls_infra_l3out, "")
+        inbound_route_map    = try(l3out.inbound_route_map, "")
+        outbound_route_map   = try(l3out.outbound_route_map, "")
+      }
+    ]
+  ])
+}
+
+module "aci_sr_mpls_l3out" {
+  source  = "netascode/l3out/aci"
+  version = "0.2.2"
+
+  for_each            = { for l3out in local.sr_mpls_l3outs : l3out.key => l3out if try(local.modules.aci_sr_mpls_l3out, true) && var.manage_tenants }
+  tenant              = each.value.tenant
+  name                = each.value.name
+  alias               = each.value.alias
+  description         = each.value.description
+  routed_domain       = each.value.domain
+  vrf                 = each.value.vrf
+  sr_mpls             = each.value.sr_mpls
+  sr_mpls_infra_l3out = each.value.sr_mpls_infra_l3out
+  inbound_route_map   = each.value.inbound_route_map
+  outbound_route_map  = each.value.outbound_route_map
+}
+
+locals {
+  sr_mpls_node_profiles_manual = flatten([
+    for tenant in local.tenants : [
+      for l3out in try(tenant.sr_mpls_l3outs, []) : [
+        for np in try(l3out.node_profiles, []) : {
+          key                      = format("%s/%s/%s", tenant.name, l3out.name, np.name)
+          tenant                   = tenant.name
+          l3out                    = l3out.name
+          name                     = "${np.name}${local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.name_suffix}"
+          sr_mpls                  = true
+          mpls_custom_qos_policy   = try(np.mpls_custom_qos_policy, null)
+          bfd_multihop_node_policy = try(np.bfd_multihop_node_policy, null)
+          nodes = [for node in try(np.nodes, []) : {
+            node_id                 = node.node_id
+            pod_id                  = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
+            router_id               = try(node.router_id, null)
+            router_id_as_loopback   = false
+            loopback                = node.bgp_evpn_loopback
+            mpls_transport_loopback = node.mpls_transport_loopback
+            segment_id              = node.segment_id
+          }]
+          bgp_infra_peers = [for peer in try(np.evpn_connectivity, []) : {
+            ip                    = peer.ip
+            remote_as             = peer.remote_as
+            description           = try(peer.description, "")
+            allow_self_as         = try(peer.allow_self_as, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.allow_self_as)
+            disable_peer_as_check = try(peer.disable_peer_as_check, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.disable_peer_as_check)
+            password              = try(peer.password, null)
+            bfd                   = try(peer.bfd, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.bfd)
+            ttl                   = try(peer.ttl, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.ttl)
+            admin_state           = try(peer.admin_state, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.admin_state)
+            local_as              = try(peer.local_as, null)
+            as_propagate          = try(peer.as_propagate, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.as_propagate)
+            peer_prefix_policy    = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
+          }]
+        }
+      ]
+    ]
+  ])
+}
+
+module "aci_sr_mpls_l3out_node_profile_manual" {
+  source  = "netascode/l3out-node-profile/aci"
+  version = "0.2.6"
+
+  for_each                 = { for np in local.sr_mpls_node_profiles_manual : np.key => np if try(local.modules.aci_sr_mpls_l3out_node_profile, true) && var.manage_tenants }
+  tenant                   = each.value.tenant
+  l3out                    = each.value.l3out
+  name                     = each.value.name
+  sr_mpls                  = each.value.sr_mpls
+  mpls_custom_qos_policy   = each.value.mpls_custom_qos_policy
+  bfd_multihop_node_policy = each.value.bfd_multihop_node_policy
+  nodes                    = each.value.nodes
+  bgp_infra_peers          = each.value.bgp_infra_peers
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_sr_mpls_l3out,
+  ]
+}
+
+locals {
+  sr_mpls_interface_profiles_manual = flatten([
+    for tenant in local.tenants : [
+      for l3out in try(tenant.sr_mpls_l3outs, []) : [
+        for np in try(l3out.node_profiles, []) : [
+          for ip in try(np.interface_profiles, []) : {
+            key                  = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
+            tenant               = tenant.name
+            l3out                = l3out.name
+            node_profile         = np.name
+            sr_mpls              = true
+            transport_data_plane = l3out.transport_data_plane
+            name                 = "${ip.name}${local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.name_suffix}"
+            bfd_policy           = try("${ip.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
+            interfaces = [for int in try(ip.interfaces, []) : {
+              ip_a        = try(int.ip, "")
+              vlan        = try(int.vlan, null)
+              description = try(int.description, "")
+              type        = try(int.port, null) != null ? "access" : try([for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == int.channel][0], "pc")
+              mac         = try(int.mac, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.mac)
+              mtu         = try(int.mtu, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.mtu)
+              node_id     = try(int.node_id, try(int.channel, null) != null ? try([for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == int.channel][0][0], null) : null)
+              pod_id      = try(int.pod_id, null)
+              module      = try(int.module, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.module)
+              port        = try(int.port, null)
+              channel     = try("${int.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", null)
+              ip          = try(int.ip, null)
+              bgp_peers = [for peer in try(int.bgp_peers, []) : {
+                ip                     = peer.ip
+                remote_as              = peer.remote_as
+                description            = try(peer.description, "")
+                allow_self_as          = try(peer.allow_self_as, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.allow_self_as)
+                send_community         = try(peer.send_community, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.send_community)
+                send_ext_community     = try(peer.send_ext_community, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.send_ext_community)
+                password               = try(peer.password, null)
+                bfd                    = try(peer.bfd, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.bfd)
+                unicast_address_family = try(peer.unicast_address_family, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.unicast_address_family)
+                #                multicast_address_family = false
+                admin_state        = try(peer.admin_state, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.admin_state)
+                local_as           = try(peer.local_as, null)
+                peer_prefix_policy = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
+              }]
+            }]
+          }
+        ]
+      ]
+    ]
+  ])
+}
+
+module "aci_sr_mpls_l3out_interface_profile_manual" {
+  source  = "netascode/l3out-interface-profile/aci"
+  version = "0.2.9"
+
+  for_each             = { for ip in local.sr_mpls_interface_profiles_manual : ip.key => ip if try(local.modules.aci_sr_mpls_l3out_interface_profile, true) && var.manage_tenants }
+  tenant               = each.value.tenant
+  l3out                = each.value.l3out
+  sr_mpls              = each.value.sr_mpls
+  node_profile         = each.value.node_profile
+  name                 = each.value.name
+  bfd_policy           = each.value.bfd_policy
+  transport_data_plane = each.value.transport_data_plane
+  interfaces = [for int in try(each.value.interfaces, []) : {
+    ip_a        = int.ip_a
+    vlan        = int.vlan
+    description = int.description
+    type        = int.type
+    mac         = int.mac
+    mtu         = int.mtu
+    node_id     = int.node_id
+    pod_id      = try(int.pod_id, [for node in local.node_policies.nodes : node.pod if node.id == int.node_id][0], local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.pod)
+    module      = int.module
+    port        = int.port
+    channel     = int.channel
+    ip          = int.ip
+    bgp_peers   = int.bgp_peers
+  }]
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_sr_mpls_l3out_node_profile_manual,
+  ]
+}
+
+locals {
+  sr_mpls_external_endpoint_groups = flatten([
+    for tenant in local.tenants : [
+      for l3out in try(tenant.sr_mpls_l3outs, []) : [
+        for epg in try(l3out.external_endpoint_groups, []) : {
+          key                         = format("%s/%s/%s", tenant.name, l3out.name, epg.name)
+          tenant                      = tenant.name
+          l3out                       = "${l3out.name}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
+          name                        = "${epg.name}${local.defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.name_suffix}"
+          alias                       = try(epg.alias, "")
+          description                 = try(epg.description, "")
+          preferred_group             = try(epg.preferred_group, local.defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.preferred_group)
+          contract_consumers          = try([for contract in epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
+          contract_providers          = try([for contract in epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
+          contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
+          sr_mpls_infra_l3out         = try(l3out.sr_mpls_infra_l3out, "")
+          sr_mpls                     = true
+          subnets = [for subnet in try(epg.subnets, []) : {
+            name                           = try(subnet.name, "")
+            prefix                         = subnet.prefix
+            shared_route_control           = try(subnet.route_leaking, local.defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.subnets.route_leaking)
+            shared_security                = try(subnet.security, local.defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.subnets.security)
+            aggregate_shared_route_control = try(subnet.aggregate_shared_route_control, local.defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.subnets.aggregate_shared_route_control)
+          }]
+        }
+      ]
+    ]
+  ])
+}
+
+module "aci_sr_mpls_external_endpoint_group" {
+  source  = "netascode/external-endpoint-group/aci"
+  version = "0.2.1"
+
+  for_each                    = { for epg in local.sr_mpls_external_endpoint_groups : epg.key => epg if try(local.modules.sr_mpls_aci_external_endpoint_group, true) && var.manage_tenants }
+  tenant                      = each.value.tenant
+  l3out                       = each.value.l3out
+  name                        = each.value.name
+  alias                       = each.value.alias
+  description                 = each.value.description
+  preferred_group             = each.value.preferred_group
+  contract_consumers          = each.value.contract_consumers
+  contract_providers          = each.value.contract_providers
+  contract_imported_consumers = each.value.contract_imported_consumers
+  subnets                     = each.value.subnets
+  sr_mpls                     = each.value.sr_mpls
+  sr_mpls_infra_l3out         = each.value.sr_mpls_infra_l3out
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_sr_mpls_l3out,
+    module.aci_contract,
+    module.aci_imported_contract,
+  ]
+}
+
 module "aci_filter" {
   source  = "netascode/filter/aci"
   version = "0.2.1"
