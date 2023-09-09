@@ -711,7 +711,7 @@ locals {
 
 module "aci_l3out" {
   source  = "netascode/l3out/aci"
-  version = "0.2.4"
+  version = "0.2.5"
 
   for_each                                = { for l3out in local.l3outs : l3out.key => l3out if local.modules.aci_l3out && var.manage_tenants }
   tenant                                  = each.value.tenant
@@ -1282,7 +1282,7 @@ locals {
         alias                      = try(l3out.alias, "")
         description                = try(l3out.description, "")
         domain                     = try("${l3out.domain}${local.defaults.apic.access_policies.routed_domains.name_suffix}", "")
-        vrf                        = try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
+        vrf                        = tenant.name == "infra" ? "overlay-1" : try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
         transport_data_plane       = try(l3out.transport_data_plane, local.defaults.apic.tenants.sr_mpls_l3outs.transport_data_plane)
         sr_mpls                    = true
         sr_mpls_infra_l3out        = try(l3out.sr_mpls_infra_l3out, "")
@@ -1295,7 +1295,7 @@ locals {
 
 module "aci_sr_mpls_l3out" {
   source  = "netascode/l3out/aci"
-  version = "0.2.4"
+  version = "0.2.5"
 
   for_each                   = { for l3out in local.sr_mpls_l3outs : l3out.key => l3out if try(local.modules.aci_sr_mpls_l3out, true) && var.manage_tenants }
   tenant                     = each.value.tenant
