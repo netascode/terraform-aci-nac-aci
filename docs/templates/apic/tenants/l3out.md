@@ -135,7 +135,6 @@ apic:
                     - ip: 14.14.14.14
                       remote_as: 65010
                       description: My Desc
-                      bfd: enabled
                       allow_self_as: true
                       as_override: true
                       bfd: true
