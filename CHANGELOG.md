@@ -12,6 +12,7 @@
 - Add support for LDAP configuration
 - Add support for BFD multihop node policies
 - Add support for security domains to physical and routed domains
+- Add support for SR MPLS L3outs
 
 ## 0.7.0
 

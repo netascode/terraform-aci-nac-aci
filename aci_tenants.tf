@@ -711,7 +711,7 @@ locals {
 
 module "aci_l3out" {
   source  = "netascode/l3out/aci"
-  version = "0.2.3"
+  version = "0.2.4"
 
   for_each                                = { for l3out in local.l3outs : l3out.key => l3out if local.modules.aci_l3out && var.manage_tenants }
   tenant                                  = each.value.tenant
@@ -821,7 +821,7 @@ locals {
 
 module "aci_l3out_node_profile_manual" {
   source  = "netascode/l3out-node-profile/aci"
-  version = "0.2.6"
+  version = "0.2.7"
 
   for_each    = { for np in local.node_profiles_manual : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
   tenant      = each.value.tenant
@@ -901,7 +901,7 @@ locals {
 
 module "aci_l3out_node_profile_auto" {
   source  = "netascode/l3out-node-profile/aci"
-  version = "0.2.6"
+  version = "0.2.7"
 
   for_each    = { for np in local.node_profiles_auto : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
   tenant      = each.value.tenant
@@ -1004,7 +1004,7 @@ locals {
 
 module "aci_l3out_interface_profile_manual" {
   source  = "netascode/l3out-interface-profile/aci"
-  version = "0.2.9"
+  version = "0.2.10"
 
   for_each                    = { for ip in local.interface_profiles_manual : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
   tenant                      = each.value.tenant
@@ -1136,7 +1136,7 @@ locals {
 
 module "aci_l3out_interface_profile_auto" {
   source  = "netascode/l3out-interface-profile/aci"
-  version = "0.2.9"
+  version = "0.2.10"
 
   for_each                    = { for ip in local.interface_profiles_auto : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
   tenant                      = each.value.tenant
@@ -1222,7 +1222,7 @@ locals {
 
 module "aci_external_endpoint_group" {
   source  = "netascode/external-endpoint-group/aci"
-  version = "0.2.1"
+  version = "0.2.2"
 
   for_each                    = { for epg in local.external_endpoint_groups : epg.key => epg if local.modules.aci_external_endpoint_group && var.manage_tenants }
   tenant                      = each.value.tenant
@@ -1276,18 +1276,18 @@ locals {
   sr_mpls_l3outs = flatten([
     for tenant in local.tenants : [
       for l3out in try(tenant.sr_mpls_l3outs, []) : {
-        key                  = format("%s/%s", tenant.name, l3out.name)
-        tenant               = tenant.name
-        name                 = "${l3out.name}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
-        alias                = try(l3out.alias, "")
-        description          = try(l3out.description, "")
-        domain               = try("${l3out.domain}${local.defaults.apic.access_policies.routed_domains.name_suffix}", "")
-        vrf                  = try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
-        transport_data_plane = try(l3out.transport_data_plane, local.defaults.apic.tenants.sr_mpls_l3outs.transport_data_plane)
-        sr_mpls              = true
-        sr_mpls_infra_l3out  = try(l3out.sr_mpls_infra_l3out, "")
-        inbound_route_map    = try(l3out.inbound_route_map, "")
-        outbound_route_map   = try(l3out.outbound_route_map, "")
+        key                        = format("%s/%s", tenant.name, l3out.name)
+        tenant                     = tenant.name
+        name                       = "${l3out.name}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
+        alias                      = try(l3out.alias, "")
+        description                = try(l3out.description, "")
+        domain                     = try("${l3out.domain}${local.defaults.apic.access_policies.routed_domains.name_suffix}", "")
+        vrf                        = try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
+        transport_data_plane       = try(l3out.transport_data_plane, local.defaults.apic.tenants.sr_mpls_l3outs.transport_data_plane)
+        sr_mpls                    = true
+        sr_mpls_infra_l3out        = try(l3out.sr_mpls_infra_l3out, "")
+        sr_mpls_inbound_route_map  = try(l3out.inbound_route_map, "")
+        sr_mpls_outbound_route_map = try(l3out.outbound_route_map, "")
       }
     ]
   ])
@@ -1295,19 +1295,19 @@ locals {
 
 module "aci_sr_mpls_l3out" {
   source  = "netascode/l3out/aci"
-  version = "0.2.2"
+  version = "0.2.4"
 
-  for_each            = { for l3out in local.sr_mpls_l3outs : l3out.key => l3out if try(local.modules.aci_sr_mpls_l3out, true) && var.manage_tenants }
-  tenant              = each.value.tenant
-  name                = each.value.name
-  alias               = each.value.alias
-  description         = each.value.description
-  routed_domain       = each.value.domain
-  vrf                 = each.value.vrf
-  sr_mpls             = each.value.sr_mpls
-  sr_mpls_infra_l3out = each.value.sr_mpls_infra_l3out
-  inbound_route_map   = each.value.inbound_route_map
-  outbound_route_map  = each.value.outbound_route_map
+  for_each                   = { for l3out in local.sr_mpls_l3outs : l3out.key => l3out if try(local.modules.aci_sr_mpls_l3out, true) && var.manage_tenants }
+  tenant                     = each.value.tenant
+  name                       = each.value.name
+  alias                      = each.value.alias
+  description                = each.value.description
+  routed_domain              = each.value.domain
+  vrf                        = each.value.vrf
+  sr_mpls                    = each.value.sr_mpls
+  sr_mpls_infra_l3out        = each.value.sr_mpls_infra_l3out
+  sr_mpls_inbound_route_map  = each.value.sr_mpls_inbound_route_map
+  sr_mpls_outbound_route_map = each.value.sr_mpls_outbound_route_map
 }
 
 locals {
@@ -1353,7 +1353,7 @@ locals {
 
 module "aci_sr_mpls_l3out_node_profile_manual" {
   source  = "netascode/l3out-node-profile/aci"
-  version = "0.2.6"
+  version = "0.2.7"
 
   for_each                 = { for np in local.sr_mpls_node_profiles_manual : np.key => np if try(local.modules.aci_sr_mpls_l3out_node_profile, true) && var.manage_tenants }
   tenant                   = each.value.tenant
@@ -1408,10 +1408,9 @@ locals {
                 password               = try(peer.password, null)
                 bfd                    = try(peer.bfd, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.bfd)
                 unicast_address_family = try(peer.unicast_address_family, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.unicast_address_family)
-                #                multicast_address_family = false
-                admin_state        = try(peer.admin_state, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.admin_state)
-                local_as           = try(peer.local_as, null)
-                peer_prefix_policy = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
+                admin_state            = try(peer.admin_state, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.admin_state)
+                local_as               = try(peer.local_as, null)
+                peer_prefix_policy     = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
               }]
             }]
           }
@@ -1423,7 +1422,7 @@ locals {
 
 module "aci_sr_mpls_l3out_interface_profile_manual" {
   source  = "netascode/l3out-interface-profile/aci"
-  version = "0.2.9"
+  version = "0.2.10"
 
   for_each             = { for ip in local.sr_mpls_interface_profiles_manual : ip.key => ip if try(local.modules.aci_sr_mpls_l3out_interface_profile, true) && var.manage_tenants }
   tenant               = each.value.tenant
@@ -1471,7 +1470,6 @@ locals {
           contract_providers          = try([for contract in epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
           sr_mpls_infra_l3out         = try(l3out.sr_mpls_infra_l3out, "")
-          sr_mpls                     = true
           subnets = [for subnet in try(epg.subnets, []) : {
             name                           = try(subnet.name, "")
             prefix                         = subnet.prefix
@@ -1487,7 +1485,7 @@ locals {
 
 module "aci_sr_mpls_external_endpoint_group" {
   source  = "netascode/external-endpoint-group/aci"
-  version = "0.2.1"
+  version = "0.2.2"
 
   for_each                    = { for epg in local.sr_mpls_external_endpoint_groups : epg.key => epg if try(local.modules.sr_mpls_aci_external_endpoint_group, true) && var.manage_tenants }
   tenant                      = each.value.tenant
