@@ -1308,6 +1308,10 @@ module "aci_sr_mpls_l3out" {
   sr_mpls_infra_l3out        = each.value.sr_mpls_infra_l3out
   sr_mpls_inbound_route_map  = each.value.sr_mpls_inbound_route_map
   sr_mpls_outbound_route_map = each.value.sr_mpls_outbound_route_map
+
+  depends_on = [
+    module.aci_tenant,
+  ]
 }
 
 locals {
