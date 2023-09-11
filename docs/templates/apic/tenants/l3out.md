@@ -2,6 +2,14 @@
 
 L3out Node and Interface Profiles can either be auto-generated, one per L3out, or can be defined explicitly.
 
+> Note: Whether an interface is an `svi`, `routed sub-interface`, or `routed` depends on the following configuration:
+
+**svi** - `vlan: <not null>`, `svi: true`, `ip: <not null>`
+
+**routed sub-interface** - `vlan: <not null>`, `svi: false`, `ip: <not null>`
+
+**routed interface** - `vlan: <null>`, `svi: false`, `ip: <not null>`
+
 Location in GUI:
 
 - `Tenants` » `XXX` » `Networking` » `L3outs`
@@ -43,6 +51,94 @@ apic:
                   bgp_peers:
                     - ip: 14.14.14.14
                       remote_as: 65010
+```
+
+SVI example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      l3outs:
+        - name: L3OUT1
+          vrf: VRF1
+          domain: ROUTED1
+          node_profiles:
+            - name: NODE_101
+              nodes:
+                - node_id: 101
+                  router_id: 5.5.5.5
+                  static_routes:
+                    - prefix: 2.2.2.0/24
+                      description: My Desc
+                      next_hops:
+                        - ip: 6.6.6.6
+              interface_profiles:
+                - name: NODE_101
+                  interfaces:
+                    - node_id: 101
+                      port: 10
+                      vlan: 301
+                      svi: true
+                      ip: 14.14.14.1/24
+```
+
+Routed Sub-interface example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      l3outs:
+        - name: L3OUT1
+          vrf: VRF1
+          domain: ROUTED1
+          node_profiles:
+            - name: NODE_101
+              nodes:
+                - node_id: 101
+                  router_id: 5.5.5.5
+                  static_routes:
+                    - prefix: 2.2.2.0/24
+                      description: My Desc
+                      next_hops:
+                        - ip: 6.6.6.6
+              interface_profiles:
+                - name: NODE_101
+                  interfaces:
+                    - node_id: 101
+                      port: 10
+                      vlan: 301
+                      svi: false
+                      ip: 14.14.14.1/24
+```
+
+Routed Interface example:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      l3outs:
+        - name: L3OUT1
+          vrf: VRF1
+          domain: ROUTED1
+          node_profiles:
+            - name: NODE_101
+              nodes:
+                - node_id: 101
+                  router_id: 5.5.5.5
+                  static_routes:
+                    - prefix: 2.2.2.0/24
+                      description: My Desc
+                      next_hops:
+                        - ip: 6.6.6.6
+              interface_profiles:
+                - name: NODE_101
+                  interfaces:
+                    - node_id: 101
+                      port: 10
+                      ip: 14.14.14.1/24
 ```
 
 Example with explicit profiles:
