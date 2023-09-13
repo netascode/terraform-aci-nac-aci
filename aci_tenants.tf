@@ -668,6 +668,8 @@ locals {
         ospf_area                               = can(tonumber(try(l3out.ospf.area, "backbone"))) ? (tonumber(try(l3out.ospf.area, "backbone")) == 0 ? "backbone" : "0.0.0.${tonumber(try(l3out.ospf.area, "backbone"))}") : try(l3out.ospf.area, "backbone")
         ospf_area_cost                          = try(l3out.ospf.area_cost, local.defaults.apic.tenants.l3outs.ospf.area_cost)
         ospf_area_type                          = try(l3out.ospf.area_type, local.defaults.apic.tenants.l3outs.ospf.area_type)
+        eigrp                                   = try(l3out.eigrp, null) != null ? true : false
+        eigrp_asn                               = try(l3out.eigrp.eigrp_asn, local.defaults.apic.tenants.l3outs.eigrp.eigrp_asn)
         l3_multicast_ipv4                       = try(l3out.l3_multicast_ipv4, local.defaults.apic.tenants.l3outs.l3_multicast_ipv4)
         target_dscp                             = try(l3out.target_dscp, local.defaults.apic.tenants.l3outs.target_dscp)
         import_route_control_enforcement        = try(l3out.import_route_control_enforcement, local.defaults.apic.tenants.l3outs.import_route_control_enforcement)
@@ -726,6 +728,8 @@ module "aci_l3out" {
   ospf_area                               = each.value.ospf_area
   ospf_area_cost                          = each.value.ospf_area_cost
   ospf_area_type                          = each.value.ospf_area_type
+  eigrp                                   = each.value.eigrp
+  eigrp_asn                               = each.value.eigrp_asn
   l3_multicast_ipv4                       = each.value.l3_multicast_ipv4
   target_dscp                             = each.value.target_dscp
   import_route_control_enforcement        = each.value.import_route_control_enforcement
@@ -750,6 +754,7 @@ module "aci_l3out" {
     module.aci_tenant,
     module.aci_vrf,
     module.aci_ospf_interface_policy,
+    module.aci_eigrp_interface_policy,
     module.aci_bfd_interface_policy,
     module.aci_set_rule,
     module.aci_match_rule,
@@ -924,23 +929,25 @@ locals {
       for l3out in try(tenant.l3outs, []) : [
         for np in try(l3out.node_profiles, []) : [
           for ip in try(np.interface_profiles, []) : {
-            key                         = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
-            tenant                      = tenant.name
-            l3out                       = l3out.name
-            node_profile                = np.name
-            name                        = "${ip.name}${local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix}"
-            multipod                    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
-            remote_leaf                 = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
-            bfd_policy                  = try("${ip.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
-            ospf_interface_profile_name = try(ip.ospf.ospf_interface_profile_name, "")
-            ospf_authentication_key     = try(ip.ospf.auth_key, "")
-            ospf_authentication_key_id  = try(ip.ospf.auth_key_id, "1")
-            ospf_authentication_type    = try(ip.ospf.auth_type, "none")
-            ospf_interface_policy       = try(ip.ospf.policy, "")
-            pim_policy                  = try("${ip.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
-            igmp_interface_policy       = try("${ip.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
-            qos_class                   = try(ip.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
-            custom_qos_policy           = try("${ip.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+            key                          = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
+            tenant                       = tenant.name
+            l3out                        = l3out.name
+            node_profile                 = np.name
+            name                         = "${ip.name}${local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix}"
+            multipod                     = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
+            remote_leaf                  = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
+            bfd_policy                   = try("${ip.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
+            ospf_interface_profile_name  = try(ip.ospf.ospf_interface_profile_name, "")
+            ospf_authentication_key      = try(ip.ospf.auth_key, "")
+            ospf_authentication_key_id   = try(ip.ospf.auth_key_id, "1")
+            ospf_authentication_type     = try(ip.ospf.auth_type, "none")
+            ospf_interface_policy        = try(ip.ospf.policy, "")
+            eigrp_interface_profile_name = try(ip.eigrp.eigrp_interface_profile_name, "")
+            eigrp_interface_policy       = try(ip.eigrp.policy, "")
+            pim_policy                   = try("${ip.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
+            igmp_interface_policy        = try("${ip.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
+            qos_class                    = try(ip.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
+            custom_qos_policy            = try("${ip.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
             interfaces = [for int in try(ip.interfaces, []) : {
               ip           = try(int.ip, "")
               svi          = try(int.svi, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.svi)
@@ -1006,23 +1013,25 @@ module "aci_l3out_interface_profile_manual" {
   source  = "netascode/l3out-interface-profile/aci"
   version = "0.2.9"
 
-  for_each                    = { for ip in local.interface_profiles_manual : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
-  tenant                      = each.value.tenant
-  l3out                       = each.value.l3out
-  node_profile                = each.value.node_profile
-  name                        = each.value.name
-  multipod                    = each.value.multipod
-  remote_leaf                 = each.value.remote_leaf
-  bfd_policy                  = each.value.bfd_policy
-  ospf_interface_profile_name = each.value.ospf_interface_profile_name
-  ospf_authentication_key     = each.value.ospf_authentication_key
-  ospf_authentication_key_id  = each.value.ospf_authentication_key_id
-  ospf_authentication_type    = each.value.ospf_authentication_type
-  ospf_interface_policy       = each.value.ospf_interface_policy
-  pim_policy                  = each.value.pim_policy
-  igmp_interface_policy       = each.value.igmp_interface_policy
-  qos_class                   = each.value.qos_class
-  custom_qos_policy           = each.value.custom_qos_policy
+  for_each                     = { for ip in local.interface_profiles_manual : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
+  tenant                       = each.value.tenant
+  l3out                        = each.value.l3out
+  node_profile                 = each.value.node_profile
+  name                         = each.value.name
+  multipod                     = each.value.multipod
+  remote_leaf                  = each.value.remote_leaf
+  bfd_policy                   = each.value.bfd_policy
+  ospf_interface_profile_name  = each.value.ospf_interface_profile_name
+  ospf_authentication_key      = each.value.ospf_authentication_key
+  ospf_authentication_key_id   = each.value.ospf_authentication_key_id
+  ospf_authentication_type     = each.value.ospf_authentication_type
+  ospf_interface_policy        = each.value.ospf_interface_policy
+  eigrp_interface_profile_name = each.value.eigrp_interface_profile_name
+  eigrp_interface_policy       = each.value.eigrp_interface_policy
+  pim_policy                   = each.value.pim_policy
+  igmp_interface_policy        = each.value.igmp_interface_policy
+  qos_class                    = each.value.qos_class
+  custom_qos_policy            = each.value.custom_qos_policy
   interfaces = [for int in try(each.value.interfaces, []) : {
     ip           = int.ip
     svi          = int.svi
@@ -1056,23 +1065,25 @@ locals {
   interface_profiles_auto = flatten([
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : {
-        key                         = format("%s/%s", tenant.name, l3out.name)
-        tenant                      = tenant.name
-        l3out                       = l3out.name
-        node_profile                = l3out.name
-        name                        = l3out.name
-        multipod                    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
-        remote_leaf                 = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
-        bfd_policy                  = try("${l3out.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
-        ospf_interface_profile_name = try(l3out.ospf.ospf_interface_profile_name, l3out.name)
-        ospf_authentication_key     = try(l3out.ospf.auth_key, "")
-        ospf_authentication_key_id  = try(l3out.ospf.auth_key_id, "1")
-        ospf_authentication_type    = try(l3out.ospf.auth_type, "none")
-        ospf_interface_policy       = try(l3out.ospf.policy, "")
-        pim_policy                  = try("${l3out.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
-        igmp_interface_policy       = try("${l3out.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
-        qos_class                   = try(l3out.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
-        custom_qos_policy           = try("${l3out.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+        key                          = format("%s/%s", tenant.name, l3out.name)
+        tenant                       = tenant.name
+        l3out                        = l3out.name
+        node_profile                 = l3out.name
+        name                         = l3out.name
+        multipod                     = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
+        remote_leaf                  = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
+        bfd_policy                   = try("${l3out.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
+        ospf_interface_profile_name  = try(l3out.ospf.ospf_interface_profile_name, l3out.name)
+        ospf_authentication_key      = try(l3out.ospf.auth_key, "")
+        ospf_authentication_key_id   = try(l3out.ospf.auth_key_id, "1")
+        ospf_authentication_type     = try(l3out.ospf.auth_type, "none")
+        ospf_interface_policy        = try(l3out.ospf.policy, "")
+        eigrp_interface_profile_name = try(l3out.eigrp.eigrp_interface_profile_name, l3out.name)
+        eigrp_interface_policy       = try(l3out.eigrp.policy, "")
+        pim_policy                   = try("${l3out.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
+        igmp_interface_policy        = try("${l3out.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
+        qos_class                    = try(l3out.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
+        custom_qos_policy            = try("${l3out.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
         interfaces = flatten([for node in try(l3out.nodes, []) : [
           for int in try(node.interfaces, []) : {
             ip           = try(int.ip, "")
@@ -1138,23 +1149,25 @@ module "aci_l3out_interface_profile_auto" {
   source  = "netascode/l3out-interface-profile/aci"
   version = "0.2.9"
 
-  for_each                    = { for ip in local.interface_profiles_auto : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
-  tenant                      = each.value.tenant
-  l3out                       = each.value.l3out
-  node_profile                = each.value.node_profile
-  name                        = each.value.name
-  multipod                    = each.value.multipod
-  remote_leaf                 = each.value.remote_leaf
-  bfd_policy                  = each.value.bfd_policy
-  ospf_interface_profile_name = each.value.ospf_interface_profile_name
-  ospf_authentication_key     = each.value.ospf_authentication_key
-  ospf_authentication_key_id  = each.value.ospf_authentication_key_id
-  ospf_authentication_type    = each.value.ospf_authentication_type
-  ospf_interface_policy       = each.value.ospf_interface_policy
-  pim_policy                  = each.value.pim_policy
-  igmp_interface_policy       = each.value.igmp_interface_policy
-  qos_class                   = each.value.qos_class
-  custom_qos_policy           = each.value.custom_qos_policy
+  for_each                     = { for ip in local.interface_profiles_auto : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
+  tenant                       = each.value.tenant
+  l3out                        = each.value.l3out
+  node_profile                 = each.value.node_profile
+  name                         = each.value.name
+  multipod                     = each.value.multipod
+  remote_leaf                  = each.value.remote_leaf
+  bfd_policy                   = each.value.bfd_policy
+  ospf_interface_profile_name  = each.value.ospf_interface_profile_name
+  ospf_authentication_key      = each.value.ospf_authentication_key
+  ospf_authentication_key_id   = each.value.ospf_authentication_key_id
+  ospf_authentication_type     = each.value.ospf_authentication_type
+  ospf_interface_policy        = each.value.ospf_interface_policy
+  eigrp_interface_profile_name = each.value.eigrp_interface_profile_name
+  eigrp_interface_policy       = each.value.eigrp_interface_policy
+  pim_policy                   = each.value.pim_policy
+  igmp_interface_policy        = each.value.igmp_interface_policy
+  qos_class                    = each.value.qos_class
+  custom_qos_policy            = each.value.custom_qos_policy
   interfaces = [for int in try(each.value.interfaces, []) : {
     ip           = int.ip
     svi          = int.svi
@@ -1456,6 +1469,52 @@ module "aci_ospf_interface_policy" {
     module.aci_tenant,
   ]
 }
+
+locals {
+  eigrp_interface_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.eigrp_interface_policies, []) : {
+        key               = format("%s/%s", tenant.name, policy.name)
+        tenant            = tenant.name
+        name              = "${policy.name}${local.defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix}"
+        description       = try(policy.description, "")
+        hold_interval     = try(policy.hold_interval, local.defaults.apic.tenants.policies.eigrp_interface_policies.hold_interval)
+        hello_interval    = try(policy.hello_interval, local.defaults.apic.tenants.policies.eigrp_interface_policies.hello_interval)
+        bandwidth         = try(policy.bandwidth, local.defaults.apic.tenants.policies.eigrp_interface_policies.bandwidth)
+        delay             = try(policy.delay, local.defaults.apic.tenants.policies.eigrp_interface_policies.delay)
+        delay_unit        = try(policy.delay_unit, local.defaults.apic.tenants.policies.eigrp_interface_policies.delay_unit)
+        passive_interface = try(policy.passive_interface, local.defaults.apic.tenants.policies.eigrp_interface_policies.passive_interface)
+        split_horizon     = try(policy.split_horizon, local.defaults.apic.tenants.policies.eigrp_interface_policies.split_horizon)
+        self_nexthop      = try(policy.self_nexthop, local.defaults.apic.tenants.policies.eigrp_interface_policies.self_nexthop)
+        bfd               = try(policy.bfd, local.defaults.apic.tenants.policies.eigrp_interface_policies.bfd)
+      }
+    ]
+  ])
+}
+
+module "aci_eigrp_interface_policy" {
+  source  = "netascode/eigrp-interface-policy/aci"
+  version = "0.1.0"
+
+  for_each          = { for policy in local.eigrp_interface_policies : policy.key => policy if local.modules.aci_eigrp_interface_policy && var.manage_tenants }
+  tenant            = each.value.tenant
+  name              = each.value.name
+  description       = each.value.description
+  hold_interval     = each.value.hold_interval
+  hello_interval    = each.value.hello_interval
+  bandwidth         = each.value.bandwidth
+  delay             = each.value.delay
+  delay_unit        = each.value.delay_unit
+  passive_interface = each.value.passive_interface
+  self_nexthop      = each.value.self_nexthop
+  split_horizon     = each.value.split_horizon
+  bfd               = each.value.bfd
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
 
 locals {
   bgp_timer_policies = flatten([
