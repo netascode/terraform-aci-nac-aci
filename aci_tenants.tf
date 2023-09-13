@@ -944,6 +944,7 @@ locals {
             ospf_interface_policy        = try(ip.ospf.policy, "")
             eigrp_interface_profile_name = try(ip.eigrp.eigrp_interface_profile_name, "")
             eigrp_interface_policy       = try(ip.eigrp.policy, "")
+            eigrp_keychain_policy_name   = try(ip.eigrp.keychain_policy_name, "")
             pim_policy                   = try("${ip.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
             igmp_interface_policy        = try("${ip.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
             qos_class                    = try(ip.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
@@ -1028,6 +1029,7 @@ module "aci_l3out_interface_profile_manual" {
   ospf_interface_policy        = each.value.ospf_interface_policy
   eigrp_interface_profile_name = each.value.eigrp_interface_profile_name
   eigrp_interface_policy       = each.value.eigrp_interface_policy
+  eigrp_keychain_policy_name   = each.value.eigrp_keychain_policy_name
   pim_policy                   = each.value.pim_policy
   igmp_interface_policy        = each.value.igmp_interface_policy
   qos_class                    = each.value.qos_class
