@@ -357,7 +357,7 @@ locals {
             deployment_immediacy = try(sl.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_leafs.deployment_immediacy)
           }]
           static_endpoints = [for se in try(epg.static_endpoints, []) : {
-            name    = "${se.name}${local.defaults.apic.tenants.application_profiles.endpoint_groups.static_endpoints.name_suffix}"
+            name    = try("${se.name}${local.defaults.apic.tenants.application_profiles.endpoint_groups.static_endpoints.name_suffix}", "")
             alias   = try(se.alias, "")
             mac     = se.mac
             ip      = try(se.ip, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_endpoints.ip)
