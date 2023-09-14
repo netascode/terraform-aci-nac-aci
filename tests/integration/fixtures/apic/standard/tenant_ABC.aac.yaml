@@ -410,8 +410,7 @@ apic:
                   mode: regular
                   deployment_immediacy: lazy
               static_endpoints:
-                - name: ST_EP1
-                  mac: 00:00:00:00:00:01
+                - mac: 00:00:00:00:00:01
                   ip: 1.1.1.1
                   type: silent-host
                   vlan: 123

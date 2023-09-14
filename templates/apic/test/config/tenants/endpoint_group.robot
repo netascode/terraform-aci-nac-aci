@@ -84,9 +84,10 @@ Verify Endpoint Group {{ epg_name }} Static Leaf {{ sl.node_id }}
 
 {% for st_ep in epg.static_endpoints | default([]) %}
 {% set static_endpoint_name = st_ep.name ~ defaults.apic.tenants.application_profiles.endpoint_groups.static_endpoints.name_suffix %}
+{% set static_endpoint_rn = 'stcep-' ~ st_ep.mac + '-type-' ~ st_ep.type %}
 
-Verify Endpoint Group {{ epg_name }} Static Endpoint {{ st_ep.name }}
-    ${con}=   Set Variable   $..fvAEPg.children[?(@.fvStCEp.attributes.name=='{{ static_endpoint_name }}')].fvStCEp
+Verify Endpoint Group {{ epg_name }} Static Endpoint {{ st_ep.mac }}
+    ${con}=   Set Variable   $..fvAEPg.children[?(@.fvStCEp.attributes.rn=='{{ static_endpoint_rn }}')].fvStCEp
     {% if st_ep.type != "vep" %}
     Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.encap   vlan-{{ st_ep.vlan }}
     {% else %}

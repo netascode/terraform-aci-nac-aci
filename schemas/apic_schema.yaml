@@ -1734,7 +1734,7 @@ ten_ap_endpoint_groups_static_leafs:
   mode: enum('regular', 'native', 'untagged', required=False)
 
 ten_ap_endpoint_groups_static_endpoints:
-  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   vlan: int(min=1, max=4096, required=False)
   mac: mac()
