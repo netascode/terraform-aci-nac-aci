@@ -21,6 +21,7 @@ modules:
   aci_application_profile: true
   aci_banner: true
   aci_bfd_interface_policy: true
+  aci_bfd_multihop_node_policy: true
   aci_bgp_address_family_context_policy: true
   aci_bgp_best_path_policy: true
   aci_bgp_peer_prefix_policy: true
@@ -115,6 +116,7 @@ modules:
   aci_remote_location: true
   aci_rogue_endpoint_control: true
   aci_route_control_route_map: true
+  aci_route_tag_policy: true
   aci_routed_domain: true
   aci_service_epg_policy: true
   aci_service_graph_template: true

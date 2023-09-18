@@ -2,6 +2,17 @@
 
 - Fix replacement of placeholders in auto-generated objects
 - Fix error with sub-port static path bindings
+- Add support for static leafs under an EPG
+- Add `auto` to allowed values for `speed` in link level policies
+- Add support for tenant security domains
+- Add support for route tag policies
+- Add support for VRF transit route tag policies
+- Add support for L3out route control enforcement
+- Add support for LDAP login domains
+- Add support for LDAP configuration
+- Add support for BFD multihop node policies
+- Add support for security domains to physical and routed domains
+- Add support for SR MPLS L3outs
 
 ## 0.7.0
 
