@@ -293,10 +293,6 @@ locals {
           contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
           contract_intra_epgs         = try([for contract in epg.contracts.intra_epgs : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           physical_domains            = try([for domain in epg.physical_domains : "${domain}${local.defaults.apic.access_policies.physical_domains.name_suffix}"], [])
-          contract_masters = [for master in try(epg.contracts.masters, []) : {
-            endpoint_group      = master.endpoint_group
-            application_profile = try(master.application_profile, ap.name)
-          }]
           subnets = [for subnet in try(epg.subnets, []) : {
             description        = try(subnet.description, "")
             ip                 = subnet.ip
@@ -415,7 +411,6 @@ module "aci_endpoint_group" {
   contract_providers          = each.value.contract_providers
   contract_imported_consumers = each.value.contract_imported_consumers
   contract_intra_epgs         = each.value.contract_intra_epgs
-  contract_masters            = each.value.contract_masters
   physical_domains            = each.value.physical_domains
   subnets                     = each.value.subnets
   vmware_vmm_domains          = each.value.vmware_vmm_domains
