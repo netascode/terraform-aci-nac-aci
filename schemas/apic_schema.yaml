@@ -2036,6 +2036,7 @@ ten_l3outs_nodes_interfaces:
   ip_shared: ip(required=False)
   bgp_peers: list(include('ten_l3outs_nodes_interfaces_bgp_peers'), required=False) # @name(L3out Node Interface BGP Peers)
   paths: list(include('ten_l3outs_nodes_interfaces_paths'), required=False) # @name(L3out Node Interface Paths)
+  mode: enum('regular', 'native', 'untagged', required=False)
 
 ten_l3outs_nodes_interfaces_bgp_peers:
   ip: ip()
@@ -2162,6 +2163,7 @@ ten_l3outs_node_profiles_interface_profiles_interfaces:
   ip_shared: ip(required=False)
   bgp_peers: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers'), required=False) # @name(L3out IP Interface BGP Peers)
   paths: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_paths'), required=False) # @name(L3out IP Interface Paths)
+  mode: enum('regular', 'native', 'untagged', required=False)
 
 ten_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers:
   ip: ip()

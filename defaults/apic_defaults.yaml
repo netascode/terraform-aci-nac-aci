@@ -736,6 +736,7 @@ defaults:
             ip: 0.0.0.0
             mac: 00:22:BD:F8:19:FF
             mtu: inherit
+            mode: regular
             bgp_peers:
               allow_self_as: false
               as_override: false
@@ -801,6 +802,7 @@ defaults:
               ip: 0.0.0.0
               mac: 00:22:BD:F8:19:FF
               mtu: inherit
+              mode: regular
               bgp_peers:
                 allow_self_as: false
                 as_override: false

@@ -366,7 +366,7 @@
                                                             "ipv6Dad": "enabled",
                                                             "llAddr": "::",
                                                             "mac": "{{ int.mac | default(defaults.apic.tenants.l3outs.nodes.interfaces.mac) }}",
-                                                            "mode": "regular",
+                                                            "mode": "{{ int.mode | default(defaults.apic.tenants.l3outs.nodes.interfaces.mode) }}",
                                                             "mtu": "{{ int.mtu | default(defaults.apic.tenants.l3outs.nodes.interfaces.mtu) }}",
                                                             {% if type == 'ap' %}
                                                             "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) }}/paths-{{ node.node_id }}/pathep-[eth{{ int.module | default(defaults.apic.tenants.l3outs.nodes.interfaces.module) }}/{{ int.port }}]",
@@ -391,7 +391,7 @@
                                                             "ipv6Dad": "enabled",
                                                             "llAddr": "::",
                                                             "mac": "{{ int.mac | default(defaults.apic.tenants.l3outs.nodes.interfaces.mac) }}",
-                                                            "mode": "regular",
+                                                            "mode": "{{ int.mode | default(defaults.apic.tenants.l3outs.nodes.interfaces.mode) }}",
                                                             "mtu": "{{ int.mtu | default(defaults.apic.tenants.l3outs.nodes.interfaces.mtu) }}",
                                                             "nodeDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) }}/node-{{ node.node_id }}",
                                                             "childAction": "deleteNonPresent"
@@ -953,7 +953,7 @@
                                                             "ipv6Dad": "enabled",
                                                             "llAddr": "::",
                                                             "mac": "{{ int.mac | default(defaults.apic.tenants.l3outs.nodes.interfaces.mac) }}",
-                                                            "mode": "regular",
+                                                            "mode": "{{ int.mode | default(defaults.apic.tenants.l3outs.nodes.interfaces.mode) }}",
                                                             "mtu": "{{ int.mtu | default(defaults.apic.tenants.l3outs.nodes.interfaces.mtu) }}",
                                                             {% if type == 'ap' %}
                                                             "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) }}/paths-{{ int.node_id }}/pathep-[eth{{ int.module | default(defaults.apic.tenants.l3outs.nodes.interfaces.module) }}/{{ int.port }}]",
@@ -978,7 +978,7 @@
                                                             "ipv6Dad": "enabled",
                                                             "llAddr": "::",
                                                             "mac": "{{ int.mac | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mac) }}",
-                                                            "mode": "regular",
+                                                            "mode": "{{ int.mode | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mode) }}",
                                                             "mtu": "{{ int.mtu | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mtu) }}",
                                                             "nodeDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) }}/node-{{ int.node_id }}",
                                                             "childAction": "deleteNonPresent"
