@@ -951,6 +951,7 @@ locals {
               type         = try(int.port, null) != null ? "access" : try([for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == int.channel][0], try(int.node2_id, null) != null ? "vpc" : "pc")
               mac          = try(int.mac, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mac)
               mtu          = try(int.mtu, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mtu)
+              mode         = try(int.mode, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mode)
               node_id      = try(int.node_id, try(int.channel, null) != null ? try([for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == int.channel][0][0], null) : null)
               node2_id     = try(int.node2_id, try(int.channel, null) != null ? try([for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == int.channel && pg.type == "vpc"][0], null) : null)
               pod_id       = try(int.pod_id, null)
@@ -1004,7 +1005,7 @@ locals {
 
 module "aci_l3out_interface_profile_manual" {
   source  = "netascode/l3out-interface-profile/aci"
-  version = "0.2.10"
+  version = "0.2.11"
 
   for_each                    = { for ip in local.interface_profiles_manual : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
   tenant                      = each.value.tenant
@@ -1033,6 +1034,7 @@ module "aci_l3out_interface_profile_manual" {
     type         = int.type
     mac          = int.mac
     mtu          = int.mtu
+    mode         = int.mode
     node_id      = int.node_id
     node2_id     = int.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == int.channel][0][1] : int.node2_id
     pod_id       = int.pod_id == null ? try([for node in local.node_policies.nodes : node.pod if node.id == int.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) : int.pod_id
@@ -1084,6 +1086,7 @@ locals {
             type         = try(int.port, null) != null ? "access" : try([for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == int.channel][0], try(int.node2_id, null) != null ? "vpc" : "pc")
             mac          = try(int.mac, local.defaults.apic.tenants.l3outs.nodes.interfaces.mac)
             mtu          = try(int.mtu, local.defaults.apic.tenants.l3outs.nodes.interfaces.mtu)
+            mode         = try(int.mode, local.defaults.apic.tenants.l3outs.nodes.interfaces.mode)
             node_id      = try(node.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == int.channel][0][0], null)
             node2_id     = try(int.node2_id, [for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == int.channel && pg.type == "vpc"][0], null)
             pod_id       = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.nodes.interfaces.pod)
@@ -1136,7 +1139,7 @@ locals {
 
 module "aci_l3out_interface_profile_auto" {
   source  = "netascode/l3out-interface-profile/aci"
-  version = "0.2.10"
+  version = "0.2.11"
 
   for_each                    = { for ip in local.interface_profiles_auto : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
   tenant                      = each.value.tenant
@@ -1165,6 +1168,7 @@ module "aci_l3out_interface_profile_auto" {
     type         = int.type
     mac          = int.mac
     mtu          = int.mtu
+    mode         = int.mode
     node_id      = int.node_id
     node2_id     = int.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == int.channel][0][1] : int.node2_id
     pod_id       = int.pod_id
