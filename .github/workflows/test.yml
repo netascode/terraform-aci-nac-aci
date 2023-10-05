@@ -27,7 +27,7 @@ jobs:
           terraform_version: 1.5.7
 
       - name: Tflint Setup
-        uses: terraform-linters/setup-tflint@v3
+        uses: terraform-linters/setup-tflint@v4
 
       - name: Terraform Docs Setup
         run: |
