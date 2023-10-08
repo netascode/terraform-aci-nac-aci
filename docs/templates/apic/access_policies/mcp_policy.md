@@ -7,7 +7,7 @@ Location in GUI:
 
 * [MCP Policy](https://registry.terraform.io/modules/netascode/mcp-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

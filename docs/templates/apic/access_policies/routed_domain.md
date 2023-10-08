@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Routed Domain](https://registry.terraform.io/modules/netascode/routed-domain/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

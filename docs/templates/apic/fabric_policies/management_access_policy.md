@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Management Access policy](https://registry.terraform.io/modules/netascode/management-access-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

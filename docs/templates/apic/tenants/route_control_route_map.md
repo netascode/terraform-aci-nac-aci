@@ -3,7 +3,7 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `Route Maps for Route Control`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

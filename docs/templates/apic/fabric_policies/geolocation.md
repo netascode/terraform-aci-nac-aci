@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Geolocation](https://registry.terraform.io/modules/netascode/geolocation/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

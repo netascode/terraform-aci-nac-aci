@@ -7,7 +7,7 @@ Location in GUI:
 
 * [QoS](https://registry.terraform.io/modules/netascode/qos/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

@@ -3,7 +3,7 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `BGP` » `BGP Peer Prefix`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

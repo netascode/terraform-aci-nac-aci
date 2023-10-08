@@ -12,7 +12,7 @@ Location in GUI:
 
 * [Fabric Leaf Interface Profile](https://registry.terraform.io/modules/netascode/fabric-leaf-interface-profile/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

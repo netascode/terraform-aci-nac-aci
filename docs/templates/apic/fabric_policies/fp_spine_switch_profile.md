@@ -12,7 +12,7 @@ Location in GUI:
 
 * [Fabric Spine Switch Profile](https://registry.terraform.io/modules/netascode/fabric-spine-switch-profile/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

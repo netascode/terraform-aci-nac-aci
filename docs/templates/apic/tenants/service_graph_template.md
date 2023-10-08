@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Service Graph Template](https://registry.terraform.io/modules/netascode/service-graph-template/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

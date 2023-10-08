@@ -7,7 +7,7 @@ Location in GUI:
 
 * [CDP Policy](https://registry.terraform.io/modules/netascode/cdp-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

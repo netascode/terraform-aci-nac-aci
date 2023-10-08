@@ -21,7 +21,7 @@ Location in GUI:
 - [L3out Node Profile](https://registry.terraform.io/modules/netascode/l3out-node-profile/aci/latest)
 - [L3out Interface Profile](https://registry.terraform.io/modules/netascode/l3out-interface-profile/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

@@ -7,7 +7,7 @@ Location in GUI:
 
 * [SNMP Trap Policy](https://registry.terraform.io/modules/netascode/snmp-trap-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

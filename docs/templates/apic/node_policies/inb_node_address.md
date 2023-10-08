@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Inband Node Address](https://registry.terraform.io/modules/netascode/inband-node-address/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

@@ -7,7 +7,7 @@ Location in GUI:
 
 * [OOB External Management Instance](https://registry.terraform.io/modules/netascode/oob-external-management-instance/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

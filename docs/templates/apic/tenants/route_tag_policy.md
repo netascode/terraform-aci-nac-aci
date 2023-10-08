@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Route Tag Policy](https://registry.terraform.io/modules/netascode/route-tag-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Syslog](https://registry.terraform.io/modules/netascode/syslog/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

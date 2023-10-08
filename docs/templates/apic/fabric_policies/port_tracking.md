@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Port Tracking](https://registry.terraform.io/modules/netascode/port-tracking/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

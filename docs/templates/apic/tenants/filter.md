@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Filter](https://registry.terraform.io/modules/netascode/filter/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

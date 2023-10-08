@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Set Rule](https://registry.terraform.io/modules/netascode/set-rule/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

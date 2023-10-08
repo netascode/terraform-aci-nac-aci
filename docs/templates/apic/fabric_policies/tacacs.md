@@ -7,7 +7,7 @@ Location in GUI:
 
 * [TACACS](https://registry.terraform.io/modules/netascode/tacacs/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

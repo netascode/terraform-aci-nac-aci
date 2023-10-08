@@ -7,7 +7,7 @@ Location in GUI:
 
 * [CA Certificate](https://registry.terraform.io/modules/netascode/ca-certificate/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

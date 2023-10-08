@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Device Selection Policy](https://registry.terraform.io/modules/netascode/device-selection-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

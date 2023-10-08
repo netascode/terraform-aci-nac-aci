@@ -3,7 +3,7 @@
 Location in GUI:
 `Fabric` » `Inventory` » `Pod X` » `Node Y` » `Interface`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Infra DSCP Translation Policy](https://registry.terraform.io/modules/netascode/infra-dscp-translation-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

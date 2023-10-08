@@ -7,7 +7,7 @@ Location in GUI:
 
 * [VRF](https://registry.terraform.io/modules/netascode/vrf/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

@@ -3,7 +3,7 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `L4-L7 Policy-Based Redirect Backup`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

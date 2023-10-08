@@ -7,7 +7,7 @@ Location in GUI:
 
 * [MPLS Custom QoS Policy](https://registry.terraform.io/modules/netascode/mpls-custom-qos-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

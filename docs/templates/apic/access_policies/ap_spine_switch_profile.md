@@ -12,7 +12,7 @@ Location in GUI:
 
 * [Access Spine Switch Profile](https://registry.terraform.io/modules/netascode/access-spine-switch-profile/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

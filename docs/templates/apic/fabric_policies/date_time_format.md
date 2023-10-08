@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Date Time Format](https://registry.terraform.io/modules/netascode/date-time-format/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

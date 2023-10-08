@@ -3,7 +3,7 @@
 Location in GUI:
 `Application Management` » `Schemas`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

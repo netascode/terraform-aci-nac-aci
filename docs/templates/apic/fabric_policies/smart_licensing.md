@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Smart Licensing](https://registry.terraform.io/modules/netascode/smart-licensing/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

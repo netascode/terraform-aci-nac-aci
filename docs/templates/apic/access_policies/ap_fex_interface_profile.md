@@ -13,7 +13,7 @@ Location in GUI:
 
 * [Access FEX Interface Profile](https://registry.terraform.io/modules/netascode/access-fex-interface-profile/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

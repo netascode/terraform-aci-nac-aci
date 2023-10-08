@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Access Leaf Interface Policy Group](https://registry.terraform.io/modules/netascode/access-leaf-interface-policy-group/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

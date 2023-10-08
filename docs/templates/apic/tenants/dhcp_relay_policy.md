@@ -7,7 +7,7 @@ Location in GUI:
 
 * [DHCP Relay Policy](https://registry.terraform.io/modules/netascode/dhcp-relay-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

@@ -3,7 +3,7 @@
 Location in GUI:
 `Infrastructure` » `Sites`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Error Disabled Recovery](https://registry.terraform.io/modules/netascode/error-disabled-recovery/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

@@ -7,7 +7,7 @@ Location in GUI:
 
 * [LDAP](https://registry.terraform.io/modules/netascode/ldap/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

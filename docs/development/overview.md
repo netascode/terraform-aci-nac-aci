@@ -128,7 +128,7 @@ apic:
 ## Update Documentation
 
 Update documentation in the [aac](https://wwwin-github.cisco.com/netascode/aac/tree/master/docs/) repository, which is located in `docs/` directory. The data model documentation is to some extend auto-generated and depends on markdown templates which are located in the `docs/templates/` directory.
-The `{{ aac_doc }}` placeholder will be replaced by an auto-generated class diagram and a list of tables.
+The `{{ doc_gen }}` placeholder will be replaced by an auto-generated class diagram and a list of tables.
 
 ````md
 # CDP Interface Policy
@@ -140,7 +140,7 @@ Location in GUI:
 
 * [CDP Policy](https://registry.terraform.io/modules/netascode/cdp-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

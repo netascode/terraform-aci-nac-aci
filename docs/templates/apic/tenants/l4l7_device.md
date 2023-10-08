@@ -7,7 +7,7 @@ Location in GUI:
 
 * [L4L7 Device](https://registry.terraform.io/modules/netascode/l4l7-device/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

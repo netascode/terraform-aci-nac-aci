@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Redirect Policy](https://registry.terraform.io/modules/netascode/redirect-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

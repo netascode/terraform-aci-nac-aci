@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Maintenance Group](https://registry.terraform.io/modules/netascode/maintenance-group/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

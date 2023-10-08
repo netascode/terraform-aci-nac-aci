@@ -3,7 +3,7 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `PIM`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

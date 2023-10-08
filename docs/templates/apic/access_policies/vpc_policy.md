@@ -7,7 +7,7 @@ Location in GUI:
 
 * [vPC Policy](https://registry.terraform.io/modules/netascode/vpc-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

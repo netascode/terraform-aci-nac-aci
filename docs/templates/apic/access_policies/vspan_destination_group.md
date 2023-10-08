@@ -3,7 +3,7 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Troubleshooting` » `VSPAN` » `VSPAN Destination Groups`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

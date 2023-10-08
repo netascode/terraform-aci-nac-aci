@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Fabric Pod Policy Group](https://registry.terraform.io/modules/netascode/fabric-pod-policy-group/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Endpoint Security Group](https://registry.terraform.io/modules/netascode/endpoint-security-group/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

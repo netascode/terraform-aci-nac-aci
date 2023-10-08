@@ -7,7 +7,7 @@ Location in GUI:
 
 * [DNS Policy](https://registry.terraform.io/modules/netascode/dns-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

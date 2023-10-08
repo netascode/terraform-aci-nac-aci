@@ -7,7 +7,7 @@ Location in GUI:
 
 * [LLDP Policy](https://registry.terraform.io/modules/netascode/lldp-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

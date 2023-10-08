@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Endpoint Loop Protection](https://registry.terraform.io/modules/netascode/endpoint-loop-protection/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

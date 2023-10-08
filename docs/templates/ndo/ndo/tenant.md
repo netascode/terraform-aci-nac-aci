@@ -3,7 +3,7 @@
 Location in GUI:
 `Application Management` » `Tenants`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

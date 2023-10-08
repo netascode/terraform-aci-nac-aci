@@ -3,7 +3,7 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `IP SLA` » `IP SLA Monitoring Policies`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

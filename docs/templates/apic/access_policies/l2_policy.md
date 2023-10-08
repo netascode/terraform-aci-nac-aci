@@ -7,7 +7,7 @@ Location in GUI:
 
 * [L2 Policy](https://registry.terraform.io/modules/netascode/l2-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

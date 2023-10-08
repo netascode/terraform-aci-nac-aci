@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Bridge Domain](https://registry.terraform.io/modules/netascode/bridge-domain/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

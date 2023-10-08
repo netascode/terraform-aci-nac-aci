@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Fabric ISIS BFD](https://registry.terraform.io/modules/netascode/fabric-isis-bfd/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

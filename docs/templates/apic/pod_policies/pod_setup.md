@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Pod Setup](https://registry.terraform.io/modules/netascode/pod-setup/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

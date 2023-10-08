@@ -7,7 +7,7 @@ Location in GUI:
 
 * [System Global GIPO](https://registry.terraform.io/modules/netascode/system-global-gipo/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

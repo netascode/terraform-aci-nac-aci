@@ -3,7 +3,7 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Switches` » `Spine Switches` » `Policy Groups`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

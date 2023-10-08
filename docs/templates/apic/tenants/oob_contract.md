@@ -7,7 +7,7 @@ Location in GUI:
 
 * [OOB Contract](https://registry.terraform.io/modules/netascode/oob-contract/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

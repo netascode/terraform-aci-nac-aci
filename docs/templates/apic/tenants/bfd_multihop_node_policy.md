@@ -7,7 +7,7 @@ Location in GUI:
 
 * [BFD Multihop Policy](https://registry.terraform.io/modules/netascode/bfd-multihop-node-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

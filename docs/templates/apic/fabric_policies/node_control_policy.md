@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Node Control Policy](https://registry.terraform.io/modules/netascode/node-control-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

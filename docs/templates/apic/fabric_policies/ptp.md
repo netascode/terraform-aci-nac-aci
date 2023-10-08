@@ -7,7 +7,7 @@ Location in GUI:
 
 * [PTP](https://registry.terraform.io/modules/netascode/ptp/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

@@ -9,4 +9,4 @@ Location in GUI:
 
 * [Monitoring Policy](https://registry.terraform.io/modules/netascode/monitoring-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}

@@ -7,7 +7,7 @@ Location in GUI:
 
 * [BFD Interface Policy](https://registry.terraform.io/modules/netascode/bfd-interface-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

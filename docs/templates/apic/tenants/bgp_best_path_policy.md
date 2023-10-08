@@ -3,7 +3,7 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `BGP` » `BGP Best Path Policy`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

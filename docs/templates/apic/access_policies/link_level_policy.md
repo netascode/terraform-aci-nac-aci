@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Link Level Policy](https://registry.terraform.io/modules/netascode/link-level-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

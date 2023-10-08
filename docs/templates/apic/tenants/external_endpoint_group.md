@@ -22,7 +22,7 @@ Location in GUI:
 
 - [External Endpoint Group](https://registry.terraform.io/modules/netascode/external-endpoint-group/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

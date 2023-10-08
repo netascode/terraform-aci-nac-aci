@@ -7,7 +7,7 @@ Location in GUI:
 
 * [VMware VMM Domain](https://registry.terraform.io/modules/netascode/vmware-vmm-domain/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

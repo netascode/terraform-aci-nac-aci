@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Storm Control Policy](https://registry.terraform.io/modules/netascode/storm-control-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

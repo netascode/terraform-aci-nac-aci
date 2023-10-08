@@ -3,7 +3,7 @@
 Location in GUI:
 `Fabric` » `Fabric Policies` » `Global` » `Fabric L2 MTU` » `default`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

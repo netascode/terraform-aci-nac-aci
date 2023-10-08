@@ -15,7 +15,7 @@ apic:
 
 * [AAEP](https://registry.terraform.io/modules/netascode/aaep/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

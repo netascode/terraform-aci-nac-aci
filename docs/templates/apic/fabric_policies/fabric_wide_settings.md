@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Fabric Wide Settings](https://registry.terraform.io/modules/netascode/fabric-wide-settings/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

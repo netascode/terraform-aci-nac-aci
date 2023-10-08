@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Access Spine Interface Policy Group](https://registry.terraform.io/modules/netascode/access-spine-interface-policy-group/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

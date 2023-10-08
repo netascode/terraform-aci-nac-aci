@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Rogue Endpoint Control](https://registry.terraform.io/modules/netascode/rogue-endpoint-control/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

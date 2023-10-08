@@ -522,7 +522,7 @@ def render_doc(system, schema_path, objects_path, defaults_path):
             with open(template_path, "r") as file:
                 filedata = file.read()
 
-            filedata = filedata.replace("{{ aac_doc }}", output)
+            filedata = filedata.replace("{{ doc_gen }}", output)
 
             if PUBHUB:
                 cleaned_data = ""

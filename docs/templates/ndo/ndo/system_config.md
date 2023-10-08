@@ -3,7 +3,7 @@
 Location in GUI:
 `Infrastructure` » `System Configuration`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

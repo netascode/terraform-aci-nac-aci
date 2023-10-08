@@ -7,7 +7,7 @@ Location in GUI:
 
 * [Port Channel Policy](https://registry.terraform.io/modules/netascode/port-channel-policy/aci/latest)
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 

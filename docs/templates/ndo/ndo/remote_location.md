@@ -3,7 +3,7 @@
 Location in GUI:
 `Operations` » `Remote Locations`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 
