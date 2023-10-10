@@ -1,0 +1,53 @@
+{# iterate_list apic.tenants name item[2] #}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {% set comma1 = joiner(",") %}
+            {% for otp in tenant.policies.ospf_timer_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = otp.name ~ defaults.apic.tenants.policies.ospf_timer_policies.name_suffix %}
+            {% set ctrl_strings = [] %}
+            {% if otp.router_id_lookup | default(defaults.apic.tenants.policies.ospf_timer_policies.router_id_lookup) %}
+                {{ ctrl_strings.append("name-lookup") }}
+            {% endif %}
+            {% if otp.prefix_suppression | default(defaults.apic.tenants.policies.ospf_timer_policies.prefix_suppression) %}
+                {{ ctrl_strings.append("pfx-suppress") }}
+            {% endif %}
+            {
+                "ospfCtxPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "bwRef": "{{ otp.reference_bandwidth | default(defaults.apic.tenants.policies.ospf_timer_policies.reference_bandwidth) }}",
+                        "ctrl": "{{ ctrl_strings | join(",") }}",
+                        "descr": "{{ otp.description | default() }}",
+                        "dist": "{{ otp.distance | default(defaults.apic.tenants.policies.ospf_timer_policies.distance) }}",
+                        "dn": "uni/tn-{{ tenant.name }}/ospfCtxP-{{ policy_name }}",
+                        "grCtrl": "{% if otp.graceful_restart | default(defaults.apic.tenants.policies.ospf_timer_policies.graceful_restart) %}helper{% else %}{% endif %}",
+                        "lsaArrivalIntvl": "{{ otp.lsa_arrival_interval | default(defaults.apic.tenants.policies.ospf_timer_policies.lsa_arrival_interval) }}",
+                        "lsaGpPacingIntvl": "{{ otp.lsa_group_pacing_interval | default(defaults.apic.tenants.policies.ospf_timer_policies.lsa_group_pacing_interval) }}",
+                        "lsaHoldIntvl": "{{ otp.lsa_hold_interval | default(defaults.apic.tenants.policies.ospf_timer_policies.lsa_hold_interval) }}",
+                        "lsaMaxIntvl": "{{ otp.lsa_max_interval | default(defaults.apic.tenants.policies.ospf_timer_policies.lsa_max_interval) }}",
+                        "lsaStartIntvl": "{{ otp.lsa_start_interval | default(defaults.apic.tenants.policies.ospf_timer_policies.lsa_start_interval) }}",
+                        "maxEcmp": "{{ otp.max_ecmp | default(defaults.apic.tenants.policies.ospf_timer_policies.max_ecmp) }}",
+                        "maxLsaAction": "{{ otp.max_lsa_action | default(defaults.apic.tenants.policies.ospf_timer_policies.max_lsa_action) }}",
+                        "maxLsaResetIntvl": "{{ otp.max_lsa_reset_interval | default(defaults.apic.tenants.policies.ospf_timer_policies.max_lsa_reset_interval) }}",
+                        "maxLsaSleepCnt": "{{ otp.max_lsa_sleep_count | default(defaults.apic.tenants.policies.ospf_timer_policies.max_lsa_sleep_count) }}",
+                        "maxLsaSleepIntvl": "{{ otp.max_lsa_sleep_interval | default(defaults.apic.tenants.policies.ospf_timer_policies.max_lsa_sleep_interval) }}",
+                        "maxLsaNum": "{{ otp.max_lsa_num | default(defaults.apic.tenants.policies.ospf_timer_policies.max_lsa_num) }}",
+                        "maxLsaThresh": "{{ otp.max_lsa_threshold | default(defaults.apic.tenants.policies.ospf_timer_policies.max_lsa_threshold) }}",
+                        "name": "{{ policy_name }}",
+                        "spfHoldIntvl": "{{ otp.spf_hold_interval | default(defaults.apic.tenants.policies.ospf_timer_policies.spf_hold_interval) }}",
+                        "spfInitIntvl": "{{ otp.spf_init_interval | default(defaults.apic.tenants.policies.ospf_timer_policies.spf_init_interval) }}",
+                        "spfMaxIntvl": "{{ otp.spf_max_interval | default(defaults.apic.tenants.policies.ospf_timer_policies.spf_max_interval) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

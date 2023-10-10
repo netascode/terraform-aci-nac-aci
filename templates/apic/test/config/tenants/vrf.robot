@@ -120,6 +120,31 @@ Verify BGP IPV4 Import Route Target {{ vrf.bgp.ipv4_import_route_target }}
     Should Be Equal Value Json String   ${r.json()}   ${bgp_entry}.attributes.type   import
 {% endif %}
 
+{% if vrf.ospf.timer_policy is defined %}
+
+Verify OSPF Timer Policy {{ vrf.ospf.timer_policy }}
+{% set address_family_context_policy_name = vrf.ospf.timer_policy ~ defaults.apic.tenants.policies.ospf_timer_policies.name_suffix %}
+    ${ospf_entry}=   Set Variable   $..fvCtx.children[?(@.fvRsOspfCtxPol.attributes.tnOspfCtxPolName=='{{ address_family_context_policy_name }}')].fvRsOspfCtxPol
+    Should Be Equal Value Json String   ${r.json()}   ${ospf_entry}.attributes.tnOspfCtxPolName   {{ address_family_context_policy_name }}
+{% endif %}
+
+{% if vrf.ospf.ipv4_address_family_context_policy is defined %}
+
+Verify OSPF Address Family IPv4 Context Policy {{ vrf.ospf.ipv4_address_family_context_policy }}
+    {% set address_family_context_policy_name = vrf.ospf.ipv4_address_family_context_policy + defaults.apic.tenants.policies.ospf_timer_policies.name_suffix %}
+    ${ospf_entry}=   Set Variable   $..fvCtx.children[?(@.fvRsCtxToOspfCtxPol.attributes.af=='ipv4-ucast')].fvRsCtxToOspfCtxPol
+    Should Be Equal Value Json String   ${r.json()}   ${ospf_entry}.attributes.tnOspfCtxPolName   {{ address_family_context_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${ospf_entry}.attributes.af   ipv4-ucast
+{% endif %}
+
+{% if vrf.ospf.ipv6_address_family_context_policy is defined %}
+
+Verify OSPF Address Family IPv6 Context Policy {{ vrf.ospf.ipv6_address_family_context_policy }}
+    {% set address_family_context_policy_name = vrf.ospf.ipv6_address_family_context_policy + defaults.apic.tenants.policies.ospf_timer_policies.name_suffix %}
+    ${ospf_entry}=   Set Variable   $..fvCtx.children[?(@.fvRsCtxToOspfCtxPol.attributes.af=='ipv6-ucast')].fvRsCtxToOspfCtxPol
+    Should Be Equal Value Json String   ${r.json()}   ${ospf_entry}.attributes.tnOspfCtxPolName   {{ address_family_context_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${ospf_entry}.attributes.af   ipv6-ucast
+{% endif %}
 {% if vrf.bgp.ipv4_export_route_target is defined %}
 
 Verify BGP IPV4 Export Route Target {{ vrf.bgp.ipv4_export_route_target }}

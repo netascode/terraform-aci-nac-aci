@@ -1587,7 +1587,10 @@ ten_vrf_bgp:
   ipv6_export_route_target: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_vrf_ospf:
-  timer_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  timer_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  ipv4_address_family_context_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  ipv6_address_family_context_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
 
 ten_vrf_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF Consumers) @ref_name(Contract)
@@ -2458,6 +2461,7 @@ ten_sr_mpls_l3outs_external_endpoint_groups_contracts:
 
 ten_policies:
   ospf_interface_policies: list(include('ten_ospf_interface_policies'), required=False)
+  ospf_timer_policies: list(include('ten_ospf_timer_policies'), required=False)
   bgp_timer_policies: list(include('ten_bgp_timer_policy'), required=False)
   bgp_peer_prefix_policies: list(include('ten_bgp_peer_prefix_policies'), required=False)
   bgp_best_path_policies: list(include('ten_bgp_best_path_policy'), required=False)
@@ -2494,6 +2498,30 @@ ten_ospf_interface_policies:
   priority: int(min=0, max=255, required=False)
   lsa_retransmit_interval: int(min=1, max=65535, required=False)
   lsa_transmit_delay: int(min=1, max=450, required=False)
+
+ten_ospf_timer_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  reference_bandwidth: int(min=1, max=4000000, required=False)
+  distance: int(min=1, max=255, required=False)
+  max_ecmp: int(min=1, max=64, required=False)
+  spf_init_interval: int(min=1, max=600000, required=False)
+  spf_hold_interval: int(min=1, max=600000, required=False)
+  spf_max_interval: int(min=1, max=600000, required=False)
+  max_lsa_reset_interval: int(min=1, max=1800, required=False)
+  max_lsa_sleep_count: int(min=50, max=30000, required=False)
+  max_lsa_sleep_interval: int(min=50, max=30000, required=False)
+  lsa_arrival_interval: int(min=1, max=600000, required=False)
+  lsa_group_pacing_interval: int(min=1, max=1800, required=False)
+  lsa_hold_interval: int(min=1, max=30000, required=False)
+  lsa_start_interval: int(min=1, max=5000, required=False)
+  lsa_max_interval: int(min=1, max=30000, required=False)
+  max_lsa_num: int(required=False)
+  max_lsa_threshold: int(min=1, max=100, required=False)
+  max_lsa_action: enum('reject', 'log', required=False)
+  graceful_restart: bool(required=False)
+  router_id_lookup: bool(required=False)
+  prefix_suppression: bool(required=False)
 
 ten_bgp_peer_prefix_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

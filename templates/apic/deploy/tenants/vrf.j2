@@ -187,6 +187,38 @@
                             }
                         }
                         {%- endif %}
+                        {%- if vrf.ospf.timer_policy is defined %}{{ comma1() }}
+                        {% set ospf_timer_name = vrf.ospf.timer_policy ~ defaults.apic.tenants.policies.ospf_timer_policies.name_suffix %}
+                        {
+                            "fvRsOspfCtxPol": {
+                                "attributes": {
+                                    "tnOspfCtxPolName": "{{ ospf_timer_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if vrf.ospf.ipv4_address_family_context_policy is defined %}{{ comma1() }}
+                        {% set address_family_context_policy_name = vrf.ospf.ipv4_address_family_context_policy ~ defaults.apic.tenants.policies.ospf_timer_policies.name_suffix %}
+                        {
+                            "fvRsCtxToOspfCtxPol": {
+                                "attributes": {
+                                    "af": "ipv4-ucast",
+                                    "tnOspfCtxPolName": "{{ address_family_context_policy_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if vrf.ospf.ipv6_address_family_context_policy is defined %}{{ comma1() }}
+                        {% set address_family_context_policy_name = vrf.ospf.ipv6_address_family_context_policy ~ defaults.apic.tenants.policies.ospf_timer_policies.name_suffix %}
+                        {
+                            "fvRsCtxToOspfCtxPol": {
+                                "attributes": {
+                                    "af": "ipv6-ucast",
+                                    "tnOspfCtxPolName": "{{ address_family_context_policy_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
                         {%- if (vrf.bgp.ipv4_import_route_target is defined or vrf.bgp.ipv4_export_route_target is defined) %}{{ comma1() }}
                         {
                             "bgpRtTargetP": {

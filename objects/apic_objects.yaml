@@ -1276,6 +1276,19 @@ tenant_objects:
       - config
     paths:
       - apic.tenants.policies.ospf_interface_policies
+  - name: OSPF Timer Policy
+    template: ospf_timer_policy
+    folder: tenants
+    aci_classes:
+      - ospfCtxPol
+    scope:
+      - user
+      - mgmt
+      - infra
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.ospf_timer_policies
   - name: BFD Interface Policy
     template: bfd_interface_policy
     folder: tenants
