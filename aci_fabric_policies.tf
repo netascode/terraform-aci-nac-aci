@@ -237,7 +237,7 @@ module "aci_snmp_policy" {
   users = [for user in try(each.value.users, []) : {
     name               = user.name
     privacy_type       = try(user.privacy_type, local.defaults.apic.fabric_policies.pod_policies.snmp_policies.users.privacy_type)
-    privacy_key        = try(user.privacy_key, "")
+    privacy_key        = try(user.privacy_key, null)
     authorization_type = try(user.authorization_type, local.defaults.apic.fabric_policies.pod_policies.snmp_policies.users.authorization_type)
     authorization_key  = try(user.authorization_key, "")
   }]
