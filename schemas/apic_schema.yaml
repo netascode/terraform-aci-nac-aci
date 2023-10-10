@@ -828,6 +828,7 @@ access_policies:
   leaf_switch_selector_name: str(min=1, max=64, required=False)
   leaf_interface_profile_name: str(min=1, max=64, required=False)
   leaf_interface_selector_name: str(min=1, max=64, required=False)
+  leaf_interface_selector_sub_port_name: str(min=1, max=64, required=False)
   fex_profile_name: str(min=1, max=64, required=False)
   fex_interface_selector_name: str(min=1, max=64, required=False)
   spine_switch_profile_name: str(min=1, max=64, required=False)
