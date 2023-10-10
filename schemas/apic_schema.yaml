@@ -2037,6 +2037,7 @@ ten_l3outs_nodes_interfaces:
   bgp_peers: list(include('ten_l3outs_nodes_interfaces_bgp_peers'), required=False) # @name(L3out Node Interface BGP Peers)
   paths: list(include('ten_l3outs_nodes_interfaces_paths'), required=False) # @name(L3out Node Interface Paths)
   mode: enum('regular', 'native', 'untagged', required=False)
+  expected_state: include('ten_l3outs_nodes_interfaces_expected_state', required=False) # @no_external_doc() @name(L3out Node Int Expected State)
 
 ten_l3outs_nodes_interfaces_bgp_peers:
   ip: ip()
@@ -2071,6 +2072,13 @@ ten_l3outs_nodes_interfaces_paths:
   vmware_vmm_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$',required=False)
   elag: regex('^[a-zA-Z0-9_.:-]{1,64}$',required=False)
   floating_ip: ip()
+
+ten_l3outs_nodes_interfaces_expected_state:
+  ospf_neighbors: list(include('ten_l3outs_nodes_interfaces_expected_state_ospf_neighbors'), required=False) # @name(L3out Node Exp State OSPF Nei)
+
+ten_l3outs_nodes_interfaces_expected_state_ospf_neighbors:
+  ip: ip()
+  state: enum('full', 'down', required=False)
 
 ten_l3outs_node_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2164,6 +2172,7 @@ ten_l3outs_node_profiles_interface_profiles_interfaces:
   bgp_peers: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers'), required=False) # @name(L3out IP Interface BGP Peers)
   paths: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_paths'), required=False) # @name(L3out IP Interface Paths)
   mode: enum('regular', 'native', 'untagged', required=False)
+  expected_state: include('ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state', required=False) # @no_external_doc() @name(L3out Int Prof Expected State)
 
 ten_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers:
   ip: ip()
@@ -2198,6 +2207,13 @@ ten_l3outs_node_profiles_interface_profiles_interfaces_paths:
   vmware_vmm_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$',required=False)
   elag: regex('^[a-zA-Z0-9_.:-]{1,64}$',required=False)
   floating_ip: ip()
+
+ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state:
+  ospf_neighbors: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_ospf_neighbors'), required=False) # @name(L3out Int Prof Exp St OSPF Nei)
+
+? ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_ospf_neighbors
+: ip: ip()
+  state: enum('full', 'down', required=False)
 
 ten_l3outs_external_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
