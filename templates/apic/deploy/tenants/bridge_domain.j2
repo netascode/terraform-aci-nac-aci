@@ -35,6 +35,7 @@
                         "unicastRoute": "{{ bd.unicast_routing | default(defaults.apic.tenants.bridge_domains.unicast_routing) | cisco.aac.aac_bool("yes") }}",
                         "unkMacUcastAct": "{{ bd.unknown_unicast | default(defaults.apic.tenants.bridge_domains.unknown_unicast) }}",
                         "unkMcastAct": "{{ bd.unknown_ipv4_multicast | default(defaults.apic.tenants.bridge_domains.unknown_ipv4_multicast) }}",
+                        "epClear": "{{ bd.clear_remote_mac_entries | default(defaults.apic.tenants.bridge_domains.clear_remote_mac_entries) | cisco.aac.aac_bool("yes")  }}",
                         "v6unkMcastAct": "{{ bd.unknown_ipv6_multicast | default(defaults.apic.tenants.bridge_domains.unknown_ipv6_multicast) }}",
                         "childAction": "deleteNonPresent"
                     },

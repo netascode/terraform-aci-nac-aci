@@ -31,6 +31,9 @@ Verify Bridge Domain {{ bd_name }}
     Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.unicastRoute   {{ bd.unicast_routing | default(defaults.apic.tenants.bridge_domains.unicast_routing) | cisco.aac.aac_bool("yes") }}
     Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.unkMacUcastAct   {{ bd.unknown_unicast | default(defaults.apic.tenants.bridge_domains.unknown_unicast) }}
     Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.unkMcastAct   {{ bd.unknown_ipv4_multicast | default(defaults.apic.tenants.bridge_domains.unknown_ipv4_multicast) }}
+    {% if bd.clear_remote_mac_entries is defined %}
+        Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.epClear   {{ bd.clear_remote_mac_entries | default(defaults.apic.tenants.bridge_domains.clear_remote_mac_entries) | cisco.aac.aac_bool("yes") }}
+    {% endif %}
     Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.v6unkMcastAct   {{ bd.unknown_ipv6_multicast | default(defaults.apic.tenants.bridge_domains.unknown_ipv6_multicast) }}
     Should Be Equal Value Json String   ${r.json()}   $..fvRsCtx.attributes.tnFvCtxName   {{ vrf_name }}
     Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.epMoveDetectMode   {{ bd_move_detection }}

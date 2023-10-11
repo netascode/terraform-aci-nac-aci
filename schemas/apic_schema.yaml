@@ -1648,6 +1648,7 @@ ten_bridge_domains:
   arp_flooding: any(bool(), enum('yes', 'no'), required=False)
   advertise_host_routes: any(bool(), enum('yes', 'no'), required=False)
   ip_dataplane_learning: any(bool(), enum('yes', 'no'), required=False)
+  clear_remote_mac_entries: any(bool(), enum('yes', 'no'), required=False)
   limit_ip_learn_to_subnets: any(bool(), enum('yes', 'no'), required=False)
   mac: mac(required=False)
   virtual_mac: mac(required=False)

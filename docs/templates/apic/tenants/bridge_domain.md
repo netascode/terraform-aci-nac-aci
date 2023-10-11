@@ -44,6 +44,7 @@ apic:
           unknown_ipv4_multicast: flood
           unknown_ipv6_multicast: flood
           unicast_routing: true
+          clear_remote_mac_entries: true
           advertise_host_routes: true
           l3_multicast: false
           vrf: VRF1

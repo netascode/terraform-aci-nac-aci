@@ -91,6 +91,7 @@ apic:
           limit_ip_learn_to_subnets: false
           multi_destination_flooding: encap-flood
           unknown_unicast: flood
+          clear_remote_mac_entries: true
           unknown_ipv4_multicast: flood
           unknown_ipv6_multicast: flood
           unicast_routing: true
