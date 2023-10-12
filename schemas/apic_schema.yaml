@@ -2080,10 +2080,14 @@ ten_l3outs_nodes_interfaces_paths:
 
 ten_l3outs_nodes_interfaces_expected_state:
   ospf_neighbors: list(include('ten_l3outs_nodes_interfaces_expected_state_ospf_neighbors'), required=False) # @name(L3out Node Exp State OSPF Nei)
+  bfd_neighbors: list(include('ten_l3outs_nodes_interfaces_expected_state_bfd_neighbors'), required=False) # @name(L3out Node Exp State BFD Nei)
 
 ten_l3outs_nodes_interfaces_expected_state_ospf_neighbors:
   ip: ip()
   state: enum('full', 'down', required=False)
+
+ten_l3outs_nodes_interfaces_expected_state_bfd_neighbors:
+  ip: ip()
 
 ten_l3outs_node_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2215,10 +2219,14 @@ ten_l3outs_node_profiles_interface_profiles_interfaces_paths:
 
 ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state:
   ospf_neighbors: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_ospf_neighbors'), required=False) # @name(L3out Int Prof Exp St OSPF Nei)
+  bfd_neighbors: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_bfd_neighbors'), required=False) # @name(L3out Int Prof Exp St BFD Nei)
 
 ? ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_ospf_neighbors
 : ip: ip()
   state: enum('full', 'down', required=False)
+
+? ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_bfd_neighbors
+: ip: ip()
 
 ten_l3outs_external_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
