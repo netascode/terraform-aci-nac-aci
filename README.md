@@ -273,7 +273,7 @@ Additional example repositories:
 | <a name="module_aci_service_graph_template"></a> [aci\_service\_graph\_template](#module\_aci\_service\_graph\_template) | netascode/service-graph-template/aci | 0.1.0 |
 | <a name="module_aci_set_rule"></a> [aci\_set\_rule](#module\_aci\_set\_rule) | netascode/set-rule/aci | 0.2.2 |
 | <a name="module_aci_smart_licensing"></a> [aci\_smart\_licensing](#module\_aci\_smart\_licensing) | netascode/smart-licensing/aci | 0.1.2 |
-| <a name="module_aci_snmp_policy"></a> [aci\_snmp\_policy](#module\_aci\_snmp\_policy) | netascode/snmp-policy/aci | 0.2.2 |
+| <a name="module_aci_snmp_policy"></a> [aci\_snmp\_policy](#module\_aci\_snmp\_policy) | netascode/snmp-policy/aci | 0.2.3 |
 | <a name="module_aci_snmp_trap_policy"></a> [aci\_snmp\_trap\_policy](#module\_aci\_snmp\_trap\_policy) | netascode/snmp-trap-policy/aci | 0.2.1 |
 | <a name="module_aci_spanning_tree_policy"></a> [aci\_spanning\_tree\_policy](#module\_aci\_spanning\_tree\_policy) | netascode/spanning-tree-policy/aci | 0.1.0 |
 | <a name="module_aci_sr_mpls_external_endpoint_group"></a> [aci\_sr\_mpls\_external\_endpoint\_group](#module\_aci\_sr\_mpls\_external\_endpoint\_group) | netascode/external-endpoint-group/aci | 0.2.2 |

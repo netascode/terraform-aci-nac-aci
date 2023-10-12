@@ -14,6 +14,7 @@
 - Add support for security domains to physical and routed domains
 - Add support for SR MPLS L3outs
 - Add support for configuring `mode` of L3out SVI interfaces
+- Support additional values for `authorization_type` attribute of SNMP users
 
 ## 0.7.0
 
