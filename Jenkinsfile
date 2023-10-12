@@ -103,6 +103,7 @@ pipeline {
     
     post {
         always {
+            cleanWs()
             sh "BUILD_STATUS=${currentBuild.currentResult} python .ci/webex-notification-jenkins.py"
         }
     }
