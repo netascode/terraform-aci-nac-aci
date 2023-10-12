@@ -669,6 +669,7 @@ defaults:
         ep_move_detection: false
         arp_flooding: true
         ip_dataplane_learning: true
+        clear_remote_mac_entries: false
         limit_ip_learn_to_subnets: true
         multi_destination_flooding: bd-flood
         unknown_unicast: flood
