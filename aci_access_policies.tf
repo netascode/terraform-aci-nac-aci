@@ -543,7 +543,7 @@ locals {
 
 module "aci_access_spine_interface_selector_manual" {
   source  = "netascode/access-spine-interface-selector/aci"
-  version = "0.2.0"
+  version = "0.2.1"
 
   for_each          = { for selector in local.spine_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_spine_interface_selector && var.manage_access_policies }
   interface_profile = each.value.profile_name
