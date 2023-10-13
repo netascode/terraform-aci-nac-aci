@@ -218,6 +218,7 @@ def test_apic_52(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir):
             [
                 "tests/integration/fixtures/apic/standard/",
                 "tests/integration/fixtures/apic/standard_52/",
+                "tests/integration/fixtures/apic/standard_60/",
                 "defaults/",
             ],
             "aac-ci-apic1-6.0.2h",
@@ -292,6 +293,7 @@ def test_apic_terraform_52(
             [
                 "tests/integration/fixtures/apic/standard/",
                 "tests/integration/fixtures/apic/standard_52/",
+                "tests/integration/fixtures/apic/standard_60/",
             ],
             "tests/integration/fixtures/apic/terraform_60",
             "aac-ci-apic1-6.0.2h",
