@@ -364,6 +364,9 @@
                                                             "ifInstT": "l3-port",
                                                             {% endif %}
                                                             "ipv6Dad": "enabled",
+                                                            {% if int.multipod_direct is defined and int.multipod_direct | default(defaults.apic.tenants.l3outs.nodes.interfaces.multipod_direct) %}
+                                                            "isMultiPodDirect": "true",
+                                                            {% endif %}
                                                             "llAddr": "::",
                                                             "mac": "{{ int.mac | default(defaults.apic.tenants.l3outs.nodes.interfaces.mac) }}",
                                                             "mode": "{{ int.mode | default(defaults.apic.tenants.l3outs.nodes.interfaces.mode) }}",
@@ -949,6 +952,9 @@
                                                             "encap": "vlan-{{ int.vlan }}",
                                                             {% else %}
                                                             "ifInstT": "l3-port",
+                                                            {% endif %}
+                                                            {% if int.multipod_direct is defined and int.multipod_direct | default(defaults.apic.tenants.l3outs.nodes.interfaces.multipod_direct) %}
+                                                            "isMultiPodDirect": "true",
                                                             {% endif %}
                                                             "ipv6Dad": "enabled",
                                                             "llAddr": "::",
