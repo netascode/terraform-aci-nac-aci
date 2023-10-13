@@ -1,0 +1,34 @@
+{# iterate_list apic.tenants name item[2] #}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for nd_ra_prefix_pol in tenant.policies.nd_ra_prefix_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = nd_ra_prefix_pol.name ~ defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix %}
+            {% set ctrl = [] %}
+            {% if nd_ra_prefix_pol.auto_configuration | default(defaults.apic.tenants.policies.nd_ra_prefix_policies.auto_configuration) %}{% set ctrl = ctrl + [("auto-cfg")] %}{% endif %}
+            {% if nd_ra_prefix_pol.on_link | default(defaults.apic.tenants.policies.nd_ra_prefix_policies.on_link) %}{% set ctrl = ctrl + [("on-link")] %}{% endif %}
+            {% if nd_ra_prefix_pol.router_address | default(defaults.apic.tenants.policies.nd_ra_prefix_policies.router_address) %}{% set ctrl = ctrl + [("router-address")] %}{% endif %}
+            {
+                "ndPfxPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ policy_name }}",
+                        "dn": "uni/tn-{{ tenant.name }}/ndpfxpol-{{ policy_name }}",
+                        "descr": "{{ nd_ra_prefix_pol.description | default() }}",
+                        "ctrl": "{{ ctrl | join(',') }}",
+                        "lifetime": "{{ nd_ra_prefix_pol.valid_lifetime | default(defaults.apic.tenants.policies.nd_ra_prefix_policies.valid_lifetime) }}",                        
+                        "prefLifetime": "{{ nd_ra_prefix_pol.preferred_lifetime | default(defaults.apic.tenants.policies.nd_ra_prefix_policies.preferred_lifetime) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

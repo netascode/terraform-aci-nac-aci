@@ -1714,6 +1714,19 @@ tenant_objects:
       - health
     paths:
       - apic.tenants.oob_contracts
+  - name: ND RA Prefix Policy
+    template: nd_ra_prefix_policy
+    folder: tenants
+    aci_classes:
+      - ndPfxPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.policies.nd_ra_prefix_policies
 
 test_objects:
   - name: System

@@ -197,6 +197,7 @@ nav:
               - IGMP Snooping Policy: data_model/apic/tenants/igmp_snooping_policy.md
               - IGMP Interface Policy: data_model/apic/tenants/igmp_interface_policy.md
               - IP SLA Policy: data_model/apic/tenants/ip_sla_policy.md
+              - ND RA Prefix Policy: data_model/apic/tenants/nd_ra_prefix_policy.md
               - Redirect Policy: data_model/apic/tenants/redirect_policy.md
               - Redirect Backup Policy: data_model/apic/tenants/redirect_backup_policy.md
               - Route Tag Policy: data_model/apic/tenants/route_tag_policy.md

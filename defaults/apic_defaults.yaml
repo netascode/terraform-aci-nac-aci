@@ -1192,6 +1192,13 @@ defaults:
           detection_multiplier: 3
           min_rx_interval: 250
           min_tx_interval: 250
+        nd_ra_prefix_policies:
+          name_suffix: ""
+          valid_lifetime: 2592000
+          preferred_lifetime: 604800
+          auto_configuration: true
+          on_link: true
+          router_address: false
       services:
         l4l7_devices:
           name_suffix: ""

@@ -114,6 +114,15 @@ apic:
                       dns_search_suffix: cisco
                       dns_suffix: cisco
                       wins_server: wins
+                - ip: fd00:0:abcd:2::2/64
+                  description: My IPv6 Desc
+                  public: true
+                  private: false
+                  shared: false
+                  igmp_querier: true
+                  nd_ra_prefix: true
+                  no_default_gateway: true
+                  nd_ra_prefix_policy: ND-RA-PREFIX1
               tags:
                 - tag1
                 - tag2

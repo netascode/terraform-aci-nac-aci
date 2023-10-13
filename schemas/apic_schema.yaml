@@ -1678,6 +1678,7 @@ ten_bridge_domain_subnets:
   igmp_querier: any(bool(), enum('yes', 'no'), required=False)
   nd_ra_prefix: any(bool(), enum('yes', 'no'), required=False)
   no_default_gateway: any(bool(), enum('yes', 'no'), required=False)
+  nd_ra_prefix_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_bridge_domain_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -1786,6 +1787,7 @@ ten_ap_endpoint_groups_subnets:
   nlb_group: ip(required=False)
   nlb_mac: mac(required=False)
   ip_pools: list(include('ten_ap_endpoint_groups_subnets_ip_address_pools'), required=False) # @name(EPG Subnet IP Pools)
+  nd_ra_prefix_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_ap_endpoint_groups_subnets_ip_address_pools:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2493,6 +2495,7 @@ ten_policies:
   qos: list(include('ten_qos'), required=False) # @name(QoS Policies) @ref_name(QoS Policy)
   mpls_custom_qos_policies: list(include('ten_mpls_custom_qos_policies'), required=False)
   bfd_multihop_node_policies: list(include('ten_bfd_multihop_node_policies'), required=False)
+  nd_ra_prefix_policies: list(include('ten_nd_ra_prefix_policies'), required=False)
 
 ten_ospf_interface_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2883,6 +2886,15 @@ ten_bfd_multihop_node_policies:
   min_rx_interval: int(min=250, max=999, required=False)
   min_tx_interval: int(min=250, max=999, required=False)
 
+ten_nd_ra_prefix_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  valid_lifetime: int(min=0, max=4294967295, required=False)
+  preferred_lifetime: int(min=0, max=4294967295, required=False)
+  auto_configuration: bool(required=False)
+  on_link: bool(required=False)
+  router_address: bool(required=False)
+
 ten_services:
   l4l7_devices: list(include('ten_ser_l4l7_devices'), required=False) # @ref_name(L4L7 Device)
   redirect_policies: list(include('ten_ser_redirect_policies'), required=False) # @ref_name(Redirect Policy)
@@ -3086,3 +3098,4 @@ expected_state:
   maximum_critical_faults: int(min=0, required=False)
   maximum_major_faults: int(min=0, required=False)
   maximum_minor_faults: int(min=0, required=False)
+

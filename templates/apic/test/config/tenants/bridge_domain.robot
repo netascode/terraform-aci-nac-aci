@@ -70,6 +70,10 @@ Verify Bridge Domain {{ bd_name }} Subnet {{ subnet.ip }}
     Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.attributes.preferred   {{ subnet.primary_ip | default(defaults.apic.tenants.bridge_domains.subnets.primary_ip) | cisco.aac.aac_bool("yes") }}
     Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.attributes.scope   {{ scope | join(',') }}   
     Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.attributes.virtual   {{ subnet.virtual | default(defaults.apic.tenants.bridge_domains.subnets.virtual) | cisco.aac.aac_bool("yes") }}               
+{% if subnet.nd_ra_prefix_policy is defined %}
+{% set nd_ra_prefix_policy_name = subnet.nd_ra_prefix_policy ~ defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.children..fvRsNdPfxPol.attributes.tnNdPfxPolName   {{ nd_ra_prefix_policy_name }}
+{% endif %}
 
 {% endfor %}
 

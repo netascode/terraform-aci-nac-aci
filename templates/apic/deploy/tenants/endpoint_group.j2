@@ -414,6 +414,17 @@
                                                     }
                                                 }
                                                 {% endif %}
+                                                {%- if subnet.nd_ra_prefix_policy is defined %}{{ comma4() }}
+                                                {% set nd_ra_prefix_policy_name = subnet.nd_ra_prefix_policy ~ defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix %}
+                                                {
+                                                    "fvRsNdPfxPol": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "tnNdPfxPolName": "{{ nd_ra_prefix_policy_name }}"
+                                                        }
+                                                    }
+                                                }
+                                                {% endif %}
                                             ]
                                         }
                                     }

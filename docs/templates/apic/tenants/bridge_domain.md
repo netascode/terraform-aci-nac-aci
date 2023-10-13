@@ -59,6 +59,17 @@ apic:
               igmp_querier: true
               nd_ra_prefix: true
               no_default_gateway: false
+            - ip: fd00:0:abcd:1::1/64
+              description: My IPv6 Desc
+              primary_ip: true
+              public: true
+              private: false
+              shared: false
+              virtual: false
+              igmp_querier: true
+              nd_ra_prefix: true
+              no_default_gateway: false
+              nd_ra_prefix_policy: ND-RA-PREFIX1
           l3outs:
             - L3OUT1
           dhcp_labels:

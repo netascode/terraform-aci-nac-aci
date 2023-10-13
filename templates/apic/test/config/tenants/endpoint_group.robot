@@ -205,6 +205,10 @@ Verify Endpoint Group {{ epg_name }} Subnet {{ subnet.ip }}
     Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvEpNlb.attributes.mac   {{ subnet.nlb_mac | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.nlb_mac) }}
     Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvEpNlb.attributes.mode   {{ get_nlb_mode(subnet.nlb_mode) }}
 {% endif %}
+{% if subnet.nd_ra_prefix_policy is defined %}
+{% set nd_ra_prefix_policy_name = subnet.nd_ra_prefix_policy ~ defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.children..fvRsNdPfxPol.attributes.tnNdPfxPolName   {{ nd_ra_prefix_policy_name }}
+{% endif %}
 
 {% for pool in subnet.ip_pools | default([]) %}
 {% set pool_name = pool.name ~ defaults.apic.tenants.application_profiles.endpoint_groups.subnets.ip_pools.name_suffix %}

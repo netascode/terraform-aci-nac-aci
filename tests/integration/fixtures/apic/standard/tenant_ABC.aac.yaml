@@ -112,6 +112,17 @@ apic:
             - ip: 1.1.2.1/24
               public: true
               private: true
+            - ip: fd00:0:abcd:1::1/64
+              description: My IPv6 Desc
+              primary_ip: true
+              public: true
+              private: false
+              shared: false
+              virtual: false
+              igmp_querier: true
+              nd_ra_prefix: true
+              no_default_gateway: false
+              nd_ra_prefix_policy: ND_RA_PREFIX1
           l3outs:
             - L3OUT1
           dhcp_labels:
@@ -493,6 +504,15 @@ apic:
                   no_default_gateway: true
                   nlb_mode: mode-mcast-static
                   nlb_mac: 03:00:0C:CC:CC:CC
+                - ip: fd00:0:abcd:2::2/64
+                  description: My IPv6 Desc
+                  public: true
+                  private: false
+                  shared: false
+                  igmp_querier: true
+                  nd_ra_prefix: true
+                  no_default_gateway: false
+                  nd_ra_prefix_policy: ND_RA_PREFIX1
               tags:
                 - tag1
                 - tag2
@@ -877,6 +897,13 @@ apic:
               tenant: DEF
               application_profile: AP1
               endpoint_group: EPG1
+        nd_ra_prefix_policies:
+          - name: ND_RA_PREFIX1
+            description: "My ND RA Prefix Policy"
+            auto_configuration: true
+            on_link: true
+            router_address: true            
+          - name: ND_RA_PREFIX2
       services:
         l4l7_devices:
           - name: DEV1
