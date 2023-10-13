@@ -51,6 +51,11 @@ Verify VMware VMM Domain {{ vmm_name }} Credential Policy {{ policy_name }}
 
 {% endfor %}
 
+{% for sd in vmm.security_domains | default([]) %}
+Verify VMM Domain {{ vmm_name }} Security Domain {{ sd }}
+    Should Be Equal Value Json String   ${r.json()}   $..vmmDomP.children[?(@.aaaDomainRef.attributes.name=='{{ sd }}')].aaaDomainRef.attributes.name   {{ sd }}
+{% endfor %}
+
 {% for vc in vmm.vcenters| default([]) %}
 {% set vc_name = vc.name ~ defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.name_suffix %}
 {% set vc_policy_name = vc.credential_policy ~ defaults.apic.fabric_policies.vmware_vmm_domains.credential_policies.name_suffix %}

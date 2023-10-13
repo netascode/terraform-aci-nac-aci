@@ -29,6 +29,17 @@
                         "childAction": "deleteNonPresent"
                     },
                     "children": [
+                        {%- set comma3 = joiner(",") %}
+                        {%- for sd in vmm.security_domains | default([]) %}{{ comma3() }}
+                        { 
+                            "aaaDomainRef": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "name": "{{ sd }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}{{ comma3() }} 
                         {
                             "vmmVSwitchPolicyCont": {
                                 "attributes": {

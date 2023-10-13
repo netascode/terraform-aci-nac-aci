@@ -538,6 +538,8 @@ apic:
         delimiter: "="
         tag_collection: true
         vlan_pool: VMM1
+        security_domains:
+          - SEC1
         vswitch:
           cdp_policy: CDP-ENABLED
           lldp_policy: LLDP-ENABLED
