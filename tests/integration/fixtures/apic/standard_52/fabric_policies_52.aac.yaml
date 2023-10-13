@@ -12,3 +12,8 @@ apic:
           lldp_policy: LLDP-ENABLED
           port_channel_policy: LACP-ACTIVE
           mtu_policy: L2_8950
+    system_performance:
+      admin_state: true
+      response_threshold: 400
+      top_slowest_requests: 7
+      calculation_window: 300

@@ -83,6 +83,7 @@ fabric_policies:
   span: include('fp_span', required=False) # @name(Fabric SPAN)
   smart_licensing: include('fp_smart_licensing', required=False)
   l2_mtu_policies: list(include('fp_l2_mtu_policies'), required=False)
+  system_performance: include('fp_system_performance', required=False) #@name (System Performance)
 
 fp_banners:
   apic_gui_alias: str(required=False)
@@ -822,6 +823,13 @@ fp_smart_licensing_proxy:
 fp_l2_mtu_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   port_mtu_size: int(min=0, max=9216, required=False)
+
+fp_system_performance:
+  admin_state: bool(required=False)
+  response_threshold: int(min=40, max=8500, required=False)
+  top_slowest_requests: int(min=1, max=10, required=False) # @description(top slowest in UI in API is topNRequests)
+  calculation_window: int(min=30, max=300, required=False) # @description(frequency in UI calculation_window in API)
+
 
 access_policies:
   leaf_switch_profile_name: str(min=1, max=64, required=False)

@@ -321,6 +321,14 @@ objects:
       - healthEvalP
     paths:
       - apic.fabric_policies.ignore_acked_faults
+  - name: System Performance
+    template: system_performance
+    delete: false
+    folder: fabric_policies
+    test_types: 
+      - config
+    paths:
+      - apic.fabric_policies.system_performance
   - name: MCP Global Instance
     template: mcp
     folder: access_policies

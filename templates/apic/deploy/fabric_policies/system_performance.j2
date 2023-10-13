@@ -1,0 +1,22 @@
+{% if apic.fabric_policies.system_performance.admin_state is not defined %}
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        }
+    }
+}
+{% else %}
+{
+    "commApiRespTime": {
+        "attributes": {
+            "annotation": "orchestrator:aac",
+            "dn": "uni/fabric/comm-default/apiResp",
+            "enableCalculation": "{{ apic.fabric_policies.system_performance.admin_state | default(defaults.apic.fabric_policies.system_performance.admin_state) | cisco.aac.aac_bool("enabled") }}",
+            "respTimeThreshold": "{{ apic.fabric_policies.system_performance.response_threshold  | default(defaults.apic.fabric_policies.system_performance.response_threshold) }}",
+            "topNRequests": "{{ apic.fabric_policies.system_performance.top_slowest_requests | default(defaults.apic.fabric_policies.system_performance.top_slowest_requests) }}",
+            "calcWindow": "{{ apic.fabric_policies.system_performance.calculation_window | default(defaults.apic.fabric_policies.system_performance.calculation_window) }}"
+        }
+    }
+}
+{% endif %}

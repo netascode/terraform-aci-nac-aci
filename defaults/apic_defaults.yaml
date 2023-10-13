@@ -334,6 +334,11 @@ defaults:
       l2_mtu_policies:
         name_suffix: ""
         port_mtu_size: 9000
+      system_performance:
+        admin_state: false
+        response_threshold: 8500
+        top_slowest_requests: 5
+        calculation_window: 300
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"

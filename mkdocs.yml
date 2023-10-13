@@ -119,6 +119,7 @@ nav:
               - Interface Type: data_model/apic/fabric_policies/interface_type.md
               - Smart Licensing: data_model/apic/fabric_policies/smart_licensing.md
               - LDAP: data_model/apic/fabric_policies/ldap.md
+              - System Performance: data_model/apic/fabric_policies/system_performance.md
           - Access Policies:
               - MCP Global Instance: data_model/apic/access_policies/mcp.md
               - QoS Class: data_model/apic/access_policies/qos.md
