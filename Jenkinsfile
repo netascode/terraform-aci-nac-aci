@@ -88,12 +88,23 @@ pipeline {
                 }
                 stage('Test NDO 3.7') {
                     steps {
-                        sh 'pytest -m "ndo and not terraform"'
+                        sh 'pytest -m "ndo_37 and not terraform"'
                     }
                     post {
                         always {
-                            junit 'ndo_xunit.xml'
-                            archiveArtifacts 'ndo_*.html, ndo_*.xml'
+                            junit 'ndo_3.7_xunit.xml'
+                            archiveArtifacts 'ndo_3.7_*.html, ndo_3.7_*.xml'
+                        }
+                    }
+                }
+                stage('Test NDO 4.2') {
+                    steps {
+                        sh 'pytest -m "ndo_42 and not terraform"'
+                    }
+                    post {
+                        always {
+                            junit 'ndo_4.2_xunit.xml'
+                            archiveArtifacts 'ndo_4.2_*.html, ndo_4.2_*.xml'
                         }
                     }
                 }

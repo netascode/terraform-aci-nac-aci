@@ -1,3 +1,3 @@
 [tool.pytest.ini_options]
 filterwarnings = ["ignore::DeprecationWarning", "ignore::PendingDeprecationWarning"]
-markers = ["unit", "integration", "validate", "apic", "ndo", "apic_42", "apic_52", "apic_60", "terraform"]
+markers = ["unit", "integration", "validate", "apic", "ndo", "apic_42", "apic_52", "apic_60", "ndo_37", "ndo_42", "terraform"]
