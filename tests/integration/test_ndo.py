@@ -4,6 +4,7 @@
 
 import os
 import shutil
+import time
 
 import errorhandler
 import iac_test.pabot
@@ -162,6 +163,10 @@ def full_ndo_test(data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, v
     if error:
         if "Fail to block deployment" not in error:
             pytest.fail(error)
+
+    # CSCwh37399
+    if version.startswith("4.2"):
+        time.sleep(30)
 
     # Enable retries
     # ndo_inst.enable_retries()
