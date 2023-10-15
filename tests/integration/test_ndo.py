@@ -204,7 +204,10 @@ def full_ndo_terraform(
         pytest.fail(error)
 
     # Revert NDO config
-    error = ndo_inst.post_or_put("backups/{}/restore".format(ndo_backup_id), "", "PUT")
+    if version.startswith("3."):
+        error = ndo_inst.post_or_put("backups/{}/restore".format(ndo_backup_id), "", "PUT")
+    else:
+        error = ndo_inst.post_or_put("backups/{}/restore".format(ndo_backup_id), "", "POST")
     if error:
         if "Fail to block deployment" not in error:
             pytest.fail(error)
