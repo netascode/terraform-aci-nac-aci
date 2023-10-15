@@ -1,0 +1,15 @@
+---
+extends: default
+
+rules:
+  comments:
+    min-spaces-from-content: 1
+  comments-indentation: disable
+  hyphens:
+    level: error
+  indentation: disable
+  key-duplicates: enable
+  line-length: disable
+  new-lines:
+    type: unix
+  truthy: disable

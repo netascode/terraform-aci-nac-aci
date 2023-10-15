@@ -83,7 +83,7 @@ fabric_policies:
   span: include('fp_span', required=False) # @name(Fabric SPAN)
   smart_licensing: include('fp_smart_licensing', required=False)
   l2_mtu_policies: list(include('fp_l2_mtu_policies'), required=False)
-  system_performance: include('fp_system_performance', required=False) #@name (System Performance)
+  system_performance: include('fp_system_performance', required=False) # @name (System Performance)
 
 fp_banners:
   apic_gui_alias: str(required=False)
@@ -3109,4 +3109,3 @@ expected_state:
   maximum_critical_faults: int(min=0, required=False)
   maximum_major_faults: int(min=0, required=False)
   maximum_minor_faults: int(min=0, required=False)
-

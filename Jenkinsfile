@@ -48,8 +48,9 @@ pipeline {
                         }
                     }
                 }
-                stage('Test Validate') {
+                stage('Lint') {
                     steps {
+                        sh 'yamllint -s .'
                         sh 'pytest -m validate'
                     }
                 }

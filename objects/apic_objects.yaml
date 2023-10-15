@@ -325,7 +325,7 @@ objects:
     template: system_performance
     delete: false
     folder: fabric_policies
-    test_types: 
+    test_types:
       - config
     paths:
       - apic.fabric_policies.system_performance
