@@ -582,7 +582,12 @@
                                     {% endif %}
                                     "allowMicroSegmentation": {% if vmm.u_segmentation | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.u_segmentation) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                                     "switchType": "default",
-                                    "switchingMode": "native"
+                                    "switchingMode": "native",
+                                    "bindingType": "none",
+                                    "netflowPref": "disabled",
+                                    "allowPromiscuous": "reject",
+                                    "forgedTransmits": "reject",
+                                    "macChanges": "reject"
                                 }
                                 {%- endfor %}
 

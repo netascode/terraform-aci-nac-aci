@@ -86,9 +86,11 @@ def ndo_login(ndo_url):
     return "", ndo_inst
 
 
-def ndo_deploy_config(ndo_inst, config_path):
+def ndo_deploy_config(ndo_inst, config_path, version):
     """Deploy config via a set of json files"""
     for template, params in TEMPLATE_MAPPINGS.items():
+        if not version.startswith("3.") and template in ["dhcp_relay", "dhcp_option"]:
+            continue
         file_path = os.path.join(config_path, template + ".j2")
         folder_path = os.path.join(config_path, template)
         if os.path.exists(file_path):
@@ -172,7 +174,7 @@ def full_ndo_test(data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, v
     # ndo_inst.enable_retries()
 
     # Configure NDO
-    error = ndo_deploy_config(ndo_inst, tmpdir.strpath)
+    error = ndo_deploy_config(ndo_inst, tmpdir.strpath, version)
     if error:
         pytest.fail(error)
 
