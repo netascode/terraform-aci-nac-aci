@@ -93,6 +93,7 @@ pipeline {
     post {
         always {
             sh "BUILD_STATUS=${currentBuild.currentResult} python .ci/webex-notification-jenkins-terraform.py"
+            cleanWs()
         }
     }
 }
