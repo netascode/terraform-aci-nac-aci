@@ -125,8 +125,6 @@ ndo:
               multi_destination_flooding: bd-flood
               unknown_ipv4_multicast: flood
               unknown_ipv6_multicast: flood
-              # dhcp_relay_policy: ANS-REL1
-              # dhcp_option_policy: ANS-OPT1
               vrf:
                 name: VRF1
               subnets:
@@ -146,7 +144,6 @@ ndo:
                   l3outs:
                     - L3OUT
             - name: BD2
-              # dhcp_relay_policy: ANS-REL2
               vrf:
                 name: VRF2
               sites:
@@ -154,10 +151,6 @@ ndo:
             - name: BD3
               vrf:
                 name: VRF2
-              # dhcp_policies:
-              #   - dhcp_relay_policy: ANS-REL1
-              #     dhcp_option_policy: ANS-OPT1
-              #   - dhcp_relay_policy: ANS-REL2
           filters:
             - name: FILTER1
               entries:

@@ -1,0 +1,36 @@
+---
+ndo:
+  version: "3.7.2h"
+  sites:
+    - name: APIC1
+      apic_urls:
+        - https://10.50.202.13
+  policies:
+    dhcp_relays:
+      - name: ANS-REL1
+        description: My Desc
+        tenant: NDO1
+        providers:
+          - ip: 1.2.3.4
+            tenant: NDO1
+            schema: ABC
+            template: TEMPLATE1
+            application_profile: AP1
+            endpoint_group: EPG1
+          - ip: 1.2.3.5
+            tenant: NDO1
+            schema: ABC
+            template: TEMPLATE1
+            external_endpoint_group: EXT-EPG1
+      - name: ANS-REL2
+        tenant: NDO1
+    dhcp_options:
+      - name: ANS-OPT1
+        description: My Desc
+        tenant: NDO1
+        options:
+          - name: OPT1
+            id: 1
+            data: DATA1
+      - name: ANS-OPT2
+        tenant: NDO1

@@ -260,7 +260,7 @@ def full_ndo_terraform(
     "data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, version",
     [
         (
-            ["tests/integration/fixtures/ndo/standard/", "defaults/"],
+            ["tests/integration/fixtures/ndo/standard/", "tests/integration/fixtures/ndo/standard_37/", "defaults/"],
             "https://10.50.202.13",
             "ce2_defaultOneTime-2023-10-14T12-43-41.tar.gz",
             "https://10.50.202.14",
@@ -277,7 +277,7 @@ def test_ndo_37(data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, ver
     "data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, version",
     [
         (
-            ["tests/integration/fixtures/ndo/standard/", "defaults/"],
+            ["tests/integration/fixtures/ndo/standard/", "tests/integration/fixtures/ndo/standard_42/", "defaults/"],
             "https://10.50.202.16",
             "ce2_defaultOneTime-2023-10-14T13-24-30.tar.gz",
             "https://10.50.202.17",
@@ -296,7 +296,7 @@ def test_ndo_42(data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, ver
     "data_paths, terraform_path, apic_url, snapshot_name, ndo_url, ndo_backup_id, version",
     [
         (
-            ["tests/integration/fixtures/ndo/standard/"],
+            ["tests/integration/fixtures/ndo/standard/", "tests/integration/fixtures/ndo/standard_37/"],
             "tests/integration/fixtures/ndo/terraform_37",
             "https://10.50.202.13",
             "ce2_defaultOneTime-2023-10-14T12-43-41.tar.gz",
@@ -319,7 +319,7 @@ def test_ndo_terraform_37(
     "data_paths, terraform_path, apic_url, snapshot_name, ndo_url, ndo_backup_id, version",
     [
         (
-            ["tests/integration/fixtures/ndo/standard/"],
+            ["tests/integration/fixtures/ndo/standard/", "tests/integration/fixtures/ndo/standard_42/"],
             "tests/integration/fixtures/ndo/terraform_42",
             "https://10.50.202.16",
             "ce2_defaultOneTime-2023-10-14T13-24-30.tar.gz",
