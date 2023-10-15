@@ -334,6 +334,11 @@ defaults:
       l2_mtu_policies:
         name_suffix: ""
         port_mtu_size: 9000
+      system_performance:
+        admin_state: false
+        response_threshold: 8500
+        top_slowest_requests: 5
+        calculation_window: 300
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
@@ -732,6 +737,7 @@ defaults:
             pod: 1
             module: 1
             svi: false
+            multipod_direct: false
             autostate: false
             floating_svi: false
             ip: 0.0.0.0
@@ -800,6 +806,7 @@ defaults:
               svi: false
               autostate: false
               floating_svi: false
+              multipod_direct: false
               ip: 0.0.0.0
               mac: 00:22:BD:F8:19:FF
               mtu: inherit
@@ -1192,6 +1199,13 @@ defaults:
           detection_multiplier: 3
           min_rx_interval: 250
           min_tx_interval: 250
+        nd_ra_prefix_policies:
+          name_suffix: ""
+          valid_lifetime: 2592000
+          preferred_lifetime: 604800
+          auto_configuration: true
+          on_link: true
+          router_address: false
       services:
         l4l7_devices:
           name_suffix: ""
