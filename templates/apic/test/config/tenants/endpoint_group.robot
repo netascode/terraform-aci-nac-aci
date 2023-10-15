@@ -83,7 +83,6 @@ Verify Endpoint Group {{ epg_name }} Static Leaf {{ sl.node_id }}
 {% endfor %}
 
 {% for st_ep in epg.static_endpoints | default([]) %}
-{% set static_endpoint_name = st_ep.name ~ defaults.apic.tenants.application_profiles.endpoint_groups.static_endpoints.name_suffix %}
 {% set static_endpoint_rn = 'stcep-' ~ st_ep.mac + '-type-' ~ st_ep.type %}
 
 Verify Endpoint Group {{ epg_name }} Static Endpoint {{ st_ep.mac }}
@@ -95,7 +94,7 @@ Verify Endpoint Group {{ epg_name }} Static Endpoint {{ st_ep.mac }}
     {% endif %}
     Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.ip   {{ st_ep.ip | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_endpoints.ip)}}
     Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.mac   {{ st_ep.mac }}
-    Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.name   {{ static_endpoint_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.name   {% if st_ep.name is defined %}{{ st_ep.name ~ defaults.apic.tenants.application_profiles.endpoint_groups.static_endpoints.name_suffix }}{% endif %} 
     Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.nameAlias   {{ st_ep.alias | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.type   {{ st_ep.type }}
     {% if st_ep.type != "vep" %}

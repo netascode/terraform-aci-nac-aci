@@ -218,7 +218,6 @@
                                     }
                                     {%- endfor %}
                                     {%- for st_ep in epg.static_endpoints | default([]) %}{{ comma3() }}
-                                    {% set static_endpoint_name = st_ep.name ~ defaults.apic.tenants.application_profiles.endpoint_groups.static_endpoints.name_suffix %}
                                     {
                                         "fvStCEp": {
                                             "attributes": {
@@ -231,7 +230,7 @@
                                                 "id": "0",
                                                 "ip": "{{ st_ep.ip | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_endpoints.ip)}}",
                                                 "mac": "{{ st_ep.mac }}",
-                                                "name": "{{ static_endpoint_name }}",
+                                                "name": "{% if st_ep.name is defined %}{{ st_ep.name ~ defaults.apic.tenants.application_profiles.endpoint_groups.static_endpoints.name_suffix }}{% endif %}",
                                                 "nameAlias": "{{ st_ep.alias | default() }}",
                                                 "type": "{{ st_ep.type }}"
                                             }{%- if st_ep.type != "vep" %}{{ comma3() }}
