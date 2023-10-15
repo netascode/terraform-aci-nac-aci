@@ -438,7 +438,7 @@ fp_vmware_vmm_domains:
   delimiter: regex('^[^a-zA-Z0-9;>"-*`,-.;\[\]/\\\\{}:?\s&<]$', required=False)
   tag_collection: any(bool(), enum('yes', 'no'), required=False)
   vlan_pool: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False)
+  security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VMWare VMM Domain Sec Domain)
   vswitch: include('fp_vmware_vmm_domains_vswitch', required=False) # @flatten()
   credential_policies: list(include('fp_vmware_vmm_domains_credential_policies'), required=False) # @name(VMware VMM Dom Cred Policies)
   vcenters: list(include('fp_vmware_vmm_domains_vcenters'), required=False) # @name(VMware VMM vCenters)
@@ -1542,7 +1542,7 @@ tenant:
   imported_contracts: list(include('ten_imported_contracts'), required=False) # @ref_name(Imported Contract)
   policies: include('ten_policies', required=False) # @flatten()
   services: include('ten_services', required=False) # @flatten()
-  security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False)
+  security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Tenant Sec Domain)
   expected_state: include('ten_expected_state', required=False) # @no_external_doc() @name(Tenant Expected State)
 
 ten_vrf:
