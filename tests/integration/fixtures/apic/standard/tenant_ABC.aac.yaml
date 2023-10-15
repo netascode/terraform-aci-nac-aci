@@ -902,7 +902,7 @@ apic:
             description: "My ND RA Prefix Policy"
             auto_configuration: true
             on_link: true
-            router_address: true            
+            router_address: true
           - name: ND_RA_PREFIX2
       services:
         l4l7_devices:

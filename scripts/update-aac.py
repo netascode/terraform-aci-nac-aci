@@ -49,12 +49,16 @@ REPOS = [
                 "dst": "./roles/apic_deploy/molecule/01_standard/data/host_vars/apic1",
             },
             {
+                "src": "../tests/integration/fixtures/apic/standard_52",
+                "dst": "./roles/apic_deploy/molecule/01_standard/data/host_vars/apic1",
+            },
+            {
                 "src": "../tests/integration/fixtures/ndo/standard",
                 "dst": "./roles/ndo_deploy/molecule/01_standard/data/host_vars/ndo1",
             },
             {
-                "src": "../tests/integration/fixtures/apic/standard_52",
-                "dst": "./roles/apic_deploy/molecule/01_standard/data/host_vars/apic1",
+                "src": "../tests/integration/fixtures/ndo/standard_37",
+                "dst": "./roles/ndo_deploy/molecule/01_standard/data/host_vars/ndo1",
             },
         ],
         "files": [
