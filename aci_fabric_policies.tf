@@ -226,7 +226,7 @@ module "aci_date_time_policy" {
 
 module "aci_snmp_policy" {
   source  = "netascode/snmp-policy/aci"
-  version = "0.2.2"
+  version = "0.2.3"
 
   for_each    = { for policy in try(local.fabric_policies.pod_policies.snmp_policies, []) : policy.name => policy if local.modules.aci_snmp_policy && var.manage_fabric_policies }
   name        = "${each.value.name}${local.defaults.apic.fabric_policies.pod_policies.snmp_policies.name_suffix}"
@@ -237,7 +237,7 @@ module "aci_snmp_policy" {
   users = [for user in try(each.value.users, []) : {
     name               = user.name
     privacy_type       = try(user.privacy_type, local.defaults.apic.fabric_policies.pod_policies.snmp_policies.users.privacy_type)
-    privacy_key        = try(user.privacy_key, "")
+    privacy_key        = try(user.privacy_key, null)
     authorization_type = try(user.authorization_type, local.defaults.apic.fabric_policies.pod_policies.snmp_policies.users.authorization_type)
     authorization_key  = try(user.authorization_key, "")
   }]

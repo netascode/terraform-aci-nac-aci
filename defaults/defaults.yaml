@@ -334,6 +334,11 @@ defaults:
       l2_mtu_policies:
         name_suffix: ""
         port_mtu_size: 9000
+      system_performance:
+        admin_state: false
+        response_threshold: 8500
+        top_slowest_requests: 5
+        calculation_window: 300
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
@@ -669,6 +674,7 @@ defaults:
         ep_move_detection: false
         arp_flooding: true
         ip_dataplane_learning: true
+        clear_remote_mac_entries: false
         limit_ip_learn_to_subnets: true
         multi_destination_flooding: bd-flood
         unknown_unicast: flood
@@ -731,11 +737,13 @@ defaults:
             pod: 1
             module: 1
             svi: false
+            multipod_direct: false
             autostate: false
             floating_svi: false
             ip: 0.0.0.0
             mac: 00:22:BD:F8:19:FF
             mtu: inherit
+            mode: regular
             bgp_peers:
               allow_self_as: false
               as_override: false
@@ -798,9 +806,11 @@ defaults:
               svi: false
               autostate: false
               floating_svi: false
+              multipod_direct: false
               ip: 0.0.0.0
               mac: 00:22:BD:F8:19:FF
               mtu: inherit
+              mode: regular
               bgp_peers:
                 allow_self_as: false
                 as_override: false
@@ -997,6 +1007,28 @@ defaults:
           priority: 1
           lsa_retransmit_interval: 5
           lsa_transmit_delay: 1
+        ospf_timer_policies:
+          name_suffix: ''
+          reference_bandwidth: 40000
+          distance: 110
+          max_ecmp: 8
+          graceful_restart: false
+          router_id_lookup: false
+          prefix_suppression: false
+          spf_init_interval: 200
+          spf_hold_interval: 1000
+          spf_max_interval: 5000
+          lsa_group_pacing_interval: 10
+          lsa_start_interval: 0
+          lsa_hold_interval: 5000
+          lsa_max_interval: 5000
+          lsa_arrival_interval: 1000
+          max_lsa_num: 20000
+          max_lsa_threshold: 75
+          max_lsa_action: 'reject'
+          max_lsa_reset_interval: 10
+          max_lsa_sleep_count: 5
+          max_lsa_sleep_interval: 5
         bgp_best_path_policies:
           name_suffix: ""
           control_type: ""
@@ -1167,6 +1199,13 @@ defaults:
           detection_multiplier: 3
           min_rx_interval: 250
           min_tx_interval: 250
+        nd_ra_prefix_policies:
+          name_suffix: ""
+          valid_lifetime: 2592000
+          preferred_lifetime: 604800
+          auto_configuration: true
+          on_link: true
+          router_address: false
       services:
         l4l7_devices:
           name_suffix: ""

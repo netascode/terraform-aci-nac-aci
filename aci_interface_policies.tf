@@ -168,7 +168,7 @@ locals {
 
 module "aci_access_spine_interface_selector_auto" {
   source  = "netascode/access-spine-interface-selector/aci"
-  version = "0.2.0"
+  version = "0.2.1"
 
   for_each          = { for selector in local.access_spine_interface_selectors : selector.key => selector if local.modules.aci_access_spine_interface_selector && var.manage_interface_policies }
   name              = each.value.name
