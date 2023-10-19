@@ -641,9 +641,18 @@ defaults:
         interfaces:
           from_module: 1
           module: 1
+          breakout: none
+          role: leaf
+          fex_id: unspecified
+          policy_group: system-ports-default
+          sub_ports:
+            port: 0
+            module: 1
         fexes:
           interfaces:
             from_module: 1
+            module: 1
+            policy_group: system-ports-default
 
     tenants:
       managed: true
