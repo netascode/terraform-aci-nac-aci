@@ -789,7 +789,7 @@ apic:
         bfd_interface_policies:
           - name: BFD1
             description: descr
-            subinterface_optimization: true
+            subinterface_optimization: false
             detection_multiplier: 5
             echo_admin_state: false
             echo_rx_interval: 100
