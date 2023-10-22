@@ -20,7 +20,7 @@
                         "annotation": "orchestrator:aac",
                         "name": "{{ pim_policy_name }}",
                         "dn": "uni/tn-{{ tenant.name }}/pimifpol-{{ pim_policy_name }}",
-                        "authKey": "{{ pim_pol.auth_key | default() }}",
+                        "secureAuthKey": "{{ pim_pol.auth_key | default() }}",
                         "authT": "{{ pim_pol.auth_type | default(defaults.apic.tenants.policies.pim_policies.auth_type) }}",
                         "ctrl": "{{ ctrl | join(',') }}",
                         "drDelay": "{{ pim_pol.designated_router_delay | default(defaults.apic.tenants.policies.pim_policies.designated_router_delay) }}",
