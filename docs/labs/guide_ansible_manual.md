@@ -264,7 +264,6 @@ apic:
   bootstrap:
     admin_username: admin
     admin_password: cisco123
-    config_passphrase: C1sco123C1sco123
 ```
 
 The `admin_password` variable must be specified in order for the AAC Bootstrap functionality to work later in this lab guide. If bootstrap is done manually, then the `admin_username` and `admin_password` configuration can be removed alltogether.

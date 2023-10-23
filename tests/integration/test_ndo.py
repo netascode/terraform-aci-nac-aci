@@ -240,6 +240,10 @@ def full_ndo_terraform(
         if "Fail to block deployment" not in error:
             pytest.fail(error)
 
+    # CSCwh37399
+    if version.startswith("4.2"):
+        time.sleep(30)
+
     os.environ["MSO_URL"] = ndo_url
 
     try:
