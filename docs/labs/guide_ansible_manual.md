@@ -327,7 +327,7 @@ apic1                      : ok=1    changed=1    unreachable=0    failed=0    s
 
 In case you hit a validation issue, then resolve this one and re-run the validation playbook before proceeding.
 
-If you do not hit a validation issue, then edit one of the desired config files located in the `aac-inventory/data/lab/host_vars/apic1` directory and make an obvious syntax or semantic error and then re-run the validation playbook and see the output. An example of an obvious error to introduce could be a Bridge Domain referencing a non-existing VRF.
+If you do not hit a validation issue, then edit one of the desired config files located in the `aac-inventory/data/lab/host_vars/apic1` directory and make an obvious syntax or semantic error and then re-run the validation playbook and see the output. An example of an obvious error to introduce could be a Physical Domain referencing a VLAN pool that does not exist.
 
 Once you have inspected the output with error(s) introduced in the desired configuration, then revert or fix these error(s) before proceeding.
 
