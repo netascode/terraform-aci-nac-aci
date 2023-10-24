@@ -141,6 +141,7 @@ defaults:
             tlsv1: false
             tlsv1_1: true
             tlsv1_2: true
+            tlsv1_3: false
           http:
             admin_state: false
             port: 80
