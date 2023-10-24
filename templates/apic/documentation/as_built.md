@@ -367,7 +367,7 @@ No Pod Policy Groups configured.
 | Pod ID | Remote ID | Remote Pool |
 |---|---|---|
 {% for pool in pod.remote_pools | default([]) %}
-| {{pod.id}} | {{pool.id}} | {{pool.remote_pool}}
+| {{pod.id}} | {{pool.id}} | {{pool.remote_pool}} |
 {% endfor %}
 </caption>
 {% endif %}
@@ -380,7 +380,7 @@ No Pod Policy Groups configured.
 | Pod ID | IP | Reserved Address Count |
 |---|---|---|
 {% for pool in pod.external_tep_pools | default([]) %}
-| {{pod.id}} | {{pool.prefix}} | {{pool.reserved_address_count}}
+| {{pod.id}} | {{pool.prefix}} | {{pool.reserved_address_count}} |
 {% endfor %}
 </caption>
 {% endif %}
