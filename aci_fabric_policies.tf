@@ -853,6 +853,7 @@ module "aci_management_access_policy" {
   ssh_aes128_gcm               = try(each.value.ssh.aes128_gcm, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.aes128_gcm)
   ssh_aes192_ctr               = try(each.value.ssh.aes192_ctr, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.aes192_ctr)
   ssh_aes256_ctr               = try(each.value.ssh.aes256_ctr, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.aes256_ctr)
+  ssh_aes256_gcm               = try(each.value.ssh.aes256_gcm, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.aes256_gcm)
   ssh_chacha                   = try(each.value.ssh.chacha, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.chacha)
   ssh_hmac_sha1                = try(each.value.ssh.hmac_sha1, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.hmac_sha1)
   ssh_hmac_sha2_256            = try(each.value.ssh.hmac_sha2_256, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.hmac_sha2_256)

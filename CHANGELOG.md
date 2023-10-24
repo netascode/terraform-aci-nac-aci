@@ -17,6 +17,7 @@
 - Support additional values for `authorization_type` attribute of SNMP users
 - Allow `:` character in name attributes of access spine interface selectors
 - Add HTTPS TLS v1.3 to management access policies
+- Add SSH AES256-GCM to management access policies
 
 ## 0.7.0
 
