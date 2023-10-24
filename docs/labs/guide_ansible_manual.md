@@ -452,85 +452,13 @@ root@ansible-aac:/aac-inventory# ls test_results/lab/apic1/
 bootstrap_log.html  bootstrap_output.xml  bootstrap_report.html  bootstrap_xunit.xml
 ```
 
-## ACI as Code Render Stage
+## ACI as Code Deploy Stage
 
-With the APIC bootstrap complete, it is time to render the desired configuration changes to the ACI fabric in order to have the configuration matching the desired configuration in the inventory.
+With the APIC bootstrap complete, it is time to render and deploy the desired configuration changes to the ACI fabric in order to have the configuration matching the desired configuration in the inventory.
 
 Since the inventory configuration in `data/lab/group_vars/aci.yaml` is configured with `apic_mode: only_changed` and at this point we do not have any previous state we should change the `apic_mode` to `all`.
 
-```sh
-root@ansible-aac:/aac-inventory# cat apic_render.yaml
----
-- name: Render APIC model
-  hosts: apic
-  gather_facts: no
-  vars:
-    apic_render: True
-    apic_option_render: True
-    apic_option_configure: False
-    apic_option_delete: False
-
-  tasks:
-    - name: APIC Render
-      include_role:
-        name: cisco.aac.apic_deploy
-      when: apic_render
-
-root@ansible-aac:/aac-inventory# ansible-playbook -i data/lab/hosts.yaml apic_render.yaml
-
-PLAY [Render APIC model] **************************************************************************************************************
-
-TASK [APIC Render] ********************************************************************************************************************
-
-TASK [Load Common Variables] **********************************************************************************************************
-
-TASK [Load Variables] *****************************************************************************************************************
-
-TASK [cisco.aac.apic_deploy : Get APIC Changed Objects] *******************************************************************************
-changed: [apic1]
-
-TASK [cisco.aac.apic_deploy : Create Directories] *************************************************************************************
-
-TASK [cisco.aac.apic_deploy : Create Spine Directories] *******************************************************************************
-
-TASK [cisco.aac.apic_deploy : Create Leaf Directories] ********************************************************************************
-
-TASK [cisco.aac.apic_deploy : Create Tenant Directories] ******************************************************************************
-changed: [apic1] => (item=PROD)
-
-TASK [Render Stage] *******************************************************************************************************************
-
-TASK [cisco.aac.apic_common : RENDER : TENANT PROD : Bridge Domain] *******************************************************************
-changed: [apic1]
-
-TASK [Configure Stage] ****************************************************************************************************************
-skipping: [apic1] => (item=[{'name': 'Bridge Domain', 'template': 'bridge_domain', 'folder': 'tenants', 'aci_classes': ['fvBD'], 'delete_ignore': ['inb'], 'scope': ['user', 'mgmt'], 'test_types': ['config', 'health'], 'paths': ['apic.tenants.bridge_domains']}, '', 'PROD'])
-
-TASK [Delete Stage] *******************************************************************************************************************
-skipping: [apic1] => (item=[{'name': 'Bridge Domain', 'template': 'bridge_domain', 'folder': 'tenants', 'aci_classes': ['fvBD'], 'delete_ignore': ['inb'], 'scope': ['user', 'mgmt'], 'test_types': ['config', 'health'], 'paths': ['apic.tenants.bridge_domains']}, '', 'PROD'])
-
-PLAY RECAP ****************************************************************************************************************************
-apic1                      : ok=3    changed=3    unreachable=0    failed=0    skipped=5    rescued=0    ignored=0
-```
-
-The `apic_render.yaml` playbook will render the respective JSON payloads to be later used in the deploy phase. This output can be found in the `rendered` directory.
-
-```sh
-root@ansible-aac:/aac-inventory# ls rendered/lab/apic1/
-bootstrap_tests  config
-root@ansible-aac:/aac-inventory# ls -l rendered/lab/apic1/config/tenants/PROD/
-total 164
--rw-r--r-- 1 root root  513 Jan  6 00:57 application_profile.json
--rw-r--r-- 1 root root  155 Jan  6 00:57 bfd_interface_policy.json
--rw-r--r-- 1 root root  155 Jan  6 00:57 bgp_address_family_context_policy.json
-<snip>
-```
-
-Before proceeding, spend some time and look at the content of the rendered configuration.
-
-## ACI as Code Render Deploy
-
-With the required configuration changes rendered, it is time to deploy these configuration changes to the ACI fabric. This is done using the `apic_deploy.yaml` playbook.
+Now it is time to deploy these configuration changes to the ACI fabric. This is done using the `apic_deploy.yaml` playbook.
 
 ```sh
 root@ansible-aac:/aac-inventory# cat apic_deploy.yaml
@@ -541,9 +469,6 @@ root@ansible-aac:/aac-inventory# cat apic_deploy.yaml
   vars:
     apic_snapshot: True
     apic_deploy: True
-    apic_option_render: False
-    apic_option_configure: True
-    apic_option_delete: True
 
   tasks:
     - name: APIC Snapshot
@@ -603,6 +528,21 @@ apic1                      : ok=5    changed=3    unreachable=0    failed=0    s
 ```
 
 Once the configuration changes have been applied to the ACI fabric, this can be verified through using the APIC GUI.
+
+The `apic_deploy.yaml` playbook will render the respective JSON payloads. This output can be found in the `rendered` directory.
+
+```sh
+root@ansible-aac:/aac-inventory# ls rendered/lab/apic1/
+bootstrap_tests  config
+root@ansible-aac:/aac-inventory# ls -l rendered/lab/apic1/config/tenants/PROD/
+total 164
+-rw-r--r-- 1 root root  513 Jan  6 00:57 application_profile.json
+-rw-r--r-- 1 root root  155 Jan  6 00:57 bfd_interface_policy.json
+-rw-r--r-- 1 root root  155 Jan  6 00:57 bgp_address_family_context_policy.json
+<snip>
+```
+
+Before proceeding, spend some time and look at the content of the rendered configuration.
 
 ## ACI as Code Testing Stage
 
