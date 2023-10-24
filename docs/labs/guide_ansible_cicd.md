@@ -214,7 +214,7 @@ In order to commit the local changes to the inventory in git repository must the
 
 With the aac-inventory repository customized is it now time to create the GitLab CI pipeline. The pipeline itself is defined in a file called `.gitlab-ci.yml`.
 
-The provided pipeline file does not require any modifications by you, but let's go through it step by step to understand the structure of the pipeline.
+Copy the content of this (<https://wwwin-github.cisco.com/moskrive/aac-bootcamp/blob/main/bootcamp/lab2/gitlab-ci.yml>) file into the `.gitlab-ci.yml` file in the root of the aac-inventory repository.
 
 ### GitLab CI Pipeline - Overall Settings
 
