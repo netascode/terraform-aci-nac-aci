@@ -538,6 +538,10 @@ Once the pipeline have completed its run should you receive a Webex notification
 
 ![gitlab_runner_webex1](../assets/labs/guide_ansible_cicd/gitlab_runner_webex1.png)
 
+## Optimizing time to deploy
+
+As we have seen in the previous execution of the pipeline, it can take quite some time to deploy a full configuration to the ACI fabric. In order to optimize this we can change the `apic_mode` to `only_changed` in the `data/lab/group_vars/aci.yaml` file. This should significantly reduce the time it takes to deploy the configuration because it will now only deploy the configuration that has changed since the last deployment.
+
 ## Testing the CI/CD Pipeline
 
 With the pipeline fully completed is it now time play a bit around with ACI and Infrastructure as code.
