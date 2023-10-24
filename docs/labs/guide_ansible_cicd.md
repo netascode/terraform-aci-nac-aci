@@ -252,9 +252,6 @@ variables:
   BOOTSTRAP:
     description: 'Enable/Disable APIC Bootstrap'
     value: 'false'
-  APIC_NAE_PCA:
-    description: 'Enable/Disable NAE Pre-Change Analysis '
-    value: 'false'
   APIC_SNAPSHOT:
     description: 'Enable/Disable APIC Snapshot'
     value: 'true'
@@ -350,65 +347,40 @@ Like the validate job are rules used to control when the bootstrap and test_boot
 
 In addition to the rules defined does the jobs only run after successfully completing the validate stage.
 
-### GitLab CI Pipeline - Render Stage
-
-Next up is the render stage, which requires a few additional repositories to be cloned in order to have a local copy of both the last_deployed config as well as the optional rendered configuration.
-
-```yaml
-render:
-  stage: render
-  script:
-    - export ANSIBLE_CONFIG=$(pwd)/ansible.cfg
-    - set -o pipefail && git clone --depth 1 --branch last_deploy https://$GITLAB_HOST/aci-iac/aac-inventory.git previous/
-    - set -o pipefail && git clone https://$GITLAB_HOST/aci-iac/aac-inventory-config.git
-    - 'echo "previous_inventory: ./previous/data/lab/" >> apic_render_vars.yaml'
-    - >
-      if [ $FULL_APIC_DEPLOY == "true" ]; then
-        echo "apic_mode: all" >> apic_render_vars.yaml
-      fi
-    - set -o pipefail && ansible-playbook -i data/lab/hosts.yaml -e @apic_render_vars.yaml apic_render.yaml |& tee render_output.txt
-    - >
-      if [ -d "./rendered" ]; then
-        /bin/cp -rf ./rendered/ ./aac-inventory-config/
-      fi
-  artifacts:
-    paths:
-      - render_output.txt
-      - previous/
-      - rendered/
-      - aac-inventory-config/
-  needs:
-    - validate
-  only:
-    - merge_requests
-    - master
-    - main
-```
-
-The render job do not use rules to control when the job is executed. This is instead controlled using the `only` configuration that can be seen above.
-
-Like the bootstrap stage are the render stage only executed after successfully completing the validate stage.
-
 ### GitLab CI Pipeline - Deploy Stage
 
-The deploy stage are responsible for deploying the desired/rendered configuration onto the ACI fabric. This stage is therefore only executed on the master branch.
+The deploy stage are responsible for rendering and deploying the desired configuration onto the ACI fabric. This stage is therefore only executed on the master branch.
 
 ```yaml
 deploy:
   stage: deploy
   script:
     - export ANSIBLE_CONFIG=$(pwd)/ansible.cfg
+    - export ACI_USE_SSL=true
+    - set -o pipefail && git clone --depth 1 --branch last_deploy https://$GITLAB_HOST/aci-iac/aac-inventory.git previous/
+    - set -o pipefail && git clone https://$GITLAB_HOST/aci-iac/aac-inventory-config.git
     - 'echo "previous_inventory: ./previous/data/lab/" >> apic_deploy_vars.yaml'
     - >
       if [ $FULL_APIC_DEPLOY == "true" ]; then
         echo "apic_mode: all" >> apic_deploy_vars.yaml
       fi
+    - >
+      if [ $APIC_SNAPSHOT == "false" ]; then
+        echo "apic_snapshot: false" >> apic_deploy_vars.yaml
+      fi
     - set -o pipefail && ansible-playbook -i data/lab/hosts.yaml -e @apic_deploy_vars.yaml apic_deploy.yaml |& tee deploy_output.txt
+    - >
+      if [ -d "./rendered" ]; then
+        /bin/cp -rf ./rendered/ ./aac-inventory-config/
+      fi
   artifacts:
     paths:
+      - previous/
+      - rendered/
+      - aac-inventory-config/
       - deploy_output.txt
   needs:
-    - render
+    - validate
   only:
     - master
     - main
@@ -439,7 +411,6 @@ test-integration:
     reports:
       junit: test_results/lab/apic1/xunit.xml
   needs:
-    - render
     - deploy
   only:
     - master
@@ -468,7 +439,6 @@ git_config_update:
     - git commit -a -m "$CI_COMMIT_MESSAGE" --allow-empty
     - git push
   needs:
-    - render
     - deploy
   only:
     - master
@@ -488,7 +458,6 @@ git_tag:
     - git tag last_deploy
     - git push origin-write --tags
   needs:
-    - render
     - deploy
   only:
     - master
@@ -518,7 +487,6 @@ failure:
       - validate_output.txt
       - bootstrap_output.txt
       - test_apic_bootstrap_output.txt
-      - render_output.txt
       - deploy_output.txt
       - test_output.txt
   cache: []
@@ -539,7 +507,6 @@ success:
       - validate_output.txt
       - bootstrap_output.txt
       - test_apic_bootstrap_output.txt
-      - render_output.txt
       - deploy_output.txt
       - test_output.txt
   cache: []
