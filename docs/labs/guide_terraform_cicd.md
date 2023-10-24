@@ -78,7 +78,7 @@ local-laptop:~$ ssh cisco@CONTROLLER_IP
 local-laptop:~$ curl -L -X GET 'https://api.ciscospark.com/v1/rooms' -H 'Authorization: Bearer <BEARER>' | json_pp -json_opt pretty,canonical
 ```
 
-In the above command, replace the \<BEARER> value with Bot Access Token value that you received when the Webex Bot was created. If all went well, you will receive a response containing a JSON body. Copy the `id` and `title` as this contains the `Room ID` and the `Title` that will be needed in our GitLab pipeline in a later section.
+In the above command, replace the `<BEARER>` value with Bot Access Token value that you received when the Webex Bot was created. If all went well, you will receive a response containing a JSON body. Copy the `id` and `title` as this contains the `Room ID` and the `Title` that will be needed in our GitLab pipeline in a later section.
 
 ```json
 {
@@ -118,7 +118,7 @@ Add the following variables:
 - **ACI_PASSWORD**: set this to the APIC password. Enable `Protect Variable` and `Mask Variable`.
 - **ACI_URL**: set this to the APIC URL. Disable `Protect Variable` and `Mask Variable`.
 - **ACI_USERNAME**: set this to the APIC Uusername. Enable `Protect Variable` and disable `Mask Variable`.
-- **GITLAB_API_URL**: set this to "http://gitlab-webservice-default.default.svc.cluster.local:8181/api/v4". Disable `Protect Variable` and `Mask Variable`.
+- **GITLAB_API_URL**: set this to "<http://gitlab-webservice-default.default.svc.cluster.local:8181/api/v4>". Disable `Protect Variable` and `Mask Variable`.
 - **GITLAB_TOKEN**: set this to the token you created in the `Create GitLab Access Token` section. Disable `Protect Variable` and enable `Mask Variable`.
 - **TF_HTTP_PASSWORD**: set this to the token you created in the `Create GitLab Access Token` section. Disable `Protect Variable` and enable `Mask Variable`.
 - **TF_HTTP_USERNAME**: set this to "lab". Disable `Protect Variable` and `Mask Variable`.
