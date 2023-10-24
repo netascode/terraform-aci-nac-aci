@@ -549,7 +549,7 @@ With the pipeline fully completed is it now time play a bit around with ACI and 
 1. Create a new branch
 2. Modify the inventory in this branch (add a BD, VRF, Leaf/Spine or something similar)
 3. Push the changes to Git and check what stages that runs in the pipeline
-4. If you did not have any syntax or scemantic errors in the inventory, then try to introduce these and check the pipeline output.
+4. If you did not have any syntax or semantic errors in the inventory, then try to introduce these and check the pipeline output.
 5. Once you have the inventory in your desired state, then raise a `Merge Request` against the master branch. Check the pipeline output.
 6. Once satisfied with the merge request, then merge it into the master branch and check the pipeline output.
 
