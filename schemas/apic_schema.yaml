@@ -2863,7 +2863,7 @@ ten_span_destination_groups_expected_state:
 ten_span_source_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  admin_state: enum('enabled', 'disabled', 'l2ping', required=False)
+  admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
   destination: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   sources: list(include('ten_span_source_groups_sources'), required=False) # @name(Tenant SPAN Src Group Sources)
   expected_state: include('ten_span_source_groups_expected_state', required=False) # @no_external_doc() @name(Ten SPAN SG Expected State)
