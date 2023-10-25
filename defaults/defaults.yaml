@@ -128,10 +128,20 @@ defaults:
             aes128_gcm: true
             aes192_ctr: true
             aes256_ctr: true
+            aes256_gcm: false
             chacha: true
             hmac_sha1: true
             hmac_sha2_256: true
             hmac_sha2_512: true
+            curve25519_sha256: false
+            curve25519_sha256_libssh: false
+            dh1_sha1: false
+            dh14_sha1: false
+            dh14_sha256: false
+            dh16_sha512: false
+            ecdh_sha2_nistp256: false
+            ecdh_sha2_nistp384: false
+            ecdh_sha2_nistp521: false
           https:
             admin_state: true
             client_cert_auth_state: false
@@ -141,6 +151,7 @@ defaults:
             tlsv1: false
             tlsv1_1: true
             tlsv1_2: true
+            tlsv1_3: false
           http:
             admin_state: false
             port: 80
