@@ -38,17 +38,17 @@
         {%- set comma1 = joiner(",") %}
         {%- if ndo_username is defined and ndo_username != 'admin' %}{{ comma1() }}
         {
-            "userId": "%%tenants/allowed-users%{{ ndo_login_domain | default('Local') }}/{{ ndo_username }}%%"
+            "userId": "%%users%{{ ndo_username }}%%"
         }
         {%- endif %}
         {%- if ndo_test_username is defined and ndo_test_username != 'admin' %}{{ comma1() }}
         {
-            "userId": "%%tenants/allowed-users%{{ ndo_test_login_domain | default('Local') }}/{{ ndo_test_username }}%%"
+            "userId": "%%users%{{ ndo_test_username }}%%"
         }
         {%- endif %}
         {%- for user in tenant.users | default([]) %}{{ comma1() }}
         {
-            "userId": "%%tenants/allowed-users%{{ user.domain | default('Local') }}/{{ user.name }}%%"
+            "userId": "%%users%{{ user.name }}%%"
         }
         {%- endfor %}
 
