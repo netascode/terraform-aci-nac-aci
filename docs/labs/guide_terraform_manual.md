@@ -42,7 +42,7 @@ Clone the repository locally in a directory of your choice.
 
 ```sh
 local-laptop:~$ git -c http.sslVerify=false clone https://CONTROLLER_IP/aci-iac/terraform-aac
-Cloning into 'terraform-aaac'...
+Cloning into 'terraform-aac'...
 warning: redirecting to https://CONTROLLER_IP/aci-iac/terraform-aac.git/
 remote: Enumerating objects: 208, done.
 remote: Total 208 (delta 0), reused 0 (delta 0), pack-reused 208
@@ -418,7 +418,7 @@ Using manual verification of configuration changes is naturally not a scalable s
 In the Terraform flavor of AAC we will use the `iac-test` tool to render the test templates against the desired configuration and then execute the tests.
 
 ```sh
-root@terraform-aac:/terraform-aac# iac-test --data ./data --data ./defaults --templates ./tests/templates --filters ./tests/filters --output ./tests/results/aci |& tee test_output.txt
+root@terraform-aac:/terraform-aac# iac-test --data ./data --data ./defaults.yaml --templates ./tests/templates --filters ./tests/filters --output ./tests/results/aci |& tee test_output.txt
 Storing .pabotsuitenames file
 2022-11-11 14:01:35.028534 [PID:35] [0] [ID:2] EXECUTING Aci.Config.Access Policies.Ap Leaf Interface Profile
 2022-11-11 14:01:35.031217 [PID:36] [2] [ID:1] EXECUTING Aci.Config.Access Policies.Ap Leaf Interface Policy Group
