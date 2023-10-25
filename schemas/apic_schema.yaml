@@ -233,10 +233,20 @@ fp_management_access_policy_ssh:
   aes128_gcm: any(bool(), enum('yes', 'no'), required=False)
   aes192_ctr: any(bool(), enum('yes', 'no'), required=False)
   aes256_ctr: any(bool(), enum('yes', 'no'), required=False)
+  aes256_gcm: any(bool(), enum('yes', 'no'), required=False)
   chacha: any(bool(), enum('yes', 'no'), required=False)
   hmac_sha1: any(bool(), enum('yes', 'no'), required=False)
   hmac_sha2_256: any(bool(), enum('yes', 'no'), required=False)
   hmac_sha2_512: any(bool(), enum('yes', 'no'), required=False)
+  curve25519_sha256: any(bool(), enum('yes', 'no'), required=False)
+  curve25519_sha256_libssh: any(bool(), enum('yes', 'no'), required=False)
+  dh1_sha1: any(bool(), enum('yes', 'no'), required=False)
+  dh14_sha1: any(bool(), enum('yes', 'no'), required=False)
+  dh14_sha256: any(bool(), enum('yes', 'no'), required=False)
+  dh16_sha512: any(bool(), enum('yes', 'no'), required=False)
+  ecdh_sha2_nistp256: any(bool(), enum('yes', 'no'), required=False)
+  ecdh_sha2_nistp384: any(bool(), enum('yes', 'no'), required=False)
+  ecdh_sha2_nistp521: any(bool(), enum('yes', 'no'), required=False)
 
 fp_management_access_policy_telnet:
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -250,6 +260,7 @@ fp_management_access_policy_https:
   tlsv1: any(bool(), enum('yes', 'no'), required=False)
   tlsv1_1: any(bool(), enum('yes', 'no'), required=False)
   tlsv1_2: any(bool(), enum('yes', 'no'), required=False)
+  tlsv1_3: any(bool(), enum('yes', 'no'), required=False)
   key_ring: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 fp_management_access_policy_http:
