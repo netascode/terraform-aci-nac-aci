@@ -65,6 +65,7 @@ defaults:
       orchestrator_only: true
     schemas:
       templates:
+        type: multi_site
         application_profiles:
           name_suffix: ""
           endpoint_groups:

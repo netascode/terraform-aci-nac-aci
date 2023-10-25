@@ -10,6 +10,11 @@
             "name": "{{ template.name }}",
             "displayName": "{{ template.name }}",
             "description": "{{ template.description | default() }}",
+            {% if template.type | default(defaults.ndo.schemas.templates.type) == "autonomous" %}
+            "templateType": "non-stretched-template",
+            {% else %}
+            "templateType": "stretched-template",
+            {% endif %}
             "tenantId": "%%tenants%{{ template.tenant }}%%",
             "anps": [
                 {%- set comma2 = joiner(",") %}

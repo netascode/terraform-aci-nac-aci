@@ -166,6 +166,7 @@ schemas:
 schemas_templates:
   name: str()
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
+  type: enum('multi_site', 'autonomous', required=False)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @ref_table(ndo.tenants)
   application_profiles: list(include('t_application_profiles'), required=False) # @ref_name(Application Profile)
   vrfs: list(include('t_vrfs'), required=False) # @ref_name(VRF)
