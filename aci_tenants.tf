@@ -665,7 +665,7 @@ locals {
           ),
         ])
         ospf                                    = try(l3out.ospf, null) != null ? true : false
-        ospf_area                               = can(tonumber(try(l3out.ospf.area, "backbone"))) ? (tonumber(try(l3out.ospf.area, "backbone")) == 0 ? "backbone" : "0.0.0.${tonumber(try(l3out.ospf.area, "backbone"))}") : try(l3out.ospf.area, "backbone")
+        ospf_area                               = can(tonumber(try(l3out.ospf.area, "backbone"))) ? (tonumber(try(l3out.ospf.area, "backbone")) == 0 ? "backbone" : tonumber(try(l3out.ospf.area, "backbone"))) : try(l3out.ospf.area, "backbone")
         ospf_area_cost                          = try(l3out.ospf.area_cost, local.defaults.apic.tenants.l3outs.ospf.area_cost)
         ospf_area_type                          = try(l3out.ospf.area_type, local.defaults.apic.tenants.l3outs.ospf.area_type)
         l3_multicast_ipv4                       = try(l3out.l3_multicast_ipv4, local.defaults.apic.tenants.l3outs.l3_multicast_ipv4)
