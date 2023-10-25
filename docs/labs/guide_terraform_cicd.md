@@ -175,9 +175,9 @@ local-laptop:~/terraform-aac$ git -c http.sslVerify=false push origin master
 
 With the terraform-aac repository customized is it now time to create the GitLab CI pipeline. The pipeline itself is defined in the file called `.gitlab-ci.yml`, which already exist within the repository.
 
-The pipeline file does not require any modifications by you, but lets go through it step by step before comitting it to the git repository.
+Copy the content of this (<https://wwwin-github.cisco.com/moskrive/aac-bootcamp/blob/main/bootcamp/lab4/.gitlab-ci.yml>) file into the `.gitlab-ci.yml` file in the root of the terraform-aac repository.
 
-**PLEASE NOTE** that you may need to edit this file and add a comment to it in order for GitLab to pickup the presence of the file - this is due to the repository being imported into GitLab during instantiation of the lab pod.
+The pipeline file does not require any modifications by you, but lets go through it step by step before comitting it to the git repository.
 
 ### GitLab CI Pipeline - Overall Settings
 
