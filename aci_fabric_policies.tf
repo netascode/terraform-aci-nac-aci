@@ -839,7 +839,7 @@ module "aci_monitoring_policy" {
 
 module "aci_management_access_policy" {
   source  = "netascode/management-access-policy/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
   for_each                     = { for policy in try(local.fabric_policies.pod_policies.management_access_policies, []) : policy.name => policy if local.modules.aci_management_access_policy && var.manage_fabric_policies }
   name                         = "${each.value.name}${local.defaults.apic.fabric_policies.pod_policies.management_access_policies.name_suffix}"

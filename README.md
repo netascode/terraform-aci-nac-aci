@@ -237,7 +237,7 @@ Additional example repositories:
 | <a name="module_aci_lldp_policy"></a> [aci\_lldp\_policy](#module\_aci\_lldp\_policy) | netascode/lldp-policy/aci | 0.1.0 |
 | <a name="module_aci_login_domain"></a> [aci\_login\_domain](#module\_aci\_login\_domain) | netascode/login-domain/aci | 0.2.1 |
 | <a name="module_aci_maintenance_group"></a> [aci\_maintenance\_group](#module\_aci\_maintenance\_group) | netascode/maintenance-group/aci | 0.1.0 |
-| <a name="module_aci_management_access_policy"></a> [aci\_management\_access\_policy](#module\_aci\_management\_access\_policy) | netascode/management-access-policy/aci | 0.1.0 |
+| <a name="module_aci_management_access_policy"></a> [aci\_management\_access\_policy](#module\_aci\_management\_access\_policy) | netascode/management-access-policy/aci | 0.1.1 |
 | <a name="module_aci_match_rule"></a> [aci\_match\_rule](#module\_aci\_match\_rule) | netascode/match-rule/aci | 0.2.1 |
 | <a name="module_aci_mcp"></a> [aci\_mcp](#module\_aci\_mcp) | netascode/mcp/aci | 0.1.1 |
 | <a name="module_aci_mcp_policy"></a> [aci\_mcp\_policy](#module\_aci\_mcp\_policy) | netascode/mcp-policy/aci | 0.1.0 |
