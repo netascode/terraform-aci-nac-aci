@@ -19,6 +19,7 @@
 - Add HTTPS TLS v1.3 to management access policies
 - Add SSH AES256-GCM to management access policies
 - Add SSH KEX Algorithms to management access policies
+- Improve handling of quad-dotted notation OSPF area IDs
 
 ## 0.7.0
 
