@@ -18,6 +18,7 @@ Verify Schema {{ schema.name }}
 Verify Schema {{ schema.name }} Template {{ template.name }}
     ${template}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${template}.name   {{ template.name }}
+    Should Be Equal Value Json String   ${r.json()}   ${template}.description   {{ template.description | default() }}
 
 {% for ap in template.application_profiles | default([]) %}
 {% set ap_name = ap.name ~ defaults.ndo.schemas.templates.application_profiles.name_suffix %}
@@ -34,6 +35,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
     ${epg}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].anps[?(@.name=='{{ ap_name }}')].epgs[?(@.name=='{{ epg_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${epg}.name   {{ epg_name }}
     Should Be Equal Value Json String   ${r.json()}   ${epg}.displayName   {{ epg_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.description   {{ epg.description | default() }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${epg}.uSegEpg   {{ epg.useg | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.useg) | cisco.aac.aac_bool(True) }}
     Should Be Equal Value Json String   ${r.json()}   ${epg}.intraEpg   {% if epg.intra_epg_isolation | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.intra_epg_isolation) | cisco.aac.aac_bool(True) %}enforced{% else %}unenforced{% endif %} 
     Should Be Equal Value Json Boolean   ${r.json()}   ${epg}.proxyArp   {{ epg.proxy_arp | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.proxy_arp) | cisco.aac.aac_bool(True) }}
@@ -247,6 +249,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
     ${bd}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].bds[?(@.name=='{{ bd_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${bd}.name   {{ bd_name }}
     Should Be Equal Value Json String   ${r.json()}   ${bd}.displayName   {{ bd_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${bd}.description   {{ bd.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${bd}.l2UnknownUnicast   {{ bd.l2_unknown_unicast | default(defaults.ndo.schemas.templates.bridge_domains.l2_unknown_unicast)}}
     Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.intersiteBumTrafficAllow   {{ bd.intersite_bum_traffic | default(defaults.ndo.schemas.templates.bridge_domains.intersite_bum_traffic) | cisco.aac.aac_bool(True) }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.optimizeWanBandwidth   {{ bd.optimize_wan_bandwidth | default(defaults.ndo.schemas.templates.bridge_domains.optimize_wan_bandwidth) | cisco.aac.aac_bool(True) }}

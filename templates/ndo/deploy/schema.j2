@@ -9,6 +9,7 @@
         {
             "name": "{{ template.name }}",
             "displayName": "{{ template.name }}",
+            "description": "{{ template.description | default() }}",
             "tenantId": "%%tenants%{{ template.tenant }}%%",
             "anps": [
                 {%- set comma2 = joiner(",") %}
@@ -24,6 +25,7 @@
                         {
                             "name": "{{ epg_name }}",
                             "displayName": "{{ epg_name }}",
+                            "description": "{{ epg.description | default() }}",
                             "contractRelationships": [
                                 {%- set comma4 = joiner(",") %}
                                 {%- for contract in epg.contracts.consumers | default([]) %}{{ comma4() }}
@@ -61,7 +63,7 @@
                                     {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %},
                                     "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.primary) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
                                     {%- endif %}
-                                    
+
                                 }
                                 {%- endfor %}
 
@@ -129,7 +131,7 @@
                             "contractRef": "/schemas/%%schemas%{{ contract.schema | default(schema.name) }}%%/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract.name }}"
                         {% endif %}
                         }
-                        {%- endfor %}                  
+                        {%- endfor %}
                     ]
                 }
                 {%- endfor %}
@@ -142,6 +144,7 @@
                 {
                     "name": "{{ bd_name }}",
                     "displayName": "{{ bd_name }}",
+                    "description": "{{ bd.description | default() }}",
                     "l2UnknownUnicast": "{{ bd.l2_unknown_unicast | default(defaults.ndo.schemas.templates.bridge_domains.l2_unknown_unicast)}}",
                     "intersiteBumTrafficAllow": {% if bd.intersite_bum_traffic | default(defaults.ndo.schemas.templates.bridge_domains.intersite_bum_traffic) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     "optimizeWanBandwidth": {% if bd.optimize_wan_bandwidth | default(defaults.ndo.schemas.templates.bridge_domains.optimize_wan_bandwidth) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
@@ -205,7 +208,7 @@
                                 "version": 1
                             }
                             {%- endif %}
-                            
+
                         }
                         {%- endfor%}
 
@@ -596,7 +599,7 @@
                                 {%- set comma4 = joiner(",") %}
                                 {%- for sp in site.static_ports | default([]) %}{{ comma4() }}
                                 {
-                                    
+
                                     {% if sp.type | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) == 'port' %}
                                     "type": "{{ sp.type | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) }}",
                                     {% if sp.sub_port is defined %}

@@ -165,6 +165,7 @@ schemas:
 
 schemas_templates:
   name: str()
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @ref_table(ndo.tenants)
   application_profiles: list(include('t_application_profiles'), required=False) # @ref_name(Application Profile)
   vrfs: list(include('t_vrfs'), required=False) # @ref_name(VRF)
@@ -182,6 +183,7 @@ t_application_profiles:
 
 t_ap_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
   useg: any(bool(), enum('enabled', 'disabled'), required=False)
   intra_epg_isolation: any(bool(), enum('enabled', 'disabled'), required=False)
   proxy_arp: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -330,6 +332,7 @@ t_vrf_sites_regions_cidrs_subnets:
 
 t_bridge_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,64}$', required=False)
   l2_unknown_unicast: enum('proxy', 'flood', required=False)
   intersite_bum_traffic: any(bool(), enum('enabled', 'disabled'), required=False)
   optimize_wan_bandwidth: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -370,6 +373,7 @@ t_bd_sites:
   subnets: list(include('t_bd_subnets'), required=False) # @name(Bridge Domain Site Subnets)
   l3outs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Bridge Domain Site L3outs) @ref_name(L3out) # @ref_table(schemas_templates.l3outs)
   mac: mac(required=False)
+
 t_filters:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   entries: list(include('t_filters_entries'), required=False) # @name(Filter Entries)
