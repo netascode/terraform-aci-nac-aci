@@ -418,7 +418,10 @@ Using manual verification of configuration changes is naturally not a scalable s
 In the Terraform flavor of AAC we will use the `iac-test` tool to render the test templates against the desired configuration and then execute the tests.
 
 ```sh
-root@terraform-aac:/terraform-aac# iac-test --data ./data --data ./defaults.yaml --templates ./tests/templates --filters ./tests/filters --output ./tests/results/aci |& tee test_output.txt
+root@terraform-aac:/terraform-aac# iac-test --data ./data --data ./defaults.yaml --templates ./tests/templates --filters ./tests/filters --output ./tests/results/aci
+```
+
+```sh
 Storing .pabotsuitenames file
 2022-11-11 14:01:35.028534 [PID:35] [0] [ID:2] EXECUTING Aci.Config.Access Policies.Ap Leaf Interface Profile
 2022-11-11 14:01:35.031217 [PID:36] [2] [ID:1] EXECUTING Aci.Config.Access Policies.Ap Leaf Interface Policy Group
