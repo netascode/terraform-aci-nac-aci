@@ -2545,7 +2545,7 @@ locals {
 
 module "aci_l4l7_device" {
   source  = "netascode/l4l7-device/aci"
-  version = "0.2.3"
+  version = "0.2.4"
 
   for_each         = { for device in local.l4l7_devices : device.key => device if local.modules.aci_l4l7_device && var.manage_tenants }
   tenant           = each.value.tenant
