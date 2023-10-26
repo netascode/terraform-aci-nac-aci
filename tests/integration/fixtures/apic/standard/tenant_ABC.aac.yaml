@@ -468,6 +468,10 @@ apic:
                 intra_epgs:
                   - CON1
                   - CON2
+                masters:
+                  - application_profile: AP1
+                    endpoint_group: EPG2
+                  - endpoint_group: EPG3
               subnets:
                 - ip: 5.50.5.1/30
                   description: My Desc
@@ -529,6 +533,8 @@ apic:
                 - name: L4L7_POOL2
                   gateway_address: 22.22.22.254/24
             - name: EPG2
+              bridge_domain: BD1
+            - name: EPG3
               bridge_domain: BD1
         - name: AP2
       contracts:
