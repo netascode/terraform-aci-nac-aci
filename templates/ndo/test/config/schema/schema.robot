@@ -19,7 +19,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }}
     ${template}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${template}.name   {{ template.name }}
     Should Be Equal Value Json String   ${r.json()}   ${template}.description   {{ template.description | default() }}
-    Should Be Equal Value Json String   ${r.json()}   ${template}.templateType   {% if template.type | default(defaults.mso.schemas.templates.type) == "autonomous" %}non-stretched-template{% else %}stretched-template{% endif %}
+    Should Be Equal Value Json String   ${r.json()}   ${template}.templateType   {% if template.type | default(defaults.ndo.schemas.templates.type) == "autonomous" %}non-stretched-template{% else %}stretched-template{% endif %}
 
 {% for ap in template.application_profiles | default([]) %}
 {% set ap_name = ap.name ~ defaults.ndo.schemas.templates.application_profiles.name_suffix %}
