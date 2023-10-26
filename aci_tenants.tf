@@ -2326,7 +2326,7 @@ locals {
 
 module "aci_pim_policy" {
   source  = "netascode/pim-policy/aci"
-  version = "0.1.1"
+  version = "0.1.2"
 
   for_each                     = { for pol in local.pim_policies : pol.key => pol if local.modules.aci_pim_policy && var.manage_tenants }
   tenant                       = each.value.tenant
