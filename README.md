@@ -183,7 +183,7 @@ Additional example repositories:
 | <a name="module_aci_dhcp_option_policy"></a> [aci\_dhcp\_option\_policy](#module\_aci\_dhcp\_option\_policy) | netascode/dhcp-option-policy/aci | 0.2.0 |
 | <a name="module_aci_dhcp_relay_policy"></a> [aci\_dhcp\_relay\_policy](#module\_aci\_dhcp\_relay\_policy) | netascode/dhcp-relay-policy/aci | 0.2.0 |
 | <a name="module_aci_dns_policy"></a> [aci\_dns\_policy](#module\_aci\_dns\_policy) | netascode/dns-policy/aci | 0.2.0 |
-| <a name="module_aci_endpoint_group"></a> [aci\_endpoint\_group](#module\_aci\_endpoint\_group) | netascode/endpoint-group/aci | 0.2.10 |
+| <a name="module_aci_endpoint_group"></a> [aci\_endpoint\_group](#module\_aci\_endpoint\_group) | netascode/endpoint-group/aci | 0.2.11 |
 | <a name="module_aci_endpoint_loop_protection"></a> [aci\_endpoint\_loop\_protection](#module\_aci\_endpoint\_loop\_protection) | netascode/endpoint-loop-protection/aci | 0.1.0 |
 | <a name="module_aci_endpoint_security_group"></a> [aci\_endpoint\_security\_group](#module\_aci\_endpoint\_security\_group) | netascode/endpoint-security-group/aci | 0.2.5 |
 | <a name="module_aci_error_disabled_recovery"></a> [aci\_error\_disabled\_recovery](#module\_aci\_error\_disabled\_recovery) | netascode/error-disabled-recovery/aci | 0.1.0 |

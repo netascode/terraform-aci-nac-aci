@@ -295,7 +295,7 @@ locals {
           physical_domains            = try([for domain in epg.physical_domains : "${domain}${local.defaults.apic.access_policies.physical_domains.name_suffix}"], [])
           contract_masters = [for master in try(epg.contracts.masters, []) : {
             endpoint_group      = master.endpoint_group
-            application_profile = try(master.application_profile, ap.name)
+            application_profile = try(master.application_profile, "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}")
           }]
           subnets = [for subnet in try(epg.subnets, []) : {
             description        = try(subnet.description, "")
@@ -394,7 +394,7 @@ locals {
 
 module "aci_endpoint_group" {
   source  = "netascode/endpoint-group/aci"
-  version = "0.2.10"
+  version = "0.2.11"
 
   for_each                    = { for epg in local.endpoint_groups : epg.key => epg if local.modules.aci_endpoint_group && var.manage_tenants }
   tenant                      = each.value.tenant
