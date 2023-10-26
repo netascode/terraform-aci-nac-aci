@@ -1823,6 +1823,11 @@ ten_ap_endpoint_groups_contracts:
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Providers) @ref_name(Contract)
   imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Imported Consumers) @ref_name(Contract)
   intra_epgs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Intra-EPG) @ref_name(Contract)
+  masters: list(include('ten_ap_endpoint_groups_contracts_masters'), required=False)
+
+ten_ap_endpoint_groups_contracts_masters:
+  application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$')
 
 ten_ap_endpoint_groups_expected_state:
   minimum_health: int(min=0, max=100, required=False)

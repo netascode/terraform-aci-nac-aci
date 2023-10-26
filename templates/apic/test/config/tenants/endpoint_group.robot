@@ -134,6 +134,13 @@ Verify Endpoint Group {{ epg_name }} Static Endpoint {{ st_ep.mac }}
 {% endfor %}
 {% endfor %}
 
+{% for master in epg.contracts.masters | default([]) %}
+    {% set app_profile_name = (master.application_profile | default(ap_name)) %}
+Verify EPG Contract Master 'uni/tn-{{ tenant.name }}/ap-{{ app_profile_name }}/epg-{{ master.endpoint_group }}'
+    ${con_master}=   Set Variable   $..fvAEPg.children[?(@.fvRsSecInherited.attributes.tDn=='uni/tn-{{ tenant.name }}/ap-{{ app_profile_name }}/epg-{{ master.endpoint_group }}')]
+    Should Not Be Empty   ${con_master}..fvRsSecInherited.attributes.tDn
+{% endfor %}
+
 {% for contract in epg.contracts.providers | default([]) %}
 {% set contract_name = contract ~ defaults.apic.tenants.contracts.name_suffix %}
 

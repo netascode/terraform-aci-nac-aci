@@ -42,6 +42,16 @@
                                 },
                                 "children": [
                                     {%- set comma3 = joiner(",") %}
+                                    {%- for ma in epg.contracts.masters | default([]) %}{{ comma3() }}
+                                    {% set app_profile_name = (ma.application_profile | default(ap_name)) %}
+                                    {
+                                        "fvRsSecInherited": {
+                                            "attributes": {
+                                                "tDn": "uni/tn-{{ tenant.name }}/ap-{{ app_profile_name }}/epg-{{ ma.endpoint_group }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
                                     {%- for pd in epg.physical_domains | default([]) %}{{ comma3() }}
                                     {% set domain_name = pd ~ defaults.apic.access_policies.physical_domains.name_suffix %}
                                     {
