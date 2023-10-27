@@ -21,7 +21,7 @@ Verify AAA Settings
 Verify AAA Security Domains
     ${r}=   GET On Session   apic   /api/node/class/aaaDomain.json
 {% for sd in apic.fabric_policies.aaa.security_domains| default([]) %}
-    Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomainRef.attributes.name=='{{ sd.name }}')].aaaDomainRef.attributes.name   {{ sd.name }}
-    Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomainRef.attributes.descr=='{{ sd.description }}')].aaaDomainRef.attributes.descr   {{ sd.description | default() }}
-    Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomainRef.attributes.restrictedRbacDomain=='{{ sd.restricted_rbac_domain }}')].aaaDomainRef.attributes.restrictedRbacDomain   {% if sd.restricted_rbac_domain | default(defaults.apic.fabric_policies.aaa.security_domains.restricted_rbac_domain) == "true" %}yes{% else %}no{% endif %} 
+    Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomain.attributes.name=='{{ sd.name }}')].aaaDomain.attributes.name   {{ sd.name }}
+    Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomain.attributes.name=='{{ sd.name }}')].aaaDomain.attributes.descr   {{ sd.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomain.attributes.name=='{{ sd.name }}')].aaaDomain.attributes.restrictedRbacDomain   {% if sd.restricted_rbac_domain | default(defaults.apic.fabric_policies.aaa.security_domains.restricted_rbac_domain) == "true" %}yes{% else %}no{% endif %} 
 {% endfor %}
