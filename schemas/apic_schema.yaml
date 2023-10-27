@@ -506,6 +506,7 @@ fp_aaa:
   ca_certificates: list(include('fp_ca_certificate'), required=False)
   key_rings: list(include('fp_key_ring'), required=False)
   ldap: include('fp_aaa_ldap', required=False)
+  security_domains: list(include('fp_aaa_security_domains'), required=False)
 
 fp_aaa_tacacs_providers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
@@ -575,6 +576,11 @@ fp_aaa_login_domains_tacacs_providers:
 fp_aaa_login_domains_ldap_providers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
   priority: int(min=0, max=16, required=False)
+
+fp_aaa_security_domains:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  restricted_rbac_domain: bool(required=False)
 
 fp_ca_certificate:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

@@ -4,6 +4,18 @@
             "dn": "uni/userext"
         },
         "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for sd in apic.fabric_policies.aaa.security_domains | default([]) %}{{ comma1() }}
+            {
+                "aaaDomain":{
+                    "attributes": {
+                        "name": "{{ sd.name }}",
+                        "descr": "{{ sd.description }}"
+                        "restrictedRbacDomain": "{% if sd.restricted_rbac_domain == "true" %}yes{% else %}no{% endif %}"
+                    }
+                }
+            }
+            {%- endfor %}{{ comma1() }}
             {
                 "aaaAuthRealm": {
                     "attributes": {

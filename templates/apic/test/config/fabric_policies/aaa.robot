@@ -17,3 +17,11 @@ Verify AAA Settings
 {% if apic.fabric_policies.aaa.console_realm | default(defaults.apic.fabric_policies.aaa.console_realm) == "tacacs" %}
     Should Be Equal Value Json String   ${r.json()}    $..aaaConsoleAuth.attributes.providerGroup   {{ apic.fabric_policies.aaa.console_login_domain | default(defaults.apic.fabric_policies.aaa.console_login_domain) }}
 {% endif %}
+
+Verify AAA Security Domains
+    ${r}=   GET On Session   apic   /api/node/class/aaaDomain.json
+{% for sd in apic.fabric_policies.aaa.security_domains| default([]) %}
+    Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomainRef.attributes.name=='{{ sd.name }}')].aaaDomainRef.attributes.name   {{ sd.name }}
+    Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomainRef.attributes.descr=='{{ sd.description }}')].aaaDomainRef.attributes.descr   {{ sd.description }}
+    Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomainRef.attributes.restrictedRbacDomain=='{{ sd.restricted_rbac_domain }}')].aaaDomainRef.attributes.restrictedRbacDomain   {% if sd.restricted_rbac_domain == "true" %}yes{% else %}no{% endif %} 
+{% endfor %}
