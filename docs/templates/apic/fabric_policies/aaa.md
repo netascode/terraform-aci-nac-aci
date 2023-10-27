@@ -20,4 +20,7 @@ apic:
       default_realm: local
       console_realm: tacacs
       console_login_domain: tacacs
+      security_domains:
+        - name: SEC1
+          restricted_rbac_domain: true
 ```

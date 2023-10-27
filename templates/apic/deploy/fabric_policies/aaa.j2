@@ -10,8 +10,8 @@
                 "aaaDomain":{
                     "attributes": {
                         "name": "{{ sd.name }}",
-                        "descr": "{{ sd.description }}"
-                        "restrictedRbacDomain": "{% if sd.restricted_rbac_domain == "true" %}yes{% else %}no{% endif %}"
+                        "descr": "{{ sd.description | default() }}"
+                        "restrictedRbacDomain": "{% if sd.restricted_rbac_domain | default(defaults.apic.fabric_policies.aaa.security_domains.restricted_rbac_domain) == "true" %}yes{% else %}no{% endif %}"
                     }
                 }
             }

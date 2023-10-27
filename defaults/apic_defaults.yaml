@@ -224,6 +224,8 @@ defaults:
         default_fallback_check: false
         default_realm: local
         console_realm: local
+        security_domains:
+          restricted_rbac_domain: false
         tacacs_providers:
           protocol: pap
           monitoring: false
@@ -1019,7 +1021,7 @@ defaults:
           lsa_retransmit_interval: 5
           lsa_transmit_delay: 1
         ospf_timer_policies:
-          name_suffix: ''
+          name_suffix: ""
           reference_bandwidth: 40000
           distance: 110
           max_ecmp: 8
@@ -1036,7 +1038,7 @@ defaults:
           lsa_arrival_interval: 1000
           max_lsa_num: 20000
           max_lsa_threshold: 75
-          max_lsa_action: 'reject'
+          max_lsa_action: "reject"
           max_lsa_reset_interval: 10
           max_lsa_sleep_count: 5
           max_lsa_sleep_interval: 5

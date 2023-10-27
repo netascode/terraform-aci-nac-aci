@@ -1,10 +1,11 @@
 ---
 apic:
   fabric_policies:
-    security_domains:
-      - name: SEC1
-        restricted_rbac_domain: true
-      - name: SEC2
+    aaa:
+      security_domains:
+        - name: SEC1
+          restricted_rbac_domain: true
+        - name: SEC2
     vmware_vmm_domains:
       - name: VMM1
         access_mode: read-write
