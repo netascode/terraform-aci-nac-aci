@@ -349,7 +349,7 @@ defaults:
         port_mtu_size: 9000
       system_performance:
         admin_state: false
-        response_threshold: 8500
+        response_threshold: 85000
         top_slowest_requests: 5
         calculation_window: 300
 

@@ -844,7 +844,7 @@ fp_l2_mtu_policies:
 
 fp_system_performance:
   admin_state: bool(required=False)
-  response_threshold: int(min=40, max=8500, required=False)
+  response_threshold: int(min=40, max=85000, required=False)
   top_slowest_requests: int(min=1, max=10, required=False) # @description(top slowest in UI in API is topNRequests)
   calculation_window: int(min=30, max=300, required=False) # @description(frequency in UI calculation_window in API)
 
