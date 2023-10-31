@@ -2052,7 +2052,7 @@ ten_l3outs_nodes_static_routes:
 
 ten_l3outs_nodes_static_routes_next_hops:
   ip: ip()
-  preference: int(min=1, max=255, required=False)
+  preference: int(min=0, max=255, required=False)
   type: enum('prefix', 'none', required=False)
 
 ten_l3outs_nodes_interfaces:
@@ -2174,7 +2174,7 @@ ten_l3outs_node_profiles_nodes_static_routes:
 
 ten_l3outs_node_profiles_nodes_static_routes_next_hops:
   ip: ip()
-  preference: int(min=1, max=255, required=False)
+  preference: int(min=0, max=255, required=False)
   type: enum('prefix', 'none', required=False)
 
 ten_l3outs_node_profiles_interface_profiles:
