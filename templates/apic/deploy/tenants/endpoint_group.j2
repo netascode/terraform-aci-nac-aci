@@ -90,6 +90,7 @@
                                                 {% endif %}
                                                 "resImedcy": "{{ vmm.resolution_immediacy | default(defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.resolution_immediacy) }}",
                                                 "switchingMode": "native",
+                                                "customEpgName": "{{ vmm.custom_epg_name | default() }}",
                                                 "tDn": "uni/vmmp-VMware/dom-{{ vmm_name }}",
                                                 "childAction": "deleteNonPresent"
                                             },

@@ -446,7 +446,7 @@ fp_infra_dscp_translation_policy:
 fp_vmware_vmm_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   access_mode: enum('read-only', 'read-write', required=False)
-  delimiter: regex('^[^a-zA-Z0-9;>"-*`,-.;\[\]/\\\\{}:?\s&<]$', required=False)
+  delimiter: regex('^[|~!@^+=]$', required=False)
   tag_collection: any(bool(), enum('yes', 'no'), required=False)
   vlan_pool: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VMWare VMM Domain Sec Domain)
@@ -464,7 +464,7 @@ fp_vmware_vmm_domains_vswitch:
   mtu_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(vSwitch MTU Policy)
 
 fp_vmware_vmm_domains_vswitch_elag:
-  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  name: regex('^[a-zA-Z0-9_.:-]{1,16}$')
   mode: enum('active', 'passive', required=False)
   lb_mode: enum('dst-ip', 'dst-ip-l4port', 'dst-ip-vlan', 'dst-ip-l4port-vlan', 'dst-mac', 'dst-l4port', 'src-ip', 'src-ip-l4port', 'src-ip-vlan', 'src-ip-l4port-vlan', 'src-mac', 'src-l4port', 'src-dst-ip', 'src-dst-ip-l4port', 'src-dst-ip-vlan', 'src-dst-ip-l4port-vlan', 'src-dst-mac', 'src-dst-l4port', 'src-port-id', 'vlan', required=False)
   num_links: int(min=2, max=8, required=False)
@@ -1783,7 +1783,7 @@ ten_ap_endpoint_groups_static_endpoints:
 ten_ap_endpoint_groups_vmware_vmm_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   u_segmentation: any(bool(), enum('yes', 'no'), required=False)
-  delimiter: regex('^[^a-zA-Z0-9;>"-*`,-.;\[\]/\\\\{}:?\s&<]$', required=False)
+  delimiter: regex('^[|~!@^+=]$', required=False)
   vlan: int(min=1, max=4096, required=False)
   primary_vlan: int(min=1, max=4096, required=False)
   secondary_vlan: int(min=1, max=4096, required=False)
@@ -1793,9 +1793,10 @@ ten_ap_endpoint_groups_vmware_vmm_domains:
   allow_promiscuous: enum('reject', 'accept', required=False)
   forged_transmits: enum('reject', 'accept', required=False)
   mac_changes: enum('reject', 'accept', required=False)
-  elag: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  elag: regex('^[a-zA-Z0-9_.:-]{1,16}$', required=False)
   active_uplinks_order: regex('^(\d+(,\d+)*)?$', required=False)
   standby_uplinks: regex('^(\d+(,\d+)*)?$', required=False)
+  custom_epg_name: regex('^.{1,80}$', required=False)
 
 ten_ap_endpoint_groups_subnets:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)

@@ -56,6 +56,7 @@ Verify Endpoint Group {{ epg_name }} VMM Domain {{ vmm_name }}
 {% endif %}
     Should Be Equal Value Json String   ${r.json()}   ${conn}.attributes.resImedcy   {{ vmm.resolution_immediacy | default(defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.resolution_immediacy) }}
     Should Be Equal Value Json String   ${r.json()}   ${conn}.attributes.switchingMode   native
+    Should Be Equal Value Json String   ${r.json()}   ${conn}.attributes.customEpgName   {{ vmm.custom_epg_name | default() }}
     
     Should Be Equal Value Json String   ${r.json()}   ${conn}.children..vmmSecP.attributes.allowPromiscuous   {{ vmm.allow_promiscuous | default(defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.allow_promiscuous) }}
     Should Be Equal Value Json String   ${r.json()}   ${conn}.children..vmmSecP.attributes.forgedTransmits   {{ vmm.forged_transmits | default(defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.forged_transmits) }}
