@@ -218,7 +218,7 @@ Additional example repositories:
 | <a name="module_aci_igmp_snooping_policy"></a> [aci\_igmp\_snooping\_policy](#module\_aci\_igmp\_snooping\_policy) | netascode/igmp-snooping-policy/aci | 0.1.0 |
 | <a name="module_aci_imported_contract"></a> [aci\_imported\_contract](#module\_aci\_imported\_contract) | netascode/imported-contract/aci | 0.1.0 |
 | <a name="module_aci_inband_endpoint_group"></a> [aci\_inband\_endpoint\_group](#module\_aci\_inband\_endpoint\_group) | netascode/inband-endpoint-group/aci | 0.1.2 |
-| <a name="module_aci_inband_node_address"></a> [aci\_inband\_node\_address](#module\_aci\_inband\_node\_address) | netascode/inband-node-address/aci | 0.2.0 |
+| <a name="module_aci_inband_node_address"></a> [aci\_inband\_node\_address](#module\_aci\_inband\_node\_address) | netascode/inband-node-address/aci | 0.2.1 |
 | <a name="module_aci_infra_dscp_translation_policy"></a> [aci\_infra\_dscp\_translation\_policy](#module\_aci\_infra\_dscp\_translation\_policy) | netascode/infra-dscp-translation-policy/aci | 0.1.0 |
 | <a name="module_aci_interface_type"></a> [aci\_interface\_type](#module\_aci\_interface\_type) | netascode/interface-type/aci | 0.1.0 |
 | <a name="module_aci_ip_aging"></a> [aci\_ip\_aging](#module\_aci\_ip\_aging) | netascode/ip-aging/aci | 0.1.0 |
@@ -249,7 +249,7 @@ Additional example repositories:
 | <a name="module_aci_oob_contract"></a> [aci\_oob\_contract](#module\_aci\_oob\_contract) | netascode/oob-contract/aci | 0.2.0 |
 | <a name="module_aci_oob_endpoint_group"></a> [aci\_oob\_endpoint\_group](#module\_aci\_oob\_endpoint\_group) | netascode/oob-endpoint-group/aci | 0.1.1 |
 | <a name="module_aci_oob_external_management_instance"></a> [aci\_oob\_external\_management\_instance](#module\_aci\_oob\_external\_management\_instance) | netascode/oob-external-management-instance/aci | 0.1.0 |
-| <a name="module_aci_oob_node_address"></a> [aci\_oob\_node\_address](#module\_aci\_oob\_node\_address) | netascode/oob-node-address/aci | 0.1.3 |
+| <a name="module_aci_oob_node_address"></a> [aci\_oob\_node\_address](#module\_aci\_oob\_node\_address) | netascode/oob-node-address/aci | 0.1.4 |
 | <a name="module_aci_ospf_interface_policy"></a> [aci\_ospf\_interface\_policy](#module\_aci\_ospf\_interface\_policy) | netascode/ospf-interface-policy/aci | 0.1.0 |
 | <a name="module_aci_physical_domain"></a> [aci\_physical\_domain](#module\_aci\_physical\_domain) | netascode/physical-domain/aci | 0.1.1 |
 | <a name="module_aci_pim_policy"></a> [aci\_pim\_policy](#module\_aci\_pim\_policy) | netascode/pim-policy/aci | 0.1.2 |

@@ -56,22 +56,23 @@ module "aci_node_registration" {
 
 module "aci_inband_node_address" {
   source  = "netascode/inband-node-address/aci"
-  version = "0.2.0"
+  version = "0.2.1"
 
-  for_each            = { for node in try(local.node_policies.nodes, []) : node.id => node if(try(node.inb_address, null) != null || try(node.inb_v6_address, null) != null) && local.modules.aci_inband_node_address && var.manage_node_policies }
-  node_id             = each.value.id
-  pod_id              = try(each.value.pod, local.defaults.apic.node_policies.nodes.pod)
-  ip                  = try(each.value.inb_address, "")
-  gateway             = try(each.value.inb_gateway, "")
-  v6_ip               = try(each.value.inb_v6_address, "")
-  v6_gateway          = try(each.value.inb_v6_gateway, "")
-  endpoint_group      = try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
-  endpoint_group_vlan = [for epg in local.inband_endpoint_groups : epg.vlan if epg.name == try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)][0]
+  for_each       = { for node in try(local.node_policies.nodes, []) : node.id => node if(try(node.inb_address, null) != null || try(node.inb_v6_address, null) != null) && local.modules.aci_inband_node_address && var.manage_node_policies }
+  node_id        = each.value.id
+  pod_id         = try(each.value.pod, local.defaults.apic.node_policies.nodes.pod)
+  ip             = try(each.value.inb_address, "")
+  gateway        = try(each.value.inb_gateway, "")
+  v6_ip          = try(each.value.inb_v6_address, "")
+  v6_gateway     = try(each.value.inb_v6_gateway, "")
+  endpoint_group = try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
+
+  depends_on = [module.aci_inband_endpoint_group]
 }
 
 module "aci_oob_node_address" {
   source  = "netascode/oob-node-address/aci"
-  version = "0.1.3"
+  version = "0.1.4"
 
   for_each       = { for node in try(local.node_policies.nodes, []) : node.id => node if(try(node.oob_address, null) != null || try(node.oob_v6_address, null) != null) && local.modules.aci_oob_node_address && var.manage_node_policies }
   node_id        = each.value.id
@@ -81,4 +82,6 @@ module "aci_oob_node_address" {
   v6_ip          = try(each.value.oob_v6_address, "")
   v6_gateway     = try(each.value.oob_v6_gateway, "")
   endpoint_group = try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group)
+
+  depends_on = [module.aci_oob_endpoint_group]
 }

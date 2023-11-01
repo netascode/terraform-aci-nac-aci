@@ -22,6 +22,7 @@
 - Improve handling of quad-dotted notation OSPF area IDs
 - Fix PIM policy compatibility issue with ACI 6.0.x
 - Add support for VMware VMM domain security domains
+- Prevent creation of duplicate node management EPGs across multiple modules
 
 ## 0.7.0
 
