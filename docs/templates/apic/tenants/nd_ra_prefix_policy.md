@@ -3,7 +3,7 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `ND RA Prefix`
 
-{{ aac_doc }}
+{{ doc_gen }}
 
 ### Examples
 
