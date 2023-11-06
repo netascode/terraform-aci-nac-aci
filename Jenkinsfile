@@ -36,6 +36,7 @@ pipeline {
                         branch "master"
                     }
                     steps {
+                        build job: "/netascode/netascode/master", wait: false
                         sh 'pip install --upgrade mkdocs mkdocs-material'
                         sh 'python3 docs/aac-doc.py'
                         sh 'mkdocs build'
