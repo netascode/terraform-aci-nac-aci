@@ -826,7 +826,7 @@ locals {
 
 module "aci_l3out_node_profile_manual" {
   source  = "netascode/l3out-node-profile/aci"
-  version = "0.2.7"
+  version = "0.2.8"
 
   for_each    = { for np in local.node_profiles_manual : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
   tenant      = each.value.tenant
@@ -906,7 +906,7 @@ locals {
 
 module "aci_l3out_node_profile_auto" {
   source  = "netascode/l3out-node-profile/aci"
-  version = "0.2.7"
+  version = "0.2.8"
 
   for_each    = { for np in local.node_profiles_auto : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
   tenant      = each.value.tenant
@@ -1366,7 +1366,7 @@ locals {
 
 module "aci_sr_mpls_l3out_node_profile_manual" {
   source  = "netascode/l3out-node-profile/aci"
-  version = "0.2.7"
+  version = "0.2.8"
 
   for_each                 = { for np in local.sr_mpls_node_profiles_manual : np.key => np if try(local.modules.aci_sr_mpls_l3out_node_profile, true) && var.manage_tenants }
   tenant                   = each.value.tenant

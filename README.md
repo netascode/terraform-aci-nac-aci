@@ -229,8 +229,8 @@ Additional example repositories:
 | <a name="module_aci_l3out"></a> [aci\_l3out](#module\_aci\_l3out) | netascode/l3out/aci | 0.2.6 |
 | <a name="module_aci_l3out_interface_profile_auto"></a> [aci\_l3out\_interface\_profile\_auto](#module\_aci\_l3out\_interface\_profile\_auto) | netascode/l3out-interface-profile/aci | 0.2.11 |
 | <a name="module_aci_l3out_interface_profile_manual"></a> [aci\_l3out\_interface\_profile\_manual](#module\_aci\_l3out\_interface\_profile\_manual) | netascode/l3out-interface-profile/aci | 0.2.11 |
-| <a name="module_aci_l3out_node_profile_auto"></a> [aci\_l3out\_node\_profile\_auto](#module\_aci\_l3out\_node\_profile\_auto) | netascode/l3out-node-profile/aci | 0.2.7 |
-| <a name="module_aci_l3out_node_profile_manual"></a> [aci\_l3out\_node\_profile\_manual](#module\_aci\_l3out\_node\_profile\_manual) | netascode/l3out-node-profile/aci | 0.2.7 |
+| <a name="module_aci_l3out_node_profile_auto"></a> [aci\_l3out\_node\_profile\_auto](#module\_aci\_l3out\_node\_profile\_auto) | netascode/l3out-node-profile/aci | 0.2.8 |
+| <a name="module_aci_l3out_node_profile_manual"></a> [aci\_l3out\_node\_profile\_manual](#module\_aci\_l3out\_node\_profile\_manual) | netascode/l3out-node-profile/aci | 0.2.8 |
 | <a name="module_aci_l4l7_device"></a> [aci\_l4l7\_device](#module\_aci\_l4l7\_device) | netascode/l4l7-device/aci | 0.2.4 |
 | <a name="module_aci_ldap"></a> [aci\_ldap](#module\_aci\_ldap) | netascode/ldap/aci | 0.1.0 |
 | <a name="module_aci_link_level_policy"></a> [aci\_link\_level\_policy](#module\_aci\_link\_level\_policy) | netascode/link-level-policy/aci | 0.1.1 |
@@ -279,7 +279,7 @@ Additional example repositories:
 | <a name="module_aci_sr_mpls_external_endpoint_group"></a> [aci\_sr\_mpls\_external\_endpoint\_group](#module\_aci\_sr\_mpls\_external\_endpoint\_group) | netascode/external-endpoint-group/aci | 0.2.2 |
 | <a name="module_aci_sr_mpls_l3out"></a> [aci\_sr\_mpls\_l3out](#module\_aci\_sr\_mpls\_l3out) | netascode/l3out/aci | 0.2.5 |
 | <a name="module_aci_sr_mpls_l3out_interface_profile_manual"></a> [aci\_sr\_mpls\_l3out\_interface\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_interface\_profile\_manual) | netascode/l3out-interface-profile/aci | 0.2.10 |
-| <a name="module_aci_sr_mpls_l3out_node_profile_manual"></a> [aci\_sr\_mpls\_l3out\_node\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_node\_profile\_manual) | netascode/l3out-node-profile/aci | 0.2.7 |
+| <a name="module_aci_sr_mpls_l3out_node_profile_manual"></a> [aci\_sr\_mpls\_l3out\_node\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_node\_profile\_manual) | netascode/l3out-node-profile/aci | 0.2.8 |
 | <a name="module_aci_storm_control_policy"></a> [aci\_storm\_control\_policy](#module\_aci\_storm\_control\_policy) | netascode/storm-control-policy/aci | 0.1.0 |
 | <a name="module_aci_syslog_policy"></a> [aci\_syslog\_policy](#module\_aci\_syslog\_policy) | netascode/syslog-policy/aci | 0.2.1 |
 | <a name="module_aci_system_global_gipo"></a> [aci\_system\_global\_gipo](#module\_aci\_system\_global\_gipo) | netascode/system-global-gipo/aci | 0.1.0 |
