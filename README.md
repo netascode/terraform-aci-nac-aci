@@ -290,7 +290,7 @@ Additional example repositories:
 | <a name="module_aci_trust_control_policy"></a> [aci\_trust\_control\_policy](#module\_aci\_trust\_control\_policy) | netascode/trust-control-policy/aci | 0.1.0 |
 | <a name="module_aci_user"></a> [aci\_user](#module\_aci\_user) | netascode/user/aci | 0.2.1 |
 | <a name="module_aci_vlan_pool"></a> [aci\_vlan\_pool](#module\_aci\_vlan\_pool) | netascode/vlan-pool/aci | 0.2.2 |
-| <a name="module_aci_vmware_vmm_domain"></a> [aci\_vmware\_vmm\_domain](#module\_aci\_vmware\_vmm\_domain) | netascode/vmware-vmm-domain/aci | 0.2.6 |
+| <a name="module_aci_vmware_vmm_domain"></a> [aci\_vmware\_vmm\_domain](#module\_aci\_vmware\_vmm\_domain) | netascode/vmware-vmm-domain/aci | 0.2.7 |
 | <a name="module_aci_vpc_group"></a> [aci\_vpc\_group](#module\_aci\_vpc\_group) | netascode/vpc-group/aci | 0.2.0 |
 | <a name="module_aci_vpc_policy"></a> [aci\_vpc\_policy](#module\_aci\_vpc\_policy) | netascode/vpc-policy/aci | 0.1.0 |
 | <a name="module_aci_vrf"></a> [aci\_vrf](#module\_aci\_vrf) | netascode/vrf/aci | 0.2.4 |
