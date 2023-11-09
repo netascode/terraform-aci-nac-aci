@@ -791,7 +791,7 @@ fp_monitoring_callhomes_destinations:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   admin_state: bool(required=False)
   severity: enum('emergencies', 'alerts', 'critical', 'errors', 'warnings', 'notifications', 'information', 'debugging', required=False)
-  email: srt(required=False)
+  email: str(required=False)
   format: enum('aml', 'short-txt', 'xml', required=False)
   maximum_size: int(min=0, max=5000000, required=False)
   rfc_compliant: bool(required=False)
@@ -819,7 +819,7 @@ fp_monitoring_smart_callhomes:
 fp_monitoring_smart_callhomes_destinations:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   admin_state: bool(required=False)
-  email: srt(required=False)
+  email: str(required=False)
   format: enum('aml', 'short-txt', 'xml', required=False)
   rfc_compliant: bool(required=False)
 
