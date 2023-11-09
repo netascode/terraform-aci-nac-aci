@@ -1,11 +1,11 @@
 ---
-apic: include('apic', required=False)
+apic: include('apic', required=False) # @sheet_hidden()
 defaults: any(required=False)
 modules: any(required=False)
 ---
 apic:
   version: str(required=False)
-  bootstrap: include('bootstrap', required=False)
+  bootstrap: include('bootstrap', required=False) # @sheet_hidden()
   fabric_policies: include('fabric_policies', required=False)
   access_policies: include('access_policies', required=False)
   pod_policies: include('pod_policies', required=False)
@@ -20,13 +20,13 @@ apic:
   auto_generate_access_spine_switch_interface_profiles: any(bool(), enum('enabled', 'disabled'), required=False)
   nae_assurance_group: str(required=False)
   new_interface_configuration: bool(required=False)
-  expected_state: include('expected_state', required=False) # @no_external_doc() @name(APIC Expected State)
+  expected_state: include('expected_state', required=False) # @no_external_doc() @name(APIC Expected State) @sheet_hidden()
 
 bootstrap:
   admin_username: str(required=False)
   admin_password: str()
   snapshot_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  objects_to_delete: list(include('t_objects_to_delete'), required=False)
+  objects_to_delete: list(include('t_objects_to_delete'), required=False) # @sheet_hidden()
 
 t_objects_to_delete:
   name: str()
@@ -58,33 +58,33 @@ fabric_policies:
   fabric_isis_bfd: any(bool(), enum('enabled', 'disabled'), required=False)
   fabric_bgp_as: int(min=1, max=4294967295, required=False)
   fabric_bgp_rr: list(int(min=1, max=4000), required=False) # @name(Fabric BGP RR) @ref_name(Node ID)
-  fabric_bgp_ext_rr: list(int(min=1, max=4000), required=False) # @name(Fabric BGP Ext RR) @ref_name(Node ID)
+  fabric_bgp_ext_rr: list(int(min=1, max=4000), required=False) # @name(Fabric BGP Ext RR) @ref_name(Node ID) @sheet_hidden()
   date_time_format: include('fp_date_time_format', required=False)
   dns_policies: list(include('fp_dns_policy'), required=False) # @ref_name(DNS Policy)
   err_disabled_recovery: include('fp_err_disabled_recovery', required=False)
   pod_policies: include('fp_pod_policies', required=False) # @name(Fabric Pod Policies)
   pod_policy_groups: list(include('fp_pod_policy_groups'), required=False) # @name(Fabric Pod Policy Groups) @ref_name(Pod Policy Group)
-  pod_profiles: list(include('fp_pod_profiles'), required=False) # @name(Fabric Pod Profiles) @ref_name(Fabric Pod Profile)
+  pod_profiles: list(include('fp_pod_profiles'), required=False) # @name(Fabric Pod Profiles) @ref_name(Fabric Pod Profile) @sheet_hidden()
   switch_policies: include('fp_switch_policies', required=False) # @name(Fabric Switch Profiles)
   leaf_switch_policy_groups: list(include('fp_leaf_switch_policy_groups'), required=False) # @name(Fabric Leaf SW Policy Groups) @ref_name(Fabric Leaf Switch Policy Group)
   spine_switch_policy_groups: list(include('fp_spine_switch_policy_groups'), required=False) # @name(Fabric Spine SW Policy Groups) @ref_name(Fabric Spine Switch Policy Group)
-  leaf_switch_profiles: list(include('fp_leaf_switch_profiles'), required=False) # @name(Fabric Leaf SW Profiles) @ref_name(Fabric Leaf Switch Profile)
-  spine_switch_profiles: list(include('fp_spine_switch_profiles'), required=False) # @name(Fabric Spine SW Profiles) @ref_name(Fabric Spine Switch Profile)
-  leaf_interface_profiles: list(include('fp_leaf_interface_profiles'), required=False) # @name(Fabric Leaf Interface Profiles) @ref_name(Fabric Leaf Interface Profile)
-  spine_interface_profiles: list(include('fp_spine_interface_profiles'), required=False) # @name(Fabric Spine Interface Profiles) @ref_name(Fabric Spine Interface Profile)
-  external_connectivity_policy: include('fp_external_connectivity_policy', required=False)
-  infra_dscp_translation_policy: include('fp_infra_dscp_translation_policy', required=False)
+  leaf_switch_profiles: list(include('fp_leaf_switch_profiles'), required=False) # @name(Fabric Leaf SW Profiles) @ref_name(Fabric Leaf Switch Profile) @sheet_hidden()
+  spine_switch_profiles: list(include('fp_spine_switch_profiles'), required=False) # @name(Fabric Spine SW Profiles) @ref_name(Fabric Spine Switch Profile) @sheet_hidden()
+  leaf_interface_profiles: list(include('fp_leaf_interface_profiles'), required=False) # @name(Fabric Leaf Interface Profiles) @ref_name(Fabric Leaf Interface Profile) @sheet_hidden()
+  spine_interface_profiles: list(include('fp_spine_interface_profiles'), required=False) # @name(Fabric Spine Interface Profiles) @ref_name(Fabric Spine Interface Profile) @sheet_hidden()
+  external_connectivity_policy: include('fp_external_connectivity_policy', required=False) # @name(External Connectivity Policy) @sheet_hidden()
+  infra_dscp_translation_policy: include('fp_infra_dscp_translation_policy', required=False) # @name(Infra DSCP Translation Policy) @sheet_hidden()
   vmware_vmm_domains: list(include('fp_vmware_vmm_domains'), required=False) # @ref_name(VMware VMM Domain)
   aaa: include('fp_aaa', required=False)
-  geolocation: include('fp_geolocation', required=False)
+  geolocation: include('fp_geolocation', required=False) # @sheet_hidden()
   remote_locations: list(include('fp_remote_locations'), required=False) # @ref_name(Remote Location)
-  schedulers: list(include('fp_schedulers'), required=False) # @ref_name(Scheduler)
+  schedulers: list(include('fp_schedulers'), required=False) # @ref_name(Scheduler) @sheet_hidden()
   config_exports: list(include('fp_config_exports'), required=False) # @ref_name(Config Export)
   monitoring: include('fp_monitoring', required=False)
-  span: include('fp_span', required=False) # @name(Fabric SPAN)
+  span: include('fp_span', required=False) # @name(Fabric SPAN) @sheet_hidden()
   smart_licensing: include('fp_smart_licensing', required=False)
-  l2_mtu_policies: list(include('fp_l2_mtu_policies'), required=False)
-  system_performance: include('fp_system_performance', required=False) # @name (System Performance)
+  l2_mtu_policies: list(include('fp_l2_mtu_policies'), required=False) # @name(L2 MTU Policy) @sheet_hidden()
+  system_performance: include('fp_system_performance', required=False) # @name (System Performance) @sheet_hidden()
 
 fp_banners:
   apic_gui_alias: str(required=False)
@@ -156,7 +156,7 @@ fp_err_disabled_recovery:
 fp_pod_policies:
   date_time_policies: list(include('fp_date_time_policy'), required=False) # @ref_name(Date Time Policy)
   snmp_policies: list(include('fp_snmp_policy'), required=False) # @ref_name(SNMP Policy)
-  management_access_policies: list(include('fp_management_access_policy'), required=False)
+  management_access_policies: list(include('fp_management_access_policy'), required=False) # @name(Management Access Policy) @sheet_hidden()
 
 fp_date_time_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -166,8 +166,8 @@ fp_date_time_policy:
   apic_ntp_server_master_mode: any(bool(), enum('enabled', 'disabled'), required=False)
   apic_ntp_server_master_stratum: int(min=1, max=14, required=False)
   ntp_servers: list(include('fp_ntp_servers'), required=False)
-  ntp_keys: list(include('fp_ntp_keys'), required=False)
-  expected_state: include('fp_date_time_policy_expected_state', required=False) # @no_external_doc()  @ame(Date Time Policy Expected State)
+  ntp_keys: list(include('fp_ntp_keys'), required=False) # @name(NTP Keys) @sheet_hidden()
+  expected_state: include('fp_date_time_policy_expected_state', required=False) # @no_external_doc() @name(Date Time Policy Expected State) @sheet_hidden()
 
 fp_ntp_servers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
@@ -194,7 +194,7 @@ fp_snmp_policy:
   contact: str(min=0, max=255, required=False)
   users: list(include('fp_snmp_policy_user'), required=False) # @name(SNMP Users)
   communities: list(str(min=0, max=32), required=False) # @name(SNMP Communities) @ref_name(Community)
-  trap_forwarders: list(include('fp_snmp_policy_trap_forwarder'), required=False) # @name(SNMP Trap Forwarders)
+  trap_forwarders: list(include('fp_snmp_policy_trap_forwarder'), required=False) # @name(SNMP Trap Forwarders) @sheet_hidden()
   clients: list(include('fp_snmp_policy_client'), required=False) # @name(SNMP Clients) @ref_name(Client)
 
 fp_snmp_policy_user:
@@ -221,10 +221,10 @@ fp_management_access_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  ssh: include('fp_management_access_policy_ssh', required=False)
-  telnet: include('fp_management_access_policy_telnet', required=False)
-  https: include('fp_management_access_policy_https', required=False)
-  http: include('fp_management_access_policy_http', required=False)
+  ssh: include('fp_management_access_policy_ssh', required=False) # @sheet_hidden()
+  telnet: include('fp_management_access_policy_telnet', required=False) # @sheet_hidden()
+  https: include('fp_management_access_policy_https', required=False) # @sheet_hidden()
+  http: include('fp_management_access_policy_http', required=False) # @sheet_hidden()
 
 fp_management_access_policy_ssh:
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -280,14 +280,14 @@ fp_pod_policy_groups:
 
 fp_pod_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  selectors: list(include('fp_pod_profiles_selectors'), required=False) # @name(Fabric Pod Profile Selectors) @ref_name(Selector)
-  expected_state: include('fp_pod_profiles_expected_state', required=False) # @no_external_doc()  @name(Pod Profile Expected State)
+  selectors: list(include('fp_pod_profiles_selectors'), required=False) # @name(Fabric Pod Profile Selectors) @ref_name(Selector) @sheet_hidden()
+  expected_state: include('fp_pod_profiles_expected_state', required=False) # @no_external_doc() @name(Pod Profile Expected State) @sheet_hidden()
 
 fp_pod_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   type: enum('all', 'range', required=False)
-  pod_blocks: list(include('fp_pod_profiles_selectors_pod_blocks'), required=False) # @name(Fabric Pod Profile Sel Blocks) @ref_name(Block)
+  pod_blocks: list(include('fp_pod_profiles_selectors_pod_blocks'), required=False) # @name(Fabric Pod Profile Sel Blocks) @ref_name(Block) @sheet_hidden()
 
 fp_pod_profiles_selectors_pod_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -301,7 +301,7 @@ fp_pod_profiles_expected_state:
   maximum_minor_faults: int(min=0, required=False)
 
 fp_switch_policies:
-  psu_policies: list(include('fp_switch_policies_psu_policies'), required=False)
+  psu_policies: list(include('fp_switch_policies_psu_policies'), required=False) # @name(PSU Policies) @sheet_hidden()
   node_control_policies: list(include('fp_switch_policies_node_control_policies'), required=False)
 
 fp_switch_policies_psu_policies:
@@ -315,7 +315,7 @@ fp_switch_policies_node_control_policies:
 
 fp_leaf_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  expected_state: include('fp_leaf_interface_profiles_expected_state', required=False) # @no_external_doc()  @name(Leaf Int Profile Expected State)
+  expected_state: include('fp_leaf_interface_profiles_expected_state', required=False) # @no_external_doc()  @name(Leaf Int Profile Expected State) @sheet_hidden()
 
 fp_leaf_interface_profiles_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -325,12 +325,12 @@ fp_leaf_interface_profiles_expected_state:
 
 fp_spine_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  selectors: list(include('fp_spine_interface_profiles_selectors'), required=False) # @name(Fabric Spine Int Prof Selectors) @ref_name(Selector)
-  expected_state: include('fp_spine_interface_profiles_expected_state', required=False) # @no_external_doc() @name(Spine Int Prof Expected State)
+  selectors: list(include('fp_spine_interface_profiles_selectors'), required=False) # @name(Fabric Spine Int Prof Selectors) @ref_name(Selector) @sheet_hidden()
+  expected_state: include('fp_spine_interface_profiles_expected_state', required=False) # @no_external_doc() @name(Spine Int Prof Expected State) @sheet_hidden()
 
 fp_spine_interface_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  port_blocks: list(include('fp_spine_interface_profiles_selectors_port_blocks'), required=False) # @name(Fabric Spine Int Prof Sel Block) @ref_name(Port Block)
+  port_blocks: list(include('fp_spine_interface_profiles_selectors_port_blocks'), required=False) # @name(Fabric Spine Int Prof Sel Block) @ref_name(Port Block) @sheet_hidden()
 
 fp_spine_interface_profiles_selectors_port_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -358,14 +358,14 @@ fp_leaf_switch_policy_groups:
 
 fp_leaf_switch_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  selectors: list(include('fp_leaf_switch_profiles_selectors'), required=False) # @name(Fabric Leaf SW Prof Selectors) @ref_name(Selector)
-  interface_profiles: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Fabric Leaf SW Prof Int Profs) @ref_name(Interface Profile)
-  expected_state: include('fp_leaf_switch_profiles_expected_state', required=False) # @no_external_doc() @name(Leaf Sw Profile Expected State)
+  selectors: list(include('fp_leaf_switch_profiles_selectors'), required=False) # @name(Fabric Leaf SW Prof Selectors) @ref_name(Selector) @sheet_hidden()
+  interface_profiles: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Fabric Leaf SW Prof Int Profs) @ref_name(Interface Profile) @sheet_hidden()
+  expected_state: include('fp_leaf_switch_profiles_expected_state', required=False) # @no_external_doc() @name(Leaf Sw Profile Expected State) @sheet_hidden()
 
 fp_leaf_switch_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  node_blocks: list(include('fp_leaf_switch_profiles_selectors_node_blocks'), required=False) # @name(Fabric Leaf SW Prof Sel Blocks) @ref_name(Node Block)
+  node_blocks: list(include('fp_leaf_switch_profiles_selectors_node_blocks'), required=False) # @name(Fabric Leaf SW Prof Sel Blocks) @ref_name(Node Block) @sheet_hidden()
 
 fp_leaf_switch_profiles_selectors_node_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -391,14 +391,14 @@ fp_spine_switch_policy_groups:
 
 fp_spine_switch_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  selectors: list(include('fp_spine_switch_profiles_selectors'), required=False) # @name(Fabric Spine SW Pro Selectors) @ref_name(Selector)
-  interface_profiles: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Fabric Spine SW Prof Int Profs) @ref_name(Interface Profile)
-  expected_state: include('fp_spine_switch_profiles_expected_state', required=False) # @no_external_doc() @name(Spine Sw Profile Expected State)
+  selectors: list(include('fp_spine_switch_profiles_selectors'), required=False) # @name(Fabric Spine SW Pro Selectors) @ref_name(Selector) @sheet_hidden()
+  interface_profiles: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Fabric Spine SW Prof Int Profs) @ref_name(Interface Profile) @sheet_hidden()
+  expected_state: include('fp_spine_switch_profiles_expected_state', required=False) # @no_external_doc() @name(Spine Sw Profile Expected State) @sheet_hidden()
 
 fp_spine_switch_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  node_blocks: list(include('fp_spine_switch_profiles_selectors_node_blocks'), required=False) # @name(Fabric Spine SW Prof Sel Blocks) @ref_name(Node Block)
+  node_blocks: list(include('fp_spine_switch_profiles_selectors_node_blocks'), required=False) # @name(Fabric Spine SW Prof Sel Blocks) @ref_name(Node Block) @sheet_hidden()
 
 fp_spine_switch_profiles_selectors_node_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -417,13 +417,13 @@ fp_external_connectivity_policy:
   site_id: int(min=0, max=1000, required=False)
   bgp_password: str(required=False)
   route_target: str(required=False)
-  routing_profiles: list(include('fp_external_connectivity_policy_routing_profiles'), required=False) # @name(External Conn Policy Subnets)
-  expected_state: include('fp_external_connectivity_policy_expected_state', required=False) # @no_external_doc() @name(Ext Conn Policy Expected State)
+  routing_profiles: list(include('fp_external_connectivity_policy_routing_profiles'), required=False) # @name(External Conn Policy Subnets) @sheet_hidden()
+  expected_state: include('fp_external_connectivity_policy_expected_state', required=False) # @no_external_doc() @name(Ext Conn Policy Expected State) @sheet_hidden()
 
 fp_external_connectivity_policy_routing_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  subnets: list (ip(), required=False)
+  subnets: list (ip(), required=False) # @sheet_hidden()
 
 fp_external_connectivity_policy_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -455,7 +455,7 @@ fp_vmware_vmm_domains:
   credential_policies: list(include('fp_vmware_vmm_domains_credential_policies'), required=False) # @name(VMware VMM Dom Cred Policies)
   vcenters: list(include('fp_vmware_vmm_domains_vcenters'), required=False) # @name(VMware VMM vCenters)
   uplinks: list(include('fp_vmware_vmm_domains_uplinks'), required=False) # @name(VMware VMM Uplinks)
-  expected_state: include('fp_vmware_vmm_domains_expected_state', required=False) # @no_external_doc() @name(VMW VMM Domain Expected State)
+  expected_state: include('fp_vmware_vmm_domains_expected_state', required=False) # @no_external_doc() @name(VMW VMM Domain Expected State) @sheet_hidden()
 
 fp_vmware_vmm_domains_vswitch:
   cdp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(vSwitch CDP Policy)
@@ -502,12 +502,12 @@ fp_aaa:
   console_realm: enum('local', 'tacacs', 'ldap', required=False)
   console_login_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   tacacs_providers: list(include('fp_aaa_tacacs_providers'), required=False)
-  users: list(include('fp_aaa_users'), required=False) # @ref_name(User) @key(username)
+  users: list(include('fp_aaa_users'), required=False) # @ref_name(User) @key(username) @sheet_hidden()
   login_domains: list(include('fp_aaa_login_domains'), required=False) # @ref_name(Login Domain)
-  ca_certificates: list(include('fp_ca_certificate'), required=False)
-  key_rings: list(include('fp_key_ring'), required=False)
-  ldap: include('fp_aaa_ldap', required=False)
-  security_domains: list(include('fp_aaa_security_domains'), required=False)
+  ca_certificates: list(include('fp_ca_certificate'), required=False) # @name(CA Certificate) @sheet_hidden()
+  key_rings: list(include('fp_key_ring'), required=False) # @name(Keyring) @sheet_hidden()
+  ldap: include('fp_aaa_ldap', required=False) # @name(LDAP) @sheet_hidden()
+  security_domains: list(include('fp_aaa_security_domains'), required=False) # @sheet_hidden()
 
 fp_aaa_tacacs_providers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
@@ -521,7 +521,7 @@ fp_aaa_tacacs_providers:
   monitoring: any(bool(), enum('enabled', 'disabled'), required=False)
   monitoring_username: regex('^[a-zA-Z0-9][a-zA-Z0-9_.@-]{0,31}$', required=False)
   monitoring_password: str(required=False)
-  expected_state: include('fp_aaa_tacacs_providers_expected_state', required=False) # @no_external_doc() @name(Tacacs Provider Expected State)
+  expected_state: include('fp_aaa_tacacs_providers_expected_state', required=False) # @no_external_doc() @name(Tacacs Provider Expected State) @sheet_hidden()
 
 fp_aaa_tacacs_providers_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -541,13 +541,13 @@ fp_aaa_users:
   status: enum('active', 'inactive', 'blocked', required=False)
   expires: any(bool(), enum('yes', 'no'), required=False)
   expire_date: any(enum('never'), timestamp(), required=False)
-  domains: list(include('fp_aaa_users_domains'), required=False) # @name(User Domains) @ref_name(Domain)
-  certificates: list(include('fp_aaa_users_certificates'), required=False) # @name(User Certificates)
-  ssh_keys: list(include('fp_aaa_users_ssh_keys'), required=False) # @name(User SSH Keys)
+  domains: list(include('fp_aaa_users_domains'), required=False) # @name(User Domains) @ref_name(Domain) @sheet_hidden()
+  certificates: list(include('fp_aaa_users_certificates'), required=False) # @name(User Certificates) @sheet_hidden()
+  ssh_keys: list(include('fp_aaa_users_ssh_keys'), required=False) # @name(User SSH Keys) @sheet_hidden()
 
 fp_aaa_users_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  roles: list(include('fp_aaa_users_domains_roles'), required=False) # @name(User Domain Roles) @ref_name(Role)
+  roles: list(include('fp_aaa_users_domains_roles'), required=False) # @name(User Domain Roles) @ref_name(Role) @sheet_hidden()
 
 fp_aaa_users_domains_roles:
   name: regex('^[a-zA-Z0-9_.-]{1,31}$')
@@ -568,7 +568,7 @@ fp_aaa_login_domains:
   auth_choice: enum('CiscoAVPair', 'LdapGroupMap', required=False)
   ldap_group_map: regex('^[a-zA-Z0-9_.:-]{1,31}$', required=False)
   tacacs_providers: list(include('fp_aaa_login_domains_tacacs_providers'), required=False) # @name(Login Domain TACACS Providers)
-  ldap_providers: list(include('fp_aaa_login_domains_ldap_providers'), required=False) # @name(Login Domain LDAP Providers)
+  ldap_providers: list(include('fp_aaa_login_domains_ldap_providers'), required=False) # @name(Login Domain LDAP Providers) @sheet_hidden()
 
 fp_aaa_login_domains_tacacs_providers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
@@ -597,9 +597,9 @@ fp_key_ring:
   private_key: regex('^[a-zA-Z0-9=\n\r/+ _.@-]{1,16384}$', required=False)
 
 fp_aaa_ldap:
-  providers: list(include('fp_aa_ldap_providers'), required=False) # @name(LDAP Providers)
-  group_map_rules: list(include('fp_aa_ldap_group_map_rules'), required=False) # @name(LDAP Group Map Rules)
-  group_maps: list(include('fp_aa_ldap_group_maps'), required=False) # @name(LDAP Group Maps)
+  providers: list(include('fp_aa_ldap_providers'), required=False) # @name(LDAP Providers) @sheet_hidden()
+  group_map_rules: list(include('fp_aa_ldap_group_map_rules'), required=False) # @name(LDAP Group Map Rule) @sheet_hidden()
+  group_maps: list(include('fp_aa_ldap_group_maps'), required=False) # @name(LDAP Group Maps) @sheet_hidden()
 
 fp_aa_ldap_providers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
@@ -623,11 +623,11 @@ fp_aa_ldap_group_map_rules:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   group_dn: str(required=False)
-  security_domains: list(include('fp_aa_ldap_group_map_rules_security_domains'), required=False) # @name(LDAP Gr Map Rules Sec Domains)
+  security_domains: list(include('fp_aa_ldap_group_map_rules_security_domains'), required=False) # @name(LDAP Gr Map Rules Sec Domains) @sheet_hidden()
 
 fp_aa_ldap_group_map_rules_security_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,31}$')
-  roles: list(include('fp_aa_ldap_group_map_rules_security_domains_roles'), required=False)
+  roles: list(include('fp_aa_ldap_group_map_rules_security_domains_roles'), required=False) # @name(LDAP Gr Map Rules Sec Dom Roles) @sheet_hidden()
 
 fp_aa_ldap_group_map_rules_security_domains_roles:
   name: regex('^[a-zA-Z0-9_.-]{1,31}$')
@@ -635,43 +635,43 @@ fp_aa_ldap_group_map_rules_security_domains_roles:
 
 fp_aa_ldap_group_maps:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  rules: list(include('fp_aa_ldap_group_maps_rules'), required=False)
+  rules: list(include('fp_aa_ldap_group_maps_rules'), required=False) # @name(LDAP Group Map Rules) @sheet_hidden()
 
 fp_aa_ldap_group_maps_rules:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
 
 fp_geolocation:
-  sites: list(include('fp_geolocation_sites'), required=False) # @name(Geolocation Sites) @ref_name(Site)
+  sites: list(include('fp_geolocation_sites'), required=False) # @name(Geolocation Sites) @ref_name(Site) @sheet_hidden()
 
 fp_geolocation_sites:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  buildings: list(include('fp_geolocation_sites_buildings'), required=False) # @name(Geolocation Buildings) @ref_name(Building)
+  buildings: list(include('fp_geolocation_sites_buildings'), required=False) # @name(Geolocation Buildings) @ref_name(Building) @sheet_hidden()
 
 fp_geolocation_sites_buildings:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  floors: list(include('fp_geolocation_sites_buildings_floors'), required=False) # @name(Geolocation Floors) @ref_name(Floor)
+  floors: list(include('fp_geolocation_sites_buildings_floors'), required=False) # @name(Geolocation Floors) @ref_name(Floor) @sheet_hidden()
 
 fp_geolocation_sites_buildings_floors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  rooms: list(include('fp_geolocation_sites_buildings_floors_rooms'), required=False) # @name(Geolocation Rooms) @ref_name(Room)
+  rooms: list(include('fp_geolocation_sites_buildings_floors_rooms'), required=False) # @name(Geolocation Rooms) @ref_name(Room) @sheet_hidden()
 
 fp_geolocation_sites_buildings_floors_rooms:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  rows: list(include('fp_geolocation_sites_buildings_floors_rooms_rows'), required=False) # @name(Geolocation Rows) @ref_name(Row)
+  rows: list(include('fp_geolocation_sites_buildings_floors_rooms_rows'), required=False) # @name(Geolocation Rows) @ref_name(Row) @sheet_hidden()
 
 fp_geolocation_sites_buildings_floors_rooms_rows:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  racks: list(include('fp_geolocation_sites_buildings_floors_rooms_rows_racks'), required=False) # @name(Geolocation Racks) @ref_name(Rack)
+  racks: list(include('fp_geolocation_sites_buildings_floors_rooms_rows_racks'), required=False) # @name(Geolocation Racks) @ref_name(Rack) @sheet_hidden()
 
 fp_geolocation_sites_buildings_floors_rooms_rows_racks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  nodes: list(int(min=1, max=4000), required=False) # @name(Geolocation Nodes) @ref_name(Node ID)
+  nodes: list(int(min=1, max=4000), required=False) # @name(Geolocation Nodes) @ref_name(Node ID) @sheet_hidden()
 
 fp_remote_locations:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -687,7 +687,7 @@ fp_remote_locations:
   ssh_private_key: str(required=False)
   ssh_passphrase: str(min=1, max=512, required=False)
   mgmt_epg: enum('inb', 'oob', required=False)
-  expected_state: include('fp_remote_locations_expected_state', required=False) # @no_external_doc() @name(Remote Location Expected State)
+  expected_state: include('fp_remote_locations_expected_state', required=False) # @no_external_doc() @name(Remote Location Expected State) @sheet_hidden()
 
 fp_remote_locations_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -698,7 +698,7 @@ fp_remote_locations_expected_state:
 fp_schedulers:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  recurring_windows: list(include('fp_schedulers_recurring_windows'), required=False) # @name(Scheduler Recurring Windows)
+  recurring_windows: list(include('fp_schedulers_recurring_windows'), required=False) # @name(Scheduler Recurring Windows) @sheet_hidden()
 
 fp_schedulers_recurring_windows:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -713,7 +713,7 @@ fp_config_exports:
   remote_location: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   scheduler: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   snapshot: any(bool(), enum('yes', 'no'), required=False)
-  expected_state: include('fp_config_exports_expected_state', required=False) # @no_external_doc() @name(Config Export Expected State)
+  expected_state: include('fp_config_exports_expected_state', required=False) # @no_external_doc() @name(Config Export Expected State) @sheet_hidden()
 
 fp_config_exports_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -724,9 +724,9 @@ fp_config_exports_expected_state:
 fp_monitoring:
   snmp_traps: list(include('fp_monitoring_snmp_traps'), required=False) # @ref_name(SNMP Trap)
   syslogs: list(include('fp_monitoring_syslogs'), required=False) # @ref_name(Syslog)
-  callhomes: list(include('fp_monitoring_callhomes'), required=False) # @ref_name(Callhome) @no_doc()
-  smart_callhomes: list(include('fp_monitoring_smart_callhomes'), required=False) # @ref_name(Smart Callhome) @no_doc()
-  policies: list(include('fp_monitoring_policies'), required=False) # @no_doc()
+  callhomes: list(include('fp_monitoring_callhomes'), required=False) # @ref_name(Callhome) @no_doc() @sheet_hidden()
+  smart_callhomes: list(include('fp_monitoring_smart_callhomes'), required=False) # @ref_name(Smart Callhome) @no_doc() @sheet_hidden()
+  policies: list(include('fp_monitoring_policies'), required=False) # @no_doc() @sheet_hidden()
 
 fp_monitoring_snmp_traps:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -828,16 +828,16 @@ fp_monitoring_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
 
 fp_span:
-  source_groups: list(include('fp_span_source_groups'), required=False) # @name(Fabric SPAN Source Groups) @ref_name(Fabric SPAN Source Group)
-  destination_groups: list(include('fp_span_destination_groups'), required=False) # @name(Fabric SPAN Destination Groups)
+  source_groups: list(include('fp_span_source_groups'), required=False) # @name(Fabric SPAN Source Groups) @ref_name(Fabric SPAN Source Group) @sheet_hidden()
+  destination_groups: list(include('fp_span_destination_groups'), required=False) # @name(Fabric SPAN Destination Groups) @sheet_hidden()
 
 fp_span_source_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
-  sources: list(include('fp_span_source_groups_sources'), required=False) # @name(Fabric SPAN SG Sources) @ref_name(Fabric SPAN Source Group Source)
-  destination: include('fp_span_source_groups_destination') # @name(Fabric SPAN SG Destinations)
-  expected_state: include('fp_span_source_groups_expected_state', required=False) # @no_external_doc() @name(Fabric SPAN SG Expected State)
+  sources: list(include('fp_span_source_groups_sources'), required=False) # @name(Fabric SPAN SG Sources) @ref_name(Fabric SPAN Source Group Source) @sheet_hidden()
+  destination: include('fp_span_source_groups_destination') # @name(Fabric SPAN SG Destinations) @sheet_hidden()
+  expected_state: include('fp_span_source_groups_expected_state', required=False) # @no_external_doc() @name(Fabric SPAN SG Expected State) @sheet_hidden()
 
 fp_span_source_groups_destination:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -851,7 +851,7 @@ fp_span_source_groups_sources:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   bridge_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  fabric_paths: list(include('fp_span_source_groups_sources_access_paths'), required=False) # @name(Fabric SPAN SG Sources Paths)
+  fabric_paths: list(include('fp_span_source_groups_sources_access_paths'), required=False) # @name(Fabric SPAN SG Sources Paths) @sheet_hidden()
 
 fp_span_source_groups_sources_access_paths:
   node_id: int(min=1, max=4000)
@@ -879,7 +879,7 @@ fp_span_destination_groups:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  expected_state: include('fp_span_destination_groups_expected_state', required=False) # @no_external_doc() @name(Fabric SPAN DG Expected State)
+  expected_state: include('fp_span_destination_groups_expected_state', required=False) # @no_external_doc() @name(Fabric SPAN DG Expected State) @sheet_hidden()
 
 fp_span_destination_groups_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -891,7 +891,7 @@ fp_smart_licensing:
   mode: enum('cslu', 'smart-licensing', 'offline', 'plr', 'proxy', 'satellite', 'transport-gateway', required=False)
   registration_token: str(min=1, max=512, required=False)
   url: str(min=1, max=512, required=False)
-  proxy: include('fp_smart_licensing_proxy', required=False)
+  proxy: include('fp_smart_licensing_proxy', required=False) # @flatten()
 
 fp_smart_licensing_proxy:
   hostname_ip: any(regex('^[a-zA-Z0-9:\[][a-zA-Z0-9.:-\]]{0,254}$'), ip(), required=False)
@@ -928,18 +928,18 @@ access_policies:
   switch_policies: include('ap_switch_policies', required=False)
   spine_switch_policy_groups: list(include('ap_spine_switch_policy_groups'), required=False)
   leaf_switch_policy_groups: list(include('ap_leaf_switch_policy_groups'), required=False) # @name(Access Leaf Switch Policy Group)
-  leaf_switch_profiles: list(include('ap_leaf_switch_profiles'), required=False) # @name(Access Leaf Switch Profile) @ref_name(Leaf Switch Profile)
-  spine_switch_profiles: list(include('ap_spine_switch_profiles'), required=False) # @name(Access Spine Switch Profile) @ref_name(Spine Switch Profile)
+  leaf_switch_profiles: list(include('ap_leaf_switch_profiles'), required=False) # @name(Access Leaf Switch Profile) @ref_name(Leaf Switch Profile) @sheet_hidden()
+  spine_switch_profiles: list(include('ap_spine_switch_profiles'), required=False) # @name(Access Spine Switch Profile) @ref_name(Spine Switch Profile) @sheet_hidden()
   interface_policies: include('ap_interface_policies', required=False)
   leaf_interface_policy_groups: list(include('ap_leaf_interface_policy_group'), required=False) # @name(Access Leaf Int Policy Group)
   spine_interface_policy_groups: list(include('ap_spine_interface_policy_group'), required=False) # @name(Access Spine Int Policy Group)
-  leaf_interface_profiles: list(include('ap_leaf_interface_profiles'), required=False) # @name(Access Leaf Interface Profile) @ref_name(Leaf Interface Profile)
-  fex_interface_profiles: list(include('ap_fex_interface_profiles'), required=False) # @name(Access FEX Interface Profile) @ref_name(FEX Interface Profile)
-  spine_interface_profiles: list(include('ap_spine_interface_profiles'), required=False) # @name(Access Spine Interface Profile) @ref_name(Spine Interface Profile)
+  leaf_interface_profiles: list(include('ap_leaf_interface_profiles'), required=False) # @name(Access Leaf Interface Profile) @ref_name(Leaf Interface Profile) @sheet_hidden()
+  fex_interface_profiles: list(include('ap_fex_interface_profiles'), required=False) # @name(Access FEX Interface Profile) @ref_name(FEX Interface Profile) @sheet_hidden()
+  spine_interface_profiles: list(include('ap_spine_interface_profiles'), required=False) # @name(Access Spine Interface Profile) @ref_name(Spine Interface Profile) @sheet_hidden()
   mcp: include('ap_mcp', required=False)
-  qos: include('ap_qos', required=False)
-  span: include('ap_span', required=False)
-  vspan: include('ap_vspan', required=False)
+  qos: include('ap_qos', required=False) # @sheet_hidden()
+  span: include('ap_span', required=False) # @sheet_hidden()
+  vspan: include('ap_vspan', required=False) # @sheet_hidden()
 
 ap_vlan_pool:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -957,8 +957,8 @@ ap_vlan_pool_range:
 ap_physical_domain:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   vlan_pool: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  expected_state: include('ap_physical_domain_expected_state', required=False) # @no_external_doc() @name(Physical Domain Expected State)
-  security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Physical Domain Sec Domain)
+  expected_state: include('ap_physical_domain_expected_state', required=False) # @no_external_doc() @name(Physical Domain Expected State) @sheet_hidden()
+  security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Physical Domain Sec Domain) @sheet_hidden()
 
 ap_physical_domain_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -969,8 +969,8 @@ ap_physical_domain_expected_state:
 ap_routed_domain:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   vlan_pool: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  expected_state: include('ap_routed_domain_expected_state', required=False) # @no_external_doc() @name(Routed Domain Expected State)
-  security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Routed Domain Sec Domain)
+  expected_state: include('ap_routed_domain_expected_state', required=False) # @no_external_doc() @name(Routed Domain Expected State) @sheet_hidden()
+  security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Routed Domain Sec Domain) @sheet_hidden()
 
 ap_routed_domain_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -983,9 +983,9 @@ ap_aaep:
   infra_vlan: any(bool(), enum('enabled', 'disabled'), required=False)
   physical_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(AAEP Physical Domains) @ref_name(Physical Domain)
   routed_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(AAEP Routed Domains) @ref_name(Routed Domain)
-  vmware_vmm_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(AAEP VMware VMM Domains) @ref_name(VMware VMM Domain)
-  endpoint_groups: list(include('ap_aaep_endpoint_groups'), required=False) # @name(AAEP Endpoint Groups)
-  expected_state: include('ap_aaep_expected_state', required=False) # @no_external_doc() @name(AAEP Expected State)
+  vmware_vmm_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(AAEP VMware VMM Domains) @ref_name(VMware VMM Domain) @sheet_hidden()
+  endpoint_groups: list(include('ap_aaep_endpoint_groups'), required=False) # @name(AAEP Endpoint Groups) @sheet_hidden()
+  expected_state: include('ap_aaep_expected_state', required=False) # @no_external_doc() @name(AAEP Expected State) @sheet_hidden()
 
 ap_aaep_endpoint_groups:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1015,7 +1015,7 @@ ap_mcp:
 
 ap_qos:
   preserve_cos: any(bool(), enum('enabled', 'disabled'), required=False)
-  qos_classes: list(include('ap_qos_class'), required=False)
+  qos_classes: list(include('ap_qos_class'), required=False) # @sheet_hidden()
 
 ap_qos_class:
   level: int(min=1, max=6)
@@ -1036,9 +1036,9 @@ ap_qos_class:
   weight: int(min=0, max=7, required=False)
 
 ap_span:
-  destination_groups: list(include('ap_span_destination_groups'), required=False) # @name(Access SPAN Destination Groups) @ref_name(Destination Group)
-  source_groups: list(include('ap_span_source_groups'), required=False) # @name(Access SPAN Source Groups) @ref_name(Source Group)
-  filter_groups: list(include('ap_span_filter_groups'), required=False) # @name(Access SPAN Filter Groups) @ref_name(Filter Group)
+  destination_groups: list(include('ap_span_destination_groups'), required=False) # @name(Access SPAN Destination Groups) @ref_name(Destination Group) @sheet_hidden()
+  source_groups: list(include('ap_span_source_groups'), required=False) # @name(Access SPAN Source Groups) @ref_name(Source Group) @sheet_hidden()
+  filter_groups: list(include('ap_span_filter_groups'), required=False) # @name(Access SPAN Filter Groups) @ref_name(Filter Group) @sheet_hidden()
 
 ap_span_destination_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1060,7 +1060,7 @@ ap_span_destination_groups:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  expected_state: include('ap_span_destination_groups_expected_state', required=False) # @no_external_doc() @name(Access SPAN DG Expected State)
+  expected_state: include('ap_span_destination_groups_expected_state', required=False) # @no_external_doc() @name(Access SPAN DG Expected State) @sheet_hidden()
 
 ap_span_destination_groups_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -1072,10 +1072,10 @@ ap_span_source_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
-  sources: list(include('ap_span_source_groups_sources'), required=False) # @name(Access SPAN SG Sources) @ref_name(Source Group Source)
+  sources: list(include('ap_span_source_groups_sources'), required=False) # @name(Access SPAN SG Sources) @ref_name(Source Group Source) @sheet_hidden()
   destination: include('ap_span_source_groups_destination') # @flatten()
   filter_group: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  expected_state: include('ap_span_source_groups_expected_state', required=False) # @no_external_doc() @name(Access SPAN SG Expected State)
+  expected_state: include('ap_span_source_groups_expected_state', required=False) # @no_external_doc() @name(Access SPAN SG Expected State) @sheet_hidden()
 
 ap_span_source_groups_destination:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(Destination Name)
@@ -1091,7 +1091,7 @@ ap_span_source_groups_sources:
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   l3out: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   vlan: int(min=1, max=4096, required=False)
-  access_paths: list(include('ap_span_source_groups_sources_access_paths'), required=False) # @name(Access SPAN SG Source Paths)
+  access_paths: list(include('ap_span_source_groups_sources_access_paths'), required=False) # @name(Access SPAN SG Source Paths) @sheet_hidden()
 
 ap_span_source_groups_sources_access_paths:
   node_id: int(min=1, max=4000, required=False)
@@ -1113,7 +1113,7 @@ ap_span_source_groups_expected_state:
 ap_span_filter_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  entries: list(include('ap_span_filter_groups_entries'), required=False) # @name(Access SPAN FG Entries)
+  entries: list(include('ap_span_filter_groups_entries'), required=False) # @name(Access SPAN FG Entries) @sheet_hidden()
 
 ap_span_filter_groups_entries:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1126,22 +1126,22 @@ ap_span_filter_groups_entries:
   ip_protocol: any(int(min=0, max=255), enum('unspecified', 'icmp', 'igmp', 'tcp', 'egp', 'igp', 'udp', 'icmpv6', 'eigrp', 'ospfigp', 'pim', 'l2tp'), required=False)
 
 ap_vspan:
-  sessions: list(include('ap_vspan_sessions'), required=False)
-  destination_groups: list(include('ap_vspan_destination_groups'), required=False)
+  sessions: list(include('ap_vspan_sessions'), required=False) # @name(VSPAN Sessions) @ref_name(VSPAN Session) @sheet_hidden()
+  destination_groups: list(include('ap_vspan_destination_groups'), required=False) # @name(VSPAN Destination Group) @ref_name(VSPAN Destination Group) @sheet_hidden()
 
 ap_vspan_sessions:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
-  sources: list(include('ap_vspan_sessions_sources'), required=False)
-  destination: include('ap_vspan_sessions_destination')
-  expected_state: include('ap_vspan_sessions_expected_state', required=False) # @no_external_doc() @name(VSPAN Session Expected State)
+  sources: list(include('ap_vspan_sessions_sources'), required=False) # @name(VSPAN Sources) @ref_name(VSPAN Source) @sheet_hidden()
+  destination: include('ap_vspan_sessions_destination') # @name(VSPAN Destination Labels) @ref_name(VSPAN Destination Group) @sheet_hidden()
+  expected_state: include('ap_vspan_sessions_expected_state', required=False) # @no_external_doc() @name(VSPAN Session Expected State) @sheet_hidden()
 
 ap_vspan_sessions_sources:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   direction: enum('in', 'out', 'both')
-  access_paths: list(include('ap_vspan_sessions_sources_access_paths'), required=False)
+  access_paths: list(include('ap_vspan_sessions_sources_access_paths'), required=False) # @name(VSPAN Source Access Path) @sheet_hidden()
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1169,8 +1169,8 @@ ap_vspan_sessions_expected_state:
 ap_vspan_destination_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  destinations: list(include('ap_vspan_destination_groups_destinations'), required=False)
-  expected_state: include('ap_vspan_destination_groups_expected_state', required=False) # @no_external_doc() @name(VSPAN DG Expected State)
+  destinations: list(include('ap_vspan_destination_groups_destinations'), required=False) # @name(VSPAN Destinations) @sheet_hidden()
+  expected_state: include('ap_vspan_destination_groups_expected_state', required=False) # @no_external_doc() @name(VSPAN DG Expected State) @sheet_hidden()
 
 ap_vspan_destination_groups_destinations:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1193,16 +1193,16 @@ ap_vspan_destination_groups_expected_state:
 
 ap_leaf_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  selectors: list(include('ap_leaf_interface_profiles_selectors'), required=False) # @name(Access Leaf Int Prof Selectors) @ref_name(Selector)
-  expected_state: include('ap_leaf_interface_profiles_expected_state', required=False) # @no_external_doc() @name(A Leaf Int Pro Expected State)
+  selectors: list(include('ap_leaf_interface_profiles_selectors'), required=False) # @name(Access Leaf Int Prof Selectors) @ref_name(Selector) @sheet_hidden()
+  expected_state: include('ap_leaf_interface_profiles_expected_state', required=False) # @no_external_doc() @name(A Leaf Int Pro Expected State) @sheet_hidden()
 
 ap_leaf_interface_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   fex_id: int(min=101, max=199, required=False)
   fex_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  port_blocks: list(include('ap_leaf_interface_profiles_selectors_port_blocks'), required=False) # @name(Access Leaf Int Prof Sel Blocks) @ref_name(Port Block)
-  sub_port_blocks: list(include('ap_leaf_interface_profiles_selectors_sub_port_blocks'), required=False) # @name(Access Leaf IntP Sel Sub Blocks) @ref_name(Sub Port Block)
+  port_blocks: list(include('ap_leaf_interface_profiles_selectors_port_blocks'), required=False) # @name(Access Leaf Int Prof Sel Blocks) @ref_name(Port Block) @sheet_hidden()
+  sub_port_blocks: list(include('ap_leaf_interface_profiles_selectors_sub_port_blocks'), required=False) # @name(Access Leaf IntP Sel Sub Blocks) @ref_name(Sub Port Block) @sheet_hidden()
 
 ap_leaf_interface_profiles_selectors_port_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1230,15 +1230,15 @@ ap_leaf_interface_profiles_expected_state:
 
 ap_fex_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  selectors: list(include('ap_fex_interface_profiles_selectors'), required=False) # @name(Access FEX Int Prof Selectors) @ref_name(Selector)
-  expected_state: include('ap_fex_interface_profiles_expected_state', required=False) # @no_external_doc() @name(FEX Int Prof Expected State)
+  selectors: list(include('ap_fex_interface_profiles_selectors'), required=False) # @name(Access FEX Int Prof Selectors) @ref_name(Selector) @sheet_hidden()
+  expected_state: include('ap_fex_interface_profiles_expected_state', required=False) # @no_external_doc() @name(FEX Int Prof Expected State) @sheet_hidden()
 
 ap_fex_interface_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   fex_id: int(min=101, max=199, required=False)
   fex_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  port_blocks: list(include('ap_fex_interface_profiles_selectors_port_blocks'), required=False) # @name(Access FEX Int Prof Sel Blocks) @ref_name(Port Block)
+  port_blocks: list(include('ap_fex_interface_profiles_selectors_port_blocks'), required=False) # @name(Access FEX Int Prof Sel Blocks) @ref_name(Port Block) @sheet_hidden()
 
 ap_fex_interface_profiles_selectors_port_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1256,15 +1256,15 @@ ap_fex_interface_profiles_expected_state:
 
 ap_spine_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  selectors: list(include('ap_spine_interface_profiles_selectors'), required=False) # @name(Access Spine Int Prof Selectors) @ref_name(Selector)
-  expected_state: include('ap_spine_interface_profiles_expected_state', required=False) # @no_external_doc() @name(A Spine Int Prof Expected State)
+  selectors: list(include('ap_spine_interface_profiles_selectors'), required=False) # @name(Access Spine Int Prof Selectors) @ref_name(Selector) @sheet_hidden()
+  expected_state: include('ap_spine_interface_profiles_expected_state', required=False) # @no_external_doc() @name(A Spine Int Prof Expected State) @sheet_hidden()
 
 ap_spine_interface_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   fex_id: int(min=101, max=199, required=False)
   fex_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  port_blocks: list(include('ap_spine_interface_profiles_selectors_port_blocks'), required=False) # @name(Access Spine Int Prof Sel Block) @ref_name(Port Block)
+  port_blocks: list(include('ap_spine_interface_profiles_selectors_port_blocks'), required=False) # @name(Access Spine Int Prof Sel Block) @ref_name(Port Block) @sheet_hidden()
 
 ap_spine_interface_profiles_selectors_port_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1379,20 +1379,20 @@ ap_spine_interface_policy_group:
   aaep: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ap_switch_policies:
-  mst_policies: list(include('ap_mst_policy'), required=False) # @ref_name(MST Policy)
-  vpc_policies: list(include('ap_vpc_policy'), required=False)
-  forwarding_scale_policies: list(include('ap_forwarding_scale_policy'), required=False)
+  mst_policies: list(include('ap_mst_policy'), required=False) # @ref_name(MST Policy) @sheet_hidden()
+  vpc_policies: list(include('ap_vpc_policy'), required=False) # @sheet_hidden()
+  forwarding_scale_policies: list(include('ap_forwarding_scale_policy'), required=False) # @sheet_hidden()
 
 ap_mst_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   region: str(min=0, max=32)
   revision: int(min=0, max=65535)
-  instances: list(include('ap_mst_policy_instance'), required=False) # @name(MST Policy Instances) @ref_name(Instance)
+  instances: list(include('ap_mst_policy_instance'), required=False) # @name(MST Policy Instances) @ref_name(Instance) @sheet_hidden()
 
 ap_mst_policy_instance:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   id: int(min=1, max=4096)
-  vlan_ranges: list(include('ap_mst_policy_instance_vlan_range'), required=False) # @name(MST Policy Instance Vlan Range) @ref_name(Vlan Range)
+  vlan_ranges: list(include('ap_mst_policy_instance_vlan_range'), required=False) # @name(MST Policy Instance Vlan Range) @ref_name(Vlan Range) @sheet_hidden()
 
 ap_mst_policy_instance_vlan_range:
   from: int(min=1, max=4096)
@@ -1408,14 +1408,14 @@ ap_forwarding_scale_policy:
 
 ap_leaf_switch_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  selectors: list(include('ap_leaf_switch_profiles_selectors'), required=False) # @name(Access Leaf SW Prof Selectors) @ref_name(Selector)
-  interface_profiles: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Access Leaf SW Prof Int Prof) @ref_name(Interface Profile)
-  expected_state: include('ap_leaf_switch_profiles_expected_state', required=False) # @no_external_doc() @name(A Leaf Sw Prof Expected State)
+  selectors: list(include('ap_leaf_switch_profiles_selectors'), required=False) # @name(Access Leaf SW Prof Selectors) @ref_name(Selector) @sheet_hidden()
+  interface_profiles: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Access Leaf SW Prof Int Prof) @ref_name(Interface Profile) @sheet_hidden()
+  expected_state: include('ap_leaf_switch_profiles_expected_state', required=False) # @no_external_doc() @name(A Leaf Sw Prof Expected State) @sheet_hidden()
 
 ap_leaf_switch_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  node_blocks: list(include('ap_leaf_switch_profiles_selectors_node_blocks'), required=False) # @name(Access Leaf SW Prof Sel Block) @ref_name(Node Block)
+  node_blocks: list(include('ap_leaf_switch_profiles_selectors_node_blocks'), required=False) # @name(Access Leaf SW Prof Sel Block) @ref_name(Node Block) @sheet_hidden()
 
 ap_leaf_switch_profiles_selectors_node_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1430,14 +1430,14 @@ ap_leaf_switch_profiles_expected_state:
 
 ap_spine_switch_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  selectors: list(include('ap_spine_switch_profiles_selectors'), required=False) # @name(Access Spine SW Prof Selectors) @ref_name(Selector)
-  interface_profiles: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Access Spine SW Prof Int Prof) @ref_name(Interface Profile)
-  expected_state: include('ap_spine_switch_profiles_expected_state', required=False) # @no_external_doc() @name(A Spine Sw Prof Expected State)
+  selectors: list(include('ap_spine_switch_profiles_selectors'), required=False) # @name(Access Spine SW Prof Selectors) @ref_name(Selector) @sheet_hidden()
+  interface_profiles: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Access Spine SW Prof Int Prof) @ref_name(Interface Profile) @sheet_hidden()
+  expected_state: include('ap_spine_switch_profiles_expected_state', required=False) # @no_external_doc() @name(A Spine Sw Prof Expected State) @sheet_hidden()
 
 ap_spine_switch_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  node_blocks: list(include('ap_spine_switch_profiles_selectors_node_blocks'), required=False) # @name(Access Spine SW Prof Sel Block) @ref_name(Node Block)
+  node_blocks: list(include('ap_spine_switch_profiles_selectors_node_blocks'), required=False) # @name(Access Spine SW Prof Sel Block) @ref_name(Node Block) @sheet_hidden()
 
 ap_spine_switch_profiles_selectors_node_blocks:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1485,8 +1485,8 @@ pp_pod:
   unicast_tep: ip(required=False)
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   external_tep_pools: list(include('pp_pod_external_tep_pools'), required=False)
-  remote_pools: list(include('pp_pod_remote_pools'), required=False)
-  expected_state: include('pp_pod_expected_state', required=False) # @no_external_doc() @name(Pod Expected State)
+  remote_pools: list(include('pp_pod_remote_pools'), required=False) # @sheet_hidden()
+  expected_state: include('pp_pod_expected_state', required=False) # @no_external_doc() @name(Pod Expected State) @sheet_hidden()
 
 pp_pod_external_tep_pools:
   prefix: ip()
@@ -1506,9 +1506,9 @@ node_policies:
   inb_endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   oob_endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   update_groups: list(include('np_update_group'), required=False)
-  vpc_groups: include('np_vpc_group', required=False) # @name(vPC)
+  vpc_groups: include('np_vpc_group', required=False) # @name(vPC) @sheet_hidden()
   nodes: list(include('np_node'), required=False)
-  expected_state: include('np_expected_state', required=False) # @no_external_doc() @name(Node Policies Expected State)
+  expected_state: include('np_expected_state', required=False) # @no_external_doc() @name(Node Policies Expected State) @sheet_hidden()
 
 np_expected_state:
   nodes_status: enum('active', 'inactive', 'disabled', 'unknown', 'undiscovered', required=False)
@@ -1547,7 +1547,7 @@ np_node:
   fabric_policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   access_policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   remote_pool_id: int(min=1, max=255, required=False)
-  expected_state: include('np_node_expected_state', required=False) # @no_external_doc() @name(Node Expected State)
+  expected_state: include('np_node_expected_state', required=False) # @no_external_doc() @name(Node Expected State) @sheet_hidden()
 
 np_node_expected_state:
   psu_count: int(min=1, max=10, required=False)
@@ -1558,18 +1558,18 @@ interface_policies:
 ip_node:
   id: int(min=1, max=4000)
   interfaces: list(include('ip_interface'), required=False) # @name(Leaf Interfaces)
-  fexes: list(include('ip_fex'), required=False) # @ref_name(FEX) @key(id)
+  fexes: list(include('ip_fex'), required=False) # @ref_name(FEX) @key(id) @sheet_hidden()
 
 ip_fex:
   id: int(min=101, max=199)
-  interfaces: list(include('ip_fex_interface'), required=False) # @name(FEX Interfaces)
+  interfaces: list(include('ip_fex_interface'), required=False) # @name(FEX Interfaces) @sheet_hidden()
 
 ip_fex_interface:
   port: int(min=1, max=127)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   module: int(min=1, max=9, required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  expected_state: include('ip_fex_interface_expected_state', required=False) # @no_external_doc() @name(FEX Interface Expected State)
+  expected_state: include('ip_fex_interface_expected_state', required=False) # @no_external_doc() @name(FEX Interface Expected State) @sheet_hidden()
 
 ip_fex_interface_expected_state:
   lldp_neighbor: str(required=False)
@@ -1581,9 +1581,9 @@ ip_interface:
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   fex_id: int(min=101, max=199, required=False)
   type: enum('uplink', 'downlink', required=False)
-  sub_ports: list(include('ip_interface_sub_ports'), required=False)
+  sub_ports: list(include('ip_interface_sub_ports'), required=False) # name(Leaf Subinterfaces) @sheet_hidden()
   breakout: enum('100g-2x', '100g-4x', '10g-4x', '25g-4x', '50g-8x', 'none', required=False)
-  expected_state: include('ip_interface_expected_state', required=False) # @no_external_doc() @name(Interface Expected State)
+  expected_state: include('ip_interface_expected_state', required=False) # @no_external_doc() @name(Interface Expected State) @sheet_hidden()
 
 ip_interface_expected_state:
   lldp_neighbor: str(required=False)
@@ -1594,7 +1594,7 @@ ip_interface_sub_ports:
   module: int(min=1, max=9, required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   fex_id: int(min=101, max=199, required=False)
-  expected_state: include('ip_interface_sub_ports_expected_state', required=False) # @no_external_doc() @name(Sub Port Expected State)
+  expected_state: include('ip_interface_sub_ports_expected_state', required=False) # @no_external_doc() @name(Sub Port Expected State) @sheet_hidden()
 
 ip_interface_sub_ports_expected_state:
   lldp_neighbor: str(required=False)
@@ -1611,15 +1611,15 @@ tenant:
   oob_endpoint_groups: list(include('ten_oob_endpoint_groups'), required=False) # @ref_name(OOB Endpoint Group)
   ext_mgmt_instances: list(include('ten_ext_mgmt_instances'), required=False) # @ref_name(EXT MGMT Instance)
   l3outs: list(include('ten_l3outs'), required=False) # @ref_name(L3out)
-  sr_mpls_l3outs: list(include('ten_sr_mpls_l3outs'), required=False)
+  sr_mpls_l3outs: list(include('ten_sr_mpls_l3outs'), required=False) # @name(SR MPLS L3out) @sheet_hidden()
   filters: list(include('ten_filters'), required=False) # @ref_name(Filter)
   contracts: list(include('ten_contracts'), required=False) # @ref_name(Contract)
   oob_contracts: list(include('ten_oob_contracts'), required=False) # @ref_name(OOB Contract)
-  imported_contracts: list(include('ten_imported_contracts'), required=False) # @ref_name(Imported Contract)
+  imported_contracts: list(include('ten_imported_contracts'), required=False) # @ref_name(Imported Contract) @sheet_hidden()
   policies: include('ten_policies', required=False) # @flatten()
   services: include('ten_services', required=False) # @flatten()
-  security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Tenant Sec Domain)
-  expected_state: include('ten_expected_state', required=False) # @no_external_doc() @name(Tenant Expected State)
+  security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Tenant Sec Domain) @sheet_hidden()
+  expected_state: include('ten_expected_state', required=False) # @no_external_doc() @name(Tenant Expected State) @sheet_hidden()
 
 ten_vrf:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1632,19 +1632,19 @@ ten_vrf:
   endpoint_retention_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
   monitoring_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
   transit_route_tag_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  leaked_internal_prefixes: list(include('ten_vrf_leaked_internal_prefixes'), required=False) # @name(VRF Leaked Internal Prefixes) @ref_name(Leaked Internal Prefix)
-  leaked_external_prefixes: list(include('ten_vrf_leaked_external_prefixes'), required=False) # @name(VRF Leaked External Prefixes) @ref_name(Leaked External Prefix)
+  leaked_internal_prefixes: list(include('ten_vrf_leaked_internal_prefixes'), required=False) # @name(VRF Leaked Internal Prefixes) @ref_name(Leaked Internal Prefix) @sheet_hidden()
+  leaked_external_prefixes: list(include('ten_vrf_leaked_external_prefixes'), required=False) # @name(VRF Leaked External Prefixes) @ref_name(Leaked External Prefix) @sheet_hidden()
   contracts: include('ten_vrf_contracts', required=False) # @flatten()
-  bgp: include('ten_vrf_bgp', required=False)
-  ospf: include('ten_vrf_ospf', required=False) # @no_doc()
-  dns_labels: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF DNS Labels) @ref_name(DNS Label)
-  pim: include('ten_vrf_pim', required=False) # @name(VRF PIM)
-  expected_state: include('ten_vrf_expected_state', required=False) # @no_external_doc() @name(VRF Expected State)
+  bgp: include('ten_vrf_bgp', required=False) # @name(VRF BGP) @sheet_hidden()
+  ospf: include('ten_vrf_ospf', required=False) # @no_doc() @sheet_hidden()
+  dns_labels: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF DNS Labels) @ref_name(DNS Label) @sheet_hidden()
+  pim: include('ten_vrf_pim', required=False) # @name(VRF PIM) @sheet_hidden()
+  expected_state: include('ten_vrf_expected_state', required=False) # @no_external_doc() @name(VRF Expected State) @sheet_hidden()
 
 ten_vrf_leaked_internal_prefixes:
   prefix: ip()
   public: bool(required=False)
-  destinations: list(include('ten_vrf_leaked_internal_prefixes_destinations'), required=False) # @name(VRF Leaked Int Pr Destinations)
+  destinations: list(include('ten_vrf_leaked_internal_prefixes_destinations'), required=False) # @name(VRF Leaked Int Pr Destinations) @sheet_hidden()
 
 ten_vrf_leaked_internal_prefixes_destinations:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -1656,7 +1656,7 @@ ten_vrf_leaked_external_prefixes:
   prefix: ip()
   from_prefix_length: int(min=1, max=128, required=False)
   to_prefix_length: int(min=1, max=128, required=False)
-  destinations: list(include('ten_vrf_leaked_external_prefixes_destinations'), required=False) # @name(VRF Leaked Ext Pr Destinations)
+  destinations: list(include('ten_vrf_leaked_external_prefixes_destinations'), required=False) # @name(VRF Leaked Ext Pr Destinations) @sheet_hidden()
 
 ten_vrf_leaked_external_prefixes_destinations:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -1678,9 +1678,9 @@ ten_vrf_ospf:
   ipv6_address_family_context_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_vrf_contracts:
-  consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF Consumers) @ref_name(Contract)
-  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF Providers) @ref_name(Contract)
-  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF Imported Consumers) @ref_name(Contract)
+  consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF Consumers) @ref_name(Contract) @sheet_hidden()
+  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF Providers) @ref_name(Contract) @sheet_hidden()
+  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF Imported Consumers) @ref_name(Contract) @sheet_hidden()
 
 ten_vrf_pim:
   mtu: int(min=1, max=9300, required=False)
@@ -1689,8 +1689,8 @@ ten_vrf_pim:
   max_multicast_entries: any(int(min=1, max=4294967295) , enum('unlimited'), required=False)
   reserved_multicast_entries: any(int(min=0, max=4294967295) , enum('undefined'), required=False)
   resource_policy_multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  static_rps: list(include('ten_vrf_pim_rps'), required=False) # @name(VRF PIM Static RP)
-  fabric_rps: list(include('ten_vrf_pim_rps'), required=False) # @name(VRF PIM Fabric RP)
+  static_rps: list(include('ten_vrf_pim_rps'), required=False) # @name(VRF PIM Static RP) @sheet_hidden()
+  fabric_rps: list(include('ten_vrf_pim_rps'), required=False) # @name(VRF PIM Fabric RP) @sheet_hidden()
   bsr_forward_updates: any(bool(), enum('yes', 'no'), required=False)
   bsr_listen_updates: any(bool(), enum('yes', 'no'), required=False)
   bsr_filter_multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1703,8 +1703,8 @@ ten_vrf_pim:
   asm_traffic_registry_max_rate: int(min=1, max=65535, required=False)
   asm_traffic_registry_source_ip: ip(required=False)
   ssm_group_range_multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  igmp_context_ssm_translate_policies: list(include('ten_vrf_pim_igmp_context_ssm_translate_policies'), required=False) # @name(VRF PIM IGMP Context SSM)
-  inter_vrf_policies: list(include('ten_vrf_inter_vrf_policies'), required=False) # @name(VRF PIM Inter-VRF Policy)
+  igmp_context_ssm_translate_policies: list(include('ten_vrf_pim_igmp_context_ssm_translate_policies'), required=False) # @name(VRF PIM IGMP Context SSM) @sheet_hidden()
+  inter_vrf_policies: list(include('ten_vrf_inter_vrf_policies'), required=False) # @name(VRF PIM Inter-VRF Policy) @sheet_hidden()
 
 ten_vrf_pim_rps:
   ip: ip()
@@ -1746,10 +1746,10 @@ ten_bridge_domains:
   vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   subnets: list(include('ten_bridge_domain_subnets'), required=False) # @name(Bridge Domain Subnets)
   l3outs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Bridge Domain L3outs) @ref_name(L3out)
-  dhcp_labels: list(include('ten_dhcp_labels'), required=False) # @name(Bridge Domain DHCP Labels)
+  dhcp_labels: list(include('ten_dhcp_labels'), required=False) # @name(Bridge Domain DHCP Labels) @sheet_hidden()
   igmp_interface_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   igmp_snooping_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  expected_state: include('ten_bridge_domain_expected_state', required=False) # @no_external_doc() @name(Bridge Domain Expected State)
+  expected_state: include('ten_bridge_domain_expected_state', required=False) # @no_external_doc() @name(Bridge Domain Expected State) @sheet_hidden()
 
 ten_bridge_domain_subnets:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -1776,8 +1776,8 @@ ten_application_profiles:
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   endpoint_groups: list(include('ten_ap_endpoint_groups'), required=False) # @ref_name(Endpoint Group)
-  endpoint_security_groups: list(include('ten_ap_endpoint_security_groups'), required=False) # @ref_name(Endpoint Security Group)
-  expected_state: include('ten_ap_expected_state', required=False) # @no_external_doc() @name(AP Expected State)
+  endpoint_security_groups: list(include('ten_ap_endpoint_security_groups'), required=False) # @ref_name(Endpoint Security Group) @sheet_hidden()
+  expected_state: include('ten_ap_expected_state', required=False) # @no_external_doc() @name(AP Expected State) @sheet_hidden()
 
 ten_ap_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1791,17 +1791,17 @@ ten_ap_endpoint_groups:
   physical_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Physical Domains) @ref_name(Physical Domain)
   vmware_vmm_domains: list(include('ten_ap_endpoint_groups_vmware_vmm_domains'), required=False) # @name(EPG VMware VMM Domains)
   static_ports: list(include('ten_ap_endpoint_groups_static_ports'), required=False) # @name(EPG Static Ports)
-  static_leafs: list(include('ten_ap_endpoint_groups_static_leafs'), required=False) # @name(EPG Static Leafs)
-  static_endpoints: list(include('ten_ap_endpoint_groups_static_endpoints'), required=False)
-  subnets: list(include('ten_ap_endpoint_groups_subnets'), required=False) # @name(EPG Subnets) @name(Subnet)
+  static_leafs: list(include('ten_ap_endpoint_groups_static_leafs'), required=False) # @name(EPG Static Leafs) @sheet_hidden()
+  static_endpoints: list(include('ten_ap_endpoint_groups_static_endpoints'), required=False) # @name(EPG Static Endpoints) @ref_name(Static Endpoint) @sheet_hidden()
+  subnets: list(include('ten_ap_endpoint_groups_subnets'), required=False) # @name(EPG Subnets) @ref_name(Subnet)
   contracts: include('ten_ap_endpoint_groups_contracts', required=False) # @flatten()
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
   custom_qos_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  tags: list(regex('^[a-zA-Z0-9_.-]{1,64}$'), required=False)
+  tags: list(regex('^[a-zA-Z0-9_.-]{1,64}$'), required=False) # @name(EPG Tags) @sheet_hidden()
   trust_control_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  l4l7_virtual_ips: list(include('ten_ap_endpoint_groups_l4l7_virtual_ips'), required=False) # @name(EPG L4L7 VIPs)
-  l4l7_address_pools: list(include('ten_ap_endpoint_groups_l4l7_address_pools'), required=False) # @name(EPG L4L7 Address Pools)
-  expected_state: include('ten_ap_endpoint_groups_expected_state', required=False) # @no_external_doc() @name(EPG Expected State)
+  l4l7_virtual_ips: list(include('ten_ap_endpoint_groups_l4l7_virtual_ips'), required=False) # @name(EPG L4L7 VIPs) @sheet_hidden()
+  l4l7_address_pools: list(include('ten_ap_endpoint_groups_l4l7_address_pools'), required=False) # @name(EPG L4L7 Address Pools) @sheet_hidden()
+  expected_state: include('ten_ap_endpoint_groups_expected_state', required=False) # @no_external_doc() @name(EPG Expected State) @sheet_hidden()
 
 ten_ap_endpoint_groups_static_ports:
   node_id: int(min=1, max=4000, required=False)
@@ -1836,7 +1836,7 @@ ten_ap_endpoint_groups_static_endpoints:
   module: int(min=1, max=9, required=False)
   port: int(min=1, max=127, required=False)
   channel: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  additional_ips: list(ip(), required=False)
+  additional_ips: list(ip(), required=False) # @name(EPG St Endpoints Additional IPs) @sheet_hidden()
 
 ten_ap_endpoint_groups_vmware_vmm_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1871,7 +1871,7 @@ ten_ap_endpoint_groups_subnets:
   nlb_mode: enum('mode-mcast-igmp', 'mode-uc', 'mode-mcast-static', required=False)
   nlb_group: ip(required=False)
   nlb_mac: mac(required=False)
-  ip_pools: list(include('ten_ap_endpoint_groups_subnets_ip_address_pools'), required=False) # @name(EPG Subnet IP Pools)
+  ip_pools: list(include('ten_ap_endpoint_groups_subnets_ip_address_pools'), required=False) # @name(EPG Subnet IP Pools) @sheet_hidden()
   nd_ra_prefix_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_ap_endpoint_groups_subnets_ip_address_pools:
@@ -1886,8 +1886,8 @@ ten_ap_endpoint_groups_subnets_ip_address_pools:
 ten_ap_endpoint_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Consumers) @ref_name(Contract)
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Providers) @ref_name(Contract)
-  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Imported Consumers) @ref_name(Contract)
-  intra_epgs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Intra-EPG) @ref_name(Contract)
+  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Imported Consumers) @ref_name(Contract) @sheet_hidden()
+  intra_epgs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Intra-EPG) @ref_name(Contract) @sheet_hidden()
   masters: list(include('ten_ap_endpoint_groups_contracts_masters'), required=False)
 
 ten_ap_endpoint_groups_contracts_masters:
@@ -1908,17 +1908,17 @@ ten_ap_endpoint_security_groups:
   intra_esg_isolation: bool(required=False)
   preferred_group: bool(required=False)
   contracts: include('ten_ap_endpoint_security_groups_contracts', required=False) # @flatten()
-  tag_selectors: list(include('ten_ap_endpoint_security_groups_tag_selectors'), required=False) # @name(ESG Tag Selectors)
-  epg_selectors: list(include('ten_ap_endpoint_security_groups_epg_selectors'), required=False) # @name(ESG EPG Selectors)
-  ip_subnet_selectors: list(include('ten_ap_endpoint_security_groups_ip_subnet_selectors'), required=False) # @name(ESG IP Subnet Selectors)
-  expected_state: include('ten_ap_endpoint_security_groups_expected_state', required=False) # @no_external_doc() @name(ESG Expected State)
+  tag_selectors: list(include('ten_ap_endpoint_security_groups_tag_selectors'), required=False) # @name(ESG Tag Selectors) @sheet_hidden()
+  epg_selectors: list(include('ten_ap_endpoint_security_groups_epg_selectors'), required=False) # @name(ESG EPG Selectors) @sheet_hidden()
+  ip_subnet_selectors: list(include('ten_ap_endpoint_security_groups_ip_subnet_selectors'), required=False) # @name(ESG IP Subnet Selectors) @sheet_hidden()
+  expected_state: include('ten_ap_endpoint_security_groups_expected_state', required=False) # @no_external_doc() @name(ESG Expected State) @sheet_hidden()
 
 ten_ap_endpoint_security_groups_contracts:
-  consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Consumers) @ref_name(Contract)
-  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Providers) @ref_name(Contract)
-  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Imported Consumers) @ref_name(Contract)
-  intra_esgs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Intra-ESG) @ref_name(Contract)
-  masters: list(include('ten_ap_endpoint_security_groups_contracts_masters'), required=False) # @name(ESG Contract Masters) @ref_name(Contract)
+  consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Consumers) @ref_name(Contract) @sheet_hidden()
+  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Providers) @ref_name(Contract) @sheet_hidden()
+  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Imported Consumers) @ref_name(Contract) @sheet_hidden()
+  intra_esgs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Intra-ESG) @ref_name(Contract) @sheet_hidden()
+  masters: list(include('ten_ap_endpoint_security_groups_contracts_masters'), required=False) # @name(ESG Contract Masters) @ref_name(Contract) @sheet_hidden()
 
 ten_ap_endpoint_security_groups_contracts_masters:
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1959,7 +1959,7 @@ ten_contracts:
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
   target_dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7', 'unspecified'), int(min=0, max=63), required=False)
   subjects: list(include('ten_contracts_subjects'), required=False) # @name(Contract Subjects) @ref_name(Subject)
-  expected_state: include('ten_contracts_expected_state', required=False) # @no_external_doc() @name(Contract Expected State)
+  expected_state: include('ten_contracts_expected_state', required=False) # @no_external_doc() @name(Contract Expected State) @sheet_hidden()
 
 ten_contracts_subjects:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1989,7 +1989,7 @@ ten_oob_contracts:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   scope: enum('application-profile', 'tenant', 'context', 'global', required=False)
   subjects: list(include('ten_oob_contracts_subjects'), required=False) # @name(OOB Contract Subjects) @ref_name(Subject)
-  expected_state: include('ten_oob_contracts_expected_state', required=False) # @no_external_doc() @name(OOB Contract Expected State)
+  expected_state: include('ten_oob_contracts_expected_state', required=False) # @no_external_doc() @name(OOB Contract Expected State) @sheet_hidden()
 
 ten_oob_contracts_subjects:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2036,15 +2036,15 @@ ten_l3outs:
   bfd_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   bgp_peers: list(include('ten_l3outs_bgp_peers'), required=False) # @name(L3out BGP Peers)
   nodes: list(include('ten_l3outs_nodes'), required=False) # @name(L3out Nodes) @ref_name(Node) @key(node_id)
-  node_profiles: list(include('ten_l3outs_node_profiles'), required=False) # @name(L3out Node Profiles) @ref_name(Node Profile)
+  node_profiles: list(include('ten_l3outs_node_profiles'), required=False) # @name(L3out Node Profiles) @ref_name(Node Profile) @sheet_hidden()
   external_endpoint_groups: list(include('ten_l3outs_external_endpoint_groups'), required=False) # @name(L3out External Endpoint Groups) @ref_name(External EPG)
   import_route_map: include('ten_l3outs_import_route_map', required=False) # @name(L3out Import Route Map) @flatten()
   export_route_map: include('ten_l3outs_export_route_map', required=False) # @name(L3out Export Route Map) @flatten()
   interleak_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  default_route_leak_policy: include('ten_l3outs_default_route_leak_policy', required=False) # @name(L3out Default Route Leak Policy)
+  default_route_leak_policy: include('ten_l3outs_default_route_leak_policy', required=False) # @name(L3out Default Route Leak Policy) @sheet_hidden()
   dampening_ipv4_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   dampening_ipv6_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  redistribution_route_maps: list(include('ten_l3outs_redistribution_route_maps'), required=False) # @name(L3out Redistribution Route Maps)
+  redistribution_route_maps: list(include('ten_l3outs_redistribution_route_maps'), required=False) # @name(L3out Redistribution Route Maps) @sheet_hidden()
   l3_multicast_ipv4: any(bool(), enum('yes', 'no'), required=False)
   pim_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   igmp_interface_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -2052,7 +2052,7 @@ ten_l3outs:
   custom_qos_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   multipod: bool(required=False)
   remote_leaf: bool(required=False)
-  expected_state: include('ten_l3outs_expected_state', required=False) # @no_external_doc() @name(L3out Expected State)
+  expected_state: include('ten_l3outs_expected_state', required=False) # @no_external_doc() @name(L3out Expected State) @sheet_hidden()
   import_route_control_enforcement: bool(required=False)
   export_route_control_enforcement: bool(required=False)
 
@@ -2141,7 +2141,7 @@ ten_l3outs_nodes_interfaces:
   bgp_peers: list(include('ten_l3outs_nodes_interfaces_bgp_peers'), required=False) # @name(L3out Node Interface BGP Peers)
   paths: list(include('ten_l3outs_nodes_interfaces_paths'), required=False) # @name(L3out Node Interface Paths)
   mode: enum('regular', 'native', 'untagged', required=False)
-  expected_state: include('ten_l3outs_nodes_interfaces_expected_state', required=False) # @no_external_doc() @name(L3out Node Int Expected State)
+  expected_state: include('ten_l3outs_nodes_interfaces_expected_state', required=False) # @no_external_doc() @name(L3out Node Int Expected State) @sheet_hidden()
 
 ten_l3outs_nodes_interfaces_bgp_peers:
   ip: ip()
@@ -2178,8 +2178,8 @@ ten_l3outs_nodes_interfaces_paths:
   floating_ip: ip()
 
 ten_l3outs_nodes_interfaces_expected_state:
-  ospf_neighbors: list(include('ten_l3outs_nodes_interfaces_expected_state_ospf_neighbors'), required=False) # @name(L3out Node Exp State OSPF Nei)
-  bfd_neighbors: list(include('ten_l3outs_nodes_interfaces_expected_state_bfd_neighbors'), required=False) # @name(L3out Node Exp State BFD Nei)
+  ospf_neighbors: list(include('ten_l3outs_nodes_interfaces_expected_state_ospf_neighbors'), required=False) # @name(L3out Node Exp State OSPF Nei) @sheet_hidden()
+  bfd_neighbors: list(include('ten_l3outs_nodes_interfaces_expected_state_bfd_neighbors'), required=False) # @name(L3out Node Exp State BFD Nei) @sheet_hidden()
 
 ten_l3outs_nodes_interfaces_expected_state_ospf_neighbors:
   ip: ip()
@@ -2190,9 +2190,9 @@ ten_l3outs_nodes_interfaces_expected_state_bfd_neighbors:
 
 ten_l3outs_node_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  bgp_peers: list(include('ten_l3outs_node_profiles_bgp_peers'), required=False) # @name(L3out Node Profile BGP Peers)
-  nodes: list(include('ten_l3outs_node_profiles_nodes'), required=False) # @name(L3out Node Profile Nodes) @ref_name(Node) @key(node_id)
-  interface_profiles: list(include('ten_l3outs_node_profiles_interface_profiles'), required=False) # @name(L3out Interface Profiles) @ref_name(Interface Profile)
+  bgp_peers: list(include('ten_l3outs_node_profiles_bgp_peers'), required=False) # @name(L3out Node Profile BGP Peers) @sheet_hidden()
+  nodes: list(include('ten_l3outs_node_profiles_nodes'), required=False) # @name(L3out Node Profile Nodes) @ref_name(Node) @key(node_id) @sheet_hidden()
+  interface_profiles: list(include('ten_l3outs_node_profiles_interface_profiles'), required=False) # @name(L3out Interface Profiles) @ref_name(Interface Profile) @sheet_hidden()
 
 ten_l3outs_node_profiles_bgp_peers:
   ip: ip()
@@ -2228,14 +2228,14 @@ ten_l3outs_node_profiles_nodes:
   router_id: ip()
   router_id_as_loopback: any(bool(), enum('yes', 'no'), required=False)
   loopback: ip(required=False)
-  static_routes: list(include('ten_l3outs_node_profiles_nodes_static_routes'), required=False) # @name(L3out Node Profile Static Route) @ref_name(Static Route)
+  static_routes: list(include('ten_l3outs_node_profiles_nodes_static_routes'), required=False) # @name(L3out Node Profile Static Route) @ref_name(Static Route) @sheet_hidden()
 
 ten_l3outs_node_profiles_nodes_static_routes:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   prefix: ip()
   preference: int(min=1, max=255, required=False)
   bfd: any(bool(), enum('enabled', 'disabled'), required=False)
-  next_hops: list(include('ten_l3outs_node_profiles_nodes_static_routes_next_hops'), required=False) # @name(L3out NP Node SRoute Next Hops)
+  next_hops: list(include('ten_l3outs_node_profiles_nodes_static_routes_next_hops'), required=False) # @name(L3out NP Node SRoute Next Hops) @sheet_hidden()
 
 ten_l3outs_node_profiles_nodes_static_routes_next_hops:
   ip: ip()
@@ -2245,13 +2245,13 @@ ten_l3outs_node_profiles_nodes_static_routes_next_hops:
 ten_l3outs_node_profiles_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   bfd_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  ospf: include('ten_l3outs_node_profiles_interface_profiles_ospf', required=False) # @name(L3out Interface Profile OSPF)
-  eigrp: include('ten_l3outs_node_profiles_interface_profiles_eigrp', required=False) # @name(L3out Interface Profile EIGRP)
+  ospf: include('ten_l3outs_node_profiles_interface_profiles_ospf', required=False) # @name(L3out Interface Profile OSPF) @sheet_hidden()
+  eigrp: include('ten_l3outs_node_profiles_interface_profiles_eigrp', required=False) # @name(L3out Interface Profile EIGRP) @sheet_hidden()
   pim_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   igmp_interface_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
   custom_qos_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  interfaces: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces'), required=False) # @name(L3out Interface Prof Interfaces) @ref_name(Interface) @key(node_id;port;module;channel;vlan)
+  interfaces: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces'), required=False) # @name(L3out Interface Prof Interfaces) @ref_name(Interface) @key(node_id;port;module;channel;vlan) @sheet_hidden()
 
 ten_l3outs_node_profiles_interface_profiles_ospf:
   ospf_interface_profile_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -2283,10 +2283,10 @@ ten_l3outs_node_profiles_interface_profiles_interfaces:
   ip_a: ip(required=False)
   ip_b: ip(required=False)
   ip_shared: ip(required=False)
-  bgp_peers: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers'), required=False) # @name(L3out IP Interface BGP Peers)
-  paths: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_paths'), required=False) # @name(L3out IP Interface Paths)
+  bgp_peers: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers'), required=False) # @name(L3out IP Interface BGP Peers) @sheet_hidden()
+  paths: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_paths'), required=False) # @name(L3out IP Interface Paths) @sheet_hidden()
   mode: enum('regular', 'native', 'untagged', required=False)
-  expected_state: include('ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state', required=False) # @no_external_doc() @name(L3out Int Prof Expected State)
+  expected_state: include('ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state', required=False) # @no_external_doc() @name(L3out Int Prof Expected State) @sheet_hidden()
 
 ten_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers:
   ip: ip()
@@ -2323,8 +2323,8 @@ ten_l3outs_node_profiles_interface_profiles_interfaces_paths:
   floating_ip: ip()
 
 ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state:
-  ospf_neighbors: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_ospf_neighbors'), required=False) # @name(L3out Int Prof Exp St OSPF Nei)
-  bfd_neighbors: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_bfd_neighbors'), required=False) # @name(L3out Int Prof Exp St BFD Nei)
+  ospf_neighbors: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_ospf_neighbors'), required=False) # @name(L3out Int Prof Exp St OSPF Nei) @sheet_hidden()
+  bfd_neighbors: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_bfd_neighbors'), required=False) # @name(L3out Int Prof Exp St BFD Nei) @sheet_hidden()
 
 ? ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_ospf_neighbors
 : ip: ip()
@@ -2342,7 +2342,7 @@ ten_l3outs_external_endpoint_groups:
   target_dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7', 'unspecified'), int(min=0, max=63), required=False)
   subnets: list(include('ten_l3outs_external_endpoint_groups_subnets'), required=False) # @name(L3out External EPG Subnets)
   contracts: include('ten_l3outs_external_endpoint_groups_contracts', required=False) # @flatten()
-  expected_state: include('ten_l3outs_external_endpoint_groups_expected_state', required=False) # @no_external_doc() @name(External EPG Expected State)
+  expected_state: include('ten_l3outs_external_endpoint_groups_expected_state', required=False) # @no_external_doc() @name(External EPG Expected State) @sheet_hidden()
 
 ten_l3outs_external_endpoint_groups_subnets:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -2360,7 +2360,7 @@ ten_l3outs_external_endpoint_groups_subnets:
 ten_l3outs_external_endpoint_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out ExtEPG Consumers) @ref_name(Contract)
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out ExtEPG Providers) @ref_name(Contract)
-  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out ExtEPG Imported Consumers) @ref_name(Contract)
+  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out ExtEPG Imported Consumers) @ref_name(Contract) @sheet_hidden()
 
 ten_l3outs_external_endpoint_groups_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -2401,14 +2401,14 @@ ten_l3outs_expected_state:
   maximum_critical_faults: int(min=0, required=False)
   maximum_major_faults: int(min=0, required=False)
   maximum_minor_faults: int(min=0, required=False)
-  learned_prefixes: list(include('ten_l3outs_expected_state_learned_prefixes'), required=False)
+  learned_prefixes: list(include('ten_l3outs_expected_state_learned_prefixes'), required=False) # @sheet_hidden()
 
 ten_l3outs_expected_state_learned_prefixes:
   prefix: ip()
   route_type: enum('internal', 'external', required=False)
   source_protocol: enum('bgp', 'ospf', 'eigrp', required=False)
   administrative_distance: int(min=1, max=255, required=False)
-  learned_node_ids: list(int(min=1, max=4000), required=False)
+  learned_node_ids: list(int(min=1, max=4000), required=False) # @sheet_hidden()
 
 ten_dhcp_labels:
   dhcp_relay_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2419,13 +2419,13 @@ ten_inb_endpoint_groups:
   vlan: int(min=1, max=4096)
   bridge_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   contracts: include('ten_inb_endpoint_groups_contracts', required=False) # @flatten()
-  static_routes: list(ip(), required=False) # @name(INB EPG Static Routes)
-  expected_state: include('ten_inb_endpoint_groups_expected_state', required=False) # @no_external_doc() @name(INB EPG Expected State)
+  static_routes: list(ip(), required=False) # @name(INB EPG Static Routes) @sheet_hidden()
+  expected_state: include('ten_inb_endpoint_groups_expected_state', required=False) # @no_external_doc() @name(INB EPG Expected State) @sheet_hidden()
 
 ten_inb_endpoint_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(INB EPG Consumers) @ref_name(Contract)
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(INB EPG Providers) @ref_name(Contract)
-  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(INB EPG Imported Consumers) @ref_name(Contract)
+  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(INB EPG Imported Consumers) @ref_name(Contract) @sheet_hidden()
 
 ten_inb_endpoint_groups_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -2436,8 +2436,8 @@ ten_inb_endpoint_groups_expected_state:
 ten_oob_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   oob_contracts: include('ten_oob_endpoint_groups_oob_contracts', required=False) # @flatten()
-  static_routes: list(ip(), required=False) # @name(OOB EPG Static Routes)
-  expected_state: include('ten_oob_endpoint_groups_expected_state', required=False) # @no_external_doc() @name(OOB EPG Expected State)
+  static_routes: list(ip(), required=False) # @name(OOB EPG Static Routes) @sheet_hidden()
+  expected_state: include('ten_oob_endpoint_groups_expected_state', required=False) # @no_external_doc() @name(OOB EPG Expected State) @sheet_hidden()
 
 ten_oob_endpoint_groups_oob_contracts:
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(OOB EPG Providers) @ref_name(Contract)
@@ -2452,7 +2452,7 @@ ten_ext_mgmt_instances:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   subnets: list(ip(), required=False) # @name(EXT MGMT Instance Subnets) @ref_name(Subnet)
   oob_contracts: include('ten_ext_mgmt_instances_oob_contracts', required=False) # @flatten()
-  expected_state: include('ten_ext_mgmt_instances_expected_state', required=False) # @no_external_doc() @name(Ext MGMT Inst Expected State)
+  expected_state: include('ten_ext_mgmt_instances_expected_state', required=False) # @no_external_doc() @name(Ext MGMT Inst Expected State) @sheet_hidden()
 
 ten_ext_mgmt_instances_oob_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EXT MGMT Instance Providers) @ref_name(Contract)
@@ -2486,8 +2486,8 @@ ten_sr_mpls_l3outs:
   sr_mpls_infra_l3out: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   transport_data_plane: enum('sr_mpls', 'mpls', required=False)
-  node_profiles: list(include('ten_sr_mpls_l3outs_node_profiles'), required=False) # @name(SR MPLS L3out Node Profiles) @ref_name(Node Profile)
-  external_endpoint_groups: list(include('ten_sr_mpls_l3outs_external_endpoint_groups'), required=False) # @name(SR MPLS L3out External EPGs) @ref_name(External EPG)
+  node_profiles: list(include('ten_sr_mpls_l3outs_node_profiles'), required=False) # @name(SR MPLS L3out Node Profiles) @ref_name(Node Profile) @sheet_hidden()
+  external_endpoint_groups: list(include('ten_sr_mpls_l3outs_external_endpoint_groups'), required=False) # @name(SR MPLS L3out External EPGs) @ref_name(External EPG) @sheet_hidden()
   inbound_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   outbound_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
@@ -2495,9 +2495,9 @@ ten_sr_mpls_l3outs_node_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   mpls_custom_qos_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   bfd_multihop_node_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  nodes: list(include('ten_sr_mpls_l3outs_node_profiles_nodes'), required=False) # @name(SR MPLS L3out Node Prof Nodes) @ref_name(Node) @key(node_id)
-  interface_profiles: list(include('ten_sr_mpls_l3outs_node_profiles_interface_profiles'), required=False) # @name(SR MPLS L3out Int Profiles) @ref_name(Interface Profile)
-  evpn_connectivity: list(include('ten_sr_mpls_l3outs_node_profiles_evpn_connectivity'), required=False) # @name(SR MPLS L3out EVPN Connectivity)
+  nodes: list(include('ten_sr_mpls_l3outs_node_profiles_nodes'), required=False) # @name(SR MPLS L3out Node Prof Nodes) @ref_name(Node) @key(node_id) @sheet_hidden()
+  interface_profiles: list(include('ten_sr_mpls_l3outs_node_profiles_interface_profiles'), required=False) # @name(SR MPLS L3out Int Profiles) @ref_name(Interface Profile) @sheet_hidden()
+  evpn_connectivity: list(include('ten_sr_mpls_l3outs_node_profiles_evpn_connectivity'), required=False) # @name(SR MPLS L3out EVPN Connectivity) @sheet_hidden()
 
 ten_sr_mpls_l3outs_node_profiles_nodes:
   node_id: int(min=1, max=4000)
@@ -2525,7 +2525,7 @@ ten_sr_mpls_l3outs_node_profiles_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   bfd_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  interfaces: list(include('ten_sr_mpls_l3outs_node_profiles_interface_profiles_interfaces'), required=False) # @name(SR MPLS L3 Int Prof Interfaces) @ref_name(Interface) @key(node_id;port;module;channel;vlan)
+  interfaces: list(include('ten_sr_mpls_l3outs_node_profiles_interface_profiles_interfaces'), required=False) # @name(SR MPLS L3 Int Prof Interfaces) @ref_name(Interface) @key(node_id;port;module;channel;vlan) @sheet_hidden()
 
 ten_sr_mpls_l3outs_node_profiles_interface_profiles_interfaces:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -2559,7 +2559,7 @@ ten_sr_mpls_l3outs_external_endpoint_groups:
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   preferred_group: bool(required=False)
-  subnets: list(include('ten_sr_mpls_l3outs_external_endpoint_groups_subnets'), required=False) # @name(SR MPLS L3out Ext EPG Subnets)
+  subnets: list(include('ten_sr_mpls_l3outs_external_endpoint_groups_subnets'), required=False) # @name(SR MPLS L3out Ext EPG Subnets) @sheet_hidden()
   contracts: include('ten_sr_mpls_l3outs_external_endpoint_groups_contracts', required=False) # @flatten()
 
 ten_sr_mpls_l3outs_external_endpoint_groups_subnets:
@@ -2570,36 +2570,36 @@ ten_sr_mpls_l3outs_external_endpoint_groups_subnets:
   aggregate_shared_route_control: bool(required=False)
 
 ten_sr_mpls_l3outs_external_endpoint_groups_contracts:
-  consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False)
-  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False)
-  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False)
+  consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @sheet_hidden()
+  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @sheet_hidden()
+  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @sheet_hidden()
 
 ten_policies:
-  ospf_interface_policies: list(include('ten_ospf_interface_policies'), required=False)
-  eigrp_interface_policies: list(include('ten_eigrp_interface_policies'), required=False)
-  ospf_timer_policies: list(include('ten_ospf_timer_policies'), required=False)
-  bgp_timer_policies: list(include('ten_bgp_timer_policy'), required=False)
-  bgp_peer_prefix_policies: list(include('ten_bgp_peer_prefix_policies'), required=False)
-  bgp_best_path_policies: list(include('ten_bgp_best_path_policy'), required=False)
-  bgp_address_family_context_policies: list(include('ten_bgp_address_family_context_policy'), required=False) # @name(BGP Address Fam Context Policy)
-  dhcp_relay_policies: list(include('ten_dhcp_relay_policy'), required=False) # @ref_name(DHCP Relay Policy)
-  dhcp_option_policies: list(include('ten_dhcp_option_policy'), required=False) # @ref_name(DHCP Option Policy)
-  route_tag_policies: list(include('ten_route_tag_policies'), required=False)
+  ospf_interface_policies: list(include('ten_ospf_interface_policies'), required=False) # @sheet_hidden()
+  eigrp_interface_policies: list(include('ten_eigrp_interface_policies'), required=False) # @sheet_hidden()
+  ospf_timer_policies: list(include('ten_ospf_timer_policies'), required=False) # @sheet_hidden()
+  bgp_timer_policies: list(include('ten_bgp_timer_policy'), required=False) # @sheet_hidden()
+  bgp_peer_prefix_policies: list(include('ten_bgp_peer_prefix_policies'), required=False) # @sheet_hidden()
+  bgp_best_path_policies: list(include('ten_bgp_best_path_policy'), required=False) # @sheet_hidden()
+  bgp_address_family_context_policies: list(include('ten_bgp_address_family_context_policy'), required=False) # @name(BGP Address Fam Context Policy) @sheet_hidden()
+  dhcp_relay_policies: list(include('ten_dhcp_relay_policy'), required=False) # @ref_name(DHCP Relay Policy) @sheet_hidden()
+  dhcp_option_policies: list(include('ten_dhcp_option_policy'), required=False) # @ref_name(DHCP Option Policy) @sheet_hidden()
+  route_tag_policies: list(include('ten_route_tag_policies'), required=False) # @sheet_hidden()
   route_control_route_maps: list(include('ten_route_control_route_maps'), required=False) # @ref_name(Route Control Route Map)
   match_rules: list(include('ten_match_rule'), required=False) # @ref_name(Match Rule)
   set_rules: list(include('ten_set_rule'), required=False)
-  bfd_interface_policies: list(include('ten_bfd_interface_policies'), required=False)
-  multicast_route_maps: list(include('ten_multicast_route_maps'), required=False) # @ref_name(Multicast Route Map)
-  pim_policies: list(include('ten_pim_policies'), required=False)
-  igmp_snooping_policies: list(include('ten_igmp_snooping_policies'), required=False)
-  igmp_interface_policies: list(include('ten_igmp_interface_policies'), required=False)
-  ip_sla_policies: list(include('ten_ip_sla_policies'), required=False)
-  trust_control_policies: list(include('ten_trust_control_policies'), required=False) # @ref_name(Trust Control Policy)
+  bfd_interface_policies: list(include('ten_bfd_interface_policies'), required=False) # @sheet_hidden()
+  multicast_route_maps: list(include('ten_multicast_route_maps'), required=False) # @ref_name(Multicast Route Map) @sheet_hidden()
+  pim_policies: list(include('ten_pim_policies'), required=False) # @sheet_hidden()
+  igmp_snooping_policies: list(include('ten_igmp_snooping_policies'), required=False) # @sheet_hidden()
+  igmp_interface_policies: list(include('ten_igmp_interface_policies'), required=False) # @sheet_hidden()
+  ip_sla_policies: list(include('ten_ip_sla_policies'), required=False) # @sheet_hidden()
+  trust_control_policies: list(include('ten_trust_control_policies'), required=False) # @ref_name(Trust Control Policy) @sheet_hidden()
   span: include('ten_span', required=False) # @flatten()
-  qos: list(include('ten_qos'), required=False) # @name(QoS Policies) @ref_name(QoS Policy)
-  mpls_custom_qos_policies: list(include('ten_mpls_custom_qos_policies'), required=False)
-  bfd_multihop_node_policies: list(include('ten_bfd_multihop_node_policies'), required=False)
-  nd_ra_prefix_policies: list(include('ten_nd_ra_prefix_policies'), required=False)
+  qos: list(include('ten_qos'), required=False) # @name(QoS Policies) @ref_name(QoS Policy) @sheet_hidden()
+  mpls_custom_qos_policies: list(include('ten_mpls_custom_qos_policies'), required=False) # @sheet_hidden()
+  bfd_multihop_node_policies: list(include('ten_bfd_multihop_node_policies'), required=False) # @sheet_hidden()
+  nd_ra_prefix_policies: list(include('ten_nd_ra_prefix_policies'), required=False) # @sheet_hidden()
 
 ten_ospf_interface_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2689,12 +2689,12 @@ ten_bgp_address_family_context_policy:
 ten_dhcp_relay_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  providers: list(include('ten_dhcp_provider'), required=False) # @name(DHCP Relay Policy Providers)
+  providers: list(include('ten_dhcp_provider'), required=False) # @name(DHCP Relay Policy Providers) @sheet_hidden()
 
 ten_dhcp_option_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  options: list(include('ten_dhcp_options'), required=False) # @name(DHCP Option Policy Options)
+  options: list(include('ten_dhcp_options'), required=False) # @name(DHCP Option Policy Options) @sheet_hidden()
 
 ten_dhcp_provider:
   ip: ip()
@@ -2769,7 +2769,7 @@ ten_set_rule:
   preference: int(min=0, max=4294967295, required=False)
   metric: int(min=0, max=4294967295, required=False)
   metric_type: enum('ospf-type1', 'ospf-type2', required=False)
-  dampening: include('ten_set_rule_dampening', required=False) # @name(Set Rule Dampening)
+  dampening: include('ten_set_rule_dampening', required=False) # @name(Set Rule Dampening) @sheet_hidden()
   additional_communities: list(include('ten_set_rule_additional_communities'), required=False) # @name(Set Rule Additional Communities)
   set_as_path: include('ten_set_rule_set_as_path', required=False) # @name(Set Rule AS Path)
   next_hop_propagation: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -2804,8 +2804,8 @@ ten_bfd_interface_policies:
 ten_multicast_route_maps:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  entries: list(include('ten_multicast_route_map_entries'), required=False) # @name(Multicast Route Map Entries)
-  expected_state: include('ten_multicast_route_maps_expected_state', required=False) # @no_external_doc() @name(Multicast RMap Expected State)
+  entries: list(include('ten_multicast_route_map_entries'), required=False) # @name(Multicast Route Map Entries) @sheet_hidden()
+  expected_state: include('ten_multicast_route_maps_expected_state', required=False) # @no_external_doc() @name(Multicast RMap Expected State) @sheet_hidden()
 
 ten_multicast_route_map_entries:
   order: int(min=0, max=9999)
@@ -2846,7 +2846,7 @@ ten_igmp_snooping_policies:
   start_query_interval: int(min=1, max=18000, required=False)
   fast_leave: any(bool(), enum('yes', 'no'), required=False)
   querier: any(bool(), enum('yes', 'no'), required=False)
-  expected_state: include('ten_igmp_snooping_policies_expected_state', required=False) # @no_external_doc() @name(IGMP Snoop Pol Expected State)
+  expected_state: include('ten_igmp_snooping_policies_expected_state', required=False) # @no_external_doc() @name(IGMP Snoop Pol Expected State) @sheet_hidden()
 
 ten_igmp_snooping_policies_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -2875,7 +2875,7 @@ ten_igmp_interface_policies:
   state_limit_multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   report_policy_multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   static_report_multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  expected_state: include('ten_igmp_interface_policies_expected_state', required=False) # @no_external_doc() @name(IGMP Int Pol Expected State)
+  expected_state: include('ten_igmp_interface_policies_expected_state', required=False) # @no_external_doc() @name(IGMP Int Pol Expected State) @sheet_hidden()
 
 ten_igmp_interface_policies_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -2890,7 +2890,7 @@ ten_ip_sla_policies:
   multiplier: int(min=1, max=100, required=False)
   sla_type: enum('icmp', 'tcp', 'l2ping', required=False)
   port: int(min=1, max=65535, required=False)
-  expected_state: include('ten_ip_sla_policies_expected_state', required=False) # @no_external_doc() @name(IP SLA Pol Expected State)
+  expected_state: include('ten_ip_sla_policies_expected_state', required=False) # @no_external_doc() @name(IP SLA Pol Expected State) @sheet_hidden()
 
 ten_ip_sla_policies_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -2902,8 +2902,8 @@ ten_qos:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  dscp_priority_maps: list(include('ten_qos_dscp_priority_map'), required=False) # @name(QoS Policy DSCP Priority Maps)
-  dot1p_classifiers: list(include('ten_qos_dot1p_classifiers'), required=False) # @name(QoS Policy Dot1p Classifiers)
+  dscp_priority_maps: list(include('ten_qos_dscp_priority_map'), required=False) # @name(QoS Policy DSCP Priority Maps) @sheet_hidden()
+  dot1p_classifiers: list(include('ten_qos_dot1p_classifiers'), required=False) # @name(QoS Policy Dot1p Classifiers) @sheet_hidden()
 
 ten_qos_dscp_priority_map:
   priority: enum('unspecified', 'level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'level7', required=False)
@@ -2930,8 +2930,8 @@ ten_trust_control_policies:
   ra: any(bool(), enum('yes', 'no'), required=False)
 
 ten_span:
-  destination_groups: list(include('ten_span_destination_groups'), required=False) # @name(Tenant SPAN Destination Group)
-  source_groups: list(include('ten_span_source_groups'), required=False) # @name(Tenant SPAN Source Group) @ref_name(Source Group)
+  destination_groups: list(include('ten_span_destination_groups'), required=False) # @name(Tenant SPAN Destination Group) @sheet_hidden()
+  source_groups: list(include('ten_span_source_groups'), required=False) # @name(Tenant SPAN Source Group) @ref_name(Source Group) @sheet_hidden()
 
 ten_span_destination_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2947,7 +2947,7 @@ ten_span_destination_groups:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  expected_state: include('ten_span_destination_groups_expected_state', required=False) # @no_external_doc() @name(Ten SPAN DG Expected State)
+  expected_state: include('ten_span_destination_groups_expected_state', required=False) # @no_external_doc() @name(Ten SPAN DG Expected State) @sheet_hidden()
 
 ten_span_destination_groups_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -2960,8 +2960,8 @@ ten_span_source_groups:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
   destination: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  sources: list(include('ten_span_source_groups_sources'), required=False) # @name(Tenant SPAN Src Group Sources)
-  expected_state: include('ten_span_source_groups_expected_state', required=False) # @no_external_doc() @name(Ten SPAN SG Expected State)
+  sources: list(include('ten_span_source_groups_sources'), required=False) # @name(Tenant SPAN Src Group Sources) @sheet_hidden()
+  expected_state: include('ten_span_source_groups_expected_state', required=False) # @no_external_doc() @name(Ten SPAN SG Expected State) @sheet_hidden()
 
 ten_span_source_groups_sources:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2980,8 +2980,8 @@ ten_mpls_custom_qos_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  ingress_rules: list(include('ten_mpls_custom_qos_ingress_rules'), required=False)
-  egress_rules: list(include('ten_mpls_custom_qos_egress_ruless'), required=False)
+  ingress_rules: list(include('ten_mpls_custom_qos_ingress_rules'), required=False) # @sheet_hidden()
+  egress_rules: list(include('ten_mpls_custom_qos_egress_ruless'), required=False) # @sheet_hidden()
 
 ten_mpls_custom_qos_ingress_rules:
   priority: enum('unspecified', 'level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'level7', required=False)
@@ -3013,13 +3013,13 @@ ten_nd_ra_prefix_policies:
   router_address: bool(required=False)
 
 ten_services:
-  l4l7_devices: list(include('ten_ser_l4l7_devices'), required=False) # @ref_name(L4L7 Device)
-  redirect_policies: list(include('ten_ser_redirect_policies'), required=False) # @ref_name(Redirect Policy)
-  service_epg_policies: list(include('ten_ser_service_epg_policies'), required=False) # @ref_name(Service EPG Policy)
-  redirect_health_groups: list(include('ten_ser_redirect_health_groups'), required=False) # @ref_name(Redirect Health Group)
-  redirect_backup_policies: list(include('ten_ser_redirect_backup_policies'), required=False) # @ref_name(Redirect Backup Policy)
-  service_graph_templates: list(include('ten_ser_service_graph_templates'), required=False) # @ref_name(Service Graph Template)
-  device_selection_policies: list(include('ten_ser_device_selection_policies'), required=False) # @ref_name(Device Selection Policy)
+  l4l7_devices: list(include('ten_ser_l4l7_devices'), required=False) # @ref_name(L4L7 Device) @sheet_hidden()
+  redirect_policies: list(include('ten_ser_redirect_policies'), required=False) # @ref_name(Redirect Policy) @sheet_hidden()
+  service_epg_policies: list(include('ten_ser_service_epg_policies'), required=False) # @ref_name(Service EPG Policy) @sheet_hidden()
+  redirect_health_groups: list(include('ten_ser_redirect_health_groups'), required=False) # @ref_name(Redirect Health Group) @sheet_hidden()
+  redirect_backup_policies: list(include('ten_ser_redirect_backup_policies'), required=False) # @ref_name(Redirect Backup Policy) @sheet_hidden()
+  service_graph_templates: list(include('ten_ser_service_graph_templates'), required=False) # @ref_name(Service Graph Template) @sheet_hidden()
+  device_selection_policies: list(include('ten_ser_device_selection_policies'), required=False) # @ref_name(Device Selection Policy) @sheet_hidden()
 
 ten_ser_l4l7_devices:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -3034,16 +3034,16 @@ ten_ser_l4l7_devices:
   trunking: any(bool(), enum('yes', 'no'), required=False)
   physical_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   vmware_vmm_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  concrete_devices: list(include('ten_ser_l4l7_devices_concrete_devices'), required=False) # @name(L4L7 Device Concrete Device) @ref_name(Concrete Device)
-  logical_interfaces: list(include('ten_ser_l4l7_devices_logical_interfaces'), required=False) # @name(L4L7 Device Logical Interfaces) @ref_name(Logical Interface)
-  expected_state: include('ten_ser_l4l7_devices_expected_state', required=False) # @no_external_doc() @name(L4L7 Device Expected State)
+  concrete_devices: list(include('ten_ser_l4l7_devices_concrete_devices'), required=False) # @name(L4L7 Device Concrete Device) @ref_name(Concrete Device) @sheet_hidden()
+  logical_interfaces: list(include('ten_ser_l4l7_devices_logical_interfaces'), required=False) # @name(L4L7 Device Logical Interfaces) @ref_name(Logical Interface) @sheet_hidden()
+  expected_state: include('ten_ser_l4l7_devices_expected_state', required=False) # @no_external_doc() @name(L4L7 Device Expected State) @sheet_hidden()
 
 ten_ser_l4l7_devices_concrete_devices:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   vcenter_name: str(min=0, max=512, required=False)
   vm_name: str(min=0, max=512, required=False)
-  interfaces: list(include('ten_ser_l4l7_devices_concrete_devices_interfaces'), required=False) # @name(L4L7 Concrete Device Interfaces)
+  interfaces: list(include('ten_ser_l4l7_devices_concrete_devices_interfaces'), required=False) # @name(L4L7 Concrete Device Interfaces) @sheet_hidden()
 
 ten_ser_l4l7_devices_concrete_devices_interfaces:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -3061,7 +3061,7 @@ ten_ser_l4l7_devices_logical_interfaces:
   name: regex('^[a-zA-Z0-9_.:-]{1,16}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   vlan: int(min=1, max=4096, required=False)
-  concrete_interfaces: list(include('ten_ser_l4l7_devices_logical_interfaces_concrete_interfaces'), required=False) # @name(L4L7 Logical Int Concrete Int)
+  concrete_interfaces: list(include('ten_ser_l4l7_devices_logical_interfaces_concrete_interfaces'), required=False) # @name(L4L7 Logical Int Concrete Int) @sheet_hidden()
 
 ten_ser_l4l7_devices_logical_interfaces_concrete_interfaces:
   device: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -3087,9 +3087,9 @@ ten_ser_redirect_policies:
   resilient_hashing: any(bool(), enum('enabled', 'disabled'), required=False)
   redirect_backup_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   threshold_down_action: enum('permit', 'deny', 'bypass', required=False)
-  l3_destinations: list(include('ten_ser_redirect_policies_l3_destinations'), required=False) # @name(Redirect Policy Destinations)
+  l3_destinations: list(include('ten_ser_redirect_policies_l3_destinations'), required=False) # @name(Redirect Policy Destinations) @sheet_hidden()
   ip_sla_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  expected_state: include('ten_ser_redirect_policies_expected_state', required=False) # @no_external_doc() @name(Redirect Policy Expected State)
+  expected_state: include('ten_ser_redirect_policies_expected_state', required=False) # @no_external_doc() @name(Redirect Policy Expected State) @sheet_hidden()
 
 ten_ser_redirect_policies_l3_destinations:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -3108,8 +3108,8 @@ ten_ser_redirect_policies_expected_state:
 ten_ser_redirect_backup_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  l3_destinations: list(include('ten_ser_redirect_backup_policies_l3_destinations'), required=False) # @name(Redirect Backup Policy L3 Dest)
-  expected_state: include('ten_ser_redirect_backup_policies_expected_state', required=False) # @no_external_doc() @name(Redir Backup Pol Expected State)
+  l3_destinations: list(include('ten_ser_redirect_backup_policies_l3_destinations'), required=False) # @name(Redirect Backup Policy L3 Dest) @sheet_hidden()
+  expected_state: include('ten_ser_redirect_backup_policies_expected_state', required=False) # @no_external_doc() @name(Redir Backup Pol Expected State) @sheet_hidden()
 
 ten_ser_redirect_backup_policies_l3_destinations:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -3133,7 +3133,7 @@ ten_ser_service_epg_policies:
 ten_ser_redirect_health_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  expected_state: include('ten_ser_redirect_health_groups_expected_state', required=False) # @no_external_doc() @name(Redir Health Gr Expected State)
+  expected_state: include('ten_ser_redirect_health_groups_expected_state', required=False) # @no_external_doc() @name(Redir Health Gr Expected State) @sheet_hidden()
 
 ten_ser_redirect_health_groups_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -3149,7 +3149,7 @@ ten_ser_service_graph_templates:
   redirect: any(bool(), enum('enabled', 'disabled'), required=False)
   share_encapsulation: any(bool(), enum('enabled', 'disabled'), required=False)
   device: include('ten_ser_service_graph_templates_device') # @flatten()
-  expected_state: include('ten_ser_service_graph_templates_expected_state', required=False) # @no_external_doc() @name(SG Template Expected State)
+  expected_state: include('ten_ser_service_graph_templates_expected_state', required=False) # @no_external_doc() @name(SG Template Expected State) @sheet_hidden()
 
 ten_ser_service_graph_templates_device:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(Device Name)
@@ -3164,9 +3164,9 @@ ten_ser_service_graph_templates_expected_state:
 ten_ser_device_selection_policies:
   contract: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   service_graph_template: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  consumer: include('ten_ser_device_selection_policies_consumer_provider') # @name(Device Selection Pol Consumer)
-  provider: include('ten_ser_device_selection_policies_consumer_provider') # @name(Device Selection Pol Provider)
-  expected_state: include('ten_ser_device_selection_policies_expected_state', required=False) # @no_external_doc() @name(Dev Sel Policy Expected State)
+  consumer: include('ten_ser_device_selection_policies_consumer_provider') # @name(Device Selection Pol Consumer) @sheet_hidden()
+  provider: include('ten_ser_device_selection_policies_consumer_provider') # @name(Device Selection Pol Provider) @sheet_hidden()
+  expected_state: include('ten_ser_device_selection_policies_expected_state', required=False) # @no_external_doc() @name(Dev Sel Policy Expected State) @sheet_hidden()
 
 ten_ser_device_selection_policies_consumer_provider:
   l3_destination: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -3190,7 +3190,7 @@ ten_ser_device_selection_policies_consumer_provider_external_endpoint_group:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(External EPG Tenant)
   l3out: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(External EPG L3out)
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(External EPG Name)
-  redistribute: include('ten_ser_device_selection_policies_consumer_provider_external_endpoint_group_redistribute', required=False) # @flatten()
+  redistribute: include('ten_ser_device_selection_policies_consumer_provider_external_endpoint_group_redistribute', required=False) # @flatten() @sheet_hidden()
 
 ? ten_ser_device_selection_policies_consumer_provider_external_endpoint_group_redistribute
 : bgp: any(bool(), enum('enabled', 'disabled'), required=False) # @name(External EPG Redistribute BGP)
