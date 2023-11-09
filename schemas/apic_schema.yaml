@@ -2065,9 +2065,9 @@ ten_l3outs_ospf:
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_eigrp:
-  eigrp_interface_profile_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  interface_profile_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   asn: int(min=1, max=65535)
-  policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  interface_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_bgp_peers:
   ip: ip()
@@ -2258,9 +2258,9 @@ ten_l3outs_node_profiles_interface_profiles_ospf:
   auth_key_id: int(min=1, max=255, required=False)
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 ten_l3outs_node_profiles_interface_profiles_eigrp:
-  eigrp_interface_profile_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  keychain_policy_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  interface_profile_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  interface_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  keychain_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_node_profiles_interface_profiles_interfaces:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)

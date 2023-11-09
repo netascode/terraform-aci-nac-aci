@@ -63,9 +63,9 @@ Verify L3out {{ l3out_name }} Profiles
 {% endif %}
 {% endif %}
 {% if l3out.eigrp is defined %}
-    Should Be Equal Value Json String   ${r.json()}   $..eigrpIfP.attributes.name   {{ l3out.eigrp.eigrp_interface_profile_name | default(l3out.name) }}
-{% if l3out.eigrp.policy is defined %}
-{% set policy_name = l3out.eigrp.policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   $..eigrpIfP.attributes.name   {{ l3out.eigrp.interface_profile_name | default(l3out.name) }}
+{% if l3out.eigrp.interface_policy is defined %}
+{% set policy_name = l3out.eigrp.interface_policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   $..eigrpRsIfPol.attributes.tnEigrpIfPolName   {{ policy_name }}
 {% endif %}
 {% endif %}
@@ -475,9 +475,9 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
 {% endif %}
 {% endif %}
 {% if ip.eigrp is defined %}
-    Should Be Equal Value Json String   ${r.json()}   ${ip}..eigrpIfP.attributes.name   {{ ip.eigrp.eigrp_interface_profile_name | default(l3out.name) }}
-{% if ip.eigrp.policy is defined %}
-{% set policy_name = ip.eigrp.policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   ${ip}..eigrpIfP.attributes.name   {{ ip.eigrp.interface_profile_name | default(l3out.name) }}
+{% if ip.eigrp.interface_policy is defined %}
+{% set policy_name = ip.eigrp.interface_policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${ip}..eigrpRsIfPol.attributes.tnEigrpIfPolName   {{ policy_name }}
 {% endif %}
 {% endif %}

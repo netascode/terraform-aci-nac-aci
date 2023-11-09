@@ -230,8 +230,8 @@
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
-                                                            {% if l3out.ospf.policy is defined %}
-                                                            {% set policy_name = l3out.ospf.policy ~ defaults.apic.tenants.policies.ospf_interface_policies.name_suffix %}
+                                                            {% if l3out.ospf.interface_policy is defined %}
+                                                            {% set policy_name = l3out.ospf.interface_policy ~ defaults.apic.tenants.policies.ospf_interface_policies.name_suffix %}
                                                             {
                                                                 "ospfRsIfPol": {
                                                                     "attributes": {
@@ -250,7 +250,7 @@
                                                     "eigrpIfP": {
                                                         "attributes": {
                                                             "annotation": "orchestrator:aac",
-                                                            "name": "{{ l3out.eigrp.eigrp_interface_profile_name | default(l3out.name) }}",
+                                                            "name": "{{ l3out.eigrp.interface_profile_name | default(l3out.name) }}",
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
@@ -263,7 +263,7 @@
                                                                         "tnEigrpIfPolName": "{{ policy_name }}"
                                                                     }
                                                                 },
-                                                                {% if l3out.eigrp.keychain_policy_name is defined %}
+                                                                {% if l3out.eigrp.keychain_policy is defined %}
                                                                 "eigrpAuthIfP": {
                                                                     "attributes": {
 
@@ -271,7 +271,7 @@
                                                                     "children": [
                                                                         "eigrpRsKeyChainPol": {
                                                                             "attributes": {
-                                                                                tnFvKeyChainPolName = {{l3out.eigrp.keychain_policy_name}}
+                                                                                tnFvKeyChainPolName = {{l3out.eigrp.keychain_policy}}
                                                                             }
                                                                         }
                                                                     ]
@@ -879,12 +879,12 @@
                                                     "eigrpIfP": {
                                                         "attributes": {
                                                             "annotation": "orchestrator:aac",
-                                                            "name": "{{ ip.eigrp.eigrp_interface_profile_name | default(l3out.name) }}",
+                                                            "name": "{{ ip.eigrp.interface_profile_name | default(l3out.name) }}",
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
-                                                            {% if ip.eigrp.policy is defined %}
-                                                            {% set policy_name = ip.eigrp.policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
+                                                            {% if ip.eigrp.interface_policy is defined %}
+                                                            {% set policy_name = ip.eigrp.interface_policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
                                                             {
                                                                 "eigrpRsIfPol": {
                                                                     "attributes": {
