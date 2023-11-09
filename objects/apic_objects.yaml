@@ -1049,6 +1049,19 @@ objects:
       - config
     paths:
       - apic.fabric_policies.smart_licensing
+  - name: New Interface Config
+    template: new_interface_config
+    folder: interface_policies
+    aci_classes:
+      - infraPortConfig
+    test_types:
+      - config
+    paths:
+      - apic.auto_generate_switch_pod_profiles
+      - apic.auto_generate_access_leaf_switch_interface_profiles
+      - apic.new_interface_configuration
+      - apic.node_policies.nodes.id
+      - apic.node_policies.nodes.name
 
 spine_objects:
   - name: Access Spine Interface Selector

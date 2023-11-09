@@ -7,12 +7,14 @@ Resource        ../../../apic_common.resource
 
 *** Test Cases ***
 {% if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) | cisco.aac.aac_bool("enabled") == "enabled" or apic.auto_generate_access_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_access_leaf_switch_interface_profiles) | cisco.aac.aac_bool("enabled") == "enabled" %}
+{% if apic.new_interface_configuration | default(defaults.apic.new_interface_configuration) is false %}
 {% for _node in apic.node_policies.nodes | default([]) %}
 {% if _node.role == "leaf" and _node.id | string == item[1] %}
-{% set leaf_interface_profile_name = (_node.id ~ ":" ~ _node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_interface_profile_name | default(defaults.apic.access_policies.leaf_interface_profile_name))) %}
 
+{% set leaf_interface_profile_name = (_node.id ~ ":" ~ _node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_interface_profile_name | default(defaults.apic.access_policies.leaf_interface_profile_name))) %}
 {% set query = "nodes[?id==`" ~ _node.id ~ "`].interfaces[]" %}
 {% if apic.interface_policies is defined %}
+
 {% for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
 {% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
 {% set leaf_interface_selector_name = (module ~ ":" ~ int.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.leaf_interface_selector_name | default(defaults.apic.access_policies.leaf_interface_selector_name))) %}
@@ -77,8 +79,10 @@ Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector 
 {% endfor %}
 
 {% endfor %}
+
 {% endif %}
 
 {% endif %}
 {% endfor %}
+{% endif %}
 {% endif %}

@@ -1,0 +1,16 @@
+---
+apic:
+  interface_policies:
+    nodes:
+      - id: 101
+        interfaces:
+          - port: 20
+            policy_group: BREAKOUT1
+            sub_ports:
+              - port: 1
+                policy_group: ACC1
+              - port: 2
+                description: FEX
+                fex_id: 102
+              - port: 3
+                policy_group: VPC2

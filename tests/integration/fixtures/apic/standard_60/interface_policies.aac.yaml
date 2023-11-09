@@ -1,0 +1,17 @@
+---
+apic:
+  new_interface_configuration: true
+  interface_policies:
+    nodes:
+      - id: 101
+        interfaces:
+          - port: 21
+            breakout: 10g-4x
+            sub_ports:
+              - port: 1
+                policy_group: ACC1
+              - port: 2
+                description: FEX
+                fex_id: 102
+              - port: 3
+                policy_group: VPC2

@@ -166,6 +166,7 @@ nav:
               - Access Spine Interface Selector: data_model/apic/interface_policies/spine_interface_selector.md
               - Access Leaf Interface Selector: data_model/apic/interface_policies/leaf_interface_selector.md
               - Access FEX Interface Selector: data_model/apic/interface_policies/fex_interface_selector.md
+              - Interface Configuration: data_model/apic/interface_policies/new_interface_config.md
           - Tenants:
               - Tenant: data_model/apic/tenants/tenant.md
               - VRF: data_model/apic/tenants/vrf.md

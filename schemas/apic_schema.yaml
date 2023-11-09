@@ -19,6 +19,7 @@ apic:
   auto_generate_access_leaf_switch_interface_profiles: any(bool(), enum('enabled', 'disabled'), required=False)
   auto_generate_access_spine_switch_interface_profiles: any(bool(), enum('enabled', 'disabled'), required=False)
   nae_assurance_group: str(required=False)
+  new_interface_configuration: bool(required=False)
   expected_state: include('expected_state', required=False) # @no_external_doc() @name(APIC Expected State)
 
 bootstrap:
@@ -1581,6 +1582,7 @@ ip_interface:
   fex_id: int(min=101, max=199, required=False)
   type: enum('uplink', 'downlink', required=False)
   sub_ports: list(include('ip_interface_sub_ports'), required=False)
+  breakout: enum('100g-2x', '100g-4x', '10g-4x', '25g-4x', '50g-8x', 'none', required=False)
   expected_state: include('ip_interface_expected_state', required=False) # @no_external_doc() @name(Interface Expected State)
 
 ip_interface_expected_state:

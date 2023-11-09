@@ -5,6 +5,7 @@ Default Tags    apic   day1   config   access_policies
 Resource        ../../apic_common.resource
 
 *** Test Cases ***
+{% if apic.new_interface_configuration | default(defaults.apic.new_interface_configuration) is false %}
 {% if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) | cisco.aac.aac_bool("enabled") == "enabled" or apic.auto_generate_access_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_access_leaf_switch_interface_profiles) | cisco.aac.aac_bool("enabled") == "enabled" %}
 {% for node in apic.interface_policies.nodes | default([]) %}
 {% set query = "nodes[?id==`" ~ node.id ~ "`]" %}
@@ -64,3 +65,4 @@ Verify Access FEX Interface Profile {{ fex_interface_profile_name }} Selector {{
 {% endfor %}
 {% endfor %}
 {% endfor %}
+{% endif %}

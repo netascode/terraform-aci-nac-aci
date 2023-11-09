@@ -25,16 +25,6 @@ apic:
             description: reserved
           - port: 10
             fex_id: 101
-          - port: 20
-            policy_group: BREAKOUT1
-            sub_ports:
-              - port: 1
-                policy_group: ACC1
-              - port: 2
-                description: FEX
-                fex_id: 102
-              - port: 3
-                policy_group: VPC2
           - port: 53
             policy_group: ACC1
             type: downlink
