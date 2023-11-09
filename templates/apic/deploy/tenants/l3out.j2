@@ -230,8 +230,8 @@
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
-                                                            {% if l3out.ospf.interface_policy is defined %}
-                                                            {% set policy_name = l3out.ospf.interface_policy ~ defaults.apic.tenants.policies.ospf_interface_policies.name_suffix %}
+                                                            {% if l3out.ospf.policy is defined %}
+                                                            {% set policy_name = l3out.ospf.policy ~ defaults.apic.tenants.policies.ospf_interface_policies.name_suffix %}
                                                             {
                                                                 "ospfRsIfPol": {
                                                                     "attributes": {
@@ -254,8 +254,8 @@
                                                             "childAction": "deleteNonPresent"
                                                         },
                                                         "children": [
-                                                            {% if l3out.eigrp.policy is defined %}
-                                                            {% set policy_name = l3out.eigrp.policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
+                                                            {% if l3out.eigrp.interface_policy is defined %}
+                                                            {% set policy_name = l3out.eigrp.interface_policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
                                                             {
                                                                 "eigrpRsIfPol": {
                                                                     "attributes": {
