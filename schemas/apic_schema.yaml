@@ -723,6 +723,8 @@ fp_config_exports_expected_state:
 fp_monitoring:
   snmp_traps: list(include('fp_monitoring_snmp_traps'), required=False) # @ref_name(SNMP Trap)
   syslogs: list(include('fp_monitoring_syslogs'), required=False) # @ref_name(Syslog)
+  callhomes: list(include('fp_monitoring_callhomes'), required=False) # @ref_name(Callhome) @no_doc()
+  smart_callhomes: list(include('fp_monitoring_smart_callhomes'), required=False) # @ref_name(Smart Callhome) @no_doc()
   policies: list(include('fp_monitoring_policies'), required=False) # @no_doc()
 
 fp_monitoring_snmp_traps:
@@ -764,6 +766,62 @@ fp_monitoring_syslogs_destinations:
   facility: enum('local0', 'local1' ,'local2' ,'local3' ,'local4' ,'local5', 'local6', 'local7', required=False)
   severity: enum('emergencies', 'alerts', 'critical', 'errors', 'warnings', 'notifications', 'information', 'debugging', required=False)
   mgmt_epg: enum('inb', 'oob', required=False)
+
+fp_monitoring_callhomes:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  admin_state: bool(required=False)
+  port: int(min=1, max=65535, required=False)
+  smtp_server: str()
+  smtp_username: str(required=False)
+  smtp_password: str(required=False)
+  mgmt_epg: enum('inb', 'oob', required=False)
+  from_email: str(required=False)
+  reply_to_email: str(required=False)
+  customer_contact_email: str(required=False)
+  phone_contact: str(required=False)
+  contact_information: str(required=False)
+  street_address: str(required=False)
+  contract_id: str(required=False)
+  customer_id: str(required=False)
+  site_id: str(required=False)
+  destinations: list(include('fp_monitoring_callhomes_destinations'), required=False) # @name(Callhome Destinations)
+
+fp_monitoring_callhomes_destinations:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  admin_state: bool(required=False)
+  severity: enum('emergencies', 'alerts', 'critical', 'errors', 'warnings', 'notifications', 'information', 'debugging', required=False)
+  email: srt(required=False)
+  format: enum('aml', 'short-txt', 'xml', required=False)
+  maximum_size: int(min=0, max=5000000, required=False)
+  rfc_compliant: bool(required=False)
+
+fp_monitoring_smart_callhomes:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  admin_state: bool(required=False)
+  port: int(min=1, max=65535, required=False)
+  smtp_server: str()
+  smtp_username: str(required=False)
+  smtp_password: str(required=False)
+  mgmt_epg: enum('inb', 'oob', required=False)
+  from_email: str(required=False)
+  reply_to_email: str(required=False)
+  customer_contact_email: str(required=False)
+  phone_contact: str(required=False)
+  contact_information: str(required=False)
+  street_address: str(required=False)
+  contract_id: str(required=False)
+  customer_id: str(required=False)
+  site_id: str(required=False)
+  destinations: list(include('fp_monitoring_smart_callhomes_destinations'), required=False) # @name(Smart Callhome Destinations)
+
+fp_monitoring_smart_callhomes_destinations:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  admin_state: bool(required=False)
+  email: srt(required=False)
+  format: enum('aml', 'short-txt', 'xml', required=False)
+  rfc_compliant: bool(required=False)
 
 fp_monitoring_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -847,7 +905,6 @@ fp_system_performance:
   response_threshold: int(min=40, max=85000, required=False)
   top_slowest_requests: int(min=1, max=10, required=False) # @description(top slowest in UI in API is topNRequests)
   calculation_window: int(min=30, max=300, required=False) # @description(frequency in UI calculation_window in API)
-
 
 access_policies:
   leaf_switch_profile_name: str(min=1, max=64, required=False)
@@ -1617,7 +1674,6 @@ ten_vrf_ospf:
   timer_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   ipv4_address_family_context_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   ipv6_address_family_context_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-
 
 ten_vrf_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF Consumers) @ref_name(Contract)
