@@ -1,0 +1,38 @@
+{# iterate_list apic.tenants name item[2] #}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for oip in tenant.policies.eigrp_interface_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = oip.name ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
+            {% set ctrl = [] %}
+            {% if oip.split_horizon | default(defaults.apic.tenants.policies.eigrp_interface_policies.split_horizon) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("split-horizon")] %}{% endif %}
+            {% if oip.passive_interface | default(defaults.apic.tenants.policies.eigrp_interface_policies.passive_interface) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("passive")] %}{% endif %}
+            {% if oip.self_nexthop | default(defaults.apic.tenants.policies.eigrp_interface_policies.self_nexthop) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("nh-self")] %}{% endif %}
+            {% if oip.bfd | default(defaults.apic.tenants.policies.eigrp_interface_policies.bfd) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("bfd")] %}{% endif %}
+            {
+                "eigrpIfPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ policy_name }}",
+                        "dn": "uni/tn-{{ tenant.name }}/eigrpIfPol-{{ policy_name }}",
+                        "descr": "{{ oip.description | default() }}",
+                        "ctrl": "{{ ctrl | join(',') }}",
+                        "holdIntvl": "{{ oip.hold_interval | default(defaults.apic.tenants.policies.eigrp_interface_policies.hold_interval) }}",
+                        "helloIntvl": "{{ oip.hello_interval | default(defaults.apic.tenants.policies.ospf_interface_policies.hello_interval) }}",
+                        "bw": "{{ oip.bandwidth | default(defaults.apic.tenants.policies.ospf_interface_policies.bandwidth) }}",
+                        "delay": "{{ oip.delay | default(defaults.apic.tenants.policies.ospf_interface_policies.delay) }}",
+                        "delayUnit": "{{ oip.delay_unit | default(defaults.apic.tenants.policies.ospf_interface_policies.delay_unit) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

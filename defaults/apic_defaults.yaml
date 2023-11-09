@@ -1020,6 +1020,17 @@ defaults:
           priority: 1
           lsa_retransmit_interval: 5
           lsa_transmit_delay: 1
+        eigrp_interface_policies:
+          name_suffix: ""
+          bfd: false
+          self_nexthop: true
+          passive_interface: false
+          split_horizon: true
+          hello_interval: 5
+          hold_interval: 15
+          bandwidth: 0
+          delay: 0
+          delay_unit: tens-of-micro
         ospf_timer_policies:
           name_suffix: ""
           reference_bandwidth: 40000

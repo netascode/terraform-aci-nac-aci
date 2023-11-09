@@ -2030,6 +2030,7 @@ ten_l3outs:
   vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   domain: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   ospf: include('ten_l3outs_ospf', required=False) # @name(L3out OSPF)
+  eigrp: include('ten_l3outs_eigrp', required=False) # @name(L3out EIGRP)
   bfd_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   bgp_peers: list(include('ten_l3outs_bgp_peers'), required=False) # @name(L3out BGP Peers)
   nodes: list(include('ten_l3outs_nodes'), required=False) # @name(L3out Nodes) @ref_name(Node) @key(node_id)
@@ -2061,6 +2062,11 @@ ten_l3outs_ospf:
   auth_type: enum('none', 'simple', 'md5', required=False)
   auth_key: str(required=False)
   auth_key_id: int(min=1, max=255, required=False)
+  policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+ten_l3outs_eigrp:
+  eigrp_interface_profile_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  asn: int(min=1, max=65535)
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_bgp_peers:
@@ -2238,6 +2244,7 @@ ten_l3outs_node_profiles_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   bfd_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   ospf: include('ten_l3outs_node_profiles_interface_profiles_ospf', required=False) # @name(L3out Interface Profile OSPF)
+  eigrp: include('ten_l3outs_node_profiles_interface_profiles_eigrp', required=False) # @name(L3out Interface Profile EIGRP)
   pim_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   igmp_interface_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
@@ -2250,6 +2257,10 @@ ten_l3outs_node_profiles_interface_profiles_ospf:
   auth_key: str(required=False)
   auth_key_id: int(min=1, max=255, required=False)
   policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+ten_l3outs_node_profiles_interface_profiles_eigrp:
+  eigrp_interface_profile_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  keychain_policy_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_node_profiles_interface_profiles_interfaces:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
@@ -2563,6 +2574,7 @@ ten_sr_mpls_l3outs_external_endpoint_groups_contracts:
 
 ten_policies:
   ospf_interface_policies: list(include('ten_ospf_interface_policies'), required=False)
+  eigrp_interface_policies: list(include('ten_eigrp_interface_policies'), required=False)
   ospf_timer_policies: list(include('ten_ospf_timer_policies'), required=False)
   bgp_timer_policies: list(include('ten_bgp_timer_policy'), required=False)
   bgp_peer_prefix_policies: list(include('ten_bgp_peer_prefix_policies'), required=False)
@@ -2601,6 +2613,19 @@ ten_ospf_interface_policies:
   priority: int(min=0, max=255, required=False)
   lsa_retransmit_interval: int(min=1, max=65535, required=False)
   lsa_transmit_delay: int(min=1, max=450, required=False)
+
+ten_eigrp_interface_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  passive_interface: any(bool(), enum('yes', 'no'), required=False)
+  split_horizon: any(bool(), enum('yes', 'no'), required=False)
+  self_nexthop: any(bool(), enum('yes', 'no'), required=False)
+  bfd: any(bool(), enum('yes', 'no'), required=False)
+  hello_interval: int(min=1, max=65535, required=False)
+  hold_interval: int(min=1, max=65535, required=False)
+  bandwidth: int(min=0, max=256000000, required=False)
+  delay: int(min=0, max=4294967295, required=False)
+  delay_unit: enum('tens-of-micro', 'pico', required=False)
 
 ten_ospf_timer_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

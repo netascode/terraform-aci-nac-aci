@@ -374,6 +374,11 @@ apic:
           export_route_control_enforcement: true
           ospf:
             area: 10
+        - name: L3OUT4
+          vrf: VRF2
+          domain: ROUTED1
+          eigrp:
+            asn: 65001
       application_profiles:
         - name: AP1
           alias: AP1-ALIAS
@@ -621,6 +626,18 @@ apic:
             lsa_retransmit_interval: 6
             lsa_transmit_delay: 2
           - name: OIP2
+        eigrp_interface_policies:
+          - name: EIP1
+            description: My Desc
+            bfd: false
+            self_nexthop: true
+            passive_interface: false
+            split_horizon: false
+            hello_interval: 5
+            hold_interval: 15
+            bandwidth: 0
+            delay: 0
+            delay_unit: tens-of-micro
         ospf_timer_policies:
           - name: OSPF_TIMER
           - name: OSPF_TIMER_NON_DEFAULT_TIMER1

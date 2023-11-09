@@ -245,6 +245,44 @@
                                                     }
                                                 }
                                                 {%- endif %}
+                                                {%- if l3out.eigrp is defined %}{{ comma4() }}
+                                                {
+                                                    "eigrpIfP": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "name": "{{ l3out.eigrp.eigrp_interface_profile_name | default(l3out.name) }}",
+                                                            "childAction": "deleteNonPresent"
+                                                        },
+                                                        "children": [
+                                                            {% if l3out.eigrp.policy is defined %}
+                                                            {% set policy_name = l3out.eigrp.policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
+                                                            {
+                                                                "eigrpRsIfPol": {
+                                                                    "attributes": {
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tnEigrpIfPolName": "{{ policy_name }}"
+                                                                    }
+                                                                },
+                                                                {% if l3out.eigrp.keychain_policy_name is defined %}
+                                                                "eigrpAuthIfP": {
+                                                                    "attributes": {
+
+                                                                    },
+                                                                    "children": [
+                                                                        "eigrpRsKeyChainPol": {
+                                                                            "attributes": {
+                                                                                tnFvKeyChainPolName = {{l3out.eigrp.keychain_policy_name}}
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                                {% endif %}
+                                                            }
+                                                            {% endif %}
+                                                        ]
+                                                    }
+                                                }
+                                                {%- endif %}
                                                 {%- if l3out.bfd_policy is defined %}{{ comma4() }}
                                                 {% set bfd_name = l3out.bfd_policy ~ defaults.apic.tenants.policies.bfd_interface_policies.name_suffix %}
                                                 {
@@ -836,6 +874,30 @@
                                                     }
                                                 }
                                                 {%- endif %}
+                                                {%- if ip.eigrp is defined %}{{ comma4() }}
+                                                {
+                                                    "eigrpIfP": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "name": "{{ ip.eigrp.eigrp_interface_profile_name | default(l3out.name) }}",
+                                                            "childAction": "deleteNonPresent"
+                                                        },
+                                                        "children": [
+                                                            {% if ip.eigrp.policy is defined %}
+                                                            {% set policy_name = ip.eigrp.policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
+                                                            {
+                                                                "eigrpRsIfPol": {
+                                                                    "attributes": {
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tnEigrpIfPolName": "{{ policy_name }}"
+                                                                    }
+                                                                }
+                                                            }
+                                                            {% endif %}
+                                                        ]
+                                                    }
+                                                }
+                                                {%- endif %}
                                                 {%- if ip.bfd_policy is defined %}{{ comma4() }}
                                                 {% set bfd_name = ip.bfd_policy ~ defaults.apic.tenants.policies.bfd_interface_policies.name_suffix %}
                                                 {
@@ -1218,6 +1280,17 @@
                                     "areaCtrl": "redistribute,summary",
                                     "areaId": "{{ l3out.ospf.area }}",
                                     "areaType": "{{ l3out.ospf.area_type | default(defaults.apic.tenants.l3outs.ospf.area_type) }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if l3out.eigrp is defined %}{{ comma2() }}
+                        {
+                            "eigrpExtP": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/eigrpExtP",
+                                    "asn": "{{ l3out.eigrp.asn | default(defaults.apic.tenants.l3outs.eigrp.asn) }}"
                                 }
                             }
                         }

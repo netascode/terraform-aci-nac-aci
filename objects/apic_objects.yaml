@@ -1115,6 +1115,7 @@ tenant_objects:
       - l3extOut
       - l3extLNodeP
       - ospfExtP
+      - eigrpExtP
       - bgpExtP
       - l3extRsL3DomAtt
       - l3extRsEctx
@@ -1146,6 +1147,7 @@ tenant_objects:
       - apic.tenants.l3outs.vrf
       - apic.tenants.l3outs.domain
       - apic.tenants.l3outs.ospf
+      - apic.tenants.l3outs.eigrp
       - apic.tenants.l3outs.bfd_policy
       - apic.tenants.l3outs.nodes
       - apic.tenants.l3outs.node_profiles
@@ -1284,6 +1286,19 @@ tenant_objects:
       - config
     paths:
       - apic.tenants.policies.ospf_interface_policies
+  - name: EIGRP Interface Policy
+    template: eigrp_interface_policy
+    folder: tenants
+    aci_classes:
+      - eigrpIfPol
+    scope:
+      - user
+      - mgmt
+      - infra
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.eigrp_interface_policies
   - name: OSPF Timer Policy
     template: ospf_timer_policy
     folder: tenants

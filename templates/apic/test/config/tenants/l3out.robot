@@ -43,6 +43,9 @@ Verify L3out {{ l3out_name }}
     Should Be Equal Value Json String   ${r.json()}   $..ospfExtP.attributes.areaId   {{ area_name(l3out.ospf.area) }}
     Should Be Equal Value Json String   ${r.json()}   $..ospfExtP.attributes.areaType   {{ l3out.ospf.area_type | default(defaults.apic.tenants.l3outs.ospf.area_type) }}
 {% endif %}
+{% if l3out.eigrp is defined %}
+    Should Be Equal Value Json String   ${r.json()}   $..eigrpExtP.attributes.asn   {{ l3out.eigrp.asn | default(defaults.apic.tenants.l3outs.eigrp.asn) }}
+{% endif %}
 
 {% if ((l3out.nodes | default([])) | length) > 0 %}
 
@@ -57,6 +60,13 @@ Verify L3out {{ l3out_name }} Profiles
 {% if l3out.ospf.policy is defined %}
 {% set policy_name = l3out.ospf.policy ~ defaults.apic.tenants.policies.ospf_interface_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   $..ospfRsIfPol.attributes.tnOspfIfPolName   {{ policy_name }}
+{% endif %}
+{% endif %}
+{% if l3out.eigrp is defined %}
+    Should Be Equal Value Json String   ${r.json()}   $..eigrpIfP.attributes.name   {{ l3out.eigrp.eigrp_interface_profile_name | default(l3out.name) }}
+{% if l3out.eigrp.policy is defined %}
+{% set policy_name = l3out.eigrp.policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   $..eigrpRsIfPol.attributes.tnEigrpIfPolName   {{ policy_name }}
 {% endif %}
 {% endif %}
 {% if l3out.bfd_policy is defined %}
@@ -462,6 +472,13 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
 {% if ip.ospf.policy is defined %}
 {% set policy_name = ip.ospf.policy ~ defaults.apic.tenants.policies.ospf_interface_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${ip}..ospfRsIfPol.attributes.tnOspfIfPolName   {{ policy_name }}
+{% endif %}
+{% endif %}
+{% if ip.eigrp is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${ip}..eigrpIfP.attributes.name   {{ ip.eigrp.eigrp_interface_profile_name | default(l3out.name) }}
+{% if ip.eigrp.policy is defined %}
+{% set policy_name = ip.eigrp.policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   ${ip}..eigrpRsIfPol.attributes.tnEigrpIfPolName   {{ policy_name }}
 {% endif %}
 {% endif %}
 {% if ip.bfd_policy is defined %}
