@@ -576,7 +576,7 @@ module "aci_vmware_vmm_domain" {
 
 module "aci_aaa" {
   source  = "netascode/aaa/aci"
-  version = "0.1.0"
+  version = "0.2.0"
 
   count                    = local.modules.aci_aaa == true && var.manage_fabric_policies ? 1 : 0
   remote_user_login_policy = try(local.fabric_policies.aaa.remote_user_login_policy, local.defaults.apic.fabric_policies.aaa.remote_user_login_policy)
