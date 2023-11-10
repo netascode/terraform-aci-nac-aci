@@ -1,6 +1,5 @@
 module "aci_pod_setup" {
-  source  = "netascode/pod-setup/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-pod-setup"
 
   for_each = { for pod in try(local.pod_policies.pods, []) : pod.id => pod if local.modules.aci_pod_setup && var.manage_pod_policies }
   pod_id   = each.value.id

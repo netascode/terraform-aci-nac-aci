@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-snmp-trap-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-snmp-trap-policy/actions/workflows/test.yml)
+
+  # Terraform ACI SNMP Trap Policy Module
+
+  Manages ACI SNMP Trap Policy
+
+  Location in GUI:
+  `Admin` » `External Data Collectors` » `Monitoring Destinations` » `SNMP`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

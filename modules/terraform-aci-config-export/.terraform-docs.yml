@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-config-export/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-config-export/actions/workflows/test.yml)
+
+  # Terraform ACI Config Export Module
+
+  Manages ACI Config Export
+
+  Location in GUI:
+  `Admin` » `Import/Export` » `Export Policies` » `Configuration`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-route-control-route-map/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-route-control-route-map/actions/workflows/test.yml)
+
+  # Terraform ACI Route Control Route Map Module
+
+  Manages ACI Route Control Route Maps
+
+  Location in GUI:
+  `Tenants` » `XXX` » `Policies` » `Protocol` » `Route Maps for Route Control`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

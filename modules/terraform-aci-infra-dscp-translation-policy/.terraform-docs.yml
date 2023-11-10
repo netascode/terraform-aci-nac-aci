@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-infra-dscp-translation-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-infra-dscp-translation-policy/actions/workflows/test.yml)
+
+  # Terraform ACI Infra DSCP Translation Policy Module
+
+  Manages ACI Infra DSCP Translation Policy
+
+  Location in GUI:
+  `Tenants` » `infra` » `Policies` » `Protocol` » `DSCP class-CoS translation policy for L3 traffic`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

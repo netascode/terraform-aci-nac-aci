@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-spanning-tree-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-spanning-tree-policy/actions/workflows/test.yml)
+
+  # Terraform ACI Spanning Tree Policy Module
+
+  Manages ACI Spanning Tree Policy
+
+  Location in GUI:
+  `Fabric` » `Access Policies` » `Policies` » `Interface` » `Spanning Tree Interface`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

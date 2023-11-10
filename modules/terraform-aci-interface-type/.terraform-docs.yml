@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-interface-type/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-interface-type/actions/workflows/test.yml)
+
+  # Terraform ACI Interface Type Module
+
+  Manages Interface Type
+
+  Location in GUI:
+  `Fabric` » `Inventory` » `Pod XXX` » `Node XXX` » `Interface`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

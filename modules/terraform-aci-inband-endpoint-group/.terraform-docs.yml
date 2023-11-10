@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-inband-endpoint-group/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-inband-endpoint-group/actions/workflows/test.yml)
+
+  # Terraform ACI Inband Endpoint Group Module
+
+  Manages ACI Inband Endpoint Group
+
+  Location in GUI:
+  `Tenants` » `mgmt` » `Node Management EPGs`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

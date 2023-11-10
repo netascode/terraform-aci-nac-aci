@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-mcp-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-mcp-policy/actions/workflows/test.yml)
+
+  # Terraform ACI MCP Policy Module
+
+  Manages ACI MCP Policy
+
+  Location in GUI:
+  `Fabric` » `Access Policies` » `Policies` » `Interface` » `MCP Interface`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

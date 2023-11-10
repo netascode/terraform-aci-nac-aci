@@ -4,6 +4,8 @@ repos:
     rev: v1.62.3
     hooks:
       - id: terraform_fmt
+        args:
+          - --args=-recursive
       - id: terraform_tflint
 
   - repo: https://github.com/terraform-docs/terraform-docs
@@ -15,3 +17,580 @@ repos:
         args: ["./examples/banner_hcl"]
       - id: terraform-docs-system
         args: ["."]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-aaa"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-aaa/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-aaep"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-aaep/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-fex-interface-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-fex-interface-profile/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-fex-interface-selector"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-fex-interface-selector/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-leaf-interface-policy-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-leaf-interface-policy-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-leaf-interface-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-leaf-interface-profile/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-leaf-interface-selector"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-leaf-interface-selector/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-leaf-switch-policy-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-leaf-switch-policy-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-leaf-switch-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-leaf-switch-profile/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-span-destination-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-span-destination-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-span-filter-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-span-filter-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-span-source-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-span-source-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-spine-interface-policy-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-spine-interface-policy-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-spine-interface-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-spine-interface-profile/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-spine-interface-selector"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-spine-interface-selector/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-spine-switch-policy-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-spine-switch-policy-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-spine-switch-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-spine-switch-profile/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-apic-connectivity-preference"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-apic-connectivity-preference/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-application-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-application-profile/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-banner"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-banner/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bfd-interface-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bfd-interface-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bfd-multihop-node-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bfd-multihop-node-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-address-family-context-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-address-family-context-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-best-path-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-best-path-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-peer-prefix-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-peer-prefix-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-timer-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-timer-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bridge-domain"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bridge-domain/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ca-certificate"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ca-certificate/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-cdp-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-cdp-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-config-export"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-config-export/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-config-passphrase"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-config-passphrase/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-contract"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-contract/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-coop-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-coop-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-date-time-format"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-date-time-format/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-date-time-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-date-time-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-device-selection-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-device-selection-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-dhcp-option-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-dhcp-option-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-dhcp-relay-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-dhcp-relay-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-dns-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-dns-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-eigrp-interface-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-eigrp-interface-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-endpoint-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-endpoint-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-endpoint-loop-protection"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-endpoint-loop-protection/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-endpoint-security-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-endpoint-security-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-error-disabled-recovery"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-error-disabled-recovery/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-external-connectivity-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-external-connectivity-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-external-endpoint-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-external-endpoint-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-isis-bfd"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-isis-bfd/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-isis-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-isis-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-l2-mtu"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-l2-mtu/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-leaf-interface-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-leaf-interface-profile/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-leaf-switch-policy-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-leaf-switch-policy-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-leaf-switch-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-leaf-switch-profile/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-pod-policy-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-pod-policy-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-pod-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-pod-profile/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-scheduler"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-scheduler/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-span-destination-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-span-destination-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-span-source-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-span-source-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-spine-interface-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-spine-interface-profile/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-spine-switch-policy-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-spine-switch-policy-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-spine-switch-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-spine-switch-profile/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-wide-settings"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-wide-settings/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-filter"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-filter/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-firmware-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-firmware-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-forwarding-scale-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-forwarding-scale-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-geolocation"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-geolocation/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-health-score-evaluation-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-health-score-evaluation-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-igmp-interface-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-igmp-interface-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-igmp-snooping-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-igmp-snooping-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-imported-contract"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-imported-contract/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-inband-endpoint-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-inband-endpoint-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-inband-node-address"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-inband-node-address/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-infra-dscp-translation-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-infra-dscp-translation-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-interface-configuration"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-interface-configuration/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-interface-type"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-interface-type/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ip-aging"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ip-aging/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ip-sla-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ip-sla-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-keyring"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-keyring/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-l2-mtu-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-l2-mtu-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-l2-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-l2-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-l3out"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-l3out/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-l3out-interface-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-l3out-interface-profile/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-l3out-node-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-l3out-node-profile/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-l4l7-device"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-l4l7-device/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ldap"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ldap/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-link-level-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-link-level-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-lldp-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-lldp-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-login-domain"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-login-domain/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-maintenance-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-maintenance-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-management-access-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-management-access-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-match-rule"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-match-rule/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-mcp"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-mcp/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-mcp-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-mcp-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-monitoring-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-monitoring-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-mst-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-mst-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-multicast-route-map"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-multicast-route-map/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-node-control-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-node-control-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-node-registration"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-node-registration/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-oob-contract"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-oob-contract/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-oob-endpoint-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-oob-endpoint-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-oob-external-management-instance"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-oob-external-management-instance/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-oob-node-address"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-oob-node-address/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ospf-interface-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ospf-interface-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-physical-domain"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-physical-domain/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-pim-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-pim-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-pod-setup"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-pod-setup/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-port-channel-member-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-port-channel-member-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-port-channel-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-port-channel-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-port-tracking"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-port-tracking/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-psu-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-psu-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ptp"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ptp/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-qos"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-qos/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-qos-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-qos-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-redirect-backup-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-redirect-backup-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-redirect-health-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-redirect-health-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-redirect-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-redirect-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-remote-location"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-remote-location/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-rogue-endpoint-control"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-rogue-endpoint-control/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-route-control-route-map"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-route-control-route-map/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-route-tag-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-route-tag-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-routed-domain"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-routed-domain/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-service-epg-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-service-epg-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-service-graph-template"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-service-graph-template/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-set-rule"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-set-rule/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-smart-licensing"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-smart-licensing/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-snmp-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-snmp-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-snmp-trap-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-snmp-trap-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-spanning-tree-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-spanning-tree-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-storm-control-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-storm-control-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-syslog-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-syslog-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-system-global-gipo"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-system-global-gipo/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tacacs"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tacacs/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-span-destination-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-span-destination-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-span-source-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-span-source-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-trust-control-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-trust-control-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-user"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-user/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vlan-pool"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vlan-pool/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vmware-vmm-domain"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vmware-vmm-domain/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vpc-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vpc-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vpc-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vpc-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vrf"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vrf/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vspan-destination-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vspan-destination-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vspan-session"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vspan-session/examples/complete"]
+

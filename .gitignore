@@ -395,3 +395,5 @@ $RECYCLE.BIN/
 *.tfstate
 *.tfstate.backup
 *.tfplan
+
+/tmp
