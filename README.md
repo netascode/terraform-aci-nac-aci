@@ -134,7 +134,7 @@ Additional example repositories:
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aci_aaa"></a> [aci\_aaa](#module\_aci\_aaa) | netascode/aaa/aci | 0.1.0 |
+| <a name="module_aci_aaa"></a> [aci\_aaa](#module\_aci\_aaa) | netascode/aaa/aci | 0.2.0 |
 | <a name="module_aci_aaep"></a> [aci\_aaep](#module\_aci\_aaep) | netascode/aaep/aci | 0.2.0 |
 | <a name="module_aci_access_fex_interface_profile_auto"></a> [aci\_access\_fex\_interface\_profile\_auto](#module\_aci\_access\_fex\_interface\_profile\_auto) | netascode/access-fex-interface-profile/aci | 0.1.0 |
 | <a name="module_aci_access_fex_interface_profile_manual"></a> [aci\_access\_fex\_interface\_profile\_manual](#module\_aci\_access\_fex\_interface\_profile\_manual) | netascode/access-fex-interface-profile/aci | 0.1.0 |
