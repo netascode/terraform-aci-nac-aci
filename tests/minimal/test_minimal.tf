@@ -7,7 +7,7 @@ terraform {
     }
     aci = {
       source  = "CiscoDevNet/aci"
-      version = ">= 2.6.1"
+      version = "= 2.10.0"
     }
     utils = {
       source  = "netascode/utils"

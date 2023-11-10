@@ -9,6 +9,20 @@
 - Add support for VRF transit route tag policies
 - Add support for L3out route control enforcement
 - Add support for LDAP login domains
+- Add support for LDAP configuration
+- Add support for BFD multihop node policies
+- Add support for security domains to physical and routed domains
+- Add support for SR MPLS L3outs
+- Add support for configuring `mode` of L3out SVI interfaces
+- Support additional values for `authorization_type` attribute of SNMP users
+- Allow `:` character in name attributes of access spine interface selectors
+- Add HTTPS TLS v1.3 to management access policies
+- Add SSH AES256-GCM to management access policies
+- Add SSH KEX Algorithms to management access policies
+- Improve handling of quad-dotted notation OSPF area IDs
+- Fix PIM policy compatibility issue with ACI 6.0.x
+- Add support for VMware VMM domain security domains
+- Add support for security domains
 
 ## 0.7.0
 

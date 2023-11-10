@@ -17,12 +17,13 @@ module "aci_vlan_pool" {
 
 module "aci_physical_domain" {
   source  = "netascode/physical-domain/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
   for_each             = { for pd in try(local.access_policies.physical_domains, []) : pd.name => pd if local.modules.aci_physical_domain && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.physical_domains.name_suffix}"
   vlan_pool            = "${each.value.vlan_pool}${local.defaults.apic.access_policies.vlan_pools.name_suffix}"
   vlan_pool_allocation = [for k, v in try(local.access_policies.vlan_pools, []) : try(v.allocation, local.defaults.apic.access_policies.vlan_pools.allocation) if v.name == each.value.vlan_pool][0]
+  security_domains     = try(each.value.security_domains, [])
 
   depends_on = [
     module.aci_vlan_pool,
@@ -31,12 +32,13 @@ module "aci_physical_domain" {
 
 module "aci_routed_domain" {
   source  = "netascode/routed-domain/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
   for_each             = { for rd in try(local.access_policies.routed_domains, []) : rd.name => rd if local.modules.aci_routed_domain && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.routed_domains.name_suffix}"
   vlan_pool            = "${each.value.vlan_pool}${local.defaults.apic.access_policies.vlan_pools.name_suffix}"
   vlan_pool_allocation = [for vp in try(local.access_policies.vlan_pools, []) : try(vp.allocation, local.defaults.apic.access_policies.vlan_pools.allocation) if vp.name == each.value.vlan_pool][0]
+  security_domains     = try(each.value.security_domains, [])
 
   depends_on = [
     module.aci_vlan_pool,
@@ -541,7 +543,7 @@ locals {
 
 module "aci_access_spine_interface_selector_manual" {
   source  = "netascode/access-spine-interface-selector/aci"
-  version = "0.2.0"
+  version = "0.2.1"
 
   for_each          = { for selector in local.spine_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_spine_interface_selector && var.manage_access_policies }
   interface_profile = each.value.profile_name

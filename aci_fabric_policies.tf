@@ -226,7 +226,7 @@ module "aci_date_time_policy" {
 
 module "aci_snmp_policy" {
   source  = "netascode/snmp-policy/aci"
-  version = "0.2.2"
+  version = "0.2.3"
 
   for_each    = { for policy in try(local.fabric_policies.pod_policies.snmp_policies, []) : policy.name => policy if local.modules.aci_snmp_policy && var.manage_fabric_policies }
   name        = "${each.value.name}${local.defaults.apic.fabric_policies.pod_policies.snmp_policies.name_suffix}"
@@ -237,7 +237,7 @@ module "aci_snmp_policy" {
   users = [for user in try(each.value.users, []) : {
     name               = user.name
     privacy_type       = try(user.privacy_type, local.defaults.apic.fabric_policies.pod_policies.snmp_policies.users.privacy_type)
-    privacy_key        = try(user.privacy_key, "")
+    privacy_key        = try(user.privacy_key, null)
     authorization_type = try(user.authorization_type, local.defaults.apic.fabric_policies.pod_policies.snmp_policies.users.authorization_type)
     authorization_key  = try(user.authorization_key, "")
   }]
@@ -538,7 +538,7 @@ module "aci_infra_dscp_translation_policy" {
 
 module "aci_vmware_vmm_domain" {
   source  = "netascode/vmware-vmm-domain/aci"
-  version = "0.2.5"
+  version = "0.2.7"
 
   for_each                    = { for vmm in try(local.fabric_policies.vmware_vmm_domains, []) : vmm.name => vmm if local.modules.aci_vmware_vmm_domain && var.manage_fabric_policies }
   name                        = "${each.value.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.name_suffix}"
@@ -550,6 +550,7 @@ module "aci_vmware_vmm_domain" {
   vswitch_lldp_policy         = try(each.value.vswitch.lldp_policy, "")
   vswitch_port_channel_policy = try(each.value.vswitch.port_channel_policy, "")
   vswitch_mtu_policy          = try(each.value.vswitch.mtu_policy, "")
+  security_domains            = try(each.value.security_domains, [])
   credential_policies = [for cp in try(each.value.credential_policies, []) : {
     name     = "${cp.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.credential_policies.name_suffix}"
     username = cp.username
@@ -576,7 +577,7 @@ module "aci_vmware_vmm_domain" {
 
 module "aci_aaa" {
   source  = "netascode/aaa/aci"
-  version = "0.1.0"
+  version = "0.2.0"
 
   count                    = local.modules.aci_aaa == true && var.manage_fabric_policies ? 1 : 0
   remote_user_login_policy = try(local.fabric_policies.aaa.remote_user_login_policy, local.defaults.apic.fabric_policies.aaa.remote_user_login_policy)
@@ -585,6 +586,11 @@ module "aci_aaa" {
   default_login_domain     = try(local.fabric_policies.aaa.default_login_domain, "")
   console_realm            = try(local.fabric_policies.aaa.console_realm, local.defaults.apic.fabric_policies.aaa.console_realm)
   console_login_domain     = try(local.fabric_policies.aaa.console_login_domain, "")
+  security_domains = [for sd in try(local.fabric_policies.aaa.security_domains, []) : {
+    name                   = sd.name
+    description            = try(sd.description, "")
+    restricted_rbac_domain = try(sd.restricted_rbac_domain, false)
+  }]
 }
 
 module "aci_tacacs" {
@@ -839,7 +845,7 @@ module "aci_monitoring_policy" {
 
 module "aci_management_access_policy" {
   source  = "netascode/management-access-policy/aci"
-  version = "0.1.0"
+  version = "0.1.1"
 
   for_each                     = { for policy in try(local.fabric_policies.pod_policies.management_access_policies, []) : policy.name => policy if local.modules.aci_management_access_policy && var.manage_fabric_policies }
   name                         = "${each.value.name}${local.defaults.apic.fabric_policies.pod_policies.management_access_policies.name_suffix}"
@@ -853,10 +859,20 @@ module "aci_management_access_policy" {
   ssh_aes128_gcm               = try(each.value.ssh.aes128_gcm, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.aes128_gcm)
   ssh_aes192_ctr               = try(each.value.ssh.aes192_ctr, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.aes192_ctr)
   ssh_aes256_ctr               = try(each.value.ssh.aes256_ctr, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.aes256_ctr)
+  ssh_aes256_gcm               = try(each.value.ssh.aes256_gcm, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.aes256_gcm)
   ssh_chacha                   = try(each.value.ssh.chacha, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.chacha)
   ssh_hmac_sha1                = try(each.value.ssh.hmac_sha1, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.hmac_sha1)
   ssh_hmac_sha2_256            = try(each.value.ssh.hmac_sha2_256, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.hmac_sha2_256)
   ssh_hmac_sha2_512            = try(each.value.ssh.hmac_sha2_512, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.hmac_sha2_512)
+  ssh_curve25519_sha256        = try(each.value.ssh.curve25519_sha256, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.curve25519_sha256)
+  ssh_curve25519_sha256_libssh = try(each.value.ssh.curve25519_sha256_libssh, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.curve25519_sha256_libssh)
+  ssh_dh1_sha1                 = try(each.value.ssh.dh1_sha1, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.dh1_sha1)
+  ssh_dh14_sha1                = try(each.value.ssh.dh14_sha1, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.dh14_sha1)
+  ssh_dh14_sha256              = try(each.value.ssh.dh14_sha256, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.dh14_sha256)
+  ssh_dh16_sha512              = try(each.value.ssh.dh16_sha512, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.dh16_sha512)
+  ssh_ecdh_sha2_nistp256       = try(each.value.ssh.ecdh_sha2_nistp256, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.ecdh_sha2_nistp256)
+  ssh_ecdh_sha2_nistp384       = try(each.value.ssh.ecdh_sha2_nistp384, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.ecdh_sha2_nistp384)
+  ssh_ecdh_sha2_nistp521       = try(each.value.ssh.ecdh_sha2_nistp521, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.ssh.ecdh_sha2_nistp521)
   https_admin_state            = try(each.value.https.admin_state, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.admin_state)
   https_client_cert_auth_state = try(each.value.https.client_cert_auth_state, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.client_cert_auth_state)
   https_port                   = try(each.value.https.port, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.port)
@@ -864,6 +880,7 @@ module "aci_management_access_policy" {
   https_tlsv1                  = try(each.value.https.tlsv1, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.tlsv1)
   https_tlsv1_1                = try(each.value.https.tlsv1_1, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.tlsv1_1)
   https_tlsv1_2                = try(each.value.https.tlsv1_2, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.tlsv1_2)
+  https_tlsv1_3                = try(each.value.https.tlsv1_3, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.tlsv1_3)
   https_keyring                = try(each.value.https.key_ring, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.key_ring)
   http_admin_state             = try(each.value.http.admin_state, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.http.admin_state)
   http_port                    = try(each.value.http.port, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.http.port)
@@ -946,4 +963,45 @@ module "aci_fabric_span_source_group" {
   }]
   destination_name        = "${each.value.destination.name}${local.defaults.apic.fabric_policies.span.destination_groups.name_suffix}"
   destination_description = try(each.value.destination.description, "")
+}
+
+module "aci_ldap" {
+  source  = "netascode/ldap/aci"
+  version = "0.1.0"
+
+  ldap_providers = [for prov in try(local.fabric_policies.aaa.ldap.providers, []) : {
+    hostname_ip          = prov.hostname_ip
+    description          = try(prov.description, "")
+    port                 = try(prov.port, local.defaults.apic.fabric_policies.aaa.ldap.providers.port)
+    bind_dn              = try(prov.bind_dn, "")
+    base_dn              = try(prov.base_dn, "")
+    password             = try(prov.password, "")
+    timeout              = try(prov.timeout, local.defaults.apic.fabric_policies.aaa.ldap.providers.timeout)
+    retries              = try(prov.retries, local.defaults.apic.fabric_policies.aaa.ldap.providers.retries)
+    enable_ssl           = try(prov.enable_ssl, local.defaults.apic.fabric_policies.aaa.ldap.providers.enable_ssl)
+    filter               = try(prov.filter, "")
+    attribute            = try(prov.attribute, "")
+    ssl_validation_level = try(prov.ssl_validation_level, local.defaults.apic.fabric_policies.aaa.ldap.providers.ssl_validation_level)
+    mgmt_epg_type        = try(prov.mgmt_epg, local.defaults.apic.fabric_policies.aaa.ldap.providers.mgmt_epg)
+    mgmt_epg_name        = try(prov.mgmt_epg, local.defaults.apic.fabric_policies.aaa.ldap.providers.mgmt_epg) == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
+    monitoring           = try(prov.server_monitoring, local.defaults.apic.fabric_policies.aaa.ldap.providers.server_monitoring)
+    monitoring_username  = try(prov.monitoring_username, local.defaults.apic.fabric_policies.aaa.ldap.providers.monitoring_username)
+    monitoring_password  = try(prov.monitoring_password, "")
+  }]
+  group_map_rules = [for rule in try(local.fabric_policies.aaa.ldap.group_map_rules, []) : {
+    name        = rule.name
+    description = try(rule.description, "")
+    group_dn    = try(rule.group_dn, "")
+    security_domains = [for dom in try(rule.security_domains, []) : {
+      name = dom.name
+      roles = [for role in try(dom.roles, []) : {
+        name           = role.name
+        privilege_type = try(role.privilege_type, local.defaults.apic.fabric_policies.aaa.ldap.group_map_rules.security_domains.roles.privilege_type)
+      }]
+    }]
+  }]
+  group_maps = [for map in try(local.fabric_policies.aaa.ldap.group_maps, []) : {
+    name  = map.name
+    rules = [for rule in try(map.rules, []) : rule.name]
+  }]
 }

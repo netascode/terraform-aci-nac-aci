@@ -21,6 +21,7 @@ modules:
   aci_application_profile: true
   aci_banner: true
   aci_bfd_interface_policy: true
+  aci_bfd_multihop_node_policy: true
   aci_bgp_address_family_context_policy: true
   aci_bgp_best_path_policy: true
   aci_bgp_peer_prefix_policy: true

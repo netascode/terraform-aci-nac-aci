@@ -19,13 +19,15 @@ jobs:
       - name: Python Setup
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Terraform Setup
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
 
       - name: Tflint Setup
-        uses: terraform-linters/setup-tflint@v3
+        uses: terraform-linters/setup-tflint@v4
 
       - name: Terraform Docs Setup
         run: |
@@ -51,7 +53,7 @@ jobs:
         if: always()
         with:
           junit_files: test-report.xml
-          check_name: 'Integration Test Results'
+          check_name: "Integration Test Results"
 
       - name: Webex Notification
         if: always()
