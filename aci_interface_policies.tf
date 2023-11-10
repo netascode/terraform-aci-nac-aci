@@ -196,8 +196,7 @@ locals {
 }
 
 module "aci_leaf_interface_configuration" {
-  source = "netascode/interface-configuration/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-interface-configuration"
 
   for_each          = { for int in local.new_leaf_interface_configuration : int.key => int if try(local.modules.aci_interface_configuration, true) && var.manage_interface_policies && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true }
   node_id           = each.value.node_id
@@ -230,8 +229,7 @@ locals {
 }
 
 module "aci_leaf_interface_configuration_sub" {
-  source = "netascode/interface-configuration/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-interface-configuration"
 
   for_each          = { for int in local.new_leaf_subinterface_configuration : int.key => int if try(local.modules.aci_interface_configuration, true) && var.manage_interface_policies && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true }
   node_id           = each.value.node_id
@@ -267,8 +265,7 @@ locals {
 }
 
 module "aci_interface_configuration_fex" {
-  source = "netascode/interface-configuration/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-interface-configuration"
 
   for_each          = { for int in local.new_fex_interface_configuration : int.key => int if try(local.modules.aci_interface_configuration, true) && var.manage_interface_policies && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true }
   node_id           = each.value.node_id
@@ -302,8 +299,7 @@ locals {
 }
 
 module "aci_spine_interface_configuration" {
-  source = "netascode/interface-configuration/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-interface-configuration"
 
   for_each     = { for int in local.new_spine_interface_configuration : int.key => int if try(local.modules.aci_interface_configuration, true) && var.manage_interface_policies && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true }
   node_id      = each.value.node_id
