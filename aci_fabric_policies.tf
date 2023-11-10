@@ -577,7 +577,7 @@ module "aci_vmware_vmm_domain" {
 
 module "aci_aaa" {
   source  = "netascode/aaa/aci"
-  version = "0.1.0"
+  version = "0.2.0"
 
   count                    = local.modules.aci_aaa == true && var.manage_fabric_policies ? 1 : 0
   remote_user_login_policy = try(local.fabric_policies.aaa.remote_user_login_policy, local.defaults.apic.fabric_policies.aaa.remote_user_login_policy)
@@ -586,6 +586,11 @@ module "aci_aaa" {
   default_login_domain     = try(local.fabric_policies.aaa.default_login_domain, "")
   console_realm            = try(local.fabric_policies.aaa.console_realm, local.defaults.apic.fabric_policies.aaa.console_realm)
   console_login_domain     = try(local.fabric_policies.aaa.console_login_domain, "")
+  security_domains = [for sd in try(local.fabric_policies.aaa.security_domains, []) : {
+    name                   = sd.name
+    description            = try(sd.description, "")
+    restricted_rbac_domain = try(sd.restricted_rbac_domain, false)
+  }]
 }
 
 module "aci_tacacs" {
