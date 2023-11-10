@@ -1197,7 +1197,7 @@ ap_leaf_interface_profiles:
   expected_state: include('ap_leaf_interface_profiles_expected_state', required=False) # @no_external_doc() @name(A Leaf Int Pro Expected State) @sheet_hidden()
 
 ap_leaf_interface_profiles_selectors:
-  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  name: regex('^[a-zA-Z0-9_.,:-]{1,64}$')
   fex_id: int(min=101, max=199, required=False)
   fex_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
