@@ -7,10 +7,10 @@
             {%- set comma1 = joiner(",") %}
             {%- for sd in apic.fabric_policies.aaa.security_domains | default([]) %}{{ comma1() }}
             {
-                "aaaDomain":{
+                "aaaDomain": {
                     "attributes": {
                         "name": "{{ sd.name }}",
-                        "descr": "{{ sd.description | default() }}"
+                        "descr": "{{ sd.description | default() }}",
                         "restrictedRbacDomain": "{% if sd.restricted_rbac_domain | default(defaults.apic.fabric_policies.aaa.security_domains.restricted_rbac_domain) == "true" %}yes{% else %}no{% endif %}"
                     }
                 }
