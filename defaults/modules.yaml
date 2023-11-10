@@ -73,6 +73,7 @@ modules:
   aci_inband_endpoint_group: true
   aci_inband_node_address: true
   aci_infra_dscp_translation_policy: true
+  aci_interface_configuration: true
   aci_interface_type: true
   aci_ip_aging: true
   aci_ip_sla_policy: true
