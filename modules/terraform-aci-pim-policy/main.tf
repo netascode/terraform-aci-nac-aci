@@ -12,7 +12,7 @@ resource "aci_rest_managed" "pimIfPol" {
     jpInterval    = var.join_prune_interval
   }
   lifecycle {
-    ignore_changes = [content["authKey"]]
+    ignore_changes = [content["secureAuthKey"]]
   }
 }
 
