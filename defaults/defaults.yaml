@@ -8,7 +8,6 @@ defaults:
     auto_generate_fabric_spine_switch_interface_profiles: false
     auto_generate_access_leaf_switch_interface_profiles: false
     auto_generate_access_spine_switch_interface_profiles: false
-    new_interface_configuration: false
     fabric_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
       leaf_interface_profile_name: "LEAF\\g<id>"
@@ -642,18 +641,9 @@ defaults:
         interfaces:
           from_module: 1
           module: 1
-          breakout: none
-          role: leaf
-          fex_id: unspecified
-          policy_group: system-ports-default
-          sub_ports:
-            port: 0
-            module: 1
         fexes:
           interfaces:
             from_module: 1
-            module: 1
-            policy_group: system-ports-default
 
     tenants:
       managed: true
