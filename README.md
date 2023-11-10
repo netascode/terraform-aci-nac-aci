@@ -221,6 +221,7 @@ Additional example repositories:
 | <a name="module_aci_inband_endpoint_group"></a> [aci\_inband\_endpoint\_group](#module\_aci\_inband\_endpoint\_group) | netascode/inband-endpoint-group/aci | 0.1.2 |
 | <a name="module_aci_inband_node_address"></a> [aci\_inband\_node\_address](#module\_aci\_inband\_node\_address) | netascode/inband-node-address/aci | 0.2.0 |
 | <a name="module_aci_infra_dscp_translation_policy"></a> [aci\_infra\_dscp\_translation\_policy](#module\_aci\_infra\_dscp\_translation\_policy) | netascode/infra-dscp-translation-policy/aci | 0.1.0 |
+| <a name="module_aci_interface_configuration_fex"></a> [aci\_interface\_configuration\_fex](#module\_aci\_interface\_configuration\_fex) | ../aci_interface_configuration | n/a |
 | <a name="module_aci_interface_type"></a> [aci\_interface\_type](#module\_aci\_interface\_type) | netascode/interface-type/aci | 0.1.0 |
 | <a name="module_aci_ip_aging"></a> [aci\_ip\_aging](#module\_aci\_ip\_aging) | netascode/ip-aging/aci | 0.1.0 |
 | <a name="module_aci_ip_sla_policy"></a> [aci\_ip\_sla\_policy](#module\_aci\_ip\_sla\_policy) | netascode/ip-sla-policy/aci | 0.1.0 |
@@ -234,6 +235,8 @@ Additional example repositories:
 | <a name="module_aci_l3out_node_profile_manual"></a> [aci\_l3out\_node\_profile\_manual](#module\_aci\_l3out\_node\_profile\_manual) | netascode/l3out-node-profile/aci | 0.2.8 |
 | <a name="module_aci_l4l7_device"></a> [aci\_l4l7\_device](#module\_aci\_l4l7\_device) | netascode/l4l7-device/aci | 0.2.4 |
 | <a name="module_aci_ldap"></a> [aci\_ldap](#module\_aci\_ldap) | netascode/ldap/aci | 0.1.0 |
+| <a name="module_aci_leaf_interface_configuration"></a> [aci\_leaf\_interface\_configuration](#module\_aci\_leaf\_interface\_configuration) | ../aci_interface_configuration | n/a |
+| <a name="module_aci_leaf_interface_configuration_sub"></a> [aci\_leaf\_interface\_configuration\_sub](#module\_aci\_leaf\_interface\_configuration\_sub) | ../aci_interface_configuration | n/a |
 | <a name="module_aci_link_level_policy"></a> [aci\_link\_level\_policy](#module\_aci\_link\_level\_policy) | netascode/link-level-policy/aci | 0.1.1 |
 | <a name="module_aci_lldp_policy"></a> [aci\_lldp\_policy](#module\_aci\_lldp\_policy) | netascode/lldp-policy/aci | 0.1.0 |
 | <a name="module_aci_login_domain"></a> [aci\_login\_domain](#module\_aci\_login\_domain) | netascode/login-domain/aci | 0.2.1 |
@@ -277,6 +280,7 @@ Additional example repositories:
 | <a name="module_aci_snmp_policy"></a> [aci\_snmp\_policy](#module\_aci\_snmp\_policy) | netascode/snmp-policy/aci | 0.2.3 |
 | <a name="module_aci_snmp_trap_policy"></a> [aci\_snmp\_trap\_policy](#module\_aci\_snmp\_trap\_policy) | netascode/snmp-trap-policy/aci | 0.2.1 |
 | <a name="module_aci_spanning_tree_policy"></a> [aci\_spanning\_tree\_policy](#module\_aci\_spanning\_tree\_policy) | netascode/spanning-tree-policy/aci | 0.1.0 |
+| <a name="module_aci_spine_interface_configuration"></a> [aci\_spine\_interface\_configuration](#module\_aci\_spine\_interface\_configuration) | ../aci_interface_configuration | n/a |
 | <a name="module_aci_sr_mpls_external_endpoint_group"></a> [aci\_sr\_mpls\_external\_endpoint\_group](#module\_aci\_sr\_mpls\_external\_endpoint\_group) | netascode/external-endpoint-group/aci | 0.2.2 |
 | <a name="module_aci_sr_mpls_l3out"></a> [aci\_sr\_mpls\_l3out](#module\_aci\_sr\_mpls\_l3out) | netascode/l3out/aci | 0.2.5 |
 | <a name="module_aci_sr_mpls_l3out_interface_profile_manual"></a> [aci\_sr\_mpls\_l3out\_interface\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_interface\_profile\_manual) | netascode/l3out-interface-profile/aci | 0.2.10 |
