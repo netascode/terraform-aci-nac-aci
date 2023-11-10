@@ -665,7 +665,7 @@ locals {
         ospf_area_cost                          = try(l3out.ospf.area_cost, local.defaults.apic.tenants.l3outs.ospf.area_cost)
         ospf_area_type                          = try(l3out.ospf.area_type, local.defaults.apic.tenants.l3outs.ospf.area_type)
         eigrp                                   = try(l3out.eigrp, null) != null ? true : false
-        eigrp_asn                               = try(l3out.eigrp, null) != null ? l3out.eigrp.asn : null
+        eigrp_asn                               = try(l3out.eigrp, null) != null ? l3out.eigrp.asn : 1
         l3_multicast_ipv4                       = try(l3out.l3_multicast_ipv4, local.defaults.apic.tenants.l3outs.l3_multicast_ipv4)
         target_dscp                             = try(l3out.target_dscp, local.defaults.apic.tenants.l3outs.target_dscp)
         import_route_control_enforcement        = try(l3out.import_route_control_enforcement, local.defaults.apic.tenants.l3outs.import_route_control_enforcement)
