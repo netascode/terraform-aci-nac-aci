@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-config-passphrase/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-config-passphrase/actions/workflows/test.yml)
+
+  # Terraform ACI Config Passphrase Module
+
+  Manages Config Passphrase
+
+  Location in GUI:
+  `System` » `System Settings` » `Global AES Passphrase Encryption Settings`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

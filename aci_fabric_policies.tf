@@ -1,22 +1,19 @@
 module "aci_config_passphrase" {
-  source  = "netascode/config-passphrase/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-config-passphrase"
 
   count             = try(local.fabric_policies.config_passphrase, null) != null && local.modules.aci_config_passphrase == true && var.manage_fabric_policies ? 1 : 0
   config_passphrase = local.fabric_policies.config_passphrase
 }
 
 module "aci_apic_connectivity_preference" {
-  source  = "netascode/apic-connectivity-preference/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-apic-connectivity-preference"
 
   count                = local.modules.aci_apic_connectivity_preference == true && var.manage_fabric_policies ? 1 : 0
   interface_preference = try(local.fabric_policies.apic_conn_pref, local.defaults.apic.fabric_policies.apic_conn_pref)
 }
 
 module "aci_banner" {
-  source  = "netascode/banner/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-banner"
 
   count                   = local.modules.aci_banner == true && var.manage_fabric_policies ? 1 : 0
   apic_gui_banner_message = try(local.fabric_policies.banners.apic_gui_banner_message, "")
@@ -27,8 +24,7 @@ module "aci_banner" {
 }
 
 module "aci_endpoint_loop_protection" {
-  source  = "netascode/endpoint-loop-protection/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-endpoint-loop-protection"
 
   count                = local.modules.aci_endpoint_loop_protection == true && var.manage_fabric_policies ? 1 : 0
   action               = try(local.fabric_policies.ep_loop_protection.action, local.defaults.apic.fabric_policies.ep_loop_protection.action)
@@ -38,8 +34,7 @@ module "aci_endpoint_loop_protection" {
 }
 
 module "aci_rogue_endpoint_control" {
-  source  = "netascode/rogue-endpoint-control/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-rogue-endpoint-control"
 
   count                = local.modules.aci_rogue_endpoint_control == true && var.manage_fabric_policies ? 1 : 0
   admin_state          = try(local.fabric_policies.rogue_ep_control.admin_state, local.defaults.apic.fabric_policies.rogue_ep_control.admin_state)
@@ -49,8 +44,7 @@ module "aci_rogue_endpoint_control" {
 }
 
 module "aci_fabric_wide_settings" {
-  source  = "netascode/fabric-wide-settings/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-fabric-wide-settings"
 
   count                         = local.modules.aci_fabric_wide_settings == true && var.manage_fabric_policies ? 1 : 0
   domain_validation             = try(local.fabric_policies.global_settings.domain_validation, local.defaults.apic.fabric_policies.global_settings.domain_validation)
@@ -63,8 +57,7 @@ module "aci_fabric_wide_settings" {
 }
 
 module "aci_port_tracking" {
-  source  = "netascode/port-tracking/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-port-tracking"
 
   count       = local.modules.aci_port_tracking == true && var.manage_fabric_policies ? 1 : 0
   admin_state = try(local.fabric_policies.port_tracking.admin_state, local.defaults.apic.fabric_policies.port_tracking.admin_state)
@@ -73,8 +66,7 @@ module "aci_port_tracking" {
 }
 
 module "aci_ptp" {
-  source  = "netascode/ptp/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-ptp"
 
   count             = local.modules.aci_ptp == true && var.manage_fabric_policies ? 1 : 0
   admin_state       = try(local.fabric_policies.ptp.admin_state, local.defaults.apic.fabric_policies.ptp.admin_state)
@@ -87,56 +79,49 @@ module "aci_ptp" {
 }
 
 module "aci_ip_aging" {
-  source  = "netascode/ip-aging/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-ip-aging"
 
   count       = local.modules.aci_ip_aging == true && var.manage_fabric_policies ? 1 : 0
   admin_state = try(local.fabric_policies.ip_aging, local.defaults.apic.fabric_policies.ip_aging)
 }
 
 module "aci_system_global_gipo" {
-  source  = "netascode/system-global-gipo/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-system-global-gipo"
 
   count          = local.modules.aci_system_global_gipo == true && var.manage_fabric_policies ? 1 : 0
   use_infra_gipo = try(local.fabric_policies.use_infra_gipo, local.defaults.apic.fabric_policies.use_infra_gipo)
 }
 
 module "aci_coop_policy" {
-  source  = "netascode/coop-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-coop-policy"
 
   count             = local.modules.aci_coop_policy == true && var.manage_fabric_policies ? 1 : 0
   coop_group_policy = try(local.fabric_policies.coop_group_policy, local.defaults.apic.fabric_policies.coop_group_policy)
 }
 
 module "aci_fabric_isis_policy" {
-  source  = "netascode/fabric-isis-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-fabric-isis-policy"
 
   count               = local.modules.aci_fabric_isis_policy == true && var.manage_fabric_policies ? 1 : 0
   redistribute_metric = try(local.fabric_policies.fabric_isis_redistribute_metric, local.defaults.apic.fabric_policies.fabric_isis_redistribute_metric)
 }
 
 module "aci_fabric_isis_bfd" {
-  source  = "netascode/fabric-isis-bfd/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-fabric-isis-bfd"
 
   count       = local.modules.aci_fabric_isis_bfd == true && var.manage_fabric_policies ? 1 : 0
   admin_state = try(local.fabric_policies.fabric_isis_bfd, local.defaults.apic.fabric_policies.fabric_isis_bfd)
 }
 
 module "aci_fabric_l2_mtu" {
-  source  = "netascode/fabric-l2-mtu/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-fabric-l2-mtu"
 
   count       = local.modules.aci_fabric_l2_mtu == true && var.manage_fabric_policies ? 1 : 0
   l2_port_mtu = try(local.fabric_policies.l2_port_mtu, local.defaults.apic.fabric_policies.l2_port_mtu)
 }
 
 module "aci_bgp_policy" {
-  source  = "netascode/bgp-policy/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-bgp-policy"
 
   count         = try(local.fabric_policies.fabric_bgp_as, null) != null && local.modules.aci_bgp_policy && var.manage_fabric_policies ? 1 : 0
   fabric_bgp_as = try(local.fabric_policies.fabric_bgp_as, null)
@@ -151,8 +136,7 @@ module "aci_bgp_policy" {
 }
 
 module "aci_date_time_format" {
-  source  = "netascode/date-time-format/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-date-time-format"
 
   count          = local.modules.aci_date_time_format == true && var.manage_fabric_policies ? 1 : 0
   display_format = try(local.fabric_policies.date_time_format.display_format, local.defaults.apic.fabric_policies.date_time_format.display_format)
@@ -161,8 +145,7 @@ module "aci_date_time_format" {
 }
 
 module "aci_l2_mtu_policy" {
-  source  = "netascode/l2-mtu-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-l2-mtu-policy"
 
   for_each      = { for policy in try(local.fabric_policies.l2_mtu_policies, []) : policy.name => policy if local.modules.aci_l2_mtu_policy && var.manage_fabric_policies }
   name          = "${each.value.name}${local.defaults.apic.fabric_policies.l2_mtu_policies.name_suffix}"
@@ -170,8 +153,7 @@ module "aci_l2_mtu_policy" {
 }
 
 module "aci_dns_policy" {
-  source  = "netascode/dns-policy/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-dns-policy"
 
   for_each      = { for policy in try(local.fabric_policies.dns_policies, []) : policy.name => policy if local.modules.aci_dns_policy && var.manage_fabric_policies }
   name          = "${each.value.name}${local.defaults.apic.fabric_policies.dns_policies.name_suffix}"
@@ -188,8 +170,7 @@ module "aci_dns_policy" {
 }
 
 module "aci_error_disabled_recovery" {
-  source  = "netascode/error-disabled-recovery/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-error-disabled-recovery"
 
   count      = local.modules.aci_error_disabled_recovery == true && var.manage_fabric_policies ? 1 : 0
   interval   = try(local.fabric_policies.err_disabled_recovery.interval, local.defaults.apic.fabric_policies.err_disabled_recovery.interval)
@@ -199,8 +180,7 @@ module "aci_error_disabled_recovery" {
 }
 
 module "aci_date_time_policy" {
-  source  = "netascode/date-time-policy/aci"
-  version = "0.2.2"
+  source = "./modules/terraform-aci-date-time-policy"
 
   for_each                       = { for policy in try(local.fabric_policies.pod_policies.date_time_policies, []) : policy.name => policy if local.modules.aci_date_time_policy && var.manage_fabric_policies }
   name                           = "${each.value.name}${local.defaults.apic.fabric_policies.pod_policies.date_time_policies.name_suffix}"
@@ -225,8 +205,7 @@ module "aci_date_time_policy" {
 }
 
 module "aci_snmp_policy" {
-  source  = "netascode/snmp-policy/aci"
-  version = "0.2.3"
+  source = "./modules/terraform-aci-snmp-policy"
 
   for_each    = { for policy in try(local.fabric_policies.pod_policies.snmp_policies, []) : policy.name => policy if local.modules.aci_snmp_policy && var.manage_fabric_policies }
   name        = "${each.value.name}${local.defaults.apic.fabric_policies.pod_policies.snmp_policies.name_suffix}"
@@ -257,8 +236,7 @@ module "aci_snmp_policy" {
 }
 
 module "aci_fabric_pod_policy_group" {
-  source  = "netascode/fabric-pod-policy-group/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-fabric-pod-policy-group"
 
   for_each                 = { for pg in try(local.fabric_policies.pod_policy_groups, []) : pg.name => pg if local.modules.aci_fabric_pod_policy_group && var.manage_fabric_policies }
   name                     = "${each.value.name}${local.defaults.apic.fabric_policies.pod_policy_groups.name_suffix}"
@@ -274,8 +252,7 @@ module "aci_fabric_pod_policy_group" {
 }
 
 module "aci_fabric_pod_profile_auto" {
-  source  = "netascode/fabric-pod-profile/aci"
-  version = "0.2.1"
+  source = "./modules/terraform-aci-fabric-pod-profile"
 
   for_each = { for pod in try(local.pod_policies.pods, []) : pod.id => pod if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_pod_profiles, local.defaults.apic.auto_generate_pod_profiles)) && local.modules.aci_fabric_pod_profile && var.manage_fabric_policies }
   name     = replace(each.value.id, "/^(?P<id>.+)$/", replace(try(local.fabric_policies.pod_profile_name, local.defaults.apic.fabric_policies.pod_profile_name), "\\g<id>", "$${id}"))
@@ -295,8 +272,7 @@ module "aci_fabric_pod_profile_auto" {
 }
 
 module "aci_fabric_pod_profile_manual" {
-  source  = "netascode/fabric-pod-profile/aci"
-  version = "0.2.1"
+  source = "./modules/terraform-aci-fabric-pod-profile"
 
   for_each = { for prof in try(local.fabric_policies.pod_profiles, []) : prof.name => prof if local.modules.aci_fabric_pod_profile && var.manage_fabric_policies }
   name     = "${each.value.name}${local.defaults.apic.fabric_policies.pod_profiles.name_suffix}"
@@ -317,8 +293,7 @@ module "aci_fabric_pod_profile_manual" {
 }
 
 module "aci_psu_policy" {
-  source  = "netascode/psu-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-psu-policy"
 
   for_each    = { for pol in try(local.fabric_policies.switch_policies.psu_policies, []) : pol.name => pol if local.modules.aci_psu_policy && var.manage_fabric_policies }
   name        = "${each.value.name}${local.defaults.apic.fabric_policies.switch_policies.psu_policies.name_suffix}"
@@ -326,8 +301,7 @@ module "aci_psu_policy" {
 }
 
 module "aci_node_control_policy" {
-  source  = "netascode/node-control-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-node-control-policy"
 
   for_each  = { for pol in try(local.fabric_policies.switch_policies.node_control_policies, []) : pol.name => pol if local.modules.aci_node_control_policy && var.manage_fabric_policies }
   name      = "${each.value.name}${local.defaults.apic.fabric_policies.switch_policies.node_control_policies.name_suffix}"
@@ -336,8 +310,7 @@ module "aci_node_control_policy" {
 }
 
 module "aci_fabric_leaf_switch_policy_group" {
-  source  = "netascode/fabric-leaf-switch-policy-group/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-fabric-leaf-switch-policy-group"
 
   for_each            = { for pg in try(local.fabric_policies.leaf_switch_policy_groups, []) : pg.name => pg if local.modules.aci_fabric_leaf_switch_policy_group && var.manage_fabric_policies }
   name                = "${each.value.name}${local.defaults.apic.fabric_policies.leaf_switch_policy_groups.name_suffix}"
@@ -351,8 +324,7 @@ module "aci_fabric_leaf_switch_policy_group" {
 }
 
 module "aci_fabric_spine_switch_policy_group" {
-  source  = "netascode/fabric-spine-switch-policy-group/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-fabric-spine-switch-policy-group"
 
   for_each            = { for pg in try(local.fabric_policies.spine_switch_policy_groups, []) : pg.name => pg if local.modules.aci_fabric_spine_switch_policy_group && var.manage_fabric_policies }
   name                = "${each.value.name}${local.defaults.apic.fabric_policies.spine_switch_policy_groups.name_suffix}"
@@ -366,8 +338,7 @@ module "aci_fabric_spine_switch_policy_group" {
 }
 
 module "aci_fabric_leaf_switch_profile_auto" {
-  source  = "netascode/fabric-leaf-switch-profile/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-fabric-leaf-switch-profile"
 
   for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles)) && local.modules.aci_fabric_leaf_switch_profile && var.manage_fabric_policies }
   name               = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_switch_profile_name, local.defaults.apic.fabric_policies.leaf_switch_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
@@ -390,8 +361,7 @@ module "aci_fabric_leaf_switch_profile_auto" {
 }
 
 module "aci_fabric_leaf_switch_profile_manual" {
-  source  = "netascode/fabric-leaf-switch-profile/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-fabric-leaf-switch-profile"
 
   for_each = { for prof in try(local.fabric_policies.leaf_switch_profiles, []) : prof.name => prof if local.modules.aci_fabric_leaf_switch_profile && var.manage_fabric_policies }
   name     = each.value.name
@@ -414,8 +384,7 @@ module "aci_fabric_leaf_switch_profile_manual" {
 }
 
 module "aci_fabric_spine_switch_profile_auto" {
-  source  = "netascode/fabric-spine-switch-profile/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-fabric-spine-switch-profile"
 
   for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_spine_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_spine_switch_interface_profiles)) && local.modules.aci_fabric_spine_switch_profile && var.manage_fabric_policies }
   name               = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.spine_switch_profile_name, local.defaults.apic.fabric_policies.spine_switch_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
@@ -438,8 +407,7 @@ module "aci_fabric_spine_switch_profile_auto" {
 }
 
 module "aci_fabric_spine_switch_profile_manual" {
-  source  = "netascode/fabric-spine-switch-profile/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-fabric-spine-switch-profile"
 
   for_each = { for prof in try(local.fabric_policies.spine_switch_profiles, []) : prof.name => prof if local.modules.aci_fabric_spine_switch_profile && var.manage_fabric_policies }
   name     = each.value.name
@@ -462,40 +430,35 @@ module "aci_fabric_spine_switch_profile_manual" {
 }
 
 module "aci_fabric_leaf_interface_profile_auto" {
-  source  = "netascode/fabric-leaf-interface-profile/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-fabric-leaf-interface-profile"
 
   for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles)) && local.modules.aci_fabric_leaf_interface_profile && var.manage_fabric_policies }
   name     = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_interface_profile_name, local.defaults.apic.fabric_policies.leaf_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
 }
 
 module "aci_fabric_leaf_interface_profile_manual" {
-  source  = "netascode/fabric-leaf-interface-profile/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-fabric-leaf-interface-profile"
 
   for_each = { for prof in try(local.fabric_policies.leaf_interface_profiles, []) : prof.name => prof if local.modules.aci_fabric_leaf_interface_profile && var.manage_fabric_policies }
   name     = "${each.value.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.name_suffix}"
 }
 
 module "aci_fabric_spine_interface_profile_auto" {
-  source  = "netascode/fabric-spine-interface-profile/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-fabric-spine-interface-profile"
 
   for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_spine_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_spine_switch_interface_profiles)) && local.modules.aci_fabric_spine_interface_profile && var.manage_fabric_policies }
   name     = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.spine_interface_profile_name, local.defaults.apic.fabric_policies.spine_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
 }
 
 module "aci_fabric_spine_interface_profile_manual" {
-  source  = "netascode/fabric-spine-interface-profile/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-fabric-spine-interface-profile"
 
   for_each = { for prof in try(local.fabric_policies.spine_interface_profiles, []) : prof.name => prof if local.modules.aci_fabric_spine_interface_profile && var.manage_fabric_policies }
   name     = "${each.value.name}${local.defaults.apic.fabric_policies.spine_interface_profiles.name_suffix}"
 }
 
 module "aci_external_connectivity_policy" {
-  source  = "netascode/external-connectivity-policy/aci"
-  version = "0.2.1"
+  source = "./modules/terraform-aci-external-connectivity-policy"
 
   count        = try(local.fabric_policies.external_connectivity_policy.name, null) != null && local.modules.aci_external_connectivity_policy && var.manage_fabric_policies ? 1 : 0
   name         = "${local.fabric_policies.external_connectivity_policy.name}${local.defaults.apic.fabric_policies.external_connectivity_policy.name_suffix}"
@@ -519,8 +482,7 @@ module "aci_external_connectivity_policy" {
 }
 
 module "aci_infra_dscp_translation_policy" {
-  source  = "netascode/infra-dscp-translation-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-infra-dscp-translation-policy"
 
   count         = local.modules.aci_infra_dscp_translation_policy == true && var.manage_fabric_policies ? 1 : 0
   admin_state   = try(local.fabric_policies.infra_dscp_translation_policy.admin_state, local.defaults.apic.fabric_policies.infra_dscp_translation_policy.admin_state)
@@ -537,8 +499,7 @@ module "aci_infra_dscp_translation_policy" {
 }
 
 module "aci_vmware_vmm_domain" {
-  source  = "netascode/vmware-vmm-domain/aci"
-  version = "0.2.7"
+  source = "./modules/terraform-aci-vmware-vmm-domain"
 
   for_each                    = { for vmm in try(local.fabric_policies.vmware_vmm_domains, []) : vmm.name => vmm if local.modules.aci_vmware_vmm_domain && var.manage_fabric_policies }
   name                        = "${each.value.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.name_suffix}"
@@ -576,8 +537,7 @@ module "aci_vmware_vmm_domain" {
 }
 
 module "aci_aaa" {
-  source  = "netascode/aaa/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-aaa"
 
   count                    = local.modules.aci_aaa == true && var.manage_fabric_policies ? 1 : 0
   remote_user_login_policy = try(local.fabric_policies.aaa.remote_user_login_policy, local.defaults.apic.fabric_policies.aaa.remote_user_login_policy)
@@ -594,8 +554,7 @@ module "aci_aaa" {
 }
 
 module "aci_tacacs" {
-  source  = "netascode/tacacs/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-tacacs"
 
   for_each            = { for tacacs in try(local.fabric_policies.aaa.tacacs_providers, []) : tacacs.hostname_ip => tacacs if local.modules.aci_tacacs && var.manage_fabric_policies }
   hostname_ip         = each.value.hostname_ip
@@ -613,8 +572,7 @@ module "aci_tacacs" {
 }
 
 module "aci_user" {
-  source  = "netascode/user/aci"
-  version = "0.2.1"
+  source = "./modules/terraform-aci-user"
 
   for_each         = { for user in try(local.fabric_policies.aaa.users, []) : user.username => user if local.modules.aci_user && var.manage_fabric_policies }
   username         = each.value.username
@@ -640,8 +598,7 @@ module "aci_user" {
 }
 
 module "aci_login_domain" {
-  source  = "netascode/login-domain/aci"
-  version = "0.2.1"
+  source = "./modules/terraform-aci-login-domain"
 
   for_each       = { for dom in try(local.fabric_policies.aaa.login_domains, []) : dom.name => dom if local.modules.aci_login_domain && var.manage_fabric_policies }
   name           = each.value.name
@@ -664,8 +621,7 @@ module "aci_login_domain" {
 }
 
 module "aci_ca_certificate" {
-  source  = "netascode/ca-certificate/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-ca-certificate"
 
   for_each          = { for cert in try(local.fabric_policies.aaa.ca_certificates, []) : cert.name => cert if local.modules.aci_ca_certificate && var.manage_fabric_policies }
   name              = "${each.value.name}${local.defaults.apic.fabric_policies.aaa.ca_certificates.name_suffix}"
@@ -674,8 +630,7 @@ module "aci_ca_certificate" {
 }
 
 module "aci_keyring" {
-  source  = "netascode/keyring/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-keyring"
 
   for_each       = { for kr in try(local.fabric_policies.aaa.key_rings, []) : kr.name => kr if local.modules.aci_keyring && var.manage_fabric_policies }
   name           = "${each.value.name}${local.defaults.apic.fabric_policies.aaa.key_rings.name_suffix}"
@@ -690,8 +645,7 @@ module "aci_keyring" {
 }
 
 module "aci_geolocation" {
-  source  = "netascode/geolocation/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-geolocation"
 
   for_each    = { for site in try(local.fabric_policies.geolocation.sites, []) : site.name => site if local.modules.aci_geolocation && var.manage_fabric_policies }
   name        = "${each.value.name}${local.defaults.apic.fabric_policies.geolocation.sites.name_suffix}"
@@ -723,8 +677,7 @@ module "aci_geolocation" {
 }
 
 module "aci_remote_location" {
-  source  = "netascode/remote-location/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-remote-location"
 
   for_each        = { for rl in try(local.fabric_policies.remote_locations, []) : rl.name => rl if local.modules.aci_remote_location && var.manage_fabric_policies }
   name            = "${each.value.name}${local.defaults.apic.fabric_policies.remote_locations.name_suffix}"
@@ -744,8 +697,7 @@ module "aci_remote_location" {
 }
 
 module "aci_fabric_scheduler" {
-  source  = "netascode/fabric-scheduler/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-fabric-scheduler"
 
   for_each    = { for scheduler in try(local.fabric_policies.schedulers, []) : scheduler.name => scheduler if local.modules.aci_fabric_scheduler && var.manage_fabric_policies }
   name        = "${each.value.name}${local.defaults.apic.fabric_policies.schedulers.name_suffix}"
@@ -759,8 +711,7 @@ module "aci_fabric_scheduler" {
 }
 
 module "aci_config_export" {
-  source  = "netascode/config-export/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-config-export"
 
   for_each        = { for ce in try(local.fabric_policies.config_exports, []) : ce.name => ce if local.modules.aci_config_export && var.manage_fabric_policies }
   name            = "${each.value.name}${local.defaults.apic.fabric_policies.config_exports.name_suffix}"
@@ -777,8 +728,7 @@ module "aci_config_export" {
 }
 
 module "aci_snmp_trap_policy" {
-  source  = "netascode/snmp-trap-policy/aci"
-  version = "0.2.1"
+  source = "./modules/terraform-aci-snmp-trap-policy"
 
   for_each    = { for trap in try(local.fabric_policies.monitoring.snmp_traps, []) : trap.name => trap if local.modules.aci_snmp_trap_policy && var.manage_fabric_policies }
   name        = "${each.value.name}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}"
@@ -795,8 +745,7 @@ module "aci_snmp_trap_policy" {
 }
 
 module "aci_syslog_policy" {
-  source  = "netascode/syslog-policy/aci"
-  version = "0.2.1"
+  source = "./modules/terraform-aci-syslog-policy"
 
   for_each            = { for syslog in try(local.fabric_policies.monitoring.syslogs, []) : syslog.name => syslog if local.modules.aci_syslog_policy && var.manage_fabric_policies }
   name                = "${each.value.name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}"
@@ -823,8 +772,7 @@ module "aci_syslog_policy" {
 }
 
 module "aci_monitoring_policy" {
-  source  = "netascode/monitoring-policy/aci"
-  version = "0.2.1"
+  source = "./modules/terraform-aci-monitoring-policy"
 
   count              = local.modules.aci_monitoring_policy == true && var.manage_fabric_policies ? 1 : 0
   snmp_trap_policies = [for policy in try(local.fabric_policies.monitoring.snmp_traps, []) : "${policy.name}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}"]
@@ -844,8 +792,7 @@ module "aci_monitoring_policy" {
 }
 
 module "aci_management_access_policy" {
-  source  = "netascode/management-access-policy/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-management-access-policy"
 
   for_each                     = { for policy in try(local.fabric_policies.pod_policies.management_access_policies, []) : policy.name => policy if local.modules.aci_management_access_policy && var.manage_fabric_policies }
   name                         = "${each.value.name}${local.defaults.apic.fabric_policies.pod_policies.management_access_policies.name_suffix}"
@@ -887,8 +834,7 @@ module "aci_management_access_policy" {
 }
 
 module "aci_interface_type" {
-  source  = "netascode/interface-type/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-interface-type"
 
   for_each = { for type in local.interface_types : type.key => type if local.modules.aci_interface_type && var.manage_fabric_policies }
   pod_id   = each.value.pod_id
@@ -899,8 +845,7 @@ module "aci_interface_type" {
 }
 
 module "aci_smart_licensing" {
-  source  = "netascode/smart-licensing/aci"
-  version = "0.1.2"
+  source = "./modules/terraform-aci-smart-licensing"
 
   count              = local.modules.aci_smart_licensing == true && try(local.fabric_policies.smart_licensing.registration_token, "") != "" && var.manage_fabric_policies ? 1 : 0
   mode               = try(local.fabric_policies.smart_licensing.mode, local.defaults.apic.fabric_policies.smart_licensing.mode)
@@ -911,16 +856,14 @@ module "aci_smart_licensing" {
 }
 
 module "aci_health_score_evaluation_policy" {
-  source  = "netascode/health-score-evaluation-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-health-score-evaluation-policy"
 
   count               = local.modules.aci_health_score_evaluation_policy && var.manage_fabric_policies ? 1 : 0
   ignore_acked_faults = try(local.fabric_policies.ignore_acked_faults, local.defaults.apic.fabric_policies.ignore_acked_faults)
 }
 
 module "aci_fabric_span_destination_group" {
-  source  = "netascode/fabric-span-destination-group/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-fabric-span-destination-group"
 
   for_each            = { for span in try(local.fabric_policies.span.destination_groups, []) : span.name => span if local.modules.aci_fabric_span_destination_group && var.manage_fabric_policies }
   name                = "${each.value.name}${local.defaults.apic.fabric_policies.span.destination_groups.name_suffix}"
@@ -939,8 +882,7 @@ module "aci_fabric_span_destination_group" {
 }
 
 module "aci_fabric_span_source_group" {
-  source  = "netascode/fabric-span-source-group/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-fabric-span-source-group"
 
   for_each    = { for span in try(local.fabric_policies.span.source_groups, []) : span.name => span if local.modules.aci_fabric_span_source_group && var.manage_fabric_policies }
   name        = "${each.value.name}${local.defaults.apic.fabric_policies.span.source_groups.name_suffix}"
@@ -966,8 +908,7 @@ module "aci_fabric_span_source_group" {
 }
 
 module "aci_ldap" {
-  source  = "netascode/ldap/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-ldap"
 
   ldap_providers = [for prov in try(local.fabric_policies.aaa.ldap.providers, []) : {
     hostname_ip          = prov.hostname_ip

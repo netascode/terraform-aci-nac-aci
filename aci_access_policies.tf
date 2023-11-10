@@ -1,6 +1,5 @@
 module "aci_vlan_pool" {
-  source  = "netascode/vlan-pool/aci"
-  version = "0.2.2"
+  source = "./modules/terraform-aci-vlan-pool"
 
   for_each    = { for vp in try(local.access_policies.vlan_pools, []) : vp.name => vp if local.modules.aci_vlan_pool && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.vlan_pools.name_suffix}"
@@ -16,8 +15,7 @@ module "aci_vlan_pool" {
 }
 
 module "aci_physical_domain" {
-  source  = "netascode/physical-domain/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-physical-domain"
 
   for_each             = { for pd in try(local.access_policies.physical_domains, []) : pd.name => pd if local.modules.aci_physical_domain && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.physical_domains.name_suffix}"
@@ -31,8 +29,7 @@ module "aci_physical_domain" {
 }
 
 module "aci_routed_domain" {
-  source  = "netascode/routed-domain/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-routed-domain"
 
   for_each             = { for rd in try(local.access_policies.routed_domains, []) : rd.name => rd if local.modules.aci_routed_domain && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.routed_domains.name_suffix}"
@@ -46,8 +43,7 @@ module "aci_routed_domain" {
 }
 
 module "aci_aaep" {
-  source  = "netascode/aaep/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-aaep"
 
   for_each           = { for aaep in try(local.access_policies.aaeps, []) : aaep.name => aaep if local.modules.aci_aaep && var.manage_access_policies }
   name               = "${each.value.name}${local.defaults.apic.access_policies.aaeps.name_suffix}"
@@ -64,8 +60,7 @@ module "aci_aaep" {
 }
 
 module "aci_mst_policy" {
-  source  = "netascode/mst-policy/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-mst-policy"
 
   for_each = { for mst in try(local.access_policies.switch_policies.mst_policies, []) : mst.name => mst if local.modules.aci_mst_policy && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.mst_policies.name_suffix}"
@@ -82,8 +77,7 @@ module "aci_mst_policy" {
 }
 
 module "aci_vpc_policy" {
-  source  = "netascode/vpc-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-vpc-policy"
 
   for_each           = { for vpc in try(local.access_policies.switch_policies.vpc_policies, []) : vpc.name => vpc if local.modules.aci_vpc_policy && var.manage_access_policies }
   name               = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.vpc_policies.name_suffix}"
@@ -91,8 +85,7 @@ module "aci_vpc_policy" {
 }
 
 module "aci_forwarding_scale_policy" {
-  source  = "netascode/forwarding-scale-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-forwarding-scale-policy"
 
   for_each = { for fs in try(local.access_policies.switch_policies.forwarding_scale_policies, []) : fs.name => fs if local.modules.aci_forwarding_scale_policy && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.forwarding_scale_policies.name_suffix}"
@@ -100,8 +93,7 @@ module "aci_forwarding_scale_policy" {
 }
 
 module "aci_access_leaf_switch_policy_group" {
-  source  = "netascode/access-leaf-switch-policy-group/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-access-leaf-switch-policy-group"
 
   for_each                = { for pg in try(local.access_policies.leaf_switch_policy_groups, []) : pg.name => pg if local.modules.aci_access_leaf_switch_policy_group && var.manage_access_policies }
   name                    = "${each.value.name}${local.defaults.apic.access_policies.leaf_switch_policy_groups.name_suffix}"
@@ -113,8 +105,7 @@ module "aci_access_leaf_switch_policy_group" {
 }
 
 module "aci_access_spine_switch_policy_group" {
-  source  = "netascode/access-spine-switch-policy-group/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-access-spine-switch-policy-group"
 
   for_each    = { for pg in try(local.access_policies.spine_switch_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_switch_policy_group && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.spine_switch_policy_groups.name_suffix}"
@@ -126,8 +117,7 @@ module "aci_access_spine_switch_policy_group" {
 }
 
 module "aci_access_leaf_switch_profile_auto" {
-  source  = "netascode/access-leaf-switch-profile/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-access-leaf-switch-profile"
 
   for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles)) && local.modules.aci_access_leaf_switch_profile && var.manage_access_policies }
   name               = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.leaf_switch_profile_name, local.defaults.apic.access_policies.leaf_switch_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
@@ -150,8 +140,7 @@ module "aci_access_leaf_switch_profile_auto" {
 }
 
 module "aci_access_leaf_switch_profile_manual" {
-  source  = "netascode/access-leaf-switch-profile/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-access-leaf-switch-profile"
 
   for_each = { for prof in try(local.access_policies.leaf_switch_profiles, []) : prof.name => prof if local.modules.aci_access_leaf_switch_profile && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.leaf_switch_profiles.name_suffix}"
@@ -174,8 +163,7 @@ module "aci_access_leaf_switch_profile_manual" {
 }
 
 module "aci_access_spine_switch_profile_auto" {
-  source  = "netascode/access-spine-switch-profile/aci"
-  version = "0.2.1"
+  source = "./modules/terraform-aci-access-spine-switch-profile"
 
   for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_spine_switch_interface_profiles, local.defaults.apic.auto_generate_access_spine_switch_interface_profiles)) && local.modules.aci_access_spine_switch_profile && var.manage_access_policies }
   name               = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.spine_switch_profile_name, local.defaults.apic.access_policies.spine_switch_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
@@ -197,8 +185,7 @@ module "aci_access_spine_switch_profile_auto" {
 }
 
 module "aci_access_spine_switch_profile_manual" {
-  source  = "netascode/access-spine-switch-profile/aci"
-  version = "0.2.1"
+  source = "./modules/terraform-aci-access-spine-switch-profile"
 
   for_each = { for prof in try(local.access_policies.spine_switch_profiles, []) : prof.name => prof if local.modules.aci_access_spine_switch_profile && var.manage_access_policies }
   name     = each.value.name
@@ -220,8 +207,7 @@ module "aci_access_spine_switch_profile_manual" {
 }
 
 module "aci_cdp_policy" {
-  source  = "netascode/cdp-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-cdp-policy"
 
   for_each    = { for cdp in try(local.access_policies.interface_policies.cdp_policies, []) : cdp.name => cdp if local.modules.aci_cdp_policy && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}"
@@ -229,8 +215,7 @@ module "aci_cdp_policy" {
 }
 
 module "aci_lldp_policy" {
-  source  = "netascode/lldp-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-lldp-policy"
 
   for_each       = { for lldp in try(local.access_policies.interface_policies.lldp_policies, []) : lldp.name => lldp if local.modules.aci_lldp_policy && var.manage_access_policies }
   name           = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}"
@@ -239,8 +224,7 @@ module "aci_lldp_policy" {
 }
 
 module "aci_link_level_policy" {
-  source  = "netascode/link-level-policy/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-link-level-policy"
 
   for_each = { for llp in try(local.access_policies.interface_policies.link_level_policies, []) : llp.name => llp if local.modules.aci_link_level_policy && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}"
@@ -250,8 +234,7 @@ module "aci_link_level_policy" {
 }
 
 module "aci_port_channel_policy" {
-  source  = "netascode/port-channel-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-port-channel-policy"
 
   for_each             = { for pc in try(local.access_policies.interface_policies.port_channel_policies, []) : pc.name => pc if local.modules.aci_port_channel_policy && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix}"
@@ -267,8 +250,7 @@ module "aci_port_channel_policy" {
 }
 
 module "aci_port_channel_member_policy" {
-  source  = "netascode/port-channel-member-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-port-channel-member-policy"
 
   for_each = { for pcm in try(local.access_policies.interface_policies.port_channel_member_policies, []) : pcm.name => pcm if local.modules.aci_port_channel_member_policy && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}"
@@ -277,8 +259,7 @@ module "aci_port_channel_member_policy" {
 }
 
 module "aci_spanning_tree_policy" {
-  source  = "netascode/spanning-tree-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-spanning-tree-policy"
 
   for_each    = { for stp in try(local.access_policies.interface_policies.spanning_tree_policies, []) : stp.name => stp if local.modules.aci_spanning_tree_policy && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.spanning_tree_policies.name_suffix}"
@@ -287,8 +268,7 @@ module "aci_spanning_tree_policy" {
 }
 
 module "aci_mcp_policy" {
-  source  = "netascode/mcp-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-mcp-policy"
 
   for_each    = { for mcp in try(local.access_policies.interface_policies.mcp_policies, []) : mcp.name => mcp if local.modules.aci_mcp_policy && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}"
@@ -296,8 +276,7 @@ module "aci_mcp_policy" {
 }
 
 module "aci_l2_policy" {
-  source  = "netascode/l2-policy/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-l2-policy"
 
   for_each         = { for l2 in try(local.access_policies.interface_policies.l2_policies, []) : l2.name => l2 if local.modules.aci_l2_policy && var.manage_access_policies }
   name             = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.l2_policies.name_suffix}"
@@ -307,8 +286,7 @@ module "aci_l2_policy" {
 }
 
 module "aci_storm_control_policy" {
-  source  = "netascode/storm-control-policy/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-storm-control-policy"
 
   for_each                   = { for sc in try(local.access_policies.interface_policies.storm_control_policies, []) : sc.name => sc if local.modules.aci_storm_control_policy && var.manage_access_policies }
   name                       = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}"
@@ -330,8 +308,7 @@ module "aci_storm_control_policy" {
 }
 
 module "aci_access_leaf_interface_policy_group" {
-  source  = "netascode/access-leaf-interface-policy-group/aci"
-  version = "0.1.4"
+  source = "./modules/terraform-aci-access-leaf-interface-policy-group"
 
   for_each                   = { for pg in try(local.access_policies.leaf_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_leaf_interface_policy_group && var.manage_access_policies }
   name                       = "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}"
@@ -364,8 +341,7 @@ module "aci_access_leaf_interface_policy_group" {
 }
 
 module "aci_access_spine_interface_policy_group" {
-  source  = "netascode/access-spine-interface-policy-group/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-access-spine-interface-policy-group"
 
   for_each          = { for pg in try(local.access_policies.spine_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_interface_policy_group && var.manage_access_policies }
   name              = "${each.value.name}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}"
@@ -381,16 +357,14 @@ module "aci_access_spine_interface_policy_group" {
 }
 
 module "aci_access_leaf_interface_profile_auto" {
-  source  = "netascode/access-leaf-interface-profile/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-access-leaf-interface-profile"
 
   for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles)) && local.modules.aci_access_leaf_interface_profile && var.manage_access_policies }
   name     = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.leaf_interface_profile_name, local.defaults.apic.access_policies.leaf_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
 }
 
 module "aci_access_leaf_interface_profile_manual" {
-  source  = "netascode/access-leaf-interface-profile/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-access-leaf-interface-profile"
 
   for_each = { for prof in try(local.access_policies.leaf_interface_profiles, []) : prof.name => prof if local.modules.aci_access_leaf_interface_profile && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_profiles.name_suffix}"
@@ -433,8 +407,7 @@ locals {
 }
 
 module "aci_access_leaf_interface_selector_manual" {
-  source  = "netascode/access-leaf-interface-selector/aci"
-  version = "0.2.1"
+  source = "./modules/terraform-aci-access-leaf-interface-selector"
 
   for_each              = { for selector in local.leaf_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_leaf_interface_selector && var.manage_access_policies }
   interface_profile     = each.value.profile_name
@@ -454,8 +427,7 @@ module "aci_access_leaf_interface_selector_manual" {
 }
 
 module "aci_access_fex_interface_profile_manual" {
-  source  = "netascode/access-fex-interface-profile/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-access-fex-interface-profile"
 
   for_each = toset([for fex in try(local.access_policies.fex_interface_profiles, []) : fex.name if local.modules.aci_access_fex_interface_profile && var.manage_access_policies])
   name     = "${each.value}${local.defaults.apic.access_policies.fex_interface_profiles.name_suffix}"
@@ -486,8 +458,7 @@ locals {
 }
 
 module "aci_access_fex_interface_selector_manual" {
-  source  = "netascode/access-fex-interface-selector/aci"
-  version = "0.2.0"
+  source = "./modules/terraform-aci-access-fex-interface-selector"
 
   for_each          = { for selector in local.fex_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_fex_interface_selector && var.manage_access_policies }
   interface_profile = each.value.profile_name
@@ -503,16 +474,14 @@ module "aci_access_fex_interface_selector_manual" {
 }
 
 module "aci_access_spine_interface_profile_auto" {
-  source  = "netascode/access-spine-interface-profile/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-access-spine-interface-profile"
 
   for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_spine_switch_interface_profiles, local.defaults.apic.auto_generate_access_spine_switch_interface_profiles)) && local.modules.aci_access_spine_interface_profile && var.manage_access_policies }
   name     = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.spine_interface_profile_name, local.defaults.apic.access_policies.spine_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
 }
 
 module "aci_access_spine_interface_profile_manual" {
-  source  = "netascode/access-spine-interface-profile/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-access-spine-interface-profile"
 
   for_each = { for prof in try(local.access_policies.spine_interface_profiles, []) : prof.name => prof if local.modules.aci_access_spine_interface_profile && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.spine_interface_profiles.name_suffix}"
@@ -542,8 +511,7 @@ locals {
 }
 
 module "aci_access_spine_interface_selector_manual" {
-  source  = "netascode/access-spine-interface-selector/aci"
-  version = "0.2.1"
+  source = "./modules/terraform-aci-access-spine-interface-selector"
 
   for_each          = { for selector in local.spine_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_spine_interface_selector && var.manage_access_policies }
   interface_profile = each.value.profile_name
@@ -559,8 +527,7 @@ module "aci_access_spine_interface_selector_manual" {
 }
 
 module "aci_mcp" {
-  source  = "netascode/mcp/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-mcp"
 
   count               = local.modules.aci_mcp == true && var.manage_access_policies ? 1 : 0
   admin_state         = try(local.access_policies.mcp.admin_state, local.defaults.apic.access_policies.mcp.admin_state)
@@ -574,8 +541,7 @@ module "aci_mcp" {
 }
 
 module "aci_qos" {
-  source  = "netascode/qos/aci"
-  version = "0.2.1"
+  source = "./modules/terraform-aci-qos"
 
   count        = local.modules.aci_qos == true && var.manage_access_policies ? 1 : 0
   preserve_cos = try(local.access_policies.qos.preserve_cos, local.defaults.apic.access_policies.qos.preserve_cos)
@@ -602,8 +568,7 @@ module "aci_qos" {
 }
 
 module "aci_access_span_filter_group" {
-  source  = "netascode/access-span-filter-group/aci"
-  version = "0.1.2"
+  source = "./modules/terraform-aci-access-span-filter-group"
 
   for_each    = { for group in try(local.access_policies.span.filter_groups, []) : group.name => group if local.modules.aci_access_span_filter_group && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.span.filter_groups.name_suffix}"
@@ -646,8 +611,7 @@ locals {
 }
 
 module "aci_access_span_destination_group" {
-  source  = "netascode/access-span-destination-group/aci"
-  version = "0.1.3"
+  source = "./modules/terraform-aci-access-span-destination-group"
 
   for_each            = { for group in local.access_span_destination_groups : group.name => group if local.modules.aci_access_span_destination_group && var.manage_access_policies }
   name                = each.value.name
@@ -707,8 +671,7 @@ locals {
 }
 
 module "aci_access_span_source_group" {
-  source  = "netascode/access-span-source-group/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-access-span-source-group"
 
   for_each                = { for group in local.access_span_source_groups : group.name => group if local.modules.aci_access_span_source_group && var.manage_access_policies }
   name                    = each.value.name
@@ -742,8 +705,7 @@ module "aci_access_span_source_group" {
 }
 
 module "aci_vspan_destination_group" {
-  source  = "netascode/vspan-destination-group/aci"
-  version = "0.1.1"
+  source = "./modules/terraform-aci-vspan-destination-group"
 
   for_each    = { for group in try(local.access_policies.vspan.destination_groups, []) : group.name => group if local.modules.aci_vspan_destination_group && var.manage_access_policies }
   name        = "${each.value.name}${local.defaults.apic.access_policies.vspan.destination_groups.name_suffix}"
@@ -796,8 +758,7 @@ locals {
 }
 
 module "aci_vspan_session" {
-  source  = "netascode/vspan-session/aci"
-  version = "0.1.0"
+  source = "./modules/terraform-aci-vspan-session"
 
   for_each                = { for session in local.vspan_sessions : session.name => session if local.modules.aci_vspan_session && var.manage_access_policies }
   name                    = each.value.name

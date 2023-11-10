@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-routed-domain/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-routed-domain/actions/workflows/test.yml)
+
+  # Terraform ACI Routed Domain Module
+
+  Manages ACI Routed Domain
+
+  Location in GUI:
+  `Fabric` » `Access Policies` » `Physical and External Domains` » `L3 Domains`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

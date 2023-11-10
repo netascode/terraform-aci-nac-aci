@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-keyring/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-keyring/actions/workflows/test.yml)
+
+  # Terraform ACI Keyring Module
+
+  Manages ACI Keyring
+
+  Location in GUI:
+  `Admin` » `AAA` » `Security` » `Public Key Management` » `Key Rings`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

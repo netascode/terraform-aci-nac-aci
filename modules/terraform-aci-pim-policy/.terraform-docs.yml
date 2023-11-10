@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-pim-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-pim-policy/actions/workflows/test.yml)
+
+  # Terraform ACI PIM Policy Module
+
+  Manages ACI PIM Policy
+
+  Location in GUI:
+  `Tenants` » `XXX` » `Policies` » `Protocol` » `PIM`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

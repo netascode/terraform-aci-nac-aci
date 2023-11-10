@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-access-spine-interface-policy-group/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-access-spine-interface-policy-group/actions/workflows/test.yml)
+
+  # Terraform ACI Access Spine Interface Policy Group Module
+
+  Manages ACI Access Spine Interface Policy Group
+
+  Location in GUI:
+  `Fabric` » `Access Policies` » `Interfaces` » `Spine Interfaces` » `Policy Groups`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

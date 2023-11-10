@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-bgp-best-path-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-bgp-best-path-policy/actions/workflows/test.yml)
+
+  # Terraform ACI BGP Best Path Policy Module
+
+  Manages ACI BGP Best Path Policy
+
+  Location in GUI:
+  `Tenants` » `XXX` » `Policies` » `Protocol` » `BGP` » `BGP Best Path Policy`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-l4l7-device/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-l4l7-device/actions/workflows/test.yml)
+
+  # Terraform ACI L4L7 Device Module
+
+  Manages L4L7 Device
+
+  Location in GUI:
+  `Tenants` » `XXX` » `Services` » `L4-L7` » `Devices`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

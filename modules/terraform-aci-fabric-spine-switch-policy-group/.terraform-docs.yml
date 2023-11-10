@@ -1,0 +1,36 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  [![Tests](https://github.com/netascode/terraform-aci-fabric-spine-switch-policy-group/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-fabric-spine-switch-policy-group/actions/workflows/test.yml)
+
+  # Terraform ACI Fabric Spine Switch Policy Group Module
+
+  Manages ACI Fabric Spine Switch Policy Group Module
+
+  Location in GUI:
+  `Fabric` » `Fabric Policies` » `Switches` » `Spine Switches` » `Policy Groups`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false
