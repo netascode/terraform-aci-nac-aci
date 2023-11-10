@@ -188,7 +188,7 @@ locals {
       for interface in try(node.interfaces, []) : {
         key               = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
         node_id           = node.id
-        card              = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+        module            = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
         port              = interface.port
         policy_group_type = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == interface.policy_group][0], "access")
         policy_group      = try("${interface.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", local.defaults.apic.interface_policies.nodes.interfaces.policy_group)
@@ -202,11 +202,11 @@ locals {
 
 module "aci_leaf_interface_configuration" {
   source = "netascode/interface-configuration/aci"
-  version = "0.0.1"
+  version = "0.1.0"
 
   for_each          = { for int in local.new_leaf_interface_configuration : int.key => int if try(local.modules.aci_interface_configuration, true) && var.manage_interface_policies && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true }
   node_id           = each.value.node_id
-  card              = each.value.card
+  module            = each.value.module
   port              = each.value.port
   policy_group_type = each.value.policy_group_type
   policy_group      = each.value.policy_group
@@ -222,7 +222,7 @@ locals {
         for subinterface in try(interface.sub_ports, []) : {
           key               = format("%s/%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port, try(subinterface.port, local.defaults.apic.interface_policies.nodes.interfaces.sub_ports.port))
           node_id           = node.id
-          card              = try(subinterface.module, local.defaults.apic.interface_policies.nodes.interfaces.sub_ports.module)
+          module            = try(subinterface.module, local.defaults.apic.interface_policies.nodes.interfaces.sub_ports.module)
           port              = interface.port
           sub_port          = try(subinterface.port, local.defaults.apic.interface_policies.nodes.interfaces.sub_ports.port)
           policy_group_type = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == subinterface.policy_group][0], "access")
@@ -236,11 +236,11 @@ locals {
 
 module "aci_leaf_interface_configuration_sub" {
   source = "netascode/interface-configuration/aci"
-  version = "0.0.1"
+  version = "0.1.0"
 
   for_each          = { for int in local.new_leaf_subinterface_configuration : int.key => int if try(local.modules.aci_interface_configuration, true) && var.manage_interface_policies && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true }
   node_id           = each.value.node_id
-  card              = each.value.card
+  module            = each.value.module
   port              = each.value.port
   sub_port          = each.value.sub_port
   policy_group_type = each.value.policy_group_type
@@ -260,7 +260,7 @@ locals {
         for interface in try(fex.interfaces, []) : {
           key               = format("%s/%s/%s/%s", node.id, fex.id, "1", interface.port)
           node_id           = node.id
-          card              = fex.id
+          module            = fex.id
           port              = 1
           sub_port          = interface.port
           policy_group_type = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == interface.policy_group][0], "access")
@@ -273,11 +273,11 @@ locals {
 
 module "aci_interface_configuration_fex" {
   source = "netascode/interface-configuration/aci"
-  version = "0.0.1"
+  version = "0.1.0"
 
   for_each          = { for int in local.new_fex_interface_configuration : int.key => int if try(local.modules.aci_interface_configuration, true) && var.manage_interface_policies && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true }
   node_id           = each.value.node_id
-  card              = each.value.card
+  module            = each.value.module
   port              = each.value.port
   sub_port          = each.value.sub_port
   policy_group_type = each.value.policy_group_type
@@ -296,7 +296,7 @@ locals {
       for interface in try(node.interfaces, []) : {
         key          = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
         node_id      = node.id
-        card         = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+        module       = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
         port         = interface.port
         policy_group = try("${interface.policy_group}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}", "")
         description  = try(interface.description, "")
@@ -308,11 +308,11 @@ locals {
 
 module "aci_spine_interface_configuration" {
   source = "netascode/interface-configuration/aci"
-  version = "0.0.1"
+  version = "0.1.0"
 
   for_each     = { for int in local.new_spine_interface_configuration : int.key => int if try(local.modules.aci_interface_configuration, true) && var.manage_interface_policies && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true }
   node_id      = each.value.node_id
-  card         = each.value.card
+  module       = each.value.module
   port         = each.value.port
   policy_group = each.value.policy_group
   description  = each.value.description
