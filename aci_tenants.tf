@@ -1706,6 +1706,72 @@ module "aci_ospf_interface_policy" {
 }
 
 locals {
+  ospf_timer_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.ospf_timer_policies, []) : {
+        key                       = format("%s/%s", tenant.name, policy.name)
+        tenant                    = tenant.name
+        name                      = "${policy.name}${local.defaults.apic.tenants.policies.ospf_timer_policies.name_suffix}"
+        description               = try(policy.description, "")
+        reference_bandwidth       = try(policy.reference_bandwidth, local.defaults.apic.tenants.policies.ospf_timer_policies.reference_bandwidth)
+        distance                  = try(policy.distance, local.defaults.apic.tenants.policies.ospf_timer_policies.distance)
+        max_ecmp                  = try(policy.max_ecmp, local.defaults.apic.tenants.policies.ospf_timer_policies.max_ecmp)
+        spf_init_interval         = try(policy.spf_init_interval, local.defaults.apic.tenants.policies.ospf_timer_policies.spf_init_interval)
+        spf_hold_interval         = try(policy.spf_hold_interval, local.defaults.apic.tenants.policies.ospf_timer_policies.spf_hold_interval)
+        spf_max_interval          = try(policy.spf_max_interval, local.defaults.apic.tenants.policies.ospf_timer_policies.spf_max_interval)
+        max_lsa_reset_interval    = try(policy.max_lsa_reset_interval, local.defaults.apic.tenants.policies.ospf_timer_policies.max_lsa_reset_interval)
+        max_lsa_sleep_count       = try(policy.max_lsa_sleep_count, local.defaults.apic.tenants.policies.ospf_timer_policies.max_lsa_sleep_count)
+        max_lsa_sleep_interval    = try(policy.max_lsa_sleep_interval, local.defaults.apic.tenants.policies.ospf_timer_policies.max_lsa_sleep_interval)
+        lsa_arrival_interval      = try(policy.lsa_arrival_interval, local.defaults.apic.tenants.policies.ospf_timer_policies.lsa_arrival_interval)
+        lsa_group_pacing_interval = try(policy.lsa_group_pacing_interval, local.defaults.apic.tenants.policies.ospf_timer_policies.lsa_group_pacing_interval)
+        lsa_hold_interval         = try(policy.lsa_hold_interval, local.defaults.apic.tenants.policies.ospf_timer_policies.lsa_hold_interval)
+        lsa_start_interval        = try(policy.lsa_start_interval, local.defaults.apic.tenants.policies.ospf_timer_policies.lsa_start_interval)
+        lsa_max_interval          = try(policy.lsa_max_interval, local.defaults.apic.tenants.policies.ospf_timer_policies.lsa_max_interval)
+        max_lsa_num               = try(policy.max_lsa_num, local.defaults.apic.tenants.policies.ospf_timer_policies.max_lsa_num)
+        max_lsa_threshold         = try(policy.max_lsa_threshold, local.defaults.apic.tenants.policies.ospf_timer_policies.max_lsa_threshold)
+        max_lsa_action            = try(policy.max_lsa_action, local.defaults.apic.tenants.policies.ospf_timer_policies.max_lsa_action)
+        graceful_restart          = try(policy.graceful_restart, local.defaults.apic.tenants.policies.ospf_timer_policies.graceful_restart)
+        router_id_lookup          = try(policy.router_id_lookup, local.defaults.apic.tenants.policies.ospf_timer_policies.router_id_lookup)
+        prefix_suppression        = try(policy.prefix_suppression, local.defaults.apic.tenants.policies.ospf_timer_policies.prefix_suppression)
+      }
+    ]
+  ])
+}
+
+module "aci_ospf_timer_policy" {
+  source = "./modules/terraform-aci-ospf-timer-policy"
+
+  for_each                  = { for policy in local.ospf_timer_policies : policy.key => policy if local.modules.aci_ospf_timer_policy && var.manage_tenants }
+  tenant                    = each.value.tenant
+  name                      = each.value.name
+  description               = each.value.description
+  reference_bandwidth       = each.value.reference_bandwidth
+  distance                  = each.value.distance
+  max_ecmp                  = each.value.max_ecmp
+  spf_init_interval         = each.value.spf_init_interval
+  spf_hold_interval         = each.value.spf_hold_interval
+  spf_max_interval          = each.value.spf_max_interval
+  max_lsa_reset_interval    = each.value.max_lsa_reset_interval
+  max_lsa_sleep_count       = each.value.max_lsa_sleep_count
+  max_lsa_sleep_interval    = each.value.max_lsa_sleep_interval
+  lsa_arrival_interval      = each.value.lsa_arrival_interval
+  lsa_group_pacing_interval = each.value.lsa_group_pacing_interval
+  lsa_hold_interval         = each.value.lsa_hold_interval
+  lsa_start_interval        = each.value.lsa_start_interval
+  lsa_max_interval          = each.value.lsa_max_interval
+  max_lsa_num               = each.value.max_lsa_num
+  max_lsa_threshold         = each.value.max_lsa_threshold
+  max_lsa_action            = each.value.max_lsa_action
+  graceful_restart          = each.value.graceful_restart
+  router_id_lookup          = each.value.router_id_lookup
+  prefix_suppression        = each.value.prefix_suppression
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
   eigrp_interface_policies = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.policies.eigrp_interface_policies, []) : {

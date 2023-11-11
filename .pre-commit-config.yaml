@@ -434,6 +434,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-ospf-interface-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ospf-timer-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ospf-timer-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-physical-domain"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-physical-domain/examples/complete"]

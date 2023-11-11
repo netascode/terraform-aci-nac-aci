@@ -103,6 +103,7 @@ modules:
   aci_oob_external_management_instance: true
   aci_oob_node_address: true
   aci_ospf_interface_policy: true
+  aci_ospf_timer_policy: true
   aci_physical_domain: true
   aci_pim_policy: true
   aci_pod_setup: true

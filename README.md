@@ -256,6 +256,7 @@ Additional example repositories:
 | <a name="module_aci_oob_external_management_instance"></a> [aci\_oob\_external\_management\_instance](#module\_aci\_oob\_external\_management\_instance) | ./modules/terraform-aci-oob-external-management-instance | n/a |
 | <a name="module_aci_oob_node_address"></a> [aci\_oob\_node\_address](#module\_aci\_oob\_node\_address) | ./modules/terraform-aci-oob-node-address | n/a |
 | <a name="module_aci_ospf_interface_policy"></a> [aci\_ospf\_interface\_policy](#module\_aci\_ospf\_interface\_policy) | ./modules/terraform-aci-ospf-interface-policy | n/a |
+| <a name="module_aci_ospf_timer_policy"></a> [aci\_ospf\_timer\_policy](#module\_aci\_ospf\_timer\_policy) | ./modules/terraform-aci-ospf-timer-policy | n/a |
 | <a name="module_aci_physical_domain"></a> [aci\_physical\_domain](#module\_aci\_physical\_domain) | ./modules/terraform-aci-physical-domain | n/a |
 | <a name="module_aci_pim_policy"></a> [aci\_pim\_policy](#module\_aci\_pim\_policy) | ./modules/terraform-aci-pim-policy | n/a |
 | <a name="module_aci_pod_setup"></a> [aci\_pod\_setup](#module\_aci\_pod\_setup) | ./modules/terraform-aci-pod-setup | n/a |

@@ -27,6 +27,7 @@
 - Add support for ND RA prefix policies
 - Add support for back-2-back Multi-Pod connections
 - Add support for system performance settings
+- Add support for OSPF timer policies
 
 ## 0.7.0
 
