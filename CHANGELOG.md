@@ -25,6 +25,7 @@
 - Add support for security domains
 - Add option to clear remote MAC entries of BDs
 - Add support for ND RA prefix policies
+- Add support for back-2-back Multi-Pod connections
 
 ## 0.7.0
 
