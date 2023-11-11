@@ -85,7 +85,7 @@ variable "users" {
     condition = alltrue([
       for u in var.users : u.authorization_type == null || try(contains(["hmac-md5-96", "hmac-sha1-96", "hmac-sha2-224", "hmac-sha2-256", "hmac-sha2-384", "hmac-sha2-512"], u.authorization_type), false)
     ])
-    error_message = "`authorization_type`: Allowed values are `hmac-md5-96` or `hmac-sha1-96`."
+    error_message = "`authorization_type`: Allowed values are `hmac-md5-96`, `hmac-sha1-96`, `hmac-sha2-224`, `hmac-sha2-256`, `hmac-sha2-384` or `hmac-sha2-512`."
   }
 
   validation {
