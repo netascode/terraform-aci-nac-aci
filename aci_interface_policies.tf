@@ -222,7 +222,7 @@ locals {
           policy_group_type = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == subinterface.policy_group][0], "access")
           policy_group      = try("${subinterface.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "system-ports-default")
           fex_id            = try(subinterface.fex_id, "unspecified")
-          description       = try(interface.description, "")
+          description       = try(subinterface.description, "")
       }]
     ] if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles)) && node.role == "leaf" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
   ])
