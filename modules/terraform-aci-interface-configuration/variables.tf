@@ -26,7 +26,7 @@ variable "port" {
 
   validation {
     condition     = try(var.port >= 1 && var.port <= 127, false)
-    error_message = "Allowed charactvaluesers: 1-127."
+    error_message = "Allowed values: 1-127."
   }
 }
 
@@ -37,7 +37,7 @@ variable "sub_port" {
 
   validation {
     condition     = try(var.sub_port >= 0 && var.sub_port <= 64, false)
-    error_message = "Allowed characters: 1-127."
+    error_message = "Allowed values: 1-64."
   }
 }
 
