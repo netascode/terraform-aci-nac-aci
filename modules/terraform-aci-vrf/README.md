@@ -135,6 +135,9 @@ module "aci_vrf" {
 | <a name="input_data_plane_learning"></a> [data\_plane\_learning](#input\_data\_plane\_learning) | VRF data plane learning. | `bool` | `true` | no |
 | <a name="input_preferred_group"></a> [preferred\_group](#input\_preferred\_group) | VRF preferred group member. | `bool` | `false` | no |
 | <a name="input_transit_route_tag_policy"></a> [transit\_route\_tag\_policy](#input\_transit\_route\_tag\_policy) | VRF transit route tag policy name. | `string` | `""` | no |
+| <a name="input_ospf_timer_policy"></a> [ospf\_timer\_policy](#input\_ospf\_timer\_policy) | OSPF timer policy name. | `string` | `""` | no |
+| <a name="input_ospf_ipv4_address_family_context_policy"></a> [ospf\_ipv4\_address\_family\_context\_policy](#input\_ospf\_ipv4\_address\_family\_context\_policy) | OSPF IPv4 address family context policy name. | `string` | `""` | no |
+| <a name="input_ospf_ipv6_address_family_context_policy"></a> [ospf\_ipv6\_address\_family\_context\_policy](#input\_ospf\_ipv6\_address\_family\_context\_policy) | OSPF IPv6 address family context policy name. | `string` | `""` | no |
 | <a name="input_bgp_timer_policy"></a> [bgp\_timer\_policy](#input\_bgp\_timer\_policy) | VRF BGP timer policy name. | `string` | `""` | no |
 | <a name="input_bgp_ipv4_address_family_context_policy"></a> [bgp\_ipv4\_address\_family\_context\_policy](#input\_bgp\_ipv4\_address\_family\_context\_policy) | VRF BGP IPv4 Address Family Context policy name. | `string` | `""` | no |
 | <a name="input_bgp_ipv6_address_family_context_policy"></a> [bgp\_ipv6\_address\_family\_context\_policy](#input\_bgp\_ipv6\_address\_family\_context\_policy) | VRF BGP IPv6 Address Family Context policy name. | `string` | `""` | no |
@@ -195,6 +198,9 @@ module "aci_vrf" {
 | [aci_rest_managed.fvRsCtxToBgpCtxAfPol_ipv4](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToBgpCtxAfPol_ipv6](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToExtRouteTagPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsCtxToOspfCtxPol_ipv4](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsCtxToOspfCtxPol_ipv6](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsOspfCtxPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.igmpCtxP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.igmpSSMXlateP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.leakExternalPrefix](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

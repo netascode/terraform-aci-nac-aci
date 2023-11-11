@@ -85,6 +85,34 @@ resource "aci_rest_managed" "fvRsCtxToExtRouteTagPol" {
   }
 }
 
+resource "aci_rest_managed" "fvRsOspfCtxPol" {
+  dn         = "${aci_rest_managed.fvCtx.dn}/rsospfCtxPol"
+  class_name = "fvRsOspfCtxPol"
+  content = {
+    tnOspfCtxPolName = var.ospf_timer_policy
+  }
+}
+
+resource "aci_rest_managed" "fvRsCtxToOspfCtxPol_ipv4" {
+  count      = var.ospf_ipv4_address_family_context_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvCtx.dn}/rsctxToOspfCtxPol-[${var.ospf_ipv4_address_family_context_policy}]-ipv4-ucast"
+  class_name = "fvRsCtxToOspfCtxPol"
+  content = {
+    af               = "ipv4-ucast"
+    tnOspfCtxPolName = var.ospf_ipv4_address_family_context_policy
+  }
+}
+
+resource "aci_rest_managed" "fvRsCtxToOspfCtxPol_ipv6" {
+  count      = var.ospf_ipv6_address_family_context_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvCtx.dn}/rsctxToOspfCtxPol-[${var.ospf_ipv6_address_family_context_policy}]-ipv6-ucast"
+  class_name = "fvRsCtxToOspfCtxPol"
+  content = {
+    af               = "ipv6-ucast"
+    tnOspfCtxPolName = var.ospf_ipv6_address_family_context_policy
+  }
+}
+
 resource "aci_rest_managed" "fvRsBgpCtxPol" {
   dn         = "${aci_rest_managed.fvCtx.dn}/rsbgpCtxPol"
   class_name = "fvRsBgpCtxPol"

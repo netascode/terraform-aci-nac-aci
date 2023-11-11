@@ -85,6 +85,39 @@ variable "transit_route_tag_policy" {
   }
 }
 
+variable "ospf_timer_policy" {
+  description = "OSPF timer policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.ospf_timer_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "ospf_ipv4_address_family_context_policy" {
+  description = "OSPF IPv4 address family context policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.ospf_ipv4_address_family_context_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "ospf_ipv6_address_family_context_policy" {
+  description = "OSPF IPv6 address family context policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.ospf_ipv6_address_family_context_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "bgp_timer_policy" {
   description = "VRF BGP timer policy name."
   type        = string
