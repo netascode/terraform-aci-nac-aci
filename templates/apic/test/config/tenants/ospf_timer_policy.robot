@@ -9,30 +9,20 @@ Resource        ../../../apic_common.resource
 {% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
 {% for otp in tenant.policies.ospf_timer_policies | default([]) %}
 {% set policy_name = otp.name ~ defaults.apic.tenants.policies.ospf_timer_policies.name_suffix %}
-
-{% set graceful_restart = "" %}
-{% if otp.graceful_restart | default(defaults.apic.tenants.policies.ospf_timer_policies.graceful_restart) %}
-    {% set graceful_restart = "helper" %}
-{% endif %}
-
-{% set ctrl_strings = [] %}
-{% if otp.router_id_lookup | default(defaults.apic.tenants.policies.ospf_timer_policies.router_id_lookup) %}
-    {{ ctrl_strings.append("name-lookup") }}
-{% endif %}
-{% if otp.prefix_suppression | default(defaults.apic.tenants.policies.ospf_timer_policies.prefix_suppression) %}
-    {{ ctrl_strings.append("pfx-suppress") }}
-{% endif %}
+{% set ctrl = [] %}
+{% if otp.router_id_lookup | default(defaults.apic.tenants.policies.ospf_timer_policies.router_id_lookup) %}{% set ctrl = ctrl + [("name-lookup")] %}{% endif %}
+{% if otp.prefix_suppression | default(defaults.apic.tenants.policies.ospf_timer_policies.prefix_suppression) %}{% set ctrl = ctrl + [("pfx-suppress")] %}{% endif %}
 
 Verify OSPF Timer Policy {{ policy_name }}
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ospfCtxP-{{ policy_name }}.json
     Set Suite Variable   ${r}
     Should Be Equal Value Json String   ${r.json()}   $..ospfCtxPol.attributes.name   {{ policy_name }}
-    Should Be Equal Value Json String   ${r.json()}   $..ospfCtxPol.attributes.ctrl   {{ ctrl_strings | join(",") }}
+    Should Be Equal Value Json String   ${r.json()}   $..ospfCtxPol.attributes.ctrl   {{ ctrl | join(",") }}
     Should Be Equal Value Json String   ${r.json()}   $..ospfCtxPol.attributes.bwRef   {{ otp.reference_bandwidth | default(defaults.apic.tenants.policies.ospf_timer_policies.reference_bandwidth) }}
     Should Be Equal Value Json String   ${r.json()}   $..ospfCtxPol.attributes.descr   {{ otp.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   $..ospfCtxPol.attributes.dist   {{ otp.distance | default(defaults.apic.tenants.policies.ospf_timer_policies.distance) }}
     Should Be Equal Value Json String   ${r.json()}   $..ospfCtxPol.attributes.dn   uni/tn-{{ tenant.name }}/ospfCtxP-{{ policy_name }}
-    Should Be Equal Value Json String   ${r.json()}   $..ospfCtxPol.attributes.grCtrl   {{ graceful_restart }}
+    Should Be Equal Value Json String   ${r.json()}   $..ospfCtxPol.attributes.grCtrl   {% if otp.graceful_restart | default(defaults.apic.tenants.policies.ospf_timer_policies.graceful_restart) %}helper{% else %}{% endif %} 
     Should Be Equal Value Json String   ${r.json()}   $..ospfCtxPol.attributes.lsaArrivalIntvl   {{ otp.lsa_arrival_interval | default(defaults.apic.tenants.policies.ospf_timer_policies.lsa_arrival_interval) }}
     Should Be Equal Value Json String   ${r.json()}   $..ospfCtxPol.attributes.lsaGpPacingIntvl   {{ otp.lsa_group_pacing_interval | default(defaults.apic.tenants.policies.ospf_timer_policies.lsa_group_pacing_interval) }}
     Should Be Equal Value Json String   ${r.json()}   $..ospfCtxPol.attributes.lsaHoldIntvl   {{ otp.lsa_hold_interval | default(defaults.apic.tenants.policies.ospf_timer_policies.lsa_hold_interval) }}
