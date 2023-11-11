@@ -655,13 +655,9 @@ defaults:
         interfaces:
           from_module: 1
           module: 1
-          role: leaf
-          sub_ports:
-            module: 1
         fexes:
           interfaces:
             from_module: 1
-            module: 1
 
     tenants:
       managed: true
