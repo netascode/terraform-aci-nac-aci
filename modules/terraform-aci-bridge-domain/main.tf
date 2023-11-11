@@ -61,6 +61,15 @@ resource "aci_rest_managed" "fvSubnet" {
   ]
 }
 
+resource "aci_rest_managed" "fvRsNdPfxPol" {
+  for_each   = { for subnet in var.subnets : subnet.ip => subnet if subnet.nd_ra_prefix_policy != "" }
+  dn         = "${aci_rest_managed.fvSubnet[each.key].dn}/rsNdPfxPol"
+  class_name = "fvRsNdPfxPol"
+  content = {
+    tnNdPfxPolName = each.value.nd_ra_prefix_policy
+  }
+}
+
 resource "aci_rest_managed" "tagTag" {
   for_each   = { for item in local.tags_list : "${item.ip}.${item.key}" => item }
   dn         = "${aci_rest_managed.fvSubnet[each.value.ip].dn}/tagKey-${each.value.key}"

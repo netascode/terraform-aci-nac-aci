@@ -174,15 +174,16 @@ variable "igmp_snooping_policy" {
 variable "subnets" {
   description = "List of subnets. Default value `primary_ip`: `false`. Default value `public`: `false`. Default value `shared`: `false`. Default value `igmp_querier`: `false`. Default value `nd_ra_prefix`: `true`. Default value `no_default_gateway`: `false`. Default value `virtual`: `false`."
   type = list(object({
-    description        = optional(string, "")
-    ip                 = string
-    primary_ip         = optional(bool, false)
-    public             = optional(bool, false)
-    shared             = optional(bool, false)
-    igmp_querier       = optional(bool, false)
-    nd_ra_prefix       = optional(bool, true)
-    no_default_gateway = optional(bool, false)
-    virtual            = optional(bool, false)
+    description         = optional(string, "")
+    ip                  = string
+    primary_ip          = optional(bool, false)
+    public              = optional(bool, false)
+    shared              = optional(bool, false)
+    igmp_querier        = optional(bool, false)
+    nd_ra_prefix        = optional(bool, true)
+    no_default_gateway  = optional(bool, false)
+    virtual             = optional(bool, false)
+    nd_ra_prefix_policy = optional(string, "")
     tags = optional(list(object({
       key   = string
       value = string
@@ -195,6 +196,13 @@ variable "subnets" {
       for s in var.subnets : s.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", s.description))
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  validation {
+    condition = alltrue([
+      for s in var.subnets : s.nd_ra_prefix_policy == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", s.nd_ra_prefix_policy))
+    ])
+    error_message = "`nd_ra_prefix_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
 
   validation {
