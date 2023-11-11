@@ -23,6 +23,7 @@
 - Fix PIM policy compatibility issue with ACI 6.0.x
 - Add support for VMware VMM domain security domains
 - Add support for security domains
+- Add option to clear remote MAC entries of BDs
 
 ## 0.7.0
 

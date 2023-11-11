@@ -31,6 +31,7 @@ resource "aci_rest_managed" "fvBD" {
     unkMacUcastAct        = var.unknown_unicast
     unkMcastAct           = var.unknown_ipv4_multicast
     v6unkMcastAct         = var.unknown_ipv6_multicast
+    epClear               = var.clear_remote_mac_entries == true ? "yes" : "no"
   }
 }
 

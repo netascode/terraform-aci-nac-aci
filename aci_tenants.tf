@@ -168,6 +168,7 @@ locals {
         mac                        = try(bd.mac, local.defaults.apic.tenants.bridge_domains.mac)
         virtual_mac                = try(bd.virtual_mac, "")
         ep_move_detection          = try(bd.ep_move_detection, local.defaults.apic.tenants.bridge_domains.ep_move_detection)
+        clear_remote_mac_entries   = try(bd.clear_remote_mac_entries, local.defaults.apic.tenants.bridge_domains.clear_remote_mac_entries)
         l3_multicast               = try(bd.l3_multicast, local.defaults.apic.tenants.bridge_domains.l3_multicast)
         multi_destination_flooding = try(bd.multi_destination_flooding, local.defaults.apic.tenants.bridge_domains.multi_destination_flooding)
         unicast_routing            = try(bd.unicast_routing, local.defaults.apic.tenants.bridge_domains.unicast_routing)
@@ -213,6 +214,7 @@ module "aci_bridge_domain" {
   mac                        = each.value.mac
   virtual_mac                = each.value.virtual_mac
   ep_move_detection          = each.value.ep_move_detection
+  clear_remote_mac_entries   = each.value.clear_remote_mac_entries
   l3_multicast               = each.value.l3_multicast
   multi_destination_flooding = each.value.multi_destination_flooding
   unicast_routing            = each.value.unicast_routing

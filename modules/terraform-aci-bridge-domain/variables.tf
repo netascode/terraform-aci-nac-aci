@@ -79,7 +79,12 @@ variable "ep_move_detection" {
   description = "Endpoint move detection flag."
   type        = bool
   default     = false
+}
 
+variable "clear_remote_mac_entries" {
+  description = "Clear remote MAC entries flag."
+  type        = bool
+  default     = false
 }
 
 variable "virtual_mac" {
