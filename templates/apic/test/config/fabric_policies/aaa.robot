@@ -23,5 +23,5 @@ Verify AAA Security Domains
 {% for sd in apic.fabric_policies.aaa.security_domains| default([]) %}
     Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomain.attributes.name=='{{ sd.name }}')].aaaDomain.attributes.name   {{ sd.name }}
     Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomain.attributes.name=='{{ sd.name }}')].aaaDomain.attributes.descr   {{ sd.description | default() }}
-    Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomain.attributes.name=='{{ sd.name }}')].aaaDomain.attributes.restrictedRbacDomain   {% if sd.restricted_rbac_domain | default(defaults.apic.fabric_policies.aaa.security_domains.restricted_rbac_domain) == "true" %}yes{% else %}no{% endif %} 
+    Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomain.attributes.name=='{{ sd.name }}')].aaaDomain.attributes.restrictedRbacDomain   {% if sd.restricted_rbac_domain | default(defaults.apic.fabric_policies.aaa.security_domains.restricted_rbac_domain) %}yes{% else %}no{% endif %} 
 {% endfor %}
