@@ -289,6 +289,7 @@ Additional example repositories:
 | <a name="module_aci_storm_control_policy"></a> [aci\_storm\_control\_policy](#module\_aci\_storm\_control\_policy) | ./modules/terraform-aci-storm-control-policy | n/a |
 | <a name="module_aci_syslog_policy"></a> [aci\_syslog\_policy](#module\_aci\_syslog\_policy) | ./modules/terraform-aci-syslog-policy | n/a |
 | <a name="module_aci_system_global_gipo"></a> [aci\_system\_global\_gipo](#module\_aci\_system\_global\_gipo) | ./modules/terraform-aci-system-global-gipo | n/a |
+| <a name="module_aci_system_performance"></a> [aci\_system\_performance](#module\_aci\_system\_performance) | ./modules/terraform-aci-system-performance | n/a |
 | <a name="module_aci_tacacs"></a> [aci\_tacacs](#module\_aci\_tacacs) | ./modules/terraform-aci-tacacs | n/a |
 | <a name="module_aci_tenant"></a> [aci\_tenant](#module\_aci\_tenant) | ./modules/terraform-aci-tenant | n/a |
 | <a name="module_aci_tenant_span_destination_group"></a> [aci\_tenant\_span\_destination\_group](#module\_aci\_tenant\_span\_destination\_group) | ./modules/terraform-aci-tenant-span-destination-group | n/a |

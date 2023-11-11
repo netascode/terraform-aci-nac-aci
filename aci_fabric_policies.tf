@@ -946,3 +946,13 @@ module "aci_ldap" {
     rules = [for rule in try(map.rules, []) : rule.name]
   }]
 }
+
+module "aci_system_performance" {
+  source = "./modules/terraform-aci-system-performance"
+
+  count                = local.modules.aci_system_performance == true && var.manage_fabric_policies ? 1 : 0
+  admin_state          = try(local.fabric_policies.system_performance.admin_state, local.defaults.apic.fabric_policies.system_performance.admin_state)
+  response_threshold   = try(local.fabric_policies.system_performance.response_threshold, local.defaults.apic.fabric_policies.system_performance.response_threshold)
+  top_slowest_requests = try(local.fabric_policies.system_performance.top_slowest_requests, local.defaults.apic.fabric_policies.system_performance.top_slowest_requests)
+  calculation_window   = try(local.fabric_policies.system_performance.calculation_window, local.defaults.apic.fabric_policies.system_performance.calculation_window)
+}

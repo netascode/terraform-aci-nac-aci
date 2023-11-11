@@ -26,6 +26,7 @@
 - Add option to clear remote MAC entries of BDs
 - Add support for ND RA prefix policies
 - Add support for back-2-back Multi-Pod connections
+- Add support for system performance settings
 
 ## 0.7.0
 

@@ -546,6 +546,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-system-global-gipo/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-system-performance"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-system-performance/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-tacacs"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-tacacs/examples/complete"]
