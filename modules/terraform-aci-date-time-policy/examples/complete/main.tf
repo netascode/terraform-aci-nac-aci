@@ -1,6 +1,6 @@
 module "aci_date_time_policy" {
   source  = "netascode/date-time-policy/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.8.0"
 
   name                           = "DATE1"
   apic_ntp_server_master_stratum = 10

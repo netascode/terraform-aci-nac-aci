@@ -1,6 +1,6 @@
 module "aci_access_span_destination_group-destination_epg" {
   source  = "netascode/access-span-destination-group/aci"
-  version = ">= 0.1.1"
+  version = ">= 0.8.0"
 
   name                = "ABC"
   ip                  = "1.1.1.1"
@@ -17,7 +17,7 @@ module "aci_access_span_destination_group-destination_epg" {
 
 module "aci_access_span_destination_group-destination_port" {
   source  = "netascode/access-span-destination-group/aci"
-  version = ">= 0.1.1"
+  version = ">= 0.8.0"
 
   name    = "ABC"
   mtu     = 9000
@@ -29,7 +29,7 @@ module "aci_access_span_destination_group-destination_port" {
 
 module "aci_access_span_destination_group-destination_subport" {
   source  = "netascode/access-span-destination-group/aci"
-  version = ">= 0.1.1"
+  version = ">= 0.8.0"
 
   name     = "ABC"
   mtu      = 9000
@@ -43,7 +43,7 @@ module "aci_access_span_destination_group-destination_subport" {
 
 module "aci_access_span_destination_group-destination_channel" {
   source  = "netascode/access-span-destination-group/aci"
-  version = ">= 0.1.1"
+  version = ">= 0.8.0"
 
   name    = "ABC"
   mtu     = 9000

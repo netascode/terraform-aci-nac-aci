@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_access_span_filter_group" {
   source  = "netascode/access-span-filter-group/aci"
-  version = ">= 0.1.1"
+  version = ">= 0.8.0"
 
   name        = "ABC"
   description = "My Filter Group"

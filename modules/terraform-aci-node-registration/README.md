@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_node_registration" {
   source  = "netascode/node-registration/aci"
-  version = ">= 0.1.1"
+  version = ">= 0.8.0"
 
   name           = "LEAF105"
   node_id        = 105

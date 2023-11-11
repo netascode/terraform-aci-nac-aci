@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_l3out" {
   source  = "netascode/l3out/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.8.0"
 
   tenant                                  = "ABC"
   name                                    = "L3OUT1"

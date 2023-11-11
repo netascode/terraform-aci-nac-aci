@@ -1,6 +1,6 @@
 module "aci_bfd_multihop_node_policy" {
   source  = "netascode/bfd-multihop-node-policy/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   tenant               = "ABC"
   name                 = "BFD-MHOP"

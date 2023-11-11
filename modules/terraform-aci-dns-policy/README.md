@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_dns_policy" {
   source  = "netascode/dns-policy/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.8.0"
 
   name          = "DNS1"
   mgmt_epg_type = "oob"

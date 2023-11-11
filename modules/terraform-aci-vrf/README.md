@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_vrf" {
   source  = "netascode/vrf/aci"
-  version = ">= 0.2.4"
+  version = ">= 0.8.0"
 
   tenant                                 = "ABC"
   name                                   = "VRF1"

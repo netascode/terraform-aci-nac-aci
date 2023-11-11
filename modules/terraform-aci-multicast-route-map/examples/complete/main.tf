@@ -1,6 +1,6 @@
 module "aci_multicast_route_map" {
   source  = "netascode/multicast-route-map/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   tenant      = "ABC"
   name        = "MRM1"

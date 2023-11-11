@@ -1,6 +1,6 @@
 module "aci_tenant_span_destination_group" {
   source  = "netascode/tenant-span-destination-group/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   tenant                          = "TF"
   name                            = "DST_GRP"

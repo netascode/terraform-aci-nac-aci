@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_external_endpoint_group" {
   source  = "netascode/external-endpoint-group/aci"
-  version = ">= 0.2.1"
+  version = ">= 0.8.0"
 
   tenant          = "ABC"
   l3out           = "L3OUT1"

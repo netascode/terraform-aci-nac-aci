@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_route_control_route_map" {
   source  = "netascode/route-control-route-map/aci"
-  version = ">= 0.0.1"
+  version = ">= 0.8.0"
 
   name        = "ABC"
   description = "My Description"

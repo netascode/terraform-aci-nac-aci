@@ -10,8 +10,9 @@ Location in GUI:
 
 ```hcl
 module "aci-access-span-source-group" {
-  source      = "netascode/access-span-source-group/aci"
-  version     = "0.0.1"
+  source  = "netascode/access-span-source-group/aci"
+  version = ">= 0.8.0"
+
   name        = "SPAN1"
   description = "My Test Span Group"
   admin_state = false

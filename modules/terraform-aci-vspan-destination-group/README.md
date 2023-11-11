@@ -12,7 +12,7 @@ Location in GUI:
 ```hcl
 module "aci_vspan_destination_group" {
   source  = "netascode/vspan-destination-group/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   name        = "DST_GRP"
   description = "My VSPAN Destination Group"

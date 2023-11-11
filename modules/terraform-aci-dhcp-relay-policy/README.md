@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_dhcp_relay_policy" {
   source  = "netascode/dhcp-relay-policy/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.8.0"
 
   tenant      = "ABC"
   name        = "DHCP-RELAY1"

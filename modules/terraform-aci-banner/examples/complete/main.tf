@@ -1,6 +1,6 @@
 module "aci_banner" {
   source  = "netascode/banner/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   apic_gui_banner_url = "http://1.1.1.1"
   apic_gui_alias      = "PROD"

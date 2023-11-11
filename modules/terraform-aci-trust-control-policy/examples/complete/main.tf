@@ -1,6 +1,6 @@
 module "aci_trust_control_policy" {
   source  = "netascode/trust-control-policy/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   tenant         = "ABC"
   name           = "TCP1"

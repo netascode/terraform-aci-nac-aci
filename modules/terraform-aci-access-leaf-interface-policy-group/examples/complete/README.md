@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_access_leaf_interface_policy_group" {
   source  = "netascode/access-leaf-interface-policy-group/aci"
-  version = ">= 0.1.4"
+  version = ">= 0.8.0"
 
   name                       = "VPC1"
   description                = "VPC Interface Policy Group 1"

@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_login_domain" {
   source  = "netascode/login-domain/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.8.0"
 
   name        = "TACACS1"
   description = "My Description"

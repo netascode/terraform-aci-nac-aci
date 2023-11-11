@@ -1,6 +1,6 @@
 module "aci_tenant_span_source_group" {
   source  = "netascode/tenant-span-source-group/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   name        = "SPAN1"
   tenant      = "ABC"

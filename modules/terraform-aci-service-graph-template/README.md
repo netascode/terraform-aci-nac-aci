@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_service_graph_template" {
   source  = "netascode/service-graph-template/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   tenant              = "ABC"
   name                = "SGT1"

@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_fabric_spine_switch_policy_group" {
   source  = "netascode/fabric-spine-switch-policy-group/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   name                = "PG1"
   psu_policy          = "PSU1"

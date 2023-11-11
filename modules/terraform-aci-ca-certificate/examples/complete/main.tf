@@ -1,6 +1,6 @@
 module "aci_ca_certificate" {
   source  = "netascode/ca-certificate/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   name              = "CA1"
   description       = "My Description"

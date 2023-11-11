@@ -1,6 +1,6 @@
 module "aci_device_selection_policy" {
   source  = "netascode/device-selection-policy/aci"
-  version = ">= 0.1.1"
+  version = ">= 0.8.0"
 
   tenant                                                  = "ABC"
   contract                                                = "CON1"

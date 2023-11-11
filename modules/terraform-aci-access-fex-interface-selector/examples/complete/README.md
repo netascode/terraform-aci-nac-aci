@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_access_fex_interface_selector" {
   source  = "netascode/access-fex-interface-selector/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.8.0"
 
   interface_profile = "FEX101"
   name              = "1-2"

@@ -1,6 +1,6 @@
 module "aci_bgp_address_family_context_policy" {
   source  = "netascode/bgp-address-family-context-policy/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   name                   = "ABC"
   tenant                 = "TEN1"

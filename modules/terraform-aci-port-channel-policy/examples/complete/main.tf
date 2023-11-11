@@ -1,6 +1,6 @@
 module "aci_port_channel_policy" {
   source  = "netascode/port-channel-policy/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   name                 = "LACP-ACTIVE"
   mode                 = "active"

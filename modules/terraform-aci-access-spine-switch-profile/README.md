@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_access_spine_switch_profile" {
   source  = "netascode/access-spine-switch-profile/aci"
-  version = ">= 0.2.1"
+  version = ">= 0.8.0"
 
   name               = "SPINE1001"
   interface_profiles = ["SPINE1001"]

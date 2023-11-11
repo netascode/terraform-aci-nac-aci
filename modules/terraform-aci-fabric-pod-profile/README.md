@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_fabric_pod_profile" {
   source  = "netascode/fabric-pod-profile/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.8.0"
 
   name = "POD1-2"
   selectors = [{

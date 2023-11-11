@@ -1,6 +1,6 @@
 module "aci_service_epg_policy" {
   source  = "netascode/service-epg-policy/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   tenant          = "ABC"
   name            = "SERVICE_EPG_POLICY_1"

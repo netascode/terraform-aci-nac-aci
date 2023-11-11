@@ -1,6 +1,6 @@
 module "aci_inband_node_address" {
   source  = "netascode/inband-node-address/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.8.0"
 
   node_id             = 201
   pod_id              = 2

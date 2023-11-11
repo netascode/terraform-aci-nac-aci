@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_interface_type" {
   source  = "netascode/interface-type/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   pod_id  = 2
   node_id = 101

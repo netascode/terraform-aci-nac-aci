@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_inband_endpoint_group" {
   source  = "netascode/inband-endpoint-group/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   name                        = "INB1"
   vlan                        = 10

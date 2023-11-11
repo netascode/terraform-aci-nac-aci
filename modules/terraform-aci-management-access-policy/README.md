@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_management_access_policy" {
   source  = "netascode/management-access-policy/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   name                         = "MAP1"
   description                  = "My Description"

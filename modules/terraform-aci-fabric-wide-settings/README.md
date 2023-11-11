@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_fabric_wide_settings" {
   source  = "netascode/fabric-wide-settings/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   domain_validation             = true
   enforce_subnet_check          = true

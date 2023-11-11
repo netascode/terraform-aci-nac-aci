@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_vlan_pool" {
   source  = "netascode/vlan-pool/aci"
-  version = ">= 0.2.2"
+  version = ">= 0.8.0"
 
   name        = "VP1"
   description = "Vlan Pool 1"

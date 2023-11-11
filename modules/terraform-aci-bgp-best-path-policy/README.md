@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_bgp_best_path_policy" {
   source  = "netascode/bgp-best-path-policy/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   name         = "ABC"
   tenant       = "TEN1"

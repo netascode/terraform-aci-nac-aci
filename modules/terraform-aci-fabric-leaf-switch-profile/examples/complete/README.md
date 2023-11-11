@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_fabric_leaf_switch_profile" {
   source  = "netascode/fabric-leaf-switch-profile/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.8.0"
 
   name               = "LEAF101"
   interface_profiles = ["PROF1"]

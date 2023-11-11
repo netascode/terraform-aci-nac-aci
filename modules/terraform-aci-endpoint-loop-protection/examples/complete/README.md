@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_endpoint_loop_protection" {
   source  = "netascode/endpoint-loop-protection/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   action               = "bd-learn-disable"
   admin_state          = true

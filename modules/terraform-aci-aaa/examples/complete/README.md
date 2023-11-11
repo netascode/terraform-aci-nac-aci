@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_aaa" {
   source  = "netascode/aaa/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   remote_user_login_policy = "assign-default-role"
   default_fallback_check   = true

@@ -1,6 +1,6 @@
 module "aci_qos" {
   source  = "netascode/qos/aci"
-  version = ">= 0.2.1"
+  version = ">= 0.8.0"
 
   preserve_cos = true
   qos_classes = [{

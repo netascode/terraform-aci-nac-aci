@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_access_vspan_session" {
   source  = "netascode/vspan-session/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   name                    = "SESSION1"
   description             = "VSPAN Session 1"

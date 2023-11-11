@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_config_passphrase" {
   source  = "netascode/config-passphrase/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   config_passphrase = "Cisco123!Cisco123!"
 }

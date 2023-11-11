@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_pim_policy" {
   source  = "netascode/pim-policy/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   name                         = "ABC"
   tenant                       = "PIM1"

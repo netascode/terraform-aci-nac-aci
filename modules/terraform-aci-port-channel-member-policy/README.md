@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_port_channel_member_policy" {
   source  = "netascode/port-channel-member-policy/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   name     = "FAST"
   priority = 10

@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_error_disabled_recovery" {
   source  = "netascode/error-disabled-recovery/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   interval   = 600
   mcp_loop   = true

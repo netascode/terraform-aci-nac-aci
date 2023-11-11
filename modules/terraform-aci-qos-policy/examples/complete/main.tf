@@ -1,6 +1,6 @@
 module "aci_qos_policy" {
   source  = "netascode/qos-policy/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   name        = "ABC"
   tenant      = "TEN1"

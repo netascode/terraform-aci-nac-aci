@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_fabric_pod_policy_group" {
   source  = "netascode/fabric-pod-policy-group/aci"
-  version = ">= 0.1.1"
+  version = ">= 0.8.0"
 
   name                     = "POD1"
   snmp_policy              = "SNMP1"

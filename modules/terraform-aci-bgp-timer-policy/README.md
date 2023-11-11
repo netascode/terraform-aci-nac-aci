@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_bgp_timer_policy" {
   source  = "netascode/bgp-timer-policy/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   tenant                  = "ABC"
   name                    = "BGP1"

@@ -1,6 +1,6 @@
 module "aci_match_rule" {
   source  = "netascode/match-rule/aci"
-  version = ">= 0.2.1"
+  version = ">= 0.8.0"
 
   tenant      = "ABC"
   name        = "MR1"

@@ -1,6 +1,6 @@
 module "aci_syslog_policy" {
   source  = "netascode/syslog-policy/aci"
-  version = ">= 0.2.1"
+  version = ">= 0.8.0"
 
   name                = "SYSLOG1"
   description         = "My Description"

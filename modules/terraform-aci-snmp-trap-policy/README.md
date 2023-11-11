@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_snmp_trap_policy" {
   source  = "netascode/snmp-trap-policy/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.8.0"
 
   name        = "TRAP1"
   description = "My Description"

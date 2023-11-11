@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_aaep" {
   source  = "netascode/aaep/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.8.0"
 
   name               = "AAEP1"
   infra_vlan         = 10

@@ -1,6 +1,6 @@
 module "aci_bgp_policy" {
   source  = "netascode/bgp-policy/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.8.0"
 
   fabric_bgp_as = 65000
   fabric_bgp_rr = [{

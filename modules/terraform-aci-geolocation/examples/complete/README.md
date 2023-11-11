@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_geolocation" {
   source  = "netascode/geolocation/aci"
-  version = ">= 0.2.0"
+  version = ">= 0.8.0"
 
   name        = "SITE1"
   description = "Site Description"

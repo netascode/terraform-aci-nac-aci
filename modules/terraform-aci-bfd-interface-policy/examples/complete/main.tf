@@ -1,6 +1,6 @@
 module "aci_bfd_interface_policy" {
   source  = "netascode/bfd-interface-policy/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.8.0"
 
   tenant                    = "ABC"
   name                      = "BFD1"

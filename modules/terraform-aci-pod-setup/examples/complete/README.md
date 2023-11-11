@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_pod_setup" {
   source  = "netascode/pod-setup/aci"
-  version = ">= 0.1.1"
+  version = ">= 0.8.0"
 
   pod_id   = 2
   tep_pool = "10.2.0.0/16"

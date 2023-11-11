@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_ptp" {
   source  = "netascode/ptp/aci"
-  version = ">= 0.1.1"
+  version = ">= 0.8.0"
 
   admin_state       = true
   global_domain     = 0

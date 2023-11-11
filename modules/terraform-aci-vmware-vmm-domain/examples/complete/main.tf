@@ -1,6 +1,6 @@
 module "aci_vmware_vmm_domain" {
   source  = "netascode/vmware-vmm-domain/aci"
-  version = ">= 0.2.6"
+  version = ">= 0.8.0"
 
   name                        = "VMW1"
   access_mode                 = "read-only"
