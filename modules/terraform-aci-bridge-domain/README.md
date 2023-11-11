@@ -84,6 +84,7 @@ module "aci_bridge_domain" {
 | <a name="input_limit_ip_learn_to_subnets"></a> [limit\_ip\_learn\_to\_subnets](#input\_limit\_ip\_learn\_to\_subnets) | Limit IP learning to subnets. | `bool` | `true` | no |
 | <a name="input_mac"></a> [mac](#input\_mac) | MAC address. Format: `12:34:56:78:9A:BC`. | `string` | `"00:22:BD:F8:19:FF"` | no |
 | <a name="input_ep_move_detection"></a> [ep\_move\_detection](#input\_ep\_move\_detection) | Endpoint move detection flag. | `bool` | `false` | no |
+| <a name="input_clear_remote_mac_entries"></a> [clear\_remote\_mac\_entries](#input\_clear\_remote\_mac\_entries) | Clear remote MAC entries flag. | `bool` | `false` | no |
 | <a name="input_virtual_mac"></a> [virtual\_mac](#input\_virtual\_mac) | Virtual MAC address. Format: `12:34:56:78:9A:BC`. | `string` | `""` | no |
 | <a name="input_l3_multicast"></a> [l3\_multicast](#input\_l3\_multicast) | L3 multicast. | `bool` | `false` | no |
 | <a name="input_multi_destination_flooding"></a> [multi\_destination\_flooding](#input\_multi\_destination\_flooding) | Multi destination flooding. Choices: `bd-flood`, `encap-flood`, `drop`. | `string` | `"bd-flood"` | no |

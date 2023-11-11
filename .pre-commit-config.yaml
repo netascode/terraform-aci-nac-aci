@@ -402,6 +402,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-multicast-route-map/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-nd-ra-prefix-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-nd-ra-prefix-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-node-control-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-node-control-policy/examples/complete"]

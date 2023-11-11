@@ -248,6 +248,7 @@ Additional example repositories:
 | <a name="module_aci_monitoring_policy"></a> [aci\_monitoring\_policy](#module\_aci\_monitoring\_policy) | ./modules/terraform-aci-monitoring-policy | n/a |
 | <a name="module_aci_mst_policy"></a> [aci\_mst\_policy](#module\_aci\_mst\_policy) | ./modules/terraform-aci-mst-policy | n/a |
 | <a name="module_aci_multicast_route_map"></a> [aci\_multicast\_route\_map](#module\_aci\_multicast\_route\_map) | ./modules/terraform-aci-multicast-route-map | n/a |
+| <a name="module_aci_nd_ra_prefix_policy"></a> [aci\_nd\_ra\_prefix\_policy](#module\_aci\_nd\_ra\_prefix\_policy) | ./modules/terraform-aci-nd-ra-prefix-policy | n/a |
 | <a name="module_aci_node_control_policy"></a> [aci\_node\_control\_policy](#module\_aci\_node\_control\_policy) | ./modules/terraform-aci-node-control-policy | n/a |
 | <a name="module_aci_node_registration"></a> [aci\_node\_registration](#module\_aci\_node\_registration) | ./modules/terraform-aci-node-registration | n/a |
 | <a name="module_aci_oob_contract"></a> [aci\_oob\_contract](#module\_aci\_oob\_contract) | ./modules/terraform-aci-oob-contract | n/a |

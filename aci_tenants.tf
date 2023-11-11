@@ -2510,6 +2510,42 @@ module "aci_bfd_multihop_node_policy" {
 }
 
 locals {
+  nd_ra_prefix_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.nd_ra_prefix_policies, []) : {
+        key                = format("%s/%s", tenant.name, policy.name)
+        tenant             = tenant.name
+        name               = "${policy.name}${local.defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix}"
+        description        = try(policy.description, "")
+        valid_lifetime     = try(policy.valid_lifetime, local.defaults.apic.tenants.policies.nd_ra_prefix_policies.valid_lifetime)
+        preferred_lifetime = try(policy.preferred_lifetime, local.defaults.apic.tenants.policies.nd_ra_prefix_policies.preferred_lifetime)
+        auto_configuration = try(policy.auto_configuration, local.defaults.apic.tenants.policies.nd_ra_prefix_policies.auto_configuration)
+        on_link            = try(policy.on_link, local.defaults.apic.tenants.policies.nd_ra_prefix_policies.on_link)
+        router_address     = try(policy.router_address, local.defaults.apic.tenants.policies.nd_ra_prefix_policies.router_address)
+      }
+    ]
+  ])
+}
+
+module "aci_nd_ra_prefix_policy" {
+  source = "./modules/terraform-aci-nd-ra-prefix-policy"
+
+  for_each           = { for pol in local.nd_ra_prefix_policies : pol.key => pol if local.modules.aci_nd_ra_prefix_policy && var.manage_tenants }
+  tenant             = each.value.tenant
+  name               = each.value.name
+  description        = each.value.description
+  valid_lifetime     = each.value.valid_lifetime
+  preferred_lifetime = each.value.preferred_lifetime
+  auto_configuration = each.value.auto_configuration
+  on_link            = each.value.on_link
+  router_address     = each.value.router_address
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
   l4l7_devices = flatten([
     for tenant in local.tenants : [
       for device in try(tenant.services.l4l7_devices, []) : {

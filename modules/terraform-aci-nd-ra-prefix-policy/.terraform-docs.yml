@@ -1,0 +1,34 @@
+version: ">= 0.14.0"
+
+formatter: markdown table
+
+content: |-
+  # Terraform ACI ND RA Prefix Policy Module
+
+  Manages ACI ND RA Prefix Policy
+
+  Location in GUI:
+  `Tenants` » `XXX` » `Policies` » `Protocol` » `ND RA Prefix`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

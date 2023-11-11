@@ -24,6 +24,7 @@
 - Add support for VMware VMM domain security domains
 - Add support for security domains
 - Add option to clear remote MAC entries of BDs
+- Add support for ND RA prefix policies
 
 ## 0.7.0
 
