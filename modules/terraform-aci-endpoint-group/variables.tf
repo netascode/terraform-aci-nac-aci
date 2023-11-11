@@ -221,13 +221,14 @@ variable "physical_domains" {
 variable "subnets" {
   description = "List of subnets. Default value `public`: `false`. Default value `shared`: `false`. Default value `igmp_querier`: `false`. Default value `nd_ra_prefix`: `true`. Default value `no_default_gateway`: `false`. `nlb_mode` allowed values: `mode-mcast-igmp`, `mode-uc` or `mode-mcast-static`."
   type = list(object({
-    description        = optional(string, "")
-    ip                 = string
-    public             = optional(bool, false)
-    shared             = optional(bool, false)
-    igmp_querier       = optional(bool, false)
-    nd_ra_prefix       = optional(bool, true)
-    no_default_gateway = optional(bool, false)
+    description         = optional(string, "")
+    ip                  = string
+    public              = optional(bool, false)
+    shared              = optional(bool, false)
+    igmp_querier        = optional(bool, false)
+    nd_ra_prefix        = optional(bool, true)
+    no_default_gateway  = optional(bool, false)
+    nd_ra_prefix_policy = optional(string, "")
     ip_pools = optional(list(object({
       name              = string
       start_ip          = optional(string, "")
@@ -250,6 +251,13 @@ variable "subnets" {
       for s in var.subnets : s.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", s.description))
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  validation {
+    condition = alltrue([
+      for s in var.subnets : s.nd_ra_prefix_policy == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", s.nd_ra_prefix_policy))
+    ])
+    error_message = "`nd_ra_prefix_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
 
   validation {
