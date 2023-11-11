@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-apic-connectivity-preference/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-apic-connectivity-preference/actions/workflows/test.yml)
-
 # Terraform ACI APIC Connectivity Preference Module
 
 Manages ACI APIC Connectivity Preference

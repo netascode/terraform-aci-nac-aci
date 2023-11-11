@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-oob-node-address/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-oob-node-address/actions/workflows/test.yml)
-
 # Terraform ACI OOB Node Address Module
 
 Manages ACI OOB Node Address

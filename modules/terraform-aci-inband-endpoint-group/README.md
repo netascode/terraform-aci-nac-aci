@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-inband-endpoint-group/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-inband-endpoint-group/actions/workflows/test.yml)
-
 # Terraform ACI Inband Endpoint Group Module
 
 Manages ACI Inband Endpoint Group

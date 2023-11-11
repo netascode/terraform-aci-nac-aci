@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-interface-configuration/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-interface-configuration/actions/workflows/test.yml)
-
 # Terraform ACI Interface Configuration Module
 
 Manages ACI Interface Configuration

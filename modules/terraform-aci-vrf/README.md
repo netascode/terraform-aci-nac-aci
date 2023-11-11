@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-vrf/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-vrf/actions/workflows/test.yml)
-
 # Terraform ACI VRF Module
 
 Manages ACI VRF

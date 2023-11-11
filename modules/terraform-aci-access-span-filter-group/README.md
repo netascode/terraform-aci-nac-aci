@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-access-span-filter-group/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-access-span-filter-group/actions/workflows/test.yml)
-
 # Terraform ACI Access SPAN Filter Group Module
 
 Manages ACI Access SPAN Filter Group

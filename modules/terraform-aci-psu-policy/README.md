@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-psu-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-psu-policy/actions/workflows/test.yml)
-
 # Terraform ACI PSU Policy Module
 
 Manages ACI PSU Policy

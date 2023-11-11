@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-bgp-address-family-context-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-bgp-address-family-context-policy/actions/workflows/test.yml)
-
 # Terraform ACI BGP Address Family Context Module
 
 Manages ACI BGP Address Family Context

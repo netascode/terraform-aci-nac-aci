@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-monitoring-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-monitoring-policy/actions/workflows/test.yml)
-
 # Terraform ACI Monitoring Policy Module
 
 Manages ACI Monitoring Policy

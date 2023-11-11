@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-vspan-destination-group/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-vspan-destination-group/actions/workflows/test.yml)
-
 # Terraform ACI VSPAN Destination Group Module
 
 Manages ACI VSPAN Destination Group

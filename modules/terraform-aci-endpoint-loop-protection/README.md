@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-endpoint-loop-protection/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-endpoint-loop-protection/actions/workflows/test.yml)
-
 # Terraform ACI Endpoint Loop Protection Module
 
 Manages ACI Endpoint Loop Protection

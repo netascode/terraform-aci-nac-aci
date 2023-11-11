@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-physical-domain/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-physical-domain/actions/workflows/test.yml)
-
 # Terraform ACI Physical Domain Module
 
 Manages ACI Physical Domain

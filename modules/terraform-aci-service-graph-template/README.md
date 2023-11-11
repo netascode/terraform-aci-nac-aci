@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-service-graph-template/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-service-graph-template/actions/workflows/test.yml)
-
 # Terraform ACI Service Graph Template Module
 
 Manages ACI Service Graph Template

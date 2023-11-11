@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-route-control-route-map/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-route-control-route-map/actions/workflows/test.yml)
-
 # Terraform ACI Route Control Route Map Module
 
 Manages ACI Route Control Route Maps

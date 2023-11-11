@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-date-time-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-date-time-policy/actions/workflows/test.yml)
-
 # Terraform ACI Date Time Policy Module
 
 Manages ACI Date Time Policy

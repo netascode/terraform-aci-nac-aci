@@ -3,8 +3,6 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  [![Tests](https://github.com/netascode/terraform-aci-access-leaf-interface-policy-group/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-access-leaf-interface-policy-group/actions/workflows/test.yml)
-
   # Terraform ACI Access Leaf Interface Policy Group Module
 
   Manages ACI Access Leaf Interface Policy Group

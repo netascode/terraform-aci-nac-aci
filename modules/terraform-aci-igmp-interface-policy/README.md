@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-igmp-interface-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-igmp-interface-policy/actions/workflows/test.yml)
-
 # Terraform ACI IGMP Interface Policy Module
 
 Manages ACI IGMP Interface Policy Module

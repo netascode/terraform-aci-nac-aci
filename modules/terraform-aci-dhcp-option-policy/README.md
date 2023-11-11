@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-dhcp-option-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-dhcp-option-policy/actions/workflows/test.yml)
-
 # Terraform ACI DHCP Option Policy Module
 
 Manages ACI DHCP Option Policy

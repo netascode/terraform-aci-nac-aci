@@ -3,8 +3,6 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  [![Tests](https://github.com/netascode/terraform-aci-l2-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-l2-policy/actions/workflows/test.yml)
-
   # Terraform ACI L2 Policy Module
 
   Manages ACI L2 Policy

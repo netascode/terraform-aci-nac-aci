@@ -3,8 +3,6 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  [![Tests](https://github.com/netascode/terraform-aci-oob-endpoint-group/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-oob-endpoint-group/actions/workflows/test.yml)
-
   # Terraform ACI OOB Endpoint Group Module
 
   Manages ACI OOB Endpoint Group

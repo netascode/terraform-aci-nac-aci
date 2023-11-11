@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-vpc-group/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-vpc-group/actions/workflows/test.yml)
-
 # Terraform ACI vPC Group Module
 
 Manages ACI vPC Group

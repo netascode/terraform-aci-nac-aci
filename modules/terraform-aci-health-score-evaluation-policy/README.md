@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-health-score-evaluation-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-health-score-evaluation-policy/actions/workflows/test.yml)
-
 # Terraform ACI Health Score Evaluation Policy Module
 
 Manages ACI Health Score Evaluation Policy

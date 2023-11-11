@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-infra-dscp-translation-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-infra-dscp-translation-policy/actions/workflows/test.yml)
-
 # Terraform ACI Infra DSCP Translation Policy Module
 
 Manages ACI Infra DSCP Translation Policy

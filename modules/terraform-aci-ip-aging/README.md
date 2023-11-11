@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-ip-aging/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-ip-aging/actions/workflows/test.yml)
-
 # Terraform ACI IP Aging Module
 
 Manages ACI IP Aging

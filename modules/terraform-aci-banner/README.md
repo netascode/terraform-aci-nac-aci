@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-banner/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-banner/actions/workflows/test.yml)
-
 # Terraform ACI Banner Module
 
 Manages ACI Banner

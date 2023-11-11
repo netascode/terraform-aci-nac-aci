@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-date-time-format/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-date-time-format/actions/workflows/test.yml)
-
 # Terraform ACI Date Time Format Module
 
 Manages ACI Date Time Format

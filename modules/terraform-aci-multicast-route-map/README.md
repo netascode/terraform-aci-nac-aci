@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-multicast-route-map/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-multicast-route-map/actions/workflows/test.yml)
-
 # Terraform ACI Multicast Route Map Module
 
 Manages ACI Multicast Route Map

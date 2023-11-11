@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-pim-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-pim-policy/actions/workflows/test.yml)
-
 # Terraform ACI PIM Policy Module
 
 Manages ACI PIM Policy

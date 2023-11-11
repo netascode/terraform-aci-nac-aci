@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-mcp-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-mcp-policy/actions/workflows/test.yml)
-
 # Terraform ACI MCP Policy Module
 
 Manages ACI MCP Policy

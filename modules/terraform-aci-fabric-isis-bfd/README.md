@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-fabric-isis-bfd/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-fabric-isis-bfd/actions/workflows/test.yml)
-
 # Terraform ACI Fabric ISIS BFD Module
 
 Manages ACI Fabric ISIS BFD

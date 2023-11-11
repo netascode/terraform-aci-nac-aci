@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-l3out/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-l3out/actions/workflows/test.yml)
-
 # Terraform ACI L3out Module
 
 Manages ACI L3out

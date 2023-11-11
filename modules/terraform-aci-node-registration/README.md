@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-node-registration/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-node-registration/actions/workflows/test.yml)
-
 # Terraform ACI Node Registration Module
 
 Manages ACI Node Registration

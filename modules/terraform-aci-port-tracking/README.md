@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-port-tracking/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-port-tracking/actions/workflows/test.yml)
-
 # Terraform ACI Port Tracking Module
 
 Manages ACI Port Tracking

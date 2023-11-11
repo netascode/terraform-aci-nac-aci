@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-snmp-trap-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-snmp-trap-policy/actions/workflows/test.yml)
-
 # Terraform ACI SNMP Trap Policy Module
 
 Manages ACI SNMP Trap Policy

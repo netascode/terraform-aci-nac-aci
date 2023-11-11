@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-l3out-interface-profile/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-l3out-interface-profile/actions/workflows/test.yml)
-
 # Terraform ACI L3out Interface Profile Module
 
 Manages ACI L3out Interface Profile

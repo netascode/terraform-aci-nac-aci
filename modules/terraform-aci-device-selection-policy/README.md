@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-device-selection-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-device-selection-policy/actions/workflows/test.yml)
-
 # Terraform ACI Device Selection Policy Module
 
 Manages ACI Device Selection Policy

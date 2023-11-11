@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-vmware-vmm-domain/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-vmware-vmm-domain/actions/workflows/test.yml)
-
 # Terraform ACI VMware VMM Domain Module
 
 Manages ACI VMware VMM Domain

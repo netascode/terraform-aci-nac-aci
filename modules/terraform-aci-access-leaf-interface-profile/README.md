@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-access-leaf-interface-profile/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-access-leaf-interface-profile/actions/workflows/test.yml)
-
 # Terraform ACI Access Leaf Interface Profile Module
 
 Manages ACI Access Leaf Interface Profile

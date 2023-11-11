@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-bgp-peer-prefix-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-bgp-peer-prefix-policy/actions/workflows/test.yml)
-
 # Terraform ACI BGP Peer Prefix Policy Module
 
 Manages ACI BGP Peer Prefix Policy

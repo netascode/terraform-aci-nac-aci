@@ -3,8 +3,6 @@ version: ">= 0.14.0"
 formatter: markdown table
 
 content: |-
-  [![Tests](https://github.com/netascode/terraform-aci-bfd-multihop-node-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-bfd-multihop-node-policy/actions/workflows/test.yml)
-
   # Terraform ACI BFD Multihop Node Policy Module
 
   Description

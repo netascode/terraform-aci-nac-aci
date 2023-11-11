@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-route-tag-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-route-tag-policy/actions/workflows/test.yml)
-
 # Terraform ACI Route Tag Policy Module
 
 Description

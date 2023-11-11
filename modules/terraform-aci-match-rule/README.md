@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-match-rule/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-match-rule/actions/workflows/test.yml)
-
 # Terraform ACI Match Rule Module
 
 Manages ACI Match Rule

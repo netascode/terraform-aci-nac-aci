@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-error-disabled-recovery/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-error-disabled-recovery/actions/workflows/test.yml)
-
 # Terraform ACI Error Disabled Recovery Module
 
 Manages ACI Error Disabled Recovery

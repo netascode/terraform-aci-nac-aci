@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-fabric-leaf-interface-profile/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-fabric-leaf-interface-profile/actions/workflows/test.yml)
-
 # Terraform ACI Fabric Leaf Interface Profile Module
 
 Manages ACI Fabric Leaf Interface Profile

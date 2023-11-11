@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-vspan-session/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-vspan-session/actions/workflows/test.yml)
-
 # Terraform ACI VSPAN Session Module
 
 Manages ACI VSPAN Session

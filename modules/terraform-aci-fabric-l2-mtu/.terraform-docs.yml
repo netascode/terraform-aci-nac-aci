@@ -3,8 +3,6 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  [![Tests](https://github.com/netascode/terraform-aci-fabric-l2-mtu/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-fabric-l2-mtu/actions/workflows/test.yml)
-
   # Terraform ACI Fabric L2 MTU Module
 
   Manage Fabric L2 MTU

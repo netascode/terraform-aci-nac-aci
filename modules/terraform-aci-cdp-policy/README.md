@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-cdp-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-cdp-policy/actions/workflows/test.yml)
-
 # Terraform ACI CDP Policy Module
 
 Manages ACI CDP Policy

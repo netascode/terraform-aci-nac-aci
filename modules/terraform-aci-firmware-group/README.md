@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-firmware-group/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-firmware-group/actions/workflows/test.yml)
-
 # Terraform ACI Firmware Group Module
 
 Manages ACI Firmware Group

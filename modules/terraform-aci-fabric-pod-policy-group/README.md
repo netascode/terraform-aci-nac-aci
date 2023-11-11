@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-fabric-pod-policy-group/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-fabric-pod-policy-group/actions/workflows/test.yml)
-
 # Terraform ACI Fabric Pod Policy Group Module
 
 Manages ACI Fabric Pod Policy Group

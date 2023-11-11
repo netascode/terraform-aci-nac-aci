@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-l2-mtu-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-l2-mtu-policy/actions/workflows/test.yml)
-
 # Terraform ACI L2 MTU Policy Module
 
 Description

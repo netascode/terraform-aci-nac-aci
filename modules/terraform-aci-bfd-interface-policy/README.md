@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-bfd-interface-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-bfd-interface-policy/actions/workflows/test.yml)
-
 # Terraform ACI BFD Interface Policy Module
 
 Manages ACI BFD Interface Policy

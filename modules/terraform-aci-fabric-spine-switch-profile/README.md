@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-fabric-spine-switch-profile/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-fabric-spine-switch-profile/actions/workflows/test.yml)
-
 # Terraform ACI Fabric Spine Switch Profile Module
 
 Manages ACI Fabric Spine Switch Profile

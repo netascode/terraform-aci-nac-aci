@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-external-endpoint-group/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-external-endpoint-group/actions/workflows/test.yml)
-
 # Terraform ACI External Endpoint Group Module
 
 Manages ACI External Endpoint Group

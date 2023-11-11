@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-bridge-domain/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-bridge-domain/actions/workflows/test.yml)
-
 # Terraform ACI Bridge Domain Module
 
 Manages ACI Bridge Domain

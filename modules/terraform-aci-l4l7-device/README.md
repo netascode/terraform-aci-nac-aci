@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-l4l7-device/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-l4l7-device/actions/workflows/test.yml)
-
 # Terraform ACI L4L7 Device Module
 
 Manages L4L7 Device

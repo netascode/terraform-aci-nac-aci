@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-port-channel-member-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-port-channel-member-policy/actions/workflows/test.yml)
-
 # Terraform ACI Port Channel Member Policy Module
 
 Manages ACI Port Channel Member Policy

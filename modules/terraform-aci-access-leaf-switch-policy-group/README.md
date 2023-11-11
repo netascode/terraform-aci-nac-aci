@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-access-leaf-switch-policy-group/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-access-leaf-switch-policy-group/actions/workflows/test.yml)
-
 # Terraform ACI Access Leaf Switch Policy Group Module
 
 Manages ACI Access Leaf Switch Policy Group

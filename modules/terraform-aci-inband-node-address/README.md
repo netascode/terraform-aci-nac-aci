@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-inband-node-address/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-inband-node-address/actions/workflows/test.yml)
-
 # Terraform ACI Inband Node Address Module
 
 Manages ACI Inband Node Address

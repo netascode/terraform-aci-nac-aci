@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-igmp-snooping-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-igmp-snooping-policy/actions/workflows/test.yml)
-
 # Terraform ACI IGMP Snooping Policy Module
 
 Manages ACI IGMP Snooping Policy

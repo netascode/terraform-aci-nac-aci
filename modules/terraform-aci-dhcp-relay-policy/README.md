@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-dhcp-relay-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-dhcp-relay-policy/actions/workflows/test.yml)
-
 # Terraform ACI DHCP Relay Policy Module
 
 Manages ACI DHCP Relay Policy

@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-redirect-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-redirect-policy/actions/workflows/test.yml)
-
 # Terraform ACI Redirect Policy Module
 
 Manages ACI Redirect Policy

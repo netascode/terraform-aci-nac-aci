@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-access-spine-interface-selector/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-access-spine-interface-selector/actions/workflows/test.yml)
-
 # Terraform ACI Access Spine Interface Selector Module
 
 Manages ACI Access Spine Interface Selector

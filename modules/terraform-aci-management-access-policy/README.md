@@ -1,6 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-management-access-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-management-access-policy/actions/workflows/test.yml)
-
 # Terraform ACI Management Access Policy Module
 
 Manages ACI Management Access Policy
