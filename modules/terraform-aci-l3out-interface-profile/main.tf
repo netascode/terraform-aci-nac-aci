@@ -273,7 +273,7 @@ resource "aci_rest_managed" "l3extRsPathL3OutAtt" {
     mode             = each.value.mode
     mtu              = each.value.mtu
     tDn              = each.value.tDn
-    isMultiPodDirect = each.value.multipod_direct ? "true" : null
+    isMultiPodDirect = each.value.multipod_direct ? "yes" : null
   }
 }
 
