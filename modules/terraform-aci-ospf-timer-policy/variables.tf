@@ -96,46 +96,46 @@ variable "spf_max_interval" {
 }
 
 variable "max_lsa_reset_interval" {
-  description = "Max LSA reset interval. Minimum value: `1`. Maximum value: `1800`."
+  description = "Max LSA reset interval. Minimum value: `1`. Maximum value: `1440`."
   type        = number
   default     = 10
 
   validation {
-    condition     = var.max_lsa_reset_interval >= 1 && var.max_lsa_reset_interval <= 1800
-    error_message = "Minimum value: `1`. Maximum value: `1800`."
+    condition     = var.max_lsa_reset_interval >= 1 && var.max_lsa_reset_interval <= 1440
+    error_message = "Minimum value: `1`. Maximum value: `1440`."
   }
 }
 
 variable "max_lsa_sleep_count" {
-  description = "Max LSA sleep count. Minimum value: `50`. Maximum value: `30000`."
+  description = "Max LSA sleep count. Minimum value: `1`. Maximum value: `4294967295`."
   type        = number
   default     = 5
 
   validation {
-    condition     = var.max_lsa_sleep_count >= 50 && var.max_lsa_sleep_count <= 30000
-    error_message = "Minimum value: `50`. Maximum value: `30000`."
+    condition     = var.max_lsa_sleep_count >= 1 && var.max_lsa_sleep_count <= 4294967295
+    error_message = "Minimum value: `1`. Maximum value: `4294967295`."
   }
 }
 
 variable "max_lsa_sleep_interval" {
-  description = "Max LSA sleep interval. Minimum value: `50`. Maximum value: `30000`."
+  description = "Max LSA sleep interval. Minimum value: `1`. Maximum value: `1440`."
   type        = number
   default     = 5
 
   validation {
-    condition     = var.max_lsa_sleep_interval >= 50 && var.max_lsa_sleep_interval <= 30000
-    error_message = "Minimum value: `50`. Maximum value: `30000`."
+    condition     = var.max_lsa_sleep_interval >= 1 && var.max_lsa_sleep_interval <= 1440
+    error_message = "Minimum value: `1`. Maximum value: `1440`."
   }
 }
 
 variable "lsa_arrival_interval" {
-  description = "LSA arrival interval. Minimum value: `1`. Maximum value: `600000`."
+  description = "LSA arrival interval. Minimum value: `10`. Maximum value: `600000`."
   type        = number
   default     = 1000
 
   validation {
-    condition     = var.lsa_arrival_interval >= 1 && var.lsa_arrival_interval <= 600000
-    error_message = "Minimum value: `1`. Maximum value: `600000`."
+    condition     = var.lsa_arrival_interval >= 10 && var.lsa_arrival_interval <= 600000
+    error_message = "Minimum value: `10`. Maximum value: `600000`."
   }
 }
 
@@ -151,35 +151,35 @@ variable "lsa_group_pacing_interval" {
 }
 
 variable "lsa_hold_interval" {
-  description = "LSA hold interval. Minimum value: `1`. Maximum value: `30000`."
+  description = "LSA hold interval. Minimum value: `50`. Maximum value: `30000`."
   type        = number
   default     = 5000
 
   validation {
-    condition     = var.lsa_hold_interval >= 1 && var.lsa_hold_interval <= 30000
-    error_message = "Minimum value: `1`. Maximum value: `30000`."
+    condition     = var.lsa_hold_interval >= 50 && var.lsa_hold_interval <= 30000
+    error_message = "Minimum value: `50`. Maximum value: `30000`."
   }
 }
 
 variable "lsa_start_interval" {
-  description = "LSA start interval. Minimum value: `1`. Maximum value: `5000`."
+  description = "LSA start interval. Minimum value: `0`. Maximum value: `5000`."
   type        = number
   default     = 0
 
   validation {
-    condition     = var.lsa_start_interval >= 1 && var.lsa_start_interval <= 5000
-    error_message = "Minimum value: `1`. Maximum value: `5000`."
+    condition     = var.lsa_start_interval >= 0 && var.lsa_start_interval <= 5000
+    error_message = "Minimum value: `0`. Maximum value: `5000`."
   }
 }
 
 variable "lsa_max_interval" {
-  description = "LSA max interval. Minimum value: `1`. Maximum value: `30000`."
+  description = "LSA max interval. Minimum value: `50`. Maximum value: `30000`."
   type        = number
   default     = 5000
 
   validation {
-    condition     = var.lsa_max_interval >= 1 && var.lsa_max_interval <= 30000
-    error_message = "Minimum value: `1`. Maximum value: `30000`."
+    condition     = var.lsa_max_interval >= 50 && var.lsa_max_interval <= 30000
+    error_message = "Minimum value: `50`. Maximum value: `30000`."
   }
 }
 
