@@ -34,7 +34,7 @@
                         "card": "{{ module }}",
                         "description": "{{ int.description }}",
                         "node": "{{ _node.id }}",
-                        "port": "{{ int.port }}"                     
+                        "port": "{{ int.port }}"
                     }
                 }
             }
@@ -72,10 +72,10 @@
                         "description": "{{ sub.description }}",
                         "node": "{{ _node.id }}",
                         "port": "{{ int.port }}", 
-                        "subPort": "{{ sub.port }}"                  
+                        "subPort": "{{ sub.port }}"
                     }
                 }
-            }               
+            }
             {%- endfor %}
             {%- endif %}
             {%- endfor %}
@@ -100,7 +100,7 @@
                         "description": "{{ int.description }}",
                         "node": "{{ _node.id }}",
                         "port": "1", 
-                        "subPort": "{{ int.port }}"                  
+                        "subPort": "{{ int.port }}"
                     }
                 }
             }
