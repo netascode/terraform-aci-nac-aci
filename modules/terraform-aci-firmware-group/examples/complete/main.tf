@@ -1,5 +1,5 @@
 module "aci_firmware_group" {
-  source  = "netascode/firmware-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-firmware-group"
   version = ">= 0.8.0"
 
   name     = "UG1"

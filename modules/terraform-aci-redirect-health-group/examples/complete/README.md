@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "redirect_health_group" {
-  source  = "netascode/redirect-health-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-redirect-health-group"
   version = ">= 0.8.0"
 
   name        = "ABC"

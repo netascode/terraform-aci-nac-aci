@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_route_tag_policy" {
-  source  = "netascode/route-tag-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-route-tag-policy"
   version = ">= 0.8.0"
 
   tenant      = "TEN1"

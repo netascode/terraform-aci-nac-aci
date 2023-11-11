@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_node_control_policy" {
-  source  = "netascode/node-control-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-node-control-policy"
   version = ">= 0.8.0"
 
   name      = "NC1"

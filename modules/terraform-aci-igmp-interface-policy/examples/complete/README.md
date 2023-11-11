@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_igmp_interface_policy" {
-  source  = "netascode/igmp-interface-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-igmp-interface-policy"
   version = ">= 0.8.0"
 
   name                              = "ABC"

@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_fabric_span_destination_group" {
-  source  = "netascode/fabric-span-destination-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-span-destination-group"
   version = ">= 0.8.0"
 
   name                = "DST_GRP"

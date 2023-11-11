@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_ca_certificate" {
-  source  = "netascode/ca-certificate/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-ca-certificate"
   version = ">= 0.8.0"
 
   name              = "CA1"

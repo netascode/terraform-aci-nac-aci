@@ -1,5 +1,5 @@
 module "aci_ospf_interface_policy" {
-  source  = "netascode/ospf-interface-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-ospf-interface-policy"
   version = ">= 0.8.0"
 
   tenant                  = "ABC"

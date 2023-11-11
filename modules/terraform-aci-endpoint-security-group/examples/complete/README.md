@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_endpoint_security_group" {
-  source  = "netascode/endpoint-security-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-endpoint-security-group"
   version = ">= 0.8.0"
 
   name                        = "ESG1"

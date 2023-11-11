@@ -1,5 +1,5 @@
 module "aci_inband_node_address" {
-  source  = "netascode/inband-node-address/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-inband-node-address"
   version = ">= 0.8.0"
 
   node_id             = 201

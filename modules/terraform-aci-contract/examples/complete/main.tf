@@ -1,5 +1,5 @@
 module "aci_contract" {
-  source  = "netascode/contract/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-contract"
   version = ">= 0.8.0"
 
   tenant      = "ABC"

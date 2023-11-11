@@ -1,5 +1,5 @@
 module "aci_date_time_format" {
-  source  = "netascode/date-time-format/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-date-time-format"
   version = ">= 0.8.0"
 
   display_format = "utc"

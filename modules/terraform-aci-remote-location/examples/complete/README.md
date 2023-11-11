@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_remote_location" {
-  source  = "netascode/remote-location/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-remote-location"
   version = ">= 0.8.0"
 
   name          = "RL1"

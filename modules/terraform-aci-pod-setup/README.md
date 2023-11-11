@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_pod_setup" {
-  source  = "netascode/pod-setup/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-pod-setup"
   version = ">= 0.8.0"
 
   pod_id   = 2

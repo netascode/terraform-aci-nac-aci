@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_l4l7_device" {
-  source  = "netascode/l4l7-device/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-l4l7-device"
   version = ">= 0.8.0"
 
   tenant          = "ABC"

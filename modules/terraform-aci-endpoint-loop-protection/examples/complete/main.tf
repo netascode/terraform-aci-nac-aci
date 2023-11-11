@@ -1,5 +1,5 @@
 module "aci_endpoint_loop_protection" {
-  source  = "netascode/endpoint-loop-protection/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-endpoint-loop-protection"
   version = ">= 0.8.0"
 
   action               = "bd-learn-disable"

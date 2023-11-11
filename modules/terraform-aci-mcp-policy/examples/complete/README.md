@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_mcp_policy" {
-  source  = "netascode/mcp-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-mcp-policy"
   version = ">= 0.8.0"
 
   name        = "MCP-OFF"

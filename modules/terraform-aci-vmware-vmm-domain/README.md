@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_vmware_vmm_domain" {
-  source  = "netascode/vmware-vmm-domain/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-vmware-vmm-domain"
   version = ">= 0.8.0"
 
   name                        = "VMW1"

@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_bgp_policy" {
-  source  = "netascode/bgp-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-bgp-policy"
   version = ">= 0.8.0"
 
   fabric_bgp_as = 65000

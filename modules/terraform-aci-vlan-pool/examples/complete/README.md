@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_vlan_pool" {
-  source  = "netascode/vlan-pool/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-vlan-pool"
   version = ">= 0.8.0"
 
   name        = "VP1"

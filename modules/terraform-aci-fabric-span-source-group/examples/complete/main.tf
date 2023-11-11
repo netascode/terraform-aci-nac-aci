@@ -1,5 +1,5 @@
 module "aci_fabric_span_source_group" {
-  source  = "netascode/fabric-span-source-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-span-source-group"
   version = ">= 0.8.0"
 
   name        = "SPAN1"

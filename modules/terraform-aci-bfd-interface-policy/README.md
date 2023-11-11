@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_bfd_interface_policy" {
-  source  = "netascode/bfd-interface-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-bfd-interface-policy"
   version = ">= 0.8.0"
 
   tenant                    = "ABC"

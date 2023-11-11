@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_bridge_domain" {
-  source  = "netascode/bridge-domain/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-bridge-domain"
   version = ">= 0.8.0"
 
   tenant                     = "ABC"

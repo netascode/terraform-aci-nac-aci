@@ -1,5 +1,5 @@
 module "aci_interface_type" {
-  source  = "netascode/interface-type/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-interface-type"
   version = ">= 0.8.0"
 
   pod_id  = 2

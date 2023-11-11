@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_access_vspan_session" {
-  source  = "netascode/vspan-session/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-vspan-session"
   version = ">= 0.8.0"
 
   name                    = "SESSION1"

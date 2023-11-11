@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_oob_external_management_instance" {
-  source  = "netascode/oob-external-management-instance/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-oob-external-management-instance"
   version = ">= 0.8.0"
 
   name                   = "INST1"

@@ -1,5 +1,5 @@
 module "aci_access_leaf_switch_profile" {
-  source  = "netascode/access-leaf-switch-profile/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-access-leaf-switch-profile"
   version = ">= 0.8.0"
 
   name               = "LEAF101"

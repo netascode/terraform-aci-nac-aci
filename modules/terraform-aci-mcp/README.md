@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_mcp" {
-  source  = "netascode/mcp/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-mcp"
   version = ">= 0.8.0"
 
   admin_state         = true

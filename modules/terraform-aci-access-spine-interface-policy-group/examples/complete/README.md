@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_access_spine_interface_policy_group" {
-  source  = "netascode/access-spine-interface-policy-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-access-spine-interface-policy-group"
   version = ">= 0.8.0"
 
   name              = "IPN"

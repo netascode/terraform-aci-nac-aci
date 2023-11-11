@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_igmp_snooping_policy" {
-  source  = "netascode/igmp-snooping-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-igmp-snooping-policy"
   version = ">= 0.8.0"
 
   name                       = "ABC"

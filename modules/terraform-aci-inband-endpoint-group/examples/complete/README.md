@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_inband_endpoint_group" {
-  source  = "netascode/inband-endpoint-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-inband-endpoint-group"
   version = ">= 0.8.0"
 
   name                        = "INB1"

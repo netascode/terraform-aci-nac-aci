@@ -1,5 +1,5 @@
 module "aci_pim_policy" {
-  source  = "netascode/pim-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-im-policy"
   version = ">= 0.8.0"
 
   name                         = "ABC"

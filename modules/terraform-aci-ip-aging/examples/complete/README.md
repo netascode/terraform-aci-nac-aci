@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_ip_aging" {
-  source  = "netascode/ip-aging/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-ip-aging"
   version = ">= 0.8.0"
 
   admin_state = true

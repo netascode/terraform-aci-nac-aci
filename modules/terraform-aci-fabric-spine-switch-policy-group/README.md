@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_fabric_spine_switch_policy_group" {
-  source  = "netascode/fabric-spine-switch-policy-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-spine-switch-policy-group"
   version = ">= 0.8.0"
 
   name                = "PG1"

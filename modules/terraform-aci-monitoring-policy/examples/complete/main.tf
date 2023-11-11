@@ -1,5 +1,5 @@
 module "aci_monitoring_policy" {
-  source  = "netascode/monitoring-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-monitoring-policy"
   version = ">= 0.8.0"
 
   snmp_trap_policies = ["SNMP1"]

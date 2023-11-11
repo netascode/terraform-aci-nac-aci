@@ -1,5 +1,5 @@
 module "aci_tenant" {
-  source  = "netascode/tenant/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-tenant"
   version = ">= 0.8.0"
 
   name        = "ABC"

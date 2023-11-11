@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_application_profile" {
-  source  = "netascode/application-profile/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-application-profile"
   version = ">= 0.8.0"
 
   tenant      = "ABC"

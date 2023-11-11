@@ -1,5 +1,5 @@
 module "aci_aaa" {
-  source  = "netascode/aaa/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-aaa"
   version = ">= 0.8.0"
 
   remote_user_login_policy = "assign-default-role"

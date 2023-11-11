@@ -1,5 +1,5 @@
 module "aci_l3out" {
-  source  = "netascode/l3out/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-l3out"
   version = ">= 0.8.0"
 
   tenant                                  = "ABC"

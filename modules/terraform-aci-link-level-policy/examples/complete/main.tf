@@ -1,5 +1,5 @@
 module "aci_link_level_policy" {
-  source  = "netascode/link-level-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-link-level-policy"
   version = ">= 0.8.0"
 
   name     = "100G"

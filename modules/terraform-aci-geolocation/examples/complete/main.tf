@@ -1,5 +1,5 @@
 module "aci_geolocation" {
-  source  = "netascode/geolocation/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-geolocation"
   version = ">= 0.8.0"
 
   name        = "SITE1"

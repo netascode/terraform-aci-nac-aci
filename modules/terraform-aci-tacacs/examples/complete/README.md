@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_tacacs" {
-  source  = "netascode/tacacs/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-tacacs"
   version = ">= 0.8.0"
 
   hostname_ip         = "1.1.1.1"

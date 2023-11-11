@@ -1,5 +1,5 @@
 module "aci_physical_domain" {
-  source  = "netascode/physical-domain/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-physical-domain"
   version = ">= 0.8.0"
 
   name                 = "PHY1"

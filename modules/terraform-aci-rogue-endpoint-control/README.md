@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_rogue_endpoint_control" {
-  source  = "netascode/rogue-endpoint-control/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-rogue-endpoint-control"
   version = ">= 0.8.0"
 
   admin_state          = true

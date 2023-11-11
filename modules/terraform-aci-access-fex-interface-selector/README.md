@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_access_fex_interface_selector" {
-  source  = "netascode/access-fex-interface-selector/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-access-fex-interface-selector"
   version = ">= 0.8.0"
 
   interface_profile = "FEX101"

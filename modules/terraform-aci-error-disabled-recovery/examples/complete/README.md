@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_error_disabled_recovery" {
-  source  = "netascode/error-disabled-recovery/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-error-disabled-recovery"
   version = ">= 0.8.0"
 
   interval   = 600

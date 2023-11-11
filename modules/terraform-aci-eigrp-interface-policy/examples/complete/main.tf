@@ -1,5 +1,5 @@
 module "aci_eigrp_interface_policy" {
-  source  = "netascode/eigrp-interface-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-eigrp-interface-policy"
   version = ">= 0.8.0"
 
   tenant            = "TF"

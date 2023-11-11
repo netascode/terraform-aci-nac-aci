@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_port_tracking" {
-  source  = "netascode/port-tracking/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-port-tracking"
   version = ">= 0.8.0"
 
   admin_state = true

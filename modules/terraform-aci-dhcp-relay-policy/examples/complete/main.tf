@@ -1,5 +1,5 @@
 module "aci_dhcp_relay_policy" {
-  source  = "netascode/dhcp-relay-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-dhcp-relay-policy"
   version = ">= 0.8.0"
 
   tenant      = "ABC"

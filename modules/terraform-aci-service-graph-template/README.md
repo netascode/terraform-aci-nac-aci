@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_service_graph_template" {
-  source  = "netascode/service-graph-template/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-service-graph-template"
   version = ">= 0.8.0"
 
   tenant              = "ABC"

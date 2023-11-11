@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_set_rule" {
-  source  = "netascode/set-rule/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-set-rule"
   version = ">= 0.8.0"
 
   tenant                      = "ABC"

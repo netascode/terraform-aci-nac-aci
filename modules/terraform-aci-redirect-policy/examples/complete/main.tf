@@ -1,5 +1,5 @@
 module "aci_redirect_policy" {
-  source  = "netascode/redirect-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-redirect-policy"
   version = ">= 0.8.0"
 
   tenant                 = "ABC"

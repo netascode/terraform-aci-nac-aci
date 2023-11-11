@@ -1,5 +1,5 @@
 module "aci_node_registration" {
-  source  = "netascode/node-registration/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-node-registration"
   version = ">= 0.8.0"
 
   name           = "LEAF105"

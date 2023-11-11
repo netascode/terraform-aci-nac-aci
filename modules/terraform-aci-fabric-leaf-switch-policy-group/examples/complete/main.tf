@@ -1,5 +1,5 @@
 module "aci_fabric_leaf_switch_policy_group" {
-  source  = "netascode/fabric-leaf-switch-policy-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-leaf-switch-policy-group"
   version = ">= 0.8.0"
 
   name                = "LEAFS"

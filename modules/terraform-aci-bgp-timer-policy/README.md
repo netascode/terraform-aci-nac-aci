@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_bgp_timer_policy" {
-  source  = "netascode/bgp-timer-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-bgp-timer-policy"
   version = ">= 0.8.0"
 
   tenant                  = "ABC"

@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_imported_contract" {
-  source  = "netascode/imported-contract/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-imported-contract"
   version = ">= 0.8.0"
 
   tenant          = "ABC"

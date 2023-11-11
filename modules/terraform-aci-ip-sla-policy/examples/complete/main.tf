@@ -1,5 +1,5 @@
 module "aci_ip_sla_policy" {
-  source  = "netascode/ip-sla-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-ip-sla-policy"
   version = ">= 0.8.0"
 
   name        = "ABC"

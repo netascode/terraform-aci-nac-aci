@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_fabric_l2_mtu" {
-  source  = "netascode/fabric-l2-mtu/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-l2-mtu"
   version = ">= 0.8.0"
 
   l2_port_mtu = 9216

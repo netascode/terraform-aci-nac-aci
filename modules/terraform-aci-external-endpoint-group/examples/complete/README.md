@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_external_endpoint_group" {
-  source  = "netascode/external-endpoint-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-external-endpoint-group"
   version = ">= 0.8.0"
 
   tenant          = "ABC"

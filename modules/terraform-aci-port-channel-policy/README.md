@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_port_channel_policy" {
-  source  = "netascode/port-channel-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-port-channel-policy"
   version = ">= 0.8.0"
 
   name                 = "LACP-ACTIVE"

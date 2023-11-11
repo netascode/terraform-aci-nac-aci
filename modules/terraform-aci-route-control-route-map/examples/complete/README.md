@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_route_control_route_map" {
-  source  = "netascode/route-control-route-map/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-route-control-route-map"
   version = ">= 0.8.0"
 
   name        = "ABC"

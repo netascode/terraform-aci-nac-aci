@@ -1,5 +1,5 @@
 module "aci_login_domain" {
-  source  = "netascode/login-domain/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-login-domain"
   version = ">= 0.8.0"
 
   name        = "TACACS1"

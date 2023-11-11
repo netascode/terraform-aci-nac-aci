@@ -1,5 +1,5 @@
 module "aci_multicast_route_map" {
-  source  = "netascode/multicast-route-map/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-multicast-route-map"
   version = ">= 0.8.0"
 
   tenant      = "ABC"

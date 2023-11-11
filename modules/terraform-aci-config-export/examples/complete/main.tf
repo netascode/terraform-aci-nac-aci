@@ -1,5 +1,5 @@
 module "aci_config_export" {
-  source  = "netascode/config-export/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-config-export"
   version = ">= 0.8.0"
 
   name            = "EXP1"

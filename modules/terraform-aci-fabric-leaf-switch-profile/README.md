@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_fabric_leaf_switch_profile" {
-  source  = "netascode/fabric-leaf-switch-profile/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-leaf-switch-profile"
   version = ">= 0.8.0"
 
   name               = "LEAF101"

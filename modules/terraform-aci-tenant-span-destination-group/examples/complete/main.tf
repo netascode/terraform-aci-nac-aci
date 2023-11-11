@@ -1,5 +1,5 @@
 module "aci_tenant_span_destination_group" {
-  source  = "netascode/tenant-span-destination-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-tenant-span-destination-group"
   version = ">= 0.8.0"
 
   tenant                          = "TF"

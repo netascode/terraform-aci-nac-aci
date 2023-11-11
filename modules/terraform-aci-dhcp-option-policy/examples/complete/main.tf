@@ -1,5 +1,5 @@
 module "aci_dhcp_option_policy" {
-  source  = "netascode/dhcp-option-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-dhcp-option-policy"
   version = ">= 0.8.0"
 
   tenant      = "ABC"

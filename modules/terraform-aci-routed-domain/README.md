@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_routed_domain" {
-  source  = "netascode/routed-domain/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-routed-domain"
   version = ">= 0.8.0"
 
   name                 = "RD1"

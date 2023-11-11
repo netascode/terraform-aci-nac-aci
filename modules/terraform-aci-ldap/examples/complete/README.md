@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_ldap" {
-  source  = "netascode/ldap/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-ldap"
   version = ">= 0.8.0"
 
   ldap_providers = [{

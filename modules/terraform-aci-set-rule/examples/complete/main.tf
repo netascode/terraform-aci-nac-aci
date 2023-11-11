@@ -1,5 +1,5 @@
 module "aci_set_rule" {
-  source  = "netascode/set-rule/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-set-rule"
   version = ">= 0.8.0"
 
   tenant                      = "ABC"

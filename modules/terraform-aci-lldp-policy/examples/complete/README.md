@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_lldp_policy" {
-  source  = "netascode/lldp-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-lldp-policy"
   version = ">= 0.8.0"
 
   name           = "LLDP-ON"

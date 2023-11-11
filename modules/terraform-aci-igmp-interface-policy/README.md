@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_igmp_interface_policy" {
-  source  = "netascode/igmp-interface-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-igmp-interface-policy"
   version = ">= 0.8.0"
 
   name                              = "ABC"

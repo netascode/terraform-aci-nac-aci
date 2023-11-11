@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_access_leaf_interface_selector" {
-  source  = "netascode/access-leaf-interface-selector/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-access-leaf-interface-selector"
   version = ">= 0.8.0"
 
   interface_profile = "LEAF101"

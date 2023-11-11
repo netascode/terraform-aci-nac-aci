@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_fabric_pod_policy_group" {
-  source  = "netascode/fabric-pod-policy-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-pod-policy-group"
   version = ">= 0.8.0"
 
   name                     = "POD1"

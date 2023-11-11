@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_match_rule" {
-  source  = "netascode/match-rule/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-match-rule"
   version = ">= 0.8.0"
 
   tenant      = "ABC"

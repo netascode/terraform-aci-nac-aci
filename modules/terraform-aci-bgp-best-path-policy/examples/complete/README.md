@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_bgp_best_path_policy" {
-  source  = "netascode/bgp-best-path-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-bgp-best-path-policy"
   version = ">= 0.8.0"
 
   name         = "ABC"

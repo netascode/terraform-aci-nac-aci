@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_error_disabled_recovery" {
-  source  = "netascode/error-disabled-recovery/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-error-disabled-recovery"
   version = ">= 0.8.0"
 
   interval   = 600

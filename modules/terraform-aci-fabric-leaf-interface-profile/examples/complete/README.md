@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_fabric_leaf_interface_profile" {
-  source  = "netascode/fabric-leaf-interface-profile/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-abric-leaf-interface-profile"
   version = ">= 0.8.0"
 
   name = "LEAF101"

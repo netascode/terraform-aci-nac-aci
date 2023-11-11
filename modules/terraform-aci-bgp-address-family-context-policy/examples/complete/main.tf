@@ -1,5 +1,5 @@
 module "aci_bgp_address_family_context_policy" {
-  source  = "netascode/bgp-address-family-context-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-bgp-address-family-context-policy"
   version = ">= 0.8.0"
 
   name                   = "ABC"

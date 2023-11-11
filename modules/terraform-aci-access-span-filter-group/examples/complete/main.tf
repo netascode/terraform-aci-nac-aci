@@ -1,5 +1,5 @@
 module "aci_access_span_filter_group" {
-  source  = "netascode/access-span-filter-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-access-span-filter-group"
   version = ">= 0.8.0"
 
   name        = "ABC"

@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_service_epg_policy" {
-  source  = "netascode/service-epg-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-service-epg-policy"
   version = ">= 0.8.0"
 
   tenant          = "ABC"

@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_tenant_span_source_group" {
-  source  = "netascode/tenant-span-source-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-tenant-span-source-group"
   version = ">= 0.8.0"
 
   name        = "SPAN1"

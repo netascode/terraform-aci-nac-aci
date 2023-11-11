@@ -1,5 +1,5 @@
 module "aci_device_selection_policy" {
-  source  = "netascode/device-selection-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-device-selection-policy"
   version = ">= 0.8.0"
 
   tenant                                                  = "ABC"

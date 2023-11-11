@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_l2_mtu_policy" {
-  source  = "netascode/l2-mtu-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-l2-mtu-policy"
   version = ">= 0.8.0"
 
   name          = "L2_8950"

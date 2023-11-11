@@ -1,5 +1,5 @@
 module "aci_dns_policy" {
-  source  = "netascode/dns-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-dns-policy"
   version = ">= 0.8.0"
 
   name          = "DNS1"

@@ -1,5 +1,5 @@
 module "aci_vrf" {
-  source  = "netascode/vrf/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-vrf"
   version = ">= 0.8.0"
 
   tenant                                 = "ABC"

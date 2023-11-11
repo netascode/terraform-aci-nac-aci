@@ -1,5 +1,5 @@
 module "aci_syslog_policy" {
-  source  = "netascode/syslog-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-syslog-policy"
   version = ">= 0.8.0"
 
   name                = "SYSLOG1"

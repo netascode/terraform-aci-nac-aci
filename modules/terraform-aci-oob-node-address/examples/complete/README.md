@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_oob_node_address" {
-  source  = "netascode/oob-node-address/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-oob-node-address"
   version = ">= 0.8.0"
 
   node_id        = 111

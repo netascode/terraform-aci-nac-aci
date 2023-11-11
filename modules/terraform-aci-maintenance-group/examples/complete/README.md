@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_maintenance_group" {
-  source  = "netascode/maintenance-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-maintenance-group"
   version = ">= 0.8.0"
 
   name     = "UG1"

@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_management_access_policy" {
-  source  = "netascode/management-access-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-management-access-policy"
   version = ">= 0.8.0"
 
   name                         = "MAP1"

@@ -1,5 +1,5 @@
 module "aci_filter" {
-  source  = "netascode/filter/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-filter"
   version = ">= 0.8.0"
 
   tenant      = "ABC"

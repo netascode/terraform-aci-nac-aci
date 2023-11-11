@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_date_time_policy" {
-  source  = "netascode/date-time-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-date-time-policy"
   version = ">= 0.8.0"
 
   name                           = "DATE1"

@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_snmp_policy" {
-  source  = "netascode/snmp-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-snmp-policy"
   version = ">= 0.8.0"
 
   name        = "SNMP1"

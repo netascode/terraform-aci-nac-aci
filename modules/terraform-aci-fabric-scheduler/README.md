@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_fabric_scheduler" {
-  source  = "netascode/fabric-scheduler/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-scheduler"
   version = ">= 0.8.0"
 
   name        = "SCHED1"

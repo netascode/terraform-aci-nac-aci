@@ -1,5 +1,5 @@
 module "aci_redirect_backup_policy" {
-  source  = "netascode/redirect-backup-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-redirect-backup-policy"
   version = ">= 0.8.0"
 
   tenant      = "ABC"

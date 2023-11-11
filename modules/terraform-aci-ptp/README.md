@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_ptp" {
-  source  = "netascode/ptp/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-ptp"
   version = ">= 0.8.0"
 
   admin_state       = true

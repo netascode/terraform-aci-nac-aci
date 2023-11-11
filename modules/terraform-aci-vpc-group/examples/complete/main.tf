@@ -1,5 +1,5 @@
 module "aci_vpc_group" {
-  source  = "netascode/vpc-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-vpc-group"
   version = ">= 0.8.0"
 
   mode = "explicit"

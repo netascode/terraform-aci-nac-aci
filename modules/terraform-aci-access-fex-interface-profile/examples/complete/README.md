@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_access_fex_interface_profile" {
-  source  = "netascode/access-fex-interface-profile/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-access-fex-interface-profile"
   version = ">= 0.8.0"
 
   name = "FEX1"

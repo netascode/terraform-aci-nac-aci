@@ -1,5 +1,5 @@
 module "aci_trust_control_policy" {
-  source  = "netascode/trust-control-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-trust-control-policy"
   version = ">= 0.8.0"
 
   tenant         = "ABC"

@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_storm_control_policy" {
-  source  = "netascode/storm-control-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-storm-control-policy"
   version = ">= 0.8.0"
 
   name                       = "SC1"

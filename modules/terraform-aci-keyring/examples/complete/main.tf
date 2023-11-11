@@ -1,5 +1,5 @@
 module "aci_keyring" {
-  source  = "netascode/keyring/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-keyring"
   version = ">= 0.8.0"
 
   name           = "KEYRING1"

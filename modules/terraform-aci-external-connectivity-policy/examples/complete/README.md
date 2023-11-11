@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_external_connectivity_policy" {
-  source  = "netascode/external-connectivity-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-external-connectivity-policy"
   version = ">= 0.8.0"
 
   name         = "EXT-POL1"

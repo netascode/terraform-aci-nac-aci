@@ -1,5 +1,5 @@
 module "aci_qos_policy" {
-  source  = "netascode/qos-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-qos-policy"
   version = ">= 0.8.0"
 
   name        = "ABC"

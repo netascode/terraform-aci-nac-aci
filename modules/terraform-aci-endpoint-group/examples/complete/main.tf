@@ -1,5 +1,5 @@
 module "aci_endpoint_group" {
-  source  = "netascode/endpoint-group/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-endpoint-group"
   version = ">= 0.8.0"
 
   tenant                      = "ABC"

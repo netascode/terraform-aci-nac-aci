@@ -1,5 +1,5 @@
 module "aci_vpc_policy" {
-  source  = "netascode/vpc-policy/aci"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-vpc-policy"
   version = ">= 0.8.0"
 
   name               = "VPC1"
