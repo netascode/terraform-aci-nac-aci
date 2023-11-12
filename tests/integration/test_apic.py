@@ -119,6 +119,7 @@ def full_apic_terraform_test(
     try:
         tf_env = {}
         if version.startswith("6."):
+            tf_env["TF_CLI_ARGS_apply"] = "-parallelism=3"
             tf_env["TF_CLI_ARGS_destroy"] = "-parallelism=3"
 
         tf = tftest.TerraformTest(terraform_path, env=tf_env)
