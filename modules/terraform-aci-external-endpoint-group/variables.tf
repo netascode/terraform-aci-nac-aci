@@ -79,7 +79,7 @@ variable "target_dscp" {
 }
 
 variable "subnets" {
-  description = "List of subnets. Default value `import_route_control`: false. Default value `export_route_control`: false. Default value `shared_route_control`: false. Default value `import_security`: true. Default value `shared_security`: false. Default value `aggregate_import_route_control`: false. Default value `aggregate_export_route_control`: false. Default value `aggregate_shared_route_control`: false. Default value `bgp_route_summarization`: false."
+  description = "List of subnets. Default value `import_route_control`: false. Default value `export_route_control`: false. Default value `shared_route_control`: false. Default value `import_security`: true. Default value `shared_security`: false. Default value `aggregate_import_route_control`: false. Default value `aggregate_export_route_control`: false. Default value `aggregate_shared_route_control`: false. Default value `bgp_route_summarization`: false. Default value `ospf_route_summarization`: false."
   type = list(object({
     name                           = optional(string, "")
     prefix                         = string
@@ -92,6 +92,7 @@ variable "subnets" {
     aggregate_export_route_control = optional(bool, false)
     aggregate_shared_route_control = optional(bool, false)
     bgp_route_summarization        = optional(bool, false)
+    ospf_route_summarization       = optional(bool, false)
   }))
   default = []
 

@@ -28,6 +28,7 @@
 - Add support for back-2-back Multi-Pod connections
 - Add support for system performance settings
 - Add support for OSPF timer policies
+- Add support for OSPF route summarization
 
 ## 0.7.0
 
