@@ -64,6 +64,11 @@ apic:
                 - value: 10.1.1.0/24
                   description: IP Subnet Selector 1
                 - value: 10.1.2.0/24
+              expected_state:
+                minimum_health: 0
+                maximum_critical_faults: 1000
+                maximum_major_faults: 1000
+                maximum_minor_faults: 1000
             - name: ESG2
               vrf: VRF2
             - name: ESG3

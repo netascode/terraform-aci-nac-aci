@@ -13,6 +13,11 @@ apic:
             providers:
               - STD-CON1
               - STD-CON2
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
       filters:
         - name: ALL
           entries:
@@ -24,6 +29,11 @@ apic:
           oob_contracts:
             providers:
               - OOB-CON1
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
         - name: OOB2
       ext_mgmt_instances:
         - name: EXT1
@@ -33,6 +43,11 @@ apic:
           oob_contracts:
             consumers:
               - OOB-CON1
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
         - name: EXT2
       contracts:
         - name: STD-CON1
@@ -62,3 +77,8 @@ apic:
               description: My Desc
               filters:
                 - filter: ALL
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000

@@ -40,6 +40,11 @@ apic:
             imported_consumers:
               - IMPORT-CON1
               - IMPORT-CON2
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
         - name: VRF2
           pim:
             mtu: 9000
@@ -130,6 +135,11 @@ apic:
               dhcp_option_policy: DHCP-OPTION1
           igmp_snooping_policy: IGMP_SNOOP1
           igmp_interface_policy: IGMP1
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
         - name: BD2
           vrf: VRF2
           subnets:
@@ -245,6 +255,16 @@ apic:
                 - prefix: 12.0.0.0/8
                   export_route_control: true
                   ospf_route_summarization: true
+              expected_state:
+                minimum_health: 0
+                maximum_critical_faults: 1000
+                maximum_major_faults: 1000
+                maximum_minor_faults: 1000
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
         - name: L3OUT2
           vrf: VRF1
           domain: ROUTED1
@@ -549,10 +569,20 @@ apic:
                   to: 11.11.11.200
                 - name: L4L7_POOL2
                   gateway_address: 22.22.22.254/24
+              expected_state:
+                minimum_health: 0
+                maximum_critical_faults: 1000
+                maximum_major_faults: 1000
+                maximum_minor_faults: 1000
             - name: EPG2
               bridge_domain: BD1
             - name: EPG3
               bridge_domain: BD1
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
         - name: AP2
       contracts:
         - name: CON1
@@ -574,6 +604,11 @@ apic:
                   priority: default
                   log: true
                   no_stats: false
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
         - name: CON2
         - name: CON3
         - name: CON4
@@ -846,6 +881,11 @@ apic:
                 rp_ip: 11.12.13.14
                 action: deny
               - order: 3
+            expected_state:
+              minimum_health: 0
+              maximum_critical_faults: 1000
+              maximum_major_faults: 1000
+              maximum_minor_faults: 1000
           - name: TEST_MRM2
           - name: TEST_MRM3
           - name: TEST_MRM4
@@ -867,10 +907,20 @@ apic:
             description: "My Snooping Policy"
             fast_leave: true
             querier: true
+            expected_state:
+              minimum_health: 0
+              maximum_critical_faults: 1000
+              maximum_major_faults: 1000
+              maximum_minor_faults: 1000
           - name: IGMP_SNOOP2
             admin_state: false
         igmp_interface_policies:
           - name: IGMP_IF1
+            expected_state:
+              minimum_health: 0
+              maximum_critical_faults: 1000
+              maximum_major_faults: 1000
+              maximum_minor_faults: 1000
           - name: IGMP_IF2
             state_limit_multicast_route_map: TEST_MRM1
           - name: IGMP_IF3
@@ -882,6 +932,11 @@ apic:
             multiplier: 10
             sla_type: tcp
             port: 150
+            expected_state:
+              minimum_health: 0
+              maximum_critical_faults: 1000
+              maximum_major_faults: 1000
+              maximum_minor_faults: 1000
           - name: EXAMPLE2
         trust_control_policies:
           - name: TRUST_ALL
@@ -912,6 +967,11 @@ apic:
                   endpoint_group: EPG1
                 - name: SRC2
               destination: DST_GRP1
+              expected_state:
+                minimum_health: 0
+                maximum_critical_faults: 1000
+                maximum_major_faults: 1000
+                maximum_minor_faults: 1000
             - name: SRC_GRP2
               destination: DST_GRP2
           destination_groups:
@@ -926,6 +986,11 @@ apic:
               enforce_version: false
               application_profile: AP1
               endpoint_group: EPG1
+              expected_state:
+                minimum_health: 0
+                maximum_critical_faults: 1000
+                maximum_major_faults: 1000
+                maximum_minor_faults: 1000
             - name: DST_GRP2
               ip: 2.2.2.2
               source_prefix: 2.2.2.2/32
@@ -938,6 +1003,11 @@ apic:
             auto_configuration: true
             on_link: true
             router_address: true
+            expected_state:
+              minimum_health: 0
+              maximum_critical_faults: 1000
+              maximum_major_faults: 1000
+              maximum_minor_faults: 1000
           - name: ND_RA_PREFIX2
       services:
         l4l7_devices:
@@ -982,6 +1052,11 @@ apic:
                 concrete_interfaces:
                   - device: DEV1
                     interface_name: INT2
+            expected_state:
+              minimum_health: 0
+              maximum_critical_faults: 1000
+              maximum_major_faults: 1000
+              maximum_minor_faults: 1000
           - name: DEV2
             type: VIRTUAL
             vmware_vmm_domain: VMM1
@@ -1008,6 +1083,11 @@ apic:
               - ip: 1.1.1.2
                 mac: 00:00:00:11:22:34
                 redirect_health_group: HEALTH_GROUP_2
+            expected_state:
+              minimum_health: 0
+              maximum_critical_faults: 1000
+              maximum_major_faults: 1000
+              maximum_minor_faults: 1000
           - name: PBR2
         service_epg_policies:
           - name: SERVICE_EPG1
@@ -1017,6 +1097,11 @@ apic:
         redirect_health_groups:
           - name: HEALTH_GROUP1
             description: My Desc
+            expected_state:
+              minimum_health: 0
+              maximum_critical_faults: 1000
+              maximum_major_faults: 1000
+              maximum_minor_faults: 1000
           - name: HEALTH_GROUP2
         redirect_backup_policies:
           - name: L4L7_REDIRECT_BACKUP1
@@ -1024,6 +1109,11 @@ apic:
               - ip: 5.6.7.8
                 mac: 00:00:00:11:22:33
                 redirect_health_group: HEALTH_GROUP_1
+            expected_state:
+              minimum_health: 0
+              maximum_critical_faults: 1000
+              maximum_major_faults: 1000
+              maximum_minor_faults: 1000
           - name: L4L7_REDIRECT_BACKUP2
             l3_destinations:
               - ip: 10.6.7.8
@@ -1041,6 +1131,11 @@ apic:
             device:
               tenant: ABC
               name: DEV1
+            expected_state:
+              minimum_health: 0
+              maximum_critical_faults: 1000
+              maximum_major_faults: 1000
+              maximum_minor_faults: 1000
           - name: TEMPLATE2
             device:
               name: DEV1
@@ -1065,3 +1160,13 @@ apic:
                 name: BD1
               service_epg_policy: SERVICE_EPG2
               custom_qos_policy: TEST_QOS_POLICY
+            expected_state:
+              minimum_health: 0
+              maximum_critical_faults: 1000
+              maximum_major_faults: 1000
+              maximum_minor_faults: 1000
+      expected_state:
+        minimum_health: 0
+        maximum_critical_faults: 1000
+        maximum_major_faults: 1000
+        maximum_minor_faults: 1000

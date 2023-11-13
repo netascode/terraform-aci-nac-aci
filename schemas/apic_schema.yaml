@@ -618,6 +618,13 @@ fp_aa_ldap_providers:
   server_monitoring: bool(required=False)
   monitoring_username: regex('^[a-zA-Z0-9][a-zA-Z0-9_.@-]{0,31}$', required=False)
   monitoring_password: str(required=False)
+  expected_state: include('fp_aa_ldap_providers_expected_state', required=False) # @no_external_doc() @name(AAA LDAP Provider Exp State) @sheet_hidden()
+
+fp_aa_ldap_providers_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 fp_aa_ldap_group_map_rules:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -3022,6 +3029,13 @@ ten_nd_ra_prefix_policies:
   auto_configuration: bool(required=False)
   on_link: bool(required=False)
   router_address: bool(required=False)
+  expected_state: include('ten_nd_ra_prefix_policies_expected_state', required=False) # @no_external_doc() @name(ND RA Prefix Policy Exp State) @sheet_hidden()
+
+ten_nd_ra_prefix_policies_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 ten_services:
   l4l7_devices: list(include('ten_ser_l4l7_devices'), required=False) # @ref_name(L4L7 Device) @sheet_hidden()

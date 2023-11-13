@@ -21,6 +21,11 @@ apic:
           description: My_SPAN_Destination
           node_id: 101
           port: 48
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
         - name: DST_GRP2
           ip: 1.2.3.4
           source_prefix: 1.1.1.1
@@ -67,6 +72,11 @@ apic:
                 - node_id: 101
                   fex_id: 101
                   port: 11
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
         - name: SRC_GRP2
           destination:
             name: DST_GRP2
@@ -98,7 +108,7 @@ apic:
               access_paths:
                 - channel: VPC1
                   node_id: 101
-                  type: 'pc'
+                  type: "pc"
       filter_groups:
         - name: FLT_GRP1
           description: My SPAN Filter Groups
@@ -144,10 +154,15 @@ apic:
                   channel: VPC1
                 - node_id: 101
                   channel: VPC2
-                  type: 'pc'
+                  type: "pc"
               tenant: ABC
               application_profile: AP1
               endpoint_group: EPG1
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
         - name: SESSION2
           admin_state: false
           destination:
@@ -168,6 +183,11 @@ apic:
               ttl: 10
               flow_id: 10
               dscp: CS4
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
     mcp:
       key: $3cR3t_K3y
     qos:
@@ -192,14 +212,14 @@ apic:
 
     vlan_pools:
       - name: STATIC1
-        description: 'Static VLAN Pool'
+        description: "Static VLAN Pool"
         allocation: static
         ranges:
           - from: 4000
             to: 4002
             allocation: inherit
             role: external
-            description: 'Range #1'
+            description: "Range #1"
           - from: 4003
           - from: 300
             to: 305
@@ -225,6 +245,11 @@ apic:
         vlan_pool: STATIC1
         security_domains:
           - SEC1
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
       - name: PHY2
         vlan_pool: STATIC2
 
@@ -233,6 +258,11 @@ apic:
         vlan_pool: ROUTED1
         security_domains:
           - SEC1
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
       - name: ROUTED2
         vlan_pool: ROUTED2
 
@@ -259,6 +289,11 @@ apic:
             endpoint_group: EPG2
             primary_vlan: 1235
             secondary_vlan: 1236
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
       - name: AAEP2
         infra_vlan: false
 
@@ -292,7 +327,7 @@ apic:
           fast_select_standby: true
           load_defer: false
           symmetric_hash: false
-          hash_key: 'src-ip'
+          hash_key: "src-ip"
         - name: MAC-PINNING
           mode: mac-pin
       port_channel_member_policies:
@@ -323,20 +358,20 @@ apic:
           alias: 10P
           broadcast_burst_pps: unspecified
           broadcast_pps: unspecified
-          broadcast_burst_rate: '10.000000'
-          broadcast_rate: '10.000000'
+          broadcast_burst_rate: "10.000000"
+          broadcast_rate: "10.000000"
           multicast_burst_pps: unspecified
           multicast_pps: unspecified
-          multicast_burst_rate: '10.000000'
-          multicast_rate: '10.000000'
+          multicast_burst_rate: "10.000000"
+          multicast_rate: "10.000000"
           unknown_unicast_burst_pps: unspecified
           unknown_unicast_pps: unspecified
-          unknown_unicast_burst_rate: '10.000000'
-          unknown_unicast_rate: '10.000000'
+          unknown_unicast_burst_rate: "10.000000"
+          unknown_unicast_rate: "10.000000"
           action: drop
         - name: 20P
-          broadcast_burst_rate: '20.000000'
-          broadcast_rate: '20.000000'
+          broadcast_burst_rate: "20.000000"
+          broadcast_rate: "20.000000"
 
     spine_interface_policy_groups:
       - name: IPN1
@@ -386,6 +421,11 @@ apic:
               - name: BLOCK1
                 from: 500
                 to: 501
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
         interface_profiles:
           - LEAF-INT-PROF1
 
@@ -408,6 +448,11 @@ apic:
                 to: 605
         interface_profiles:
           - SPINE-INT-PROF1
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
       - name: SPINE-PROF2
         selectors:
           - name: SEL1
@@ -420,7 +465,7 @@ apic:
 
     leaf_interface_policy_groups:
       - name: ACC1
-        description: 'Access Policy Group'
+        description: "Access Policy Group"
         type: access
         link_level_policy: 10G
         cdp_policy: CDP-ENABLED
@@ -481,6 +526,11 @@ apic:
                 description: SUBBLK-DESC
                 from_port: 1
                 from_sub_port: 1
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
 
     fex_interface_profiles:
       - name: FEX-INT-PROF1
@@ -491,6 +541,11 @@ apic:
               - name: BLK1
                 description: INT-DESC
                 from_port: 1
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
 
     spine_interface_profiles:
       - name: SPINE-INT-PROF1
@@ -501,6 +556,11 @@ apic:
               - name: BLK1
                 description: INT-DESC
                 from_port: 1
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
       - name: SPINE-INT-PROF2
         selectors:
           - name: SEL1

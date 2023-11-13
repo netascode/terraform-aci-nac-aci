@@ -115,6 +115,11 @@ apic:
           monitoring: true
           monitoring_username: user1
           monitoring_password: pass1
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
         - hostname_ip: 1.1.1.2
       ldap:
         providers:
@@ -134,6 +139,11 @@ apic:
             server_monitoring: true
             monitoring_username: user1
             monitoring_password: pass1
+            expected_state:
+              minimum_health: 0
+              maximum_critical_faults: 1000
+              maximum_major_faults: 1000
+              maximum_minor_faults: 1000
           - hostname_ip: 2.2.2.3
         group_map_rules:
           - name: test-users-rules
@@ -278,6 +288,11 @@ apic:
         username: cisco
         password: cisco
         mgmt_epg: inb
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
 
     schedulers:
       - name: scheduler1
@@ -295,6 +310,11 @@ apic:
         format: xml
         remote_location: remote1
         scheduler: scheduler1
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
       - name: export2
         remote_location: remote1
         scheduler: scheduler1
@@ -374,6 +394,11 @@ apic:
               key: key1
               auth_type: md5
               trusted: false
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
 
       snmp_policies:
         - name: SNMP1
@@ -428,6 +453,11 @@ apic:
               - name: PB1
                 from: 3
                 to: 3
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
       - name: PODY
         selectors:
           - name: SEL2
@@ -471,6 +501,11 @@ apic:
               - name: BLOCK1
                 from: 500
                 to: 501
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
         interface_profiles:
           - LEAF-INT-PROF1
 
@@ -497,6 +532,11 @@ apic:
                 to: 607
         interface_profiles:
           - SPINE-INT-PROF1
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
       - name: SPINE-PROF2
         selectors:
           - name: SEL1
@@ -510,9 +550,19 @@ apic:
 
     leaf_interface_profiles:
       - name: LEAF-INT-PROF1
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
 
     spine_interface_profiles:
       - name: SPINE-INT-PROF1
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
       - name: SPINE-INT-PROF2
 
     external_connectivity_policy:
@@ -531,6 +581,11 @@ apic:
           subnets:
             - 13.13.13.1/24
             - 13.13.14.1/24
+      expected_state:
+        minimum_health: 0
+        maximum_critical_faults: 1000
+        maximum_major_faults: 1000
+        maximum_minor_faults: 1000
 
     vmware_vmm_domains:
       - name: VMM1
@@ -573,6 +628,11 @@ apic:
             name: UPLINK3
           - id: 4
             name: UPLINK4
+        expected_state:
+          minimum_health: 0
+          maximum_critical_faults: 1000
+          maximum_major_faults: 1000
+          maximum_minor_faults: 1000
     geolocation:
       sites:
         - name: site1
@@ -626,6 +686,11 @@ apic:
             - name: SRC2
               tenant: AP1
               bridge_domain: BD1
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
       destination_groups:
         - name: DST_GRP1
           description: My Fabric SPAN
@@ -639,6 +704,11 @@ apic:
           ttl: 10
           version: 2
           enforce_version: true
+          expected_state:
+            minimum_health: 0
+            maximum_critical_faults: 1000
+            maximum_major_faults: 1000
+            maximum_minor_faults: 1000
         - name: DST_GRP2
           tenant: ABC
           application_profile: AP1
