@@ -58,6 +58,9 @@ apic:
               preferred_group: false
               qos_class: level4
               target_dscp: CS5
+              route_control_profiles:
+                - name: IMPORT-RCP1
+                  direction: import
               subnets:
                 - name: ALL
                   prefix: 0.0.0.0/0
@@ -66,6 +69,9 @@ apic:
                   shared_route_control: false
                   import_security: true
                   shared_security: false
+                  route_control_profiles:          
+                    - name: EXPORT-RCP1
+                      direction: export
               contracts:
                 consumers:
                   - CON1

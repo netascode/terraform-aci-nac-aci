@@ -329,6 +329,9 @@ apic:
               preferred_group: false
               qos_class: level4
               target_dscp: CS5
+              route_control_profiles:
+                - name: IMPORT-RCP1
+                  direction: import
               subnets:
                 - name: ALL
                   prefix: 0.0.0.0/0
@@ -340,6 +343,9 @@ apic:
                   aggregate_shared_route_control: true
                   import_security: true
                   shared_security: false
+                  route_control_profiles:
+                    - name: EXPORT-RCP1
+                      direction: export
                 - prefix: 10.0.0.0/8
                   export_route_control: true
                   bgp_route_summarization: true

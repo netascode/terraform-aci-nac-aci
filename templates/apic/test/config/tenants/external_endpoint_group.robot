@@ -26,6 +26,16 @@ Verify L3out {{ l3out_name }} External EPG {{ eepg_name }}
     Should Be Equal Value Json String   ${r.json()}   ${eepg}..l3extInstP.attributes.prio   {{ epg.qos_class | default(defaults.apic.tenants.l3outs.external_endpoint_groups.qos_class) }}
     Should Be Equal Value Json String   ${r.json()}   ${eepg}..l3extInstP.attributes.targetDscp   {{ epg.target_dscp | default(defaults.apic.tenants.l3outs.external_endpoint_groups.target_dscp) }}
 
+{%- for route_control_profile in epg.route_control_profiles | default([]) %}
+{% set route_control_profile_name = route_control_profile.name ~ defaults.apic.tenants.l3outs.external_endpoint_groups.route_control_profiles.name_suffix %}
+
+Verify L3out {{ l3out_name }} External EPG {{ eepg_name }} Route Control Profile {{ route_control_profile_name }}
+    ${eepg}=   Set Variable   $..l3extOut.children[?(@.l3extInstP.attributes.name=='{{ eepg_name }}')]
+    Should Be Equal Value Json String   ${r.json()}   ${eepg}..l3extRsInstPToProfile.attributes.tnRtctrlProfileName   {{ route_control_profile_name ~ defaults.apic.tenants.l3outs.external_endpoint_groups.route_control_profiles.name_suffix }}
+    Should Be Equal Value Json String   ${r.json()}   ${eepg}..l3extRsInstPToProfile.attributes.direction   {{ route_control_profile.direction | default(defaults.apic.tenants.l3outs.external_endpoint_groups.route_control_profiles.direction) }}
+
+{% endfor %}
+
 {% for subnet in epg.subnets | default([]) %}
 {% set scope = [] %}
 {% if subnet.export_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.export_route_control) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("export-rtctrl")] %}{% endif %}
@@ -50,6 +60,16 @@ Verify L3out {{ l3out_name }} External EPG {{ eepg_name }} Subnet {{ subnet.pref
 {% elif subnet.ospf_route_summarization | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ospf_route_summarization) %}
     Should Be Equal Value Json String   ${r.json()}   ${subnet}..l3extRsSubnetToRtSumm.attributes.tDn   uni/tn-common/ospfrtsumm-default
 {% endif %}
+
+{% for route_control_profile in subnet.route_control_profiles | default([]) %}
+{% set route_control_profile_name = route_control_profile.name ~ defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.route_control_profiles.name_suffix %}
+
+Verify L3out {{ l3out_name }} External EPG {{ eepg_name }} Subnet {{ subnet.prefix }} Route Control Profile {{ route_control_profile_name }}
+    ${eepg}=   Set Variable   $..l3extOut.children[?(@.l3extInstP.attributes.name=='{{ eepg_name }}')]
+    ${subnet}=   Set Variable   ${eepg}..l3extInstP.children[?(@.l3extSubnet.attributes.ip=='{{ subnet.prefix }}')]
+    Should Be Equal Value Json String   ${r.json()}     ${subnet}..l3extRsSubnetToProfile.attributes.tnRtctrlProfileName   {{ route_control_profile_name }}
+    Should Be Equal Value Json String   ${r.json()}     ${subnet}..l3extRsSubnetToProfile.attributes.direction   {{ route_control_profile.direction | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.route_control_profiles.direction) }}
+{% endfor %}
 
 {% endfor %}
 

@@ -36,6 +36,18 @@
                                 },
                                 "children": [
                                     {%- set comma3 = joiner(",") %}
+                                    {%- for route_control_profile in epg.route_control_profiles | default([]) %}{{ comma3() }}
+                                    {% set route_control_profile_name = route_control_profile.name ~ defaults.apic.tenants.l3outs.external_endpoint_groups.route_control_profiles.name_suffix %}                                   
+                                    {
+                                        "l3extRsInstPToProfile": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tnRtctrlProfileName": "{{ route_control_profile_name }}",
+                                                "direction": "{{ route_control_profile.direction | default(defaults.apic.tenants.l3outs.external_endpoint_groups.route_control_profiles.direction) }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}                       
                                     {%- for subnet in epg.subnets | default([]) %}{{ comma3() }}
                                     {% set scope = [] %}
                                     {% if subnet.export_route_control | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.export_route_control) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("export-rtctrl")] %}{% endif %}
@@ -77,6 +89,20 @@
                                                     }
                                                 }
                                                 {% endif %}
+                                                {%- set comma4 = joiner(",") %}
+                                                {%- for route_control_profile in subnet.route_control_profiles | default([]) %}{{ comma4() }}
+                                                {% set route_control_profile_name = route_control_profile.name ~ defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.route_control_profiles.name_suffix %}
+                                                {
+                                                    "l3extRsSubnetToProfile": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",                                                            
+                                                            "tnRtctrlProfileName": "{{ route_control_profile_name }}",
+                                                            "direction": "{{ route_control_profile.direction | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.route_control_profiles.direction) }}"
+                                                        }
+                                                    }
+                                                }
+                                                {%- endfor %}
+
                                             ]
                                         }
                                     }
