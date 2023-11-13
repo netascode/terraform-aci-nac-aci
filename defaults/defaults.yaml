@@ -859,6 +859,7 @@ defaults:
             aggregate_export_route_control: false
             aggregate_shared_route_control: false
             bgp_route_summarization: false
+            ospf_route_summarization: false
         import_route_map:
           type: global
           contexts:
