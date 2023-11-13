@@ -239,6 +239,11 @@ apic:
                   paths:
                     - floating_ip: 24.24.24.25/24
                       physical_domain: PHY1
+          external_endpoint_groups:
+            - name: L3OUT1-EPG1
+              subnets:
+                - prefix: 0.0.0.0/0
+                  ospf_route_summarization: true
         - name: L3OUT2
           vrf: VRF1
           domain: ROUTED1

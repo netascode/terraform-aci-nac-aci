@@ -47,6 +47,8 @@ Verify L3out {{ l3out_name }} External EPG {{ eepg_name }} Subnet {{ subnet.pref
     Should Be Equal Value Json String   ${r.json()}   ${subnet}..l3extSubnet.attributes.scope   {{ scope | join(',') }}
 {% if subnet.bgp_route_summarization | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.bgp_route_summarization) | cisco.aac.aac_bool("yes") ==  "yes" %}
     Should Be Equal Value Json String   ${r.json()}   ${subnet}..l3extRsSubnetToRtSumm.attributes.tDn   uni/tn-common/bgprtsum-default
+{% elif subnet.ospf_route_summarization | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ospf_route_summarization) %}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..l3extRsSubnetToRtSumm.attributes.tDn   uni/tn-common/ospfrtsumm-default
 {% endif %}
 
 {% endfor %}

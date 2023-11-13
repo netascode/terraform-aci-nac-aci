@@ -2356,6 +2356,7 @@ ten_l3outs_external_endpoint_groups_subnets:
   aggregate_export_route_control: any(bool(), enum('yes', 'no'), required=False)
   aggregate_shared_route_control: any(bool(), enum('yes', 'no'), required=False)
   bgp_route_summarization: any(bool(), enum('yes', 'no'), required=False)
+  ospf_route_summarization: bool(required=False)
 
 ten_l3outs_external_endpoint_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out ExtEPG Consumers) @ref_name(Contract)
