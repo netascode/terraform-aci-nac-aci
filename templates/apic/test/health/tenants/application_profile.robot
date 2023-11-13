@@ -13,9 +13,9 @@ Resource        ../../../apic_common.resource
 {% if ap.expected_state.maximum_critical_faults is defined or ap.expected_state.maximum_major_faults is defined or ap.expected_state.maximum_minor_faults is defined %}
 Verify Application Profile {{ ap_name }} Faults
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ap-{{ ap_name }}/fltCnts.json
-    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
-    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
-    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
 {% if ap.expected_state.maximum_critical_faults is defined %}
     Run Keyword If   ${critical}[0] > {{ ap.expected_state.maximum_critical_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ ap_name }} has ${critical}[0] critical faults"
@@ -34,9 +34,9 @@ Verify Application Profile {{ ap_name }} Faults
 Verify Application Profile {{ ap_name }} Faults Pre-Check
     [Tags]   pre-check
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ap-{{ ap_name }}/fltCnts.json
-    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
-    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
-    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
     &{json}=    Create Dictionary   critical=${critical}[0]   major=${major}[0]   minor=${minor}[0]
     Create Directory   ${STATE_PATH}
     evaluate   json.dump($json, open('${STATE_PATH}tenant_{{ tenant.name }}_ap_{{ ap_name }}_faults.json', 'w'))   modules=json
@@ -46,9 +46,9 @@ Verify Application Profile {{ ap_name }} Faults Pre-Check
 Verify Application Profile {{ ap_name }} Faults Post-Check
     [Tags]   post-check
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ap-{{ ap_name }}/fltCnts.json
-    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
-    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
-    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
     &{previous}=   evaluate   json.load(open('${STATE_PATH}tenant_{{ tenant.name }}_ap_{{ ap_name }}_faults.json'))   modules=json
     Run Keyword If   ${critical}[0] > ${previous["critical"]}   Run Keyword And Continue On Failure
     ...   Fail  "Number of critical faults increased from ${previous["critical"]} to ${critical}[0]"
