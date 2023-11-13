@@ -10,7 +10,7 @@ Resource        ../../apic_common.resource
 
 {% if vspan.expected_state.maximum_critical_faults is defined or vspan.expected_state.maximum_major_faults is defined or vspan.expected_state.maximum_minor_faults is defined %}
 Verify VSPAN Destination Group {{ vspan_name }} Faults
-    GET  "/api/mo/uni/infra/vdestgrp-{{ vspan_name }}/fltCnts.json
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/vdestgrp-{{ vspan_name }}/fltCnts.json
     ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
     ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
     ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
@@ -31,7 +31,7 @@ Verify VSPAN Destination Group {{ vspan_name }} Faults
 {% if 'pre-check' in robot_include_tags | default() %}
 Verify VSPAN Destination Group {{ vspan_name }} Faults Pre-Check
     [Tags]   pre-check
-    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ vspan.name }}//fltCnts.json
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/vdestgrp-{{ vspan_name }}/fltCnts.json
     ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
     ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
     ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
@@ -43,7 +43,7 @@ Verify VSPAN Destination Group {{ vspan_name }} Faults Pre-Check
 {% if 'post-check' in robot_include_tags | default() %}
 Verify VSPAN Destination Group {{ vspan_name }} Faults Post-Check
     [Tags]   post-check
-    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ vspan.name }}//fltCnts.json
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/vdestgrp-{{ vspan_name }}/fltCnts.json
     ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
     ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
     ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
