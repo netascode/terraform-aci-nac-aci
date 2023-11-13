@@ -21,7 +21,7 @@ locals {
           value = {
             static_route = "${node.node_id}/${sr.prefix}"
             ip           = nh.ip
-            preference   = nh.preference
+            preference   = nh.preference == 0 ? "unspecified" : nh.preference
             type         = nh.type
           }
         }
