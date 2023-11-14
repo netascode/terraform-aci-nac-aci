@@ -1279,6 +1279,10 @@ defaults:
           template_type: FW_ROUTED
           redirect: false
           share_encapsulation: false
+          consumer:
+            direct_connect: false
+          provider:
+            direct_connect: false
         device_selection_policies:
           consumer:
             l3_destination: true
