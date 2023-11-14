@@ -10,10 +10,10 @@ locals {
     for file in var.yaml_files : file(file)
   ]
   model_strings = length(keys(var.model)) != 0 ? [yamlencode(var.model)] : []
-  user_defaults = { "defaults" : try(lookup(yamldecode(data.utils_yaml_merge.model.output), "defaults"), {}) }
-  defaults      = lookup(yamldecode(data.utils_yaml_merge.defaults.output), "defaults")
-  user_modules  = { "modules" : try(lookup(yamldecode(data.utils_yaml_merge.model.output), "modules"), {}) }
-  modules       = lookup(yamldecode(data.utils_yaml_merge.modules.output), "modules")
+  user_defaults = { "defaults" : try(yamldecode(data.utils_yaml_merge.model.output)["defaults"], {}) }
+  defaults      = yamldecode(data.utils_yaml_merge.defaults.output)["defaults"]
+  user_modules  = { "modules" : try(yamldecode(data.utils_yaml_merge.model.output)["modules"], {}) }
+  modules       = yamldecode(data.utils_yaml_merge.modules.output)["modules"]
   model         = yamldecode(data.utils_yaml_merge.model.output)
 }
 
