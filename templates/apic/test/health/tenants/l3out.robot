@@ -10,33 +10,162 @@ Resource        ../../../apic_common.resource
 {% for l3out in tenant.l3outs | default([]) %}
 {% set l3out_name = l3out.name ~ defaults.apic.tenants.l3outs.name_suffix %}
 
+{% if l3out.expected_state.maximum_critical_faults is defined or l3out.expected_state.maximum_major_faults is defined or l3out.expected_state.maximum_minor_faults is defined %}
 Verify L3out {{ l3out_name }} Faults
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/fltCnts.json
-    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
-    ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
-    ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
-    Run Keyword If   ${critical}[0] > 0   Run Keyword And Continue On Failure
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
+{% if l3out.expected_state.maximum_critical_faults is defined %}
+    Run Keyword If   ${critical}[0] > {{ l3out.expected_state.maximum_critical_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ l3out_name }} has ${critical}[0] critical faults"
-    Run Keyword If   ${major}[0] > 0   Run Keyword And Continue On Failure
+{% endif %}
+{% if l3out.expected_state.maximum_major_faults is defined %}
+    Run Keyword If   ${major}[0] > {{ l3out.expected_state.maximum_major_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ l3out_name }} has ${major}[0] major faults"
-    Run Keyword If   ${minor}[0] > 0   Run Keyword And Continue On Failure
+{% endif %}
+{% if l3out.expected_state.maximum_minor_faults is defined %}
+    Run Keyword If   ${minor}[0] > {{ l3out.expected_state.maximum_minor_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ l3out_name }} has ${minor}[0] minor faults"
+{% endif %}
+{% endif %}
+
+{% if 'pre-check' in robot_include_tags | default() %}
+Verify L3out {{ l3out_name }} Faults Pre-Check
+    [Tags]   pre-check
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/fltCnts.json
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
+    &{json}=    Create Dictionary   critical=${critical}[0]   major=${major}[0]   minor=${minor}[0]
+    Create Directory   ${STATE_PATH}
+    evaluate   json.dump($json, open('${STATE_PATH}tenant_{{ tenant.name }}_out_{{ l3out_name }}_faults.json', 'w'))   modules=json
+{% endif %}
+
+{% if 'post-check' in robot_include_tags | default() %}
+Verify L3out {{ l3out_name }} Faults Post-Check
+    [Tags]   post-check
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/fltCnts.json
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
+    &{previous}=   evaluate   json.load(open('${STATE_PATH}tenant_{{ tenant.name }}_out_{{ l3out_name }}_faults.json'))   modules=json
+    Run Keyword If   ${critical}[0] > ${previous["critical"]}   Run Keyword And Continue On Failure
+    ...   Fail  "Number of critical faults increased from ${previous["critical"]} to ${critical}[0]"
+    Run Keyword If   ${major}[0] > ${previous["major"]}   Run Keyword And Continue On Failure
+    ...   Fail  "Number of major faults increased from ${previous["major"]} to ${major}[0]"
+    Run Keyword If   ${minor}[0] > ${previous["minor"]}   Run Keyword And Continue On Failure
+    ...   Fail  "Number of minor faults increased from ${previous["minor"]} to ${minor}[0]"
+{% endif %}
+
+{% if l3out.expected_state.minimum_health is defined %}
+Verify L3out {{ l3out_name }} Health
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/health.json
+    ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur
+     Run Keyword If   ${health}[0] < {{ l3out.expected_state.minimum_health }}   Run Keyword And Continue On Failure
+    ...   Fail  "{{ l3out_name }} health score: ${health}[0]"
+{% endif %}
+
+{% if 'pre-check' in robot_include_tags | default() %}
+Verify L3out {{ l3out_name }} Health Pre-Check
+    [Tags]   pre-check
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/health.json
+    ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur
+    &{json}=    Create Dictionary   health=${health}[0]
+    Create Directory   ${STATE_PATH}
+    evaluate   json.dump($json, open('${STATE_PATH}tenant_{{ tenant.name }}_out_{{ l3out_name }}_health.json', 'w'))   modules=json
+{% endif %}
+
+{% if 'post-check' in robot_include_tags | default() %}
+Verify L3out {{ l3out_name }} Health Post-Check
+    [Tags]   post-check
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/health.json
+    ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur
+    &{previous}=   evaluate   json.load(open('${STATE_PATH}tenant_{{ tenant.name }}_out_{{ l3out_name }}_health.json'))   modules=json
+    Run Keyword If   ${health}[0] < ${previous["health"]}   Run Keyword And Continue On Failure
+    ...   Fail  "{{ l3out_name }} health score degraded from ${previous["health"]} to ${health}[0]"
+{% endif %}
 
 {% endfor %}
 
 {% for l3out in tenant.sr_mpls_l3outs | default([]) %}
 {% set l3out_name = l3out.name ~ defaults.apic.tenants.sr_mpls_l3outs.name_suffix %}
 
+{% if l3out.expected_state.maximum_critical_faults is defined or l3out.expected_state.maximum_major_faults is defined or l3out.expected_state.maximum_minor_faults is defined %}
 Verify SR MPLS L3out {{ l3out_name }} Faults
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/fltCnts.json
-    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
-    ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
-    ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
-    Run Keyword If   ${critical}[0] > 0   Run Keyword And Continue On Failure
+     ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
+{% if l3out.expected_state.maximum_critical_faults is defined %}
+    Run Keyword If   ${critical}[0] > {{ l3out.expected_state.maximum_critical_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ l3out_name }} has ${critical}[0] critical faults"
-    Run Keyword If   ${major}[0] > 0   Run Keyword And Continue On Failure
+{% endif %}
+{% if out.expected_state.maximum_major_faults is defined %}
+    Run Keyword If   ${major}[0] > {{ out.expected_state.maximum_major_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ l3out_name }} has ${major}[0] major faults"
-    Run Keyword If   ${minor}[0] > 0   Run Keyword And Continue On Failure
+{% endif %}
+{% if out.expected_state.maximum_minor_faults is defined %}
+    Run Keyword If   ${minor}[0] > {{ out.expected_state.maximum_minor_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ l3out_name }} has ${minor}[0] minor faults"
 
+{% endif %}
+{% endif %}
+
+{% if 'pre-check' in robot_include_tags | default() %}
+Verify SR MPLS L3out {{ l3out_name }} Faults Pre-Check
+    [Tags]   pre-check
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/fltCnts.json
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
+    &{json}=    Create Dictionary   critical=${critical}[0]   major=${major}[0]   minor=${minor}[0]
+    Create Directory   ${STATE_PATH}
+    evaluate   json.dump($json, open('${STATE_PATH}tenant_{{ tenant.name }}_out_{{ l3out_name }}_faults.json', 'w'))   modules=json
+{% endif %}
+
+{% if 'post-check' in robot_include_tags | default() %}
+Verify SR MPLS L3out {{ l3out_name }} Faults Post-Check
+    [Tags]   post-check
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/fltCnts.json
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
+    &{previous}=   evaluate   json.load(open('${STATE_PATH}tenant_{{ tenant.name }}_out_{{ l3out_name }}_faults.json'))   modules=json
+    Run Keyword If   ${critical}[0] > ${previous["critical"]}   Run Keyword And Continue On Failure
+    ...   Fail  "Number of critical faults increased from ${previous["critical"]} to ${critical}[0]"
+    Run Keyword If   ${major}[0] > ${previous["major"]}   Run Keyword And Continue On Failure
+    ...   Fail  "Number of major faults increased from ${previous["major"]} to ${major}[0]"
+    Run Keyword If   ${minor}[0] > ${previous["minor"]}   Run Keyword And Continue On Failure
+    ...   Fail  "Number of minor faults increased from ${previous["minor"]} to ${minor}[0]"
+{% endif %}
+
+{% if out.expected_state.minimum_health is defined %}
+Verify SR MPLS L3out {{ l3out_name }} Health
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/health.json
+    ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur
+    Run Keyword If   ${health}[0] < {{ out.expected_state.minimum_health }}   Run Keyword And Continue On Failure
+    ...   Fail  "{{ ap_name }} health score: ${health}[0]"
+{% endif %}
+
+{% if 'pre-check' in robot_include_tags | default() %}
+Verify SR MPLS L3out {{ l3out_name }} Health Pre-Check
+    [Tags]   pre-check
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/health.json
+    ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur
+    &{json}=    Create Dictionary   health=${health}[0]
+    Create Directory   ${STATE_PATH}
+    evaluate   json.dump($json, open('${STATE_PATH}tenant_{{ tenant.name }}_out_{{ l3out_name }}_health.json', 'w'))   modules=json
+{% endif %}
+
+{% if 'post-check' in robot_include_tags | default() %}
+Verify SR MPLS L3out {{ l3out_name }} Health Post-Check
+    [Tags]   post-check
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/health.json
+    ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur
+    &{previous}=   evaluate   json.load(open('${STATE_PATH}tenant_{{ tenant.name }}_out_{{ l3out_name }}_health.json'))   modules=json
+    Run Keyword If   ${health}[0] < ${previous["health"]}   Run Keyword And Continue On Failure
+    ...   Fail  "{{ ap_name }} health score degraded from ${previous["health"]} to ${health}[0]"
+
+{% endif %}
 {% endfor %}

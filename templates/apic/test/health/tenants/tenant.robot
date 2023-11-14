@@ -82,5 +82,4 @@ Verify Tenant {{ tenant.name }} Health Post-Check
     Run Keyword If   ${health}[0] < ${previous["health"]}   Run Keyword And Continue On Failure
     ...   Fail  "Tenant health score degraded from ${previous["health"]} to ${health}[0]"
 {% endif %}
-
 {% endfor %}
