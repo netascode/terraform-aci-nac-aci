@@ -316,7 +316,7 @@ variable "interfaces" {
 
   validation {
     condition = alltrue([
-      for i in var.interfaces : i.channel == null || try(can(regex("^[a-zA-Z0-9_.-:]{0,64}$", i.channel)), false)
+      for i in var.interfaces : i.channel == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", i.channel)), false)
     ])
     error_message = "`channel`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`, `:`. Maximum characters: 64."
   }
@@ -372,7 +372,7 @@ variable "interfaces" {
 
   validation {
     condition = alltrue(flatten([
-      for i in var.interfaces : [for p in coalesce(i.paths, []) : p.physical_domain == null || try(can(regex("^[a-zA-Z0-9_.-:]{0,64}$", p.physical_domain)))]
+      for i in var.interfaces : [for p in coalesce(i.paths, []) : p.physical_domain == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", p.physical_domain)))]
     ]))
     error_message = "`paths.physical_domain`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`, `:`. Maximum characters: 64."
   }
