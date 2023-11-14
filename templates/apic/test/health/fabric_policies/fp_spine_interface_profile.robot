@@ -5,26 +5,25 @@ Default Tags    apic   day1   health   fabric_policies   non-critical
 Resource        ../../apic_common.resource
 
 *** Test Cases ***
-{% for node in apic.node_policies.nodes | default([]) %}
-{% if node.role == "spine" %}
-{% set spine_interface_profile_name = (node.id ~ ":" ~ node.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.fabric_policies.spine_interface_profile_name | default(defaults.apic.fabric_policies.spine_interface_profile_name))) %}
+{% for prof in apic.fabric_policies.spine_interface_profiles | default([]) %}
+{% set spine_interface_profile_name = prof.name ~ defaults.apic.fabric_policies.spine_interface_profiles.name_suffix %}
 
-{% if node.expected_state.maximum_critical_faults is defined or node.expected_state.maximum_major_faults is defined or node.expected_state.maximum_minor_faults is defined %}
+{% if prof.expected_state.maximum_critical_faults is defined or prof.expected_state.maximum_major_faults is defined or prof.expected_state.maximum_minor_faults is defined %}
 Verify Spine Interface Profile {{ spine_interface_profile_name }} Faults
     ${r}=   GET On Session   apic   /api/mo/uni/fabric/spportp-{{ spine_interface_profile_name }}/fltCnts.json
      ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
     ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
     ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
-{% if node.expected_state.maximum_critical_faults is defined %}
-    Run Keyword If   ${critical}[0] > {{ node.expected_state.maximum_critical_faults }}   Run Keyword And Continue On Failure
+{% if prof.expected_state.maximum_critical_faults is defined %}
+    Run Keyword If   ${critical}[0] > {{ prof.expected_state.maximum_critical_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ spine_interface_profile_name }} has ${critical}[0] critical faults"
 {% endif %}
-{% if node.expected_state.maximum_major_faults is defined %}
-    Run Keyword If   ${major}[0] > {{ node.expected_state.maximum_major_faults }}   Run Keyword And Continue On Failure
+{% if prof.expected_state.maximum_major_faults is defined %}
+    Run Keyword If   ${major}[0] > {{ prof.expected_state.maximum_major_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ spine_interface_profile_name }} has ${major}[0] major faults"
 {% endif %}
-{% if node.expected_state.maximum_minor_faults is defined %}
-    Run Keyword If   ${minor}[0] > {{ node.expected_state.maximum_minor_faults }}   Run Keyword And Continue On Failure
+{% if prof.expected_state.maximum_minor_faults is defined %}
+    Run Keyword If   ${minor}[0] > {{ prof.expected_state.maximum_minor_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ spine_interface_profile_name }} has ${minor}[0] minor faults"
 {% endif %}
 {% endif %}
@@ -57,5 +56,4 @@ Verify Spine Interface Profile {{ spine_interface_profile_name }} Faults Post-Ch
     ...   Fail  "Number of minor faults increased from ${previous["minor"]} to ${minor}[0]"
 {% endif %}
 
-{% endif %}
 {% endfor %}

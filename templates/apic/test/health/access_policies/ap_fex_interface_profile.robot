@@ -5,12 +5,8 @@ Default Tags    apic   day1   health   access_policies   non-critical
 Resource        ../../apic_common.resource
 
 *** Test Cases ***
-{% for node in apic.interface_policies.nodes | default([]) %}
-{% set query = "nodes[?id==`" ~ node.id ~ "`]" %}
-{% set full_node = (apic.node_policies | community.general.json_query(query))[0] %}
-{% if full_node.role == "leaf" %}
-{% for fex in node.fexes | default([]) %}
-{% set fex_profile_name = (full_node.id ~ ":" ~ full_node.name~ ":" ~ fex.id) | regex_replace("^(?P<id>.+):(?P<name>.+):(?P<fex>.+)$", (apic.access_policies.fex_profile_name | default(defaults.apic.access_policies.fex_profile_name))) %}
+{% for fex in apic.access_policies.fex_interface_profiles | default([]) %}
+{% set fex_profile_name = fex.name ~ defaults.apic.access_policies.fex_interface_profiles.name_suffix %}
 
 {% if fex.expected_state.maximum_critical_faults is defined or fex.expected_state.maximum_major_faults is defined or fex.expected_state.maximum_minor_faults is defined %}
 Verify FEX Interface Profile {{ fex_profile_name }} Faults
@@ -60,6 +56,4 @@ Verify FEX Interface Profile {{ fex_profile_name }} Faults Post-Check
     ...   Fail  "Number of minor faults increased from ${previous["minor"]} to ${minor}[0]"
 {% endif %}
 
-{% endfor %}
-{% endif %}
 {% endfor %}
