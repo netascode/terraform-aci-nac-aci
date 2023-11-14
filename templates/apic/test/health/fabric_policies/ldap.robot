@@ -20,10 +20,10 @@ Verify LDAP Provider {{ prov.hostname_ip }} Faults
 {% if prov.expected_state.maximum_major_faults is defined %}
     Run Keyword If   ${major}[0] > {{ prov.expected_state.maximum_major_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ prov.hostname_ip }} has ${major}[0] major faults"
-    Run Keyword If   ${minor}[0] > 0   Run Keyword And Continue On Failure
 {% endif %}
 {% if prov.expected_state.maximum_minor_faults is defined %}
     Run Keyword If   ${minor}[0] > {{ prov.expected_state.maximum_minor_faults }}   Run Keyword And Continue On Failure
+    ...   Fail  "{{ prov.hostname_ip }} has ${minor}[0] minor faults"
 {% endif %}
 {% endif %}
 
