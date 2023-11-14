@@ -165,7 +165,7 @@ resource "aci_rest_managed" "ospfRsIfPol" {
 }
 
 resource "aci_rest_managed" "eigrpIfP" {
-  count      = var.eigrp_interface_profile_name != "" ? 1 : 0
+  count      = var.eigrp_interface_profile_name != "" && (var.eigrp_interface_policy != "" || var.eigrp_keychain_policy != "") ? 1 : 0
   dn         = "${aci_rest_managed.l3extLIfP.dn}/eigrpIfP"
   class_name = "eigrpIfP"
   content = {
