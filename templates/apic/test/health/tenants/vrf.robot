@@ -10,13 +10,12 @@ Resource        ../../../apic_common.resource
 {% for vrf in tenant.vrfs | default([]) %}
 {% set vrf_name = vrf.name ~ ('' if vrf.name in ('inb', 'obb', 'overlay-1') else defaults.apic.tenants.vrfs.name_suffix) %}
 
-
 {% if vrf.expected_state.maximum_critical_faults is defined or vrf.expected_state.maximum_major_faults is defined or vrf.expected_state.maximum_minor_faults is defined %}
 Verify VRF {{ vrf_name }} Faults
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ctx-{{ vrf_name }}/fltCnts.json
-    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
-    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
-    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
 {% if vrf.expected_state.maximum_critical_faults is defined %}
     Run Keyword If   ${critical}[0] > {{ vrf.expected_state.maximum_critical_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ vrf_name }} has ${critical}[0] critical faults"
@@ -35,22 +34,22 @@ Verify VRF {{ vrf_name }} Faults
 Verify VRF {{ vrf_name }} Faults Pre-Check
     [Tags]   pre-check
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ctx-{{ vrf_name }}/fltCnts.json
-    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
-    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
-    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
     &{json}=    Create Dictionary   critical=${critical}[0]   major=${major}[0]   minor=${minor}[0]
     Create Directory   ${STATE_PATH}
-    evaluate   json.dump($json, open('${STATE_PATH}tenant_{{ tenant.name }}_ctx_{{ vrf_name }}_faults.json', 'w'))   modules=json
+    evaluate   json.dump($json, open('${STATE_PATH}tenant_{{ tenant.name }}_vrf_{{ vrf_name }}_faults.json', 'w'))   modules=json
 {% endif %}
 
 {% if 'post-check' in robot_include_tags | default() %}
 Verify VRF {{ vrf_name }} Faults Post-Check
     [Tags]   post-check
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ctx-{{ vrf_name }}/fltCnts.json
-    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
-    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
-    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
-    &{previous}=   evaluate   json.load(open('${STATE_PATH}tenant_{{ tenant.name }}_ctx_{{ vrf_name }}_faults.json'))   modules=json
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
+    &{previous}=   evaluate   json.load(open('${STATE_PATH}tenant_{{ tenant.name }}_vrf_{{ vrf_name }}_faults.json'))   modules=json
     Run Keyword If   ${critical}[0] > ${previous["critical"]}   Run Keyword And Continue On Failure
     ...   Fail  "Number of critical faults increased from ${previous["critical"]} to ${critical}[0]"
     Run Keyword If   ${major}[0] > ${previous["major"]}   Run Keyword And Continue On Failure
@@ -74,7 +73,7 @@ Verify VRF {{ vrf_name }} Health Pre-Check
     ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur
     &{json}=    Create Dictionary   health=${health}[0]
     Create Directory   ${STATE_PATH}
-    evaluate   json.dump($json, open('${STATE_PATH}tenant_{{ tenant.name }}_ctx_{{ vrf_name }}_health.json', 'w'))   modules=json
+    evaluate   json.dump($json, open('${STATE_PATH}tenant_{{ tenant.name }}_vrf_{{ vrf_name }}_health.json', 'w'))   modules=json
 {% endif %}
 
 {% if 'post-check' in robot_include_tags | default() %}
@@ -82,8 +81,9 @@ Verify VRF {{ vrf_name }} Health Post-Check
     [Tags]   post-check
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ctx-{{ vrf_name }}/health.json
     ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur
-    &{previous}=   evaluate   json.load(open('${STATE_PATH}tenant_{{ tenant.name }}_ctx_{{ vrf_name }}_health.json'))   modules=json
+    &{previous}=   evaluate   json.load(open('${STATE_PATH}tenant_{{ tenant.name }}_vrf_{{ vrf_name }}_health.json'))   modules=json
     Run Keyword If   ${health}[0] < ${previous["health"]}   Run Keyword And Continue On Failure
     ...   Fail  "{{ ap_name }} health score degraded from ${previous["health"]} to ${health}[0]"
 {% endif %}
+
 {% endfor %}

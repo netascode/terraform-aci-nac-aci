@@ -14,12 +14,11 @@ Resource        ../../../apic_common.resource
 {% set sgt_name = dsp.service_graph_template ~ defaults.apic.tenants.services.service_graph_templates.name_suffix %}
 
 {% if dsp.expected_state.maximum_critical_faults is defined or dsp.expected_state.maximum_major_faults is defined or dsp.expected_state.maximum_minor_faults is defined %}
-
 Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }} Faults
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ldevCtx-dsp-{{ contract_name }}-sgt-{{ sgt_name }}-n-N1/fltCnts.json
-    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
-    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
-    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
 {% if dsp.expected_state.maximum_critical_faults is defined %}
     Run Keyword If   ${critical}[0] > {{ dsp.expected_state.maximum_critical_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ contract_name }}-{{ sgt_name }} has ${critical}[0] critical faults"
@@ -37,23 +36,23 @@ Verify Device Selection Policy Contract {{ contract_name }} Service Graph Templa
 {% if 'pre-check' in robot_include_tags | default() %}
 Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }} Faults Pre-Check
     [Tags]   pre-check
-    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ldevCtx-dsp-{{ contract_name }}-sgt-{{ sgt_name }}-n-N1/fltCnts.json
-    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
-    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
-    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}ldevCtx-dsp-{{ contract_name }}-sgt-{{ sgt_name }}-n-N1/fltCnts.json
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
     &{json}=    Create Dictionary   critical=${critical}[0]   major=${major}[0]   minor=${minor}[0]
     Create Directory   ${STATE_PATH}
-    evaluate   json.dump($json, open('${STATE_PATH}tenant_{{ tenant.name }}_contract_{{ contract_name }}_sgt_{{ sgt_name }}_faults.json', 'w'))   modules=json
+    evaluate   json.dump($json, open('${STATE_PATH}tenant_{{ tenant.name }}_device_selection_policy_{{ contract_name }}_{{ sgt_name }}_faults.json', 'w'))   modules=json
 {% endif %}
 
 {% if 'post-check' in robot_include_tags | default() %}
 Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }} Faults Post-Check
     [Tags]   post-check
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ldevCtx-dsp-{{ contract_name }}-sgt-{{ sgt_name }}-n-N1/fltCnts.json
-    ${critical}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.crit
-    ${major}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.maj
-    ${minor}=   Get Value From Json   ${r.json()}   $..faultCountsWithDetails.attributes.minor
-    &{previous}=   evaluate   json.load(open('${STATE_PATH}tenant_{{ tenant.name }}_contract_{{ contract_name }}_sgt_{{ sgt_name }}_faults.json'))   modules=json
+    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
+    ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
+    ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
+    &{previous}=   evaluate   json.load(open('${STATE_PATH}tenant_{{ tenant.name }}_device_selection_policy_{{ contract_name }}_{{ sgt_name }}_faults.json'))   modules=json
     Run Keyword If   ${critical}[0] > ${previous["critical"]}   Run Keyword And Continue On Failure
     ...   Fail  "Number of critical faults increased from ${previous["critical"]} to ${critical}[0]"
     Run Keyword If   ${major}[0] > ${previous["major"]}   Run Keyword And Continue On Failure
@@ -62,32 +61,4 @@ Verify Device Selection Policy Contract {{ contract_name }} Service Graph Templa
     ...   Fail  "Number of minor faults increased from ${previous["minor"]} to ${minor}[0]"
 {% endif %}
 
-{% if dsp.expected_state.minimum_health is defined %}
-Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }} Health
-    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ldevCtx-dsp-{{ contract_name }}-sgt-{{ sgt_name }}/health.json
-    ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur
-    Run Keyword If   ${health}[0] < {{ dsp.expected_state.minimum_health }}   Run Keyword And Continue On Failure
-    ...   Fail  "{{ contract_name }}-{{ sgt_name }} health score: ${health}[0]"
-{% endif %}
-
-{% if 'pre-check' in robot_include_tags | default() %}
-Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }} Health Pre-Check
-    [Tags]   pre-check
-    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ldevCtx-dsp-{{ contract_name }}-sgt-{{ sgt_name }}/health.json
-    ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur
-    &{json}=    Create Dictionary   health=${health}[0]
-    Create Directory   ${STATE_PATH}
-    evaluate   json.dump($json, open('${STATE_PATH}tenant_{{ tenant.name }}_contract_{{ contract_name }}_sgt_{{ sgt_name }}_health.json', 'w'))   modules=json
-{% endif %}
-
-{% if 'post-check' in robot_include_tags | default() %}
-Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }} Health Post-Check
-    [Tags]   post-check
-    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ldevCtx-dsp-{{ contract_name }}-sgt-{{ sgt_name }}/health.json
-    ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur
-    &{previous}=   evaluate   json.load(open('${STATE_PATH}tenant_{{ tenant.name }}_contract_{{ contract_name }}_sgt_{{ sgt_name }}_health.json'))   modules=json
-    Run Keyword If   ${health}[0] < ${previous["health"]}   Run Keyword And Continue On Failure
-    ...   Fail  "{{ contract_name }}-{{ sgt_name }} health score degraded from ${previous["health"]} to ${health}[0]"
-{% endif %}
 {% endfor %}
-
