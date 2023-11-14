@@ -480,7 +480,7 @@ variable "static_ports" {
 
   validation {
     condition = alltrue([
-      for sp in var.static_ports : sp.channel == null || can(regex("^[a-zA-Z0-9_.-:]{0,64}$", sp.channel))
+      for sp in var.static_ports : sp.channel == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", sp.channel))
     ])
     error_message = "`channel`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`, `:`. Maximum characters: 64."
   }
