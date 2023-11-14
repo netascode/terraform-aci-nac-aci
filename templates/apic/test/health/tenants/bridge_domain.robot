@@ -62,7 +62,7 @@ Verify Bridge Domain {{ bd_name }} Faults Post-Check
 Verify Bridge Domain {{ bd_name }} Health
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/BD-{{ bd_name }}/health.json
     ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur
-    Run Keyword If   ${health}[0] <  {{ bd.expected_state.minimum_health }}   Run Keyword And Continue On Failure
+    Run Keyword If   ${health}[0] < {{ bd.expected_state.minimum_health }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ bd_name }} health score: ${health}[0]"
 {% endif %}
 

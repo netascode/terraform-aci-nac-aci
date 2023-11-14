@@ -64,7 +64,7 @@ Verify Endpoint Group {{ epg_name }} Faults Post-Check
 Verify Endpoint Group {{ epg_name }} Health
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ap-{{ ap_name }}/epg-{{ epg_name }}/health.json
     ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur
-    Run Keyword If   ${health}[0] < {{ ap.expected_state.minimum_health }}   Run Keyword And Continue On Failure
+    Run Keyword If   ${health}[0] < {{ epg.expected_state.minimum_health }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ epg_name }} health score: ${health}[0]"
 {% endif %}
 

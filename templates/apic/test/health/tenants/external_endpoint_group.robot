@@ -107,7 +107,7 @@ Verify SR MPLS L3out {{ l3out_name }} External Endpoint Group {{ eepg_name }} Fa
     ...   Fail  "{{ eepg_name }} has ${critical}[0] critical faults"
 {% endif %}
 {% if epg.expected_state.maximum_major_faults is defined %}
-    Run Keyword If   ${major}[0] > {{ ap.expected_state.maximum_major_faults }}   Run Keyword And Continue On Failure
+    Run Keyword If   ${major}[0] > {{ epg.expected_state.maximum_major_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ eepg_name }} has ${major}[0] major faults"
 {% endif %}
 {% if epg.expected_state.maximum_minor_faults is defined %}

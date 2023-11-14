@@ -23,11 +23,11 @@ Verify Endpoint Security Group {{ esg_name }} Faults
     ...   Fail  "{{ esg_name }} has ${critical}[0] critical faults"
 {% endif %}
 {% if esg.expected_state.maximum_major_faults is defined %}
-    Run Keyword If   ${major}[0] > {{ ap.expected_state.maximum_major_faults }}   Run Keyword And Continue On Failure
+    Run Keyword If   ${major}[0] > {{ esg.expected_state.maximum_major_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ esg_name }} has ${major}[0] major faults"
 {% endif %}
 {% if esg.expected_state.maximum_minor_faults is defined %}
-    Run Keyword If   ${minor}[0] > {{ ap.expected_state.maximum_minor_faults }}   Run Keyword And Continue On Failure
+    Run Keyword If   ${minor}[0] > {{ esg.expected_state.maximum_minor_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ esg_name }} has ${minor}[0] minor faults"
 {% endif %}
 {% endif %}
@@ -60,8 +60,7 @@ Verify Endpoint Security Group {{ esg_name }} Faults Post-Check
     ...   Fail  "Number of minor faults increased from ${previous["minor"]} to ${minor}[0]"
 {% endif %}
 
-{% if ap.expected_state.minimum_health is defined %}
-
+{% if esg.expected_state.minimum_health is defined %}
 Verify Endpoint Security Group {{ esg_name }} Health
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ap-{{ ap_name }}/esg-{{ esg_name }}/health.json
     ${health}=   Get Value From Json   ${r.json()}   $..healthInst.attributes.cur

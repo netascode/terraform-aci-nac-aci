@@ -1410,7 +1410,6 @@ tenant_objects:
       - mgmt
     test_types:
       - config
-      - health
     paths:
       - apic.tenants.policies.multicast_route_maps
   - name: Set Rule
@@ -1496,7 +1495,6 @@ tenant_objects:
       - mgmt
     test_types:
       - config
-      - health
     paths:
       - apic.tenants.policies.igmp_snooping_policies
   - name: IGMP Interface Policy
@@ -1760,7 +1758,6 @@ tenant_objects:
       - mgmt
     test_types:
       - config
-      - health
     paths:
       - apic.tenants.policies.nd_ra_prefix_policies
 

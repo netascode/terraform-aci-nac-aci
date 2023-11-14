@@ -15,7 +15,7 @@ Verify Leaf Switch Profile {{ leaf_switch_profile_name }} Faults
     ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
     ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
     ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
-{% if ap.expected_state.maximum_critical_faults is defined %}
+{% if node.expected_state.maximum_critical_faults is defined %}
     Run Keyword If   ${critical}[0] > {{ node.expected_state.maximum_critical_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ leaf_switch_profile_name }} has ${critical}[0] critical faults"
 {% endif %}
