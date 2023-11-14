@@ -56,5 +56,4 @@ Verify Leaf Interface Profile {{ leaf_interface_profile_name }} Faults Post-Chec
     ...   Fail  "Number of minor faults increased from ${previous["minor"]} to ${minor}[0]"
 {% endif %}
 
-{% endif %}
 {% endfor %}
