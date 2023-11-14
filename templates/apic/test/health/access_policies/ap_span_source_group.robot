@@ -5,8 +5,8 @@ Default Tags    apic   day2   health   tenants   non-critical
 Resource        ../../apic_common.resource
 
 *** Test Cases ***
-{% for span in apic.access_policies.span.span_sources_groups | default([]) %}
-{% set span_name = span.name ~ defaults.apic.access_policies.span.span_sources_groups.name_suffix %}
+{% for span in apic.access_policies.span.source_groups | default([]) %}
+{% set span_name = span.name ~ defaults.apic.access_policies.span.source_groups.name_suffix %}
 
 {% if span.expected_state.maximum_critical_faults is defined or span.expected_state.maximum_major_faults is defined or span.expected_state.maximum_minor_faults is defined %}
 Verify SPAN Source Group {{ span_name }} Faults
