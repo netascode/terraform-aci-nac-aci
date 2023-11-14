@@ -27,6 +27,7 @@ Verify Spine Switch Profile {{ spine_switch_profile_name }} Faults
     ...   Fail  "{{ spine_switch_profile_name }} has ${minor}[0] minor faults"
 {% endif %}
 {% endif %}
+
 {% if 'pre-check' in robot_include_tags | default() %}
 Verify Spine Switch Profile {{ spine_switch_profile_name }} Faults Pre-Check
     [Tags]   pre-check
