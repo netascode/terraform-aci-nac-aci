@@ -21,7 +21,7 @@ Verify Device Selection Policy Contract {{ contract_name }} Service Graph Templa
     Should Be Equal Value Json String   ${r.json()}   $..vnsLDevCtx.attributes.graphNameOrLbl   {{ sgt_name }}
     Should Be Equal Value Json String   ${r.json()}   $..vnsRsLDevCtxToLDev.attributes.tDn   uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}
 
-{% if dsp.consumer and dsp.provider is defined %}
+{% if dsp.consumer is defined and dsp.provider is defined %}
 Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }} Consumer
     ${consumer}=   Set Variable   $..vnsLDevCtx.children[?(@.vnsLIfCtx.attributes.connNameOrLbl=='consumer')]
     Should Be Equal Value Json String   ${r.json()}   ${consumer}..vnsLIfCtx.attributes.l3Dest   {{ 'yes' if dsp.consumer.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}
