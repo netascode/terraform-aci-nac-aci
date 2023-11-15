@@ -30,6 +30,7 @@
 - Add support for OSPF timer policies
 - Add support for OSPF route summarization
 - Add support for copy services (service graphs)
+- Add support for direct connect in service graph templates
 
 ## 0.7.0
 
