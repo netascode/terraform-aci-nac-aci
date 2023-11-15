@@ -2352,7 +2352,7 @@ ten_l3outs_external_endpoint_groups:
   target_dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7', 'unspecified'), int(min=0, max=63), required=False)
   subnets: list(include('ten_l3outs_external_endpoint_groups_subnets'), required=False) # @name(L3out External EPG Subnets)
   contracts: include('ten_l3outs_external_endpoint_groups_contracts', required=False) # @flatten()
-  route_control_profiles: list(include('ten_l3outs_external_endpoint_groups_route_control_profiles'), required=False)
+  route_control_profiles: list(include('ten_l3outs_external_endpoint_groups_route_control_profiles'), required=False) # @name(Ext EPG Route Control Profiles)
   expected_state: include('ten_l3outs_external_endpoint_groups_expected_state', required=False) # @no_external_doc() @name(External EPG Expected State) @sheet_hidden()
 
 ten_l3outs_external_endpoint_groups_subnets:
@@ -2368,7 +2368,7 @@ ten_l3outs_external_endpoint_groups_subnets:
   aggregate_shared_route_control: any(bool(), enum('yes', 'no'), required=False)
   bgp_route_summarization: any(bool(), enum('yes', 'no'), required=False)
   ospf_route_summarization: bool(required=False)
-  route_control_profiles: list(include('ten_l3outs_external_endpoint_groups_subnets_route_control_profiles'), required=False)
+  route_control_profiles: list(include('ten_l3outs_external_endpoint_groups_subnets_route_control_profiles'), required=False) # @name(EEPG Subnet Route Control Prof)
 
 ten_l3outs_external_endpoint_groups_route_control_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=True)
