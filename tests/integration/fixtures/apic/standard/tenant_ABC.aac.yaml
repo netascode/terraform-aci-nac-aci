@@ -1060,6 +1060,27 @@ apic:
           - name: DEV2
             type: VIRTUAL
             vmware_vmm_domain: VMM1
+          - name: DEV-COPY
+            physical_domain: PHY1
+            copy_device: true
+            service_type: COPY
+            function: None
+            concrete_devices:
+              - name: DEV-COPY
+                alias: copy-device
+                interfaces:
+                  - name: INT1
+                    alias: INT1-ALIAS
+                    node_id: 101
+                    module: 1
+                    port: 12
+            logical_interfaces:
+              - name: INT1
+                alias: INT1-ALIAS
+                vlan: 136
+                concrete_interfaces:
+                  - device: DEV-COPY
+                    interface_name: INT1
         redirect_policies:
           - name: PBR1
             alias: PBR1
@@ -1139,6 +1160,11 @@ apic:
           - name: TEMPLATE2
             device:
               name: DEV1
+          - name: TEMPLATE-COPY
+            template_type: OTHER
+            device:
+              tenant: ABC
+              name: DEV-COPY
         device_selection_policies:
           - contract: CON1
             service_graph_template: TEMPLATE1
@@ -1165,6 +1191,12 @@ apic:
               maximum_critical_faults: 1000
               maximum_major_faults: 1000
               maximum_minor_faults: 1000
+          - contract: COPY-CONTRACT
+            service_graph_template: TEMPLATE-COPY
+            copy_service:
+              permit_logging: true
+              logical_interface: INT1
+              custom_qos_policy: TEST_QOS_POLICY
       expected_state:
         minimum_health: 0
         maximum_critical_faults: 1000

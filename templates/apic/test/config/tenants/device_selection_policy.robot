@@ -21,6 +21,7 @@ Verify Device Selection Policy Contract {{ contract_name }} Service Graph Templa
     Should Be Equal Value Json String   ${r.json()}   $..vnsLDevCtx.attributes.graphNameOrLbl   {{ sgt_name }}
     Should Be Equal Value Json String   ${r.json()}   $..vnsRsLDevCtxToLDev.attributes.tDn   uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}
 
+{% if dsp.consumer and dsp.provider is defined %}
 Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }} Consumer
     ${consumer}=   Set Variable   $..vnsLDevCtx.children[?(@.vnsLIfCtx.attributes.connNameOrLbl=='consumer')]
     Should Be Equal Value Json String   ${r.json()}   ${consumer}..vnsLIfCtx.attributes.l3Dest   {{ 'yes' if dsp.consumer.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no'}}
@@ -86,5 +87,24 @@ Verify Device Selection Policy Contract {{ contract_name }} Service Graph Templa
 {% set custom_qos_policy_name = dsp.provider.custom_qos_policy ~ defaults.apic.tenants.policies.custom_qos.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${provider}..vnsRsLIfCtxToCustQosPol.attributes.tnQosCustomPolName   {{ custom_qos_policy_name }}
 {% endif %}
+
+{% elif dsp.copy_service is defined %}
+
+Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }} Copy
+    ${copy}=   Set Variable   $..vnsLDevCtx.children[?(@.vnsLIfCtx.attributes.connNameOrLbl=='copy')]
+    Should Be Equal Value Json String   ${r.json()}   ${copy}..vnsLIfCtx.attributes.l3Dest   {{ 'yes' if dsp.copy_service.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.copy_service.l3_destination) else 'no'}}
+    Should Be Equal Value Json String   ${r.json()}   ${copy}..vnsLIfCtx.attributes.permitLog   {{ 'yes' if dsp.copy_service.permit_logging | default(defaults.apic.tenants.services.device_selection_policies.copy_service.permit_logging) else 'no'}}
+{% if dsp.copy.service_epg_policy is defined %}
+{% set pol_name = dsp.copy_service.service_epg_policy ~ defaults.apic.tenants.services.service_epg_policies.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   ${copy}..vnsRsLIfCtxToSvcEPgPol.attributes.tDn   uni/tn-{{ tenant.name }}/svcCont/svcEPgPol-{{ pol_name }}
+{% endif %}
+{% if dsp.provider.custom_qos_policy is defined %}
+{% set custom_qos_policy_name = dsp.copy_service.custom_qos_policy ~ defaults.apic.tenants.policies.custom_qos.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   ${copy}..vnsRsLIfCtxToCustQosPol.attributes.tnQosCustomPolName   {{ custom_qos_policy_name }}
+{% endif %}
+{% set int_name = dsp.copy_service.logical_interface ~ defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   ${copy}..vnsRsLIfCtxToLIf.attributes.tDn   uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}/lIf-{{ int_name }}
+{% endif %}
+
 
 {% endfor %}

@@ -33,6 +33,7 @@
                                 }
                             }
                         },
+                        {% if dsp.consumer and dsp.provider is defined %}
                         {
                             "vnsLIfCtx": {
                                 "attributes": {
@@ -199,6 +200,52 @@
                                 ]
                             }
                         }
+                        {% elif dsp.copy_service is defined %}
+                        {
+                            "vnsLIfCtx": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "connNameOrLbl": "copy",
+                                    "l3Dest": "{{ 'yes' if dsp.copy_service.l3_destination | default(defaults.apic.tenants.services.device_selection_policies.copy_service.l3_destination) else 'no'}}",
+                                    "permitLog": "{{ 'yes' if dsp.copy_service.permit_logging | default(defaults.apic.tenants.services.device_selection_policies.copy_service.permit_logging) else 'no'}}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {% if dsp.copy_service.service_epg_policy is defined %}
+                                    {% set pol_name = dsp.copy_service.service_epg_policy ~ defaults.apic.tenants.services.service_epg_policies.name_suffix %}
+                                    {
+                                        "vnsRsLIfCtxToSvcEPgPol":{
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tDn": "uni/tn-{{ tenant.name }}/svcCont/svcEPgPol-{{ pol_name }}"
+                                            }
+                                        }
+                                    },
+                                    {% endif %}
+                                    {% if dsp.copy_service.custom_qos_policy is defined %}
+                                    {% set custom_qos_policy_name = dsp.copy_service.custom_qos_policy ~ defaults.apic.tenants.policies.custom_qos.name_suffix %}
+                                    {
+                                        "vnsRsLIfCtxToCustQosPol": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tnQosCustomPolName": "{{ custom_qos_policy_name }}"
+                                            }
+                                        }
+                                    },
+                                    {% endif %}   
+                                    {% set int_name = dsp.copy_service.logical_interface ~ defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix %}
+                                    {
+                                        "vnsRsLIfCtxToLIf": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tDn": "uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}/lIf-{{ int_name }}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        {% endif %}
                     ]
                 }
             }

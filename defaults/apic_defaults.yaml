@@ -1304,3 +1304,6 @@ defaults:
                 ospf: false
                 connected: false
                 static: false
+          copy_service:
+            l3_destination: true
+            permit_logging: false

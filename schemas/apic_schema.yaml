@@ -3189,8 +3189,9 @@ ten_ser_service_graph_templates_expected_state:
 ten_ser_device_selection_policies:
   contract: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   service_graph_template: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  consumer: include('ten_ser_device_selection_policies_consumer_provider') # @name(Device Selection Pol Consumer) @sheet_hidden()
-  provider: include('ten_ser_device_selection_policies_consumer_provider') # @name(Device Selection Pol Provider) @sheet_hidden()
+  consumer: include('ten_ser_device_selection_policies_consumer_provider', required=False) # @name(Device Selection Pol Consumer) @sheet_hidden()
+  provider: include('ten_ser_device_selection_policies_consumer_provider', required=False) # @name(Device Selection Pol Provider) @sheet_hidden()
+  copy_service: include('ten_ser_device_selection_policies_copy_service', required=False) # @name(Device Selection Pol Copy) @sheet_hidden()
   expected_state: include('ten_ser_device_selection_policies_expected_state', required=False) # @no_external_doc() @name(Dev Sel Policy Expected State) @sheet_hidden()
 
 ten_ser_device_selection_policies_consumer_provider:
@@ -3222,6 +3223,13 @@ ten_ser_device_selection_policies_consumer_provider_external_endpoint_group:
   ospf: any(bool(), enum('enabled', 'disabled'), required=False) # @name(External EPG Redistribute OSPF)
   connected: any(bool(), enum('enabled', 'disabled'), required=False) # @name(External EPG Redistribute Connected)
   static: any(bool(), enum('enabled', 'disabled'), required=False) # @name(External EPG Redistribute Static)
+
+ten_ser_device_selection_policies_copy_service:
+  l3_destination: bool(required=False)
+  permit_logging: bool(required=False)
+  logical_interface: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  service_epg_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(Service EPG Policy Name)
+  custom_qos_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_ser_device_selection_policies_expected_state:
   minimum_health: int(min=0, max=100, required=False)

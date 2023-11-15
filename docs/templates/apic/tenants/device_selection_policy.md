@@ -35,6 +35,20 @@ apic:
                 name: BD1
 ```
 
+Copy service:
+
+```yaml
+apic:
+  tenants:
+    - name: ABC
+      services:
+        device_selection_policies:
+          - contract: CON2
+            service_graph_template: TEMPLATE2
+            copy_service:
+              logical_interface: INT1
+```
+
 Full example:
 
 ```yaml
