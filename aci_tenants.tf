@@ -2930,6 +2930,12 @@ locals {
         provider_service_epg_policy                             = try("${dsp.provider.service_epg_policy}${local.defaults.apic.tenants.services.service_epg_policies.name_suffix}", "")
         provider_service_epg_policy_tenant                      = tenant.name
         provider_custom_qos_policy                              = try("${dsp.provider.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+        copy_l3_destination                                     = try(dsp.copy_service.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.copy_service.l3_destination)
+        copy_permit_logging                                     = try(dsp.copy_service.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.copy_service.permit_logging)
+        copy_logical_interface                                  = "${dsp.copy_service.logical_interface}${local.defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix}"
+        copy_custom_qos_policy                                  = try("${dsp.copy_service.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+        copy_service_epg_policy                                 = try("${dsp.copy_service.service_epg_policy}${local.defaults.apic.tenants.services.service_epg_policies.name_suffix}", "")
+        copy_service_epg_policy_tenant                          = tenant.name
       }
     ]
   ])
@@ -2978,6 +2984,12 @@ module "aci_device_selection_policy" {
   provider_service_epg_policy                             = each.value.provider_service_epg_policy
   provider_service_epg_policy_tenant                      = each.value.provider_service_epg_policy_tenant
   provider_custom_qos_policy                              = each.value.provider_custom_qos_policy
+  copy_l3_destination                                     = each.value.copy_l3_destination
+  copy_permit_logging                                     = each.value.copy_permit_logging
+  copy_logical_interface                                  = each.value.copy_logical_interafce
+  copy_custom_qos_policy                                  = each.value.copy_custom_qos_policy
+  copy_service_epg_policy                                 = each.value.copy_service_epg_policy
+  copy_service_epg_policy_tenant                          = each.value.copy_service_epg_policy_tenant
 
   depends_on = [
     module.aci_tenant,

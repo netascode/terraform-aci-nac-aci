@@ -143,3 +143,39 @@ resource "aci_rest_managed" "vnsRsLIfCtxToCustQosPol_provider" {
     tnQosCustomPolName = var.provider_custom_qos_policy
   }
 }
+
+resource "aci_rest_managed" "vnsLIfCtx_copy" {
+  dn         = "${aci_rest_managed.vnsLDevCtx.dn}/lIfCtx-c-copy"
+  class_name = "vnsLIfCtx"
+  content = {
+    connNameOrLbl = "copy",
+    l3Dest        = var.copy_l3_destination == true ? "yes" : "no"
+    permitLog     = var.copy_permit_logging == true ? "yes" : "no"
+  }
+}
+
+resource "aci_rest_managed" "vnsRsLIfCtxToLIf_copy" {
+  dn         = "${aci_rest_managed.vnsLIfCtx_copy.dn}/rsLIfCtxToLIf"
+  class_name = "vnsRsLIfCtxToLIf"
+  content = {
+    tDn = "uni/tn-${var.sgt_device_tenant != "" ? var.sgt_device_tenant : var.tenant}/lDevVip-${var.sgt_device_name}/lIf-${var.copy_logical_interface}"
+  }
+}
+
+resource "aci_rest_managed" "vnsRsLIfCtxToSvcEPgPol_copy" {
+  count      = var.copy_service_epg_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.vnsLIfCtx_copy.dn}/rsLIfCtxToSvcEPgPol"
+  class_name = "vnsRsLIfCtxToSvcEPgPol"
+  content = {
+    tDn = "uni/tn-${var.copy_service_epg_policy_tenant != "" ? var.copy_service_epg_policy_tenant : var.tenant}/svcCont/svcEPgPol-${var.copy_service_epg_policy}"
+  }
+}
+
+resource "aci_rest_managed" "vnsRsLIfCtxToCustQosPol_copy" {
+  count      = var.copy_custom_qos_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.vnsLIfCtx_copy.dn}/rsLIfCtxToCustQosPol"
+  class_name = "vnsRsLIfCtxToCustQosPol"
+  content = {
+    tnQosCustomPolName = var.copy_custom_qos_policy
+  }
+}

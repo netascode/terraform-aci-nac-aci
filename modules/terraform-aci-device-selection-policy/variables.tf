@@ -351,12 +351,68 @@ variable "provider_service_epg_policy_tenant" {
 }
 
 variable "provider_custom_qos_policy" {
-  description = "Provider custome QoS policy name."
+  description = "Provider custom QoS policy name."
   type        = string
   default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.provider_custom_qos_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+}
+
+
+variable "copy_l3_destination" {
+  description = "Copy L3 destination."
+  type        = bool
+  default     = false
+}
+
+variable "copy_permit_logging" {
+  description = "Copy permit logging."
+  type        = bool
+  default     = false
+}
+
+variable "copy_logical_interface" {
+  description = "Copy logical interface."
+  type        = string
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.copy_logical_interface))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "copy_custom_qos_policy" {
+  description = "Copy custom QoS policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.copy_custom_qos_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "copy_service_epg_policy" {
+  description = "Copy service EPG policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.copy_service_epg_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "copy_service_epg_policy_tenant" {
+  description = "Copy service EPG policy tenant name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.copy_service_epg_policy_tenant))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
 }
