@@ -42,4 +42,8 @@ apic:
             device:
               tenant: ABC
               name: DEV1
+            consumer:
+              direct_connect: false
+            provider:
+              direct_connect: true
 ```

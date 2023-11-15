@@ -3174,11 +3174,16 @@ ten_ser_service_graph_templates:
   redirect: any(bool(), enum('enabled', 'disabled'), required=False)
   share_encapsulation: any(bool(), enum('enabled', 'disabled'), required=False)
   device: include('ten_ser_service_graph_templates_device') # @flatten()
+  consumer: include('ten_ser_service_graph_templates_consumer_provider') # @name(SG Template Consumer) @sheet_hidden()
+  provider: include('ten_ser_service_graph_templates_consumer_provider') # @name(SG Template Provider) @sheet_hidden()
   expected_state: include('ten_ser_service_graph_templates_expected_state', required=False) # @no_external_doc() @name(SG Template Expected State) @sheet_hidden()
 
 ten_ser_service_graph_templates_device:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(Device Name)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(Device Tenant)
+
+ten_ser_service_graph_templates_consumer_provider:
+  direct_connect: any(bool(), required=False)
 
 ten_ser_service_graph_templates_expected_state:
   minimum_health: int(min=0, max=100, required=False)

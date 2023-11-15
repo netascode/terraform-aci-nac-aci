@@ -1152,6 +1152,10 @@ apic:
             device:
               tenant: ABC
               name: DEV1
+            consumer:
+              direct_connect: false
+            provider:
+              direct_connect: true
             expected_state:
               minimum_health: 0
               maximum_critical_faults: 1000
