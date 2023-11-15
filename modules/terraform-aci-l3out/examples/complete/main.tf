@@ -14,6 +14,9 @@ module "aci_l3out" {
   ospf_area                               = "0.0.0.10"
   ospf_area_cost                          = 10
   ospf_area_type                          = "stub"
+  ospf_area_control_redistribute          = true
+  ospf_area_control_summary               = true
+  ospf_area_control_suppress_fa           = false
   l3_multicast_ipv4                       = true
   target_dscp                             = "CS0"
   import_route_control_enforcement        = true

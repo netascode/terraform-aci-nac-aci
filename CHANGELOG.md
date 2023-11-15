@@ -31,6 +31,7 @@
 - Add support for OSPF route summarization
 - Add support for copy services (service graphs)
 - Add support for direct connect in service graph templates
+- Add support for OSPF area control
 
 ## 0.7.0
 
