@@ -39,9 +39,14 @@ Verify L3out {{ l3out_name }}
     Should Be Equal Value Json String   ${r.json()}   $..l3extRsL3DomAtt.attributes.tDn   uni/l3dom-{{ domain_name }}
     Should Be Equal Value Json String   ${r.json()}   $..l3extRsEctx.attributes.tnFvCtxName   {{ vrf_name }}
 {% if l3out.ospf is defined %}
+{% set area_ctrl = [] %}
+{% if l3out.ospf.area_control_redistribute | default(defaults.apic.tenants.l3outs.ospf.area_control_redistribute) | cisco.aac.aac_bool("yes")  == "yes" %}{% set area_ctrl = area_ctrl + [("redistribute")] %}{% endif %}
+{% if l3out.ospf.area_control_summary | default(defaults.apic.tenants.l3outs.ospf.area_control_summary) | cisco.aac.aac_bool("yes")  == "yes" %}{% set area_ctrl = area_ctrl + [("summary")] %}{% endif %}
+{% if l3out.ospf.area_control_suppress_fa | default(defaults.apic.tenants.l3outs.ospf.area_control_suppress_fa) | cisco.aac.aac_bool("yes")  == "yes" %}{% set area_ctrl = area_ctrl + [("suppress-fa")] %}{% endif %}
     Should Be Equal Value Json String   ${r.json()}   $..ospfExtP.attributes.areaCost   {{ l3out.ospf.area_cost | default(defaults.apic.tenants.l3outs.ospf.area_cost) }}
     Should Be Equal Value Json String   ${r.json()}   $..ospfExtP.attributes.areaId   {{ area_name(l3out.ospf.area) }}
     Should Be Equal Value Json String   ${r.json()}   $..ospfExtP.attributes.areaType   {{ l3out.ospf.area_type | default(defaults.apic.tenants.l3outs.ospf.area_type) }}
+    Should Be Equal Value Json String   ${r.json()}   $..ospfExtP.attributes.areaCtrl   {{ area_ctrl | join(',') }}
 {% endif %}
 {% if l3out.eigrp is defined %}
     Should Be Equal Value Json String   ${r.json()}   $..eigrpExtP.attributes.asn   {{ l3out.eigrp.asn | default(defaults.apic.tenants.l3outs.eigrp.asn) }}

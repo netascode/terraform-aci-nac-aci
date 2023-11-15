@@ -717,6 +717,9 @@ defaults:
           auth_type: none
           area_cost: 1
           area_type: regular
+          area_control_redistribute: true
+          area_control_summary: true
+          area_control_suppress_fa: false
         bgp_peers:
           allow_self_as: false
           as_override: false

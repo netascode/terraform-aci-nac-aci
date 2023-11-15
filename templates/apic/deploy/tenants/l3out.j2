@@ -1271,13 +1271,17 @@
                         }
                         {%- endfor %}
                         {%- if l3out.ospf is defined %}{{ comma2() }}
+                        {%- set area_ctrl = [] %}
+                        {%- if l3out.ospf.area_control_redistribute | default(defaults.apic.tenants.l3outs.ospf.area_control_redistribute) | cisco.aac.aac_bool("yes")  == "yes" %}{% set area_ctrl = area_ctrl + [("redistribute")] %}{% endif %}
+                        {%- if l3out.ospf.area_control_summary | default(defaults.apic.tenants.l3outs.ospf.area_control_summary) | cisco.aac.aac_bool("yes")  == "yes" %}{% set area_ctrl = area_ctrl + [("summary")] %}{% endif %}
+                        {%- if l3out.ospf.area_control_suppress_fa | default(defaults.apic.tenants.l3outs.ospf.area_control_suppress_fa) | cisco.aac.aac_bool("yes")  == "yes" %}{% set area_ctrl = area_ctrl + [("suppress-fa")] %}{% endif %}
                         {
                             "ospfExtP": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/ospfExtP",
                                     "areaCost": "{{ l3out.ospf.area_cost | default(defaults.apic.tenants.l3outs.ospf.area_cost) }}",
-                                    "areaCtrl": "redistribute,summary",
+                                    "areaCtrl": "{{ area_ctrl | join(',') }}",
                                     "areaId": "{{ l3out.ospf.area }}",
                                     "areaType": "{{ l3out.ospf.area_type | default(defaults.apic.tenants.l3outs.ospf.area_type) }}"
                                 }

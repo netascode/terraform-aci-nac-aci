@@ -1414,7 +1414,11 @@ No L3OUT Node Profiles configured.
 
 | L3OUT | Area ID | Area Type | Area Cost | Area Controls |
 |---|---|---|---|---|
-| {{l3out.name ~ defaults.apic.tenants.l3outs.name_suffix}} | {{ l3out.ospf.area }} | {{l3out.ospf.area_type | default(defaults.apic.tenants.l3outs.ospf.area_type)}} | {{l3out.ospf.area_cost | default(defaults.apic.tenants.l3outs.ospf.area_cost)}} | |
+{% set area_ctrl = [] %}
+{% if l3out.ospf.area_control_redistribute | default(defaults.apic.tenants.l3outs.ospf.area_control_redistribute) | cisco.aac.aac_bool("yes")  == "yes" %}{% set area_ctrl = area_ctrl + [("redistribute")] %}{% endif %}
+{% if l3out.ospf.area_control_summary | default(defaults.apic.tenants.l3outs.ospf.area_control_summary) | cisco.aac.aac_bool("yes")  == "yes" %}{% set area_ctrl = area_ctrl + [("summary")] %}{% endif %}
+{% if l3out.ospf.area_control_suppress_fa | default(defaults.apic.tenants.l3outs.ospf.area_control_suppress_fa) | cisco.aac.aac_bool("yes")  == "yes" %}{% set area_ctrl = area_ctrl + [("suppress-fa")] %}{% endif %}
+| {{l3out.name ~ defaults.apic.tenants.l3outs.name_suffix}} | {{ l3out.ospf.area }} | {{l3out.ospf.area_type | default(defaults.apic.tenants.l3outs.ospf.area_type)}} | {{l3out.ospf.area_cost | default(defaults.apic.tenants.l3outs.ospf.area_cost)}} | {{ area_ctrl | join(',') }} |
 </caption>
 {% endif %}
 

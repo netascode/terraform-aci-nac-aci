@@ -158,6 +158,9 @@ apic:
             area: backbone
             area_type: regular
             area_cost: 1
+            area_control_redistribute: true
+            area_control_summary: true
+            area_control_suppress_fa: false
             auth_type: simple
             auth_key: cisco
             auth_key_id: 1
