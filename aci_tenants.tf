@@ -2994,7 +2994,7 @@ module "aci_device_selection_policy" {
   provider_custom_qos_policy                              = each.value.provider_custom_qos_policy
   copy_l3_destination                                     = each.value.copy_l3_destination
   copy_permit_logging                                     = each.value.copy_permit_logging
-  copy_logical_interface                                  = each.value.copy_logical_interafce
+  copy_logical_interface                                  = each.value.copy_logical_interface
   copy_custom_qos_policy                                  = each.value.copy_custom_qos_policy
   copy_service_epg_policy                                 = each.value.copy_service_epg_policy
   copy_service_epg_policy_tenant                          = each.value.copy_service_epg_policy_tenant
