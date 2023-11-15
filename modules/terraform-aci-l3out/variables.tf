@@ -111,6 +111,24 @@ variable "ospf_area_type" {
   }
 }
 
+variable "ospf_area_control_redistribute" {
+  description = "Send redistributed LSAs into NSSA area."
+  type        = bool
+  default     = true
+}
+
+variable "ospf_area_control_summary" {
+  description = "Originate summary LSA."
+  type        = bool
+  default     = true
+}
+
+variable "ospf_area_control_suppress_fa" {
+  description = "Suppress forwarding address in translated LSA."
+  type        = bool
+  default     = false
+}
+
 variable "eigrp_asn" {
   description = "EIGRP Autonomous System Number area cost. Minimum value: 1. Maximum value: 65535."
   type        = number

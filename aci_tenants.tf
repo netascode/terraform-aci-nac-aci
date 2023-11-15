@@ -674,6 +674,9 @@ locals {
         ospf_area                               = can(tonumber(try(l3out.ospf.area, "backbone"))) ? (tonumber(try(l3out.ospf.area, "backbone")) == 0 ? "backbone" : tonumber(try(l3out.ospf.area, "backbone"))) : try(l3out.ospf.area, "backbone")
         ospf_area_cost                          = try(l3out.ospf.area_cost, local.defaults.apic.tenants.l3outs.ospf.area_cost)
         ospf_area_type                          = try(l3out.ospf.area_type, local.defaults.apic.tenants.l3outs.ospf.area_type)
+        ospf_area_control_redistribute          = try(l3out.ospf.area_control_redistribute, local.defaults.apic.tenants.l3outs.ospf.area_control_redistribute)
+        ospf_area_control_summary               = try(l3out.ospf.area_control_summary, local.defaults.apic.tenants.l3outs.ospf.area_control_summary)
+        ospf_area_control_suppress_fa           = try(l3out.ospf.area_control_suppress_fa, local.defaults.apic.tenants.l3outs.ospf.area_control_suppress_fa)
         eigrp                                   = try(l3out.eigrp, null) != null ? true : false
         eigrp_asn                               = try(l3out.eigrp, null) != null ? l3out.eigrp.asn : 1
         l3_multicast_ipv4                       = try(l3out.l3_multicast_ipv4, local.defaults.apic.tenants.l3outs.l3_multicast_ipv4)
@@ -733,6 +736,9 @@ module "aci_l3out" {
   ospf_area                               = each.value.ospf_area
   ospf_area_cost                          = each.value.ospf_area_cost
   ospf_area_type                          = each.value.ospf_area_type
+  ospf_area_control_redistribute          = each.value.ospf_area_control_redistribute
+  ospf_area_control_summary               = each.value.ospf_area_control_summary
+  ospf_area_control_suppress_fa           = each.value.ospf_area_control_suppress_fa
   eigrp                                   = each.value.eigrp
   eigrp_asn                               = each.value.eigrp_asn
   l3_multicast_ipv4                       = each.value.l3_multicast_ipv4

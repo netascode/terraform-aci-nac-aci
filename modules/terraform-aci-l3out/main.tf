@@ -23,7 +23,7 @@ resource "aci_rest_managed" "ospfExtP" {
   class_name = "ospfExtP"
   content = {
     areaCost = var.ospf_area_cost
-    areaCtrl = "redistribute,summary"
+    areaCtrl = join(",", concat(var.ospf_area_control_redistribute == true ? ["redistribute"] : [], var.ospf_area_control_summary == true ? ["summary"] : [], var.ospf_area_control_suppress_fa == true ? ["suppress-fa"] : []))
     areaId   = try(tonumber(var.ospf_area), false) != false ? format("%s.%s.%s.%s", floor(var.ospf_area % pow(2, 32) / pow(2, 24)), floor(var.ospf_area % pow(2, 24) / pow(2, 16)), floor(var.ospf_area % pow(2, 16) / pow(2, 8)), var.ospf_area % pow(2, 8)) : var.ospf_area
     areaType = var.ospf_area_type
   }

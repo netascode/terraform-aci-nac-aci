@@ -25,6 +25,9 @@ module "aci_l3out" {
   ospf_area                               = "0.0.0.10"
   ospf_area_cost                          = 10
   ospf_area_type                          = "stub"
+  ospf_area_control_redistribute          = true
+  ospf_area_control_summary               = true
+  ospf_area_control_suppress_fa           = false
   l3_multicast_ipv4                       = true
   target_dscp                             = "CS0"
   import_route_control_enforcement        = true
@@ -93,6 +96,9 @@ module "aci_l3out" {
 | <a name="input_ospf_area"></a> [ospf\_area](#input\_ospf\_area) | OSPF area. Allowed values are `backbone`, a number between 1 and 4294967295, or an ID in IP address format. | `string` | `"backbone"` | no |
 | <a name="input_ospf_area_cost"></a> [ospf\_area\_cost](#input\_ospf\_area\_cost) | OSPF area cost. Minimum value: 1. Maximum value: 16777215. | `number` | `1` | no |
 | <a name="input_ospf_area_type"></a> [ospf\_area\_type](#input\_ospf\_area\_type) | OSPF area type. Choices: `regular`, `stub`, `nssa`. | `string` | `"regular"` | no |
+| <a name="input_ospf_area_control_redistribute"></a> [ospf\_area\_control\_redistribute](#input\_ospf\_area\_control\_redistribute) | Send redistributed LSAs into NSSA area. | `bool` | `true` | no |
+| <a name="input_ospf_area_control_summary"></a> [ospf\_area\_control\_summary](#input\_ospf\_area\_control\_summary) | Originate summary LSA. | `bool` | `true` | no |
+| <a name="input_ospf_area_control_suppress_fa"></a> [ospf\_area\_control\_suppress\_fa](#input\_ospf\_area\_control\_suppress\_fa) | Suppress forwarding address in translated LSA. | `bool` | `false` | no |
 | <a name="input_eigrp_asn"></a> [eigrp\_asn](#input\_eigrp\_asn) | EIGRP Autonomous System Number area cost. Minimum value: 1. Maximum value: 65535. | `number` | `1` | no |
 | <a name="input_l3_multicast_ipv4"></a> [l3\_multicast\_ipv4](#input\_l3\_multicast\_ipv4) | L3 IPv4 Multicast. | `bool` | `false` | no |
 | <a name="input_target_dscp"></a> [target\_dscp](#input\_target\_dscp) | Target DSCP. Choices: `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS3`, `AF31`, `AF32`, `AF33`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6`, `CS7`, `unspecified` or a number between `0` and `63`. | `string` | `"unspecified"` | no |
