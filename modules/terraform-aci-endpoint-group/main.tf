@@ -213,7 +213,7 @@ resource "aci_rest_managed" "fvRsNodeAtt" {
 }
 
 resource "aci_rest_managed" "fvRsPathAtt_port" {
-  for_each   = { for sp in var.static_ports : "${sp.node_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" => sp if sp.channel == null && sp.fex_id == null && sp.sub_port == null }
+  for_each   = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.port}-vl-${sp.vlan}") => sp if sp.channel == null && sp.fex_id == null && sp.sub_port == null }
   dn         = "${aci_rest_managed.fvAEPg.dn}/rspathAtt-[${format("topology/pod-%s/paths-%s/pathep-[eth%s/%s]", each.value.pod_id, each.value.node_id, each.value.module, each.value.port)}]"
   class_name = "fvRsPathAtt"
   content = {
@@ -225,7 +225,7 @@ resource "aci_rest_managed" "fvRsPathAtt_port" {
 }
 
 resource "aci_rest_managed" "fvRsPathAtt_subport" {
-  for_each   = { for sp in var.static_ports : "${sp.node_id}-${sp.module}-${sp.port}-${sp.sub_port}-vl-${sp.vlan}" => sp if sp.channel == null && sp.fex_id == null && sp.sub_port != null }
+  for_each   = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.module}-${sp.port}-${sp.sub_port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.port}-${sp.sub_port}-vl-${sp.vlan}") => sp if sp.channel == null && sp.fex_id == null && sp.sub_port != null }
   dn         = "${aci_rest_managed.fvAEPg.dn}/rspathAtt-[${format("topology/pod-%s/paths-%s/pathep-[eth%s/%s/%s]", each.value.pod_id, each.value.node_id, each.value.module, each.value.port, each.value.sub_port)}]"
   class_name = "fvRsPathAtt"
   content = {
@@ -249,7 +249,7 @@ resource "aci_rest_managed" "fvRsPathAtt_channel" {
 }
 
 resource "aci_rest_managed" "fvRsPathAtt_fex_port" {
-  for_each   = { for sp in var.static_ports : "${sp.node_id}-${sp.fex_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" => sp if sp.channel == null && sp.fex_id != null }
+  for_each   = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.fex_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.fex_id}-${sp.port}-vl-${sp.vlan}") => sp if sp.channel == null && sp.fex_id != null }
   dn         = "${aci_rest_managed.fvAEPg.dn}/rspathAtt-[${format("topology/pod-%s/paths-%s/extpaths-%s/pathep-[eth%s/%s]", each.value.pod_id, each.value.node_id, each.value.fex_id, each.value.module, each.value.port)}]"
   class_name = "fvRsPathAtt"
   content = {
