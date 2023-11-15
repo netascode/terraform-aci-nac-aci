@@ -2851,19 +2851,21 @@ locals {
   service_graph_templates = flatten([
     for tenant in local.tenants : [
       for sgt in try(tenant.services.service_graph_templates, []) : {
-        key                 = format("%s/%s", tenant.name, sgt.name)
-        tenant              = tenant.name
-        name                = "${sgt.name}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
-        description         = try(sgt.description, "")
-        alias               = try(sgt.alias, "")
-        template_type       = try(sgt.template_type, local.defaults.apic.tenants.services.service_graph_templates.template_type)
-        redirect            = try(sgt.redirect, local.defaults.apic.tenants.services.service_graph_templates.redirect)
-        share_encapsulation = try(sgt.share_encapsulation, local.defaults.apic.tenants.services.service_graph_templates.share_encapsulation)
-        device_name         = "${sgt.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
-        device_tenant       = try(sgt.device.tenant, tenant.name)
-        device_function     = length([for d in local.l4l7_devices : d if d.tenant == tenant.name]) > 0 ? [for device in local.l4l7_devices : try(device.function, []) if device.name == sgt.device.name && device.tenant == tenant.name][0] : "None"
-        device_copy         = length([for d in local.l4l7_devices : d if d.tenant == tenant.name]) > 0 ? [for device in local.l4l7_devices : try(device.copy_device, []) if device.name == sgt.device.name && device.tenant == tenant.name][0] : false
-        device_managed      = length([for d in local.l4l7_devices : d if d.tenant == tenant.name]) > 0 ? [for device in local.l4l7_devices : try(device.managed, []) if device.name == sgt.device.name && device.tenant == tenant.name][0] : false
+        key                     = format("%s/%s", tenant.name, sgt.name)
+        tenant                  = tenant.name
+        name                    = "${sgt.name}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
+        description             = try(sgt.description, "")
+        alias                   = try(sgt.alias, "")
+        template_type           = try(sgt.template_type, local.defaults.apic.tenants.services.service_graph_templates.template_type)
+        redirect                = try(sgt.redirect, local.defaults.apic.tenants.services.service_graph_templates.redirect)
+        share_encapsulation     = try(sgt.share_encapsulation, local.defaults.apic.tenants.services.service_graph_templates.share_encapsulation)
+        device_name             = "${sgt.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
+        device_tenant           = try(sgt.device.tenant, tenant.name)
+        device_function         = length([for d in local.l4l7_devices : d if d.tenant == tenant.name]) > 0 ? [for device in local.l4l7_devices : try(device.function, []) if device.name == sgt.device.name && device.tenant == tenant.name][0] : "None"
+        device_copy             = length([for d in local.l4l7_devices : d if d.tenant == tenant.name]) > 0 ? [for device in local.l4l7_devices : try(device.copy_device, []) if device.name == sgt.device.name && device.tenant == tenant.name][0] : false
+        device_managed          = length([for d in local.l4l7_devices : d if d.tenant == tenant.name]) > 0 ? [for device in local.l4l7_devices : try(device.managed, []) if device.name == sgt.device.name && device.tenant == tenant.name][0] : false
+        consumer_direct_connect = try(sgt.consumer.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.consumer.direct_connect) ? "yes" : "no"
+        provider_direct_connect = try(sgt.provider.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.provider.direct_connect) ? "yes" : "no"
       }
     ]
   ])
@@ -2904,7 +2906,7 @@ locals {
         sgt_device_name                                         = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : "${sg_template.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}" if sg_template.name == dsp.service_graph_template][0] : ""
         consumer_l3_destination                                 = try(dsp.consumer.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination)
         consumer_permit_logging                                 = try(dsp.consumer.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.consumer.permit_logging)
-        consumer_logical_interface                              = "${dsp.consumer.logical_interface}${local.defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix}"
+        consumer_logical_interface                              = try("${dsp.consumer.logical_interface}${local.defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix}", "")
         consumer_redirect_policy                                = try("${dsp.consumer.redirect_policy.name}${local.defaults.apic.tenants.services.redirect_policies.name_suffix}", "")
         consumer_redirect_policy_tenant                         = try(dsp.consumer.redirect_policy.tenant, tenant.name)
         consumer_bridge_domain                                  = try("${dsp.consumer.bridge_domain.name}${local.defaults.apic.tenants.bridge_domains.name_suffix}", "")
@@ -2921,7 +2923,7 @@ locals {
         consumer_custom_qos_policy                              = try("${dsp.consumer.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
         provider_l3_destination                                 = try(dsp.provider.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.provider.l3_destination)
         provider_permit_logging                                 = try(dsp.provider.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.provider.permit_logging)
-        provider_logical_interface                              = "${dsp.provider.logical_interface}${local.defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix}"
+        provider_logical_interface                              = try("${dsp.provider.logical_interface}${local.defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix}", "")
         provider_redirect_policy                                = try("${dsp.provider.redirect_policy.name}${local.defaults.apic.tenants.services.redirect_policies.name_suffix}", "")
         provider_redirect_policy_tenant                         = try(dsp.provider.redirect_policy.tenant, tenant.name)
         provider_bridge_domain                                  = try("${dsp.provider.bridge_domain.name}${local.defaults.apic.tenants.bridge_domains.name_suffix}", "")
@@ -2936,6 +2938,12 @@ locals {
         provider_service_epg_policy                             = try("${dsp.provider.service_epg_policy}${local.defaults.apic.tenants.services.service_epg_policies.name_suffix}", "")
         provider_service_epg_policy_tenant                      = tenant.name
         provider_custom_qos_policy                              = try("${dsp.provider.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+        copy_l3_destination                                     = try(dsp.copy_service.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.copy_service.l3_destination)
+        copy_permit_logging                                     = try(dsp.copy_service.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.copy_service.permit_logging)
+        copy_logical_interface                                  = try("${dsp.copy_service.logical_interface}${local.defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix}", "")
+        copy_custom_qos_policy                                  = try("${dsp.copy_service.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+        copy_service_epg_policy                                 = try("${dsp.copy_service.service_epg_policy}${local.defaults.apic.tenants.services.service_epg_policies.name_suffix}", "")
+        copy_service_epg_policy_tenant                          = tenant.name
       }
     ]
   ])
@@ -2984,6 +2992,12 @@ module "aci_device_selection_policy" {
   provider_service_epg_policy                             = each.value.provider_service_epg_policy
   provider_service_epg_policy_tenant                      = each.value.provider_service_epg_policy_tenant
   provider_custom_qos_policy                              = each.value.provider_custom_qos_policy
+  copy_l3_destination                                     = each.value.copy_l3_destination
+  copy_permit_logging                                     = each.value.copy_permit_logging
+  copy_logical_interface                                  = each.value.copy_logical_interafce
+  copy_custom_qos_policy                                  = each.value.copy_custom_qos_policy
+  copy_service_epg_policy                                 = each.value.copy_service_epg_policy
+  copy_service_epg_policy_tenant                          = each.value.copy_service_epg_policy_tenant
 
   depends_on = [
     module.aci_tenant,

@@ -13,18 +13,20 @@ module "aci_service_graph_template" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-service-graph-template"
   version = ">= 0.8.0"
 
-  tenant              = "ABC"
-  name                = "SGT1"
-  alias               = "SGT1-ALIAS"
-  description         = "My Description"
-  template_type       = "FW_ROUTED"
-  redirect            = true
-  share_encapsulation = true
-  device_name         = "DEV1"
-  device_tenant       = "DEF"
-  device_function     = "GoThrough"
-  device_copy         = false
-  device_managed      = false
+  tenant                  = "ABC"
+  name                    = "SGT1"
+  alias                   = "SGT1-ALIAS"
+  description             = "My Description"
+  template_type           = "FW_ROUTED"
+  redirect                = true
+  share_encapsulation     = true
+  device_name             = "DEV1"
+  device_tenant           = "DEF"
+  device_function         = "GoThrough"
+  device_copy             = false
+  device_managed          = false
+  consumer_direct_connect = false
+  provider_direct_connect = true
 }
 ```
 
@@ -57,6 +59,8 @@ module "aci_service_graph_template" {
 | <a name="input_device_function"></a> [device\_function](#input\_device\_function) | L4L7 device function. Choices: `None`, `GoTo`, `GoThrough`, `L2`, `L1`. | `string` | `"GoTo"` | no |
 | <a name="input_device_copy"></a> [device\_copy](#input\_device\_copy) | L4L7 device copy function. | `bool` | `false` | no |
 | <a name="input_device_managed"></a> [device\_managed](#input\_device\_managed) | L4L7 managed device. | `bool` | `false` | no |
+| <a name="input_consumer_direct_connect"></a> [consumer\_direct\_connect](#input\_consumer\_direct\_connect) | Direct connect on consumer connection. | `bool` | `false` | no |
+| <a name="input_provider_direct_connect"></a> [provider\_direct\_connect](#input\_provider\_direct\_connect) | Direct connect on provider connection. | `bool` | `false` | no |
 
 ## Outputs
 

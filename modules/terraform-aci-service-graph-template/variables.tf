@@ -106,3 +106,15 @@ variable "device_managed" {
   type        = bool
   default     = false
 }
+
+variable "consumer_direct_connect" {
+  description = "Direct connect on consumer connection."
+  type        = bool
+  default     = false
+}
+
+variable "provider_direct_connect" {
+  description = "Direct connect on provider connection."
+  type        = bool
+  default     = false
+}

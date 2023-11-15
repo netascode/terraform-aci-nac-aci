@@ -110,7 +110,7 @@ resource "aci_rest_managed" "vnsAbsConnection_Consumer" {
     adjType       = "L3"
     connDir       = "provider"
     connType      = "external"
-    directConnect = "no"
+    directConnect = var.consumer_direct_connect ? "yes" : "no"
     name          = "C1"
     unicastRoute  = "yes"
   }
@@ -139,7 +139,7 @@ resource "aci_rest_managed" "vnsAbsConnection_Provider" {
     adjType       = "L3"
     connDir       = "provider"
     connType      = "external"
-    directConnect = "no"
+    directConnect = var.provider_direct_connect ? "yes" : "no"
     name          = "C2"
     unicastRoute  = "yes"
   }

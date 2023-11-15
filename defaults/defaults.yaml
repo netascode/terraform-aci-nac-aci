@@ -852,6 +852,9 @@ defaults:
           preferred_group: false
           qos_class: unspecified
           target_dscp: unspecified
+          route_control_profiles:
+            name_suffix: ""
+            direction: import
           subnets:
             import_route_control: false
             export_route_control: false
@@ -863,6 +866,9 @@ defaults:
             aggregate_shared_route_control: false
             bgp_route_summarization: false
             ospf_route_summarization: false
+            route_control_profiles:
+              name_suffix: ""
+              direction: import
         import_route_map:
           type: global
           contexts:
@@ -1282,6 +1288,10 @@ defaults:
           template_type: FW_ROUTED
           redirect: false
           share_encapsulation: false
+          consumer:
+            direct_connect: false
+          provider:
+            direct_connect: false
         device_selection_policies:
           consumer:
             l3_destination: true
