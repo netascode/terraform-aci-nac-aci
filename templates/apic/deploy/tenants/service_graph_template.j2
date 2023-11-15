@@ -90,8 +90,10 @@
                             }
                         },
                         {%- set ten = sgt.device.tenant | default(tenant.name) %}
-                        {%- set query = "tenants[?name==`" ~ ten ~ "`].services.l4l7_devices[?name==`" ~ sgt.device.name ~ "`]" %}
-                        {%- set dev = (apic | community.general.json_query(query))[0] %}
+                        {%- set query1 = "tenants[?name==`" ~ ten ~ "`]" %}
+                        {%- set query2 = "services.l4l7_devices[?name==`" ~ sgt.device.name ~ "`]" %}
+                        {%- set t = (apic | community.general.json_query(query1))[0] %}
+                        {%- set dev = (t | community.general.json_query(query2))[0] %}
                         {
                             "vnsAbsNode": {
                                 "attributes": {

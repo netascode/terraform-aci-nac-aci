@@ -10,8 +10,10 @@ Resource        ../../../apic_common.resource
 {% for sgt in tenant.services.service_graph_templates | default([]) %}
 {% set sgt_name = sgt.name ~ defaults.apic.tenants.services.service_graph_templates.name_suffix %}
 {% set ten = sgt.device.tenant | default(tenant.name) %}
-{% set query = "tenants[?name==`" ~ ten ~ "`].services.l4l7_devices[?name==`" ~ sgt.device.name ~ "`]" %}
-{% set dev = (apic | community.general.json_query(query))[0] %}
+{% set query1 = "tenants[?name==`" ~ ten ~ "`]" %}
+{% set query2 = "services.l4l7_devices[?name==`" ~ sgt.device.name ~ "`]" %}
+{% set t = (apic | community.general.json_query(query1))[0] %}
+{% set dev = (t | community.general.json_query(query2))[0] %}
 {% set dev_name = sgt.device.name  ~ defaults.apic.tenants.services.l4l7_devices.name_suffix %}
 
 Verify Service Graph Template {{ sgt_name }}
