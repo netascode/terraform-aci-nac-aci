@@ -64,6 +64,7 @@ variable "consumer_permit_logging" {
 variable "consumer_logical_interface" {
   description = "Consumer logical interface."
   type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.consumer_logical_interface))
@@ -220,6 +221,7 @@ variable "provider_permit_logging" {
 variable "provider_logical_interface" {
   description = "Provider logical interface."
   type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.provider_logical_interface))
@@ -377,6 +379,7 @@ variable "copy_permit_logging" {
 variable "copy_logical_interface" {
   description = "Copy logical interface."
   type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.copy_logical_interface))

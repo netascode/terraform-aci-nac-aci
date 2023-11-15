@@ -29,6 +29,7 @@
 - Add support for system performance settings
 - Add support for OSPF timer policies
 - Add support for OSPF route summarization
+- Add support for copy services (service graphs)
 
 ## 0.7.0
 
