@@ -1643,7 +1643,7 @@ ten_vrf:
   leaked_external_prefixes: list(include('ten_vrf_leaked_external_prefixes'), required=False) # @name(VRF Leaked External Prefixes) @ref_name(Leaked External Prefix) @sheet_hidden()
   contracts: include('ten_vrf_contracts', required=False) # @flatten()
   bgp: include('ten_vrf_bgp', required=False) # @name(VRF BGP) @sheet_hidden()
-  ospf: include('ten_vrf_ospf', required=False) # @no_doc() @sheet_hidden()
+  ospf: include('ten_vrf_ospf', required=False) # @name(VRF OSPF) @sheet_hidden()
   dns_labels: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF DNS Labels) @ref_name(DNS Label) @sheet_hidden()
   pim: include('ten_vrf_pim', required=False) # @name(VRF PIM) @sheet_hidden()
   expected_state: include('ten_vrf_expected_state', required=False) # @no_external_doc() @name(VRF Expected State) @sheet_hidden()
