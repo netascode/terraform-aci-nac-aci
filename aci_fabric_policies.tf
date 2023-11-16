@@ -551,6 +551,10 @@ module "aci_aaa" {
     description            = try(sd.description, "")
     restricted_rbac_domain = try(sd.restricted_rbac_domain, false)
   }]
+  password_strength_check  = try(local.fabric_policies.aaa.management_settings.password_strength_check, local.defaults.apic.fabric_policies.aaa.management_settings.password_strength_check)
+  web_token_timeout        = try(local.fabric_policies.aaa.management_settings.web_token_timeout, local.defaults.apic.fabric_policies.aaa.management_settings.web_token_timeout)
+  web_token_max_validity   = try(local.fabric_policies.aaa.management_settings.web_token_max_validity, local.defaults.apic.fabric_policies.aaa.management_settings.web_token_max_validity)
+  web_session_idle_timeout = try(local.fabric_policies.aaa.management_settings.web_session_idle_timeout, local.defaults.apic.fabric_policies.aaa.management_settings.web_session_idle_timeout)
 }
 
 module "aci_tacacs" {
