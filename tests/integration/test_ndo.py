@@ -173,7 +173,7 @@ def full_ndo_test(
             pytest.fail(error)
 
     # CSCwh37399
-    if version.startswith("4.2"):
+    if version.startswith("4.1") or version.startswith("4.2"):
         time.sleep(30)
 
     # Enable retries
@@ -241,7 +241,7 @@ def full_ndo_terraform(
             pytest.fail(error)
 
     # CSCwh37399
-    if version.startswith("4.2"):
+    if version.startswith("4.1") or version.startswith("4.2"):
         time.sleep(30)
 
     os.environ["MSO_URL"] = ndo_url
