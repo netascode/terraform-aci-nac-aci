@@ -73,10 +73,10 @@ resource "aci_rest_managed" "l3extSubnet" {
   }
 }
 
-resource "aci_rest_managed" "l3extRsInstPToProfile_subnet" {
+resource "aci_rest_managed" "l3extRsSubnetToProfile" {
   for_each   = { for rcp in local.subnet_route_control_profiles : rcp.id => rcp }
-  dn         = "${aci_rest_managed.l3extSubnet[each.value.prefix].dn}/rsinstPToProfile-[${each.value.name}]-${each.value.direction}"
-  class_name = "l3extRsInstPToProfile"
+  dn         = "${aci_rest_managed.l3extSubnet[each.value.prefix].dn}/rssubnetToProfile-[${each.value.name}]-${each.value.direction}"
+  class_name = "l3extRsSubnetToProfile"
   content = {
     tnRtctrlProfileName = each.value.name
     direction           = each.value.direction
