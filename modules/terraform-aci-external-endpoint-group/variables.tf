@@ -78,6 +78,29 @@ variable "target_dscp" {
   }
 }
 
+variable "route_control_profiles" {
+  description = "List of route control profiles. Choices `direction`: `import`, `export`."
+  type = list(object({
+    name      = string
+    direction = optional(string, "import")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for r in var.route_control_profiles : can(regex("^[a-zA-Z0-9_.-]{0,64}$", r.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for r in var.route_control_profiles : contains(["import", "export"], r.direction)
+    ])
+    error_message = "`direction`: Allowed values are `import` and `export`."
+  }
+}
+
 variable "subnets" {
   description = "List of subnets. Default value `import_route_control`: false. Default value `export_route_control`: false. Default value `shared_route_control`: false. Default value `import_security`: true. Default value `shared_security`: false. Default value `aggregate_import_route_control`: false. Default value `aggregate_export_route_control`: false. Default value `aggregate_shared_route_control`: false. Default value `bgp_route_summarization`: false. Default value `ospf_route_summarization`: false."
   type = list(object({
@@ -93,6 +116,10 @@ variable "subnets" {
     aggregate_shared_route_control = optional(bool, false)
     bgp_route_summarization        = optional(bool, false)
     ospf_route_summarization       = optional(bool, false)
+    route_control_profiles = optional(list(object({
+      name      = string
+      direction = optional(string, "import")
+    })), [])
   }))
   default = []
 
@@ -101,6 +128,24 @@ variable "subnets" {
       for s in var.subnets : s.name == null || try(can(regex("^[a-zA-Z0-9_.-]{0,64}$", s.name)), false)
     ])
     error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for s in var.subnets : alltrue([
+        for r in s.route_control_profiles : can(regex("^[a-zA-Z0-9_.-]{0,64}$", r.name))
+      ])
+    ])
+    error_message = "`route_control_profiles.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for s in var.subnets : alltrue([
+        for r in s.route_control_profiles : contains(["import", "export"], r.direction)
+      ])
+    ])
+    error_message = "`direction`: Allowed values are `import` and `export`."
   }
 }
 

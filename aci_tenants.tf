@@ -1231,6 +1231,10 @@ locals {
           contract_consumers          = try([for contract in epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_providers          = try([for contract in epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
+          route_control_profiles = [for rcp in try(epg.route_control_profiles, []) : {
+            name      = rcp.name
+            direction = try(rcp.direction, local.defaults.apic.tenants.l3outs.external_endpoint_groups.route_control_profiles.direction)
+          }]
           subnets = [for subnet in try(epg.subnets, []) : {
             name                           = try(subnet.name, "")
             prefix                         = subnet.prefix
@@ -1244,6 +1248,10 @@ locals {
             aggregate_shared_route_control = try(subnet.aggregate_shared_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_shared_route_control)
             bgp_route_summarization        = try(subnet.bgp_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.bgp_route_summarization)
             ospf_route_summarization       = try(subnet.ospf_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ospf_route_summarization)
+            route_control_profiles = [for rcp in try(subnet.route_control_profiles, []) : {
+              name      = rcp.name
+              direction = try(rcp.direction, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.route_control_profiles.direction)
+            }]
           }]
         }
       ]
@@ -1266,6 +1274,7 @@ module "aci_external_endpoint_group" {
   contract_consumers          = each.value.contract_consumers
   contract_providers          = each.value.contract_providers
   contract_imported_consumers = each.value.contract_imported_consumers
+  route_control_profiles      = each.value.route_control_profiles
   subnets                     = each.value.subnets
 
   depends_on = [

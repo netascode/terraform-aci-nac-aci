@@ -1,3 +1,16 @@
+locals {
+  subnet_route_control_profiles = flatten([
+    for subnet in var.subnets : [
+      for rcp in try(subnet.route_control_profiles, []) : {
+        id        = "${subnet.prefix}-${rcp.name}-${rcp.direction}"
+        prefix    = subnet.prefix
+        name      = rcp.name
+        direction = rcp.direction
+      }
+    ]
+  ])
+}
+
 resource "aci_rest_managed" "l3extInstP" {
   dn         = "uni/tn-${var.tenant}/out-${var.l3out}/instP-${var.name}"
   class_name = "l3extInstP"
@@ -38,6 +51,16 @@ resource "aci_rest_managed" "fvRsConsIf" {
   }
 }
 
+resource "aci_rest_managed" "l3extRsInstPToProfile" {
+  for_each   = { for rcp in var.route_control_profiles : rcp.name => rcp }
+  dn         = "${aci_rest_managed.l3extInstP.dn}/rsinstPToProfile-[${each.value.name}]-${each.value.direction}"
+  class_name = "l3extRsInstPToProfile"
+  content = {
+    tnRtctrlProfileName = each.value.name
+    direction           = each.value.direction
+  }
+}
+
 resource "aci_rest_managed" "l3extSubnet" {
   for_each   = { for subnet in var.subnets : subnet.prefix => subnet }
   dn         = "${aci_rest_managed.l3extInstP.dn}/extsubnet-[${each.value.prefix}]"
@@ -47,6 +70,16 @@ resource "aci_rest_managed" "l3extSubnet" {
     name      = each.value.name
     scope     = join(",", concat(each.value.export_route_control == true ? ["export-rtctrl"] : [], each.value.import_route_control == true ? ["import-rtctrl"] : [], each.value.import_security == true ? ["import-security"] : [], each.value.shared_route_control == true ? ["shared-rtctrl"] : [], each.value.shared_security == true ? ["shared-security"] : []))
     aggregate = join(",", concat(each.value.aggregate_export_route_control == true ? ["export-rtctrl"] : [], each.value.aggregate_import_route_control == true ? ["import-rtctrl"] : [], each.value.aggregate_shared_route_control == true ? ["shared-rtctrl"] : []))
+  }
+}
+
+resource "aci_rest_managed" "l3extRsInstPToProfile_subnet" {
+  for_each   = { for rcp in local.subnet_route_control_profiles : rcp.id => rcp }
+  dn         = "${aci_rest_managed.l3extSubnet[each.value.prefix].dn}/rsinstPToProfile-[${each.value.name}]-${each.value.direction}"
+  class_name = "l3extRsInstPToProfile"
+  content = {
+    tnRtctrlProfileName = each.value.name
+    direction           = each.value.direction
   }
 }
 
