@@ -25,7 +25,7 @@ TEMPLATE = """[**[{status}] {job_name} {build}**]({url})
 * _Author_: {author}
 * _Branch_: {branch}
 * _Event_: {event}
-* _Test Reports_: [APIC 4.2]({build_url}artifact/apic_tf_4.2_log.html), [APIC 5.2]({build_url}artifact/apic_tf_5.2_log.html), [APIC 6.0]({build_url}artifact/apic_tf_6.0_log.html), [NDO 3.7]({build_url}artifact/ndo_tf_3.7_log.html), [NDO 4.2]({build_url}artifact/ndo_tf_4.2_log.html)
+* _Test Reports_: [APIC 4.2]({build_url}artifact/apic_tf_4.2_log.html), [APIC 5.2]({build_url}artifact/apic_tf_5.2_log.html), [APIC 6.0]({build_url}artifact/apic_tf_6.0_log.html), [NDO 3.7]({build_url}artifact/ndo_tf_3.7_log.html), [NDO 4.1]({build_url}artifact/ndo_tf_4.1_log.html)
 """.format(
     status=str(os.getenv("BUILD_STATUS") or "").lower(),
     job_name=str(os.getenv("JOB_NAME")).rsplit("/", 1)[0],

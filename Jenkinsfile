@@ -99,14 +99,14 @@ pipeline {
                         }
                     }
                 }
-                stage('Test NDO 4.2') {
+                stage('Test NDO 4.1') {
                     steps {
-                        sh 'pytest -m "ndo_42 and not terraform"'
+                        sh 'pytest -m "ndo_41 and not terraform"'
                     }
                     post {
                         always {
-                            junit 'ndo_4.2_xunit.xml'
-                            archiveArtifacts 'ndo_4.2_*.html, ndo_4.2_*.xml'
+                            junit 'ndo_4.1_xunit.xml'
+                            archiveArtifacts 'ndo_4.1_*.html, ndo_4.1_*.xml'
                         }
                     }
                 }
