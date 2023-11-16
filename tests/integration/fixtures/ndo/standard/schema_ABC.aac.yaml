@@ -227,21 +227,21 @@ ndo:
                           device: DEV1
                           logical_interface: INT1
                           redirect_policy: PBR1
-                  - name: LB1
-                    provider:
-                      bridge_domain: BD1
-                      sites:
-                        - name: APIC1
-                          device: DEV2
-                          logical_interface: INT1
-                          redirect_policy: PBR2
-                    consumer:
-                      bridge_domain: BD1
-                      sites:
-                        - name: APIC1
-                          device: DEV2
-                          logical_interface: INT1
-                          redirect_policy: PBR2
+                  # - name: LB1
+                  #   provider:
+                  #     bridge_domain: BD1
+                  #     sites:
+                  #       - name: APIC1
+                  #         device: DEV2
+                  #         logical_interface: INT1
+                  #         redirect_policy: PBR2
+                  #   consumer:
+                  #     bridge_domain: BD1
+                  #     sites:
+                  #       - name: APIC1
+                  #         device: DEV2
+                  #         logical_interface: INT1
+                  #         redirect_policy: PBR2
             - name: CONTRACT2
               scope: context
               type: bothWay
@@ -255,12 +255,12 @@ ndo:
                   sites:
                     - name: APIC1
                       device: DEV1
-                - name: LB1
-                  type: "load-balancer"
-                  index: 2
-                  sites:
-                    - name: APIC1
-                      device: DEV2
+                # - name: LB1
+                #   type: "load-balancer"
+                #   index: 2
+                #   sites:
+                #     - name: APIC1
+                #       device: DEV2
           sites:
             - APIC1
         - name: TEMPLATE2
