@@ -35,3 +35,21 @@ resource "aci_rest_managed" "aaaDomain" {
     restrictedRbacDomain = each.value.restricted_rbac_domain == true ? "yes" : "no"
   }
 }
+
+resource "aci_rest_managed" "aaaUserEp" {
+  dn         = "uni/userext"
+  class_name = "aaaUserEp"
+  content = {
+    pwdStrengthCheck = var.password_strength_check == true ? "yes" : "no"
+  }
+}
+
+resource "aci_rest_managed" "pkiWebTokenData" {
+  dn         = "uni/userext/pkiext/webtokendata"
+  class_name = "pkiWebTokenData"
+  content = {
+    webtokenTimeoutSeconds = var.web_token_timeout
+    maximumValidityPeriod  = var.web_token_max_validity
+    uiIdleTimeoutSeconds   = var.web_session_idle_timeout
+  }
+}

@@ -19,6 +19,10 @@ module "aci_aaa" {
   default_login_domain     = "ISE"
   console_realm            = "tacacs"
   console_login_domain     = "ISE"
+  password_strength_check  = true
+  web_token_timeout        = 600
+  web_token_max_validity   = 24
+  web_session_idle_timeout = 1200
 }
 ```
 
@@ -46,6 +50,10 @@ module "aci_aaa" {
 | <a name="input_console_realm"></a> [console\_realm](#input\_console\_realm) | Console realm. Choices: `local`, `tacacs`. | `string` | `"local"` | no |
 | <a name="input_console_login_domain"></a> [console\_login\_domain](#input\_console\_login\_domain) | Console login domain. | `string` | `""` | no |
 | <a name="input_security_domains"></a> [security\_domains](#input\_security\_domains) | List of security domains. | <pre>list(object({<br>    name                   = string<br>    description            = optional(string, "")<br>    restricted_rbac_domain = optional(bool, false)<br>  }))</pre> | `[]` | no |
+| <a name="input_password_strength_check"></a> [password\_strength\_check](#input\_password\_strength\_check) | Password strength check. | `bool` | `false` | no |
+| <a name="input_web_token_timeout"></a> [web\_token\_timeout](#input\_web\_token\_timeout) | Web session idle timeout (s). | `number` | `600` | no |
+| <a name="input_web_token_max_validity"></a> [web\_token\_max\_validity](#input\_web\_token\_max\_validity) | Web token maximum validity period (h). | `number` | `24` | no |
+| <a name="input_web_session_idle_timeout"></a> [web\_session\_idle\_timeout](#input\_web\_session\_idle\_timeout) | Web session idle timeout (s). | `number` | `1200` | no |
 
 ## Outputs
 
@@ -61,4 +69,6 @@ module "aci_aaa" {
 | [aci_rest_managed.aaaConsoleAuth](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.aaaDefaultAuth](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.aaaDomain](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.aaaUserEp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.pkiWebTokenData](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

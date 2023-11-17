@@ -33,6 +33,7 @@
 - Add support for direct connect in service graph templates
 - Add support for OSPF area control
 - Add support for L3out route control profiles
+- Add AAA user management settings
 
 ## 0.7.0
 
