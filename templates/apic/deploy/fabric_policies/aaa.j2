@@ -1,7 +1,8 @@
 {
     "aaaUserEp": {
         "attributes": {
-            "dn": "uni/userext"
+            "dn": "uni/userext",
+            "pwdStrengthCheck": "{{ apic.fabric_policies.aaa.management_settings.password_strength_check | default(defaults.apic.fabric_policies.aaa.management_settings.password_strength_check) | cisco.aac.aac_bool("yes") }}"
         },
         "children": [
             {%- set comma1 = joiner(",") %}
@@ -44,6 +45,26 @@
                                     "providerGroup": "{{ apic.fabric_policies.aaa.console_login_domain | default(defaults.apic.fabric_policies.aaa.console_login_domain) }}",
                                     {% endif %}
                                     "realm": "{{ apic.fabric_policies.aaa.console_realm | default(defaults.apic.fabric_policies.aaa.console_realm) }}"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pkiEp": {
+                    "attributes": {
+                        "dn": "uni/userext/pkiext"
+                    },
+                    "children": [
+                        {
+                            "pkiWebTokenData": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/userext/pkiext/webtokendata",
+                                    "maximumValidityPeriod": "{{ apic.fabric_policies.aaa.management_settings.web_token_max_validity | default(defaults.apic.fabric_policies.aaa.management_settings.web_token_max_validity) }}",
+                                    "webtokenTimeoutSeconds": "{{ apic.fabric_policies.aaa.management_settings.web_token_timeout | default(defaults.apic.fabric_policies.aaa.management_settings.web_token_timeout) }}",
+                                    "uiIdleTimeoutSeconds": "{{ apic.fabric_policies.aaa.management_settings.web_session_idle_timeout | default(defaults.apic.fabric_policies.aaa.management_settings.web_session_idle_timeout) }}"
                                 }
                             }
                         }

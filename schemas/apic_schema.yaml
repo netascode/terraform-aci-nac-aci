@@ -501,6 +501,7 @@ fp_aaa:
   default_login_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   console_realm: enum('local', 'tacacs', 'ldap', required=False)
   console_login_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  management_settings: include('fp_aaa_management_settings', required=False)
   tacacs_providers: list(include('fp_aaa_tacacs_providers'), required=False)
   users: list(include('fp_aaa_users'), required=False) # @ref_name(User) @key(username) @sheet_hidden()
   login_domains: list(include('fp_aaa_login_domains'), required=False) # @ref_name(Login Domain)
@@ -508,6 +509,12 @@ fp_aaa:
   key_rings: list(include('fp_key_ring'), required=False) # @name(Keyring) @sheet_hidden()
   ldap: include('fp_aaa_ldap', required=False) # @name(LDAP) @sheet_hidden()
   security_domains: list(include('fp_aaa_security_domains'), required=False) # @sheet_hidden()
+
+fp_aaa_management_settings:
+  password_strength_check: bool(required=False)
+  web_token_timeout: int(min=300, max=9600, required=False)
+  web_token_max_validity: int(min=4, max=24, required=False)
+  web_session_idle_timeout: int(min=600, max=65525, required=False)
 
 fp_aaa_tacacs_providers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())

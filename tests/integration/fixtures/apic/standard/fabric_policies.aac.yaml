@@ -103,6 +103,11 @@ apic:
       default_realm: local
       console_realm: tacacs
       console_login_domain: tacacs
+      management_settings:
+        password_strength_check: false
+        web_token_timeout: 600
+        web_token_max_validity: 24
+        web_session_idle_timeout: 1200
       tacacs_providers:
         - hostname_ip: 1.1.1.1
           description: descr

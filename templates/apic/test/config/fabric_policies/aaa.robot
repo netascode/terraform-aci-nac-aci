@@ -25,3 +25,13 @@ Verify AAA Security Domains
     Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomain.attributes.name=='{{ sd.name }}')].aaaDomain.attributes.descr   {{ sd.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   $..imdata[?(@.aaaDomain.attributes.name=='{{ sd.name }}')].aaaDomain.attributes.restrictedRbacDomain   {% if sd.restricted_rbac_domain | default(defaults.apic.fabric_policies.aaa.security_domains.restricted_rbac_domain) %}yes{% else %}no{% endif %} 
 {% endfor %}
+
+Verify AAA Password Strength Check
+    ${r}=   GET On Session   apic   /api/mo/uni/userext.json
+    Should Be Equal Value Json String   ${r.json()}    $..aaaUserEp.attributes.pwdStrengthCheck   {{ apic.fabric_policies.aaa.management_settings.password_strength_check | default(defaults.apic.fabric_policies.aaa.management_settings.password_strength_check) | cisco.aac.aac_bool("yes") }} 
+
+Verify AAA Web Token Settings
+    ${r}=   GET On Session   apic   /api/mo/uni/userext/pkiext/webtokendata.json
+    Should Be Equal Value Json String   ${r.json()}    $..pkiWebTokenData.attributes.webtokenTimeoutSeconds   {{ apic.fabric_policies.aaa.management_settings.web_token_timeout | default(defaults.apic.fabric_policies.aaa.management_settings.web_token_timeout) }}
+    Should Be Equal Value Json String   ${r.json()}    $..pkiWebTokenData.attributes.maximumValidityPeriod   {{ apic.fabric_policies.aaa.management_settings.web_token_max_validity | default(defaults.apic.fabric_policies.aaa.management_settings.web_token_max_validity) }}
+    Should Be Equal Value Json String   ${r.json()}    $..pkiWebTokenData.attributes.uiIdleTimeoutSeconds   {{ apic.fabric_policies.aaa.management_settings.web_session_idle_timeout | default(defaults.apic.fabric_policies.aaa.management_settings.web_session_idle_timeout) }}

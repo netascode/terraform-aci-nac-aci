@@ -23,4 +23,9 @@ apic:
       security_domains:
         - name: SEC1
           restricted_rbac_domain: true
+      management_settings:
+        password_strength_check: true
+        web_token_timeout: 600
+        web_token_max_validity: 24
+        web_session_idle_timeout: 1200
 ```

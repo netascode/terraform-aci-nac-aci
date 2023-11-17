@@ -168,6 +168,7 @@ objects:
       - apic.fabric_policies.aaa.default_login_domain
       - apic.fabric_policies.aaa.console_realm
       - apic.fabric_policies.aaa.console_login_domain
+      - apic.fabric_policies.aaa.management_settings
   - name: TACACS Provider
     template: tacacs
     folder: fabric_policies
