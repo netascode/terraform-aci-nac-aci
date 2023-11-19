@@ -417,13 +417,13 @@ fp_external_connectivity_policy:
   site_id: int(min=0, max=1000, required=False)
   bgp_password: str(required=False)
   route_target: str(required=False)
-  routing_profiles: list(include('fp_external_connectivity_policy_routing_profiles'), required=False) # @name(External Conn Policy Subnets) @sheet_hidden()
+  routing_profiles: list(include('fp_external_connectivity_policy_routing_profiles'), required=False) # @name(Ext Conn Policy Route Profiles) @ref_name(External Conn Policy Route Profile) @sheet_hidden()
   expected_state: include('fp_external_connectivity_policy_expected_state', required=False) # @no_external_doc() @name(Ext Conn Policy Expected State) @sheet_hidden()
 
 fp_external_connectivity_policy_routing_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  subnets: list (ip(), required=False) # @sheet_hidden()
+  subnets: list (ip(), required=False) # @name(External Conn Policy Subnets) @sheet_hidden()
 
 fp_external_connectivity_policy_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -625,7 +625,7 @@ fp_aa_ldap_providers:
   server_monitoring: bool(required=False)
   monitoring_username: regex('^[a-zA-Z0-9][a-zA-Z0-9_.@-]{0,31}$', required=False)
   monitoring_password: str(required=False)
-  expected_state: include('fp_aa_ldap_providers_expected_state', required=False) # @no_external_doc() @name(AAA LDAP Provider Exp State) @sheet_hidden()
+  expected_state: include('fp_aa_ldap_providers_expected_state', required=False) # @no_external_doc() @name(LDAP Provider Exp State) @sheet_hidden()
 
 fp_aa_ldap_providers_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -740,7 +740,7 @@ fp_monitoring:
   syslogs: list(include('fp_monitoring_syslogs'), required=False) # @ref_name(Syslog)
   callhomes: list(include('fp_monitoring_callhomes'), required=False) # @ref_name(Callhome) @no_doc() @sheet_hidden()
   smart_callhomes: list(include('fp_monitoring_smart_callhomes'), required=False) # @ref_name(Smart Callhome) @no_doc() @sheet_hidden()
-  policies: list(include('fp_monitoring_policies'), required=False) # @no_doc() @sheet_hidden()
+  policies: list(include('fp_monitoring_policies'), required=False) # @no_doc() @name(Monitoring Policies) @sheet_hidden()
 
 fp_monitoring_snmp_traps:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1245,7 +1245,7 @@ ap_leaf_interface_profiles_expected_state:
 ap_fex_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   selectors: list(include('ap_fex_interface_profiles_selectors'), required=False) # @name(Access FEX Int Prof Selectors) @ref_name(Selector) @sheet_hidden()
-  expected_state: include('ap_fex_interface_profiles_expected_state', required=False) # @no_external_doc() @name(FEX Int Prof Expected State) @sheet_hidden()
+  expected_state: include('ap_fex_interface_profiles_expected_state', required=False) # @no_external_doc() @name(Access FEX Int Prof Exp State) @sheet_hidden()
 
 ap_fex_interface_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1901,8 +1901,8 @@ ten_ap_endpoint_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Consumers) @ref_name(Contract)
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Providers) @ref_name(Contract)
   imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Imported Consumers) @ref_name(Contract) @sheet_hidden()
-  intra_epgs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Intra-EPG) @ref_name(Contract) @sheet_hidden()
-  masters: list(include('ten_ap_endpoint_groups_contracts_masters'), required=False)
+  intra_epgs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(EPG Intra-EPG Contracts) @ref_name(Contract) @sheet_hidden()
+  masters: list(include('ten_ap_endpoint_groups_contracts_masters'), required=False) # @name(EPG Contract Masters)
 
 ten_ap_endpoint_groups_contracts_masters:
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1931,7 +1931,7 @@ ten_ap_endpoint_security_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Consumers) @ref_name(Contract) @sheet_hidden()
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Providers) @ref_name(Contract) @sheet_hidden()
   imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Imported Consumers) @ref_name(Contract) @sheet_hidden()
-  intra_esgs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Intra-ESG) @ref_name(Contract) @sheet_hidden()
+  intra_esgs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ESG Intra-ESG Contracts) @ref_name(Contract) @sheet_hidden()
   masters: list(include('ten_ap_endpoint_security_groups_contracts_masters'), required=False) # @name(ESG Contract Masters) @ref_name(Contract) @sheet_hidden()
 
 ten_ap_endpoint_security_groups_contracts_masters:
@@ -2051,7 +2051,7 @@ ten_l3outs:
   bgp_peers: list(include('ten_l3outs_bgp_peers'), required=False) # @name(L3out BGP Peers)
   nodes: list(include('ten_l3outs_nodes'), required=False) # @name(L3out Nodes) @ref_name(Node) @key(node_id)
   node_profiles: list(include('ten_l3outs_node_profiles'), required=False) # @name(L3out Node Profiles) @ref_name(Node Profile) @sheet_hidden()
-  external_endpoint_groups: list(include('ten_l3outs_external_endpoint_groups'), required=False) # @name(L3out External Endpoint Groups) @ref_name(External EPG)
+  external_endpoint_groups: list(include('ten_l3outs_external_endpoint_groups'), required=False) # @name(External Endpoint Groups) @ref_name(External EPG)
   import_route_map: include('ten_l3outs_import_route_map', required=False) # @name(L3out Import Route Map) @flatten()
   export_route_map: include('ten_l3outs_export_route_map', required=False) # @name(L3out Export Route Map) @flatten()
   interleak_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -2357,7 +2357,7 @@ ten_l3outs_external_endpoint_groups:
   preferred_group: any(bool(), enum('exclude', 'include'), required=False)
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
   target_dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7', 'unspecified'), int(min=0, max=63), required=False)
-  subnets: list(include('ten_l3outs_external_endpoint_groups_subnets'), required=False) # @name(L3out External EPG Subnets)
+  subnets: list(include('ten_l3outs_external_endpoint_groups_subnets'), required=False) # @name(External EPG Subnets)
   contracts: include('ten_l3outs_external_endpoint_groups_contracts', required=False) # @flatten()
   route_control_profiles: list(include('ten_l3outs_external_endpoint_groups_route_control_profiles'), required=False) # @name(Ext EPG Route Control Profiles)
   expected_state: include('ten_l3outs_external_endpoint_groups_expected_state', required=False) # @no_external_doc() @name(External EPG Expected State) @sheet_hidden()
@@ -2386,9 +2386,9 @@ ten_l3outs_external_endpoint_groups_subnets_route_control_profiles:
   direction: enum('import', 'export', required=False)
 
 ten_l3outs_external_endpoint_groups_contracts:
-  consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out ExtEPG Consumers) @ref_name(Contract)
-  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out ExtEPG Providers) @ref_name(Contract)
-  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out ExtEPG Imported Consumers) @ref_name(Contract) @sheet_hidden()
+  consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ExtEPG Consumers) @ref_name(Contract)
+  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ExtEPG Providers) @ref_name(Contract)
+  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(ExtEPG Imported Consumers) @ref_name(Contract) @sheet_hidden()
 
 ten_l3outs_external_endpoint_groups_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -2399,12 +2399,12 @@ ten_l3outs_external_endpoint_groups_expected_state:
 ten_l3outs_import_route_map:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Import Route Map Description)
   type: enum('combinable', 'global', required=False) # @name(Import Route Map Type)
-  contexts: list(include('ten_l3outs_route_map_context'), required=False) # @name(Import Route Map Contexts)
+  contexts: list(include('ten_l3outs_route_map_context'), required=False) # @name(L3out Import Route Map Contexts)
 
 ten_l3outs_export_route_map:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Export Route Map Description)
   type: enum('combinable', 'global', required=False) # @name(Export Route Map Type)
-  contexts: list(include('ten_l3outs_route_map_context'), required=False) # @name(Export Route Map Contexts)
+  contexts: list(include('ten_l3outs_route_map_context'), required=False) # @name(L3out Export Route Map Contexts)
 
 ten_l3outs_default_route_leak_policy:
   always: any(bool(), enum('yes', 'no'), required=False)
@@ -2429,14 +2429,14 @@ ten_l3outs_expected_state:
   maximum_critical_faults: int(min=0, required=False)
   maximum_major_faults: int(min=0, required=False)
   maximum_minor_faults: int(min=0, required=False)
-  learned_prefixes: list(include('ten_l3outs_expected_state_learned_prefixes'), required=False) # @sheet_hidden()
+  learned_prefixes: list(include('ten_l3outs_expected_state_learned_prefixes'), required=False) # @name(L3out Exp State Learned Pref) @ref_name(Learned Prefix) @sheet_hidden()
 
 ten_l3outs_expected_state_learned_prefixes:
   prefix: ip()
   route_type: enum('internal', 'external', required=False)
   source_protocol: enum('bgp', 'ospf', 'eigrp', required=False)
   administrative_distance: int(min=1, max=255, required=False)
-  learned_node_ids: list(int(min=1, max=4000), required=False) # @sheet_hidden()
+  learned_node_ids: list(int(min=1, max=4000), required=False) # @name(L3out Exp State LPref Node IDs) @sheet_hidden()
 
 ten_dhcp_labels:
   dhcp_relay_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2515,7 +2515,7 @@ ten_sr_mpls_l3outs:
   domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   transport_data_plane: enum('sr_mpls', 'mpls', required=False)
   node_profiles: list(include('ten_sr_mpls_l3outs_node_profiles'), required=False) # @name(SR MPLS L3out Node Profiles) @ref_name(Node Profile) @sheet_hidden()
-  external_endpoint_groups: list(include('ten_sr_mpls_l3outs_external_endpoint_groups'), required=False) # @name(SR MPLS L3out External EPGs) @ref_name(External EPG) @sheet_hidden()
+  external_endpoint_groups: list(include('ten_sr_mpls_l3outs_external_endpoint_groups'), required=False) # @name(SR MPLS External EPGs) @ref_name(External EPG) @sheet_hidden()
   inbound_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   outbound_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
@@ -2566,7 +2566,7 @@ ten_sr_mpls_l3outs_node_profiles_interface_profiles_interfaces:
   vlan: int(min=1, max=4096, required=False)
   mac: mac(required=False)
   mtu: any(enum('inherit'), int(min=576, max=9216), required=False)
-  bgp_peers: list(include('ten_sr_mpls_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers'), required=False)
+  bgp_peers: list(include('ten_sr_mpls_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers'), required=False) # @name(SR MPLS L3 Int Prof BGP Peers)
 
 ten_sr_mpls_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers:
   ip: ip()
@@ -2587,7 +2587,7 @@ ten_sr_mpls_l3outs_external_endpoint_groups:
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   preferred_group: bool(required=False)
-  subnets: list(include('ten_sr_mpls_l3outs_external_endpoint_groups_subnets'), required=False) # @name(SR MPLS L3out Ext EPG Subnets) @sheet_hidden()
+  subnets: list(include('ten_sr_mpls_l3outs_external_endpoint_groups_subnets'), required=False) # @name(SR MPLS Ext EPG Subnets) @sheet_hidden()
   contracts: include('ten_sr_mpls_l3outs_external_endpoint_groups_contracts', required=False) # @flatten()
 
 ten_sr_mpls_l3outs_external_endpoint_groups_subnets:
@@ -2598,9 +2598,9 @@ ten_sr_mpls_l3outs_external_endpoint_groups_subnets:
   aggregate_shared_route_control: bool(required=False)
 
 ten_sr_mpls_l3outs_external_endpoint_groups_contracts:
-  consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @sheet_hidden()
-  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @sheet_hidden()
-  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @sheet_hidden()
+  consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(SR MPLS Ext EPGs Consumers) @sheet_hidden()
+  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(SR MPLS Ext EPGs Providers)@sheet_hidden()
+  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(SR MPLS Ext EPGs Imp Consumers) @sheet_hidden()
 
 ten_policies:
   ospf_interface_policies: list(include('ten_ospf_interface_policies'), required=False) # @sheet_hidden()
@@ -2609,20 +2609,20 @@ ten_policies:
   bgp_timer_policies: list(include('ten_bgp_timer_policy'), required=False) # @sheet_hidden()
   bgp_peer_prefix_policies: list(include('ten_bgp_peer_prefix_policies'), required=False) # @sheet_hidden()
   bgp_best_path_policies: list(include('ten_bgp_best_path_policy'), required=False) # @sheet_hidden()
-  bgp_address_family_context_policies: list(include('ten_bgp_address_family_context_policy'), required=False) # @name(BGP Address Fam Context Policy) @sheet_hidden()
-  dhcp_relay_policies: list(include('ten_dhcp_relay_policy'), required=False) # @ref_name(DHCP Relay Policy) @sheet_hidden()
-  dhcp_option_policies: list(include('ten_dhcp_option_policy'), required=False) # @ref_name(DHCP Option Policy) @sheet_hidden()
+  bgp_address_family_context_policies: list(include('ten_bgp_address_family_context_policy'), required=False) # @name(BGP Add Fam Context Policies) @sheet_hidden()
+  dhcp_relay_policies: list(include('ten_dhcp_relay_policy'), required=False) # @ref_name(DHCP Relay Policies) @sheet_hidden()
+  dhcp_option_policies: list(include('ten_dhcp_option_policy'), required=False) # @ref_name(DHCP Option Policies) @sheet_hidden()
   route_tag_policies: list(include('ten_route_tag_policies'), required=False) # @sheet_hidden()
-  route_control_route_maps: list(include('ten_route_control_route_maps'), required=False) # @ref_name(Route Control Route Map)
-  match_rules: list(include('ten_match_rule'), required=False) # @ref_name(Match Rule)
+  route_control_route_maps: list(include('ten_route_control_route_maps'), required=False) # @ref_name(Route Control Route Maps)
+  match_rules: list(include('ten_match_rule'), required=False) # @ref_name(Match Rules)
   set_rules: list(include('ten_set_rule'), required=False)
   bfd_interface_policies: list(include('ten_bfd_interface_policies'), required=False) # @sheet_hidden()
-  multicast_route_maps: list(include('ten_multicast_route_maps'), required=False) # @ref_name(Multicast Route Map) @sheet_hidden()
+  multicast_route_maps: list(include('ten_multicast_route_maps'), required=False) # @ref_name(Multicast Route Maps) @sheet_hidden()
   pim_policies: list(include('ten_pim_policies'), required=False) # @sheet_hidden()
   igmp_snooping_policies: list(include('ten_igmp_snooping_policies'), required=False) # @sheet_hidden()
   igmp_interface_policies: list(include('ten_igmp_interface_policies'), required=False) # @sheet_hidden()
   ip_sla_policies: list(include('ten_ip_sla_policies'), required=False) # @sheet_hidden()
-  trust_control_policies: list(include('ten_trust_control_policies'), required=False) # @ref_name(Trust Control Policy) @sheet_hidden()
+  trust_control_policies: list(include('ten_trust_control_policies'), required=False) # @ref_name(Trust Control Policies) @sheet_hidden()
   span: include('ten_span', required=False) # @flatten()
   qos: list(include('ten_qos'), required=False) # @name(QoS Policies) @ref_name(QoS Policy) @sheet_hidden()
   mpls_custom_qos_policies: list(include('ten_mpls_custom_qos_policies'), required=False) # @sheet_hidden()
@@ -3008,8 +3008,8 @@ ten_mpls_custom_qos_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  ingress_rules: list(include('ten_mpls_custom_qos_ingress_rules'), required=False) # @sheet_hidden()
-  egress_rules: list(include('ten_mpls_custom_qos_egress_ruless'), required=False) # @sheet_hidden()
+  ingress_rules: list(include('ten_mpls_custom_qos_ingress_rules'), required=False) # @name(MPLS Custom QoS Ingress Rules) @sheet_hidden()
+  egress_rules: list(include('ten_mpls_custom_qos_egress_ruless'), required=False) # @name(MPLS Custom QoS Egress Rules) @sheet_hidden()
 
 ten_mpls_custom_qos_ingress_rules:
   priority: enum('unspecified', 'level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'level7', required=False)
