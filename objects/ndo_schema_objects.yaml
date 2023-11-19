@@ -5,8 +5,11 @@ schema_objects:
     folder: schema
     paths:
       - ndo.schemas.templates.name
+      - ndo.schemas.templates.description
+      - ndo.schemas.templates.type
       - ndo.schemas.templates.tenant
       - ndo.schemas.templates.sites
+      - ndo.schemas.templates.deploy_order
   - name: Application Profile
     template: application_profile
     folder: schema

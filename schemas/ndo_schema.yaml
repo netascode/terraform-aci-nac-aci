@@ -177,6 +177,7 @@ schemas_templates:
   external_endpoint_groups: list(include('t_external_endpoint_groups'), required=False) # @name(External EPGs) @ref_name(External EPG)
   service_graphs: list(include('t_service_graphs'), required=False) # @ref_name(Service Graph)
   sites: list(str(), required=False) # @name(Template Sites) @ref_name(Site)
+  deploy_order: int(min=1, max=3, required=False) # @description(Terraform only)
 
 t_application_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
