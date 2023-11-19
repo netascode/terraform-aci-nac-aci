@@ -130,7 +130,7 @@ variable "vswitch_enhanced_lags" {
 }
 
 variable "vcenters" {
-  description = "List of vCenter hosts. Choices `dvs_version`: `unmanaged`, `5.1`, `5.5`, `6.0`, `6.5`, `6.6`. Default value `dvs_version`: `unmanaged`. Default value `statistics`: false. Allowed values `mgmt_epg_type`: `inb`, `oob`. Default value `mgmt_epg_type`: `inb`."
+  description = "List of vCenter hosts. Choices `dvs_version`: `unmanaged`, `5.1`, `5.5`, `6.0`, `6.5`, `6.6`, `7.0`. Default value `dvs_version`: `unmanaged`. Default value `statistics`: false. Allowed values `mgmt_epg_type`: `inb`, `oob`. Default value `mgmt_epg_type`: `inb`."
   type = list(object({
     name              = string
     hostname_ip       = string
@@ -173,9 +173,9 @@ variable "vcenters" {
 
   validation {
     condition = alltrue([
-      for v in var.vcenters : v.dvs_version == null || try(contains(["unmanaged", "5.1", "5.5", "6.0", "6.5", "6.6"], v.dvs_version), false)
+      for v in var.vcenters : v.dvs_version == null || try(contains(["unmanaged", "5.1", "5.5", "6.0", "6.5", "6.6", "7.0"], v.dvs_version), false)
     ])
-    error_message = "`dvs_version`: Allowed values are `unmanaged`, `5.1`, `5.5`, `6.0`, `6.5` or `6.6`."
+    error_message = "`dvs_version`: Allowed values are `unmanaged`, `5.1`, `5.5`, `6.0`, `6.5`, `6.6` or `7.0`."
   }
 
   validation {
