@@ -45,7 +45,8 @@ ndo:
               sites:
                 - name: APIC1
                   tenant: MSO1
-                  l3out: ANS-L3OUT
+                  l3out: 
+                    name: ANS-L3OUT
 ```
 
 Azure External Endpoint Group:
