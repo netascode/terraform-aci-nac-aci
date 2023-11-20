@@ -1363,7 +1363,7 @@ tenant_objects:
       - config
     paths:
       - apic.tenants.policies.dhcp_option_policies
-  - name: Route Tag Policies
+  - name: Route Tag Policy
     template: route_tag_policy
     folder: tenants
     aci_classes:
