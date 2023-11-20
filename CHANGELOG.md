@@ -1,4 +1,4 @@
-## 0.7.1 (unreleased)
+## 0.8.0 (unreleased)
 
 - Fix replacement of placeholders in auto-generated objects
 - Fix error with sub-port static path bindings
@@ -21,8 +21,11 @@
 - Add SSH KEX Algorithms to management access policies
 - Improve handling of quad-dotted notation OSPF area IDs
 - Fix PIM policy compatibility issue with ACI 6.0.x
+- Add support for EPG contract masters
 - Add support for VMware VMM domain security domains
 - Add support for security domains
+- Add support for EIGRP to L3outs
+- Add support for new interface configuration mode
 - Add option to clear remote MAC entries of BDs
 - Add support for ND RA prefix policies
 - Add support for back-2-back Multi-Pod connections
@@ -30,7 +33,7 @@
 - Add support for OSPF timer policies
 - Add support for OSPF route summarization
 - Add support for copy services (service graphs)
-- Add support for direct connect in service graph templates
+- Add support for "direct connect" in service graph templates
 - Add support for OSPF area control
 - Add support for L3out route control profiles
 - Add AAA user management settings
