@@ -146,7 +146,7 @@
                                     "adjType": "L3",
                                     "connDir": "provider",
                                     "connType": "external",
-                                    "directConnect": "{{ sgt.consumer.direct_connect | default(defaults.apic.tenants.services.service_graph_templates.consumer.direct_connect) | cisco.aac.aac_bool("yes") }}",
+                                    "directConnect": "{{ 'yes' if sgt.consumer.direct_connect | default(defaults.apic.tenants.services.service_graph_templates.consumer.direct_connect) else 'no' }}",
                                     "name": "C1",
                                     "unicastRoute": "yes",
                                     "childAction": "deleteNonPresent"
@@ -178,7 +178,7 @@
                                     "adjType": "L3",
                                     "connDir": "provider",
                                     "connType": "external",
-                                    "directConnect": "{{ sgt.provider.direct_connect | default(defaults.apic.tenants.services.service_graph_templates.provider.direct_connect) | cisco.aac.aac_bool("yes") }}",
+                                    "directConnect": "{{ 'yes' if sgt.provider.direct_connect | default(defaults.apic.tenants.services.service_graph_templates.provider.direct_connect) else 'no' }}",
                                     "name": "C2",
                                     "unicastRoute": "yes",
                                     "childAction": "deleteNonPresent"

@@ -3193,7 +3193,7 @@ ten_ser_service_graph_templates_device:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(Device Tenant)
 
 ten_ser_service_graph_templates_consumer_provider:
-  direct_connect: any(bool(), required=False)
+  direct_connect: bool(required=False)
 
 ten_ser_service_graph_templates_expected_state:
   minimum_health: int(min=0, max=100, required=False)

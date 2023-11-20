@@ -28,5 +28,7 @@ Verify Service Graph Template {{ sgt_name }}
     Should Be Equal Value Json String   ${r.json()}   $..vnsAbsNode.attributes.routingMode   {{ 'Redirect' if sgt.redirect | default(defaults.apic.tenants.services.service_graph_templates.redirect) | cisco.aac.aac_bool("enabled") == 'enabled' else 'unspecified' }} 
     Should Be Equal Value Json String   ${r.json()}   $..vnsAbsNode.attributes.shareEncap   {{ 'yes' if sgt.share_encapsulation | default(defaults.apic.tenants.services.service_graph_templates.share_encapsulation)  | cisco.aac.aac_bool("enabled") == 'enabled' else 'no' }}
     Should Be Equal Value Json String   ${r.json()}   $..vnsRsNodeToLDev.attributes.tDn   uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..vnsAbsGraph.children[?(@.vnsAbsConnection.attributes.name=='C1')].vnsAbsConnection.attributes.directConnect   $..vnsAbsNode.attributes.shareEncap   {{ 'yes' if sgt.consumer.direct_connect | default(defaults.apic.tenants.services.service_graph_templates.consumer.direct_connect) else 'no' }}
+    Should Be Equal Value Json String   ${r.json()}   $..vnsAbsGraph.children[?(@.vnsAbsConnection.attributes.name=='C2')].vnsAbsConnection.attributes.directConnect   $..vnsAbsNode.attributes.shareEncap   {{ 'yes' if sgt.provider.direct_connect | default(defaults.apic.tenants.services.service_graph_templates.provider.direct_connect) else 'no' }}
 
 {% endfor %}
