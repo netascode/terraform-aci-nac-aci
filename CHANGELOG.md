@@ -1,4 +1,4 @@
-## 0.8.0 (unreleased)
+## 0.8.0
 
 - Fix replacement of placeholders in auto-generated objects
 - Fix error with sub-port static path bindings
