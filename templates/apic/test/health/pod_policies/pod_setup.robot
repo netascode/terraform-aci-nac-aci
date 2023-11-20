@@ -28,7 +28,7 @@ Verify Pod {{ pod.id }} Faults
 {% endif %}
 
 {% if 'pre-check' in robot_include_tags | default() %}
-Verify Pod {{ pod.id }}  Faults Pre-Check
+Verify Pod {{ pod.id }} Faults Pre-Check
     [Tags]   pre-check
     ${r}=   GET On Session   apic   /api/mo/uni/controller/setuppol/setupp-{{ pod.id }}/fltCnts.json
     ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
