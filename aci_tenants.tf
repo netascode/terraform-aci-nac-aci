@@ -2873,8 +2873,8 @@ locals {
         device_function         = length([for d in local.l4l7_devices : d if d.tenant == tenant.name]) > 0 ? [for device in local.l4l7_devices : try(device.function, []) if device.name == sgt.device.name && device.tenant == tenant.name][0] : "None"
         device_copy             = length([for d in local.l4l7_devices : d if d.tenant == tenant.name]) > 0 ? [for device in local.l4l7_devices : try(device.copy_device, []) if device.name == sgt.device.name && device.tenant == tenant.name][0] : false
         device_managed          = length([for d in local.l4l7_devices : d if d.tenant == tenant.name]) > 0 ? [for device in local.l4l7_devices : try(device.managed, []) if device.name == sgt.device.name && device.tenant == tenant.name][0] : false
-        consumer_direct_connect = try(sgt.consumer.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.consumer.direct_connect) ? "yes" : "no"
-        provider_direct_connect = try(sgt.provider.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.provider.direct_connect) ? "yes" : "no"
+        consumer_direct_connect = try(sgt.consumer.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.consumer.direct_connect)
+        provider_direct_connect = try(sgt.provider.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.provider.direct_connect)
       }
     ]
   ])
@@ -2883,19 +2883,21 @@ locals {
 module "aci_service_graph_template" {
   source = "./modules/terraform-aci-service-graph-template"
 
-  for_each            = { for sg_template in local.service_graph_templates : sg_template.key => sg_template if local.modules.aci_service_graph_template && var.manage_tenants }
-  tenant              = each.value.tenant
-  name                = each.value.name
-  description         = each.value.description
-  alias               = each.value.alias
-  template_type       = each.value.template_type
-  redirect            = each.value.redirect
-  share_encapsulation = each.value.share_encapsulation
-  device_name         = each.value.device_name
-  device_tenant       = each.value.device_tenant
-  device_function     = each.value.device_function
-  device_copy         = each.value.device_copy
-  device_managed      = each.value.device_managed
+  for_each                = { for sg_template in local.service_graph_templates : sg_template.key => sg_template if local.modules.aci_service_graph_template && var.manage_tenants }
+  tenant                  = each.value.tenant
+  name                    = each.value.name
+  description             = each.value.description
+  alias                   = each.value.alias
+  template_type           = each.value.template_type
+  redirect                = each.value.redirect
+  share_encapsulation     = each.value.share_encapsulation
+  device_name             = each.value.device_name
+  device_tenant           = each.value.device_tenant
+  device_function         = each.value.device_function
+  device_copy             = each.value.device_copy
+  device_managed          = each.value.device_managed
+  consumer_direct_connect = each.value.consumer_direct_connect
+  provider_direct_connect = each.value.provider_direct_connect
 
   depends_on = [
     module.aci_tenant,
