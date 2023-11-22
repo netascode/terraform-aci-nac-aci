@@ -49,7 +49,7 @@ Verify Redirect Policy {{ pol_name }} L3 Destination {{ dest.ip }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.descr   {{ dest.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.ip   {{ dest.ip }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.ip2   {{ dest.ip_2 | default() }}
-    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.mac   {{ dest.mac }}
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.mac   {{ dest.mac | default("00:00:00:00:00:00") }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.podId   {{ dest.pod | default(defaults.apic.tenants.services.redirect_policies.l3_destinations.pod) }}
 {% if dest.redirect_health_group is defined %}
 {% set health_group_name = dest.redirect_health_group ~ defaults.apic.tenants.services.redirect_health_groups.name_suffix %}

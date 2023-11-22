@@ -67,7 +67,7 @@
                                                 "descr": "{{ dest.description | default() }}",
                                                 "ip": "{{ dest.ip }}",
                                                 "ip2": "{{ dest.ip_2 | default() }}",
-                                                "mac": "{{ dest.mac }}",
+                                                "mac": "{{ dest.mac | default("00:00:00:00:00:00") }}",
                                                 "podId": "{{ dest.pod | default(defaults.apic.tenants.services.redirect_policies.l3_destinations.pod) }}"
                                             },
                                             "children": [
