@@ -2808,7 +2808,7 @@ locals {
           description           = try(dest.description, "")
           ip                    = dest.ip
           ip_2                  = try(dest.ip_2, null)
-          mac                   = dest.mac
+          mac                   = try(dest.mac, null)
           redirect_health_group = try("${dest.redirect_health_group}${local.defaults.apic.tenants.services.redirect_health_groups.name_suffix}", "")
         }]
       }

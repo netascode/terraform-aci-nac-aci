@@ -71,7 +71,7 @@ module "aci_redirect_policy" {
 | <a name="input_threshold_down_action"></a> [threshold\_down\_action](#input\_threshold\_down\_action) | Threshold down action. Choices: `permit`, `deny`, `bypass`. | `string` | `"permit"` | no |
 | <a name="input_ip_sla_policy"></a> [ip\_sla\_policy](#input\_ip\_sla\_policy) | IP SLA Policy Name. | `string` | `""` | no |
 | <a name="input_redirect_backup_policy"></a> [redirect\_backup\_policy](#input\_redirect\_backup\_policy) | Redirect Backup Policy Name. | `string` | `""` | no |
-| <a name="input_l3_destinations"></a> [l3\_destinations](#input\_l3\_destinations) | List of L3 destinations. Allowed values `pod`: 1-255. | <pre>list(object({<br>    description           = optional(string, "")<br>    ip                    = string<br>    ip_2                  = optional(string)<br>    mac                   = string<br>    pod_id                = optional(number, 1)<br>    redirect_health_group = optional(string, "")<br>  }))</pre> | `[]` | no |
+| <a name="input_l3_destinations"></a> [l3\_destinations](#input\_l3\_destinations) | List of L3 destinations. Allowed values `pod`: 1-255. | <pre>list(object({<br>    description           = optional(string, "")<br>    ip                    = string<br>    ip_2                  = optional(string)<br>    mac                   = optional(string)<br>    pod_id                = optional(number, 1)<br>    redirect_health_group = optional(string, "")<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

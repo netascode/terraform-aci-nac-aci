@@ -1,3 +1,7 @@
+## 0.8.1 (unreleased)
+
+- Make L3 PBR destination MAC optional
+
 ## 0.8.0
 
 - Fix replacement of placeholders in auto-generated objects

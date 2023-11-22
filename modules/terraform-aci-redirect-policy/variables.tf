@@ -145,7 +145,7 @@ variable "l3_destinations" {
     description           = optional(string, "")
     ip                    = string
     ip_2                  = optional(string)
-    mac                   = string
+    mac                   = optional(string)
     pod_id                = optional(number, 1)
     redirect_health_group = optional(string, "")
   }))
