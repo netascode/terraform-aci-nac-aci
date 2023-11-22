@@ -43,7 +43,7 @@ resource "aci_rest_managed" "vnsRedirectDest" {
     descr = each.value.description
     ip    = each.value.ip
     ip2   = each.value.ip_2 != null ? each.value.ip_2 : "0.0.0.0"
-    mac   = each.value.mac
+    mac   = each.value.mac != null ? each.value.mac : "00:00:00:00:00:00"
     podId = each.value.pod_id
   }
 }
