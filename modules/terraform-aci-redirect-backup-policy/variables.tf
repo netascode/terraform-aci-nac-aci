@@ -36,7 +36,7 @@ variable "l3_destinations" {
     description           = optional(string, "")
     ip                    = string
     ip_2                  = optional(string)
-    mac                   = string
+    mac                   = optional(string)
     redirect_health_group = optional(string, "")
   }))
   default = []

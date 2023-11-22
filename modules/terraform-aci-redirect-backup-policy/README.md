@@ -47,7 +47,7 @@ module "aci_redirect_backup_policy" {
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Redirect backup policy name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
-| <a name="input_l3_destinations"></a> [l3\_destinations](#input\_l3\_destinations) | List of L3 destinations. | <pre>list(object({<br>    name                  = optional(string, "")<br>    description           = optional(string, "")<br>    ip                    = string<br>    ip_2                  = optional(string)<br>    mac                   = string<br>    redirect_health_group = optional(string, "")<br>  }))</pre> | `[]` | no |
+| <a name="input_l3_destinations"></a> [l3\_destinations](#input\_l3\_destinations) | List of L3 destinations. | <pre>list(object({<br>    name                  = optional(string, "")<br>    description           = optional(string, "")<br>    ip                    = string<br>    ip_2                  = optional(string)<br>    mac                   = optional(string)<br>    redirect_health_group = optional(string, "")<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

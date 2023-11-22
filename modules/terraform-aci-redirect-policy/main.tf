@@ -46,6 +46,10 @@ resource "aci_rest_managed" "vnsRedirectDest" {
     mac   = each.value.mac != null ? each.value.mac : "00:00:00:00:00:00"
     podId = each.value.pod_id
   }
+
+  depends_on = [
+    aci_rest_managed.vnsRsIPSLAMonitoringPol
+  ]
 }
 
 resource "aci_rest_managed" "vnsRsRedirectHealthGroup" {
