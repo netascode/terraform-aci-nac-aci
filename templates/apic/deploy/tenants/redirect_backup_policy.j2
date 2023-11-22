@@ -37,7 +37,7 @@
                                                 "destName": "{{ des.destination_name | default() }}",
                                                 "ip": "{{ des.ip }}",
                                                 "ip2": "{{ des.ip_2 | default(defaults.apic.tenants.services.redirect_backup_policies.l3_destinations.ip_2) }}",
-                                                "mac": "{{ des.mac }}"
+                                                "mac": "{{ des.mac | default("00:00:00:00:00:00") }}"
                                             }
                                         {%- if des.redirect_health_group is defined %}
                                         {%- set redirect_health_group_name = des.redirect_health_group ~ defaults.apic.tenants.services.redirect_health_groups.name_suffix %},

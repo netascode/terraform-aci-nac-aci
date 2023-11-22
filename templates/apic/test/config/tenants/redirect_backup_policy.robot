@@ -21,7 +21,7 @@ Verify Redirect Back Policy {{ pol_name }} Destination {{ des.ip }}
     ${dest}=   Set Variable   $..vnsBackupPol.children[?(@.vnsRedirectDest.attributes.ip=='{{ des.ip }}')].vnsRedirectDest
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.ip   {{ des.ip }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.ip2   {{ des.ip_2 | default(defaults.apic.tenants.services.redirect_backup_policies.l3_destinations.ip_2) }}
-    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.mac   {{ des.mac }}
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.mac   {{ des.mac | default("00:00:00:00:00:00") }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.destName   {{ des.destination_name | default() }}
 
 {% if des.redirect_health_group is defined %}

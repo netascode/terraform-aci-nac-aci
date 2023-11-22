@@ -3151,7 +3151,7 @@ ten_ser_redirect_backup_policies_l3_destinations:
   ip: ip()
   ip_2: ip(required=False)
   destination_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  mac: mac()
+  mac: mac(required=False)
   redirect_health_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_ser_redirect_backup_policies_expected_state:
