@@ -34,13 +34,13 @@ variable "gateway" {
 variable "v6_ip" {
   description = "OOB IPv6 address."
   type        = string
-  default     = ""
+  default     = "::"
 }
 
 variable "v6_gateway" {
   description = "OOB IPv6 gateway IP."
   type        = string
-  default     = ""
+  default     = "::"
 }
 
 variable "endpoint_group" {

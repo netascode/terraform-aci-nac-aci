@@ -172,7 +172,7 @@ locals {
         ip_dataplane_learning      = try(bd.ip_dataplane_learning, local.defaults.apic.tenants.bridge_domains.ip_dataplane_learning)
         limit_ip_learn_to_subnets  = try(bd.limit_ip_learn_to_subnets, local.defaults.apic.tenants.bridge_domains.limit_ip_learn_to_subnets)
         mac                        = try(bd.mac, local.defaults.apic.tenants.bridge_domains.mac)
-        virtual_mac                = try(bd.virtual_mac, "")
+        virtual_mac                = try(bd.virtual_mac, "not-applicable")
         ep_move_detection          = try(bd.ep_move_detection, local.defaults.apic.tenants.bridge_domains.ep_move_detection)
         clear_remote_mac_entries   = try(bd.clear_remote_mac_entries, local.defaults.apic.tenants.bridge_domains.clear_remote_mac_entries)
         l3_multicast               = try(bd.l3_multicast, local.defaults.apic.tenants.bridge_domains.l3_multicast)

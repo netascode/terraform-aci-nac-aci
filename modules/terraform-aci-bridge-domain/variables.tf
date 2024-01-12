@@ -90,10 +90,10 @@ variable "clear_remote_mac_entries" {
 variable "virtual_mac" {
   description = "Virtual MAC address. Format: `12:34:56:78:9A:BC`."
   type        = string
-  default     = ""
+  default     = "not-applicable"
 
   validation {
-    condition     = var.virtual_mac == "" || can(regex("^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$", var.virtual_mac))
+    condition     = var.virtual_mac == "not-applicable" || can(regex("^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$", var.virtual_mac))
     error_message = "Format: `12:34:56:78:9A:BC`."
   }
 }

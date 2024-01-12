@@ -58,8 +58,8 @@ module "aci_inband_node_address" {
   pod_id              = try(each.value.pod, local.defaults.apic.node_policies.nodes.pod)
   ip                  = try(each.value.inb_address, "")
   gateway             = try(each.value.inb_gateway, "")
-  v6_ip               = try(each.value.inb_v6_address, "")
-  v6_gateway          = try(each.value.inb_v6_gateway, "")
+  v6_ip               = try(each.value.inb_v6_address, "::")
+  v6_gateway          = try(each.value.inb_v6_gateway, "::")
   endpoint_group      = try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
   endpoint_group_vlan = [for epg in local.inband_endpoint_groups : epg.vlan if epg.name == try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)][0]
 }
@@ -72,7 +72,7 @@ module "aci_oob_node_address" {
   pod_id         = try(each.value.pod, local.defaults.apic.node_policies.nodes.pod)
   ip             = try(each.value.oob_address, "")
   gateway        = try(each.value.oob_gateway, "")
-  v6_ip          = try(each.value.oob_v6_address, "")
-  v6_gateway     = try(each.value.oob_v6_gateway, "")
+  v6_ip          = try(each.value.oob_v6_address, "::")
+  v6_gateway     = try(each.value.oob_v6_gateway, "::")
   endpoint_group = try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group)
 }
