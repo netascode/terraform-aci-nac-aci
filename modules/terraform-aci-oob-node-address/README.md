@@ -44,8 +44,8 @@ module "aci_oob_node_address" {
 | <a name="input_pod_id"></a> [pod\_id](#input\_pod\_id) | Pod ID. | `number` | `1` | no |
 | <a name="input_ip"></a> [ip](#input\_ip) | OOB IP address. | `string` | `""` | no |
 | <a name="input_gateway"></a> [gateway](#input\_gateway) | OOB gateway IP. | `string` | `""` | no |
-| <a name="input_v6_ip"></a> [v6\_ip](#input\_v6\_ip) | OOB IPv6 address. | `string` | `""` | no |
-| <a name="input_v6_gateway"></a> [v6\_gateway](#input\_v6\_gateway) | OOB IPv6 gateway IP. | `string` | `""` | no |
+| <a name="input_v6_ip"></a> [v6\_ip](#input\_v6\_ip) | OOB IPv6 address. | `string` | `"::"` | no |
+| <a name="input_v6_gateway"></a> [v6\_gateway](#input\_v6\_gateway) | OOB IPv6 gateway IP. | `string` | `"::"` | no |
 | <a name="input_endpoint_group"></a> [endpoint\_group](#input\_endpoint\_group) | OOB management endpoint group name. | `string` | n/a | yes |
 
 ## Outputs
