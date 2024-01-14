@@ -7,7 +7,7 @@ pipeline {
         }
     }
 
-    environment { 
+    environment {
         ACI_USERNAME = credentials('ACI_USERNAME')
         ACI_PASSWORD = credentials('ACI_PASSWORD')
         MSO_USERNAME = credentials('MSO_USERNAME')
@@ -16,7 +16,7 @@ pipeline {
         VMWARE_USER = credentials('VMWARE_USER')
         VMWARE_PASSWORD = credentials('VMWARE_PASSWORD')
         WEBEX_TOKEN = credentials('WEBEX_TOKEN')
-        WEBEX_ROOM_ID = "Y2lzY29zcGFyazovL3VzL1JPT00vNTFmMGNmODAtYjI0My0xMWU5LTljZjUtNWY0NGQ2ZTlmYWY0"
+        WEBEX_ROOM_ID = 'Y2lzY29zcGFyazovL3VzL1JPT00vNTFmMGNmODAtYjI0My0xMWU5LTljZjUtNWY0NGQ2ZTlmYWY0'
         GIT_COMMIT_MESSAGE = "${sh(returnStdout: true, script: 'git config --global --add safe.directory "*" && git log -1 --pretty=%B ${GIT_COMMIT}').trim()}"
         GIT_COMMIT_AUTHOR = "${sh(returnStdout: true, script: 'git show -s --pretty=%an').trim()}"
         GIT_EVENT = "${(env.CHANGE_ID != null) ? 'Pull Request' : 'Push'}"
@@ -33,20 +33,20 @@ pipeline {
             parallel {
                 stage('Documentation') {
                     when {
-                        branch "master"
+                        branch 'master'
                     }
                     steps {
-                        build job: "/netascode/netascode/master", wait: false
-                        // sh 'pip install --upgrade mkdocs mkdocs-material'
-                        // sh 'python3 docs/aac-doc.py'
-                        // sh 'mkdocs build'
-                        // sshagent(credentials: ['AAC_HOST_SSH']) {
-                        //     sh '''
-                        //         [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
-                        //         ssh-keyscan -t rsa,dsa aac.cisco.com >> ~/.ssh/known_hosts
-                        //         scp -r site/ danischm@aac.cisco.com:/www/aac/
-                        //     '''
-                        // }
+                        build job: '/netascode/netascode/master', wait: false
+                    // sh 'pip install --upgrade mkdocs mkdocs-material'
+                    // sh 'python3 docs/aac-doc.py'
+                    // sh 'mkdocs build'
+                    // sshagent(credentials: ['AAC_HOST_SSH']) {
+                    //     sh '''
+                    //         [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
+                    //         ssh-keyscan -t rsa,dsa aac.cisco.com >> ~/.ssh/known_hosts
+                    //         scp -r site/ danischm@aac.cisco.com:/www/aac/
+                    //     '''
+                    // }
                     }
                 }
                 stage('Lint') {
@@ -99,21 +99,21 @@ pipeline {
                         }
                     }
                 }
-                stage('Test NDO 4.1') {
+                stage('Test NDO 4.2') {
                     steps {
-                        sh 'pytest -m "ndo_41 and not terraform"'
+                        sh 'pytest -m "ndo_42 and not terraform"'
                     }
                     post {
                         always {
-                            junit 'ndo_4.1_xunit.xml'
-                            archiveArtifacts 'ndo_4.1_*.html, ndo_4.1_*.xml'
+                            junit 'ndo_4.2_xunit.xml'
+                            archiveArtifacts 'ndo_4.2_*.html, ndo_4.2_*.xml'
                         }
                     }
                 }
             }
         }
     }
-    
+
     post {
         always {
             sh "BUILD_STATUS=${currentBuild.currentResult} python .ci/webex-notification-jenkins.py"
