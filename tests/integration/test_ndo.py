@@ -326,25 +326,25 @@ def test_ndo_37(
     )
 
 
-@pytest.mark.ndo_41
+@pytest.mark.ndo_42
 @pytest.mark.parametrize(
     "data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, version",
     [
         (
             [
                 "tests/integration/fixtures/ndo/standard/",
-                "tests/integration/fixtures/ndo/standard_41/",
+                "tests/integration/fixtures/ndo/standard_42/",
                 "defaults/",
             ],
             "https://10.50.202.16",
             "ce2_defaultOneTime-2023-12-18T06-15-42.tar.gz",
             "https://10.50.202.17",
-            "6555f6e2a93149b740349645",
-            "4.1",
+            "65a465703e4f4ce7cdf63cb0",
+            "4.2",
         )
     ],
 )
-def test_ndo_41(
+def test_ndo_42(
     data_paths, apic_url, snapshot_name, ndo_url, ndo_backup_id, version, tmpdir
 ):
     full_ndo_test(
@@ -393,7 +393,7 @@ def test_ndo_terraform_37(
     )
 
 
-@pytest.mark.ndo_41
+@pytest.mark.ndo_42
 @pytest.mark.terraform
 @pytest.mark.parametrize(
     "data_paths, terraform_path, apic_url, snapshot_name, ndo_url, ndo_backup_id, version",
@@ -401,18 +401,18 @@ def test_ndo_terraform_37(
         (
             [
                 "tests/integration/fixtures/ndo/standard/",
-                "tests/integration/fixtures/ndo/standard_41/",
+                "tests/integration/fixtures/ndo/standard_42/",
             ],
-            "tests/integration/fixtures/ndo/terraform_41",
+            "tests/integration/fixtures/ndo/terraform_42",
             "https://10.50.202.16",
             "ce2_defaultOneTime-2023-12-18T06-15-42.tar.gz",
             "https://10.50.202.17",
-            "6555f6e2a93149b740349645",
-            "4.1",
+            "65a465703e4f4ce7cdf63cb0",
+            "4.2",
         )
     ],
 )
-def test_ndo_terraform_41(
+def test_ndo_terraform_42(
     data_paths,
     terraform_path,
     apic_url,
