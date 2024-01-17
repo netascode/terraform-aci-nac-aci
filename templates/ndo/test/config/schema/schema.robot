@@ -299,10 +299,9 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
     Should Be Equal Value Json String   ${r.json()}   ${subnet}.ip   {{ subnet.ip }}
     Should Be Equal Value Json String   ${r.json()}   ${subnet}.scope   {{ subnet.scope | default(defaults.ndo.schemas.templates.bridge_domains.subnets.scope) }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.shared   {{ subnet.shared | default(defaults.ndo.schemas.templates.bridge_domains.subnets.shared) | cisco.aac.aac_bool(True) }}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.noDefaultGateway   {{ subnet.no_default_gateway | default(defaults.ndo.schemas.templates.bridge_domains.subnets.no_default_gateway) | cisco.aac.aac_bool(True) }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.querier   {{ subnet.querier | default(defaults.ndo.schemas.templates.bridge_domains.subnets.querier) | cisco.aac.aac_bool(True) }}
-{% if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %}
     Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.primary   {{ subnet.primary | default(defaults.ndo.schemas.templates.bridge_domains.subnets.primary) | cisco.aac.aac_bool(True) }}
-{% endif %}
 {% endfor %}
 
 {% for site in bd.sites | default([]) %}
@@ -325,10 +324,11 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
     ${site_id}=   NDO Lookup   sites   {{ site.name }}
     ${subnet}=   Set Variable   $.sites[?(@.siteId=='${site_id}')&(@.templateName=='{{ template.name }}')].bds[?(@.bdRef=='/schemas/${schema_id}/templates/{{ template.name }}/bds/{{ bd_name }}')].subnets[?(@.ip=='{{ subnet.ip }}')]
     Should Be Equal Value Json String   ${r.json()}   ${subnet}.ip   {{ subnet.ip }}
-    Should Be Equal Value Json String   ${r.json()}   ${subnet}.scope   {{ subnet.scope | default(defaults.ndo.schemas.templates.bridge_domains.subnets.scope) }}
-    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.shared   {{ subnet.shared | default(defaults.ndo.schemas.templates.bridge_domains.subnets.shared) | cisco.aac.aac_bool(True) }}
-    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.querier   {{ subnet.querier | default(defaults.ndo.schemas.templates.bridge_domains.subnets.querier) | cisco.aac.aac_bool(True) }}
-    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.primary   {{ subnet.primary | default(defaults.ndo.schemas.templates.bridge_domains.subnets.primary) | cisco.aac.aac_bool(True) }}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}.scope   {{ subnet.scope | default(defaults.ndo.schemas.templates.bridge_domains.sites.subnets.scope) }}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.shared   {{ subnet.shared | default(defaults.ndo.schemas.templates.bridge_domains.sites.subnets.shared) | cisco.aac.aac_bool(True) }}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.noDefaultGateway   {{ subnet.no_default_gateway | default(defaults.ndo.schemas.templates.bridge_domains.sites.subnets.no_default_gateway) | cisco.aac.aac_bool(True) }}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.querier   {{ subnet.querier | default(defaults.ndo.schemas.templates.bridge_domains.sites.subnets.querier) | cisco.aac.aac_bool(True) }}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.primary   {{ subnet.primary | default(defaults.ndo.schemas.templates.bridge_domains.sites.subnets.primary) | cisco.aac.aac_bool(True) }}
 {% endfor %}
 
 {% endfor %}

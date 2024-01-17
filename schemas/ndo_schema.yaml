@@ -362,6 +362,7 @@ t_bd_subnets:
   ip: ip()
   scope: enum('private', 'public', required=False)
   shared: any(bool(), enum('enabled', 'disabled'), required=False)
+  no_default_gateway: bool(required=False)
   querier: any(bool(), enum('enabled', 'disabled'), required=False)
   primary: any(bool(), enum('enabled', 'disabled'), required=False)
 

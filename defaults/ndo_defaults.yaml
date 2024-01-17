@@ -125,11 +125,18 @@ defaults:
           subnets:
             scope: private
             shared: false
+            no_default_gateway: false
             querier: false
             primary: false
           sites:
             advertise_host_routes: false
             mac: 00:22:BD:F8:19:FF
+            subnets:
+              scope: private
+              shared: false
+              no_default_gateway: false
+              querier: false
+              primary: false
         filters:
           name_suffix: ""
           entries:

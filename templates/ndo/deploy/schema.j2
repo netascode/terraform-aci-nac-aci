@@ -64,10 +64,8 @@
                                     "ip": "{{ subnet.ip }}",
                                     "scope": "{{ subnet.scope | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.scope) }}",
                                     "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.shared) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
-                                    "noDefaultGateway": {% if subnet.no_default_gateway | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.no_default_gateway) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
-                                    {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %},
+                                    "noDefaultGateway": {% if subnet.no_default_gateway | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.no_default_gateway) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                                     "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.primary) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
-                                    {%- endif %}
 
                                 }
                                 {%- endfor %}
@@ -174,10 +172,9 @@
                             "ip": "{{ subnet.ip }}",
                             "scope": "{{ subnet.scope | default(defaults.ndo.schemas.templates.bridge_domains.subnets.scope) }}",
                             "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.bridge_domains.subnets.shared) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
-                            "querier": {% if subnet.querier | default(defaults.ndo.schemas.templates.bridge_domains.subnets.querier) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
-                            {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %},
+                            "noDefaultGateway": {% if subnet.no_default_gateway | default(defaults.ndo.schemas.templates.bridge_domains.subnets.no_default_gateway) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                            "querier": {% if subnet.querier | default(defaults.ndo.schemas.templates.bridge_domains.subnets.querier) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                             "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.bridge_domains.subnets.primary) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
-                            {%- endif %}
 
                         }
                         {%- endfor %}
@@ -652,10 +649,8 @@
                                     "description": "{{ subnet.description | default() }}",
                                     "scope": "{{ subnet.scope | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.scope) }}",
                                     "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.shared) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
-                                    "noDefaultGateway": {% if subnet.no_default_gateway | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.no_default_gateway) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
-                                    {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %},
+                                    "noDefaultGateway": {% if subnet.no_default_gateway | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.no_default_gateway) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                                     "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.subnets.primary) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
-                                    {%- endif %}
 
                                 }
                                 {%- endfor %}
@@ -757,12 +752,11 @@
                         {%- for subnet in site.subnets | default([]) %}{{ comma3() }}
                         {
                             "ip": "{{ subnet.ip }}",
-                            "scope": "{{ subnet.scope | default(defaults.ndo.schemas.templates.bridge_domains.subnets.scope) }}",
-                            "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.bridge_domains.subnets.shared) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
-                            "querier": {% if subnet.querier | default(defaults.ndo.schemas.templates.bridge_domains.subnets.querier) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
-                            {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %},
-                            "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.bridge_domains.subnets.primary) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
-                            {%- endif %}
+                            "scope": "{{ subnet.scope | default(defaults.ndo.schemas.templates.bridge_domains.sites.subnets.scope) }}",
+                            "shared": {% if subnet.shared | default(defaults.ndo.schemas.templates.bridge_domains.sites.subnets.shared) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                            "noDefaultGateway": {% if subnet.no_default_gateway | default(defaults.ndo.schemas.templates.bridge_domains.sites.subnets.no_default_gateway) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                            "querier": {% if subnet.querier | default(defaults.ndo.schemas.templates.bridge_domains.sites.subnets.querier) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                            "primary": {% if subnet.primary | default(defaults.ndo.schemas.templates.bridge_domains.sites.subnets.primary) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
 
                         }
                         {%- endfor %}
