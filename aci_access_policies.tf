@@ -142,7 +142,7 @@ module "aci_access_leaf_switch_profile_auto" {
 module "aci_access_leaf_switch_profile_manual" {
   source = "./modules/terraform-aci-access-leaf-switch-profile"
 
-  for_each = { for prof in try(local.access_policies.leaf_switch_profiles, []) : prof.name => prof if local.modules.aci_access_leaf_switch_profile && var.manage_access_policies }
+  for_each = { for prof in try(local.access_policies.leaf_switch_profiles, []) : prof.name => prof if local.modules.aci_access_leaf_switch_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.leaf_switch_profiles.name_suffix}"
   selectors = [for selector in try(each.value.selectors, []) : {
     name         = "${selector.name}${local.defaults.apic.access_policies.leaf_switch_profiles.selectors.name_suffix}"
@@ -187,7 +187,7 @@ module "aci_access_spine_switch_profile_auto" {
 module "aci_access_spine_switch_profile_manual" {
   source = "./modules/terraform-aci-access-spine-switch-profile"
 
-  for_each = { for prof in try(local.access_policies.spine_switch_profiles, []) : prof.name => prof if local.modules.aci_access_spine_switch_profile && var.manage_access_policies }
+  for_each = { for prof in try(local.access_policies.spine_switch_profiles, []) : prof.name => prof if local.modules.aci_access_spine_switch_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies }
   name     = each.value.name
   selectors = [for selector in try(each.value.selectors, []) : {
     name         = "${selector.name}${local.defaults.apic.access_policies.spine_switch_profiles.selectors.name_suffix}"
@@ -366,7 +366,7 @@ module "aci_access_leaf_interface_profile_auto" {
 module "aci_access_leaf_interface_profile_manual" {
   source = "./modules/terraform-aci-access-leaf-interface-profile"
 
-  for_each = { for prof in try(local.access_policies.leaf_interface_profiles, []) : prof.name => prof if local.modules.aci_access_leaf_interface_profile && var.manage_access_policies }
+  for_each = { for prof in try(local.access_policies.leaf_interface_profiles, []) : prof.name => prof if local.modules.aci_access_leaf_interface_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_profiles.name_suffix}"
 }
 
@@ -409,7 +409,7 @@ locals {
 module "aci_access_leaf_interface_selector_manual" {
   source = "./modules/terraform-aci-access-leaf-interface-selector"
 
-  for_each              = { for selector in local.leaf_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_leaf_interface_selector && var.manage_access_policies }
+  for_each              = { for selector in local.leaf_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_leaf_interface_selector && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies }
   interface_profile     = each.value.profile_name
   name                  = each.value.name
   fex_id                = each.value.fex_id
@@ -429,7 +429,7 @@ module "aci_access_leaf_interface_selector_manual" {
 module "aci_access_fex_interface_profile_manual" {
   source = "./modules/terraform-aci-access-fex-interface-profile"
 
-  for_each = toset([for fex in try(local.access_policies.fex_interface_profiles, []) : fex.name if local.modules.aci_access_fex_interface_profile && var.manage_access_policies])
+  for_each = toset([for fex in try(local.access_policies.fex_interface_profiles, []) : fex.name if local.modules.aci_access_fex_interface_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies])
   name     = "${each.value}${local.defaults.apic.access_policies.fex_interface_profiles.name_suffix}"
 }
 
@@ -460,7 +460,7 @@ locals {
 module "aci_access_fex_interface_selector_manual" {
   source = "./modules/terraform-aci-access-fex-interface-selector"
 
-  for_each          = { for selector in local.fex_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_fex_interface_selector && var.manage_access_policies }
+  for_each          = { for selector in local.fex_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_fex_interface_selector && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies }
   interface_profile = each.value.profile_name
   name              = each.value.name
   policy_group      = each.value.policy_group
@@ -483,7 +483,7 @@ module "aci_access_spine_interface_profile_auto" {
 module "aci_access_spine_interface_profile_manual" {
   source = "./modules/terraform-aci-access-spine-interface-profile"
 
-  for_each = { for prof in try(local.access_policies.spine_interface_profiles, []) : prof.name => prof if local.modules.aci_access_spine_interface_profile && var.manage_access_policies }
+  for_each = { for prof in try(local.access_policies.spine_interface_profiles, []) : prof.name => prof if local.modules.aci_access_spine_interface_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies }
   name     = "${each.value.name}${local.defaults.apic.access_policies.spine_interface_profiles.name_suffix}"
 }
 
@@ -513,7 +513,7 @@ locals {
 module "aci_access_spine_interface_selector_manual" {
   source = "./modules/terraform-aci-access-spine-interface-selector"
 
-  for_each          = { for selector in local.spine_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_spine_interface_selector && var.manage_access_policies }
+  for_each          = { for selector in local.spine_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_spine_interface_selector && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies }
   interface_profile = each.value.profile_name
   name              = each.value.name
   policy_group      = each.value.policy_group

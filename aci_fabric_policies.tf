@@ -340,7 +340,7 @@ module "aci_fabric_spine_switch_policy_group" {
 module "aci_fabric_leaf_switch_profile_auto" {
   source = "./modules/terraform-aci-fabric-leaf-switch-profile"
 
-  for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles)) && local.modules.aci_fabric_leaf_switch_profile && var.manage_fabric_policies }
+  for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles)) && local.modules.aci_fabric_leaf_switch_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
   name               = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_switch_profile_name, local.defaults.apic.fabric_policies.leaf_switch_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
   interface_profiles = [replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_interface_profile_name, local.defaults.apic.fabric_policies.leaf_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))]
   selectors = [{
@@ -363,7 +363,7 @@ module "aci_fabric_leaf_switch_profile_auto" {
 module "aci_fabric_leaf_switch_profile_manual" {
   source = "./modules/terraform-aci-fabric-leaf-switch-profile"
 
-  for_each = { for prof in try(local.fabric_policies.leaf_switch_profiles, []) : prof.name => prof if local.modules.aci_fabric_leaf_switch_profile && var.manage_fabric_policies }
+  for_each = { for prof in try(local.fabric_policies.leaf_switch_profiles, []) : prof.name => prof if local.modules.aci_fabric_leaf_switch_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
   name     = each.value.name
   selectors = [for selector in try(each.value.selectors, []) : {
     name         = "${selector.name}${local.defaults.apic.fabric_policies.leaf_switch_profiles.selectors.name_suffix}"
@@ -386,7 +386,7 @@ module "aci_fabric_leaf_switch_profile_manual" {
 module "aci_fabric_spine_switch_profile_auto" {
   source = "./modules/terraform-aci-fabric-spine-switch-profile"
 
-  for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_spine_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_spine_switch_interface_profiles)) && local.modules.aci_fabric_spine_switch_profile && var.manage_fabric_policies }
+  for_each           = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_spine_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_spine_switch_interface_profiles)) && local.modules.aci_fabric_spine_switch_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
   name               = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.spine_switch_profile_name, local.defaults.apic.fabric_policies.spine_switch_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
   interface_profiles = [replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.spine_interface_profile_name, local.defaults.apic.fabric_policies.spine_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))]
   selectors = [{
@@ -409,7 +409,7 @@ module "aci_fabric_spine_switch_profile_auto" {
 module "aci_fabric_spine_switch_profile_manual" {
   source = "./modules/terraform-aci-fabric-spine-switch-profile"
 
-  for_each = { for prof in try(local.fabric_policies.spine_switch_profiles, []) : prof.name => prof if local.modules.aci_fabric_spine_switch_profile && var.manage_fabric_policies }
+  for_each = { for prof in try(local.fabric_policies.spine_switch_profiles, []) : prof.name => prof if local.modules.aci_fabric_spine_switch_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
   name     = each.value.name
   selectors = [for selector in try(each.value.selectors, []) : {
     name         = "${selector.name}${local.defaults.apic.fabric_policies.spine_switch_profiles.selectors.name_suffix}"
@@ -432,28 +432,28 @@ module "aci_fabric_spine_switch_profile_manual" {
 module "aci_fabric_leaf_interface_profile_auto" {
   source = "./modules/terraform-aci-fabric-leaf-interface-profile"
 
-  for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles)) && local.modules.aci_fabric_leaf_interface_profile && var.manage_fabric_policies }
+  for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles)) && local.modules.aci_fabric_leaf_interface_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
   name     = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_interface_profile_name, local.defaults.apic.fabric_policies.leaf_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
 }
 
 module "aci_fabric_leaf_interface_profile_manual" {
   source = "./modules/terraform-aci-fabric-leaf-interface-profile"
 
-  for_each = { for prof in try(local.fabric_policies.leaf_interface_profiles, []) : prof.name => prof if local.modules.aci_fabric_leaf_interface_profile && var.manage_fabric_policies }
+  for_each = { for prof in try(local.fabric_policies.leaf_interface_profiles, []) : prof.name => prof if local.modules.aci_fabric_leaf_interface_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
   name     = "${each.value.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.name_suffix}"
 }
 
 module "aci_fabric_spine_interface_profile_auto" {
   source = "./modules/terraform-aci-fabric-spine-interface-profile"
 
-  for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_spine_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_spine_switch_interface_profiles)) && local.modules.aci_fabric_spine_interface_profile && var.manage_fabric_policies }
+  for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && (try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_spine_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_spine_switch_interface_profiles)) && local.modules.aci_fabric_spine_interface_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
   name     = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.spine_interface_profile_name, local.defaults.apic.fabric_policies.spine_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
 }
 
 module "aci_fabric_spine_interface_profile_manual" {
   source = "./modules/terraform-aci-fabric-spine-interface-profile"
 
-  for_each = { for prof in try(local.fabric_policies.spine_interface_profiles, []) : prof.name => prof if local.modules.aci_fabric_spine_interface_profile && var.manage_fabric_policies }
+  for_each = { for prof in try(local.fabric_policies.spine_interface_profiles, []) : prof.name => prof if local.modules.aci_fabric_spine_interface_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
   name     = "${each.value.name}${local.defaults.apic.fabric_policies.spine_interface_profiles.name_suffix}"
 }
 
