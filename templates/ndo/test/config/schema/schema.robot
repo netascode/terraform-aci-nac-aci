@@ -478,8 +478,8 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Service Graph {{ sg
 {% set node_type = {"firewall": "0000ffff0000000000000051", "load-balancer": "0000ffff0000000000000052", "other": "0000ffff0000000000000053"}[node.type | default(defaults.ndo.schemas.templates.service_graphs.node_type)] %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Service Graph {{ sg_name }} Node {{ node.name }}
-    ${node}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].serviceGraphs[?(@.name=='{{ sg_name }}')].serviceNodes[?(@.name =~ '^{{ node.name }}|tfnode1$')]
-    Should Be Equal Value Json String   ${r.json()}   ${node}.name   {{ node.name }}   tfnode1
+    ${node}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].serviceGraphs[?(@.name=='{{ sg_name }}')].serviceNodes[?(@.name =~ '^{{ node.name }}|node{{ node.index | default(1) }}$')]
+    Should Be Equal Value Json String   ${r.json()}   ${node}.name   {{ node.name }}   node{{ node.index | default(1) }}
     Should Be Equal Value Json String   ${r.json()}   ${node}.serviceNodeTypeId   {{ node_type }}
     Should Be Equal Value Json String   ${r.json()}   ${node}.index   {{ node.index | default(1) }}
 
