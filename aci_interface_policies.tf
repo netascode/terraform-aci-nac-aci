@@ -190,6 +190,8 @@ locals {
         breakout          = try(interface.breakout, "none")
         fex_id            = try(interface.fex_id, "unspecified")
         description       = try(interface.description, "")
+        shutdown          = try(interface.shutdown, false)
+        role              = node.role
       } if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if node.role == "leaf" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
   ])
@@ -207,6 +209,8 @@ module "aci_leaf_interface_configuration" {
   breakout          = each.value.breakout
   fex_id            = each.value.fex_id
   description       = each.value.description
+  shutdown          = each.value.shutdown
+  role              = each.value.role
 }
 
 locals {
@@ -223,6 +227,8 @@ locals {
           policy_group      = try("${subinterface.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "system-ports-default")
           fex_id            = try(subinterface.fex_id, "unspecified")
           description       = try(subinterface.description, "")
+          shutdown          = try(subinterface.shutdown, false)
+          role              = node.role
         }
       ] if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if node.role == "leaf" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
@@ -241,6 +247,8 @@ module "aci_leaf_interface_configuration_sub" {
   policy_group      = each.value.policy_group
   fex_id            = each.value.fex_id
   description       = each.value.description
+  shutdown          = each.value.shutdown
+  role              = each.value.role
 
   depends_on = [
     module.aci_leaf_interface_configuration
@@ -260,6 +268,8 @@ locals {
           policy_group_type = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == interface.policy_group][0], "access")
           policy_group      = try("${interface.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "system-ports-default")
           description       = try(interface.description, "")
+          shutdown          = try(interface.shutdown, false)
+          role              = node.role
       }]
     ] if node.role == "leaf" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
   ])
@@ -276,6 +286,8 @@ module "aci_interface_configuration_fex" {
   policy_group_type = each.value.policy_group_type
   policy_group      = each.value.policy_group
   description       = each.value.description
+  shutdown          = each.value.shutdown
+  role              = each.value.role
 
   depends_on = [
     module.aci_leaf_interface_configuration,
@@ -293,7 +305,8 @@ locals {
         port         = interface.port
         policy_group = try("${interface.policy_group}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}", "system-ports-default")
         description  = try(interface.description, "")
-        role         = "spine"
+        shutdown     = try(interface.shutdown, false)
+        role         = node.role
       } if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if node.role == "spine" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
   ])
@@ -308,6 +321,7 @@ module "aci_spine_interface_configuration" {
   port         = each.value.port
   policy_group = each.value.policy_group
   description  = each.value.description
+  shutdown     = each.value.shutdown
   role         = each.value.role
 }
 
@@ -321,7 +335,7 @@ locals {
         port         = interface.port
         policy_group = try("${interface.policy_group}${local.defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix}", "system-ports-default")
         description  = try(interface.description, "")
-        shutdown     = try(interface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
+        shutdown     = try(interface.shutdown, false)
         role         = node.role
       } if try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if node.role == "leaf" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
@@ -353,7 +367,7 @@ locals {
           sub_port     = subinterface.port
           policy_group = try("${subinterface.policy_group}${local.defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix}", "system-ports-default")
           description  = try(subinterface.description, "")
-          shutdown     = try(subinterface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
+          shutdown     = try(subinterface.shutdown, false)
           role         = node.role
         }
       ] if try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
@@ -389,7 +403,7 @@ locals {
         port         = interface.port
         policy_group = try("${interface.policy_group}${local.defaults.apic.fabric_policies.spine_interface_policy_groups.name_suffix}", "system-ports-default")
         description  = try(interface.description, "")
-        shutdown     = try(interface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
+        shutdown     = try(interface.shutdown, false)
         role         = node.role
       } if try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if node.role == "spine" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true

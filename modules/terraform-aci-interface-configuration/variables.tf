@@ -106,3 +106,9 @@ variable "role" {
     error_message = "Allowed values: `leaf`, `spine`."
   }
 }
+
+variable "shutdown" {
+  description = "Shutdown interface."
+  type        = bool
+  default     = false
+}

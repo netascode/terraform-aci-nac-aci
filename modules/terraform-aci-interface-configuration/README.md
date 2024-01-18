@@ -47,6 +47,7 @@ module "aci_interface_configuration" {
 | <a name="input_fex_id"></a> [fex\_id](#input\_fex\_id) | FEX ID. Allowed values: 101-199. `0` meaning no FEX. | `string` | `"unspecified"` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_role"></a> [role](#input\_role) | Node role. Allowed values: `leaf`, `spine`. | `string` | `"leaf"` | no |
+| <a name="input_shutdown"></a> [shutdown](#input\_shutdown) | Shutdown interface. | `bool` | `false` | no |
 
 ## Outputs
 
