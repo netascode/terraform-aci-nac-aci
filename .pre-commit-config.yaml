@@ -206,6 +206,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-external-endpoint-group/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-interface-configuration"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-interface-configuration/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-isis-bfd"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-isis-bfd/examples/complete"]

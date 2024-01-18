@@ -235,6 +235,8 @@ Additional example repositories:
 | <a name="module_aci_l3out_node_profile_manual"></a> [aci\_l3out\_node\_profile\_manual](#module\_aci\_l3out\_node\_profile\_manual) | ./modules/terraform-aci-l3out-node-profile | n/a |
 | <a name="module_aci_l4l7_device"></a> [aci\_l4l7\_device](#module\_aci\_l4l7\_device) | ./modules/terraform-aci-l4l7-device | n/a |
 | <a name="module_aci_ldap"></a> [aci\_ldap](#module\_aci\_ldap) | ./modules/terraform-aci-ldap | n/a |
+| <a name="module_aci_leaf_fabric_interface_configuration"></a> [aci\_leaf\_fabric\_interface\_configuration](#module\_aci\_leaf\_fabric\_interface\_configuration) | ./modules/terraform-aci-fabric-interface-configuration | n/a |
+| <a name="module_aci_leaf_fabric_interface_configuration_sub"></a> [aci\_leaf\_fabric\_interface\_configuration\_sub](#module\_aci\_leaf\_fabric\_interface\_configuration\_sub) | ./modules/terraform-aci-fabric-interface-configuration | n/a |
 | <a name="module_aci_leaf_interface_configuration"></a> [aci\_leaf\_interface\_configuration](#module\_aci\_leaf\_interface\_configuration) | ./modules/terraform-aci-interface-configuration | n/a |
 | <a name="module_aci_leaf_interface_configuration_sub"></a> [aci\_leaf\_interface\_configuration\_sub](#module\_aci\_leaf\_interface\_configuration\_sub) | ./modules/terraform-aci-interface-configuration | n/a |
 | <a name="module_aci_link_level_policy"></a> [aci\_link\_level\_policy](#module\_aci\_link\_level\_policy) | ./modules/terraform-aci-link-level-policy | n/a |
@@ -282,6 +284,7 @@ Additional example repositories:
 | <a name="module_aci_snmp_policy"></a> [aci\_snmp\_policy](#module\_aci\_snmp\_policy) | ./modules/terraform-aci-snmp-policy | n/a |
 | <a name="module_aci_snmp_trap_policy"></a> [aci\_snmp\_trap\_policy](#module\_aci\_snmp\_trap\_policy) | ./modules/terraform-aci-snmp-trap-policy | n/a |
 | <a name="module_aci_spanning_tree_policy"></a> [aci\_spanning\_tree\_policy](#module\_aci\_spanning\_tree\_policy) | ./modules/terraform-aci-spanning-tree-policy | n/a |
+| <a name="module_aci_spine_fabric_interface_configuration"></a> [aci\_spine\_fabric\_interface\_configuration](#module\_aci\_spine\_fabric\_interface\_configuration) | ./modules/terraform-aci-fabric-interface-configuration | n/a |
 | <a name="module_aci_spine_interface_configuration"></a> [aci\_spine\_interface\_configuration](#module\_aci\_spine\_interface\_configuration) | ./modules/terraform-aci-interface-configuration | n/a |
 | <a name="module_aci_sr_mpls_external_endpoint_group"></a> [aci\_sr\_mpls\_external\_endpoint\_group](#module\_aci\_sr\_mpls\_external\_endpoint\_group) | ./modules/terraform-aci-external-endpoint-group | n/a |
 | <a name="module_aci_sr_mpls_l3out"></a> [aci\_sr\_mpls\_l3out](#module\_aci\_sr\_mpls\_l3out) | ./modules/terraform-aci-l3out | n/a |

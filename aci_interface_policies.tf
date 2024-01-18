@@ -190,7 +190,7 @@ locals {
         breakout          = try(interface.breakout, "none")
         fex_id            = try(interface.fex_id, "unspecified")
         description       = try(interface.description, "")
-      }
+      } if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if node.role == "leaf" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
   ])
 }
@@ -223,7 +223,8 @@ locals {
           policy_group      = try("${subinterface.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "system-ports-default")
           fex_id            = try(subinterface.fex_id, "unspecified")
           description       = try(subinterface.description, "")
-      }]
+        }
+      ] if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if node.role == "leaf" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
   ])
 }
@@ -293,7 +294,7 @@ locals {
         policy_group = try("${interface.policy_group}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}", "system-ports-default")
         description  = try(interface.description, "")
         role         = "spine"
-      }
+      } if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if node.role == "spine" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
   ])
 }
@@ -307,5 +308,103 @@ module "aci_spine_interface_configuration" {
   port         = each.value.port
   policy_group = each.value.policy_group
   description  = each.value.description
+  role         = each.value.role
+}
+
+locals {
+  new_leaf_fabric_interface_configuration = flatten([
+    for node in local.nodes : [
+      for interface in try(node.interfaces, []) : {
+        key          = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
+        node_id      = node.id
+        module       = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+        port         = interface.port
+        policy_group = try("${interface.policy_group}${local.defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix}", "system-ports-default")
+        description  = try(interface.description, "")
+        shutdown     = try(interface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
+        role         = node.role
+      } if try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
+    ] if node.role == "leaf" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
+  ])
+}
+
+module "aci_leaf_fabric_interface_configuration" {
+  source = "./modules/terraform-aci-fabric-interface-configuration"
+
+  for_each     = { for int in local.new_leaf_fabric_interface_configuration : int.key => int if local.modules.aci_fabric_interface_configuration && var.manage_interface_policies }
+  node_id      = each.value.node_id
+  module       = each.value.module
+  port         = each.value.port
+  policy_group = each.value.policy_group
+  description  = each.value.description
+  shutdown     = each.value.shutdown
+  role         = each.value.role
+}
+
+locals {
+  new_leaf_fabric_subinterface_configuration = flatten([
+    for node in local.nodes : [
+      for interface in try(node.interfaces, []) : [
+        for subinterface in try(interface.sub_ports, []) : {
+          key          = format("%s/%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port, subinterface.port)
+          node_id      = node.id
+          module       = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+          port         = interface.port
+          sub_port     = subinterface.port
+          policy_group = try("${subinterface.policy_group}${local.defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix}", "system-ports-default")
+          description  = try(subinterface.description, "")
+          shutdown     = try(subinterface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
+          role         = node.role
+        }
+      ] if try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
+    ] if node.role == "leaf" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
+  ])
+}
+
+module "aci_leaf_fabric_interface_configuration_sub" {
+  source = "./modules/terraform-aci-fabric-interface-configuration"
+
+  for_each     = { for int in local.new_leaf_fabric_subinterface_configuration : int.key => int if local.modules.aci_fabric_interface_configuration && var.manage_interface_policies }
+  node_id      = each.value.node_id
+  module       = each.value.module
+  port         = each.value.port
+  sub_port     = each.value.sub_port
+  policy_group = each.value.policy_group
+  description  = each.value.description
+  shutdown     = each.value.shutdown
+  role         = each.value.role
+
+  depends_on = [
+    module.aci_leaf_fabric_interface_configuration
+  ]
+}
+
+locals {
+  new_spine_fabric_interface_configuration = flatten([
+    for node in local.nodes : [
+      for interface in try(node.interfaces, []) : {
+        key          = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
+        node_id      = node.id
+        module       = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+        port         = interface.port
+        policy_group = try("${interface.policy_group}${local.defaults.apic.fabric_policies.spine_interface_policy_groups.name_suffix}", "system-ports-default")
+        description  = try(interface.description, "")
+        shutdown     = try(interface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
+        role         = node.role
+      } if try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
+    ] if node.role == "spine" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
+  ])
+}
+
+module "aci_spine_fabric_interface_configuration" {
+  source = "./modules/terraform-aci-fabric-interface-configuration"
+
+  for_each     = { for int in local.new_spine_fabric_interface_configuration : int.key => int if local.modules.aci_fabric_interface_configuration && var.manage_interface_policies }
+  node_id      = each.value.node_id
+  module       = each.value.module
+  port         = each.value.port
+  policy_group = each.value.policy_group
+  description  = each.value.description
+  shutdown     = each.value.shutdown
   role         = each.value.role
 }

@@ -47,6 +47,7 @@ modules:
   aci_error_disabled_recovery: true
   aci_external_connectivity_policy: true
   aci_external_endpoint_group: true
+  aci_fabric_interface_configuration: true
   aci_fabric_isis_bfd: true
   aci_fabric_isis_policy: true
   aci_fabric_l2_mtu: true

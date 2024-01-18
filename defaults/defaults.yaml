@@ -660,6 +660,8 @@ defaults:
         interfaces:
           from_module: 1
           module: 1
+          fabric: false
+          shutdown: false
         fexes:
           interfaces:
             from_module: 1
