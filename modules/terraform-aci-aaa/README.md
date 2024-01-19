@@ -45,9 +45,9 @@ module "aci_aaa" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_remote_user_login_policy"></a> [remote\_user\_login\_policy](#input\_remote\_user\_login\_policy) | Remote user login policy. Choices: `assign-default-role`, `no-login` | `string` | `"no-login"` | no |
 | <a name="input_default_fallback_check"></a> [default\_fallback\_check](#input\_default\_fallback\_check) | Default fallback check. | `bool` | `false` | no |
-| <a name="input_default_realm"></a> [default\_realm](#input\_default\_realm) | Default realm. Choices: `local`, `tacacs`. | `string` | `"local"` | no |
+| <a name="input_default_realm"></a> [default\_realm](#input\_default\_realm) | Default realm. Choices: `local`, `tacacs`, `radius`. | `string` | `"local"` | no |
 | <a name="input_default_login_domain"></a> [default\_login\_domain](#input\_default\_login\_domain) | Default login domain. | `string` | `""` | no |
-| <a name="input_console_realm"></a> [console\_realm](#input\_console\_realm) | Console realm. Choices: `local`, `tacacs`. | `string` | `"local"` | no |
+| <a name="input_console_realm"></a> [console\_realm](#input\_console\_realm) | Console realm. Choices: `local`, `tacacs`, `radius`. | `string` | `"local"` | no |
 | <a name="input_console_login_domain"></a> [console\_login\_domain](#input\_console\_login\_domain) | Console login domain. | `string` | `""` | no |
 | <a name="input_security_domains"></a> [security\_domains](#input\_security\_domains) | List of security domains. | <pre>list(object({<br>    name                   = string<br>    description            = optional(string, "")<br>    restricted_rbac_domain = optional(bool, false)<br>  }))</pre> | `[]` | no |
 | <a name="input_password_strength_check"></a> [password\_strength\_check](#input\_password\_strength\_check) | Password strength check. | `bool` | `false` | no |

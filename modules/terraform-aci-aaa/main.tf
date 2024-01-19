@@ -12,7 +12,7 @@ resource "aci_rest_managed" "aaaDefaultAuth" {
   content = {
     fallbackCheck = var.default_fallback_check ? "true" : "false"
     realm         = var.default_realm
-    providerGroup = var.default_realm == "tacacs" ? var.default_login_domain : ""
+    providerGroup = var.default_realm == "tacacs" || var.console_realm == "radius" ? var.default_login_domain : ""
   }
 }
 
@@ -21,7 +21,7 @@ resource "aci_rest_managed" "aaaConsoleAuth" {
   class_name = "aaaConsoleAuth"
   content = {
     realm         = var.console_realm
-    providerGroup = var.console_realm == "tacacs" ? var.console_login_domain : ""
+    providerGroup = var.console_realm == "tacacs" || var.console_realm == "radius" ? var.console_login_domain : ""
   }
 }
 
