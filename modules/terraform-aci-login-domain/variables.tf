@@ -20,12 +20,12 @@ variable "description" {
 }
 
 variable "realm" {
-  description = "Realm. Choices: `local`, `tacacs`, `ldap`."
+  description = "Realm. Choices: `local`, `tacacs`, `radius`, `ldap`."
   type        = string
 
   validation {
-    condition     = contains(["local", "tacacs", "ldap"], var.realm)
-    error_message = "Allowed values: `local`, `tacacs` or `ldap`."
+    condition     = contains(["local", "tacacs", "radius", "ldap"], var.realm)
+    error_message = "Allowed values: `local`, `tacacs`, `radius` or `ldap`."
   }
 }
 
@@ -62,6 +62,22 @@ variable "tacacs_providers" {
   validation {
     condition = alltrue([
       for p in var.tacacs_providers : (p.priority >= 0 && p.priority <= 16)
+    ])
+    error_message = "`priority`: Minimum value: 0. Maximum value: 16."
+  }
+}
+
+variable "radius_providers" {
+  description = "List of Radius providers. Allowed values `priority`: 0-16. Default value `priority`: 0"
+  type = list(object({
+    hostname_ip = string
+    priority    = optional(number, 0)
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for p in var.radius_providers : (p.priority >= 0 && p.priority <= 16)
     ])
     error_message = "`priority`: Minimum value: 0. Maximum value: 16."
   }
