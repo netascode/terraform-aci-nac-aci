@@ -42,10 +42,11 @@ module "aci_login_domain" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Login domain name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
-| <a name="input_realm"></a> [realm](#input\_realm) | Realm. Choices: `local`, `tacacs`, `ldap`. | `string` | n/a | yes |
+| <a name="input_realm"></a> [realm](#input\_realm) | Realm. Choices: `local`, `tacacs`, `ldap`, `radius`. | `string` | n/a | yes |
 | <a name="input_auth_choice"></a> [auth\_choice](#input\_auth\_choice) | Authentication choice. Choices: `CiscoAVPair`, `LdapGroupMap`. | `string` | `"CiscoAVPair"` | no |
 | <a name="input_ldap_group_map"></a> [ldap\_group\_map](#input\_ldap\_group\_map) | LDAP group map. | `string` | `""` | no |
 | <a name="input_tacacs_providers"></a> [tacacs\_providers](#input\_tacacs\_providers) | List of TACACS providers. Allowed values `priority`: 0-16. Default value `priority`: 0 | <pre>list(object({<br>    hostname_ip = string<br>    priority    = optional(number, 0)<br>  }))</pre> | `[]` | no |
+| <a name="input_radius_providers"></a> [radius\_providers](#input\_radius\_providers) | List of RADIUS providers. Allowed values `priority`: 0-16. Default value `priority`: 0 | <pre>list(object({<br>    hostname_ip = string<br>    priority    = optional(number, 0)<br>  }))</pre> | `[]` | no |
 | <a name="input_ldap_providers"></a> [ldap\_providers](#input\_ldap\_providers) | List of LDAP providers. Allowed values `priority`: 0-16. Default value `priority`: 0 | <pre>list(object({<br>    hostname_ip = string<br>    priority    = optional(number, 0)<br>  }))</pre> | `[]` | no |
 
 ## Outputs
@@ -65,4 +66,5 @@ module "aci_login_domain" {
 | [aci_rest_managed.aaaProviderRef](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.aaaProviderRef_ldap](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.aaaTacacsPlusProviderGroup](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.aaaRadiusProviderGroup](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

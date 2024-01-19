@@ -18,7 +18,7 @@ module "aci_login_domain" {
   name        = "RADIUS1"
   description = "My Description"
   realm       = "radius"
-  tacacs_providers = [{
+  radius_providers = [{
     hostname_ip = "10.2.1.10"
     priority    = 10
   }]
