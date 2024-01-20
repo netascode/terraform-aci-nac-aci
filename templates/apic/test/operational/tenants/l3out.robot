@@ -19,7 +19,7 @@ Resource        ../../../apic_common.resource
 Verify L3out {{ l3out_name }} BGP Neighbor {{ peer.ip }}
     ${r}=   GET On Session   apic   /api/node/mo/topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.pod) }}/node-{{ node.node_id }}/sys/bgp/inst/dom-{{ tenant.name }}:{{ vrf_name }}/peer-[{{ peer.ip }}/32]/ent-[{{ peer.ip }}].json
     ${state}=   Get Value From Json   ${r.json()}   $..bgpPeerEntry.attributes.operSt
-    Run Keyword If   "${state}" != "established"   Run Keyword And Continue On Failure
+    Run Keyword If   "${state}[0]" != "established"   Run Keyword And Continue On Failure
     ...   Fail  "Peer {{ peer.ip }}: BGP is not established"
 
 {% endfor %}
