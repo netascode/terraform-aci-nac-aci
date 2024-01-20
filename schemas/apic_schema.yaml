@@ -118,6 +118,7 @@ fp_port_tracking:
   admin_state: any(bool(), enum('on', 'off'), required=False)
   delay: int(min=1, max=300, required=False)
   min_links: int(min=0, max=48, required=False)
+  include_apic: bool(required=False)
 
 fp_ptp:
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)

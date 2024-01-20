@@ -22,3 +22,8 @@ apic:
       response_threshold: 400
       top_slowest_requests: 7
       calculation_window: 300
+    port_tracking:
+      admin_state: false
+      delay: 130
+      min_links: 1
+      include_apic: true

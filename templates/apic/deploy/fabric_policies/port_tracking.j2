@@ -6,6 +6,9 @@
             "delay": "{{ apic.fabric_policies.port_tracking.delay | default(defaults.apic.fabric_policies.port_tracking.delay) }}",
             "dn": "uni/infra/trackEqptFabP-default",
             "minlinks": "{{ apic.fabric_policies.port_tracking.min_links | default(defaults.apic.fabric_policies.port_tracking.min_links) }}"
+            {%- if apic.fabric_policies.port_tracking.include_apic is defined %},
+            "includeApicPorts": "{{ 'yes' if apic.fabric_policies.port_tracking.include_apic | default(defaults.apic.fabric_policies.port_tracking.include_apic) else 'no' }}"
+            {% endif %}
         }
     }
 }

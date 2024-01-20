@@ -48,6 +48,7 @@ defaults:
         admin_state: true
         delay: 120
         min_links: 0
+        include_apic: false
       ptp:
         admin_state: false
         global_domain: 0
