@@ -117,12 +117,7 @@ def full_apic_terraform_test(
     os.environ["ACI_RETRIES"] = "4"
 
     try:
-        tf_env = {}
-        if version.startswith("6."):
-            tf_env["TF_CLI_ARGS_apply"] = "-parallelism=2"
-            tf_env["TF_CLI_ARGS_destroy"] = "-parallelism=2"
-
-        tf = tftest.TerraformTest(terraform_path, env=tf_env)
+        tf = tftest.TerraformTest(terraform_path)
         tf.setup(cleanup_on_exit=False, upgrade="upgrade")
         try:
             tf.apply()
