@@ -1,6 +1,7 @@
 ## 0.8.1 (unreleased)
 
 - Make L3 PBR destination MAC optional
+- Add support for Radius Provider
 
 ## 0.8.0
 

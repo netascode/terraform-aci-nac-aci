@@ -575,6 +575,24 @@ module "aci_tacacs" {
   mgmt_epg_name       = try(each.value.mgmt_epg, local.defaults.apic.fabric_policies.aaa.tacacs_providers.mgmt_epg) == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
 }
 
+module "aci_radius" {
+  source = "./modules/terraform-aci-radius"
+
+  for_each            = { for radius in try(local.fabric_policies.aaa.radius_providers, []) : radius.hostname_ip => radius if local.modules.aci_radius && var.manage_fabric_policies }
+  hostname_ip         = each.value.hostname_ip
+  description         = try(each.value.description, "")
+  protocol            = try(each.value.protocol, local.defaults.apic.fabric_policies.aaa.radius_providers.protocol)
+  monitoring          = try(each.value.monitoring, local.defaults.apic.fabric_policies.aaa.radius_providers.monitoring)
+  monitoring_username = try(each.value.monitoring_username, "")
+  monitoring_password = try(each.value.monitoring_password, "")
+  key                 = try(each.value.key, "")
+  authPort            = try(each.value.port, local.defaults.apic.fabric_policies.aaa.radius_providers.port)
+  retries             = try(each.value.retries, local.defaults.apic.fabric_policies.aaa.radius_providers.retries)
+  timeout             = try(each.value.timeout, local.defaults.apic.fabric_policies.aaa.radius_providers.timeout)
+  mgmt_epg_type       = try(each.value.mgmt_epg, local.defaults.apic.fabric_policies.aaa.radius_providers.mgmt_epg)
+  mgmt_epg_name       = try(each.value.mgmt_epg, local.defaults.apic.fabric_policies.aaa.radius_providers.mgmt_epg) == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
+}
+
 module "aci_user" {
   source = "./modules/terraform-aci-user"
 
@@ -614,6 +632,10 @@ module "aci_login_domain" {
     hostname_ip = prov.hostname_ip
     priority    = try(prov.priority, local.defaults.apic.fabric_policies.aaa.login_domains.tacacs_providers.priority)
   }]
+  radius_providers = [for prov in try(each.value.radius_providers, []) : {
+    hostname_ip = prov.hostname_ip
+    priority    = try(prov.priority, local.defaults.apic.fabric_policies.aaa.login_domains.radius_providers.priority)
+  }]
   ldap_providers = [for prov in try(each.value.ldap_providers, []) : {
     hostname_ip = prov.hostname_ip
     priority    = try(prov.priority, local.defaults.apic.fabric_policies.aaa.login_domains.ldap_providers.priority)
@@ -621,7 +643,9 @@ module "aci_login_domain" {
 
   depends_on = [
     module.aci_tacacs,
+    module.aci_radius,
   ]
+
 }
 
 module "aci_ca_certificate" {
