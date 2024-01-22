@@ -546,6 +546,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-storm-control-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-switch-configuration"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-switch-configuration/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-syslog-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-syslog-policy/examples/complete"]

@@ -383,6 +383,19 @@ module "aci_fabric_leaf_switch_profile_manual" {
   ]
 }
 
+module "aci_fabric_leaf_switch_configuration" {
+  source = "./modules/terraform-aci-switch-configuration"
+
+  for_each            = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && local.modules.aci_switch_configuration && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true && var.manage_fabric_policies }
+  node_id             = each.value.id
+  role                = each.value.role
+  fabric_policy_group = try("${each.value.fabric_policy_group}${local.defaults.apic.fabric_policies.leaf_switch_policy_groups.name_suffix}", "")
+
+  depends_on = [
+    module.aci_fabric_leaf_switch_policy_group,
+  ]
+}
+
 module "aci_fabric_spine_switch_profile_auto" {
   source = "./modules/terraform-aci-fabric-spine-switch-profile"
 
@@ -425,6 +438,19 @@ module "aci_fabric_spine_switch_profile_manual" {
   depends_on = [
     module.aci_fabric_spine_interface_profile_manual,
     module.aci_fabric_spine_interface_profile_auto,
+    module.aci_fabric_spine_switch_policy_group,
+  ]
+}
+
+module "aci_fabric_spine_switch_configuration" {
+  source = "./modules/terraform-aci-switch-configuration"
+
+  for_each            = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "spine" && local.modules.aci_switch_configuration && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true && var.manage_fabric_policies }
+  node_id             = each.value.id
+  role                = each.value.role
+  fabric_policy_group = try("${each.value.fabric_policy_group}${local.defaults.apic.fabric_policies.leaf_switch_policy_groups.name_suffix}", "")
+
+  depends_on = [
     module.aci_fabric_spine_switch_policy_group,
   ]
 }

@@ -131,6 +131,7 @@ modules:
   aci_snmp_trap_policy: true
   aci_spanning_tree_policy: true
   aci_storm_control_policy: true
+  aci_switch_configuration: true
   aci_syslog_policy: true
   aci_system_global_gipo: true
   aci_system_performance: true
