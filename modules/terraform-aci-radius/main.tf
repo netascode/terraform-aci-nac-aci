@@ -1,4 +1,4 @@
-resource "aci_rest_managed" "aaaRaddiusProvider" {
+resource "aci_rest_managed" "aaaRadiusProvider" {
   dn         = "uni/userext/radiusext/radiusprovider-${var.hostname_ip}"
   class_name = "aaaRadiusProvider"
   content = {

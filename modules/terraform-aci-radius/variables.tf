@@ -64,7 +64,7 @@ variable "key" {
 variable "port" {
   description = "Port. Minimum value: 0, Maximum value: 65535."
   type        = number
-  default     = 49
+  default     = 1812
 
   validation {
     condition     = var.port >= 0 && var.port <= 65535

@@ -10,16 +10,3 @@ module "aci_login_domain" {
     priority    = 10
   }]
 }
-
-module "aci_login_domain" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-login-domain"
-  version = ">= 0.8.0"
-
-  name        = "RADIUS1"
-  description = "My Description"
-  realm       = "radius"
-  radius_providers = [{
-    hostname_ip = "10.2.1.10"
-    priority    = 10
-  }]
-}

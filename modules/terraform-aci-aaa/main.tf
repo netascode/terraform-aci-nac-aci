@@ -12,7 +12,7 @@ resource "aci_rest_managed" "aaaDefaultAuth" {
   content = {
     fallbackCheck = var.default_fallback_check ? "true" : "false"
     realm         = var.default_realm
-    providerGroup = var.default_realm == "tacacs" || var.console_realm == "radius" ? var.default_login_domain : ""
+    providerGroup = var.default_realm == "tacacs" || var.default_realm == "radius" ? var.default_login_domain : ""
   }
 }
 
