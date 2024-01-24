@@ -4,6 +4,7 @@
 
 import os
 import shutil
+import time
 
 import errorhandler
 import iac_test.pabot
@@ -89,6 +90,10 @@ def full_apic_test(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir
     if error:
         pytest.fail(error)
 
+    # Fix issue with ACI 5.2 simulator
+    if version.startswith("5.2"):
+        time.sleep(60)
+    
     # Run tests
     error = apic_render_run_tests(
         apic_url, data_paths, os.path.join(tmpdir, "results/")
