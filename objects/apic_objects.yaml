@@ -182,6 +182,19 @@ objects:
     diff_paths:
       - apic.node_policies.oob_endpoint_group
       - apic.node_policies.inb_endpoint_group
+  - name: RADIUS Provider
+    template: radius
+    folder: fabric_policies
+    test_types:
+      - config
+      - health
+    aci_classes:
+      - aaaRadiusProvider
+    paths:
+      - apic.fabric_policies.aaa.radius_providers
+    diff_paths:
+      - apic.node_policies.oob_endpoint_group
+      - apic.node_policies.inb_endpoint_group
   - name: LDAP
     template: ldap
     folder: fabric_policies
@@ -220,6 +233,7 @@ objects:
     aci_classes:
       - aaaLoginDomain
       - aaaTacacsPlusProviderGroup
+      - aaaRadiusProviderGroup
       - aaaLdapProviderGroup
     delete_ignore: fallback
     paths:

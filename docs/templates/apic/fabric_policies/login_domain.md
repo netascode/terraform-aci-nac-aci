@@ -22,6 +22,12 @@ apic:
           tacacs_providers:
             - hostname_ip: 1.1.1.1
               priority: 1
+        - name: radius
+          realm: radius
+          description: login domain radius
+          radius_providers:
+            - hostname_ip: 3.3.3.1
+              priority: 1
         - name: ldap
           realm: ldap
           description: login domain ldap

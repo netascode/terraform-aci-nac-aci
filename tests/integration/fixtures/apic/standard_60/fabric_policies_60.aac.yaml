@@ -2,10 +2,6 @@
 apic:
   fabric_policies:
     aaa:
-      security_domains:
-        - name: SEC1
-          restricted_rbac_domain: true
-        - name: SEC2
       radius_providers:
         - hostname_ip: 3.3.3.1
           description: descr
@@ -32,24 +28,3 @@ apic:
             - hostname_ip: 3.3.3.1
               priority: 1
             - hostname_ip: 3.3.3.2
-    vmware_vmm_domains:
-      - name: VMM1
-        access_mode: read-write
-        delimiter: "="
-        tag_collection: true
-        vlan_pool: VMM1
-        vswitch:
-          cdp_policy: CDP-ENABLED
-          lldp_policy: LLDP-ENABLED
-          port_channel_policy: LACP-ACTIVE
-          mtu_policy: L2_8950
-    system_performance:
-      admin_state: true
-      response_threshold: 400
-      top_slowest_requests: 7
-      calculation_window: 300
-    port_tracking:
-      admin_state: false
-      delay: 130
-      min_links: 1
-      include_apic: true

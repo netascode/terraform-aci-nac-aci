@@ -21,7 +21,7 @@
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
                                     "dn": "uni/userext/logindomain-{{ login_domain.name }}/domainauth",
-                                    {% if login_domain.realm == 'tacacs' or login_domain.realm == 'ldap' %}
+                                    {% if login_domain.realm in ['tacacs', 'ldap', 'radius'] %}
                                     "providerGroup": "{{ login_domain.name }}",
                                     {% endif %}
                                     "realm": "{{ login_domain.realm }}"
@@ -54,6 +54,41 @@
                                                 "annotation": "orchestrator:aac",
                                                 "dn": "uni/userext/tacacsext/tacacsplusprovidergroup-{{ login_domain.name }}/providerref-{{ prov.hostname_ip }}",
                                                 "order": "{{ prov.priority | default(defaults.apic.fabric_policies.aaa.login_domains.tacacs_providers.priority) }}",
+                                                "name": "{{ prov.hostname_ip }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
+
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- elif login_domain.realm == 'radius' %},
+            {
+                "aaaRadiusEp": {
+                    "attributes": {
+                        "dn": "uni/userext/radiusext"
+                    },
+                    "children": [
+                        {
+                            "aaaRadiusProviderGroup": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/userext/radiusext/radiusprovidergroup-{{ login_domain.name }}",
+                                    "childAction": "deleteNonPresent"
+                                },
+                                "children": [
+                                    {%- set comma2 = joiner(",") %}
+                                    {%- for prov in login_domain.radius_providers | default([]) %}{{ comma2() }}
+                                    {
+                                        "aaaProviderRef": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "dn": "uni/userext/radiusext/radiusprovidergroup-{{ login_domain.name }}/providerref-{{ prov.hostname_ip }}",
+                                                "order": "{{ prov.priority | default(defaults.apic.fabric_policies.aaa.login_domains.radius_providers.priority) }}",
                                                 "name": "{{ prov.hostname_ip }}"
                                             }
                                         }

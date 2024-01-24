@@ -498,12 +498,13 @@ fp_vmware_vmm_domains_expected_state:
 fp_aaa:
   remote_user_login_policy: enum('assign-default-role', 'no-login', required=False)
   default_fallback_check: any(bool(), enum('enabled', 'disabled'), required=False)
-  default_realm: enum('local', 'tacacs', 'ldap', required=False)
+  default_realm: enum('local', 'tacacs', 'ldap', 'radius', required=False)
   default_login_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  console_realm: enum('local', 'tacacs', 'ldap', required=False)
+  console_realm: enum('local', 'tacacs', 'ldap', 'radius', required=False)
   console_login_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   management_settings: include('fp_aaa_management_settings', required=False)
   tacacs_providers: list(include('fp_aaa_tacacs_providers'), required=False)
+  radius_providers: list(include('fp_aaa_radius_providers'), required=False)
   users: list(include('fp_aaa_users'), required=False) # @ref_name(User) @key(username) @sheet_hidden()
   login_domains: list(include('fp_aaa_login_domains'), required=False) # @ref_name(Login Domain)
   ca_certificates: list(include('fp_ca_certificate'), required=False) # @name(CA Certificate) @sheet_hidden()
@@ -516,6 +517,26 @@ fp_aaa_management_settings:
   web_token_timeout: int(min=300, max=9600, required=False)
   web_token_max_validity: int(min=4, max=24, required=False)
   web_session_idle_timeout: int(min=600, max=65525, required=False)
+
+fp_aaa_radius_providers:
+  hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  port: int(min=0, max=65535, required=False)
+  protocol: enum('pap', 'chap', 'mschap', required=False)
+  key: str(required=False)
+  timeout: int(min=0, max=60, required=False)
+  retries: int(min=0, max=5, required=False)
+  mgmt_epg: enum('inb', 'oob', required=False)
+  monitoring: bool(required=False)
+  monitoring_username: regex('^[a-zA-Z0-9][a-zA-Z0-9_.@-]{0,31}$', required=False)
+  monitoring_password: str(required=False)
+  expected_state: include('fp_aaa_radius_providers_expected_state', required=False) # @no_external_doc() @name(Radius Provider Expected State) @sheet_hidden()
+
+fp_aaa_radius_providers_expected_state:
+  minimum_health: int(min=0, max=100, required=False)
+  maximum_critical_faults: int(min=0, required=False)
+  maximum_major_faults: int(min=0, required=False)
+  maximum_minor_faults: int(min=0, required=False)
 
 fp_aaa_tacacs_providers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
@@ -571,18 +592,23 @@ fp_aaa_users_ssh_keys:
 
 fp_aaa_login_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  realm: enum('local', 'tacacs', 'ldap')
+  realm: enum('local', 'tacacs', 'ldap', 'radius')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   auth_choice: enum('CiscoAVPair', 'LdapGroupMap', required=False)
   ldap_group_map: regex('^[a-zA-Z0-9_.:-]{1,31}$', required=False)
   tacacs_providers: list(include('fp_aaa_login_domains_tacacs_providers'), required=False) # @name(Login Domain TACACS Providers)
   ldap_providers: list(include('fp_aaa_login_domains_ldap_providers'), required=False) # @name(Login Domain LDAP Providers) @sheet_hidden()
+  radius_providers: list(include('fp_aaa_login_domains_radius_providers'), required=False) # @name(Login Domain Radius Providers) @sheet_hidden()
 
 fp_aaa_login_domains_tacacs_providers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
   priority: int(min=0, max=16, required=False)
 
 fp_aaa_login_domains_ldap_providers:
+  hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
+  priority: int(min=0, max=16, required=False)
+
+fp_aaa_login_domains_radius_providers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
   priority: int(min=0, max=16, required=False)
 

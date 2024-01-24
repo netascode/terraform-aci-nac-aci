@@ -1,0 +1,49 @@
+{
+    "aaaRadiusEp": {
+        "attributes": {
+            "dn": "uni/userext/radiusext"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for prov in apic.fabric_policies.aaa.radius_providers | default([]) %}{{ comma1() }}
+            {
+                "aaaRadiusProvider": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "authProtocol": "{{ prov.protocol | default(defaults.apic.fabric_policies.aaa.radius_providers.protocol) }}",
+                        "descr": "{{ prov.description | default() }}",
+                        "dn": "uni/userext/radiusext/radiusprovider-{{ prov.hostname_ip }}",
+                        "monitorServer": "{{ prov.monitoring | default(defaults.apic.fabric_policies.aaa.radius_providers.monitoring) | cisco.aac.aac_bool("enabled") }}",
+                        {% if prov.monitoring | default(defaults.apic.fabric_policies.aaa.radius_providers.monitoring) %}
+                        "monitoringUser": "{{ prov.monitoring_username | default() }}",
+                        "monitoringPassword": "{{ prov.monitoring_password | default() }}",
+                        {% endif %}
+                        "name": "{{ prov.hostname_ip }}",
+                        "key": "{{ prov.key | default() }}",
+                        "authPort": "{{ prov.port | default(defaults.apic.fabric_policies.aaa.radius_providers.port) }}",
+                        "retries": "{{ prov.retries | default(defaults.apic.fabric_policies.aaa.radius_providers.retries) }}",
+                        "timeout": "{{ prov.timeout | default(defaults.apic.fabric_policies.aaa.radius_providers.timeout) }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {
+                            "aaaRsSecProvToEpg": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    {% set mgmt_epg = prov.mgmt_epg | default(defaults.apic.fabric_policies.aaa.radius_providers.mgmt_epg) %}
+                                    {% if mgmt_epg == "oob" %}
+                                    "tDn": "uni/tn-mgmt/mgmtp-default/oob-{{ apic.node_policies.oob_endpoint_group | default(defaults.apic.node_policies.oob_endpoint_group) }}"
+                                    {% elif mgmt_epg == "inb" %}
+                                    "tDn": "uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}"
+                                    {% endif %}
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

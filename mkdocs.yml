@@ -87,6 +87,7 @@ nav:
               - Infra DSCP Translation Policy: data_model/apic/fabric_policies/infra_dscp_translation_policy.md
               - AAA Settings: data_model/apic/fabric_policies/aaa.md
               - TACACS Provider: data_model/apic/fabric_policies/tacacs.md
+              - Radius Provider: data_model/apic/fabric_policies/radius.md
               - User: data_model/apic/fabric_policies/user.md
               - Login Domain: data_model/apic/fabric_policies/login_domain.md
               - Remote Location: data_model/apic/fabric_policies/remote_location.md

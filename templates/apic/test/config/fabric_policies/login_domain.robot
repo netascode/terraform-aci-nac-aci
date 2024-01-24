@@ -22,6 +22,15 @@ Verify Login Domain {{ login_domain.name }} TACACS Provider {{ prov.hostname_ip 
     Should Be Equal Value Json String   ${r.json()}    $..aaaProviderRef.attributes.order   {{ prov.priority | default(defaults.apic.fabric_policies.aaa.login_domains.tacacs_providers.priority) }}
 
 {% endfor %}
+{% elif login_domain.realm == 'radius' %}
+{% for prov in login_domain.radius_providers | default([]) %}
+
+Verify Login Domain {{ login_domain.name }} RADIUS Provider {{ prov.hostname_ip }}
+    ${r}=   GET On Session   apic   api/node/mo/uni/userext/radiusext/radiusprovidergroup-{{ login_domain.name }}/providerref-{{ prov.hostname_ip }}.json
+    Should Be Equal Value Json String   ${r.json()}    $..aaaProviderRef.attributes.name   {{ prov.hostname_ip }}
+    Should Be Equal Value Json String   ${r.json()}    $..aaaProviderRef.attributes.order   {{ prov.priority | default(defaults.apic.fabric_policies.aaa.login_domains.radius_providers.priority) }}
+
+{% endfor %}
 {% elif login_domain.realm == 'ldap' %}
 
 Verify Login Domain {{ login_domain.name }} LDAP Provider Group
