@@ -2,6 +2,7 @@
 
 # Copyright: (c) 2022, Daniel Schmidt <danischm@cisco.com>
 
+import os
 import errorhandler
 import pytest
 from iac_validate.validator import Validator
@@ -31,7 +32,7 @@ def test_apic_validation(data_paths):
 
 @pytest.mark.parametrize("data_paths", [(["tests/integration/fixtures/ndo/standard/"])])
 def test_ndo_validation(data_paths):
-    validator = Validator(NDO_SCHEMA_PATH, "")
+    validator = Validator(NDO_SCHEMA_PATH, ".rules/")
     validator.validate_syntax(data_paths)
     if validator.errors:
         pytest.fail("Syntactic validation has failed.")
