@@ -586,7 +586,7 @@ module "aci_radius" {
   monitoring_username = try(each.value.monitoring_username, "")
   monitoring_password = try(each.value.monitoring_password, "")
   key                 = try(each.value.key, "")
-  port                = try(each.value.port, local.defaults.apic.fabric_policies.aaa.radius_providers.port)""
+  port                = try(each.value.port, local.defaults.apic.fabric_policies.aaa.radius_providers.port)
   retries             = try(each.value.retries, local.defaults.apic.fabric_policies.aaa.radius_providers.retries)
   timeout             = try(each.value.timeout, local.defaults.apic.fabric_policies.aaa.radius_providers.timeout)
   mgmt_epg_type       = try(each.value.mgmt_epg, local.defaults.apic.fabric_policies.aaa.radius_providers.mgmt_epg)
