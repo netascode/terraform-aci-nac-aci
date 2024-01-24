@@ -21,6 +21,8 @@ FILTERS_PATH = "jinja_filters/"
 APIC_DEPLOY_TEMPLATES_PATH = "templates/apic/deploy/"
 APIC_TEST_TEMPLATES_PATH = "templates/apic/test/"
 
+PRIORITIZED_TEMPLATES = ["radius.j2"]
+
 
 def apic_deploy_config(apic_url, config_path):
     """Deploy config via a set of json files"""
@@ -35,7 +37,12 @@ def apic_deploy_config(apic_url, config_path):
     if r:
         return "APIC login failed: {}.".format(r)
     for dir, subdir, files in sorted(os.walk(config_path)):
-        for filename in sorted(files):
+        sorted_files = sorted(files)
+        for filename in PRIORITIZED_TEMPLATES:
+            if filename in sorted_files:
+                sorted_files.remove(filename)
+                sorted_files.insert(0, filename)
+        for filename in sorted_files:
             if ".j2" in filename:
                 with open(dir + os.path.sep + filename, "r") as file:
                     data = file.read()
