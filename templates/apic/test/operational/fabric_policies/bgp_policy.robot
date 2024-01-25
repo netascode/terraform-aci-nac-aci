@@ -13,7 +13,7 @@ Verify BGP Route Reflector {{ rr }} Peerings
     ${r}=   GET On Session   apic   /api/mo/uni/controller/setuppol/setupp-{{ pod }}.json
     ${tep_pool}=   Get Value From Json   ${r.json()}   $..fabricSetupP.attributes.tepPool
 {% for node in apic.node_policies.nodes | default([]) %}
-{% if node.role == "leaf" %}
+{% if node.role == "leaf" and node.pod | default(defaults.apic.node_policies.nodes.pod) == pod %}
     ${r}=   GET On Session   apic   api/node/class/fabricNode.json
     ${node_ip}=   Get Value From Json   ${r.json()}   $..imdata[?(@.fabricNode.attributes.id=='{{ node.id }}')].fabricNode.attributes.address
     ${r}=   GET On Session   apic   /api/node/mo/topology/pod-{{ pod }}/node-{{ rr }}/sys/bgp/inst/dom-overlay-1/peer-[${tep_pool}[0]]/ent-[${node_ip}[0]].json
