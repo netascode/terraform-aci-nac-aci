@@ -63,7 +63,7 @@ module "aci_port_tracking" {
   admin_state  = try(local.fabric_policies.port_tracking.admin_state, local.defaults.apic.fabric_policies.port_tracking.admin_state)
   delay        = try(local.fabric_policies.port_tracking.delay, local.defaults.apic.fabric_policies.port_tracking.delay)
   min_links    = try(local.fabric_policies.port_tracking.min_links, local.defaults.apic.fabric_policies.port_tracking.min_links)
-  apic_include = try(local.fabric_policies.port_tracking.apic_include, null)
+  include_apic = try(local.fabric_policies.port_tracking.include_apic, null)
 }
 
 module "aci_ptp" {
