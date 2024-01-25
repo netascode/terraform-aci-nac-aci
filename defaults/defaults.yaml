@@ -240,11 +240,20 @@ defaults:
           retries: 1
           timeout: 5
           mgmt_epg: inb
+        radius_providers:
+          protocol: pap
+          monitoring: false
+          port: 1812
+          retries: 1
+          timeout: 5
+          mgmt_epg: inb
         login_domains:
           auth_choice: CiscoAVPair
           tacacs_providers:
             priority: 0
           ldap_providers:
+            priority: 0
+          radius_providers:
             priority: 0
         users:
           status: active

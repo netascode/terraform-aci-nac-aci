@@ -12,7 +12,7 @@ resource "aci_rest_managed" "aaaDomainAuth" {
   class_name = "aaaDomainAuth"
   content = {
     realm         = var.realm
-    providerGroup = contains(["tacacs", "ldap"], var.realm) ? var.name : null
+    providerGroup = contains(["tacacs", "radius", "ldap"], var.realm) ? var.name : null
   }
 }
 
@@ -28,6 +28,25 @@ resource "aci_rest_managed" "aaaTacacsPlusProviderGroup" {
 resource "aci_rest_managed" "aaaProviderRef" {
   for_each   = { for prov in var.tacacs_providers : prov.hostname_ip => prov if var.realm == "tacacs" }
   dn         = "${aci_rest_managed.aaaTacacsPlusProviderGroup[0].dn}/providerref-${each.value.hostname_ip}"
+  class_name = "aaaProviderRef"
+  content = {
+    name  = each.value.hostname_ip
+    order = each.value.priority
+  }
+}
+
+resource "aci_rest_managed" "aaaRadiusProviderGroup" {
+  count      = var.realm == "radius" ? 1 : 0
+  dn         = "uni/userext/radiusext/radiusprovidergroup-${var.name}"
+  class_name = "aaaRadiusProviderGroup"
+  content = {
+    name = var.name
+  }
+}
+
+resource "aci_rest_managed" "aaaProviderRef_radius" {
+  for_each   = { for prov in var.radius_providers : prov.hostname_ip => prov if var.realm == "radius" }
+  dn         = "${aci_rest_managed.aaaRadiusProviderGroup[0].dn}/providerref-${each.value.hostname_ip}"
   class_name = "aaaProviderRef"
   content = {
     name  = each.value.hostname_ip

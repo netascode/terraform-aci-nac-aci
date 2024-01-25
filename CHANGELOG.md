@@ -2,6 +2,7 @@
 
 - Make L3 PBR destination MAC optional
 - Add `apic_include` option to `port_tracking` configuration
+- Add support for Radius Provider
 
 ## 0.8.0
 
