@@ -22,7 +22,7 @@ variable "default_realm" {
 
   validation {
     condition     = contains(["local", "tacacs", "radius"], var.default_realm)
-    error_message = "Valid values are `local` or `tacacs`, `radius`."
+    error_message = "Valid values are `local`, `tacacs` or `radius`."
   }
 }
 
@@ -44,7 +44,7 @@ variable "console_realm" {
 
   validation {
     condition     = contains(["local", "tacacs", "radius"], var.console_realm)
-    error_message = "Valid values are `local` or `tacacs`, `radius`."
+    error_message = "Valid values are `local`, `tacacs` or `radius`."
   }
 }
 
