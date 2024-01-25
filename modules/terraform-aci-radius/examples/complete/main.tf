@@ -1,6 +1,6 @@
 module "aci_radius" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-radius"
-  version = ">= 0.8.0"
+  version = ">= 0.8.1"
 
   hostname_ip         = "1.1.1.1"
   description         = "My Description"
