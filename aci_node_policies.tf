@@ -56,8 +56,8 @@ module "aci_inband_node_address" {
   for_each            = { for node in try(local.node_policies.nodes, []) : node.id => node if(try(node.inb_address, null) != null || try(node.inb_v6_address, null) != null) && local.modules.aci_inband_node_address && var.manage_node_policies }
   node_id             = each.value.id
   pod_id              = try(each.value.pod, local.defaults.apic.node_policies.nodes.pod)
-  ip                  = try(each.value.inb_address, "")
-  gateway             = try(each.value.inb_gateway, "")
+  ip                  = try(each.value.inb_address, "0.0.0.0")
+  gateway             = try(each.value.inb_gateway, "0.0.0.0")
   v6_ip               = try(each.value.inb_v6_address, "::")
   v6_gateway          = try(each.value.inb_v6_gateway, "::")
   endpoint_group      = try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
@@ -70,8 +70,8 @@ module "aci_oob_node_address" {
   for_each       = { for node in try(local.node_policies.nodes, []) : node.id => node if(try(node.oob_address, null) != null || try(node.oob_v6_address, null) != null) && local.modules.aci_oob_node_address && var.manage_node_policies }
   node_id        = each.value.id
   pod_id         = try(each.value.pod, local.defaults.apic.node_policies.nodes.pod)
-  ip             = try(each.value.oob_address, "")
-  gateway        = try(each.value.oob_gateway, "")
+  ip             = try(each.value.oob_address, "0.0.0.0")
+  gateway        = try(each.value.oob_gateway, "0.0.0.0")
   v6_ip          = try(each.value.oob_v6_address, "::")
   v6_gateway     = try(each.value.oob_v6_gateway, "::")
   endpoint_group = try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group)

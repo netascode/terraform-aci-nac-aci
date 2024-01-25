@@ -318,8 +318,8 @@ locals {
             nlb_mode            = try(subnet.nlb_mode, "")
             ip_pools = [for pool in try(subnet.ip_pools, []) : {
               name              = "${pool.name}${local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.ip_pools.name_suffix}"
-              start_ip          = try(pool.start_ip, "")
-              end_ip            = try(pool.end_ip, "")
+              start_ip          = try(pool.start_ip, "0.0.0.0")
+              end_ip            = try(pool.end_ip, "0.0.0.0")
               dns_search_suffix = try(pool.dns_search_suffix, "")
               dns_server        = try(pool.dns_server, "")
               dns_suffix        = try(pool.dns_suffix, "")

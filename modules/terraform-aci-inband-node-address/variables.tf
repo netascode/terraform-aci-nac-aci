@@ -22,13 +22,13 @@ variable "pod_id" {
 variable "ip" {
   description = "Inband IP address."
   type        = string
-  default     = ""
+  default     = "0.0.0.0"
 }
 
 variable "gateway" {
   description = "Inband gateway IP."
   type        = string
-  default     = ""
+  default     = "0.0.0.0"
 }
 
 variable "v6_ip" {

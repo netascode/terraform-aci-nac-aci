@@ -22,13 +22,13 @@ variable "pod_id" {
 variable "ip" {
   description = "OOB IP address."
   type        = string
-  default     = ""
+  default     = "0.0.0.0"
 }
 
 variable "gateway" {
   description = "OOB gateway IP."
   type        = string
-  default     = ""
+  default     = "0.0.0.0"
 }
 
 variable "v6_ip" {

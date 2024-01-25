@@ -110,7 +110,7 @@ resource "aci_rest_managed" "ipNexthopEpP" {
 
 resource "aci_rest_managed" "fvEpAnycast" {
   for_each   = { for subnet in var.subnets : subnet.ip => subnet if subnet.anycast_mac != "" }
-  dn         = "${aci_rest_managed.fvSubnet[each.value.ip].dn}/epAnycast-[${each.value.anycast_mac}]"
+  dn         = "${aci_rest_managed.fvSubnet[each.value.ip].dn}/epAnycast-${each.value.anycast_mac}"
   class_name = "fvEpAnycast"
   content = {
     mac = each.value.anycast_mac
@@ -372,7 +372,7 @@ resource "aci_rest_managed" "fvRsVmmVSwitchEnhancedLagPol" {
 
 resource "aci_rest_managed" "fvVip" {
   for_each   = { for vip in var.l4l7_virtual_ips : vip.ip => vip }
-  dn         = "${aci_rest_managed.fvAEPg.dn}/vip-${each.key}"
+  dn         = "${aci_rest_managed.fvAEPg.dn}/vip-[${each.key}]"
   class_name = "fvVip"
   content = {
     addr  = each.value.ip

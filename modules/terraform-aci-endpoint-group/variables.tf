@@ -231,8 +231,8 @@ variable "subnets" {
     nd_ra_prefix_policy = optional(string, "")
     ip_pools = optional(list(object({
       name              = string
-      start_ip          = optional(string, "")
-      end_ip            = optional(string, "")
+      start_ip          = optional(string, "0.0.0.0")
+      end_ip            = optional(string, "0.0.0.0")
       dns_search_suffix = optional(string, "")
       dns_server        = optional(string, "")
       dns_suffix        = optional(string, "")
