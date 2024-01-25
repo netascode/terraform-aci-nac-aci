@@ -39,6 +39,7 @@ module "aci_port_tracking" {
 | <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | Admin state. | `bool` | `false` | no |
 | <a name="input_delay"></a> [delay](#input\_delay) | Delay. Minimum value: 1. Maximum value: 300. | `number` | `120` | no |
 | <a name="input_min_links"></a> [min\_links](#input\_min\_links) | Minimum links. Minimum value: 0. Maximum value: 48. | `number` | `0` | no |
+| <a name="input_include_apic"></a> [include\_apic](#input\_include\_apic) | Include APIC ports. | `bool` | `null` | no |
 
 ## Outputs
 

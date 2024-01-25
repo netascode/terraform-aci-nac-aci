@@ -59,10 +59,11 @@ module "aci_fabric_wide_settings" {
 module "aci_port_tracking" {
   source = "./modules/terraform-aci-port-tracking"
 
-  count       = local.modules.aci_port_tracking == true && var.manage_fabric_policies ? 1 : 0
-  admin_state = try(local.fabric_policies.port_tracking.admin_state, local.defaults.apic.fabric_policies.port_tracking.admin_state)
-  delay       = try(local.fabric_policies.port_tracking.delay, local.defaults.apic.fabric_policies.port_tracking.delay)
-  min_links   = try(local.fabric_policies.port_tracking.min_links, local.defaults.apic.fabric_policies.port_tracking.min_links)
+  count        = local.modules.aci_port_tracking == true && var.manage_fabric_policies ? 1 : 0
+  admin_state  = try(local.fabric_policies.port_tracking.admin_state, local.defaults.apic.fabric_policies.port_tracking.admin_state)
+  delay        = try(local.fabric_policies.port_tracking.delay, local.defaults.apic.fabric_policies.port_tracking.delay)
+  min_links    = try(local.fabric_policies.port_tracking.min_links, local.defaults.apic.fabric_policies.port_tracking.min_links)
+  apic_include = try(local.fabric_policies.port_tracking.apic_include, null)
 }
 
 module "aci_ptp" {
