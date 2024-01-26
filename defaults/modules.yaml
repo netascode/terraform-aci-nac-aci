@@ -95,6 +95,7 @@ modules:
   aci_monitoring_policy: true
   aci_mst_policy: true
   aci_multicast_route_map: true
+  aci_nd_interface_policy: true
   aci_nd_ra_prefix_policy: true
   aci_node_control_policy: true
   aci_node_registration: true
