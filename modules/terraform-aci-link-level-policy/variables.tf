@@ -35,3 +35,14 @@ variable "fec_mode" {
     error_message = "Allowed values: `inherit`, `cl91-rs-fec`, `cl74-fc-fec`, `ieee-rs-fec`, `cons16-rs-fec`, `disable-fec`."
   }
 }
+
+variable "physical_media_type" {
+  description = "Physical Media Type. Choices: `auto`, `sfp-10g-tx`."
+  type        = string
+  default     = "auto"
+
+  validation {
+    condition     = contains(["auto", "sfp-10g-tx"], var.physical_media_type)
+    error_message = "Allowed values: `auto`, `sfp-10g-tx`."
+  }
+}

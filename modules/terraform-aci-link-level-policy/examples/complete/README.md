@@ -20,6 +20,7 @@ module "aci_link_level_policy" {
   speed    = "100G"
   auto     = true
   fec_mode = "disable-fec"
+  portPhyMediaType = "auto"
 }
 ```
 <!-- END_TF_DOCS -->
