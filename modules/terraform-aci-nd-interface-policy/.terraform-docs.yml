@@ -1,0 +1,34 @@
+version: '>= 0.0.1'
+
+formatter: markdown table
+
+content: |-
+  # Terraform ACI ND Interface Policy Module
+
+  Manages ACI ND Interface Policy
+
+  Location in GUI:
+  `Tenants` » `XXX` » `Policies` » `Protocol` » `ND Interface`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false
