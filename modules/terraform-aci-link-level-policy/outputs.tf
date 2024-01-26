@@ -9,6 +9,11 @@ output "dn2" {
 }
 
 output "name" {
-  value       = aci_rest_managed.fabricHIfPol[0].content.name
+  value       = "${var.physical_media_type == "auto" ? aci_rest_managed.fabricHIfPol[0].content.name : ""}"
+  description = "Link level interface policy name."
+}
+
+output "name2" {
+  value       = "${var.physical_media_type == "sfp-10g-tx" ? aci_rest_managed.fabricHIfPol_sfp-10g-tx[0].content.name : ""}"
   description = "Link level interface policy name."
 }
