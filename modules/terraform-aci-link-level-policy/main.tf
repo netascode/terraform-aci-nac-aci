@@ -10,7 +10,7 @@ resource "aci_rest_managed" "fabricHIfPol" {
   }
 }
 
-resource "aci_rest_managed" "fabricHIfPol_sfp-10g-tx" {
+resource "aci_rest_managed" "fabricHIfPol" {
   count      = var.physical_media_type == "sfp-10g-tx" ? 1 : 0
   dn         = "uni/infra/hintfpol-${var.name}"
   class_name = "fabricHIfPol"
