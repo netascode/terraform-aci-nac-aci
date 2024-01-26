@@ -4,6 +4,6 @@ output "dn" {
 }
 
 output "name" {
-  value       = aci_rest_managed.fabricHIfPol.content.name
+  value       = aci_rest_managed.fabricHIfPol[0].content.name
   description = "Link level interface policy name."
 }
