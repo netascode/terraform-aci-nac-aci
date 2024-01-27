@@ -3,6 +3,7 @@
 # Copyright: (c) 2022, Daniel Schmidt <danischm@cisco.com>
 
 import os
+import pytest
 
 import errorhandler
 from iac_test.robot_writer import RobotWriter
@@ -34,6 +35,30 @@ def revert_snapshot(vm_name, snapshot_name):
     else:
         vpshere = Vsphere(host, user, password)
     vpshere.vmware_revert_snapshot(vm_name, snapshot_name)
+
+
+def terraform_post_process(message, completed_process, ignore_errors=False):
+    print(
+        "--------------------------------------------------------------------------------"
+    )
+    print(message)
+    print("Return code: {}".format(completed_process.returncode))
+    print(
+        "--------------------------------------------------------------------------------"
+    )
+    print("stdout:")
+    print(completed_process.stdout)
+    print(
+        "--------------------------------------------------------------------------------"
+    )
+    print("stderr:")
+    print(completed_process.stderr)
+    print(
+        "--------------------------------------------------------------------------------"
+    )
+    if not ignore_errors:
+        if completed_process.returncode != 0:
+            pytest.fail(completed_process.stderr)
 
 
 class TimeoutHTTPAdapter(HTTPAdapter):

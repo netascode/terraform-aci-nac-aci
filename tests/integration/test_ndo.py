@@ -4,15 +4,15 @@
 
 import os
 import shutil
+import subprocess
 import time
 
 import errorhandler
 import iac_test.pabot
 import pytest
-import tftest
 from aci import Apic
 from ndo import Ndo
-from util import render_templates
+from util import render_templates, terraform_post_process
 
 pytestmark = pytest.mark.integration
 pytestmark = pytest.mark.ndo
@@ -214,6 +214,7 @@ def full_ndo_terraform(
     ndo_backup_id,
     version,
     tmpdir,
+    terraform_binary="terraform",
 ):
     """Deploy config to NDO instance and run tests"""
 
@@ -247,18 +248,30 @@ def full_ndo_terraform(
     os.environ["MSO_URL"] = ndo_url
 
     try:
-        tf = tftest.TerraformTest(
-            terraform_path,
-            env={
-                "TF_CLI_ARGS_apply": "-parallelism=1",
-                "TF_CLI_ARGS_destroy": "-parallelism=1",
-            },
+        r = subprocess.run(
+            [terraform_binary, "init", "-upgrade", "-no-color"],
+            cwd=terraform_path,
+            capture_output=True,
+            text=True,
         )
-        tf.setup(cleanup_on_exit=False, upgrade="upgrade")
-        try:
-            tf.apply()
-        except:
-            tf.apply()
+        terraform_post_process("TERRAFORM INIT", r)
+
+        r = subprocess.run(
+            [terraform_binary, "apply", "-auto-approve", "-no-color", "-parallelism=1"],
+            cwd=terraform_path,
+            capture_output=True,
+            text=True,
+        )
+        terraform_post_process("FIRST TERRAFORM APPLY", r, ignore_errors=True)
+
+        # second apply to work around NDO API quirks
+        r = subprocess.run(
+            [terraform_binary, "apply", "-auto-approve", "-no-color", "-parallelism=1"],
+            cwd=terraform_path,
+            capture_output=True,
+            text=True,
+        )
+        terraform_post_process("SECOND TERRAFORM APPLY", r)
 
         data_paths.append(os.path.join(terraform_path, "defaults.yaml"))
         # Render and run tests
@@ -286,10 +299,32 @@ def full_ndo_terraform(
             # pytest.fail(error)
             pass
 
-        try:
-            tf.destroy()
-        except:
-            tf.destroy()
+        r = subprocess.run(
+            [
+                terraform_binary,
+                "destroy",
+                "-auto-approve",
+                "-no-color",
+                "-parallelism=1",
+            ],
+            cwd=terraform_path,
+            capture_output=True,
+            text=True,
+        )
+        terraform_post_process("FIRST TERRAFORM DESTROY", r, ignore_errors=True)
+        r = subprocess.run(
+            [
+                terraform_binary,
+                "destroy",
+                "-auto-approve",
+                "-no-color",
+                "-parallelism=1",
+            ],
+            cwd=terraform_path,
+            capture_output=True,
+            text=True,
+        )
+        terraform_post_process("SECOND TERRAFORM DESTROY", r)
     finally:
         pass
         state_path = os.path.join(terraform_path, "terraform.tfstate")

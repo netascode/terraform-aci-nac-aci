@@ -4,14 +4,14 @@
 
 import os
 import shutil
+import subprocess
 import time
 
 import errorhandler
 import iac_test.pabot
 import pytest
-import tftest
 from aci import Apic
-from util import render_templates, revert_snapshot
+from util import render_templates, revert_snapshot, terraform_post_process
 
 pytestmark = pytest.mark.integration
 pytestmark = pytest.mark.apic
@@ -93,7 +93,7 @@ def full_apic_test(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir
     # Fix issue with ACI 5.2 simulator
     if version.startswith("5.2"):
         time.sleep(60)
-    
+
     # Run tests
     error = apic_render_run_tests(
         apic_url, data_paths, os.path.join(tmpdir, "results/")
@@ -118,7 +118,14 @@ def full_apic_test(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir
 
 
 def full_apic_terraform_test(
-    data_paths, terraform_path, vm_name, snapshot_name, apic_url, version, tmpdir
+    data_paths,
+    terraform_path,
+    vm_name,
+    snapshot_name,
+    apic_url,
+    version,
+    tmpdir,
+    terraform_binary="terraform",
 ):
     """Deploy config to ACI simulator using Terraform"""
 
@@ -129,19 +136,41 @@ def full_apic_terraform_test(
     os.environ["ACI_RETRIES"] = "4"
 
     try:
-        tf = tftest.TerraformTest(terraform_path)
-        tf.setup(cleanup_on_exit=False, upgrade="upgrade")
-        try:
-            tf.apply()
-        except Exception:
-            pass
+        r = subprocess.run(
+            [terraform_binary, "init", "-upgrade", "-no-color"],
+            cwd=terraform_path,
+            capture_output=True,
+            text=True,
+        )
+        terraform_post_process("TERRAFORM INIT", r)
+
+        r = subprocess.run(
+            [terraform_binary, "apply", "-auto-approve", "-no-color"],
+            cwd=terraform_path,
+            capture_output=True,
+            text=True,
+        )
+        terraform_post_process("FIRST TERRAFORM APPLY", r, ignore_errors=True)
+
         # second apply to work around APIC API quirks
-        tf.apply()
+        r = subprocess.run(
+            [terraform_binary, "apply", "-auto-approve", "-no-color"],
+            cwd=terraform_path,
+            capture_output=True,
+            text=True,
+        )
+        terraform_post_process("SECOND TERRAFORM APPLY", r)
 
         # check idempotency
-        output = tf.apply()
-        if "No changes. Your infrastructure matches the configuration." not in output:
-            pytest.fail(output)
+        r = subprocess.run(
+            [terraform_binary, "apply", "-auto-approve", "-no-color"],
+            cwd=terraform_path,
+            capture_output=True,
+            text=True,
+        )
+        terraform_post_process("THIRD TERRAFORM APPLY", r)
+        if "Your infrastructure matches the configuration." not in r.stdout:
+            pytest.fail("Idempotency check failed.")
 
         # Run tests
         data_paths.append(os.path.join(terraform_path, "defaults.yaml"))
@@ -167,10 +196,20 @@ def full_apic_terraform_test(
         if error:
             pytest.fail(error)
 
-        try:
-            tf.destroy()
-        except:
-            tf.destroy()
+        r = subprocess.run(
+            [terraform_binary, "destroy", "-auto-approve", "-no-color"],
+            cwd=terraform_path,
+            capture_output=True,
+            text=True,
+        )
+        terraform_post_process("FIRST TERRAFORM DESTROY", r, ignore_errors=True)
+        r = subprocess.run(
+            [terraform_binary, "destroy", "-auto-approve", "-no-color"],
+            cwd=terraform_path,
+            capture_output=True,
+            text=True,
+        )
+        terraform_post_process("SECOND TERRAFORM DESTROY", r)
     finally:
         state_path = os.path.join(terraform_path, "terraform.tfstate")
         state_backup_path = os.path.join(terraform_path, "terraform.tfstate.backup")
