@@ -46,6 +46,8 @@ resource "aci_rest_managed" "aaaLdapGroupMapRule" {
     descr   = each.value.description
     groupdn = each.value.group_dn
   }
+
+  depends_on = [aci_rest_managed.aaaRsSecProvToEpg]
 }
 
 locals {
@@ -105,6 +107,8 @@ resource "aci_rest_managed" "aaaLdapGroupMap" {
   content = {
     name = each.value.name
   }
+
+  depends_on = [aci_rest_managed.aaaUserRole]
 }
 
 locals {
