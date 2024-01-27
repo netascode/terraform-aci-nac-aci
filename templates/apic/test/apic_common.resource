@@ -17,13 +17,10 @@ Get APIC Token
     Set Log Level   ${log_level}
     ${r_token}=   Get Value From Json   ${response.json()}   $..token
     Set Parallel Value For Key   apic_token   ${r_token[0]}
-    Set Suite Variable   ${apic_token}   ${r_token[0]}
 
 Login APIC
-    Wait Until Keyword Succeeds   10x   1 s   Acquire Lock   login
+    Run Only Once   Get APIC Token
     ${apic_token}=   Get Parallel Value For Key   apic_token
-    Run Keyword If   "${apic_token}"=="${EMPTY}"   Get APIC Token
-    Release Lock   login
     Create Session   apic   %{ACI_URL}   headers={"Cookie": "APIC-cookie=${apic_token}"}
     Set Global Variable   ${STATE_PATH}   ${state_path}
 

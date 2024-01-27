@@ -18,13 +18,10 @@ Get NDO Token
     Set Log Level   ${log_level}
     ${r_token}=   Get Value From Json   ${response.json()}   $..token
     Set Parallel Value For Key   ndo_token   ${r_token[0]}
-    Set Suite Variable   ${ndo_token}   ${r_token[0]}
 
 Login NDO
-    Wait Until Keyword Succeeds   10x   1 s   Acquire Lock   login
+    Run Only Once   Get NDO Token
     ${ndo_token}=   Get Parallel Value For Key   ndo_token
-    Run Keyword If   "${ndo_token}"=="${EMPTY}"   Get NDO Token
-    Release Lock   login
     Create Session   ndo   %{MSO_URL}   headers={"Content-Type": "application/json", "Authorization": "Bearer ${ndo_token}"}
     Set Global Variable   ${STATE_PATH}   ${state_path}
 
