@@ -37,14 +37,6 @@ pipeline {
                 sh 'pytest -m validate'
             }
         }
-        stage('Update repos') {
-            when {
-                branch 'master'
-            }
-            steps {
-                sh 'cd scripts && python3 update_repos.py'
-            }
-        }
         stage('Update Documentation') {
             when {
                 branch 'master'
@@ -116,6 +108,11 @@ pipeline {
 
     post {
         always {
+            script {
+                if (env.BRANCH_NAME == "master") {
+                    sh 'cd scripts && python3 update_repos.py'
+                }
+            }
             sh "BUILD_STATUS=${currentBuild.currentResult} python .ci/webex-notification-jenkins.py"
             cleanWs()
         }
