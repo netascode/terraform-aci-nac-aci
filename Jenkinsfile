@@ -37,6 +37,22 @@ pipeline {
                 sh 'pytest -m validate'
             }
         }
+        stage('Update repos') {
+            when {
+                branch 'master'
+            }
+            steps {
+                sh 'cd scripts && python3 update_repos.py'
+            }
+        }
+        stage('Update Documentation') {
+            when {
+                branch 'master'
+            }
+            steps {
+                build job: '/netascode/netascode/master', wait: false
+            }
+        }
         stage('Test') {
             parallel {
                 stage('Test APIC 4.2') {
@@ -94,22 +110,6 @@ pipeline {
                         }
                     }
                 }
-            }
-        }
-        stage('Update repos') {
-            when {
-                branch 'master'
-            }
-            steps {
-                sh 'cd scripts && python3 update_repos.py'
-            }
-        }
-        stage('Update Documentation') {
-            when {
-                branch 'master'
-            }
-            steps {
-                build job: '/netascode/netascode/master', wait: false
             }
         }
     }
