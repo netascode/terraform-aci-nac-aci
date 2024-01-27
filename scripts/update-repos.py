@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright: (c) 2021, Daniel Schmidt <danischm@cisco.com>
+# Copyright: (c) 2023, Daniel Schmidt <danischm@cisco.com>
 
 import os
 import shutil
@@ -9,7 +9,8 @@ import tempfile
 
 REPOS = [
     {
-        "url": "https://wwwin-github.cisco.com/netascode/ansible-aac.git",
+        "url": "https://{}@wwwin-github.cisco.com/netascode/ansible-aac.git",
+        "type": "internal",
         "commit_message": "Aac updates",
         "directories": [
             {
@@ -89,7 +90,8 @@ REPOS = [
         ],
     },
     {
-        "url": "https://wwwin-github.cisco.com/netascode/terraform-aac.git",
+        "url": "https://{}@wwwin-github.cisco.com/netascode/terraform-aac.git",
+        "type": "internal",
         "commit_message": "Aac updates",
         "directories": [
             {
@@ -113,7 +115,8 @@ REPOS = [
         ],
     },
     {
-        "url": "https://wwwin-github.cisco.com/netascode/terraform-ndo-aac.git",
+        "url": "https://{}@wwwin-github.cisco.com/netascode/terraform-ndo-aac.git",
+        "type": "internal",
         "commit_message": "Aac updates",
         "directories": [
             {
@@ -149,7 +152,8 @@ REPOS = [
         ],
     },
     {
-        "url": "https://wwwin-github.cisco.com/danischm/aac-tf-demo.git",
+        "url": "https://{}@wwwin-github.cisco.com/danischm/aac-tf-demo.git",
+        "type": "internal",
         "commit_message": "Aac updates",
         "directories": [
             {
@@ -173,7 +177,8 @@ REPOS = [
         ],
     },
     {
-        "url": "https://wwwin-github.cisco.com/netascode/aac-tool.git",
+        "url": "https://{}@wwwin-github.cisco.com/netascode/aac-tool.git",
+        "type": "internal",
         "commit_message": "Aac updates",
         "directories": [
             {
@@ -233,7 +238,8 @@ REPOS = [
         ],
     },
     {
-        "url": "https://github.com/netascode/terraform-aci-nac-aci.git",
+        "url": "https://{}@github.com/netascode/terraform-aci-nac-aci.git",
+        "type": "external",
         "commit_message": "Defaults updates",
         "files": [
             {
@@ -243,7 +249,8 @@ REPOS = [
         ],
     },
     {
-        "url": "https://github.com/netascode/terraform-mso-nac-ndo.git",
+        "url": "https://{}@github.com/netascode/terraform-mso-nac-ndo.git",
+        "type": "external",
         "commit_message": "Defaults updates",
         "files": [
             {
@@ -253,7 +260,8 @@ REPOS = [
         ],
     },
     {
-        "url": "https://wwwin-github.cisco.com/netascode/onboarding-tool.git",
+        "url": "https://{}@wwwin-github.cisco.com/netascode/onboarding-tool.git",
+        "type": "internal",
         "commit_message": "Aac updates",
         "directories": [
             {
@@ -276,22 +284,28 @@ REPOS = [
             },
         ],
     },
-    {
-        "url": "https://github.com/netascode/nac-validate.git",
-        "commit_message": "Schema updates",
-        "files": [
-            {
-                "src": "../schemas/schema.json",
-                "dst": "./schema.json",
-            },
-        ],
-    },
 ]
+
+
+def print_message(message):
+    print(
+        "--------------------------------------------------------------------------------"
+    )
+    print(message)
+    print(
+        "--------------------------------------------------------------------------------"
+    )
 
 
 def update_repo(repo):
     with tempfile.TemporaryDirectory() as dirname:
-        subprocess.run(["git", "clone", repo["url"], dirname])
+        if repo["type"] == "internal":
+            url = repo["url"].format(os.getenv("DD_INTERNAL_GITHUB_TOKEN"))
+        elif repo["type"] == "external":
+            url = repo["url"].format(os.getenv("DD_GITHUB_TOKEN"))
+        args = ["git", "clone", url, dirname]
+        print_message("git clone")
+        subprocess.run(args, check=True)
         # copy files and dirs
         for dir in repo.get("directories", []):
             shutil.copytree(
@@ -300,24 +314,32 @@ def update_repo(repo):
         for file in repo.get("files", []):
             shutil.copyfile(file["src"], os.path.join(dirname, file["dst"]))
         cwd = dirname
-        subprocess.run(["git", "add", "--all"], cwd=cwd)
-        p = subprocess.run(["git", "diff", "--cached", "--exit-code"], cwd=cwd)
-        if p.returncode > 0:
-            subprocess.run(["git", "commit", "-m", repo["commit_message"]], cwd=cwd)
-            subprocess.run(["git", "push"], cwd=cwd)
+        args = ["git", "add", "--all"]
+        print_message(args)
+        subprocess.run(args, cwd=cwd, check=True)
+        args = ["git", "diff", "--cached", "--exit-code"]
+        print_message(args)
+        r = subprocess.run(args, cwd=cwd)
+        if r.returncode > 0:
+            if repo["type"] == "internal":
+                subprocess.run(["git", "config", "user.email", "digidev.gen@cisco.com"], cwd=cwd, check=True)
+                subprocess.run(["git", "config", "user.name", "digidev.gen"], cwd=cwd, check=True)
+            elif repo["type"] == "external":
+                subprocess.run(["git", "config", "user.email", "netascode-gen@cisco.com"], cwd=cwd, check=True)
+                subprocess.run(["git", "config", "user.name", "netascode-gen"], cwd=cwd, check=True)
+            args = ["git", "commit", "-m", repo["commit_message"]]
+            print_message(args)
+            subprocess.run(args, cwd=cwd, check=True)
+            args = ["git", "push"]
+            print_message(args)
+            subprocess.run(args, cwd=cwd, check=True)
 
 
-def update_aac():
+def update_repos():
     for repo in REPOS:
         print("\n-> Updating repo {}\n".format(repo["url"]))
         update_repo(repo)
 
 
-def update_json_schema():
-    print("\n-> Rendering JSON schema")
-    subprocess.run(["python", "json-schema.py"])
-
-
 if __name__ == "__main__":
-    update_json_schema()
-    update_aac()
+    update_repos()

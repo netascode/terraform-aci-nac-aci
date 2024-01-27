@@ -15,6 +15,8 @@ pipeline {
         VMWARE_HOST = credentials('VMWARE_HOST')
         VMWARE_USER = credentials('VMWARE_USER')
         VMWARE_PASSWORD = credentials('VMWARE_PASSWORD')
+        DD_GITHUB_TOKEN = credentials('DD_GITHUB_TOKEN')
+        DD_INTERNAL_GITHUB_TOKEN = credentials('DD_INTERNAL_GITHUB_TOKEN')
         WEBEX_TOKEN = credentials('WEBEX_TOKEN')
         WEBEX_ROOM_ID = 'Y2lzY29zcGFyazovL3VzL1JPT00vNTFmMGNmODAtYjI0My0xMWU5LTljZjUtNWY0NGQ2ZTlmYWY0'
         GIT_COMMIT_MESSAGE = "${sh(returnStdout: true, script: 'git config --global --add safe.directory "*" && git log -1 --pretty=%B ${GIT_COMMIT}').trim()}"
@@ -29,32 +31,14 @@ pipeline {
     }
 
     stages {
-        stage('Pipeline') {
+        stage('Lint') {
+            steps {
+                sh 'yamllint -s .'
+                sh 'pytest -m validate'
+            }
+        }
+        stage('Test') {
             parallel {
-                stage('Documentation') {
-                    when {
-                        branch 'master'
-                    }
-                    steps {
-                        build job: '/netascode/netascode/master', wait: false
-                    // sh 'pip install --upgrade mkdocs mkdocs-material'
-                    // sh 'python3 docs/aac-doc.py'
-                    // sh 'mkdocs build'
-                    // sshagent(credentials: ['AAC_HOST_SSH']) {
-                    //     sh '''
-                    //         [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
-                    //         ssh-keyscan -t rsa,dsa aac.cisco.com >> ~/.ssh/known_hosts
-                    //         scp -r site/ danischm@aac.cisco.com:/www/aac/
-                    //     '''
-                    // }
-                    }
-                }
-                stage('Lint') {
-                    steps {
-                        sh 'yamllint -s .'
-                        sh 'pytest -m validate'
-                    }
-                }
                 stage('Test APIC 4.2') {
                     steps {
                         sh 'pytest -m "apic_42 and not terraform"'
@@ -110,6 +94,22 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
+        stage('Update repos') {
+            when {
+                branch 'master'
+            }
+            steps {
+                sh 'cd scripts && python3 update_repos.py'
+            }
+        }
+        stage('Update Documentation') {
+            when {
+                branch 'master'
+            }
+            steps {
+                build job: '/netascode/netascode/master', wait: false
             }
         }
     }
