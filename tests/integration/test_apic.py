@@ -144,18 +144,15 @@ def full_apic_terraform_test(
         )
         terraform_post_process("TERRAFORM INIT", r)
 
+        apply_args = [terraform_binary, "apply", "-auto-approve", "-no-color"]
+        if version.startswith("6.0"):
+            apply_args.append("-parallelism=3")
         r = subprocess.run(
-            [terraform_binary, "apply", "-auto-approve", "-no-color"],
-            cwd=terraform_path,
-            capture_output=True,
-            text=True,
+            apply_args, cwd=terraform_path, capture_output=True, text=True
         )
         terraform_post_process("FIRST TERRAFORM APPLY", r, ignore_errors=True)
 
         # second apply to work around APIC API quirks
-        apply_args = [terraform_binary, "apply", "-auto-approve", "-no-color"]
-        if version.startswith("6.0"):
-            apply_args.append("-paralellism=3")
         r = subprocess.run(
             apply_args, cwd=terraform_path, capture_output=True, text=True
         )
@@ -195,7 +192,7 @@ def full_apic_terraform_test(
 
         destroy_args = [terraform_binary, "destroy", "-auto-approve", "-no-color"]
         if version.startswith("6.0"):
-            destroy_args.append("-paralellism=3")
+            destroy_args.append("-parallelism=3")
         r = subprocess.run(
             destroy_args,
             cwd=terraform_path,
