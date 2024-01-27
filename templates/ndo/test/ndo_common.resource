@@ -14,7 +14,7 @@ ${state_path}   tests/state/
 Get NDO Token
     Create Session   login   %{MSO_URL}   headers={"Content-Type": "application/json"}
     ${log_level}=   Set Log Level   NONE
-    ${response}=   POST On Session   login   /api/v1/auth/login   data=${login_json}
+    ${response}=   Wait Until Keyword Succeeds   6x   10s   POST On Session   login   /api/v1/auth/login   data=${login_json}
     Set Log Level   ${log_level}
     ${r_token}=   Get Value From Json   ${response.json()}   $..token
     Set Parallel Value For Key   ndo_token   ${r_token[0]}

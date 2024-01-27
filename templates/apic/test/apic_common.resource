@@ -13,7 +13,7 @@ ${state_path}   tests/state/
 Get APIC Token
     Create Session   login   %{ACI_URL}
     ${log_level}=   Set Log Level   NONE
-    ${response}=   POST On Session   login   /api/aaaLogin.json   data=${login_json}
+    ${response}=   Wait Until Keyword Succeeds   6x   10s   POST On Session   login   /api/aaaLogin.json   data=${login_json}
     Set Log Level   ${log_level}
     ${r_token}=   Get Value From Json   ${response.json()}   $..token
     Set Parallel Value For Key   apic_token   ${r_token[0]}
