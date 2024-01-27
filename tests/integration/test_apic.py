@@ -153,20 +153,17 @@ def full_apic_terraform_test(
         terraform_post_process("FIRST TERRAFORM APPLY", r, ignore_errors=True)
 
         # second apply to work around APIC API quirks
+        apply_args = [terraform_binary, "apply", "-auto-approve", "-no-color"]
+        if version.startswith("6.0"):
+            apply_args.append("-paralellism=3")
         r = subprocess.run(
-            [terraform_binary, "apply", "-auto-approve", "-no-color"],
-            cwd=terraform_path,
-            capture_output=True,
-            text=True,
+            apply_args, cwd=terraform_path, capture_output=True, text=True
         )
         terraform_post_process("SECOND TERRAFORM APPLY", r)
 
         # check idempotency
         r = subprocess.run(
-            [terraform_binary, "apply", "-auto-approve", "-no-color"],
-            cwd=terraform_path,
-            capture_output=True,
-            text=True,
+            apply_args, cwd=terraform_path, capture_output=True, text=True
         )
         terraform_post_process("THIRD TERRAFORM APPLY", r)
         if "Your infrastructure matches the configuration." not in r.stdout:
@@ -196,15 +193,18 @@ def full_apic_terraform_test(
         if error:
             pytest.fail(error)
 
+        destroy_args = [terraform_binary, "destroy", "-auto-approve", "-no-color"]
+        if version.startswith("6.0"):
+            destroy_args.append("-paralellism=3")
         r = subprocess.run(
-            [terraform_binary, "destroy", "-auto-approve", "-no-color"],
+            destroy_args,
             cwd=terraform_path,
             capture_output=True,
             text=True,
         )
         terraform_post_process("FIRST TERRAFORM DESTROY", r, ignore_errors=True)
         r = subprocess.run(
-            [terraform_binary, "destroy", "-auto-approve", "-no-color"],
+            destroy_args,
             cwd=terraform_path,
             capture_output=True,
             text=True,
@@ -356,8 +356,22 @@ def test_apic_terraform_52(
     ],
 )
 def test_apic_terraform_60(
-    data_paths, terraform_path, vm_name, snapshot_name, apic_url, version, tmpdir, terraform_binary
+    data_paths,
+    terraform_path,
+    vm_name,
+    snapshot_name,
+    apic_url,
+    version,
+    tmpdir,
+    terraform_binary,
 ):
     full_apic_terraform_test(
-        data_paths, terraform_path, vm_name, snapshot_name, apic_url, version, tmpdir, terraform_binary=terraform_binary
+        data_paths,
+        terraform_path,
+        vm_name,
+        snapshot_name,
+        apic_url,
+        version,
+        tmpdir,
+        terraform_binary=terraform_binary,
     )
