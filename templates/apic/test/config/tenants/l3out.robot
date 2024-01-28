@@ -192,71 +192,71 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} BGP Peer {{ peer.
 
 Verify L3out {{ l3out_name }} Node {{ node.node_id }} Interface {{ loop.index }}
 {% if int.port is defined or int.floating_svi | default(defaults.apic.tenants.l3outs.nodes.interfaces.floating_svi) | cisco.aac.aac_bool("yes") == 'yes' %}
-{% set type = 'ap' %}
-{% set query = "nodes[?id==`" ~ node.node_id ~ "`].pod" %}
-{% set pod = node.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+    {% set type = 'ap' %}
+    {% set query = "nodes[?id==`" ~ node.node_id ~ "`].pod" %}
+    {% set pod = node.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
 {% else %}
-{% set policy_group_name = int.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
-{% set query = "leaf_interface_policy_groups[?name==`" ~ int.channel ~ "`].type" %}
-{% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if int.node2_id is defined else 'pc') %}
-{% if int.node_id is defined %}
-    {% set node_ = int.node_id %}
-{% else %}
-    {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
-    {% set node_ = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
-{% endif %}
-{% set query = "nodes[?id==`" ~ node_ ~ "`].pod" %}
-{% set pod = node.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
-{% if type == 'vpc' %}
-{% if int.node2_id is defined %}
-    {% set node2 = int.node2_id %}
-{% else %}
-    {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
-    {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
-    {% if node2 < node_ %}{% set node_tmp = node_ %}{% set node_ = node2 %}{% set node2 = node_tmp %}{% endif %}
-{% endif %}
-{% endif %}
-{% endif %}
-{% if type == 'ap' %}
-{% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) ~ "/paths-" ~ node.node_id ~ "/pathep-[eth" ~ int.module | default(defaults.apic.tenants.l3outs.nodes.interfaces.module) ~ "/" ~ int.port ~ "]" %}
-{% elif type == 'pc' %}
-{% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) ~ "/paths-" ~ node_ ~ "/pathep-[" ~ policy_group_name ~ "]" %}
-{% elif type == 'vpc' %}
-{% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) ~ "/protpaths-" ~ node_ ~ "-" ~ node2 ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+    {% set policy_group_name = int.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
+    {% set query = "leaf_interface_policy_groups[?name==`" ~ int.channel ~ "`].type" %}
+    {% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if int.node2_id is defined else 'pc') %}
+    {% if int.node_id is defined %}
+        {% set node_ = int.node_id %}
+    {% else %}
+        {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
+        {% set node_ = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
+    {% endif %}
+    {% set query = "nodes[?id==`" ~ node_ ~ "`].pod" %}
+    {% set pod = node.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+    {% if type == 'vpc' %}
+        {% if int.node2_id is defined %}
+            {% set node2 = int.node2_id %}
+        {% else %}
+            {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
+            {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
+            {% if node2 < node_ %}{% set node_tmp = node_ %}{% set node_ = node2 %}{% set node2 = node_tmp %}{% endif %}
+        {% endif %}
+    {% endif %}
 {% endif %}
 {% if int.floating_svi | default(defaults.apic.tenants.l3outs.nodes.interfaces.floating_svi) | cisco.aac.aac_bool("yes") == 'no' %}
+    {% if type == 'ap' %}
+        {% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) ~ "/paths-" ~ node.node_id ~ "/pathep-[eth" ~ int.module | default(defaults.apic.tenants.l3outs.nodes.interfaces.module) ~ "/" ~ int.port ~ "]" %}
+    {% elif type == 'pc' %}
+        {% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) ~ "/paths-" ~ node_ ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+    {% elif type == 'vpc' %}
+        {% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) ~ "/protpaths-" ~ node_ ~ "-" ~ node2 ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+    {% endif %}
     ${int}=   Set Variable   $..l3extLIfP.children[?(@.l3extRsPathL3OutAtt.attributes.tDn=='{{ tDn }}')]
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.addr   {{ defaults.apic.tenants.l3outs.nodes.interfaces.ip if type == 'vpc' else int.ip }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.descr   {{ int.description | default() }}
     
-{% if int.vlan is defined %}
+    {% if int.vlan is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.ifInstT   {{ 'ext-svi' if int.svi | default(defaults.apic.tenants.l3outs.nodes.interfaces.svi) | cisco.aac.aac_bool("yes") == 'yes' else 'sub-interface'}}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.autostate   {{ 'enabled' if int.autostate | default(defaults.apic.tenants.l3outs.nodes.interfaces.autostate) else 'disabled' }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.encap   vlan-{{ int.vlan }}
-    {% if int.multipod_direct is defined %}
+        {% if int.multipod_direct is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.isMultiPodDirect    {{ 'yes' if int.multipod_direct | default(defaults.apic.tenants.l3outs.nodes.interfaces.multipod_direct) else 'no' }}
-    {% endif %}
-{% else %}
+        {% endif %}
+    {% else %}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.ifInstT   l3-port
-{% endif %}
+    {% endif %}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.mac   {{ int.mac | default(defaults.apic.tenants.l3outs.nodes.interfaces.mac) }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.mtu   {{ int.mtu | default(defaults.apic.tenants.l3outs.nodes.interfaces.mtu) }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.tDn   {{ tDn }}
-{% if type != 'vpc' and int.ip_shared is defined %}
+    {% if type != 'vpc' and int.ip_shared is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extIp.attributes.addr   {{ int.ip_shared }}
-{% endif %}
-{% if type == 'vpc' %}
+    {% endif %}
+    {% if type == 'vpc' %}
     ${ip1}=   Set Variable   ${int}..l3extRsPathL3OutAtt.children[?(@.l3extMember.attributes.addr=='{{ int.ip_a }}')]
     Should Be Equal Value Json String   ${r.json()}   ${ip1}..l3extMember.attributes.addr   {{ int.ip_a }}
-  {% if int.ip_shared is defined %}
+        {% if int.ip_shared is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${ip1}..l3extIp.attributes.addr   {{ int.ip_shared }}
-  {% endif %}
+        {% endif %}
     ${ip2}=   Set Variable   ${int}..l3extRsPathL3OutAtt.children[?(@.l3extMember.attributes.addr=='{{ int.ip_b }}')]
     Should Be Equal Value Json String   ${r.json()}   ${ip2}..l3extMember.attributes.addr   {{ int.ip_b }}
-  {% if int.ip_shared is defined %}
+        {% if int.ip_shared is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${ip2}..l3extIp.attributes.addr   {{ int.ip_shared }}
-  {% endif %}
-{% endif %}
+        {% endif %}
+    {% endif %}
 {% else %}
     ${int}=   Set Variable   $..l3extLIfP.children[?(@.l3extVirtualLIfP.attributes.nodeDn=='topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) }}/node-{{ node.node_id }}' & @.l3extVirtualLIfP.attributes.encap=='vlan-{{ int.vlan }}')]
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.addr   {{ int.ip }}
@@ -314,6 +314,13 @@ Verify L3out {{ l3out_name }} Node {{ node.node_id }} Interface {{ loop.index }}
 
 Verify L3out {{ l3out_name }} Node {{ node.node_id }} Interface {{ loop.index }} BGP Peer {{ peer.ip }}
 {% if int.floating_svi | default(defaults.apic.tenants.l3outs.nodes.interfaces.floating_svi) | cisco.aac.aac_bool("yes") == 'no' %}
+    {% if type == 'ap' %}
+        {% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) ~ "/paths-" ~ node.node_id ~ "/pathep-[eth" ~ int.module | default(defaults.apic.tenants.l3outs.nodes.interfaces.module) ~ "/" ~ int.port ~ "]" %}
+    {% elif type == 'pc' %}
+        {% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) ~ "/paths-" ~ node_ ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+    {% elif type == 'vpc' %}
+        {% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) ~ "/protpaths-" ~ node_ ~ "-" ~ node2 ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+    {% endif %}
     ${int}=   Set Variable   $..l3extLIfP.children[?(@.l3extRsPathL3OutAtt.attributes.tDn=='{{ tDn }}')]
     ${peer}=   Set Variable   ${int}..l3extRsPathL3OutAtt.children[?(@.bgpPeerP.attributes.addr=='{{ peer.ip }}')]
 {% else %}
@@ -479,32 +486,32 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
     Should Be Equal Value Json String   ${r.json()}   ${ip}..ospfIfP.attributes.name   {{ ip.ospf.ospf_interface_profile_name | default(l3out.name) }}
     Should Be Equal Value Json String   ${r.json()}   ${ip}..ospfIfP.attributes.authKeyId   {{ ip.ospf.auth_key_id | default(defaults.apic.tenants.l3outs.ospf.auth_key_id) }}
     Should Be Equal Value Json String   ${r.json()}   ${ip}..ospfIfP.attributes.authType   {{ ip.ospf.auth_type | default(defaults.apic.tenants.l3outs.ospf.auth_type) }}
-{% if ip.ospf.policy is defined %}
-{% set policy_name = ip.ospf.policy ~ defaults.apic.tenants.policies.ospf_interface_policies.name_suffix %}
+    {% if ip.ospf.policy is defined %}
+        {% set policy_name = ip.ospf.policy ~ defaults.apic.tenants.policies.ospf_interface_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${ip}..ospfRsIfPol.attributes.tnOspfIfPolName   {{ policy_name }}
-{% endif %}
+    {% endif %}
 {% endif %}
 {% if ip.eigrp is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${ip}..eigrpIfP.attributes.name   {{ ip.eigrp.interface_profile_name | default(l3out.name) }}
-{% if ip.eigrp.interface_policy is defined %}
-{% set policy_name = ip.eigrp.interface_policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
+    {% if ip.eigrp.interface_policy is defined %}
+        {% set policy_name = ip.eigrp.interface_policy ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${ip}..eigrpRsIfPol.attributes.tnEigrpIfPolName   {{ policy_name }}
-{% endif %}
+    {% endif %}
 {% endif %}
 {% if ip.bfd_policy is defined %}
-{% set bfd_name = ip.bfd_policy ~ defaults.apic.tenants.policies.bfd_interface_policies.name_suffix %}
+    {% set bfd_name = ip.bfd_policy ~ defaults.apic.tenants.policies.bfd_interface_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${ip}..bfdRsIfPol.attributes.tnBfdIfPolName   {{ bfd_name }}
 {% endif %}
 {% if ip.pim_policy is defined %}
-{% set pim_name = ip.pim_policy ~ defaults.apic.tenants.policies.pim_policies.name_suffix %}
+    {% set pim_name = ip.pim_policy ~ defaults.apic.tenants.policies.pim_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${ip}..pimRsIfPol.attributes.tDn   uni/tn-{{tenant.name}}/pimifpol-{{ pim_name }}
 {% endif %}
 {% if ip.igmp_interface_policy is defined %}
-{% set igmp_name = ip.igmp_interface_policy ~ defaults.apic.tenants.policies.igmp_interface_policies.name_suffix %}
+    {% set igmp_name = ip.igmp_interface_policy ~ defaults.apic.tenants.policies.igmp_interface_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${ip}..igmpRsIfPol.attributes.tDn   uni/tn-{{tenant.name}}/igmpIfPol-{{ igmp_name }}
 {% endif %}
 {% if ip.custom_qos_policy is defined %}
-{% set custom_qos_policy_name = ip.custom_qos_policy ~ defaults.apic.tenants.policies.custom_qos.name_suffix %}
+    {% set custom_qos_policy_name = ip.custom_qos_policy ~ defaults.apic.tenants.policies.custom_qos.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${ip}..l3extRsLIfPCustQosPol.attributes.tnQosCustomPolName   {{ custom_qos_policy_name }}
 {% endif %}
 
@@ -512,72 +519,72 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
 
 Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile {{ l3out_ip_name }} Interface {{ loop.index }}
 {% if int.port is defined or int.floating_svi | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.floating_svi) | cisco.aac.aac_bool("yes") == 'yes' %}
-{% set type = 'ap' %}
-{% set query = "nodes[?id==`" ~ int.node_id ~ "`].pod" %}
-{% set pod = int.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+    {% set type = 'ap' %}
+    {% set query = "nodes[?id==`" ~ int.node_id ~ "`].pod" %}
+    {% set pod = int.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
 {% else %}
-{% set policy_group_name = int.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
-{% set query = "leaf_interface_policy_groups[?name==`" ~ int.channel ~ "`].type" %}
-{% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if int.node2_id is defined else 'pc') %}
-{% if int.node_id is defined %}
-    {% set node_ = int.node_id %}
-{% else %}
-    {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
-    {% set node_ = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
-{% endif %}
-{% set query = "nodes[?id==`" ~ node_ ~ "`].pod" %}
-{% set pod = int.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
-{% if type == 'vpc' %}
-{% if int.node2_id is defined %}
-    {% set node2 = int.node2_id %}
-{% else %}
-    {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
-    {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
-    {% if node2 < node_ %}{% set node_tmp = node_ %}{% set node_ = node2 %}{% set node2 = node_tmp %}{% endif %}
-{% endif %}
-{% endif %}
-{% endif %}
-{% if type == 'ap' %}
-{% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) ~ "/paths-" ~ int.node_id ~ "/pathep-[eth" ~ int.module | default(defaults.apic.tenants.l3outs.nodes.interfaces.module) ~ "/" ~ int.port ~ "]" %}
-{% elif type == 'pc' %}
-{% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) ~ "/paths-" ~ node_ ~ "/pathep-[" ~ policy_group_name ~ "]" %}
-{% elif type == 'vpc' %}
-{% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) ~ "/protpaths-" ~ node_ ~ "-" ~ node2 ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+    {% set policy_group_name = int.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
+    {% set query = "leaf_interface_policy_groups[?name==`" ~ int.channel ~ "`].type" %}
+    {% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if int.node2_id is defined else 'pc') %}
+    {% if int.node_id is defined %}
+        {% set node_ = int.node_id %}
+    {% else %}
+        {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
+        {% set node_ = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
+    {% endif %}
+    {% set query = "nodes[?id==`" ~ node_ ~ "`].pod" %}
+    {% set pod = int.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+    {% if type == 'vpc' %}
+        {% if int.node2_id is defined %}
+            {% set node2 = int.node2_id %}
+        {% else %}
+            {% set query = "nodes[?interfaces[?policy_group==`" ~ int.channel ~ "`]].id" %}
+            {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
+            {% if node2 < node_ %}{% set node_tmp = node_ %}{% set node_ = node2 %}{% set node2 = node_tmp %}{% endif %}
+        {% endif %}
+    {% endif %}
 {% endif %}
 {% if int.floating_svi | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.floating_svi) | cisco.aac.aac_bool("yes") == 'no' %}
+    {% if type == 'ap' %}
+        {% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) ~ "/paths-" ~ int.node_id ~ "/pathep-[eth" ~ int.module | default(defaults.apic.tenants.l3outs.nodes.interfaces.module) ~ "/" ~ int.port ~ "]" %}
+    {% elif type == 'pc' %}
+        {% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) ~ "/paths-" ~ node_ ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+    {% elif type == 'vpc' %}
+        {% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) ~ "/protpaths-" ~ node_ ~ "-" ~ node2 ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+    {% endif %}
     ${np}=   Set Variable   $..l3extOut.children[?(@.l3extLNodeP.attributes.name=='{{ l3out_np_name }}')]
     ${ip}=   Set Variable   ${np}..l3extLNodeP.children[?(@.l3extLIfP.attributes.name=='{{ l3out_ip_name }}')]
     ${int}=   Set Variable   ${ip}..l3extLIfP.children[?(@.l3extRsPathL3OutAtt.attributes.tDn=='{{ tDn }}')]
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.addr   {{ defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.ip if type == 'vpc' else int.ip }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.descr   {{ int.description | default() }}
-{% if int.vlan is defined %}
+    {% if int.vlan is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.ifInstT   {{ 'ext-svi' if int.svi | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.svi) | cisco.aac.aac_bool("yes") == 'yes' else 'sub-interface'}}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.autostate   {{ 'enabled' if int.autostate | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.autostate) else 'disabled' }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.encap   vlan-{{ int.vlan }}
-    {% if int.multipod_direct is defined %}
+        {% if int.multipod_direct is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.isMultiPodDirect    {{ 'yes' if int.multipod_direct | default(defaults.apic.tenants.l3outs.nodes.interfaces.multipod_direct) else 'no' }}
-    {% endif %}
-{% else %}
+        {% endif %}
+    {% else %}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.ifInstT   l3-port
-{% endif %}
+    {% endif %}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.mac   {{ int.mac | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mac) }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.mtu   {{ int.mtu | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mtu) }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.tDn   {{ tDn }}
-{% if type != 'vpc' and int.ip_shared is defined %}
+    {% if type != 'vpc' and int.ip_shared is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extIp.attributes.addr   {{ int.ip_shared }}
-{% endif %}
-{% if type == 'vpc' %}
+    {% endif %}
+    {% if type == 'vpc' %}
     ${ip1}=   Set Variable   ${int}..l3extRsPathL3OutAtt.children[?(@.l3extMember.attributes.addr=='{{ int.ip_a }}')]
     Should Be Equal Value Json String   ${r.json()}   ${ip1}..l3extMember.attributes.addr   {{ int.ip_a }}
-  {% if int.ip_shared is defined %}
+        {% if int.ip_shared is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${ip1}..l3extIp.attributes.addr   {{ int.ip_shared }}
-  {% endif %}
+        {% endif %}
     ${ip2}=   Set Variable   ${int}..l3extRsPathL3OutAtt.children[?(@.l3extMember.attributes.addr=='{{ int.ip_b }}')]
     Should Be Equal Value Json String   ${r.json()}   ${ip2}..l3extMember.attributes.addr   {{ int.ip_b }}
-  {% if int.ip_shared is defined %}
+        {% if int.ip_shared is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${ip2}..l3extIp.attributes.addr   {{ int.ip_shared }}
-  {% endif %}
-{% endif %}
+        {% endif %}
+    {% endif %}
 {% else %}
     ${int}=   Set Variable   $..l3extLIfP.children[?(@.l3extVirtualLIfP.attributes.nodeDn=='topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) }}/node-{{ int.node_id }}' & @.l3extVirtualLIfP.attributes.encap=='vlan-{{ int.vlan }}')]
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.addr   {{ int.ip }}
@@ -637,6 +644,13 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
     ${np}=   Set Variable   $..l3extOut.children[?(@.l3extLNodeP.attributes.name=='{{ l3out_np_name }}')]
     ${ip}=   Set Variable   ${np}..l3extLNodeP.children[?(@.l3extLIfP.attributes.name=='{{ l3out_ip_name }}')]
 {% if int.floating_svi | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.floating_svi) | cisco.aac.aac_bool("yes") == 'no' %}
+    {% if type == 'ap' %}
+        {% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) ~ "/paths-" ~ int.node_id ~ "/pathep-[eth" ~ int.module | default(defaults.apic.tenants.l3outs.nodes.interfaces.module) ~ "/" ~ int.port ~ "]" %}
+    {% elif type == 'pc' %}
+        {% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) ~ "/paths-" ~ node_ ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+    {% elif type == 'vpc' %}
+        {% set tDn = "topology/pod-" ~ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) ~ "/protpaths-" ~ node_ ~ "-" ~ node2 ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+    {% endif %}
     ${int}=   Set Variable   ${ip}..l3extLIfP.children[?(@.l3extRsPathL3OutAtt.attributes.tDn=='{{ tDn }}')]
     ${peer}=   Set Variable   ${int}..l3extRsPathL3OutAtt.children[?(@.bgpPeerP.attributes.addr=='{{ peer.ip }}')]
 {% else %}
