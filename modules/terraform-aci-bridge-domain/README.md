@@ -85,6 +85,8 @@ module "aci_bridge_domain" {
 | <a name="input_clear_remote_mac_entries"></a> [clear\_remote\_mac\_entries](#input\_clear\_remote\_mac\_entries) | Clear remote MAC entries flag. | `bool` | `false` | no |
 | <a name="input_virtual_mac"></a> [virtual\_mac](#input\_virtual\_mac) | Virtual MAC address. Format: `12:34:56:78:9A:BC`. | `string` | `"not-applicable"` | no |
 | <a name="input_l3_multicast"></a> [l3\_multicast](#input\_l3\_multicast) | L3 multicast. | `bool` | `false` | no |
+| <a name="input_pim_source_filter"></a> [pim\_source\_filter](#input\_pim\_source\_filter) | PIM source filter. | `string` | `""` | no |
+| <a name="input_pim_destination_filter"></a> [pim\_destination\_filter](#input\_pim\_destination\_filter) | PIM destination filter. | `string` | `""` | no |
 | <a name="input_multi_destination_flooding"></a> [multi\_destination\_flooding](#input\_multi\_destination\_flooding) | Multi destination flooding. Choices: `bd-flood`, `encap-flood`, `drop`. | `string` | `"bd-flood"` | no |
 | <a name="input_unicast_routing"></a> [unicast\_routing](#input\_unicast\_routing) | Unicast routing. | `bool` | `true` | no |
 | <a name="input_unknown_unicast"></a> [unknown\_unicast](#input\_unknown\_unicast) | Unknown unicast forwarding behavior. Choices: `flood`, `proxy`. | `string` | `"proxy"` | no |
@@ -118,5 +120,7 @@ module "aci_bridge_domain" {
 | [aci_rest_managed.fvSubnet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.igmpIfP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.igmpRsIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.rtdmcRsFilterToRtMapPol_destination](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.rtdmcRsFilterToRtMapPol_source](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.tagTag](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->
