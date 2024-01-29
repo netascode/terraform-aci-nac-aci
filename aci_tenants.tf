@@ -2915,7 +2915,7 @@ locals {
         tenant                                                  = tenant.name
         contract                                                = "${dsp.contract}${local.defaults.apic.tenants.contracts.name_suffix}"
         service_graph_template                                  = "${dsp.service_graph_template}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
-        sgt_device_tenant                                       = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : try(sg_template.device.tenant, tenant.name) if sg_template.name == dsp.service_graph_template][0] : tenant.name
+        sgt_device_tenant                                       = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : try(sg_template.device.tenant, "") if sg_template.name == dsp.service_graph_template][0] : ""
         sgt_device_name                                         = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : "${sg_template.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}" if sg_template.name == dsp.service_graph_template][0] : ""
         consumer_l3_destination                                 = try(dsp.consumer.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination)
         consumer_permit_logging                                 = try(dsp.consumer.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.consumer.permit_logging)
