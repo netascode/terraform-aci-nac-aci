@@ -226,11 +226,11 @@ module "aci_lldp_policy" {
 module "aci_link_level_policy" {
   source = "./modules/terraform-aci-link-level-policy"
 
-  for_each = { for llp in try(local.access_policies.interface_policies.link_level_policies, []) : llp.name => llp if local.modules.aci_link_level_policy && var.manage_access_policies }
-  name     = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}"
-  speed    = try(each.value.speed, local.defaults.apic.access_policies.interface_policies.link_level_policies.speed)
-  auto     = try(each.value.auto, local.defaults.apic.access_policies.interface_policies.link_level_policies.auto)
-  fec_mode = try(each.value.fec_mode, local.defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode)
+  for_each            = { for llp in try(local.access_policies.interface_policies.link_level_policies, []) : llp.name => llp if local.modules.aci_link_level_policy && var.manage_access_policies }
+  name                = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}"
+  speed               = try(each.value.speed, local.defaults.apic.access_policies.interface_policies.link_level_policies.speed)
+  auto                = try(each.value.auto, local.defaults.apic.access_policies.interface_policies.link_level_policies.auto)
+  fec_mode            = try(each.value.fec_mode, local.defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode)
   physical_media_type = try(each.value.physical_media_type, null)
 }
 
