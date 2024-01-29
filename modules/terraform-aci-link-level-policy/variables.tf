@@ -39,9 +39,10 @@ variable "fec_mode" {
 variable "physical_media_type" {
   description = "Physical Media Type. Choices: `auto`, `sfp-10g-tx`."
   type        = string
+  default     = null
 
   validation {
-    condition     = contains(["auto", "sfp-10g-tx"], var.physical_media_type)
+    condition     = var.physical_media_type == null ? true : (contains(["auto", "sfp-10g-tx"], var.physical_media_type))
     error_message = "Allowed values: `auto`, `sfp-10g-tx`."
   }
 }

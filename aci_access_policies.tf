@@ -231,7 +231,7 @@ module "aci_link_level_policy" {
   speed    = try(each.value.speed, local.defaults.apic.access_policies.interface_policies.link_level_policies.speed)
   auto     = try(each.value.auto, local.defaults.apic.access_policies.interface_policies.link_level_policies.auto)
   fec_mode = try(each.value.fec_mode, local.defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode)
-  physical_media_type = try(each.value.physical_media_type, local.defaults.apic.access_policies.interface_policies.link_level_policies.physical_media_type)
+  physical_media_type = try(each.value.physical_media_type, null)
 }
 
 module "aci_port_channel_policy" {
