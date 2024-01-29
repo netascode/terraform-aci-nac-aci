@@ -73,6 +73,7 @@ module "aci_l4l7_device" {
 | <a name="input_function"></a> [function](#input\_function) | Function. Choices: `None`, `GoTo`, `GoThrough`, `L2`, `L1`. | `string` | `"GoTo"` | no |
 | <a name="input_copy_device"></a> [copy\_device](#input\_copy\_device) | Copy device. | `bool` | `false` | no |
 | <a name="input_managed"></a> [managed](#input\_managed) | Managed. | `bool` | `false` | no |
+| <a name="input_exported_tenant"></a> [exported\_tenant](#input\_exported\_tenant) | Tenant to which the L4L7 device is exported. | `string` | `""` | no |
 | <a name="input_promiscuous_mode"></a> [promiscuous\_mode](#input\_promiscuous\_mode) | Promiscuous mode. | `bool` | `false` | no |
 | <a name="input_service_type"></a> [service\_type](#input\_service\_type) | Service type. Choices: `ADC`, `FW`, `OTHERS`, `COPY`, `NATIVELB`. | `string` | `"OTHERS"` | no |
 | <a name="input_trunking"></a> [trunking](#input\_trunking) | Trunking. | `bool` | `false` | no |
@@ -95,6 +96,7 @@ module "aci_l4l7_device" {
 |------|------|
 | [aci_rest_managed.vnsCDev](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsCIf](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vnsLDevIf](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsLDevVip](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsLIf](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsRsALDevToDomP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

@@ -12,7 +12,7 @@ resource "aci_rest_managed" "vnsRsLDevCtxToLDev" {
   dn         = "${aci_rest_managed.vnsLDevCtx.dn}/rsLDevCtxToLDev"
   class_name = "vnsRsLDevCtxToLDev"
   content = {
-    tDn = "uni/tn-${var.sgt_device_tenant != "" ? var.sgt_device_tenant : var.tenant}/lDevVip-${var.sgt_device_name}"
+    tDn = var.sgt_device_tenant == "" ? "uni/tn-${var.tenant}/lDevVip-${var.sgt_device_name}" : "uni/tn-${var.tenant}/lDevIf-[uni/tn-${var.sgt_device_tenant}/lDevVip-${var.sgt_device_name}]"
   }
 }
 

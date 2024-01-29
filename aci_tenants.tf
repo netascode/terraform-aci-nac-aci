@@ -2652,6 +2652,7 @@ locals {
         function         = try(device.function, local.defaults.apic.tenants.services.l4l7_devices.function)
         copy_device      = try(device.copy_device, local.defaults.apic.tenants.services.l4l7_devices.copy_device)
         managed          = try(device.managed, local.defaults.apic.tenants.services.l4l7_devices.managed)
+        exported_tenant  = try(device.exported_tenant, "")
         promiscuous_mode = try(device.promiscuous_mode, local.defaults.apic.tenants.services.l4l7_devices.promiscuous_mode)
         service_type     = try(device.service_type, local.defaults.apic.tenants.services.l4l7_devices.service_type)
         trunking         = try(device.trunking, local.defaults.apic.tenants.services.l4l7_devices.trunking)
@@ -2704,6 +2705,7 @@ module "aci_l4l7_device" {
   function         = each.value.function
   copy_device      = each.value.copy_device
   managed          = each.value.managed
+  exported_tenant  = each.value.exported_tenant
   promiscuous_mode = each.value.promiscuous_mode
   service_type     = each.value.service_type
   trunking         = each.value.trunking

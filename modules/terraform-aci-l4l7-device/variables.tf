@@ -74,6 +74,12 @@ variable "managed" {
   default     = false
 }
 
+variable "exported_tenant" {
+  description = "Tenant to which the L4L7 device is exported."
+  type        = string
+  default     = ""
+}
+
 variable "promiscuous_mode" {
   description = "Promiscuous mode."
   type        = bool

@@ -118,8 +118,8 @@ Additional example repositories:
 
 | Name | Version |
 |------|---------|
-| <a name="provider_local"></a> [local](#provider\_local) | >= 2.3.0 |
-| <a name="provider_utils"></a> [utils](#provider\_utils) | >= 0.2.5 |
+| <a name="provider_local"></a> [local](#provider\_local) | 2.4.1 |
+| <a name="provider_utils"></a> [utils](#provider\_utils) | 0.2.5 |
 
 ## Resources
 

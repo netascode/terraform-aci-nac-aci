@@ -30,6 +30,15 @@ locals {
   ])
 }
 
+resource "aci_rest_managed" "vnsLDevIf" {
+  count      = var.exported_tenant != "" ? 1 : 0
+  dn         = "uni/tn-${var.exported_tenant}/lDevIf-[uni/tn-${var.tenant}/lDevVip-${var.name}]"
+  class_name = "vnsLDevIf"
+  content = {
+    ldev = "uni/tn-${var.tenant}/lDevVip-${var.name}"
+  }
+}
+
 resource "aci_rest_managed" "vnsLDevVip" {
   dn         = "uni/tn-${var.tenant}/lDevVip-${var.name}"
   class_name = "vnsLDevVip"
