@@ -435,7 +435,6 @@ defaults:
           speed: inherit
           auto: true
           fec_mode: inherit
-          physical_media_type: auto
         port_channel_policies:
           name_suffix: ""
           min_links: 1
