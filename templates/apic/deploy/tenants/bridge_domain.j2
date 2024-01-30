@@ -156,7 +156,69 @@
                                 }
                             }
                         }
-                        {% endif %}
+                        {%- endif %}
+                        {%- if bd.pim_source_filter is defined or bd.pim_destination_filter is defined %}{{ comma2() }}
+                        {
+                            "pimBDP": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                },
+                                "children": [
+                                    {
+                                        "pimBDFilterPol": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                            },
+                                            "children": [
+                                                {%- set comma3 = joiner(",") %}
+                                                {%- if bd.pim_source_filter is defined %}{{ comma3() }}
+                                                {% set filter_name = bd.pim_source_filter ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix %}
+                                                {
+                                                    "pimBDSrcFilterPol": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "rtdmcRsFilterToRtMapPol": {
+                                                                    "attributes": {
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ filter_name }}"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                                {%- endif %}
+                                                {%- if bd.pim_destination_filter is defined %}{{ comma3() }}
+                                                {% set filter_name = bd.pim_destination_filter ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix %}
+                                                {
+                                                    "pimBDDestFilterPol": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "rtdmcRsFilterToRtMapPol": {
+                                                                    "attributes": {
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tDn": "uni/tn-{{ tenant.name }}/rtmap-{{ filter_name }}"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                                {%- endif %}
+
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        {%- endif %}
 
                     ]
                 }
