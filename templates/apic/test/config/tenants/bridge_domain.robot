@@ -39,10 +39,10 @@ Verify Bridge Domain {{ bd_name }}
     Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.epMoveDetectMode   {{ bd_move_detection }}
 {% if bd.pim_source_filter is defined %}
     Should Be Equal Value Json String   ${r.json()}   $..pimBDSrcFilterPol..rtdmcRsFilterToRtMapPol.attributes.tDn   uni/tn-{{ tenant.name }}/rtmap-{{ bd.pim_source_filter ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix }}
-{% endif }
+{% endif %}
 {% if bd.pim_destination_filter is defined %}
     Should Be Equal Value Json String   ${r.json()}   $..pimBDDestFilterPol..rtdmcRsFilterToRtMapPol.attributes.tDn   uni/tn-{{ tenant.name }}/rtmap-{{ bd.pim_destination_filter ~ defaults.apic.tenants.policies.multicast_route_maps.name_suffix }}
-{% endif }
+{% endif %}
 
 {% for dhcp_label in bd.dhcp_labels | default([]) %}
 {% set dhcp_relay_policy_name = dhcp_label.dhcp_relay_policy ~ defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix %}
