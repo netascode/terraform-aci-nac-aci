@@ -717,6 +717,8 @@ defaults:
         unicast_routing: true
         advertise_host_routes: false
         l3_multicast: false
+        dhcp_labels:
+          scope: tenant
         subnets:
           primary_ip: false
           public: false
