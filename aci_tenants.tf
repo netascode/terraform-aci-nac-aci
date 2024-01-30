@@ -2645,7 +2645,7 @@ locals {
         route_advertise_interval = try(policy.route_advertise_interval, local.defaults.apic.tenants.policies.nd_interface_policies.route_advertise_interval)
         router_lifetime          = try(policy.router_lifetime, local.defaults.apic.tenants.policies.nd_interface_policies.router_lifetime)
         reachable_time           = try(policy.reachable_time, local.defaults.apic.tenants.policies.nd_interface_policies.reachable_time)
-        retransmit_timer         = try(policy.retransmit_retry_count, local.defaults.apic.tenants.policies.nd_interface_policies.retransmit_timer)
+        retransmit_timer         = try(policy.retransmit_timer, local.defaults.apic.tenants.policies.nd_interface_policies.retransmit_timer)
       }
     ]
   ])
