@@ -1,6 +1,6 @@
 module "aci_nd_interface_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-nd-interface-policy"
-  version = ">= 0.8.0"
+  version = ">= 0.8.1"
 
   tenant                   = "ABC"
   name                     = "ND-INTF-POL1"

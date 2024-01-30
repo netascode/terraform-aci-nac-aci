@@ -6,6 +6,7 @@
 - Add support for imported L4L7 devices
 - Add support for PIM source and destination filters to bridge domains
 - Add support for DHCP label scope to bridge domains
+- Add support for ND interface policies
 
 ## 0.8.0
 
