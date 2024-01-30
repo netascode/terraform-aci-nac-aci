@@ -1013,6 +1013,22 @@ apic:
               maximum_major_faults: 1000
               maximum_minor_faults: 1000
           - name: ND_RA_PREFIX2
+        nd_interface_policies:
+          - name: ND_INT1
+            description: My ND Interface policy
+            controller_state: [managed-cfg, other-cfg]
+            hop_limit: 10
+            ns_tx_interval: 1000
+            mtu: 2000
+            retransmit_retry_count: 10
+            nud_retransmit_base: 1
+            nud_retransmit_interval: 2000
+            nud_retransmit_count: 5
+            route_advertise_interval: 100
+            router_lifetime: 1000
+            reachable_time: 10000
+            retransmit_timer: 20
+          - name: ND_INT2
       services:
         l4l7_devices:
           - name: DEV1

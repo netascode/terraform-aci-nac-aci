@@ -10,8 +10,7 @@ apic:
     pod_profile_name: "POD\\g<id>"
     pod_profile_pod_selector_name: "POD\\g<id>"
 
-    # temporarly disabled due to bug in 2.13.0 provider release, https://github.com/CiscoDevNet/terraform-provider-aci/pull/1147
-    # config_passphrase: Cisco123!Cisco123!
+    config_passphrase: Cisco123!Cisco123!
 
     apic_conn_pref: ooband
 
