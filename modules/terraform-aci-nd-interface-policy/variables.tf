@@ -88,7 +88,7 @@ variable "retransmit_retry_count" {
 variable "nud_retransmit_base" {
   description = "NUD retransmission base. Minimum value: 1. Maximum value: 3."
   type        = number
-  default     = 1
+  default     = null
 
   validation {
     condition     = var.nud_retransmit_base >= 1 && var.nud_retransmit_base <= 3
@@ -99,7 +99,7 @@ variable "nud_retransmit_base" {
 variable "nud_retransmit_interval" {
   description = "NUD retransmission interval (msec). Minimum value: 1000. Maximum value: 10000."
   type        = number
-  default     = 1000
+  default     = null
 
   validation {
     condition     = var.nud_retransmit_interval >= 1000 && var.nud_retransmit_interval <= 10000
@@ -110,7 +110,7 @@ variable "nud_retransmit_interval" {
 variable "nud_retransmit_count" {
   description = "NUD retransmission count. Minimum value: 3. Maximum value: 10."
   type        = number
-  default     = 3
+  default     = null
 
   validation {
     condition     = var.nud_retransmit_count >= 3 && var.nud_retransmit_count <= 10

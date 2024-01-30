@@ -56,9 +56,9 @@ module "aci_nd_interface_policy" {
 | <a name="input_ns_tx_interval"></a> [ns\_tx\_interval](#input\_ns\_tx\_interval) | Neighbor solicitation transmit interval (msec). Minimum value: 1000. Maximum value: 3600000. | `number` | `1000` | no |
 | <a name="input_mtu"></a> [mtu](#input\_mtu) | Maximum transmission unit. Minimum value: 1280. Maximum value: 9000. | `number` | `9000` | no |
 | <a name="input_retransmit_retry_count"></a> [retransmit\_retry\_count](#input\_retransmit\_retry\_count) | Retransmission retry count. Minimum value: 1. Maximum value: 100. | `number` | `3` | no |
-| <a name="input_nud_retransmit_base"></a> [nud\_retransmit\_base](#input\_nud\_retransmit\_base) | NUD retransmission base. Minimum value: 1. Maximum value: 3. | `number` | `1` | no |
-| <a name="input_nud_retransmit_interval"></a> [nud\_retransmit\_interval](#input\_nud\_retransmit\_interval) | NUD retransmission interval (msec). Minimum value: 1000. Maximum value: 10000. | `number` | `1000` | no |
-| <a name="input_nud_retransmit_count"></a> [nud\_retransmit\_count](#input\_nud\_retransmit\_count) | NUD retransmission count. Minimum value: 3. Maximum value: 10. | `number` | `3` | no |
+| <a name="input_nud_retransmit_base"></a> [nud\_retransmit\_base](#input\_nud\_retransmit\_base) | NUD retransmission base. Minimum value: 1. Maximum value: 3. | `number` | `null` | no |
+| <a name="input_nud_retransmit_interval"></a> [nud\_retransmit\_interval](#input\_nud\_retransmit\_interval) | NUD retransmission interval (msec). Minimum value: 1000. Maximum value: 10000. | `number` | `null` | no |
+| <a name="input_nud_retransmit_count"></a> [nud\_retransmit\_count](#input\_nud\_retransmit\_count) | NUD retransmission count. Minimum value: 3. Maximum value: 10. | `number` | `null` | no |
 | <a name="input_route_advertise_interval"></a> [route\_advertise\_interval](#input\_route\_advertise\_interval) | Route advertise interval. Minimum value: 4. Maximum value: 1800. | `number` | `600` | no |
 | <a name="input_router_lifetime"></a> [router\_lifetime](#input\_router\_lifetime) | Router lifetime. Minimum value: 0. Maximum value: 9000. | `number` | `1800` | no |
 | <a name="input_reachable_time"></a> [reachable\_time](#input\_reachable\_time) | Reachable time (msec). Minimum value: 0. Maximum value: 3600000. | `number` | `0` | no |
