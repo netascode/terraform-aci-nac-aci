@@ -103,7 +103,7 @@ apic:
           advertise_host_routes: true
           l3_multicast: false
           pim_source_filter: TEST_MRM1
-          pim destination_filter: TEST_MRM1
+          pim_destination_filter: TEST_MRM1
           vrf: VRF1
           subnets:
             - ip: 1.1.1.1/24
