@@ -88,10 +88,10 @@ variable "retransmit_retry_count" {
 variable "nud_retransmit_base" {
   description = "NUD retransmission base. Minimum value: 1. Maximum value: 3."
   type        = number
-  default     = null
+  default     = 0
 
   validation {
-    condition     = var.nud_retransmit_base == null || var.nud_retransmit_base >= 1 && var.nud_retransmit_base <= 3
+    condition     = var.nud_retransmit_base == 0 || var.nud_retransmit_base >= 1 && var.nud_retransmit_base <= 3
     error_message = "Minimum value: 1. Maximum value: 3."
   }
 }
@@ -99,10 +99,10 @@ variable "nud_retransmit_base" {
 variable "nud_retransmit_interval" {
   description = "NUD retransmission interval (msec). Minimum value: 1000. Maximum value: 10000."
   type        = number
-  default     = null
+  default     = 0
 
   validation {
-    condition     = var.nud_retransmit_interval == null || var.nud_retransmit_interval >= 1000 && var.nud_retransmit_interval <= 10000
+    condition     = var.nud_retransmit_interval == 0 || var.nud_retransmit_interval >= 1000 && var.nud_retransmit_interval <= 10000
     error_message = "Minimum value: 1000. Maximum value: 10000."
   }
 }
@@ -110,10 +110,10 @@ variable "nud_retransmit_interval" {
 variable "nud_retransmit_count" {
   description = "NUD retransmission count. Minimum value: 3. Maximum value: 10."
   type        = number
-  default     = null
+  default     = 0
 
   validation {
-    condition     = var.nud_retransmit_count == null || var.nud_retransmit_count >= 3 && var.nud_retransmit_count <= 10
+    condition     = var.nud_retransmit_count == 0 || var.nud_retransmit_count >= 3 && var.nud_retransmit_count <= 10
     error_message = "Minimum value: 3. Maximum value: 10."
   }
 }

@@ -9,9 +9,9 @@ resource "aci_rest_managed" "ndIfPol" {
     nsIntvl             = var.ns_tx_interval
     mtu                 = var.mtu
     nsRetries           = var.retransmit_retry_count
-    nudRetryBase        = var.nud_retransmit_base != null ? var.nud_retransmit_base : null
-    nudRetryInterval    = var.nud_retransmit_interval != null ? var.nud_retransmit_interval : null
-    nudRetryMaxAttempts = var.nud_retransmit_count != null ? var.nud_retransmit_count : null
+    nudRetryBase        = var.nud_retransmit_base != 0 ? var.nud_retransmit_base : null
+    nudRetryInterval    = var.nud_retransmit_interval != 0 ? var.nud_retransmit_interval : null
+    nudRetryMaxAttempts = var.nud_retransmit_count != 0 ? var.nud_retransmit_count : null
     raIntvl             = var.route_advertise_interval
     raLifetime          = var.router_lifetime
     reachableTime       = var.reachable_time
