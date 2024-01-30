@@ -2626,6 +2626,56 @@ locals {
   ])
 }
 
+locals {
+  nd_interface_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.nd_interface_policies, []) : {
+        key                      = format("%s/%s", tenant.name, policy.name)
+        tenant                   = tenant.name
+        name                     = "${policy.name}${local.defaults.apic.tenants.policies.nd_interface_policies.name_suffix}"
+        description              = try(policy.description, "")
+        controller_state         = [for state in try(policy.controller_state, []) : state]
+        hop_limit                = try(policy.hop_limit, local.defaults.apic.tenants.policies.nd_interface_policies.hop_limit)
+        ns_tx_interval           = try(policy.ns_tx_interval, local.defaults.apic.tenants.policies.nd_interface_policies.ns_tx_interval)
+        mtu                      = try(policy.mtu, local.defaults.apic.tenants.policies.nd_interface_policies.mtu)
+        retransmit_retry_count   = try(policy.retransmit_retry_count, local.defaults.apic.tenants.policies.nd_interface_policies.retransmit_retry_count)
+        nud_retransmit_base      = try(policy.nud_retransmit_base, local.defaults.apic.tenants.policies.nd_interface_policies.nud_retransmit_base)
+        nud_retransmit_interval  = try(policy.nud_retransmit_interval, local.defaults.apic.tenants.policies.nd_interface_policies.nud_retransmit_interval)
+        nud_retransmit_count     = try(policy.nud_retransmit_count, local.defaults.apic.tenants.policies.nd_interface_policies.nud_retransmit_count)
+        route_advertise_interval = try(policy.route_advertise_interval, local.defaults.apic.tenants.policies.nd_interface_policies.route_advertise_interval)
+        router_lifetime          = try(policy.router_lifetime, local.defaults.apic.tenants.policies.nd_interface_policies.router_lifetime)
+        reachable_time           = try(policy.reachable_time, local.defaults.apic.tenants.policies.nd_interface_policies.reachable_time)
+        retransmit_timer         = try(policy.retransmit_retry_count, local.defaults.apic.tenants.policies.nd_interface_policies.retransmit_timer)
+      }
+    ]
+  ])
+}
+
+module "aci_nd_interface_policy" {
+  source = "./modules/terraform-aci-nd-interface-policy"
+
+  for_each                 = { for pol in local.nd_interface_policies : pol.key => pol if local.modules.aci_nd_interface_policy && var.manage_tenants }
+  tenant                   = each.value.tenant
+  name                     = each.value.name
+  description              = each.value.description
+  controller_state         = each.value.controller_state
+  hop_limit                = each.value.hop_limit
+  ns_tx_interval           = each.value.ns_tx_interval
+  mtu                      = each.value.mtu
+  retransmit_retry_count   = each.value.retransmit_retry_count
+  nud_retransmit_base      = each.value.nud_retransmit_base
+  nud_retransmit_interval  = each.value.nud_retransmit_interval
+  nud_retransmit_count     = each.value.nud_retransmit_count
+  route_advertise_interval = each.value.route_advertise_interval
+  router_lifetime          = each.value.router_lifetime
+  reachable_time           = each.value.reachable_time
+  retransmit_timer         = each.value.retransmit_timer
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
 module "aci_nd_ra_prefix_policy" {
   source = "./modules/terraform-aci-nd-ra-prefix-policy"
 

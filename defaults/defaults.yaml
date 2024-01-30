@@ -1256,6 +1256,19 @@ defaults:
           detection_multiplier: 3
           min_rx_interval: 250
           min_tx_interval: 250
+        nd_interface_policies:
+          name_suffix: ""
+          hop_limit: 64
+          ns_tx_interval: 1000
+          mtu: 9000
+          retransmit_retry_count: 3
+          nud_retransmit_base: 1
+          nud_retransmit_interval: 1000
+          nud_retransmit_count: 3
+          route_advertise_interval: 600
+          router_lifetime: 1800
+          reachable_time: 0
+          retransmit_timer: 0
         nd_ra_prefix_policies:
           name_suffix: ""
           valid_lifetime: 2592000
