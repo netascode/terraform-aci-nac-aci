@@ -202,6 +202,7 @@ locals {
         dhcp_labels = [for label in try(bd.dhcp_labels, []) : {
           dhcp_relay_policy  = try("${label.dhcp_relay_policy}${local.defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix}", "")
           dhcp_option_policy = try("${label.dhcp_option_policy}${local.defaults.apic.tenants.policies.dhcp_option_policies.name_suffix}", "")
+          scope              = try(label.scope, local.defaults.apic.tenants.bridge_domains.dhcp_labels.scope)
         }]
       }
     ]

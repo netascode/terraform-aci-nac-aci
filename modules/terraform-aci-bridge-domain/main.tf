@@ -98,7 +98,7 @@ resource "aci_rest_managed" "dhcpLbl" {
   dn         = "${aci_rest_managed.fvBD.dn}/dhcplbl-${each.value.dhcp_relay_policy}"
   class_name = "dhcpLbl"
   content = {
-    owner = "tenant",
+    owner = each.value.scope,
     name  = each.value.dhcp_relay_policy
   }
 

@@ -5,6 +5,7 @@
 - Add support for Radius Provider
 - Add support for imported L4L7 devices
 - Add support for PIM source and destination filters to bridge domains
+- Add support for DHCP label scope to bridge domains
 
 ## 0.8.0
 

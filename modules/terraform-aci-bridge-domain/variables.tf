@@ -254,6 +254,7 @@ variable "dhcp_labels" {
   type = list(object({
     dhcp_relay_policy  = string
     dhcp_option_policy = optional(string)
+    scope              = optional(string, "tenant")
   }))
   default = []
 
@@ -262,6 +263,13 @@ variable "dhcp_labels" {
       for l in var.dhcp_labels : l.dhcp_relay_policy == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", l.dhcp_relay_policy))
     ])
     error_message = "`dhcp_relay_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for l in var.dhcp_labels : contains(["tenant", "infra"], l.scope)
+    ])
+    error_message = "`scope`: Allowed values: `tenant`, `infra`."
   }
 
   validation {
