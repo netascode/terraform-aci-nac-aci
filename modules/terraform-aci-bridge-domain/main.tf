@@ -139,3 +139,21 @@ resource "aci_rest_managed" "fvRsIgmpsn" {
     tnIgmpSnoopPolName = var.igmp_snooping_policy
   }
 }
+
+resource "aci_rest_managed" "rtdmcRsFilterToRtMapPol_source" {
+  count      = var.pim_source_filter != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvBD.dn}/pimbdp/pimbdfilterp/pimbdsrcfilterp/rsfilterToRtMapPol"
+  class_name = "rtdmcRsFilterToRtMapPol"
+  content = {
+    tDn = "uni/tn-${var.tenant}/rtmap-${var.pim_source_filter}"
+  }
+}
+
+resource "aci_rest_managed" "rtdmcRsFilterToRtMapPol_destination" {
+  count      = var.pim_destination_filter != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvBD.dn}/pimbdp/pimbdfilterp/pimbddestfilterp/rsfilterToRtMapPol"
+  class_name = "rtdmcRsFilterToRtMapPol"
+  content = {
+    tDn = "uni/tn-${var.tenant}/rtmap-${var.pim_destination_filter}"
+  }
+}

@@ -104,6 +104,18 @@ variable "l3_multicast" {
   default     = false
 }
 
+variable "pim_source_filter" {
+  description = "PIM source filter."
+  type        = string
+  default     = ""
+}
+
+variable "pim_destination_filter" {
+  description = "PIM destination filter."
+  type        = string
+  default     = ""
+}
+
 variable "multi_destination_flooding" {
   description = "Multi destination flooding. Choices: `bd-flood`, `encap-flood`, `drop`."
   type        = string
