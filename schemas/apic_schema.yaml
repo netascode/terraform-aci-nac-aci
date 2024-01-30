@@ -2662,6 +2662,7 @@ ten_policies:
   qos: list(include('ten_qos'), required=False) # @name(QoS Policies) @ref_name(QoS Policy) @sheet_hidden()
   mpls_custom_qos_policies: list(include('ten_mpls_custom_qos_policies'), required=False) # @sheet_hidden()
   bfd_multihop_node_policies: list(include('ten_bfd_multihop_node_policies'), required=False) # @sheet_hidden()
+  nd_interface_policies: list(include('ten_nd_interface_policies'), required=False) # @sheet_hidden()
   nd_ra_prefix_policies: list(include('ten_nd_ra_prefix_policies'), required=False) # @sheet_hidden()
 
 ten_ospf_interface_policies:
@@ -3065,6 +3066,22 @@ ten_bfd_multihop_node_policies:
   detection_multiplier: int(min=1, max=50, required=False)
   min_rx_interval: int(min=250, max=999, required=False)
   min_tx_interval: int(min=250, max=999, required=False)
+
+ten_nd_interface_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  controller_state: list(enum('managed-cfg', 'other-cfg', 'suppress-ra', 'suppress-ra-mtu', 'unsolicit-na-glean'), required=False)
+  hop_limit: int(min=0, max=255, required=False)
+  ns_tx_interval: int(min=0, max=3600000, required=False)
+  mtu: int(min=1280, max=9000, required=False)
+  retransmit_retry_count: int(min=1, max=100, required=False)
+  nud_retransmit_base: int(min=1, max=3, required=False)
+  nud_retransmit_interval: int(min=1000, max=10000, required=False)
+  nud_retransmit_count: int(min=3, max=10, required=False)
+  route_advertise_interval: int(min=4, max=1800, required=False)
+  router_lifetime: int(min=0, max=9000, required=False)
+  reachable_time: int(min=0, max=3600000, required=False)
+  retransmit_timer: int(min=0, max=4294967295, required=False)
 
 ten_nd_ra_prefix_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

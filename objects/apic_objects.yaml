@@ -1834,6 +1834,18 @@ tenant_objects:
       - health
     paths:
       - apic.tenants.oob_contracts
+  - name: ND Interface Policy
+    template: nd_interface_policy
+    folder: tenants
+    aci_classes:
+      - ndIfPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.nd_interface_policies
   - name: ND RA Prefix Policy
     template: nd_ra_prefix_policy
     folder: tenants
