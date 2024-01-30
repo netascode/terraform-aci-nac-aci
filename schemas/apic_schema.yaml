@@ -1784,6 +1784,8 @@ ten_bridge_domains:
   virtual_mac: mac(required=False)
   ep_move_detection: any(bool(), enum('enabled', 'disabled'), required=False)
   l3_multicast: any(bool(), enum('yes', 'no'), required=False)
+  pim_source_filter: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  pim_destination_filter: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   multi_destination_flooding: enum('bd-flood', 'encap-flood', 'drop', required=False)
   unicast_routing: any(bool(), enum('yes', 'no'), required=False)
   unknown_unicast: enum('flood', 'proxy', required=False)
