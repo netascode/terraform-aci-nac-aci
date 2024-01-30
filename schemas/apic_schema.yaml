@@ -2475,6 +2475,7 @@ ten_l3outs_expected_state_learned_prefixes:
 ten_dhcp_labels:
   dhcp_relay_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   dhcp_option_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  scope: enum('infra', 'tenant', required=False)
 
 ten_inb_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

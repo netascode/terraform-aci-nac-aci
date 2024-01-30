@@ -51,6 +51,7 @@ Verify Bridge Domain {{ bd_name }} DHCP Relay Policy {{ dhcp_relay_policy_name }
     ${dhcp_label}=   Set Variable   $..fvBD.children[?(@.dhcpLbl.attributes.name=='{{ dhcp_relay_policy_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${dhcp_label}..dhcpLbl.attributes.name   {{ dhcp_relay_policy_name }}
     Should Be Equal Value Json String   ${r.json()}   ${dhcp_label}..dhcpLbl.attributes.descr   {{ dhcp_label.description | default() }} 
+    Should Be Equal Value Json String   ${r.json()}   ${dhcp_label}..dhcpLbl.attributes.owner   {{ dhcp_label.scope | default(defaults.apic.tenants.bridge_domains.dhcp_labels.scope) }}
 {% if dhcp_label.dhcp_option_policy is defined %}
 {% set dhcp_option_policy_name = dhcp_label.dhcp_option_policy ~ defaults.apic.tenants.policies.dhcp_option_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${dhcp_label}..dhcpRsDhcpOptionPol.attributes.tnDhcpOptionPolName   {{ dhcp_option_policy_name }}

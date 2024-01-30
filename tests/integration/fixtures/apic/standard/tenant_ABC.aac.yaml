@@ -133,6 +133,7 @@ apic:
           dhcp_labels:
             - dhcp_relay_policy: DHCP-RELAY1
               dhcp_option_policy: DHCP-OPTION1
+              scope: tenant
           igmp_snooping_policy: IGMP_SNOOP1
           igmp_interface_policy: IGMP1
           expected_state:

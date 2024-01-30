@@ -48,7 +48,7 @@
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
                                     "dn": "uni/tn-{{ tenant.name }}/BD-{{ bd_name }}/dhcplbl-{{ dhcp_relay_policy_name }}",
-                                    "owner": "tenant",
+                                    "owner": "{{ dhcp_label.scope | default(defaults.apic.tenants.bridge_domains.dhcp_labels.scope) }}",
                                     "name": "{{ dhcp_relay_policy_name }}"
                                 },
                                 "children": [
