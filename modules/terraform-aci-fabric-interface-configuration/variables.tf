@@ -41,17 +41,6 @@ variable "sub_port" {
   }
 }
 
-variable "policy_group_type" {
-  description = "Interface policy group type. Choices: `access`, `pc`, `vpc`."
-  type        = string
-  default     = "access"
-
-  validation {
-    condition     = contains(["access", "pc", "vpc"], var.policy_group_type)
-    error_message = "Allowed values: `access`, `pc` or `vpc`."
-  }
-}
-
 variable "policy_group" {
   description = "Interface policy group name."
   type        = string
@@ -60,28 +49,6 @@ variable "policy_group" {
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.policy_group))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
-  }
-}
-
-variable "breakout" {
-  description = "Breakout Map. Allowed values: `none`, `100g-2x`, `100g-4x`, `10g-4x`, `25g-4x`, `50g-8x`. Default value: `none`."
-  type        = string
-  default     = "none"
-
-  validation {
-    condition     = contains(["none", "100g-2x", "100g-4x", "10g-4x", "25g-4x", "`50g-8x"], var.breakout)
-    error_message = "Allowed values: `none`, `100g-2x`, `100g-4x`, `10g-4x`, `25g-4x`, `50g-8x`."
-  }
-}
-
-variable "fex_id" {
-  description = "FEX ID. Allowed values: 101-199. `0` meaning no FEX."
-  type        = string
-  default     = "unspecified"
-
-  validation {
-    condition     = try(contains(["unspecified"], var.fex_id), false) || try(tonumber(var.fex_id) == 0, false) || try(tonumber(var.fex_id) >= 101 && tonumber(var.fex_id) <= 65535, false)
-    error_message = "Allowed values: 0, 101-199."
   }
 }
 

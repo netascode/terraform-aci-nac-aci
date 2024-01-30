@@ -146,6 +146,7 @@ Additional example repositories:
 | <a name="module_aci_access_leaf_interface_selector_auto"></a> [aci\_access\_leaf\_interface\_selector\_auto](#module\_aci\_access\_leaf\_interface\_selector\_auto) | ./modules/terraform-aci-access-leaf-interface-selector | n/a |
 | <a name="module_aci_access_leaf_interface_selector_manual"></a> [aci\_access\_leaf\_interface\_selector\_manual](#module\_aci\_access\_leaf\_interface\_selector\_manual) | ./modules/terraform-aci-access-leaf-interface-selector | n/a |
 | <a name="module_aci_access_leaf_interface_selector_sub_auto"></a> [aci\_access\_leaf\_interface\_selector\_sub\_auto](#module\_aci\_access\_leaf\_interface\_selector\_sub\_auto) | ./modules/terraform-aci-access-leaf-interface-selector | n/a |
+| <a name="module_aci_access_leaf_switch_configuration"></a> [aci\_access\_leaf\_switch\_configuration](#module\_aci\_access\_leaf\_switch\_configuration) | ./modules/terraform-aci-switch-configuration | n/a |
 | <a name="module_aci_access_leaf_switch_policy_group"></a> [aci\_access\_leaf\_switch\_policy\_group](#module\_aci\_access\_leaf\_switch\_policy\_group) | ./modules/terraform-aci-access-leaf-switch-policy-group | n/a |
 | <a name="module_aci_access_leaf_switch_profile_auto"></a> [aci\_access\_leaf\_switch\_profile\_auto](#module\_aci\_access\_leaf\_switch\_profile\_auto) | ./modules/terraform-aci-access-leaf-switch-profile | n/a |
 | <a name="module_aci_access_leaf_switch_profile_manual"></a> [aci\_access\_leaf\_switch\_profile\_manual](#module\_aci\_access\_leaf\_switch\_profile\_manual) | ./modules/terraform-aci-access-leaf-switch-profile | n/a |
@@ -157,6 +158,7 @@ Additional example repositories:
 | <a name="module_aci_access_spine_interface_profile_manual"></a> [aci\_access\_spine\_interface\_profile\_manual](#module\_aci\_access\_spine\_interface\_profile\_manual) | ./modules/terraform-aci-access-spine-interface-profile | n/a |
 | <a name="module_aci_access_spine_interface_selector_auto"></a> [aci\_access\_spine\_interface\_selector\_auto](#module\_aci\_access\_spine\_interface\_selector\_auto) | ./modules/terraform-aci-access-spine-interface-selector | n/a |
 | <a name="module_aci_access_spine_interface_selector_manual"></a> [aci\_access\_spine\_interface\_selector\_manual](#module\_aci\_access\_spine\_interface\_selector\_manual) | ./modules/terraform-aci-access-spine-interface-selector | n/a |
+| <a name="module_aci_access_spine_switch_configuration"></a> [aci\_access\_spine\_switch\_configuration](#module\_aci\_access\_spine\_switch\_configuration) | ./modules/terraform-aci-switch-configuration | n/a |
 | <a name="module_aci_access_spine_switch_policy_group"></a> [aci\_access\_spine\_switch\_policy\_group](#module\_aci\_access\_spine\_switch\_policy\_group) | ./modules/terraform-aci-access-spine-switch-policy-group | n/a |
 | <a name="module_aci_access_spine_switch_profile_auto"></a> [aci\_access\_spine\_switch\_profile\_auto](#module\_aci\_access\_spine\_switch\_profile\_auto) | ./modules/terraform-aci-access-spine-switch-profile | n/a |
 | <a name="module_aci_access_spine_switch_profile_manual"></a> [aci\_access\_spine\_switch\_profile\_manual](#module\_aci\_access\_spine\_switch\_profile\_manual) | ./modules/terraform-aci-access-spine-switch-profile | n/a |
@@ -195,6 +197,7 @@ Additional example repositories:
 | <a name="module_aci_fabric_l2_mtu"></a> [aci\_fabric\_l2\_mtu](#module\_aci\_fabric\_l2\_mtu) | ./modules/terraform-aci-fabric-l2-mtu | n/a |
 | <a name="module_aci_fabric_leaf_interface_profile_auto"></a> [aci\_fabric\_leaf\_interface\_profile\_auto](#module\_aci\_fabric\_leaf\_interface\_profile\_auto) | ./modules/terraform-aci-fabric-leaf-interface-profile | n/a |
 | <a name="module_aci_fabric_leaf_interface_profile_manual"></a> [aci\_fabric\_leaf\_interface\_profile\_manual](#module\_aci\_fabric\_leaf\_interface\_profile\_manual) | ./modules/terraform-aci-fabric-leaf-interface-profile | n/a |
+| <a name="module_aci_fabric_leaf_switch_configuration"></a> [aci\_fabric\_leaf\_switch\_configuration](#module\_aci\_fabric\_leaf\_switch\_configuration) | ./modules/terraform-aci-switch-configuration | n/a |
 | <a name="module_aci_fabric_leaf_switch_policy_group"></a> [aci\_fabric\_leaf\_switch\_policy\_group](#module\_aci\_fabric\_leaf\_switch\_policy\_group) | ./modules/terraform-aci-fabric-leaf-switch-policy-group | n/a |
 | <a name="module_aci_fabric_leaf_switch_profile_auto"></a> [aci\_fabric\_leaf\_switch\_profile\_auto](#module\_aci\_fabric\_leaf\_switch\_profile\_auto) | ./modules/terraform-aci-fabric-leaf-switch-profile | n/a |
 | <a name="module_aci_fabric_leaf_switch_profile_manual"></a> [aci\_fabric\_leaf\_switch\_profile\_manual](#module\_aci\_fabric\_leaf\_switch\_profile\_manual) | ./modules/terraform-aci-fabric-leaf-switch-profile | n/a |
@@ -206,6 +209,7 @@ Additional example repositories:
 | <a name="module_aci_fabric_span_source_group"></a> [aci\_fabric\_span\_source\_group](#module\_aci\_fabric\_span\_source\_group) | ./modules/terraform-aci-fabric-span-source-group | n/a |
 | <a name="module_aci_fabric_spine_interface_profile_auto"></a> [aci\_fabric\_spine\_interface\_profile\_auto](#module\_aci\_fabric\_spine\_interface\_profile\_auto) | ./modules/terraform-aci-fabric-spine-interface-profile | n/a |
 | <a name="module_aci_fabric_spine_interface_profile_manual"></a> [aci\_fabric\_spine\_interface\_profile\_manual](#module\_aci\_fabric\_spine\_interface\_profile\_manual) | ./modules/terraform-aci-fabric-spine-interface-profile | n/a |
+| <a name="module_aci_fabric_spine_switch_configuration"></a> [aci\_fabric\_spine\_switch\_configuration](#module\_aci\_fabric\_spine\_switch\_configuration) | ./modules/terraform-aci-switch-configuration | n/a |
 | <a name="module_aci_fabric_spine_switch_policy_group"></a> [aci\_fabric\_spine\_switch\_policy\_group](#module\_aci\_fabric\_spine\_switch\_policy\_group) | ./modules/terraform-aci-fabric-spine-switch-policy-group | n/a |
 | <a name="module_aci_fabric_spine_switch_profile_auto"></a> [aci\_fabric\_spine\_switch\_profile\_auto](#module\_aci\_fabric\_spine\_switch\_profile\_auto) | ./modules/terraform-aci-fabric-spine-switch-profile | n/a |
 | <a name="module_aci_fabric_spine_switch_profile_manual"></a> [aci\_fabric\_spine\_switch\_profile\_manual](#module\_aci\_fabric\_spine\_switch\_profile\_manual) | ./modules/terraform-aci-fabric-spine-switch-profile | n/a |
@@ -235,6 +239,8 @@ Additional example repositories:
 | <a name="module_aci_l3out_node_profile_manual"></a> [aci\_l3out\_node\_profile\_manual](#module\_aci\_l3out\_node\_profile\_manual) | ./modules/terraform-aci-l3out-node-profile | n/a |
 | <a name="module_aci_l4l7_device"></a> [aci\_l4l7\_device](#module\_aci\_l4l7\_device) | ./modules/terraform-aci-l4l7-device | n/a |
 | <a name="module_aci_ldap"></a> [aci\_ldap](#module\_aci\_ldap) | ./modules/terraform-aci-ldap | n/a |
+| <a name="module_aci_leaf_fabric_interface_configuration"></a> [aci\_leaf\_fabric\_interface\_configuration](#module\_aci\_leaf\_fabric\_interface\_configuration) | ./modules/terraform-aci-fabric-interface-configuration | n/a |
+| <a name="module_aci_leaf_fabric_interface_configuration_sub"></a> [aci\_leaf\_fabric\_interface\_configuration\_sub](#module\_aci\_leaf\_fabric\_interface\_configuration\_sub) | ./modules/terraform-aci-fabric-interface-configuration | n/a |
 | <a name="module_aci_leaf_interface_configuration"></a> [aci\_leaf\_interface\_configuration](#module\_aci\_leaf\_interface\_configuration) | ./modules/terraform-aci-interface-configuration | n/a |
 | <a name="module_aci_leaf_interface_configuration_sub"></a> [aci\_leaf\_interface\_configuration\_sub](#module\_aci\_leaf\_interface\_configuration\_sub) | ./modules/terraform-aci-interface-configuration | n/a |
 | <a name="module_aci_link_level_policy"></a> [aci\_link\_level\_policy](#module\_aci\_link\_level\_policy) | ./modules/terraform-aci-link-level-policy | n/a |
@@ -283,6 +289,7 @@ Additional example repositories:
 | <a name="module_aci_snmp_policy"></a> [aci\_snmp\_policy](#module\_aci\_snmp\_policy) | ./modules/terraform-aci-snmp-policy | n/a |
 | <a name="module_aci_snmp_trap_policy"></a> [aci\_snmp\_trap\_policy](#module\_aci\_snmp\_trap\_policy) | ./modules/terraform-aci-snmp-trap-policy | n/a |
 | <a name="module_aci_spanning_tree_policy"></a> [aci\_spanning\_tree\_policy](#module\_aci\_spanning\_tree\_policy) | ./modules/terraform-aci-spanning-tree-policy | n/a |
+| <a name="module_aci_spine_fabric_interface_configuration"></a> [aci\_spine\_fabric\_interface\_configuration](#module\_aci\_spine\_fabric\_interface\_configuration) | ./modules/terraform-aci-fabric-interface-configuration | n/a |
 | <a name="module_aci_spine_interface_configuration"></a> [aci\_spine\_interface\_configuration](#module\_aci\_spine\_interface\_configuration) | ./modules/terraform-aci-interface-configuration | n/a |
 | <a name="module_aci_sr_mpls_external_endpoint_group"></a> [aci\_sr\_mpls\_external\_endpoint\_group](#module\_aci\_sr\_mpls\_external\_endpoint\_group) | ./modules/terraform-aci-external-endpoint-group | n/a |
 | <a name="module_aci_sr_mpls_l3out"></a> [aci\_sr\_mpls\_l3out](#module\_aci\_sr\_mpls\_l3out) | ./modules/terraform-aci-l3out | n/a |

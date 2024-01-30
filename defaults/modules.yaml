@@ -47,6 +47,7 @@ modules:
   aci_error_disabled_recovery: true
   aci_external_connectivity_policy: true
   aci_external_endpoint_group: true
+  aci_fabric_interface_configuration: true
   aci_fabric_isis_bfd: true
   aci_fabric_isis_policy: true
   aci_fabric_l2_mtu: true
@@ -131,6 +132,7 @@ modules:
   aci_snmp_trap_policy: true
   aci_spanning_tree_policy: true
   aci_storm_control_policy: true
+  aci_switch_configuration: true
   aci_syslog_policy: true
   aci_system_global_gipo: true
   aci_system_performance: true

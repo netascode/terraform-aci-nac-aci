@@ -10,6 +10,7 @@ resource "aci_rest_managed" "infraPortConfig" {
     node         = var.node_id
     port         = var.port
     role         = var.role
+    shutdown     = var.shutdown ? "yes" : "no"
     subPort      = var.sub_port
   }
 }

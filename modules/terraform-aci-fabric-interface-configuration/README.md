@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI Interface Configuration Module
+# Terraform ACI Fabric Interface Configuration Module
 
-Manages ACI Interface Configuration
+Manages ACI Fabric Interface Configuration
 
 Location in GUI:
 `Fabric` » `Access Policies` » `Interface Configuration`
@@ -9,14 +9,14 @@ Location in GUI:
 ## Examples
 
 ```hcl
-module "aci_interface_configuration" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-interface-configuration"
+module "aci_fabric_interface_configuration" {
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-interface-configuration"
   version = ">= 0.8.0"
 
   node_id      = 101
-  policy_group = "ACC1"
+  policy_group = "FAB1"
   description  = "Port description"
-  port         = 10
+  port         = 49
 }
 ```
 
@@ -41,10 +41,7 @@ module "aci_interface_configuration" {
 | <a name="input_module"></a> [module](#input\_module) | Module ID. Allowed values: 1-255. | `number` | `1` | no |
 | <a name="input_port"></a> [port](#input\_port) | Interface ID. Allowed values: 1-127. | `number` | `1` | no |
 | <a name="input_sub_port"></a> [sub\_port](#input\_sub\_port) | Subinterface ID. Allowed values: 1-64. | `number` | `0` | no |
-| <a name="input_policy_group_type"></a> [policy\_group\_type](#input\_policy\_group\_type) | Interface policy group type. Choices: `access`, `pc`, `vpc`. | `string` | `"access"` | no |
 | <a name="input_policy_group"></a> [policy\_group](#input\_policy\_group) | Interface policy group name. | `string` | `"system-ports-default"` | no |
-| <a name="input_breakout"></a> [breakout](#input\_breakout) | Breakout Map. Allowed values: `none`, `100g-2x`, `100g-4x`, `10g-4x`, `25g-4x`, `50g-8x`. Default value: `none`. | `string` | `"none"` | no |
-| <a name="input_fex_id"></a> [fex\_id](#input\_fex\_id) | FEX ID. Allowed values: 101-199. `0` meaning no FEX. | `string` | `"unspecified"` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_role"></a> [role](#input\_role) | Node role. Allowed values: `leaf`, `spine`. | `string` | `"leaf"` | no |
 | <a name="input_shutdown"></a> [shutdown](#input\_shutdown) | Shutdown interface. | `bool` | `false` | no |
@@ -53,11 +50,11 @@ module "aci_interface_configuration" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `infraPortConfig` object. |
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `fabricPortConfig` object. |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aci_rest_managed.infraPortConfig](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fabricPortConfig](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

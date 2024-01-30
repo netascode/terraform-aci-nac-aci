@@ -180,6 +180,10 @@ defaults:
           name_suffix: ""
           node_blocks:
             name_suffix: ""
+      leaf_interface_policy_groups:
+        name_suffix: ""
+      spine_interface_policy_groups:
+        name_suffix: ""
       leaf_interface_profiles:
         name_suffix: ""
       spine_interface_profiles:
@@ -670,6 +674,7 @@ defaults:
         interfaces:
           from_module: 1
           module: 1
+          fabric: false
         fexes:
           interfaces:
             from_module: 1
