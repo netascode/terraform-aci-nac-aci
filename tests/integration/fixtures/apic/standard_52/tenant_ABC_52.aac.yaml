@@ -22,6 +22,10 @@ apic:
                   tenant: ABC
                   vrf: VRF2
             - prefix: 4.4.4.0/24
+      bridge_domains:
+        - name: BD1
+          pim_source_filter: TEST_MRM1
+          pim_destination_filter: TEST_MRM1
       application_profiles:
         - name: AP1
           endpoint_security_groups:
