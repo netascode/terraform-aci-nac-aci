@@ -1,0 +1,95 @@
+{# iterate_list apic.node_policies.nodes id item[1] #}
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- if apic.new_interface_configuration | default(defaults.apic.new_interface_configuration) %}
+            {%- set comma1 = joiner(",") %}
+            {%- for _node in apic.node_policies.nodes | default([]) %}
+            {%- if _node.role == "leaf" and _node.id | string == item[1] %}
+            {%- set query = "nodes[?id==`" ~ _node.id ~ "`].interfaces[]" %}
+            {%- if apic.interface_policies is defined %}
+            {%- for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
+            {%- if int.fabric | default(defaults.apic.interface_policies.nodes.interfaces.fabric) %}
+            {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}{{ comma1() }}
+            {
+                "fabricPortConfig": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/fabric/portconfnode-{{ _node.id }}-card-{{ module }}-port-{{ int.port }}-sub-0",
+                        {% if int.policy_group is defined %}
+                        {% set policy_group_name = int.policy_group ~ defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix %}
+                        "assocGrp": "uni/fabric/funcprof/leportgrp-{{ policy_group_name }}",
+                        {% endif %}
+                        "card": "{{ module }}",
+                        "description": "{{ int.description | default() }}",
+                        "node": "{{ _node.id }}",
+                        "port": "{{ int.port }}",
+                        "role": "{{ _node.role }}",
+                        "shutdown": "{{ int.shutdown | default(False) | cisco.aac.aac_bool("yes") }}"
+                    }
+                }
+            }
+            {%- for sub in int.sub_ports | default([]) %}{{ comma1() }}
+            {
+                "fabricPortConfig": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/fabric/portconfnode-{{ _node.id }}-card-{{ module }}-port-{{ int.port }}-sub-{{ sub.port }}",
+                        {% if sub.policy_group is defined %}
+                        {% set policy_group_name = sub.policy_group ~ defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix %}
+                        "assocGrp": "uni/fabric/funcprof/leportgrp-{{ policy_group_name }}",
+                        {% endif %}
+                        "card": "{{ module }}",
+                        "description": "{{ sub.description | default() }}",
+                        "node": "{{ _node.id }}",
+                        "port": "{{ int.port }}", 
+                        "subPort": "{{ sub.port }}",
+                        "role": "{{ _node.role }}",
+                        "shutdown": "{{ sub.shutdown | default(False) | cisco.aac.aac_bool("yes") }}"
+                    }
+                }
+            }
+            {%- endfor %}
+            {%- endif %}
+            {%- endfor %}
+            {%- endif %}
+            {%- endif %}
+            {%- endfor %}
+            {%- for node in apic.node_policies.nodes | default([]) %}
+            {%- if node.role == "spine" and node.id | string == item[1] %}
+            {%- if apic.interface_policies is defined %}
+            {%- set query = "nodes[?id==`" ~ node.id ~ "`].interfaces[]" %}
+            {%- for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
+            {%- if int.fabric | default(defaults.apic.interface_policies.nodes.interfaces.fabric) %}
+            {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}{{ comma1() }}
+            {
+                "fabricPortConfig": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/fabric/portconfnode-{{ node.id }}-card-{{ module }}-port-{{ int.port }}-sub-0",
+                        {% if int.policy_group is defined %}
+                        {% set policy_group_name = int.policy_group ~ defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix %}
+                        "assocGrp": "uni/fabric/funcprof/spportgrp-{{ policy_group_name }}",
+                        {% endif %}
+                        "card": "{{ module }}",
+                        "description": "{{ int.description | default() }}",
+                        "node": "{{ node.id }}",
+                        "port": "{{ int.port }}",
+                        "role": "{{ node.role }}",
+                        "shutdown": "{{ int.shutdown | default(False) | cisco.aac.aac_bool("yes") }}"
+                    }
+                }
+            }
+            {%- endif %}
+            {%- endfor %}
+            {%- endif %}
+            {%- endif %}
+            {%- endfor %}
+            {%- endif %}
+
+        ]
+    }
+}

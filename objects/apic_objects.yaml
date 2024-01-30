@@ -1064,33 +1064,69 @@ objects:
       - config
     paths:
       - apic.fabric_policies.smart_licensing
-  - name: New Interface Config
-    template: new_interface_config
-    folder: interface_policies
+  - name: Access Switch Configuration
+    template: ap_switch_configuration
+    folder: access_policies
     aci_classes:
-      - infraPortConfig
+      - infraNodeConfig
     test_types:
       - config
     paths:
-      - apic.auto_generate_switch_pod_profiles
-      - apic.auto_generate_access_leaf_switch_interface_profiles
-      - apic.auto_generate_access_spine_switch_interface_profiles
       - apic.new_interface_configuration
-      - apic.interface_policies
+      - apic.node_policies.nodes.id
+      - apic.node_policies.nodes.role
+      - apic.node_policies.nodes.access_policy_group
+  - name: Fabric Switch Configuration
+    template: fp_switch_configuration
+    folder: fabric_policies
+    aci_classes:
+      - fabricNodeConfig
+    test_types:
+      - config
+    paths:
+      - apic.new_interface_configuration
+      - apic.node_policies.nodes.id
+      - apic.node_policies.nodes.role
+      - apic.node_policies.nodes.fabric_policy_group
+
 
 spine_objects:
   - name: Access Spine Interface Selector
     template: spine_interface_selector
     folder: interface_policies
+    aci_classes: []
     test_types:
       - config
     paths:
+      - apic.interface_policies
+  - name: New Access Spine Interface Config
+    template: new_interface_config
+    folder: interface_policies
+    aci_classes:
+      - infraPortConfig
+    match_dn: 'uni\/infra\/portconfnode-%%NODE%%-.*'
+    test_types:
+      - config
+    paths:
+      - apic.new_interface_configuration
+      - apic.interface_policies
+  - name: New Fabric Spine Interface Config
+    template: new_fabric_interface_config
+    folder: interface_policies
+    aci_classes:
+      - fabricPortConfig
+    match_dn: 'uni\/fabric\/portconfnode-%%NODE%%-.*'
+    test_types:
+      - config
+    paths:
+      - apic.new_interface_configuration
       - apic.interface_policies
 
 leaf_objects:
   - name: Access Leaf Interface Selector
     template: leaf_interface_selector
     folder: interface_policies
+    aci_classes: []
     test_types:
       - config
     paths:
@@ -1098,9 +1134,32 @@ leaf_objects:
   - name: Access FEX Interface Selector
     template: fex_interface_selector
     folder: interface_policies
+    aci_classes: []
     test_types:
       - config
     paths:
+      - apic.interface_policies
+  - name: New Access Leaf Interface Config
+    template: new_interface_config
+    folder: interface_policies
+    aci_classes:
+      - infraPortConfig
+    match_dn: 'uni\/infra\/portconfnode-%%NODE%%-.*'
+    test_types:
+      - config
+    paths:
+      - apic.new_interface_configuration
+      - apic.interface_policies
+  - name: New Fabric Leaf Interface Config
+    template: new_fabric_interface_config
+    folder: interface_policies
+    aci_classes:
+      - fabricPortConfig
+    match_dn: 'uni\/fabric\/portconfnode-%%NODE%%-.*'
+    test_types:
+      - config
+    paths:
+      - apic.new_interface_configuration
       - apic.interface_policies
 
 tenant_objects:

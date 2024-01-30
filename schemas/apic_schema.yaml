@@ -1610,6 +1610,7 @@ ip_fex_interface:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   module: int(min=1, max=9, required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  shutdown: bool(required=False)
   expected_state: include('ip_fex_interface_expected_state', required=False) # @no_external_doc() @name(FEX Interface Expected State) @sheet_hidden()
 
 ip_fex_interface_expected_state:
@@ -1624,6 +1625,8 @@ ip_interface:
   type: enum('uplink', 'downlink', required=False)
   sub_ports: list(include('ip_interface_sub_ports'), required=False) # name(Leaf Subinterfaces) @sheet_hidden()
   breakout: enum('100g-2x', '100g-4x', '10g-4x', '25g-4x', '50g-8x', 'none', required=False)
+  fabric: bool(required=False)
+  shutdown: bool(required=False)
   expected_state: include('ip_interface_expected_state', required=False) # @no_external_doc() @name(Interface Expected State) @sheet_hidden()
 
 ip_interface_expected_state:
@@ -1635,6 +1638,7 @@ ip_interface_sub_ports:
   module: int(min=1, max=9, required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   fex_id: int(min=101, max=199, required=False)
+  shutdown: bool(required=False)
   expected_state: include('ip_interface_sub_ports_expected_state', required=False) # @no_external_doc() @name(Sub Port Expected State) @sheet_hidden()
 
 ip_interface_sub_ports_expected_state:

@@ -18,7 +18,6 @@ Simple example:
 ```yaml
 apic:
   new_interface_configuration: true
-  auto_generate_switch_pod_profiles: true
   interface_policies:
     nodes:
       - id: 101
@@ -33,7 +32,6 @@ Breakout port example:
 ```yaml
 apic:
   new_interface_configuration: true
-  auto_generate_switch_pod_profiles: true
   interface_policies:
     nodes:
       - id: 101

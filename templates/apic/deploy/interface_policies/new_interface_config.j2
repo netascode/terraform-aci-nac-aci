@@ -7,18 +7,19 @@
         "children": [
             {%- if apic.new_interface_configuration | default(defaults.apic.new_interface_configuration) %}
             {%- set comma1 = joiner(",") %}
-            {%- if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) | cisco.aac.aac_bool("enabled") == "enabled" or apic.auto_generate_access_leaf_switch_interface_profiles | default(defaults.apic.auto_generate_access_leaf_switch_interface_profiles) | cisco.aac.aac_bool("enabled") == "enabled" %}
             {%- for _node in apic.node_policies.nodes | default([]) %}
             {%- if _node.role == "leaf" and _node.id | string == item[1] %}
             {%- set query = "nodes[?id==`" ~ _node.id ~ "`].interfaces[]" %}
             {%- if apic.interface_policies is defined %}
             {%- for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
+            {%- if int.fabric | default(defaults.apic.interface_policies.nodes.interfaces.fabric) is false %}
             {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
             {%- if int.breakout is not defined %}{{ comma1() }}
             {
                 "infraPortConfig": {
                     "attributes": {
                         "annotation": "orchestrator:aac",
+                        "dn": "uni/infra/portconfnode-{{ _node.id }}-card-{{ module }}-port-{{ int.port }}-sub-0",
                         {% if int.policy_group is defined %}
                         {% set query = "leaf_interface_policy_groups[?name=='" ~ int.policy_group ~ "'].type[]" %}
                         {% set type = (apic.access_policies | community.general.json_query(query)) %}
@@ -32,9 +33,11 @@
                         "connectedFex": "{{ int.fex_id }}",
                         {% endif %}
                         "card": "{{ module }}",
-                        "description": "{{ int.description }}",
+                        "description": "{{ int.description | default() }}",
                         "node": "{{ _node.id }}",
-                        "port": "{{ int.port }}"
+                        "port": "{{ int.port }}",
+                        "role": "{{ _node.role }}",
+                        "shutdown": "{{ int.shutdown | default(False) | cisco.aac.aac_bool("yes") }}"
                     }
                 }
             }
@@ -43,11 +46,14 @@
                 "infraPortConfig": {
                     "attributes": {
                         "annotation": "orchestrator:aac",
+                        "dn": "uni/infra/portconfnode-{{ _node.id }}-card-{{ module }}-port-{{ int.port }}-sub-0",
                         "brkoutMap": "{{ int.breakout }}",
                         "card": "{{ module }}",
-                        "description": "{{ int.description }}",
+                        "description": "{{ int.description | default() }}",
                         "node": "{{ _node.id }}",
-                        "port": "{{ int.port }}"
+                        "port": "{{ int.port }}",
+                        "role": "{{ _node.role }}",
+                        "shutdown": "{{ int.shutdown | default(False) | cisco.aac.aac_bool("yes") }}"
                     }
                 }
             }
@@ -56,6 +62,7 @@
                 "infraPortConfig": {
                     "attributes": {
                         "annotation": "orchestrator:aac",
+                        "dn": "uni/infra/portconfnode-{{ _node.id }}-card-{{ module }}-port-{{ int.port }}-sub-{{ sub.port }}",
                         {% if sub.policy_group is defined %}
                         {% set query = "leaf_interface_policy_groups[?name=='" ~ sub.policy_group ~ "'].type[]" %}
                         {% set type = (apic.access_policies | community.general.json_query(query)) %}
@@ -69,14 +76,17 @@
                         "connectedFex": "{{ sub.fex_id }}",
                         {% endif %}
                         "card": "{{ module }}",
-                        "description": "{{ sub.description }}",
+                        "description": "{{ sub.description | default() }}",
                         "node": "{{ _node.id }}",
                         "port": "{{ int.port }}", 
-                        "subPort": "{{ sub.port }}"
+                        "subPort": "{{ sub.port }}",
+                        "role": "{{ _node.role }}",
+                        "shutdown": "{{ sub.shutdown | default(False) | cisco.aac.aac_bool("yes") }}"
                     }
                 }
             }
             {%- endfor %}
+            {%- endif %}
             {%- endif %}
             {%- endfor %}
             {%- set query = "nodes[?id==`" ~ _node.id ~ "`].fexes[]" %}
@@ -86,6 +96,7 @@
                 "infraPortConfig": {
                     "attributes": {
                         "annotation": "orchestrator:aac",
+                        "dn": "uni/infra/portconfnode-{{ _node.id }}-card-{{ fex.id }}-port-{{ 1 }}-sub-{{ int.port }}",
                         {% if int.policy_group is defined %}
                         {% set query = "leaf_interface_policy_groups[?name=='" ~ int.policy_group ~ "'].type[]" %}
                         {% set type = (apic.access_policies | community.general.json_query(query)) %}
@@ -97,10 +108,12 @@
                         {% endif %}
                         {% endif %}
                         "card": "{{ fex.id }}",
-                        "description": "{{ int.description }}",
+                        "description": "{{ int.description | default() }}",
                         "node": "{{ _node.id }}",
                         "port": "1", 
-                        "subPort": "{{ int.port }}"
+                        "subPort": "{{ int.port }}",
+                        "role": "{{ _node.role }}",
+                        "shutdown": "{{ int.shutdown | default(False) | cisco.aac.aac_bool("yes") }}"
                     }
                 }
             }
@@ -109,35 +122,36 @@
             {%- endif %}
             {%- endif %}
             {%- endfor %}
-            {%- endif %}
-            {%- if apic.auto_generate_switch_pod_profiles | default(defaults.apic.auto_generate_switch_pod_profiles) | cisco.aac.aac_bool("enabled") == "enabled" or apic.auto_generate_access_spine_switch_interface_profiles | default(defaults.apic.auto_generate_access_spine_switch_interface_profiles) | cisco.aac.aac_bool("enabled") == "enabled" %}
             {%- for node in apic.node_policies.nodes | default([]) %}
             {%- if node.role == "spine" and node.id | string == item[1] %}
             {%- if apic.interface_policies is defined %}
             {%- set query = "nodes[?id==`" ~ node.id ~ "`].interfaces[]" %}
             {%- for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
+            {%- if int.fabric | default(defaults.apic.interface_policies.nodes.interfaces.fabric) is false %}
             {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}{{ comma1() }}
             {
                 "infraPortConfig": {
                     "attributes": {
                         "annotation": "orchestrator:aac",
+                        "dn": "uni/infra/portconfnode-{{ node.id }}-card-{{ module }}-port-{{ int.port }}-sub-0",
                         {% if int.policy_group is defined %}
                         {% set policy_group_name = int.policy_group ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
                         "assocGrp": "uni/infra/funcprof/spaccportgrp-{{ policy_group_name }}",
                         {% endif %}
                         "card": "{{ module }}",
-                        "description": "{{ int.description }}",
+                        "description": "{{ int.description | default() }}",
                         "node": "{{ node.id }}",
                         "port": "{{ int.port }}",
-                        "role": "spine"
+                        "role": "{{ node.role }}",
+                        "shutdown": "{{ int.shutdown | default(False) | cisco.aac.aac_bool("yes") }}"
                     }
                 }
             }
-            {%- endfor %}
-            {%- endif %}
             {%- endif %}
             {%- endfor %}
             {%- endif %}
+            {%- endif %}
+            {%- endfor %}
             {%- endif %}
 
         ]

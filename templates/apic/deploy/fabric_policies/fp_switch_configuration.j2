@@ -1,0 +1,42 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- if apic.new_interface_configuration | default(defaults.apic.new_interface_configuration) %}
+            {%- set comma1 = joiner(",") %}
+            {%- for node in apic.node_policies.nodes | default([]) %}
+            {%- if node.fabric_policy_group is defined %}
+            {%- if node.role == "leaf" %}
+            {%- set policy_group_name = node.fabric_policy_group ~ defaults.apic.fabric_policies.leaf_switch_policy_groups.name_suffix %}{{ comma1() }}
+            {
+                "fabricNodeConfig": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/fabric/nodeconfnode-{{ node.id }}",
+                        "assocGrp": "uni/fabric/funcprof/lenodepgrp-{{ policy_group_name }}",
+                        "node": "{{ node.id }}"
+                    }
+                }
+            }
+            {%- elif node.role == "spine" %}
+            {%- set policy_group_name = node.fabric_policy_group ~ defaults.apic.fabric_policies.spine_switch_policy_groups.name_suffix %}{{ comma1() }}
+            {
+                "fabricNodeConfig": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/fabric/nodeconfnode-{{ node.id }}",
+                        "assocGrp": "uni/fabric/funcprof/spnodepgrp-{{ policy_group_name }}",
+                        "node": "{{ node.id }}"
+                    }
+                }
+            }
+            {%- endif %}
+            {%- endif %}
+            {%- endfor %}
+            {%- endif %}
+
+        ]
+    }
+}
