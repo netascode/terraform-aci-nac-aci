@@ -23,9 +23,15 @@
                         "nsIntvl": "{{ nd_intf_pol.ns_tx_interval | default(defaults.apic.tenants.policies.nd_interface_policies.ns_tx_interval) }}",
                         "mtu": "{{ nd_intf_pol.mtu | default(defaults.apic.tenants.policies.nd_interface_policies.mtu) }}",
                         "nsRetries": "{{ nd_intf_pol.retransmit_retry_count | default(defaults.apic.tenants.policies.nd_interface_policies.retransmit_retry_count) }}",
-                        "nudRetryBase": "{{ nd_intf_pol.nud_retransmit_base | default(defaults.apic.tenants.policies.nd_interface_policies.nud_retransmit_base) }}",
-                        "nudRetryInterval": "{{ nd_intf_pol.nud_retransmit_interval | default(defaults.apic.tenants.policies.nd_interface_policies.nud_retransmit_interval) }}",
-                        "nudRetryMaxAttempts": "{{ nd_intf_pol.nud_retransmit_count | default(defaults.apic.tenants.policies.nd_interface_policies.nud_retransmit_count) }}",
+                        {% if nd_intf_pol.nud_retransmit_base is defined %}
+                        "nudRetryBase": "{{ nd_intf_pol.nud_retransmit_base }}",
+                        {% endif %}
+                        {% if nd_intf_pol.nud_retransmit_interval is defined %}
+                        "nudRetryInterval": "{{ nd_intf_pol.nud_retransmit_interval }}",
+                        {% endif %}
+                        {% if nd_intf_pol.nud_retransmit_count is defined %}
+                        "nudRetryMaxAttempts": "{{ nd_intf_pol.nud_retransmit_count }}",
+                        {% endif %}
                         "raIntvl": "{{ nd_intf_pol.route_advertise_interval | default(defaults.apic.tenants.policies.nd_interface_policies.route_advertise_interval) }}",
                         "raLifetime": "{{ nd_intf_pol.router_lifetime | default(defaults.apic.tenants.policies.nd_interface_policies.router_lifetime) }}",
                         "reachableTime": "{{ nd_intf_pol.reachable_time | default(defaults.apic.tenants.policies.nd_interface_policies.reachable_time) }}",
