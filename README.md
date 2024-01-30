@@ -221,7 +221,8 @@ Additional example repositories:
 | <a name="module_aci_health_score_evaluation_policy"></a> [aci\_health\_score\_evaluation\_policy](#module\_aci\_health\_score\_evaluation\_policy) | ./modules/terraform-aci-health-score-evaluation-policy | n/a |
 | <a name="module_aci_igmp_interface_policy"></a> [aci\_igmp\_interface\_policy](#module\_aci\_igmp\_interface\_policy) | ./modules/terraform-aci-igmp-interface-policy | n/a |
 | <a name="module_aci_igmp_snooping_policy"></a> [aci\_igmp\_snooping\_policy](#module\_aci\_igmp\_snooping\_policy) | ./modules/terraform-aci-igmp-snooping-policy | n/a |
-| <a name="module_aci_imported_contract"></a> [aci\_imported\_contract](#module\_aci\_imported\_contract) | ./modules/terraform-aci-imported-l4l7-device | n/a |
+| <a name="module_aci_imported_contract"></a> [aci\_imported\_contract](#module\_aci\_imported\_contract) | ./modules/terraform-aci-imported-contract | n/a |
+| <a name="module_aci_imported_l4l7_device"></a> [aci\_imported\_l4l7\_device](#module\_aci\_imported\_l4l7\_device) | ./modules/terraform-aci-imported-l4l7-device | n/a |
 | <a name="module_aci_inband_endpoint_group"></a> [aci\_inband\_endpoint\_group](#module\_aci\_inband\_endpoint\_group) | ./modules/terraform-aci-inband-endpoint-group | n/a |
 | <a name="module_aci_inband_node_address"></a> [aci\_inband\_node\_address](#module\_aci\_inband\_node\_address) | ./modules/terraform-aci-inband-node-address | n/a |
 | <a name="module_aci_infra_dscp_translation_policy"></a> [aci\_infra\_dscp\_translation\_policy](#module\_aci\_infra\_dscp\_translation\_policy) | ./modules/terraform-aci-infra-dscp-translation-policy | n/a |

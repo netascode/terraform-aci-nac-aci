@@ -2750,7 +2750,7 @@ locals {
   ])
 }
 
-module "aci_imported_contract" {
+module "aci_imported_l4l7_device" {
   source = "./modules/terraform-aci-imported-l4l7-device"
 
   for_each      = { for device in local.imported_l4l7_devices : device.key => device if local.modules.aci_imported_l4l7_device && var.manage_tenants }
