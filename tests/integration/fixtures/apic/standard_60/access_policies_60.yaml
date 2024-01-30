@@ -1,0 +1,14 @@
+---
+apic:
+  access_policies:
+    interface_policies:
+      link_level_policies:
+        - name: 10G-sfp-10g-tx
+          speed: 10G
+          auto: true
+          fec_mode: inherit
+          physical_media_type: sfp-10g-tx
+        - name: 10G-auto
+          speed: 10G
+          auto: true
+          fec_mode: inherit

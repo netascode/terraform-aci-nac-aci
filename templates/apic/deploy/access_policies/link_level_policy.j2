@@ -14,6 +14,9 @@
                         "speed": "{{ policy.speed | default(defaults.apic.access_policies.interface_policies.link_level_policies.speed) }}",
                         "autoNeg": "{{ policy.auto | default(defaults.apic.access_policies.interface_policies.link_level_policies.auto) | cisco.aac.aac_bool("on") }}",
                         "fecMode": "{{ policy.fec_mode | default(defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode) }}"
+                        {%- if policy.physical_media_type is defined %},
+                        "portPhyMediaType": "{{ policy.physical_media_type }}"
+                        {%- endif %}
                     }
                 }
             }

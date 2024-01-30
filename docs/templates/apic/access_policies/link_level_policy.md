@@ -20,4 +20,9 @@ apic:
           speed: 10G
           auto: true
           fec_mode: inherit
+        - name: 10G-Copper
+          speed: 10G
+          auto: true
+          fec_mode: inherit
+          physical_media_type: sfp-10g-tx
 ```
