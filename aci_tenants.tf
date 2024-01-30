@@ -2737,6 +2737,35 @@ module "aci_l4l7_device" {
 }
 
 locals {
+  imported_l4l7_devices = flatten([
+    for tenant in local.tenants : [
+      for device in try(tenant.services.imported_l4l7_devices, []) : {
+        key           = format("%s/%s", tenant.name, device.name)
+        tenant        = tenant.name
+        source_tenant = device.tenant
+        source_device = "${device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
+        description   = try(device.description, "")
+      }
+    ]
+  ])
+}
+
+module "aci_imported_contract" {
+  source = "./modules/terraform-aci-imported-l4l7-device"
+
+  for_each      = { for device in local.imported_l4l7_devices : device.key => device if local.modules.aci_imported_l4l7_device && var.manage_tenants }
+  tenant        = each.value.tenant
+  source_tenant = each.value.source_tenant
+  source_device = each.value.source_device
+  description   = each.value.description
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+
+locals {
   redirect_policies = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.services.redirect_policies, []) : {

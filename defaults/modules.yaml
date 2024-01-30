@@ -71,6 +71,7 @@ modules:
   aci_igmp_interface_policy: true
   aci_igmp_snooping_policy: true
   aci_imported_contract: true
+  aci_imported_l4l7_device: true
   aci_inband_endpoint_group: true
   aci_inband_node_address: true
   aci_infra_dscp_translation_policy: true

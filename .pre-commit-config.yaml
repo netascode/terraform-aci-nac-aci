@@ -302,6 +302,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-imported-contract/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-imported-l4l7-device"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-imported-l4l7-device/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-inband-endpoint-group"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-inband-endpoint-group/examples/complete"]
