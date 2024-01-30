@@ -91,7 +91,7 @@ variable "nud_retransmit_base" {
   default     = null
 
   validation {
-    condition     = var.nud_retransmit_base >= 1 && var.nud_retransmit_base <= 3
+    condition     = var.nud_retransmit_base == null || var.nud_retransmit_base >= 1 && var.nud_retransmit_base <= 3
     error_message = "Minimum value: 1. Maximum value: 3."
   }
 }
@@ -102,7 +102,7 @@ variable "nud_retransmit_interval" {
   default     = null
 
   validation {
-    condition     = var.nud_retransmit_interval >= 1000 && var.nud_retransmit_interval <= 10000
+    condition     = var.nud_retransmit_interval == null || var.nud_retransmit_interval >= 1000 && var.nud_retransmit_interval <= 10000
     error_message = "Minimum value: 1000. Maximum value: 10000."
   }
 }
@@ -113,7 +113,7 @@ variable "nud_retransmit_count" {
   default     = null
 
   validation {
-    condition     = var.nud_retransmit_count >= 3 && var.nud_retransmit_count <= 10
+    condition     = var.nud_retransmit_count == null || var.nud_retransmit_count >= 3 && var.nud_retransmit_count <= 10
     error_message = "Minimum value: 3. Maximum value: 10."
   }
 }
