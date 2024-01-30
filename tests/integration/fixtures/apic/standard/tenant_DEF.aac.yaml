@@ -22,3 +22,8 @@ apic:
           scope: global
         - name: CON3
           scope: global
+      services:
+        imported_l4l7_devices:
+          - name: DEV1
+            tenant: ABC
+            description: My imported device

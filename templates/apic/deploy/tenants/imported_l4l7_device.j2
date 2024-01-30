@@ -1,0 +1,28 @@
+{# iterate_list apic.tenants name item[2] #}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for dev in tenant.services.imported_l4l7_devices | default([]) %}{{ comma1() }}
+            {% set imported_dev_name = dev.name ~ defaults.apic.tenants.services.l4l7_devices.name_suffix %}
+            {
+                "vnsLDevIf": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "ldev": "uni/tn-{{ dev.tenant }}/lDevVip-{{ imported_dev_name }}",
+                        "dn": "uni/tn-{{ tenant.name }}/lDevIf-[uni/tn-{{ dev.tenant }}/lDevVip-{{ imported_dev_name }}]",
+                        "description": "{{ dev.description | default() }}",
+                        "childAction": "deleteNonPresent"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

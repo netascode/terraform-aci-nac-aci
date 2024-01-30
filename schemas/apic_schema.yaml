@@ -3081,6 +3081,7 @@ ten_nd_ra_prefix_policies_expected_state:
 
 ten_services:
   l4l7_devices: list(include('ten_ser_l4l7_devices'), required=False) # @ref_name(L4L7 Device) @sheet_hidden()
+  imported_l4l7_devices: list(include('ten_ser_imported_l4l7_devices'), required=False) # @ref_name(Imported L4L7 Device) @sheet_hidden()
   redirect_policies: list(include('ten_ser_redirect_policies'), required=False) # @ref_name(Redirect Policy) @sheet_hidden()
   service_epg_policies: list(include('ten_ser_service_epg_policies'), required=False) # @ref_name(Service EPG Policy) @sheet_hidden()
   redirect_health_groups: list(include('ten_ser_redirect_health_groups'), required=False) # @ref_name(Redirect Health Group) @sheet_hidden()
@@ -3104,6 +3105,11 @@ ten_ser_l4l7_devices:
   concrete_devices: list(include('ten_ser_l4l7_devices_concrete_devices'), required=False) # @name(L4L7 Device Concrete Device) @ref_name(Concrete Device) @sheet_hidden()
   logical_interfaces: list(include('ten_ser_l4l7_devices_logical_interfaces'), required=False) # @name(L4L7 Device Logical Interfaces) @ref_name(Logical Interface) @sheet_hidden()
   expected_state: include('ten_ser_l4l7_devices_expected_state', required=False) # @no_external_doc() @name(L4L7 Device Expected State) @sheet_hidden()
+
+ten_ser_imported_l4l7_devices:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ten_ser_l4l7_devices_concrete_devices:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

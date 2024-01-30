@@ -1735,6 +1735,18 @@ tenant_objects:
       - health
     paths:
       - apic.tenants.services.l4l7_devices
+  - name: Imported L4L7 Device
+    template: imported_l4l7_device
+    folder: tenants
+    aci_classes:
+      - vnsLDevIf
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.services.imported_l4l7_devices
   - name: Service Graph Template
     template: service_graph_template
     folder: tenants
