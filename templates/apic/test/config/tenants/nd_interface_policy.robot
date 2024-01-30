@@ -18,7 +18,7 @@ Verify ND Interface Policy {{ policy_name }}
     Should Be Equal Value Json String   ${r.json()}   $..ndIfPol.attributes.ctrl   {{ state | default() }}
     Should Be Equal Value Json String   ${r.json()}   $..ndIfPol.attributes.hopLimit   {{ nd_intf_pol.hop_limit | default(defaults.apic.tenants.policies.nd_interface_policies.hop_limit) }}
     Should Be Equal Value Json String   ${r.json()}   $..ndIfPol.attributes.nsIntvl   {{ nd_intf_pol.ns_tx_interval | default(defaults.apic.tenants.policies.nd_interface_policies.ns_tx_interval) }}
-    Should Be Equal Value Json String   ${r.json()}   $..ndIfPol.attributes.mtu   {{ nd_intf.mtu | default(defaults.apic.tenants.policies.nd_interface_policies.mtu) }}
+    Should Be Equal Value Json String   ${r.json()}   $..ndIfPol.attributes.mtu   {{ nd_intf_pol.mtu | default(defaults.apic.tenants.policies.nd_interface_policies.mtu) }}
     Should Be Equal Value Json String   ${r.json()}   $..ndIfPol.attributes.nsRetries   {{ nd_intf_pol.retransmit_retry_count | default(defaults.apic.tenants.policies.nd_interface_policies.retransmit_retry_count) }}
 {% if nd_intf_pol.nud_retransmit_base is defined %}
     Should Be Equal Value Json String   ${r.json()}   $..ndIfPol.attributes.nudRetryBase   {{ nd_intf_pol.nud_retransmit_base }}

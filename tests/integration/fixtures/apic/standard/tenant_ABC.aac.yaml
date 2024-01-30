@@ -1021,9 +1021,6 @@ apic:
             ns_tx_interval: 1000
             mtu: 2000
             retransmit_retry_count: 10
-            nud_retransmit_base: 1
-            nud_retransmit_interval: 2000
-            nud_retransmit_count: 5
             route_advertise_interval: 500
             router_lifetime: 1000
             reachable_time: 10000
