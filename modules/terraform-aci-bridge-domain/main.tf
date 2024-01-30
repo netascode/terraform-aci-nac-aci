@@ -140,18 +140,42 @@ resource "aci_rest_managed" "fvRsIgmpsn" {
   }
 }
 
+resource "aci_rest_managed" "pimBDP" {
+  count      = var.pim_source_filter != "" || var.pim_destination_filter != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvBD.dn}/pimbdp"
+  class_name = "pimBDP"
+}
+
+resource "aci_rest_managed" "pimBDFilterPol" {
+  count      = var.pim_source_filter != "" || var.pim_destination_filter != "" ? 1 : 0
+  dn         = "${aci_rest_managed.pimBDP[0].dn}/pimbdfilterp"
+  class_name = "pimBDFilterPol"
+}
+
+resource "aci_rest_managed" "pimBDSrcFilterPol" {
+  count      = var.pim_source_filter != "" ? 1 : 0
+  dn         = "${aci_rest_managed.pimBDFilterPol[0].dn}/pimbdsrcfilterp"
+  class_name = "pimBDSrcFilterPol"
+}
+
 resource "aci_rest_managed" "rtdmcRsFilterToRtMapPol_source" {
   count      = var.pim_source_filter != "" ? 1 : 0
-  dn         = "${aci_rest_managed.fvBD.dn}/pimbdp/pimbdfilterp/pimbdsrcfilterp/rsfilterToRtMapPol"
+  dn         = "${aci_rest_managed.pimBDSrcFilterPol[0].dn}/rsfilterToRtMapPol"
   class_name = "rtdmcRsFilterToRtMapPol"
   content = {
     tDn = "uni/tn-${var.tenant}/rtmap-${var.pim_source_filter}"
   }
 }
 
+resource "aci_rest_managed" "pimBDDestFilterPol" {
+  count      = var.pim_destination_filter != "" ? 1 : 0
+  dn         = "${aci_rest_managed.pimBDFilterPol[0].dn}/pimbddestfilterp"
+  class_name = "pimBDDestFilterPol"
+}
+
 resource "aci_rest_managed" "rtdmcRsFilterToRtMapPol_destination" {
   count      = var.pim_destination_filter != "" ? 1 : 0
-  dn         = "${aci_rest_managed.fvBD.dn}/pimbdp/pimbdfilterp/pimbddestfilterp/rsfilterToRtMapPol"
+  dn         = "${aci_rest_managed.pimBDDestFilterPol[0].dn}/rsfilterToRtMapPol"
   class_name = "rtdmcRsFilterToRtMapPol"
   content = {
     tDn = "uni/tn-${var.tenant}/rtmap-${var.pim_destination_filter}"
