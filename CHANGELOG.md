@@ -3,6 +3,10 @@
 - Make L3 PBR destination MAC optional
 - Add `apic_include` option to `port_tracking` configuration
 - Add support for Radius Provider
+- Enhance new interface configuration mode to support creating access and fabric policy groups on the created switch profiles
+- Enhance new interface configuration mode to support configuring fabric interfaces
+- Enhance new interface configuration mode to support interface shutdown option
+- Add support for `physical_media_type` to link level policies
 - Add support for imported L4L7 devices
 - Add support for PIM source and destination filters to bridge domains
 - Add support for DHCP label scope to bridge domains
