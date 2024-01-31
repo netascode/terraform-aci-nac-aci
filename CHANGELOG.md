@@ -1,4 +1,4 @@
-## 0.8.1 (unreleased)
+## 0.8.1
 
 - Make L3 PBR destination MAC optional
 - Add `apic_include` option to `port_tracking` configuration
