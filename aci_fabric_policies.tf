@@ -576,12 +576,26 @@ module "aci_aaa" {
   security_domains = [for sd in try(local.fabric_policies.aaa.security_domains, []) : {
     name                   = sd.name
     description            = try(sd.description, "")
-    restricted_rbac_domain = try(sd.restricted_rbac_domain, false)
+    restricted_rbac_domain = try(sd.restricted_rbac_domain, local.defaults.fabric_policies.aaa.security_domains.restricted_rbac_domain)
   }]
-  password_strength_check  = try(local.fabric_policies.aaa.management_settings.password_strength_check, local.defaults.apic.fabric_policies.aaa.management_settings.password_strength_check)
-  web_token_timeout        = try(local.fabric_policies.aaa.management_settings.web_token_timeout, local.defaults.apic.fabric_policies.aaa.management_settings.web_token_timeout)
-  web_token_max_validity   = try(local.fabric_policies.aaa.management_settings.web_token_max_validity, local.defaults.apic.fabric_policies.aaa.management_settings.web_token_max_validity)
-  web_session_idle_timeout = try(local.fabric_policies.aaa.management_settings.web_session_idle_timeout, local.defaults.apic.fabric_policies.aaa.management_settings.web_session_idle_timeout)
+  password_strength_check          = try(local.fabric_policies.aaa.management_settings.password_strength_check, local.defaults.apic.fabric_policies.aaa.management_settings.password_strength_check)
+  min_password_length              = try(local.fabric_policies.aaa.management_settings.password_strength_profile.password_mininum_length, local.defaults.apic.fabric_policies.aaa.management_settings.password_strength_profile.password_mininum_length)
+  max_password_length              = try(local.fabric_policies.aaa.management_settings.password_strength_profile.password_maximum_length, local.defaults.apic.fabric_policies.aaa.management_settings.password_strength_profile.password_maximum_length)
+  password_strength_test_type      = try(local.fabric_policies.aaa.management_settings.password_strength_profile.password_strength_test_type, local.defaults.apic.fabric_policies.aaa.management_settings.password_strength_profile.password_strength_test_type)
+  password_class_flags             = try(local.fabric_policies.aaa.management_settings.password_strength_profile.password_class_flags, local.defaults.apic.fabric_policies.aaa.management_settings.password_strength_profile.password_class_flags)
+  password_change_during_interval  = try(local.fabric_policies.aaa.management_settings.password_change_during_interval, local.defaults.apic.fabric_policies.aaa.management_settings.password_change_during_interval)
+  password_change_interval         = try(local.fabric_policies.aaa.management_settings.password_change_interval, local.defaults.apic.fabric_policies.aaa.management_settings.password_change_interval)
+  password_change_count            = try(local.fabric_policies.aaa.management_settings.password_change_count, local.defaults.apic.fabric_policies.aaa.management_settings.password_change_count)
+  password_history_count           = try(local.fabric_policies.aaa.management_settings.password_history_count, local.defaults.apic.fabric_policies.aaa.management_settings.password_history_count)
+  password_no_change_interval      = try(local.fabric_policies.aaa.management_settings.password_no_change_interval, local.defaults.apic.fabric_policies.aaa.management_settings.password_no_change_interval)
+  web_token_timeout                = try(local.fabric_policies.aaa.management_settings.web_token_timeout, local.defaults.apic.fabric_policies.aaa.management_settings.web_token_timeout)
+  web_token_max_validity           = try(local.fabric_policies.aaa.management_settings.web_token_max_validity, local.defaults.apic.fabric_policies.aaa.management_settings.web_token_max_validity)
+  web_session_idle_timeout         = try(local.fabric_policies.aaa.management_settings.web_session_idle_timeout, local.defaults.apic.fabric_policies.aaa.management_settings.web_session_idle_timeout)
+  include_refresh_session_records  = try(local.fabric_policies.aaa.management_settings.include_refresh_session_records, local.defaults.apic.fabric_policies.aaa.management_settings.include_refresh_session_records)
+  enable_login_block               = try(local.fabric_policies.aaa.management_settings.enable_login_block, local.defaults.apic.fabric_policies.aaa.management_settings.enable_login_block)
+  login_block_duration             = try(local.fabric_policies.aaa.management_settings.login_block_duration, local.defaults.apic.fabric_policies.aaa.management_settings.login_block_duration)
+  login_max_failed_attempts        = try(local.fabric_policies.aaa.management_settings.login_max_failed_attempts, local.defaults.apic.fabric_policies.aaa.management_settings.login_max_failed_attempts)
+  login_max_failed_attempts_window = try(local.fabric_policies.aaa.management_settings.login_max_failed_attempts_window, local.defaults.apic.fabric_policies.aaa.management_settings.login_max_failed_attempts_window)
 }
 
 module "aci_tacacs" {
