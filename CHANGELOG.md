@@ -1,3 +1,7 @@
+## 0.8.2 (unreleased)
+
+- Add support for syslog show timezone
+
 ## 0.8.1
 
 - Make L3 PBR destination MAC optional

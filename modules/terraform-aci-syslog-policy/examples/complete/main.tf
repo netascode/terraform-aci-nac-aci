@@ -6,6 +6,7 @@ module "aci_syslog_policy" {
   description         = "My Description"
   format              = "nxos"
   show_millisecond    = true
+  show_timezone       = true
   admin_state         = true
   local_admin_state   = false
   local_severity      = "errors"
