@@ -2852,7 +2852,7 @@ locals {
           description           = try(dest.description, "")
           name                  = dest.name
           mac                   = try(dest.mac, null)
-          weight                = try(dest.weight, local.defaults.apic.tenants.services.redirect_policies.l1l2_destinations.weight)
+          weight                = try(dest.weight, null)
           pod_id                = try(dest.pod, local.defaults.apic.tenants.services.redirect_policies.l1l2_destinations.pod)
           redirect_health_group = try("${dest.redirect_health_group}${local.defaults.apic.tenants.services.redirect_health_groups.name_suffix}", "")
           l4l7_device           = "${dest.concrete_interface.l4l7_device}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"

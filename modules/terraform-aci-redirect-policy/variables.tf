@@ -179,7 +179,7 @@ variable "l1l2_destinations" {
     description           = optional(string, "")
     name                  = string
     mac                   = optional(string)
-    weight                = optional(number, 1)
+    weight                = optional(number)
     pod_id                = optional(number, 1)
     redirect_health_group = optional(string, "")
     l4l7_device           = string
