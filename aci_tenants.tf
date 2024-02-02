@@ -2848,6 +2848,17 @@ locals {
           pod_id                = try(dest.pod, local.defaults.apic.tenants.services.redirect_policies.l3_destinations.pod)
           redirect_health_group = try("${dest.redirect_health_group}${local.defaults.apic.tenants.services.redirect_health_groups.name_suffix}", "")
         }]
+        l1l2_destinations = [for dest in try(policy.l1l2_destinations, []) : {
+          description           = try(dest.description, "")
+          name                  = dest.name
+          mac                   = try(dest.mac, null)
+          weight                = try(dest.weight, local.defaults.apic.tenants.services.redirect_policies.l1l2_destinations.weight)
+          pod_id                = try(dest.pod, local.defaults.apic.tenants.services.redirect_policies.l1l2_destinations.pod)
+          redirect_health_group = try("${dest.redirect_health_group}${local.defaults.apic.tenants.services.redirect_health_groups.name_suffix}", "")
+          l4l7_device           = "${dest.concrete_interface.l4l7_device}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
+          concrete_device       = "${dest.concrete_interface.concrete_device}${local.defaults.apic.tenants.services.l4l7_devices.concrete_devices.name_suffix}"
+          interface             = "${dest.concrete_interface.interface}${local.defaults.apic.tenants.services.l4l7_devices.concrete_devices.interfaces.name_suffix}"
+        }]
       }
     ]
   ])
@@ -2873,6 +2884,7 @@ module "aci_redirect_policy" {
   ip_sla_policy          = each.value.ip_sla_policy
   redirect_backup_policy = each.value.redirect_backup_policy
   l3_destinations        = each.value.l3_destinations
+  l1l2_destinations      = each.value.l1l2_destinations
 
   depends_on = [
     module.aci_tenant,
