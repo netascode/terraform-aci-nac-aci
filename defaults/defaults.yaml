@@ -1309,8 +1309,6 @@ defaults:
           pod_aware: false
           l3_destinations:
             pod: 1
-          l1l2_destinations:
-            pod: 1
         redirect_backup_policies:
           name_suffix: ""
           l3_destinations:
