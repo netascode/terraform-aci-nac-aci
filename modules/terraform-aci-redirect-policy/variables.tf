@@ -204,7 +204,7 @@ variable "l1l2_destinations" {
 
   validation {
     condition = alltrue([
-      for l1l2 in var.l1l2_destinations : l1l2.pod_id == null || (l1l2.pod_id >= 1 && l1l2.pod_id <= 255)
+      for l1l2 in var.l1l2_destinations : l1l2.pod_id == null || try(l1l2.pod_id >= 1 && l1l2.pod_id <= 255, false)
     ])
     error_message = "`pod_id`: Minimum value: 1. Maximum value: 255."
   }
