@@ -33,10 +33,6 @@ resource "aci_rest_managed" "aaaUser" {
   lifecycle {
     ignore_changes = [content["pwd"]]
   }
-
-  depends_on = [
-    aci_rest_managed.aaaPwdProfile
-  ]
 }
 
 resource "aci_rest_managed" "aaaUserDomain" {
