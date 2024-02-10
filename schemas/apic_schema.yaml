@@ -3180,8 +3180,8 @@ ten_ser_redirect_policies:
   resilient_hashing: any(bool(), enum('enabled', 'disabled'), required=False)
   redirect_backup_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   threshold_down_action: enum('permit', 'deny', 'bypass', required=False)
-  l1l2_destinations: list(include('ten_ser_redirect_policies_l1l2_destinations'), required=False) # @name(Redirect Policy L1L2 Destinations) @sheet_hidden()
-  l3_destinations: list(include('ten_ser_redirect_policies_l3_destinations'), required=False) # @name(Redirect Policy Destinations) @sheet_hidden()
+  l1l2_destinations: list(include('ten_ser_redirect_policies_l1l2_destinations'), required=False) # @name(Redirect Policy L1L2 Dest) @sheet_hidden()
+  l3_destinations: list(include('ten_ser_redirect_policies_l3_destinations'), required=False) # @name(Redirect Policy L3 Dest) @sheet_hidden()
   ip_sla_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   expected_state: include('ten_ser_redirect_policies_expected_state', required=False) # @no_external_doc() @name(Redirect Policy Expected State) @sheet_hidden()
 
@@ -3192,7 +3192,7 @@ ten_ser_redirect_policies_l1l2_destinations:
   weight: int(min=1, required=False)
   pod: int(min=1, max=255, required=False)
   redirect_health_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  concrete_interface: include('ten_ser_redirect_policies_l1l2_destinations_concrete_interface')
+  concrete_interface: include('ten_ser_redirect_policies_l1l2_destinations_concrete_interface') # flatten()
 
 ten_ser_redirect_policies_l1l2_destinations_concrete_interface:
   l4l7_device: regex('^[a-zA-Z0-9_.:-]{1,64}$')
