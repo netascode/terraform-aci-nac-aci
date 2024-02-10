@@ -51,6 +51,33 @@
                     ]
                 }
             },
+            {% if apic.fabric_policies.aaa.management_settings.password_strength_check | default(defaults.apic.fabric_policies.aaa.management_settings.password_strength_check) %}
+            {
+                "aaaPwdStrengthProfile": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/userext/pwdstrengthprofile",
+                        "pwdMinLength": {{ apic.fabric_policies.aaa.management_settings.password_strength_profile.password_mininum_length | default(defaults.apic.fabric_policies.aaa.management_settings.password_strength_profile.password_mininum_length) }},
+                        "pwdMaxLength": {{ apic.fabric_policies.aaa.management_settings.password_strength_profile.password_maximum_length | default(defaults.apic.fabric_policies.aaa.management_settings.password_strength_profile.password_maximum_length) }},
+                        "pwdStrengthTestType": {{ apic.fabric_policies.aaa.management_settings.password_strength_profile.password_strength_test_type | default(defaults.apic.fabric_policies.aaa.management_settings.password_strength_profile.password_strength_test_type) }},
+                        "pwdClassFlags": {{ apic.fabric_policies.aaa.management_settings.password_strength_profile.password_class_flags | default(defaults.apic.fabric_policies.aaa.management_settings.password_strength_profile.password_class_flags) | sort() | join(',') }}
+                    }
+                }
+            },
+            {% endif %}
+            {
+                "aaaPwdProfile": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/userext/pwdprofile",
+                        "changeDuringInterval": "{% if apic.fabric_policies.aaa.management_settings.password_change_during_interval | default(defaults.apic.fabric_policies.aaa.management_settings.password_change_during_interval) %}enable{% else %}disable{% endif %}",
+                        "changeCount": "{{ apic.fabric_policies.aaa.management_settings.password_change_count | default(defaults.apic.fabric_policies.aaa.management_settings.password_change_count) }}",
+                        "changeInterval": "{{ apic.fabric_policies.aaa.management_settings.password_change_interval | default(defaults.apic.fabric_policies.aaa.management_settings.password_change_interval) }}",
+                        "noChangeInterval": "{{ apic.fabric_policies.aaa.management_settings.password_no_change_interval | default(defaults.apic.fabric_policies.aaa.management_settings.password_no_change_interval) }}",
+                        "historyCount": "{{ apic.fabric_policies.aaa.management_settings.password_history_count | default(defaults.apic.fabric_policies.aaa.management_settings.password_history_count) }}"
+                    }
+                }
+            },
             {
                 "pkiEp": {
                     "attributes": {
@@ -64,11 +91,28 @@
                                     "dn": "uni/userext/pkiext/webtokendata",
                                     "maximumValidityPeriod": "{{ apic.fabric_policies.aaa.management_settings.web_token_max_validity | default(defaults.apic.fabric_policies.aaa.management_settings.web_token_max_validity) }}",
                                     "webtokenTimeoutSeconds": "{{ apic.fabric_policies.aaa.management_settings.web_token_timeout | default(defaults.apic.fabric_policies.aaa.management_settings.web_token_timeout) }}",
-                                    "uiIdleTimeoutSeconds": "{{ apic.fabric_policies.aaa.management_settings.web_session_idle_timeout | default(defaults.apic.fabric_policies.aaa.management_settings.web_session_idle_timeout) }}"
+                                    "uiIdleTimeoutSeconds": "{{ apic.fabric_policies.aaa.management_settings.web_session_idle_timeout | default(defaults.apic.fabric_policies.aaa.management_settings.web_session_idle_timeout) }}",
+                                    {% if apic.fabric_policies.aaa.management_settings.include_refresh_session_records | default(defaults.apic.fabric_policies.aaa.management_settings.include_refresh_session_records) %}
+                                    "sessionRecordFlags": "login,logout,refresh"
+                                    {% else %}
+                                    "sessionRecordFlags": "login,logout"
+                                    {% endif %}
                                 }
                             }
                         }
                     ]
+                }
+            },
+            {
+                "aaaBlockLoginProfile": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/userext/blockloginp",
+                        "enableLoginBlock": "{% if apic.fabric_policies.aaa.management_settings.enable_login_block | default(defaults.apic.fabric_policies.aaa.management_settings.enable_login_block) %}enable{% else %}disable{% endif %}",
+                        "blockDuration": "{{ apic.fabric_policies.aaa.management_settings.login_block_duration | default(defaults.apic.fabric_policies.aaa.management_settings.login_block_duration) }}",
+                        "maxFailedAttempts": "{{ apic.fabric_policies.aaa.management_settings.login_max_failed_attempts | default(defaults.apic.fabric_policies.aaa.management_settings.login_max_failed_attempts) }}",
+                        "maxFailedAttemptsWindow": "{{ apic.fabric_policies.aaa.management_settings.login_max_failed_attempts_window | default(defaults.apic.fabric_policies.aaa.management_settings.login_max_failed_attempts_window) }}"
+                    }
                 }
             }
         ]

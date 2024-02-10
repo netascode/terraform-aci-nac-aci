@@ -514,9 +514,26 @@ fp_aaa:
 
 fp_aaa_management_settings:
   password_strength_check: bool(required=False)
+  password_strength_profile: include('fp_password_strength_profile', required=False)
+  password_change_during_interval: bool(required=False)
+  password_change_count: int(min=0, max=10, required=False)
+  password_change_interval: int(min=0, max=745, required=False)
+  password_no_change_interval: int(min=0, max=745, required=False)
+  password_history_count: int(min=0, max=15, required=False)
   web_token_timeout: int(min=300, max=9600, required=False)
   web_token_max_validity: int(min=4, max=24, required=False)
   web_session_idle_timeout: int(min=600, max=65525, required=False)
+  include_refresh_session_records: bool(required=False)
+  enable_login_block: bool(required=False)
+  login_block_duration: int(min=1, max=1440, required=False)
+  login_max_failed_attempts: int(min=1, max=15, required=False)
+  login_max_failed_attempts_window: int(min=1, max=720, required=False)
+
+fp_password_strength_profile:
+  password_mininum_length: int(min=8, max=64, required=False)
+  password_maximum_length: int(min=8, max=64, required=False)
+  password_strength_test_type: enum('default', 'custom', required=False)
+  password_class_flags: list(enum('digits', 'lowercase', 'specialchars', 'uppercase'), required=False)
 
 fp_aaa_radius_providers:
   hostname_ip: any(regex('^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$'), ip())
