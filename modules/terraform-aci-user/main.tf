@@ -13,14 +13,6 @@ locals {
   ])
 }
 
-resource "aci_rest_managed" "aaaPwdProfile" {
-  dn         = "uni/userext/pwdprofile"
-  class_name = "aaaPwdProfile"
-  content = {
-    historyCount = 0
-  }
-}
-
 resource "aci_rest_managed" "aaaUser" {
   dn         = "uni/userext/user-${var.username}"
   class_name = "aaaUser"
@@ -41,10 +33,6 @@ resource "aci_rest_managed" "aaaUser" {
   lifecycle {
     ignore_changes = [content["pwd"]]
   }
-
-  depends_on = [
-    aci_rest_managed.aaaPwdProfile
-  ]
 }
 
 resource "aci_rest_managed" "aaaUserDomain" {
