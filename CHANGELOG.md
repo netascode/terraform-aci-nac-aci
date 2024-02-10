@@ -1,5 +1,6 @@
 ## 0.8.2 (unreleased)
 
+- Add support for PBR L1L2 destinations
 - Add support for additional AAA security management settings
 
 ## 0.8.1

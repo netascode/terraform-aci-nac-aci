@@ -60,3 +60,34 @@ resource "aci_rest_managed" "vnsRsRedirectHealthGroup" {
     "tDn" = "uni/tn-${var.tenant}/svcCont/redirectHealthGroup-${each.value.redirect_health_group}"
   }
 }
+
+resource "aci_rest_managed" "vnsL1L2RedirectDest" {
+  for_each   = { for destination in var.l1l2_destinations : destination.name => destination }
+  dn         = "${aci_rest_managed.vnsSvcRedirectPol.dn}/L1L2RedirectDest-${each.value.name}"
+  class_name = "vnsL1L2RedirectDest"
+  content = {
+    descr    = each.value.description
+    destName = each.value.name
+    mac      = each.value.mac
+    weight   = each.value.weight
+    podId    = each.value.pod_id
+  }
+}
+
+resource "aci_rest_managed" "vnsRsL1L2RedirectHealthGroup" {
+  for_each   = { for destination in var.l1l2_destinations : destination.name => destination if destination.redirect_health_group != "" }
+  dn         = "${aci_rest_managed.vnsL1L2RedirectDest[each.value.name].dn}/rsL1L2RedirectHealthGroup"
+  class_name = "vnsRsL1L2RedirectHealthGroup"
+  content = {
+    "tDn" = "uni/tn-${var.tenant}/svcCont/redirectHealthGroup-${each.value.redirect_health_group}"
+  }
+}
+
+resource "aci_rest_managed" "vnsRsToCIf" {
+  for_each   = { for destination in var.l1l2_destinations : destination.name => destination }
+  dn         = "${aci_rest_managed.vnsL1L2RedirectDest[each.value.name].dn}/rstoCIf"
+  class_name = "vnsRsToCIf"
+  content = {
+    "tDn" = "uni/tn-${var.tenant}/lDevVip-${each.value.l4l7_device}/cDev-${each.value.concrete_device}/cIf-[${each.value.interface}]"
+  }
+}
