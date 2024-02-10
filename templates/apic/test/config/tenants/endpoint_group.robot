@@ -70,6 +70,77 @@ Verify Endpoint Group {{ epg_name }} VMM Domain {{ vmm_name }}
 {% endif %}
 {% endfor %}
 
+{% for sp in epg.static_ports | default([]) %}
+    {% if sp.node_id is defined and sp.channel is not defined %}
+        {% set query = "nodes[?id==`" ~ sp.node_id ~ "`].pod" %}
+        {% set pod = sp.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+        {% if sp.sub_port is defined %}
+            {% set sp_tdn = "topology/pod-" ~ pod ~ "/paths-" ~ sp.node_id ~ "/pathep-[eth" ~ sp.module | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.module) ~ "/" ~ sp.port ~ "/" ~ sp.sub_port ~ "]" %}
+        {% elif sp.fex_id is defined %}
+            {% set sp_tdn = "topology/pod-" ~ pod ~ "/paths-" ~ sp.node_id ~ "/extpaths-" ~ sp.fex_id ~ "/pathep-[eth" ~ sp.module | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.module) ~ "/" ~ sp.port ~"]" %}
+        {% else %}
+            {% set sp_tdn = "topology/pod-" ~ pod ~ "/paths-" ~ sp.node_id ~ "/pathep-[eth" ~ sp.module | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.module) ~ "/" ~ sp.port ~ "]" %}
+        {% endif %}
+    {% else %}
+        {% set policy_group_name = sp.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
+        {% set query = "leaf_interface_policy_groups[?name==`" ~ sp.channel ~ "`].type" %}
+        {% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if sp.node2_id is defined else 'pc') %}
+        {% set query_sub_ports = "nodes[?interfaces[?sub_ports[?policy_group==`" ~ sp.channel ~ "`]]].id" %}
+        {% set id_sub_ports = (apic.interface_policies | default() | community.general.json_query(query_sub_ports)) %}
+        {% set query_ports = "nodes[?interfaces[?policy_group==`" ~ sp.channel ~ "`]].id" %}
+        {% set id_ports = (apic.interface_policies | default() | community.general.json_query(query_ports)) %}
+        {% if id_sub_ports != None and id_sub_ports | length > 0 %}
+            {% if sp.node_id is defined %}
+                {% set node = sp.node_id %}
+            {% else %}
+                {% set query = "nodes[?interfaces[?sub_ports[?policy_group==`" ~ sp.channel ~ "`]]].id" %}
+                {% set node = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
+            {% endif %}
+            {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
+            {% set pod = sp.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+            {% if type == 'vpc' %}
+                {% if sp.node2_id is defined %}
+                    {% set node2 = sp.node2_id %}
+                {% else %}
+                    {% set query = "nodes[?interfaces[?sub_ports[?policy_group==`" ~ sp.channel ~ "`]]].id" %}
+                    {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
+                    {% if node2 < node %}{% set node_tmp = node %}{% set node = node2 %}{% set node2 = node_tmp %}{% endif %}
+                {% endif %}
+                {% set sp_tdn = "topology/pod-" ~ pod ~ "/protpaths-" ~ node ~ "-" ~ node2 ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+            {% else %}
+                {% set sp_tdn = "topology/pod-" ~ pod ~ "/paths-" ~ node ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+            {% endif %}                                                    
+        {% else %}
+            {% if sp.node_id is defined %}
+                {% set node = sp.node_id %}
+            {% else %}
+                {% set query = "nodes[?interfaces[?policy_group==`" ~ sp.channel ~ "`]].id" %}
+                {% set node = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
+            {% endif %}
+            {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
+            {% set pod = sp.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+            {% if type == 'vpc' %}
+                {% if sp.node2_id is defined %}
+                    {% set node2 = sp.node2_id %}
+                {% else %}
+                    {% set query = "nodes[?interfaces[?policy_group==`" ~ sp.channel ~ "`]].id" %}
+                    {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
+                    {% if node2 < node %}{% set node_tmp = node %}{% set node = node2 %}{% set node2 = node_tmp %}{% endif %}
+                {% endif %}
+                {% set sp_tdn = "topology/pod-" ~ pod ~ "/protpaths-" ~ node ~ "-" ~ node2 ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+            {% else %}
+                {% set sp_tdn = "topology/pod-" ~ pod ~ "/paths-" ~ node ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+Verify Endpoint Group {{ epg_name }} Static Ports {{ sp_tdn }}
+    ${sp}=   Set Variable   $..fvAEPg.children[?(@.fvRsPathAtt.attributes.tDn=='{{ sp_tdn }}')].fvRsPathAtt
+    Should Be Equal Value Json String   ${r.json()}   ${sp}.attributes.encap   vlan-{{ sp.vlan }}
+    Should Be Equal Value Json String   ${r.json()}   ${sp}.attributes.instrImedcy   {{ sp.deployment_immediacy | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.deployment_immediacy) }}
+    Should Be Equal Value Json String   ${r.json()}   ${sp}.attributes.mode   {{ sp.mode | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.mode) }}
+    Should Be Equal Value Json String   ${r.json()}   ${sp}.attributes.tDn   {{ sp_tdn }}
+{% endfor %}
+
 {% for sl in epg.static_leafs | default([]) %}
 {% set query = "nodes[?id==`" ~ sl.node_id ~ "`].pod" %}
 {% set pod = sl.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
