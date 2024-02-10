@@ -16,7 +16,7 @@
                         "descr": "{{ syslog.description | default() }}",
                         "format": "{{ syslog.format | default(defaults.apic.fabric_policies.monitoring.syslogs.format) }}",
                         "includeMilliSeconds": "{% if syslog.show_millisecond | default(defaults.apic.fabric_policies.monitoring.syslogs.show_millisecond)| cisco.aac.aac_bool("enabled") == 'enabled' %}yes{% else %}no{% endif %}",
-                        "includeTimeZone": "{{ syslog.show_timezone | default(defaults.apic.fabric_policies.monitoring.syslogs.show_timezone) | cisco.aac.aac_bool("yes") }}",
+                        "includeTimeZone": "{{ 'yes' if syslog.show_timezone | default(defaults.apic.fabric_policies.monitoring.syslogs.show_timezone) else 'no' }}",
                         "childAction": "deleteNonPresent"
                     },
                     "children": [

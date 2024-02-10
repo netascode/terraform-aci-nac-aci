@@ -14,7 +14,7 @@ Verify Syslog Policy {{ policy_name }}
     Should Be Equal Value Json String   ${r.json()}    $..syslogGroup.attributes.name   {{ policy_name }}
     Should Be Equal Value Json String   ${r.json()}    $..syslogGroup.attributes.descr   {{ syslog.description | default() }}
     Should Be Equal Value Json String   ${r.json()}    $..syslogGroup.attributes.format   {{ syslog.format | default(defaults.apic.fabric_policies.monitoring.syslogs.format) }}
-    Should Be Equal Value Json String   ${r.json()}    $..syslogGroup.attributes.includeTimeZone    {{ syslog.show_timezone | default(defaults.apic.fabric_policies.monitoring.syslogs.show_timezone) | cisco.aac.aac_bool("yes") }}
+    Should Be Equal Value Json String   ${r.json()}    $..syslogGroup.attributes.includeTimeZone    {{ 'yes' if syslog.show_timezone | default(defaults.apic.fabric_policies.monitoring.syslogs.show_timezone) else 'no' }}
     Should Be Equal Value Json String   ${r.json()}    $..syslogGroup.attributes.includeMilliSeconds   {% if syslog.show_millisecond | default(defaults.apic.fabric_policies.monitoring.syslogs.show_millisecond) | cisco.aac.aac_bool("enabled") == 'enabled' %}yes{% else %}no{% endif %}
 
 {% for dest in syslog.destinations | default([]) %}
