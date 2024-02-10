@@ -173,3 +173,81 @@ variable "l3_destinations" {
   }
 }
 
+variable "l1l2_destinations" {
+  description = "List of L1L2 destinations."
+  type = list(object({
+    description           = optional(string, "")
+    name                  = string
+    mac                   = optional(string)
+    weight                = optional(number)
+    pod_id                = optional(number)
+    redirect_health_group = optional(string, "")
+    l4l7_device           = string
+    concrete_device       = string
+    interface             = string
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for l1l2 in var.l1l2_destinations : l1l2.name == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", l1l2.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for l1l2 in var.l1l2_destinations : l1l2.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", l1l2.description))
+    ])
+    error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  validation {
+    condition = alltrue([
+      for l1l2 in var.l1l2_destinations : l1l2.pod_id == null || try(l1l2.pod_id >= 1 && l1l2.pod_id <= 255, false)
+    ])
+    error_message = "`pod_id`: Minimum value: 1. Maximum value: 255."
+  }
+
+  validation {
+    condition = alltrue([
+      for l1l2 in var.l1l2_destinations : l1l2.mac == null || (l1l2.mac != "" && l1l2.mac != "00:00:00:00:00:00")
+    ])
+    error_message = "`mac`: Empty string or `00:00:00:00:00:00` are not allowed."
+  }
+
+  validation {
+    condition = alltrue([
+      for l1l2 in var.l1l2_destinations : l1l2.weight == null || try(l1l2.weight >= 1 && l1l2.weight <= 10, false)
+    ])
+    error_message = "`weight`: Minimum value: 1. Maximum value: 10."
+  }
+
+  validation {
+    condition = alltrue([
+      for l1l2 in var.l1l2_destinations : can(regex("^[a-zA-Z0-9_.-]{0,64}$", l1l2.redirect_health_group))
+    ])
+    error_message = "`redirect_health_group` allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for l1l2 in var.l1l2_destinations : l1l2.l4l7_device == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", l1l2.l4l7_device))
+    ])
+    error_message = "`l4l7_device`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for l1l2 in var.l1l2_destinations : l1l2.concrete_device == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", l1l2.concrete_device))
+    ])
+    error_message = "`concrete_device`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for l1l2 in var.l1l2_destinations : l1l2.interface == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", l1l2.interface))
+    ])
+    error_message = "`interface`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+}

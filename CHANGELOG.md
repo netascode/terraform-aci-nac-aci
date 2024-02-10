@@ -1,3 +1,7 @@
+## 0.8.2 (unreleased)
+
+- Add support for PBR L1L2 destinations
+
 ## 0.8.1
 
 - Make L3 PBR destination MAC optional
