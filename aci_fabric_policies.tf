@@ -821,6 +821,7 @@ module "aci_syslog_policy" {
   description         = try(each.value.description, "")
   format              = try(each.value.format, local.defaults.apic.fabric_policies.monitoring.syslogs.format)
   show_millisecond    = try(each.value.show_millisecond, local.defaults.apic.fabric_policies.monitoring.syslogs.show_millisecond)
+  show_timezone       = try(each.value.show_timezone, local.defaults.apic.fabric_policies.monitoring.syslogs.show_timezone)
   admin_state         = try(each.value.admin_state, local.defaults.apic.fabric_policies.monitoring.syslogs.admin_state)
   local_admin_state   = try(each.value.local_admin_state, local.defaults.apic.fabric_policies.monitoring.syslogs.local_admin_state)
   local_severity      = try(each.value.local_severity, local.defaults.apic.fabric_policies.monitoring.syslogs.local_severity)

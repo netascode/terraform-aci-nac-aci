@@ -36,6 +36,12 @@ variable "show_millisecond" {
   default     = false
 }
 
+variable "show_timezone" {
+  description = "Show timezone."
+  type        = bool
+  default     = false
+}
+
 variable "admin_state" {
   description = "Admin state."
   type        = bool

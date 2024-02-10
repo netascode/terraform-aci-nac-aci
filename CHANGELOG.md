@@ -2,6 +2,7 @@
 
 - Add support for PBR L1L2 destinations
 - Add support for additional AAA security management settings
+- Add support for syslog show timezone
 
 ## 0.8.1
 

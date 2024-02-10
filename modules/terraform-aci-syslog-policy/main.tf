@@ -6,6 +6,7 @@ resource "aci_rest_managed" "syslogGroup" {
     descr               = var.description
     format              = var.format
     includeMilliSeconds = var.show_millisecond == true ? "yes" : "no"
+    includeTimeZone     = var.show_timezone ? "yes" : "no"
   }
 }
 

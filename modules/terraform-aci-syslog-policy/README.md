@@ -17,6 +17,7 @@ module "aci_syslog_policy" {
   description         = "My Description"
   format              = "nxos"
   show_millisecond    = true
+  show_timezone       = true
   admin_state         = true
   local_admin_state   = false
   local_severity      = "errors"
@@ -58,6 +59,7 @@ module "aci_syslog_policy" {
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_format"></a> [format](#input\_format) | Format. Choices: `aci`, `nxos`. | `string` | `"aci"` | no |
 | <a name="input_show_millisecond"></a> [show\_millisecond](#input\_show\_millisecond) | Show milliseconds. | `bool` | `false` | no |
+| <a name="input_show_timezone"></a> [show\_timezone](#input\_show\_timezone) | Show timezone. | `bool` | `false` | no |
 | <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | Admin state. | `bool` | `true` | no |
 | <a name="input_local_admin_state"></a> [local\_admin\_state](#input\_local\_admin\_state) | Local admin state. | `bool` | `true` | no |
 | <a name="input_local_severity"></a> [local\_severity](#input\_local\_severity) | Local severity. Choices: `emergencies`, `alerts`, `critical`, `errors`, `warnings`, `notifications`, `information`, `debugging`. | `string` | `"information"` | no |
