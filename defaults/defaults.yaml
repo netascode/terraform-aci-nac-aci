@@ -348,7 +348,6 @@ defaults:
           minimum_severity: warnings
           format: aci
           show_millisecond: false
-          show_timezone: false
           admin_state: true
           local_admin_state: true
           local_severity: information
