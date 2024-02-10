@@ -40,7 +40,7 @@ Verify Redirect Policy {{ pol_name }} IP SLA Policy
 Verify Redirect Policy {{ pol_name }} Backup Policy
     Should Be Equal Value Json String   ${r.json()}   $..vnsSvcRedirectPol.children..vnsRsBackupPol.attributes.tDn   uni/tn-{{ tenant.name }}/svcCont/backupPol-{{ backup_pol_name }}
 
-{% endif %}                                   
+{% endif %}
 
 {% for dest in pol.l3_destinations | default([]) %}
 
@@ -55,6 +55,31 @@ Verify Redirect Policy {{ pol_name }} L3 Destination {{ dest.ip }}
 {% set health_group_name = dest.redirect_health_group ~ defaults.apic.tenants.services.redirect_health_groups.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.children..vnsRsRedirectHealthGroup.attributes.tDn   uni/tn-{{ tenant.name }}/svcCont/redirectHealthGroup-{{ health_group_name }}
 {% endif %}                                                 
+{% endfor %}
+
+{% for dest in pol.l1l2_destinations | default([]) %}
+
+Verify Redirect Policy {{ pol_name }} L1/L2 Destination {{ dest.name }}
+    ${dest}=   Set Variable   $..vnsSvcRedirectPol.children[?(@.vnsL1L2RedirectDest.attributes.destName=='{{ dest.name }}')].vnsL1L2RedirectDest
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.descr   {{ dest.description | default()  }}
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.destName   {{ dest.name }}
+{% if dest.mac is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.mac   {{ dest.mac }}
+{% endif %}
+{% if dest.weight is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.weight   {{ dest.weight }}
+{% endif %}
+{% if dest.pod is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.podId   {{ dest.pod }}
+{% endif %}
+{% if dest.redirect_health_group is defined %}
+{% set health_group_name = dest.redirect_health_group ~ defaults.apic.tenants.services.redirect_health_groups.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.children..vnsRsL1L2RedirectHealthGroup.attributes.tDn   uni/tn-{{ tenant.name }}/svcCont/redirectHealthGroup-{{ health_group_name }}
+{% endif %}
+{% set l4l7_device = dest.concrete_interface.l4l7_device ~ defaults.apic.tenants.services.l4l7_devices.name_suffix %}
+{% set concrete_device = dest.concrete_interface.concrete_device ~ defaults.apic.tenants.services.l4l7_devices.concrete_devices.name_suffix %}
+{% set interface = dest.concrete_interface.interface ~ defaults.apic.tenants.services.l4l7_devices.concrete_devices.interfaces.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.children..vnsRsToCIf.attributes.tDn   uni/tn-{{ tenant.name }}/lDevVip-{{ l4l7_device }}/cDev-{{ concrete_device }}/cIf-[{{ interface }}]
 {% endfor %}
 
 {% endfor %}

@@ -1098,6 +1098,26 @@ apic:
                 concrete_interfaces:
                   - device: DEV-COPY
                     interface_name: INT1
+          - name: DEV-L1
+            physical_domain: PHY1
+            service_type: OTHERS
+            function: L1
+            concrete_devices:
+              - name: DEV1-L1
+                interfaces:
+                  - name: INT1
+                    node_id: 101
+                    port: 21
+          - name: DEV-L2
+            physical_domain: PHY1
+            service_type: OTHERS
+            function: L2
+            concrete_devices:
+              - name: DEV1-L2
+                interfaces:
+                  - name: INT1
+                    node_id: 101
+                    port: 22
         redirect_policies:
           - name: PBR1
             alias: PBR1
@@ -1127,20 +1147,51 @@ apic:
               maximum_major_faults: 1000
               maximum_minor_faults: 1000
           - name: PBR2
+          - name: PBR_L1
+            alias: PBR_L1
+            description: My Desc
+            type: L1
+            hashing: sip-dip-prototype
+            resilient_hashing: false
+            l1l2_destinations:
+              - description: L1 destination
+                name: L1_DEST1
+                redirect_health_group: HEALTH_GROUP_L1
+                concrete_interface:
+                  l4l7_device: DEV-L1
+                  concrete_device: DEV1-L1
+                  interface: INT1
+          - name: PBR_L2
+            alias: PBR_L2
+            description: My Desc
+            type: L2
+            hashing: sip-dip-prototype
+            resilient_hashing: false
+            l1l2_destinations:
+              - description: L2 destination
+                name: L2_DEST1
+                mac: 00:00:00:11:22:34
+                redirect_health_group: HEALTH_GROUP_L2
+                concrete_interface:
+                  l4l7_device: DEV-L2
+                  concrete_device: DEV1-L2
+                  interface: INT1
         service_epg_policies:
           - name: SERVICE_EPG1
             description: My Desc
             preferred_group: true
           - name: SERVICE_EPG2
         redirect_health_groups:
-          - name: HEALTH_GROUP1
+          - name: HEALTH_GROUP_1
             description: My Desc
             expected_state:
               minimum_health: 0
               maximum_critical_faults: 1000
               maximum_major_faults: 1000
               maximum_minor_faults: 1000
-          - name: HEALTH_GROUP2
+          - name: HEALTH_GROUP_2
+          - name: HEALTH_GROUP_L1
+          - name: HEALTH_GROUP_L2
         redirect_backup_policies:
           - name: L4L7_REDIRECT_BACKUP1
             l3_destinations:

@@ -87,6 +87,51 @@
                                         }
                                     }
                                     {%- endfor %}
+                                    {%- for dest in pol.l1l2_destinations | default([]) %}{{ comma2() }}
+                                    {
+                                        "vnsL1L2RedirectDest": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "destName": "{{ dest.name }}",
+                                                {% if dest.mac is defined %}
+                                                "mac": "{{ dest.mac }}",
+                                                {% endif %}
+                                                {% if dest.weight is defined %}
+                                                "weight": "{{ dest.weight }}",
+                                                {% endif %}
+                                                {% if dest.pod is defined %}
+                                                "podId": "{{ dest.pod }},"
+                                                {% endif %}
+                                                "descr": "{{ dest.description | default() }}"
+                                            },
+                                            "children": [
+                                                {% if dest.redirect_health_group is defined %}
+                                                {% set health_group_name = dest.redirect_health_group ~ defaults.apic.tenants.services.redirect_health_groups.name_suffix %}
+                                                {
+                                                    "vnsRsL1L2RedirectHealthGroup": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "tDn": "uni/tn-{{ tenant.name }}/svcCont/redirectHealthGroup-{{ health_group_name }}"
+                                                        }
+                                                    }
+                                                },
+                                                {%- endif %}
+
+                                                {% set l4l7_device = dest.concrete_interface.l4l7_device ~ defaults.apic.tenants.services.l4l7_devices.name_suffix %}
+                                                {% set concrete_device = dest.concrete_interface.concrete_device ~ defaults.apic.tenants.services.l4l7_devices.concrete_devices.name_suffix %}
+                                                {% set interface = dest.concrete_interface.interface ~ defaults.apic.tenants.services.l4l7_devices.concrete_devices.interfaces.name_suffix %}
+                                                {
+                                                    "vnsRsToCIf": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "tDn": "uni/tn-{{ tenant.name }}/lDevVip-{{ l4l7_device }}/cDev-{{ concrete_device }}/cIf-[{{ interface }}]"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                    {%- endfor %}
 
                                 ]
                             }
