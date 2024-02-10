@@ -89,6 +89,102 @@ variable "password_strength_check" {
   default     = false
 }
 
+variable "min_password_length" {
+  description = "Minimum password length."
+  type        = number
+  default     = 8
+
+  validation {
+    condition     = var.min_password_length >= 8 && var.min_password_length <= 64
+    error_message = "Allowed values `min_password_length`: 8-64."
+  }
+}
+
+variable "max_password_length" {
+  description = "Maximum password length."
+  type        = number
+  default     = 64
+
+  validation {
+    condition     = var.max_password_length >= 8 && var.max_password_length <= 64
+    error_message = "Allowed values `max_password_length`: 8-64."
+  }
+}
+
+variable "password_strength_test_type" {
+  description = "Password strength test type for Password Strength Policy"
+  type        = string
+  default     = "default"
+
+  validation {
+    condition     = contains(["default", "custom"], var.password_strength_test_type)
+    error_message = "Allowed values `password_strength_test_type`: default, custom"
+  }
+}
+
+variable "password_class_flags" {
+  description = "Password class flags for Password Strength Policy"
+  type        = list(string)
+  default     = ["digits", "lowercase", "uppercase"]
+
+  validation {
+    condition = length(var.password_class_flags) >= 3 && alltrue([
+      for d in var.password_class_flags : contains(["digits", "lowercase", "specialchars", "uppercase"], d)
+    ])
+    error_message = "Allowed values `password_class_flags`: a combination of at least three out of four options: digits,lowercase,specialchars,uppercase."
+  }
+}
+
+variable "password_change_during_interval" {
+  description = "Enables or disables password change during interval."
+  type        = bool
+  default     = true
+}
+
+variable "password_change_count" {
+  description = "The number of password changes allowed within the change interval."
+  type        = number
+  default     = 2
+
+  validation {
+    condition     = var.password_change_count >= 0 && var.password_change_count <= 10
+    error_message = "Allowed values `password_change_interval`: 0-10."
+  }
+}
+
+variable "password_change_interval" {
+  description = "A time interval (hours) for limiting the number of password changes."
+  type        = number
+  default     = 48
+
+  validation {
+    condition     = var.password_change_interval >= 0 && var.password_change_interval <= 745
+    error_message = "Allowed values `password_change_interval`: 0-745."
+  }
+}
+
+variable "password_no_change_interval" {
+  description = "A minimum period after a password change before the user can change the password again."
+  type        = number
+  default     = 24
+
+  validation {
+    condition     = var.password_no_change_interval >= 0 && var.password_no_change_interval <= 745
+    error_message = "Allowed values `password_no_change_interval`: 0-745."
+  }
+}
+
+variable "password_history_count" {
+  description = "Number of recent user passwords to store."
+  type        = number
+  default     = 5
+
+  validation {
+    condition     = var.password_history_count >= 0 && var.password_history_count <= 15
+    error_message = "Allowed values `password_history_count`: 0-15."
+  }
+}
+
 variable "web_token_timeout" {
   description = "Web session idle timeout (s)."
   type        = number
@@ -119,5 +215,50 @@ variable "web_session_idle_timeout" {
   validation {
     condition     = var.web_session_idle_timeout >= 60 && var.web_session_idle_timeout <= 65525
     error_message = "Allowed values `web_session_idle_timeout`: 60-65525."
+  }
+}
+
+variable "include_refresh_session_records" {
+  description = "Enables or disables inluding a refresh in the session records."
+  type        = bool
+  default     = true
+}
+
+variable "enable_login_block" {
+  description = "Enables or disables lockout user after multiple failed login attempts."
+  type        = bool
+  default     = false
+}
+
+variable "login_block_duration" {
+  description = "Duration in minutes for which future logins should be blocked."
+  type        = number
+  default     = 60
+
+  validation {
+    condition     = var.login_block_duration >= 1 && var.login_block_duration <= 1440
+    error_message = "Allowed values `login_block_duration`: 1-1440."
+  }
+}
+
+variable "login_max_failed_attempts" {
+  description = "Max failed login attempts before blocking user login."
+  type        = number
+  default     = 5
+
+  validation {
+    condition     = var.login_max_failed_attempts >= 1 && var.login_max_failed_attempts <= 15
+    error_message = "Allowed values `login_max_failed_attempts`: 1-15."
+  }
+}
+
+variable "login_max_failed_attempts_window" {
+  description = "Time period (unit: minute) in which consecutive attempts were failed."
+  type        = number
+  default     = 5
+
+  validation {
+    condition     = var.login_max_failed_attempts_window >= 1 && var.login_max_failed_attempts_window <= 720
+    error_message = "Allowed values `login_max_failed_attempts_window`: 1-720."
   }
 }
