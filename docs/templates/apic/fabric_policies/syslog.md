@@ -35,6 +35,7 @@ apic:
           admin_state: false
           format: nxos
           show_millisecond: true
+          show_timezone: true
           local_admin_state: false
           local_severity: emergencies
           console_admin_state: false

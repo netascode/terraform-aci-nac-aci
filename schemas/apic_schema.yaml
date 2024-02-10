@@ -810,6 +810,7 @@ fp_monitoring_syslogs:
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
   format: enum('aci', 'nxos', required=False)
   show_millisecond: any(bool(), enum('enabled', 'disabled'), required=False)
+  show_timezone: bool(required=False)
   local_admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
   local_severity: enum('emergencies', 'alerts', 'critical', 'errors', 'warnings', 'notifications', 'information', 'debugging', required=False)
   console_admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
