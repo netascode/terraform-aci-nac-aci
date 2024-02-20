@@ -122,8 +122,6 @@ module "aci_l3out" {
 | <a name="input_multipod"></a> [multipod](#input\_multipod) | Multipod L3out flag. | `bool` | `true` | no |
 | <a name="input_sr_mpls"></a> [sr\_mpls](#input\_sr\_mpls) | SR MPLS L3out flag. | `bool` | `false` | no |
 | <a name="input_sr_mpls_infra_l3outs"></a> [sr\_mpls\_infra\_l3outs](#input\_sr\_mpls\_infra\_l3outs) | SR MPLS Infra L3Outs. | <pre>list(object({<br>    name               = string<br>    outbound_route_map = optional(string, "")<br>    inbound_route_map  = optional(string, "")<br>    external_epgs      = optional(list(string), [])<br>  }))</pre> | `[]` | no |
-| <a name="input_sr_mpls_inbound_route_map"></a> [sr\_mpls\_inbound\_route\_map](#input\_sr\_mpls\_inbound\_route\_map) | SR MPLS Tenant L3out Inbound Route Map name. | `string` | `""` | no |
-| <a name="input_sr_mpls_outbound_route_map"></a> [sr\_mpls\_outbound\_route\_map](#input\_sr\_mpls\_outbound\_route\_map) | SR MPLS Tenant L3out Outbound Route Map name. | `string` | `""` | no |
 
 ## Outputs
 
