@@ -241,31 +241,51 @@ resource "aci_rest_managed" "l3extProvLbl" {
 }
 
 resource "aci_rest_managed" "l3extConsLbl" {
-  count      = var.tenant != "infra" && var.sr_mpls == true ? 1 : 0
-  dn         = "${aci_rest_managed.l3extOut.dn}/conslbl-${var.sr_mpls_infra_l3out}"
+  for_each   = { for infra_l3out in var.sr_mpls_infra_l3outs : infra_l3out.name => infra_l3out }
+  dn         = "${aci_rest_managed.l3extOut.dn}/conslbl-${each.value.name}"
   class_name = "l3extConsLbl"
   content = {
-    name = var.sr_mpls_infra_l3out
+    name = each.value.name
   }
 }
 
 resource "aci_rest_managed" "l3extRsLblToProfile_import" {
-  count      = var.tenant != "infra" && var.sr_mpls == true && length(var.sr_mpls_inbound_route_map) > 0 ? 1 : 0
-  dn         = "${aci_rest_managed.l3extConsLbl[0].dn}/rslblToProfile-[uni/tn-${var.tenant}/prof-${var.sr_mpls_inbound_route_map}]-import"
+  for_each   = { for infra_l3out in var.sr_mpls_infra_l3outs : infra_l3out.name => infra_l3out }
+  dn         = "${aci_rest_managed.l3extConsLbl[each.value.name].dn}/rslblToProfile-[uni/tn-${var.tenant}/prof-${each.value.inbound_route_map}]-import"
   class_name = "l3extRsLblToProfile"
   content = {
     direction = "import"
-    tDn       = "uni/tn-${var.tenant}/prof-${var.sr_mpls_inbound_route_map}"
+    tDn       = "uni/tn-${var.tenant}/prof-${each.value.inbound_route_map}"
   }
 }
 
 resource "aci_rest_managed" "l3extRsLblToProfile_export" {
-  count      = var.tenant != "infra" && var.sr_mpls == true && length(var.sr_mpls_outbound_route_map) > 0 ? 1 : 0
-  dn         = "${aci_rest_managed.l3extConsLbl[0].dn}/rslblToProfile-[uni/tn-${var.tenant}/prof-${var.sr_mpls_outbound_route_map}]-export"
+  for_each   = { for infra_l3out in var.sr_mpls_infra_l3outs : infra_l3out.name => infra_l3out }
+  dn         = "${aci_rest_managed.l3extConsLbl[each.value.name].dn}/rslblToProfile-[uni/tn-${var.tenant}/prof-${each.value.outbound_route_map}]-export"
   class_name = "l3extRsLblToProfile"
   content = {
     direction = "export"
-    tDn       = "uni/tn-${var.tenant}/prof-${var.sr_mpls_outbound_route_map}"
+    tDn       = "uni/tn-${var.tenant}/prof-${each.value.outbound_route_map}"
+  }
+}
+
+locals {
+  infra_l3out_external_epgs = flatten([
+    for infra_l3out in var.sr_mpls_infra_l3outs : [
+      for eepg in try(infra_l3out.external_epgs, []) : {
+        name    = infra_l3out.name
+        ext_epg = eepg
+      }
+    ]
+  ])
+}
+
+resource "aci_rest_managed" "l3extRsLblToInstP" {
+  for_each   = { for eepg in local.infra_l3out_external_epgs : "${eepg.name}/${eepg.ext_epg}" => eepg }
+  dn         = "${aci_rest_managed.l3extConsLbl[each.value.name].dn}/rslblToInstP-[uni/tn-${var.tenant}/out-${var.name}/instP-${each.value.ext_epg}]"
+  class_name = "l3extRsLblToInstP"
+  content = {
+    tDn = "uni/tn-${var.tenant}/out-${var.name}/instP-${each.value.ext_epg}"
   }
 }
 
