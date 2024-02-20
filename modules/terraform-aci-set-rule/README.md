@@ -86,6 +86,9 @@ module "aci_set_rule" {
 | <a name="input_set_as_path_asn"></a> [set\_as\_path\_asn](#input\_set\_as\_path\_asn) | AS-PATH ASN. Allowed values `set_as_path_asn`: 0-65535. | `number` | `null` | no |
 | <a name="input_next_hop_propagation"></a> [next\_hop\_propagation](#input\_next\_hop\_propagation) | Next Hop Propagation. | `bool` | `false` | no |
 | <a name="input_multipath"></a> [multipath](#input\_multipath) | Multipath. | `bool` | `false` | no |
+| <a name="input_external_endpoint_group"></a> [external\_endpoint\_group](#input\_external\_endpoint\_group) | External endpoint group name. | `string` | `""` | no |
+| <a name="input_external_endpoint_group_l3out"></a> [external\_endpoint\_group\_l3out](#input\_external\_endpoint\_group\_l3out) | External endpoint group l3out name. | `string` | `""` | no |
+| <a name="input_external_endpoint_group_tenant"></a> [external\_endpoint\_group\_tenant](#input\_external\_endpoint\_group\_tenant) | External endpoint group tenant name. | `string` | `""` | no |
 
 ## Outputs
 
@@ -99,6 +102,7 @@ module "aci_set_rule" {
 | Name | Type |
 |------|------|
 | [aci_rest_managed.rtctrlAttrP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.rtctrlRsSetPolicyTagToInstP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlSetASPath](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlSetASPathASN](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlSetAddComm](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
@@ -106,6 +110,7 @@ module "aci_set_rule" {
 | [aci_rest_managed.rtctrlSetDamp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlSetNh](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlSetNhUnchanged](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.rtctrlSetPolicyTag](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlSetPref](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlSetRedistMultipath](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlSetRtMetric](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

@@ -144,3 +144,21 @@ resource "aci_rest_managed" "rtctrlSetRedistMultipath" {
     aci_rest_managed.rtctrlSetNh
   ]
 }
+
+resource "aci_rest_managed" "rtctrlSetPolicyTag" {
+  count      = var.external_endpoint_group != "" && var.external_endpoint_group_l3out != "" ? 1 : 0
+  dn         = "${aci_rest_managed.rtctrlAttrP.dn}/sptag"
+  class_name = "rtctrlSetPolicyTag"
+  content = {
+    "type" = "policy-tag"
+  }
+}
+
+resource "aci_rest_managed" "rtctrlRsSetPolicyTagToInstP" {
+  count      = var.external_endpoint_group != "" && var.external_endpoint_group_l3out != "" ? 1 : 0
+  dn         = "${aci_rest_managed.rtctrlSetPolicyTag.dn}/rssetPolicyTagToInstP"
+  class_name = "rtctrlRsSetPolicyTagToInstP"
+  content = {
+    "tDn" = "uni/tn-${try(var.external_endpoint_group_tenant, var.tenant)}/out-${var.external_endpoint_group_l3out}/instP-${var.external_endpoint_group}"
+  }
+}
