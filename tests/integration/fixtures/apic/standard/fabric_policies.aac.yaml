@@ -109,7 +109,7 @@ apic:
         password_change_count: 2
         password_change_interval: 48
         password_no_change_interval: 24
-        password_history_count: 5
+        password_history_count: 0
         web_token_timeout: 600
         web_token_max_validity: 24
         web_session_idle_timeout: 1200

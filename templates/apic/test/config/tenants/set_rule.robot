@@ -57,6 +57,12 @@ Verify Set Rule {{ rule_name }}
 {% if rule.multipath | default(defaults.apic.tenants.policies.set_rules.multipath) | cisco.aac.aac_bool("enabled") == 'enabled' %}
     Should Be Equal Value Json String   ${r.json()}   $..rtctrlSetRedistMultipath.attributes.type   redist-multipath
 {% endif %}
+{% if rule.external_endpoint_group is defined %}
+    {% set l3out_name = rule.external_endpoint_group.l3out ~ defaults.apic.tenants.l3outs.name_suffix %}
+    {% set eepg_name = rule.external_endpoint_group.name ~ defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   $..rtctrlSetPolicyTag.attributes.type   policy-tag
+    Should Be Equal Value Json String   ${r.json()}   $..rtctrlRsSetPolicyTagToInstP.attributes.tDn   uni/tn-{{ rule.external_endpoint_group.tenant | default(tenant) }}/out-{{ l3out_name }}/instP-{{ eepg_name }}
+{% endif %}
 
 {% for add_comm in rule.additional_communities | default([]) %}
 Verify Set Rule {{ rule_name }} Additional Community {{ add_comm.community  }}

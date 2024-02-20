@@ -1,0 +1,11 @@
+---
+apic:
+  tenants:
+    - name: ABC
+      policies:
+        set_rules:
+          - name: SET3
+            external_endpoint_group:
+              name: L3OUT1-EPG1
+              l3out: l3OUT1
+              tenant: ABC
