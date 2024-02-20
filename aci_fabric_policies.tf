@@ -576,7 +576,7 @@ module "aci_aaa" {
   security_domains = [for sd in try(local.fabric_policies.aaa.security_domains, []) : {
     name                   = sd.name
     description            = try(sd.description, "")
-    restricted_rbac_domain = try(sd.restricted_rbac_domain, local.defaults.fabric_policies.aaa.security_domains.restricted_rbac_domain)
+    restricted_rbac_domain = try(sd.restricted_rbac_domain, local.defaults.apic.fabric_policies.aaa.security_domains.restricted_rbac_domain)
   }]
   password_strength_check          = try(local.fabric_policies.aaa.management_settings.password_strength_check, local.defaults.apic.fabric_policies.aaa.management_settings.password_strength_check)
   min_password_length              = try(local.fabric_policies.aaa.management_settings.password_strength_profile.password_mininum_length, local.defaults.apic.fabric_policies.aaa.management_settings.password_strength_profile.password_mininum_length)
