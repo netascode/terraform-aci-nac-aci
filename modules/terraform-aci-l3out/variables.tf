@@ -426,14 +426,44 @@ variable "sr_mpls" {
   default     = false
 }
 
-variable "sr_mpls_infra_l3out" {
-  description = "SR MPLS Infra L3Out name."
-  type        = string
-  default     = ""
+variable "sr_mpls_infra_l3outs" {
+  description = "SR MPLS Infra L3Outs."
+  type = list(object({
+    name               = string
+    outbound_route_map = optional(string, "")
+    inbound_route_map  = optional(string, "")
+    external_epgs      = optional(list(string), [])
+  }))
+  default = []
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.sr_mpls_infra_l3out))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition = alltrue([
+      for i in var.sr_mpls_infra_l3outs : can(regex("^[a-zA-Z0-9_.-]{0,64}$", i.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for i in var.sr_mpls_infra_l3outs : can(regex("^[a-zA-Z0-9_.-]{0,64}$", i.outbound_route_map))
+    ])
+    error_message = "`outbound_route_map`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for i in var.sr_mpls_infra_l3outs : can(regex("^[a-zA-Z0-9_.-]{0,64}$", i.inbound_route_map))
+    ])
+    error_message = "`inbound_route_map`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for i in var.sr_mpls_infra_l3outs : alltrue([
+        for e in i.external_epgs : can(regex("^[a-zA-Z0-9_.-]{0,64}$", e))
+      ])
+    ])
+    error_message = "`external_epgs`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
 }
 
