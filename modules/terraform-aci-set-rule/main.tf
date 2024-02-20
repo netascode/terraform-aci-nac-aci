@@ -156,7 +156,7 @@ resource "aci_rest_managed" "rtctrlSetPolicyTag" {
 
 resource "aci_rest_managed" "rtctrlRsSetPolicyTagToInstP" {
   count      = var.external_endpoint_group != "" && var.external_endpoint_group_l3out != "" ? 1 : 0
-  dn         = "${aci_rest_managed.rtctrlSetPolicyTag.dn}/rssetPolicyTagToInstP"
+  dn         = "${aci_rest_managed.rtctrlSetPolicyTag[0].dn}/rssetPolicyTagToInstP"
   class_name = "rtctrlRsSetPolicyTagToInstP"
   content = {
     "tDn" = "uni/tn-${try(var.external_endpoint_group_tenant, var.tenant)}/out-${var.external_endpoint_group_l3out}/instP-${var.external_endpoint_group}"
