@@ -1515,7 +1515,6 @@ locals {
           contract_consumers          = try([for contract in epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_providers          = try([for contract in epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
-          sr_mpls_infra_l3out         = try(l3out.sr_mpls_infra_l3out, "")
           subnets = [for subnet in try(epg.subnets, []) : {
             name                           = try(subnet.name, "")
             prefix                         = subnet.prefix
@@ -1543,7 +1542,6 @@ module "aci_sr_mpls_external_endpoint_group" {
   contract_providers          = each.value.contract_providers
   contract_imported_consumers = each.value.contract_imported_consumers
   subnets                     = each.value.subnets
-  sr_mpls_infra_l3out         = each.value.sr_mpls_infra_l3out
 
   depends_on = [
     module.aci_tenant,
