@@ -109,7 +109,9 @@ pipeline {
     post {
         always {
             script {
-                if (env.BRANCH_NAME == "master") {
+                if (env.TAG_NAME) {
+                    sh 'cd scripts && python3 update_repos.py --release'
+                } else if (env.BRANCH_NAME == "master") {
                     sh 'cd scripts && python3 update_repos.py'
                 }
             }

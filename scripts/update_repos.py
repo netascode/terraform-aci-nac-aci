@@ -2,6 +2,7 @@
 
 # Copyright: (c) 2023, Daniel Schmidt <danischm@cisco.com>
 
+import argparse
 import os
 import shutil
 import subprocess
@@ -92,6 +93,7 @@ REPOS = [
     {
         "url": "https://{}@wwwin-github.cisco.com/netascode/terraform-aac.git",
         "type": "internal",
+        "update_release_only": True,
         "commit_message": "Aac updates",
         "directories": [
             {
@@ -117,6 +119,7 @@ REPOS = [
     {
         "url": "https://{}@wwwin-github.cisco.com/netascode/terraform-ndo-aac.git",
         "type": "internal",
+        "update_release_only": True,
         "commit_message": "Aac updates",
         "directories": [
             {
@@ -262,6 +265,7 @@ REPOS = [
     {
         "url": "https://{}@wwwin-github.cisco.com/netascode/onboarding-tool.git",
         "type": "internal",
+        "update_release_only": True,
         "commit_message": "Aac updates",
         "directories": [
             {
@@ -336,7 +340,14 @@ def update_repo(repo):
 
 
 def update_repos():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--release", help="Update repos marked as 'update_release_only'", action="store_true"
+    )
+    args = parser.parse_args()
     for repo in REPOS:
+        if repo.get("update_release_only", False) and not args.release:
+            continue
         print("\n-> Updating repo {}\n".format(repo["url"]))
         update_repo(repo)
 
