@@ -3,8 +3,8 @@ variable "tenant" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.tenant))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -13,8 +13,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -40,8 +40,8 @@ variable "destination" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.destination))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.destination))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -58,9 +58,9 @@ variable "sources" {
 
   validation {
     condition = alltrue([
-      for s in var.sources : can(regex("^[a-zA-Z0-9_.-]{0,64}$", s.name))
+      for s in var.sources : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.name))
     ])
-    error_message = "Source `name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Source `name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -79,15 +79,15 @@ variable "sources" {
 
   validation {
     condition = alltrue([
-      for s in var.sources : s.application_profile == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", s.application_profile))
+      for s in var.sources : s.application_profile == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.application_profile))
     ])
-    error_message = "Source `application_profile`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Source `application_profile`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for s in var.sources : s.endpoint_group == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", s.endpoint_group))
+      for s in var.sources : s.endpoint_group == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.endpoint_group))
     ])
-    error_message = "Source `endpoint_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Source `endpoint_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

@@ -4,8 +4,8 @@ variable "tenant" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.tenant))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -14,8 +14,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -107,8 +107,8 @@ variable "destination_tenant" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.destination_tenant))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.destination_tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -117,8 +117,8 @@ variable "destination_application_profile" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.destination_application_profile))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.destination_application_profile))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -127,7 +127,7 @@ variable "destination_endpoint_group" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.destination_endpoint_group))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.destination_endpoint_group))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

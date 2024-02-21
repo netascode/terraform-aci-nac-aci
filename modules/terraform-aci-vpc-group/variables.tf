@@ -22,9 +22,9 @@ variable "groups" {
 
   validation {
     condition = alltrue([
-      for g in var.groups : can(regex("^[a-zA-Z0-9_.-]{0,64}$", g.name))
+      for g in var.groups : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", g.name))
     ])
-    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -36,9 +36,9 @@ variable "groups" {
 
   validation {
     condition = alltrue([
-      for g in var.groups : can(regex("^[a-zA-Z0-9_.-]{0,64}$", g.policy))
+      for g in var.groups : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", g.policy))
     ])
-    error_message = "Allowed characters `policy`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters `policy`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {

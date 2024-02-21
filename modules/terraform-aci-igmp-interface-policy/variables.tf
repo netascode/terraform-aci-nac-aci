@@ -3,8 +3,8 @@ variable "tenant" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.tenant))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -13,8 +13,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -163,8 +163,8 @@ variable "report_policy_multicast_route_map" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.report_policy_multicast_route_map))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.report_policy_multicast_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -174,8 +174,8 @@ variable "static_report_multicast_route_map" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.static_report_multicast_route_map))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.static_report_multicast_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -207,7 +207,7 @@ variable "state_limit_multicast_route_map" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.state_limit_multicast_route_map))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.state_limit_multicast_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

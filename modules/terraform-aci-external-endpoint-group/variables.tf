@@ -3,8 +3,8 @@ variable "tenant" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.tenant))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -13,8 +13,8 @@ variable "l3out" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.l3out))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.l3out))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -23,8 +23,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -34,8 +34,8 @@ variable "alias" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.alias))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.alias))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -88,9 +88,9 @@ variable "route_control_profiles" {
 
   validation {
     condition = alltrue([
-      for r in var.route_control_profiles : can(regex("^[a-zA-Z0-9_.-]{0,64}$", r.name))
+      for r in var.route_control_profiles : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", r.name))
     ])
-    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -125,18 +125,18 @@ variable "subnets" {
 
   validation {
     condition = alltrue([
-      for s in var.subnets : s.name == null || try(can(regex("^[a-zA-Z0-9_.-]{0,64}$", s.name)), false)
+      for s in var.subnets : s.name == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.name)), false)
     ])
-    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
       for s in var.subnets : alltrue([
-        for r in s.route_control_profiles : can(regex("^[a-zA-Z0-9_.-]{0,64}$", r.name))
+        for r in s.route_control_profiles : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", r.name))
       ])
     ])
-    error_message = "`route_control_profiles.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`route_control_profiles.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -194,7 +194,7 @@ variable "sr_mpls_infra_l3out" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.sr_mpls_infra_l3out))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.sr_mpls_infra_l3out))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

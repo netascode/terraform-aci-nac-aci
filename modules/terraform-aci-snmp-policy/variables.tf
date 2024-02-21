@@ -3,8 +3,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -64,7 +64,7 @@ variable "users" {
     condition = alltrue([
       for u in var.users : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", u.name))
     ])
-    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -129,7 +129,7 @@ variable "clients" {
     condition = alltrue([
       for c in var.clients : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", c.name))
     ])
-    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -143,13 +143,13 @@ variable "clients" {
     condition = alltrue([
       for c in var.clients : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", c.mgmt_epg_name))
     ])
-    error_message = "Allowed characters `mgmt_epg_name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters `mgmt_epg_name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue(flatten([
-      for c in var.clients : [for e in coalesce(c.entries, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", e.name))]
+      for c in var.clients : [for e in coalesce(c.entries, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", e.name))]
     ]))
-    error_message = "`entries.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`entries.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

@@ -3,8 +3,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -26,9 +26,9 @@ variable "physical_domains" {
 
   validation {
     condition = alltrue([
-      for pd in var.physical_domains : can(regex("^[a-zA-Z0-9_.-]{0,64}$", pd))
+      for pd in var.physical_domains : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", pd))
     ])
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -39,9 +39,9 @@ variable "routed_domains" {
 
   validation {
     condition = alltrue([
-      for rd in var.routed_domains : can(regex("^[a-zA-Z0-9_.-]{0,64}$", rd))
+      for rd in var.routed_domains : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rd))
     ])
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -52,9 +52,9 @@ variable "vmware_vmm_domains" {
 
   validation {
     condition = alltrue([
-      for vmwd in var.vmware_vmm_domains : can(regex("^[a-zA-Z0-9_.-]{0,64}$", vmwd))
+      for vmwd in var.vmware_vmm_domains : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", vmwd))
     ])
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -74,23 +74,23 @@ variable "endpoint_groups" {
 
   validation {
     condition = alltrue([
-      for epg in var.endpoint_groups : can(regex("^[a-zA-Z0-9_.-]{0,64}$", epg.tenant))
+      for epg in var.endpoint_groups : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", epg.tenant))
     ])
-    error_message = "`tenant`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`tenant`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for epg in var.endpoint_groups : can(regex("^[a-zA-Z0-9_.-]{0,64}$", epg.application_profile))
+      for epg in var.endpoint_groups : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", epg.application_profile))
     ])
-    error_message = "`application_profile`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`application_profile`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for epg in var.endpoint_groups : can(regex("^[a-zA-Z0-9_.-]{0,64}$", epg.endpoint_group))
+      for epg in var.endpoint_groups : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", epg.endpoint_group))
     ])
-    error_message = "`endpoint_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`endpoint_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {

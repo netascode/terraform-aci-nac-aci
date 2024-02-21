@@ -3,8 +3,8 @@ variable "tenant" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.tenant))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -13,8 +13,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -43,9 +43,9 @@ variable "contexts" {
 
   validation {
     condition = alltrue([
-      for ctx in var.contexts : can(regex("^[a-zA-Z0-9_.-]{0,64}$", ctx.name))
+      for ctx in var.contexts : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", ctx.name))
     ])
-    error_message = "Context `name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Context `name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -71,15 +71,15 @@ variable "contexts" {
 
   validation {
     condition = alltrue([
-      for ctx in var.contexts : ctx.set_rule == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", ctx.set_rule))
+      for ctx in var.contexts : ctx.set_rule == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", ctx.set_rule))
     ])
-    error_message = "Context Set rule `name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Context Set rule `name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue(flatten([
-      for ctx in var.contexts : [for rule in coalesce(ctx.match_rules, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", rule))]
+      for ctx in var.contexts : [for rule in coalesce(ctx.match_rules, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rule))]
     ]))
-    error_message = "Context match rule: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Context match rule: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

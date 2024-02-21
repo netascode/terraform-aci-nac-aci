@@ -3,8 +3,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -24,16 +24,16 @@ variable "selectors" {
 
   validation {
     condition = alltrue([
-      for s in var.selectors : can(regex("^[a-zA-Z0-9_.-]{0,64}$", s.name))
+      for s in var.selectors : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.name))
     ])
-    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for s in var.selectors : s.policy_group == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", s.policy_group))
+      for s in var.selectors : s.policy_group == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.policy_group))
     ])
-    error_message = "`policy_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`policy_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -45,9 +45,9 @@ variable "selectors" {
 
   validation {
     condition = alltrue(flatten([
-      for s in var.selectors : [for pb in coalesce(s.pod_blocks, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", pb.name))]
+      for s in var.selectors : [for pb in coalesce(s.pod_blocks, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", pb.name))]
     ]))
-    error_message = "`pod_blocks.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`pod_blocks.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {

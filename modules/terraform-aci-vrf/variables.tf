@@ -3,8 +3,8 @@ variable "tenant" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.tenant))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -13,8 +13,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -24,8 +24,8 @@ variable "alias" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.alias))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.alias))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -80,8 +80,8 @@ variable "transit_route_tag_policy" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.transit_route_tag_policy))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.transit_route_tag_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -91,8 +91,8 @@ variable "ospf_timer_policy" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.ospf_timer_policy))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.ospf_timer_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -102,8 +102,8 @@ variable "ospf_ipv4_address_family_context_policy" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.ospf_ipv4_address_family_context_policy))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.ospf_ipv4_address_family_context_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -113,8 +113,8 @@ variable "ospf_ipv6_address_family_context_policy" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.ospf_ipv6_address_family_context_policy))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.ospf_ipv6_address_family_context_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -124,8 +124,8 @@ variable "bgp_timer_policy" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.bgp_timer_policy))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_timer_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -135,8 +135,8 @@ variable "bgp_ipv4_address_family_context_policy" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.bgp_ipv4_address_family_context_policy))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_ipv4_address_family_context_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -146,8 +146,8 @@ variable "bgp_ipv6_address_family_context_policy" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.bgp_ipv6_address_family_context_policy))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_ipv6_address_family_context_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -202,9 +202,9 @@ variable "dns_labels" {
 
   validation {
     condition = alltrue([
-      for dns in var.dns_labels : can(regex("^[a-zA-Z0-9_.-]{0,64}$", dns))
+      for dns in var.dns_labels : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", dns))
     ])
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -304,8 +304,8 @@ variable "pim_resource_policy_multicast_route_map" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.pim_resource_policy_multicast_route_map))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.pim_resource_policy_multicast_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -318,9 +318,9 @@ variable "pim_static_rps" {
 
   validation {
     condition = alltrue([
-      for rp in var.pim_static_rps : can(regex("^[a-zA-Z0-9_.-]{0,64}$", rp.multicast_route_map))
+      for rp in var.pim_static_rps : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rp.multicast_route_map))
     ])
-    error_message = "`multicast_route_map` Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`multicast_route_map` Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
   default = []
 }
@@ -334,9 +334,9 @@ variable "pim_fabric_rps" {
 
   validation {
     condition = alltrue([
-      for rp in var.pim_fabric_rps : can(regex("^[a-zA-Z0-9_.-]{0,64}$", rp.multicast_route_map))
+      for rp in var.pim_fabric_rps : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rp.multicast_route_map))
     ])
-    error_message = "`multicast_route_map` Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`multicast_route_map` Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
   default = []
 }
@@ -359,8 +359,8 @@ variable "pim_bsr_filter_multicast_route_map" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.pim_bsr_filter_multicast_route_map))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.pim_bsr_filter_multicast_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -382,8 +382,8 @@ variable "pim_auto_rp_filter_multicast_route_map" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.pim_auto_rp_filter_multicast_route_map))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.pim_auto_rp_filter_multicast_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -393,8 +393,8 @@ variable "pim_asm_shared_range_multicast_route_map" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.pim_asm_shared_range_multicast_route_map))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.pim_asm_shared_range_multicast_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -415,8 +415,8 @@ variable "pim_asm_sg_expiry_multicast_route_map" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.pim_asm_sg_expiry_multicast_route_map))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.pim_asm_sg_expiry_multicast_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -437,8 +437,8 @@ variable "pim_asm_traffic_registry_source_ip" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.pim_asm_traffic_registry_source_ip))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.pim_asm_traffic_registry_source_ip))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -449,8 +449,8 @@ variable "pim_ssm_group_range_multicast_route_map" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.pim_ssm_group_range_multicast_route_map))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.pim_ssm_group_range_multicast_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -464,23 +464,23 @@ variable "pim_inter_vrf_policies" {
 
   validation {
     condition = alltrue([
-      for pol in var.pim_inter_vrf_policies : can(regex("^[a-zA-Z0-9_.-]{0,64}$", pol.tenant))
+      for pol in var.pim_inter_vrf_policies : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", pol.tenant))
     ])
-    error_message = "`tenant`. Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`tenant`. Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for pol in var.pim_inter_vrf_policies : can(regex("^[a-zA-Z0-9_.-]{0,64}$", pol.vrf))
+      for pol in var.pim_inter_vrf_policies : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", pol.vrf))
     ])
-    error_message = "`vrf`. Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`vrf`. Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for pol in var.pim_inter_vrf_policies : can(regex("^[a-zA-Z0-9_.-]{0,64}$", pol.multicast_route_map))
+      for pol in var.pim_inter_vrf_policies : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", pol.multicast_route_map))
     ])
-    error_message = "`multicast_route_map`. Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`multicast_route_map`. Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   default = []
@@ -519,16 +519,16 @@ variable "leaked_internal_prefixes" {
 
   validation {
     condition = alltrue(flatten([
-      for p in var.leaked_internal_prefixes : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", d.tenant))]
+      for p in var.leaked_internal_prefixes : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", d.tenant))]
     ]))
-    error_message = "`tenant`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`tenant`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue(flatten([
-      for p in var.leaked_internal_prefixes : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", d.vrf))]
+      for p in var.leaked_internal_prefixes : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", d.vrf))]
     ]))
-    error_message = "`vrf`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`vrf`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -569,15 +569,15 @@ variable "leaked_external_prefixes" {
 
   validation {
     condition = alltrue(flatten([
-      for p in var.leaked_external_prefixes : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", d.tenant))]
+      for p in var.leaked_external_prefixes : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", d.tenant))]
     ]))
-    error_message = "`tenant`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`tenant`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue(flatten([
-      for p in var.leaked_external_prefixes : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", d.vrf))]
+      for p in var.leaked_external_prefixes : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", d.vrf))]
     ]))
-    error_message = "`vrf`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`vrf`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

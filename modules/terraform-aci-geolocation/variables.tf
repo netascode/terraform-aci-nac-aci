@@ -3,8 +3,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -49,9 +49,9 @@ variable "buildings" {
 
   validation {
     condition = alltrue([
-      for b in var.buildings : can(regex("^[a-zA-Z0-9_.-]{0,64}$", b.name))
+      for b in var.buildings : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", b.name))
     ])
-    error_message = "`buildings.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`buildings.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -63,9 +63,9 @@ variable "buildings" {
 
   validation {
     condition = alltrue(flatten([
-      for b in var.buildings : [for f in coalesce(b.floors, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", f.name))]
+      for b in var.buildings : [for f in coalesce(b.floors, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", f.name))]
     ]))
-    error_message = "`floors.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`floors.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -77,9 +77,9 @@ variable "buildings" {
 
   validation {
     condition = alltrue(flatten([
-      for b in var.buildings : [for f in coalesce(b.floors, []) : [for r in coalesce(f.rooms, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", r.name))]]
+      for b in var.buildings : [for f in coalesce(b.floors, []) : [for r in coalesce(f.rooms, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", r.name))]]
     ]))
-    error_message = "`rooms.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`rooms.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -91,9 +91,9 @@ variable "buildings" {
 
   validation {
     condition = alltrue(flatten([
-      for b in var.buildings : [for f in coalesce(b.floors, []) : [for r in coalesce(f.rooms, []) : [for row in coalesce(r.rows, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", row.name))]]]
+      for b in var.buildings : [for f in coalesce(b.floors, []) : [for r in coalesce(f.rooms, []) : [for row in coalesce(r.rows, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", row.name))]]]
     ]))
-    error_message = "`rows.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`rows.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -105,9 +105,9 @@ variable "buildings" {
 
   validation {
     condition = alltrue(flatten([
-      for b in var.buildings : [for f in coalesce(b.floors, []) : [for r in coalesce(f.rooms, []) : [for row in coalesce(r.rows, []) : [for rack in coalesce(row.racks, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", rack.name))]]]]
+      for b in var.buildings : [for f in coalesce(b.floors, []) : [for r in coalesce(f.rooms, []) : [for row in coalesce(r.rows, []) : [for rack in coalesce(row.racks, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rack.name))]]]]
     ]))
-    error_message = "`racks.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`racks.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
