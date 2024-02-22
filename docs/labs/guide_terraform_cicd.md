@@ -115,9 +115,9 @@ Go to the `aci-iac/terraform-aac` repository on GitLab and go to `Settings` and 
 
 Add the following variables:
 
-- **ACI_PASSWORD**: set this to the APIC password. Enable `Protect Variable` and `Mask Variable`.
+- **ACI_PASSWORD**: set this to the APIC password. Disable `Protect Variable` and enable `Mask Variable`.
 - **ACI_URL**: set this to the APIC URL. Disable `Protect Variable` and `Mask Variable`.
-- **ACI_USERNAME**: set this to the APIC Uusername. Enable `Protect Variable` and disable `Mask Variable`.
+- **ACI_USERNAME**: set this to the APIC Uusername. Disable `Protect Variable` and `Mask Variable`.
 - **GITLAB_API_URL**: set this to "<http://gitlab-webservice-default.default.svc.cluster.local:8181/api/v4>". Disable `Protect Variable` and `Mask Variable`.
 - **GITLAB_TOKEN**: set this to the token you created in the `Create GitLab Access Token` section. Disable `Protect Variable` and enable `Mask Variable`.
 - **TF_HTTP_PASSWORD**: set this to the token you created in the `Create GitLab Access Token` section. Disable `Protect Variable` and enable `Mask Variable`.
