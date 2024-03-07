@@ -125,7 +125,7 @@ resource "aci_rest_managed" "rtctrlSetASPathASN" {
 }
 
 resource "aci_rest_managed" "rtctrlSetNhUnchanged" {
-  count      = var.next_hop_propagation == true ? 1 : 0
+  count      = var.next_hop_propagation == true || var.multipath == true ? 1 : 0
   dn         = "${aci_rest_managed.rtctrlAttrP.dn}/nhunchanged"
   class_name = "rtctrlSetNhUnchanged"
   content = {
@@ -141,7 +141,7 @@ resource "aci_rest_managed" "rtctrlSetRedistMultipath" {
     "type" = "redist-multipath"
   }
   depends_on = [
-    aci_rest_managed.rtctrlSetNh
+    aci_rest_managed.rtctrlSetNhUnchanged
   ]
 }
 
