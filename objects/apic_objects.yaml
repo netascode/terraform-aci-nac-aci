@@ -1231,11 +1231,13 @@ tenant_objects:
       - apic.tenants.l3outs.name
       - apic.tenants.l3outs.alias
       - apic.tenants.l3outs.description
+      - apic.tenants.l3outs.target_dscp
       - apic.tenants.l3outs.vrf
       - apic.tenants.l3outs.domain
       - apic.tenants.l3outs.ospf
       - apic.tenants.l3outs.eigrp
       - apic.tenants.l3outs.bfd_policy
+      - apic.tenants.l3outs.bgp_peers
       - apic.tenants.l3outs.nodes
       - apic.tenants.l3outs.node_profiles
       - apic.tenants.l3outs.import_route_map
@@ -1248,6 +1250,12 @@ tenant_objects:
       - apic.tenants.l3outs.l3_multicast_ipv4
       - apic.tenants.l3outs.pim_policy
       - apic.tenants.l3outs.igmp_interface_policy
+      - apic.tenants.l3outs.qos_class
+      - apic.tenants.l3outs.custom_qos_policy
+      - apic.tenants.l3outs.multipod
+      - apic.tenants.l3outs.remote_leaf
+      - apic.tenants.l3outs.import_route_control_enforcement
+      - apic.tenants.l3outs.export_route_control_enforcement
       - apic.tenants.l3outs.expected_state
       - apic.tenants.sr_mpls_l3outs.name
       - apic.tenants.sr_mpls_l3outs.alias
