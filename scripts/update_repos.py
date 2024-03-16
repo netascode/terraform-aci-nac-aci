@@ -326,11 +326,23 @@ def update_repo(repo):
         r = subprocess.run(args, cwd=cwd)
         if r.returncode > 0:
             if repo["type"] == "internal":
-                subprocess.run(["git", "config", "user.email", "digidev.gen@cisco.com"], cwd=cwd, check=True)
-                subprocess.run(["git", "config", "user.name", "digidev.gen"], cwd=cwd, check=True)
+                subprocess.run(
+                    ["git", "config", "user.email", "digidev.gen@cisco.com"],
+                    cwd=cwd,
+                    check=True,
+                )
+                subprocess.run(
+                    ["git", "config", "user.name", "digidev.gen"], cwd=cwd, check=True
+                )
             elif repo["type"] == "external":
-                subprocess.run(["git", "config", "user.email", "netascode-gen@cisco.com"], cwd=cwd, check=True)
-                subprocess.run(["git", "config", "user.name", "netascode-gen"], cwd=cwd, check=True)
+                subprocess.run(
+                    ["git", "config", "user.email", "netascode-gen@cisco.com"],
+                    cwd=cwd,
+                    check=True,
+                )
+                subprocess.run(
+                    ["git", "config", "user.name", "netascode-gen"], cwd=cwd, check=True
+                )
             args = ["git", "commit", "-m", repo["commit_message"]]
             print_message(args)
             subprocess.run(args, cwd=cwd, check=True)
@@ -342,7 +354,9 @@ def update_repo(repo):
 def update_repos():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--release", help="Update repos marked as 'update_release_only'", action="store_true"
+        "--release",
+        help="Update repos marked as 'update_release_only'",
+        action="store_true",
     )
     args = parser.parse_args()
     for repo in REPOS:

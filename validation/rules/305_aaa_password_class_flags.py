@@ -7,7 +7,6 @@ class Rule:
     def match(cls, inventory):
         results = []
         try:
-
             password_class_flags = inventory["apic"]["fabric_policies"]["aaa"][
                 "management_settings"
             ]["password_strength_profile"]["password_class_flags"]
