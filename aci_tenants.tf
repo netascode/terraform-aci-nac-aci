@@ -700,6 +700,7 @@ locals {
           source    = try(routemap.source, local.defaults.apic.tenants.l3outs.redistribution_route_maps.source)
           route_map = "${routemap.route_map}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}"
         }]
+        import_route_map_name        = try(l3out.import_route_map.name, "default-import")
         import_route_map_description = try(l3out.import_route_map.description, "")
         import_route_map_type        = try(l3out.import_route_map.type, local.defaults.apic.tenants.l3outs.import_route_map.type)
         import_route_map_contexts = [for context in try(l3out.import_route_map.contexts, []) : {
@@ -708,8 +709,9 @@ locals {
           action      = try(context.action, local.defaults.apic.tenants.l3outs.import_route_map.contexts.action)
           order       = try(context.order, local.defaults.apic.tenants.l3outs.import_route_map.contexts.order)
           set_rule    = try("${context.set_rule}${local.defaults.apic.tenants.policies.set_rules.name_suffix}", "")
-          match_rule  = try("${context.match_rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}", "")
+          match_rules = [for rule in try(context.match_rules, []) : "${rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}"]
         }]
+        export_route_map_name        = try(l3out.export_route_map.name, "default-export")
         export_route_map_description = try(l3out.export_route_map.description, "")
         export_route_map_type        = try(l3out.export_route_map.type, local.defaults.apic.tenants.l3outs.export_route_map.type)
         export_route_map_contexts = [for context in try(l3out.export_route_map.contexts, []) : {
@@ -718,7 +720,7 @@ locals {
           action      = try(context.action, local.defaults.apic.tenants.l3outs.export_route_map.contexts.action)
           order       = try(context.order, local.defaults.apic.tenants.l3outs.export_route_map.contexts.order)
           set_rule    = try("${context.set_rule}${local.defaults.apic.tenants.policies.set_rules.name_suffix}", "")
-          match_rule  = try("${context.match_rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}", "")
+          match_rules = [for rule in try(context.match_rules, []) : "${rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}"]
         }]
       }
     ]
@@ -759,9 +761,11 @@ module "aci_l3out" {
   default_route_leak_policy_context_scope = each.value.default_route_leak_policy_context_scope
   default_route_leak_policy_outside_scope = each.value.default_route_leak_policy_outside_scope
   redistribution_route_maps               = each.value.redistribution_route_maps
+  import_route_map_name                   = each.value.import_route_map_name
   import_route_map_description            = each.value.import_route_map_description
   import_route_map_type                   = each.value.import_route_map_type
   import_route_map_contexts               = each.value.import_route_map_contexts
+  export_route_map_name                   = each.value.export_route_map_name
   export_route_map_description            = each.value.export_route_map_description
   export_route_map_type                   = each.value.export_route_map_type
   export_route_map_contexts               = each.value.export_route_map_contexts
