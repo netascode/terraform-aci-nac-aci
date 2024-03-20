@@ -157,6 +157,7 @@ REPOS = [
     {
         "url": "https://{}@wwwin-github.cisco.com/danischm/aac-tf-demo.git",
         "type": "internal",
+        "update_release_only": True,
         "commit_message": "Aac updates",
         "directories": [
             {
