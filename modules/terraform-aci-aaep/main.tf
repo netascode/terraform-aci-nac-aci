@@ -10,6 +10,7 @@ resource "aci_rest_managed" "infraAttEntityP" {
   class_name = "infraAttEntityP"
   content = {
     name = var.name
+    descr = var.description
   }
 }
 
