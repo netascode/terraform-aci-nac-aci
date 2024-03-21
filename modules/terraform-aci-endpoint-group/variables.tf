@@ -411,9 +411,34 @@ variable "static_ports" {
     channel              = optional(string)
     deployment_immediacy = optional(string, "lazy")
     mode                 = optional(string, "regular")
+    ptp = optional(object({
+      src_ip  = optional(string, "0.0.0.0")
+      mode    = optional(string, "multicast")
+      profile = string
+    }))
   }))
   default = []
 
+  validation {
+    condition = alltrue([
+      for sp in var.static_ports : can(regex("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", sp.ptp.src_ip))
+    ])
+    error_message = "value of `src_ip` is not a valid IPv4 address."
+  }
+
+  validation {
+    condition = alltrue([
+      for sp in var.static_ports : sp.ptp == null || try(contains(["multicast", "multicast-master", "unicast-master", "unicast-slave"], sp.ptp.mode), false)
+    ])
+    error_message = "`mode`: Allowed values are `multicast`, `multicast-master`, `unicast-master` or `unicast-slave`."
+  }
+
+  validation {
+    condition = alltrue([
+      for sp in var.static_ports : can(regex("^[a-zA-Z0-9_.:-]{0,16}$", sp.ptp.profile))
+    ])
+    error_message = "`profile`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 16."
+  }
 
   validation {
     condition = alltrue([

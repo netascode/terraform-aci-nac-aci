@@ -58,6 +58,9 @@ module "aci_endpoint_group" {
     module               = 1
     deployment_immediacy = "lazy"
     mode                 = "untagged"
+    ptp = {
+      profile = "PTP1"
+    }
   }]
   static_leafs = [{
     node_id              = 102
