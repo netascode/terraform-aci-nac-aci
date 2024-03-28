@@ -181,63 +181,63 @@ REPOS = [
         ],
     },
     {
-        "url": "https://{}@wwwin-github.cisco.com/netascode/aac-tool.git",
+        "url": "https://{}@wwwin-github.cisco.com/netascode/nac-tool.git",
         "type": "internal",
         "commit_message": "Aac updates",
         "directories": [
             {
                 "src": "../defaults",
-                "dst": "./aac_tool/defaults",
+                "dst": "./nac_tool/defaults",
             },
             {
                 "src": "../templates/apic/deploy",
-                "dst": "./aac_tool/templates/apic/deploy",
+                "dst": "./nac_tool/templates/apic/deploy",
             },
             {
                 "src": "../templates/ndo/deploy",
-                "dst": "./aac_tool/templates/ndo/deploy",
+                "dst": "./nac_tool/templates/ndo/deploy",
             },
             {
                 "src": "../templates/apic/test",
-                "dst": "./aac_tool/templates/apic/test",
+                "dst": "./nac_tool/templates/apic/test",
             },
             {
                 "src": "../templates/ndo/test",
-                "dst": "./aac_tool/templates/ndo/test",
+                "dst": "./nac_tool/templates/ndo/test",
             },
             {
                 "src": "../templates/apic/documentation",
-                "dst": "./aac_tool/templates/apic/documentation",
+                "dst": "./nac_tool/templates/apic/documentation",
             },
             {
                 "src": "../templates/ndo/documentation",
-                "dst": "./aac_tool/templates/ndo/documentation",
+                "dst": "./nac_tool/templates/ndo/documentation",
             },
         ],
         "files": [
             {
                 "src": "../objects/apic_objects.yaml",
-                "dst": "./aac_tool/objects/apic_objects.yaml",
+                "dst": "./nac_tool/objects/apic_objects.yaml",
             },
             {
                 "src": "../objects/apic_doc_objects.yaml",
-                "dst": "./aac_tool/objects/apic_doc_objects.yaml",
+                "dst": "./nac_tool/objects/apic_doc_objects.yaml",
             },
             {
                 "src": "../objects/ndo_objects.yaml",
-                "dst": "./aac_tool/objects/ndo_objects.yaml",
+                "dst": "./nac_tool/objects/ndo_objects.yaml",
             },
             {
                 "src": "../objects/ndo_doc_objects.yaml",
-                "dst": "./aac_tool/objects/ndo_doc_objects.yaml",
+                "dst": "./nac_tool/objects/ndo_doc_objects.yaml",
             },
             {
                 "src": "../schemas/apic_schema.yaml",
-                "dst": "./aac_tool/schemas/apic_schema.yaml",
+                "dst": "./nac_tool/schemas/apic_schema.yaml",
             },
             {
                 "src": "../schemas/ndo_schema.yaml",
-                "dst": "./aac_tool/schemas/ndo_schema.yaml",
+                "dst": "./nac_tool/schemas/ndo_schema.yaml",
             },
         ],
     },
