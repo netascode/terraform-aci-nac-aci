@@ -348,7 +348,7 @@ def test_apic_terraform_52(
             "Clean",
             "https://10.50.202.12",
             "6.0",
-            "tofu",
+            "terraform",
         ),
     ],
 )
