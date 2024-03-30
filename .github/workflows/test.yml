@@ -43,9 +43,10 @@ jobs:
       - name: Terraform Test
         id: test
         env:
-          ACI_USERNAME: ${{ secrets.ACI_USERNAME }}
-          ACI_PASSWORD: ${{ secrets.ACI_PASSWORD }}
-          ACI_URL: ${{ secrets.ACI_URL }}
+          # Use public Cisco DevNet Sandbox
+          ACI_USERNAME: admin
+          ACI_PASSWORD: "!v3G@!4@Y"
+          ACI_URL: "https://sandboxapicdc.cisco.com"
         run: terraform test -junit-xml=test-report.xml
 
       - name: Publish Integration Test Results
@@ -56,7 +57,7 @@ jobs:
           check_name: "Integration Test Results"
 
       - name: Webex Notification
-        if: always()
+        if: always() && github.event_name != 'pull_request'
         uses: qsnyder/action-wxt@master
         env:
           TOKEN: ${{ secrets.WEBEX_TOKEN }}
