@@ -184,18 +184,19 @@ variable "igmp_snooping_policy" {
 }
 
 variable "subnets" {
-  description = "List of subnets. Default value `primary_ip`: `false`. Default value `public`: `false`. Default value `shared`: `false`. Default value `igmp_querier`: `false`. Default value `nd_ra_prefix`: `true`. Default value `no_default_gateway`: `false`. Default value `virtual`: `false`."
+  description = "List of subnets. Default value `primary_ip`: `false`. Default value `public`: `false`. Default value `shared`: `false`. Default value `igmp_querier`: `false`. Default value `nd_ra_prefix`: `true`. Default value `no_default_gateway`: `false`. Default value `virtual`: `false`. Default value `ip_dataplane_learning`: `true`"
   type = list(object({
-    description         = optional(string, "")
-    ip                  = string
-    primary_ip          = optional(bool, false)
-    public              = optional(bool, false)
-    shared              = optional(bool, false)
-    igmp_querier        = optional(bool, false)
-    nd_ra_prefix        = optional(bool, true)
-    no_default_gateway  = optional(bool, false)
-    virtual             = optional(bool, false)
-    nd_ra_prefix_policy = optional(string, "")
+    description           = optional(string, "")
+    ip                    = string
+    primary_ip            = optional(bool, false)
+    public                = optional(bool, false)
+    shared                = optional(bool, false)
+    igmp_querier          = optional(bool, false)
+    nd_ra_prefix          = optional(bool, true)
+    no_default_gateway    = optional(bool, false)
+    virtual               = optional(bool, false)
+    nd_ra_prefix_policy   = optional(string, "")
+    ip_dataplane_learning = optional(bool, true)
     tags = optional(list(object({
       key   = string
       value = string

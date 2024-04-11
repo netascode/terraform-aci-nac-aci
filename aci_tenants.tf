@@ -187,16 +187,17 @@ locals {
         igmp_interface_policy      = try("${bd.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
         igmp_snooping_policy       = try("${bd.igmp_snooping_policy}${local.defaults.apic.tenants.policies.igmp_snooping_policies.name_suffix}", "")
         subnets = [for subnet in try(bd.subnets, []) : {
-          ip                  = subnet.ip
-          description         = try(subnet.description, "")
-          primary_ip          = try(subnet.primary_ip, local.defaults.apic.tenants.bridge_domains.subnets.primary_ip)
-          public              = try(subnet.public, local.defaults.apic.tenants.bridge_domains.subnets.public)
-          shared              = try(subnet.shared, local.defaults.apic.tenants.bridge_domains.subnets.shared)
-          igmp_querier        = try(subnet.igmp_querier, local.defaults.apic.tenants.bridge_domains.subnets.igmp_querier)
-          nd_ra_prefix        = try(subnet.nd_ra_prefix, local.defaults.apic.tenants.bridge_domains.subnets.nd_ra_prefix)
-          no_default_gateway  = try(subnet.no_default_gateway, local.defaults.apic.tenants.bridge_domains.subnets.no_default_gateway)
-          virtual             = try(subnet.virtual, local.defaults.apic.tenants.bridge_domains.subnets.virtual)
-          nd_ra_prefix_policy = try("${subnet.nd_ra_prefix_policy}${local.defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix}", "")
+          ip                    = subnet.ip
+          description           = try(subnet.description, "")
+          primary_ip            = try(subnet.primary_ip, local.defaults.apic.tenants.bridge_domains.subnets.primary_ip)
+          public                = try(subnet.public, local.defaults.apic.tenants.bridge_domains.subnets.public)
+          shared                = try(subnet.shared, local.defaults.apic.tenants.bridge_domains.subnets.shared)
+          igmp_querier          = try(subnet.igmp_querier, local.defaults.apic.tenants.bridge_domains.subnets.igmp_querier)
+          nd_ra_prefix          = try(subnet.nd_ra_prefix, local.defaults.apic.tenants.bridge_domains.subnets.nd_ra_prefix)
+          no_default_gateway    = try(subnet.no_default_gateway, local.defaults.apic.tenants.bridge_domains.subnets.no_default_gateway)
+          virtual               = try(subnet.virtual, local.defaults.apic.tenants.bridge_domains.subnets.virtual)
+          nd_ra_prefix_policy   = try("${subnet.nd_ra_prefix_policy}${local.defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix}", "")
+          ip_dataplane_learning = try(subnet.ip_dataplane_learning, local.defaults.apic.tenants.bridge_domains.subnets.ip_dataplane_learning)
         }]
         l3outs = try(bd.l3outs, null) != null ? [for l3out in bd.l3outs : "${l3out}${local.defaults.apic.tenants.l3outs.name_suffix}"] : []
         dhcp_labels = [for label in try(bd.dhcp_labels, []) : {
