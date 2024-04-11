@@ -225,6 +225,7 @@ Additional example repositories:
 | <a name="module_aci_imported_l4l7_device"></a> [aci\_imported\_l4l7\_device](#module\_aci\_imported\_l4l7\_device) | ./modules/terraform-aci-imported-l4l7-device | n/a |
 | <a name="module_aci_inband_endpoint_group"></a> [aci\_inband\_endpoint\_group](#module\_aci\_inband\_endpoint\_group) | ./modules/terraform-aci-inband-endpoint-group | n/a |
 | <a name="module_aci_inband_node_address"></a> [aci\_inband\_node\_address](#module\_aci\_inband\_node\_address) | ./modules/terraform-aci-inband-node-address | n/a |
+| <a name="module_aci_infra_dhcp_relay_policy"></a> [aci\_infra\_dhcp\_relay\_policy](#module\_aci\_infra\_dhcp\_relay\_policy) | ./modules/terraform-aci-infra-dhcp-relay-policy | n/a |
 | <a name="module_aci_infra_dscp_translation_policy"></a> [aci\_infra\_dscp\_translation\_policy](#module\_aci\_infra\_dscp\_translation\_policy) | ./modules/terraform-aci-infra-dscp-translation-policy | n/a |
 | <a name="module_aci_interface_configuration_fex"></a> [aci\_interface\_configuration\_fex](#module\_aci\_interface\_configuration\_fex) | ./modules/terraform-aci-interface-configuration | n/a |
 | <a name="module_aci_interface_type"></a> [aci\_interface\_type](#module\_aci\_interface\_type) | ./modules/terraform-aci-interface-type | n/a |

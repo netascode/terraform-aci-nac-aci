@@ -74,6 +74,7 @@ modules:
   aci_imported_l4l7_device: true
   aci_inband_endpoint_group: true
   aci_inband_node_address: true
+  aci_infra_dhcp_relay_policy: true
   aci_infra_dscp_translation_policy: true
   aci_interface_configuration: true
   aci_interface_type: true

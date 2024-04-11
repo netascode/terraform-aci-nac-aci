@@ -423,6 +423,8 @@ defaults:
         endpoint_groups:
           mode: regular
           deployment_immediacy: lazy
+      dhcp_relay_policies:
+        name_suffix: ""
       switch_policies:
         vpc_policies:
           name_suffix: ""
