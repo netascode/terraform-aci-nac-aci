@@ -196,7 +196,7 @@ variable "subnets" {
     no_default_gateway    = optional(bool, false)
     virtual               = optional(bool, false)
     nd_ra_prefix_policy   = optional(string, "")
-    ip_dataplane_learning = optional(bool, true)
+    ip_dataplane_learning = optional(bool, null)
     tags = optional(list(object({
       key   = string
       value = string

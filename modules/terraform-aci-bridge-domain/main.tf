@@ -54,7 +54,7 @@ resource "aci_rest_managed" "fvSubnet" {
     ctrl         = join(",", concat(each.value.nd_ra_prefix == true ? ["nd"] : [], each.value.no_default_gateway == true ? ["no-default-gateway"] : [], each.value.igmp_querier == true ? ["querier"] : []))
     scope        = join(",", concat(each.value.public == true ? ["public"] : ["private"], each.value.shared == true ? ["shared"] : []))
     virtual      = each.value.virtual == true ? "yes" : "no"
-    ipDPLearning = each.value.ip_dataplane_learning == true ? "enabled" : "disabled"
+    ipDPLearning = each.value.ip_dataplane_learning != null ? (each.value.ip_dataplane_learning == true ? "enabled" : "disabled") : null
   }
 
   depends_on = [

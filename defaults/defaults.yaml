@@ -747,7 +747,6 @@ defaults:
           igmp_querier: false
           nd_ra_prefix: true
           no_default_gateway: false
-          ip_dataplane_learning: true
       l3outs:
         name_suffix: ""
         target_dscp: unspecified

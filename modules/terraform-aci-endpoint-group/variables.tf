@@ -221,14 +221,15 @@ variable "physical_domains" {
 variable "subnets" {
   description = "List of subnets. Default value `public`: `false`. Default value `shared`: `false`. Default value `igmp_querier`: `false`. Default value `nd_ra_prefix`: `true`. Default value `no_default_gateway`: `false`. `nlb_mode` allowed values: `mode-mcast-igmp`, `mode-uc` or `mode-mcast-static`."
   type = list(object({
-    description         = optional(string, "")
-    ip                  = string
-    public              = optional(bool, false)
-    shared              = optional(bool, false)
-    igmp_querier        = optional(bool, false)
-    nd_ra_prefix        = optional(bool, true)
-    no_default_gateway  = optional(bool, false)
-    nd_ra_prefix_policy = optional(string, "")
+    description           = optional(string, "")
+    ip                    = string
+    public                = optional(bool, false)
+    shared                = optional(bool, false)
+    igmp_querier          = optional(bool, false)
+    nd_ra_prefix          = optional(bool, true)
+    no_default_gateway    = optional(bool, false)
+    nd_ra_prefix_policy   = optional(string, "")
+    ip_dataplane_learning = optional(bool, null)
     ip_pools = optional(list(object({
       name              = string
       start_ip          = optional(string, "0.0.0.0")
