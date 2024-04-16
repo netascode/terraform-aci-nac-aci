@@ -8,7 +8,7 @@ resource "aci_rest_managed" "fvTrackList" {
     percentageDown = var.percentage_down
     percentageUp   = var.percentage_up
     weightDown     = var.weight_down
-    weightUp       = var.weight_down
+    weightUp       = var.weight_up
   }
 }
 
