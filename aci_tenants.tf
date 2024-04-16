@@ -795,10 +795,11 @@ locals {
             router_id_as_loopback = try(node.router_id_as_loopback, local.defaults.apic.tenants.l3outs.node_profiles.nodes.router_id_as_loopback)
             loopback              = try(node.loopback, null)
             static_routes = [for sr in try(node.static_routes, []) : {
-              description = try(sr.description, "")
-              prefix      = sr.prefix
-              preference  = try(sr.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.preference)
-              bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
+              description  = try(sr.description, "")
+              prefix       = sr.prefix
+              preference   = try(sr.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.preference)
+              bfd          = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
+              track_policy = try(sr.track_policy, null)
               next_hops = [for nh in try(sr.next_hops, []) : {
                 ip         = nh.ip
                 preference = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
@@ -875,10 +876,11 @@ locals {
           router_id_as_loopback = try(node.router_id_as_loopback, local.defaults.apic.tenants.l3outs.nodes.router_id_as_loopback)
           loopback              = try(node.loopback, null)
           static_routes = [for sr in try(node.static_routes, []) : {
-            description = try(sr.description, "")
-            prefix      = sr.prefix
-            preference  = try(sr.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.preference)
-            bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
+            description  = try(sr.description, "")
+            prefix       = sr.prefix
+            preference   = try(sr.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.preference)
+            bfd          = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
+            track_policy = try(sr.track_policy, null)
             next_hops = [for nh in try(sr.next_hops, []) : {
               ip         = nh.ip
               preference = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
@@ -3235,4 +3237,68 @@ module "aci_tenant_span_source_group" {
   depends_on = [
     module.aci_tenant,
   ]
+}
+
+locals {
+  track_lists = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.track_lists, []) : {
+        key             = format("%s/%s", tenant.name, policy.name)
+        tenant          = tenant.name
+        name            = "${policy.name}${local.defaults.apic.tenants.policies.track_lists.name_suffix}"
+        description     = try(policy.description, "")
+        type            = try(policy.type, local.defaults.apic.tenants.policies.track_lists.type)
+        percentage_up   = try(policy.percentage_up, local.defaults.apic.tenants.policies.track_lists.percentage_up)
+        percentage_down = try(policy.percentage_down, local.defaults.apic.tenants.policies.track_lists.percentage_down)
+        weight_up       = try(policy.weight_up, local.defaults.apic.tenants.policies.track_lists.weight_up)
+        weight_down     = try(policy.weight_down, local.defaults.apic.tenants.policies.track_lists.weight_down)
+        track_members   = try(policy.track_members, [])
+      }
+    ]
+  ])
+}
+
+module "aci_track_list" {
+  source = "./modules/terraform-aci-track-list"
+
+  for_each        = { for track_list in local.track_lists : track_list.key => track_list if local.modules.aci_track_list && var.manage_tenants }
+  tenant          = each.value.tenant
+  name            = each.value.name
+  description     = each.value.description
+  type            = each.value.type
+  percentage_up   = each.value.percentage_up
+  percentage_down = each.value.percentage_down
+  weight_up       = each.value.weight_up
+  weight_down     = each.value.weight_down
+  track_members   = each.value.track_members
+}
+
+locals {
+  track_members = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.track_members, []) : {
+        key            = format("%s/%s", tenant.name, policy.name)
+        tenant         = tenant.name
+        name           = policy.name
+        description    = try(policy.description, "")
+        destination_ip = policy.destination_ip
+        scope_type     = policy.scope_type
+        scope          = policy.scope
+        ip_sla_policy  = policy.ip_sla_policy
+      }
+    ]
+  ])
+}
+
+module "aci_track_member" {
+  source = "./modules/terraform-aci-track-member"
+
+  for_each       = { for member in local.track_members : member.key => member if local.modules.aci_track_member && var.manage_tenants }
+  tenant         = each.value.tenant
+  name           = each.value.name
+  description    = each.value.description
+  destination_ip = each.value.destination_ip
+  scope_type     = each.value.scope_type
+  scope          = each.value.scope
+  ip_sla_policy  = each.value.ip_sla_policy
 }

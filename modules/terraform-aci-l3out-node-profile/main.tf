@@ -4,11 +4,12 @@ locals {
       for sr in coalesce(node.static_routes, []) : {
         key = "${node.node_id}/${sr.prefix}"
         value = {
-          node        = node.node_id
-          prefix      = sr.prefix
-          description = sr.description
-          preference  = sr.preference
-          bfd         = sr.bfd
+          node         = node.node_id
+          prefix       = sr.prefix
+          description  = sr.description
+          preference   = sr.preference
+          bfd          = sr.bfd
+          track_policy = sr.track_policy
         }
       }
     ]
@@ -66,6 +67,15 @@ resource "aci_rest_managed" "ipRouteP" {
     descr  = each.value.description
     pref   = each.value.preference
     rtCtrl = each.value.bfd == true ? "bfd" : ""
+  }
+}
+
+resource "aci_rest_managed" "ipRsRouteTrack" {
+  for_each   = { for item in local.static_routes : item.key => item.value if item.value.track_policy != null }
+  dn         = "${aci_rest_managed.ipRouteP[each.key].dn}/rsRouteTrack"
+  class_name = "ipRsRouteTrack"
+  content = {
+    tDn = "uni/tn-${var.tenant}/tracklist-${each.value.track_policy}"
   }
 }
 
