@@ -12,7 +12,7 @@ REPOS = [
     {
         "url": "https://{}@wwwin-github.cisco.com/netascode/ansible-aac.git",
         "type": "internal",
-        "commit_message": "Aac updates",
+        "commit_message": "Nac updates",
         "directories": [
             {
                 "src": "../validation/rules",
@@ -91,10 +91,10 @@ REPOS = [
         ],
     },
     {
-        "url": "https://{}@wwwin-github.cisco.com/netascode/terraform-aac.git",
+        "url": "https://{}@wwwin-github.cisco.com/netascode/nac-aci-terraform.git",
         "type": "internal",
         "update_release_only": True,
-        "commit_message": "Aac updates",
+        "commit_message": "Nac updates",
         "directories": [
             {
                 "src": "../validation/rules",
@@ -117,10 +117,10 @@ REPOS = [
         ],
     },
     {
-        "url": "https://{}@wwwin-github.cisco.com/netascode/terraform-ndo-aac.git",
+        "url": "https://{}@wwwin-github.cisco.com/netascode/nac-aci-terraform-ndo.git",
         "type": "internal",
         "update_release_only": True,
-        "commit_message": "Aac updates",
+        "commit_message": "Nac updates",
         "directories": [
             {
                 "src": "../validation/rules",
@@ -158,7 +158,7 @@ REPOS = [
         "url": "https://{}@wwwin-github.cisco.com/danischm/aac-tf-demo.git",
         "type": "internal",
         "update_release_only": True,
-        "commit_message": "Aac updates",
+        "commit_message": "Nac updates",
         "directories": [
             {
                 "src": "../validation/rules",
@@ -183,7 +183,7 @@ REPOS = [
     {
         "url": "https://{}@wwwin-github.cisco.com/netascode/nac-tool.git",
         "type": "internal",
-        "commit_message": "Aac updates",
+        "commit_message": "Nac updates",
         "directories": [
             {
                 "src": "../defaults",
@@ -267,7 +267,7 @@ REPOS = [
         "url": "https://{}@wwwin-github.cisco.com/netascode/onboarding-tool.git",
         "type": "internal",
         "update_release_only": True,
-        "commit_message": "Aac updates",
+        "commit_message": "Nac updates",
         "directories": [
             {
                 "src": "../validation/rules",

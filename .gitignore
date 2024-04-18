@@ -391,9 +391,6 @@ $RECYCLE.BIN/
 # vsCode
 .vscode
 
-# Ansible Collection tarball
-cisco-aac-*.tar.gz
-
 # Test Results
 test_results/
 
