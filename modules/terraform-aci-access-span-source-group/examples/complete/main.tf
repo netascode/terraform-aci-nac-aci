@@ -32,8 +32,8 @@ module "aci-access-span-source-group" {
           channel = "ipg_regular-po_test"
         },
         {
-          node_id = 101
-          channel = "ipg_vpc_component"
+          node_id   = 101
+          channel   = "ipg_vpc_component"
           path_type = component
         },
         {
