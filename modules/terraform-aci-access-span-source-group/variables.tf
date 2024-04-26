@@ -47,6 +47,7 @@ variable "sources" {
       sub_port = optional(number)
       module   = optional(number, 1)
       channel  = optional(string)
+      path_type = optional(string, "vpc")
     })), [])
   }))
   default = []
@@ -163,6 +164,14 @@ variable "sources" {
       ])
     ])
     error_message = "Source Access Path `module`: Minimum value: `1`. Maximum value: `9`."
+  }
+  validation {
+    condition = alltrue([
+      for s in var.sources : alltrue([
+        for ptype in s.access_paths: ptype.path_type == null || contains(["vpc", "component"], ptype.path_type)
+      ])
+    ])
+    error_message = "Source Access Path `module`: Valid values are `vpc` or `component`."
   }
 }
 

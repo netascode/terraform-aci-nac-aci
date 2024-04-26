@@ -692,6 +692,7 @@ locals {
         sub_port = try(ap.sub_port, null)
         module   = try(ap.module, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.module)
         channel  = try(ap.channel, null)
+        path_type = try(ap.path_type, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.path_type)
       }]
     }]
   }]
@@ -718,15 +719,16 @@ module "aci_access_span_source_group" {
     l3out               = source.l3out
     vlan                = source.vlan
     access_paths = [for ap in try(source.access_paths, []) : {
-      node_id  = ap.node_id
-      node2_id = ap.node2_id == "vpc" ? try([for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == ap.channel][0][1], null) : ap.node2_id
-      fex_id   = ap.fex_id
-      fex2_id  = ap.fex2_id == "vpc" ? try([for pg in local.leaf_interface_policy_group_mapping : pg.fex_ids if pg.name == ap.channel][0][1], null) : ap.fex2_id
-      pod_id   = try(ap.pod_id, [for node in local.node_policies.nodes : node.pod if node.id == ap.node_id][0], local.defaults.apic.node_policies.nodes.pod)
-      port     = ap.port
-      sub_port = ap.sub_port
-      module   = ap.module
-      channel  = ap.channel
+      node_id   = ap.node_id
+      node2_id  = ap.node2_id == "vpc" ? try([for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == ap.channel][0][1], null) : ap.node2_id
+      fex_id    = ap.fex_id
+      fex2_id   = ap.fex2_id == "vpc" ? try([for pg in local.leaf_interface_policy_group_mapping : pg.fex_ids if pg.name == ap.channel][0][1], null) : ap.fex2_id
+      pod_id    = try(ap.pod_id, [for node in local.node_policies.nodes : node.pod if node.id == ap.node_id][0], local.defaults.apic.node_policies.nodes.pod)
+      port      = ap.port
+      sub_port  = ap.sub_port
+      module    = ap.module
+      channel   = ap.channel
+      path_type = ap.path_type
     }]
   }]
 }
