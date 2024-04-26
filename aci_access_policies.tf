@@ -681,19 +681,18 @@ locals {
       l3out               = try(source.l3out, null)
       vlan                = try(source.vlan, null)
       access_paths = [for ap in try(source.access_paths, []) : {
-        node_id = try(ap.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == ap.channel][0][0], null)
+        node_id   = try(ap.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == ap.channel][0][0], null)
         # set node2_id to "vpc" if channel IPG is vPC, otherwise "null"
-        node2_id = try(ap.node2_id, [for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == ap.channel && pg.type == "vpc"][0], null)
-        fex_id   = try(ap.fex_id, [for pg in local.leaf_interface_policy_group_mapping : pg.fex_ids if pg.name == ap.channel][0][0], null)
+        node2_id  = try(ap.node2_id, [for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == ap.channel && pg.type == "vpc"][0], null)
+        fex_id    = try(ap.fex_id, [for pg in local.leaf_interface_policy_group_mapping : pg.fex_ids if pg.name == ap.channel][0][0], null)
         # set fex2_id to "vpc" if channel IPG is vPC, otherwise "null"
-        fex2_id  = try(ap.fex2_id, [for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == ap.channel && pg.type == "vpc"][0], null)
-        pod_id   = try(ap.pod_id, null)
-        port     = try(ap.port, null)
-        sub_port = try(ap.sub_port, null)
-        module   = try(ap.module, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.module)
-        channel  = try(ap.channel, null)
-        
-         = try(ap.path_type, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.path_type)
+        fex2_id   = try(ap.fex2_id, [for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == ap.channel && pg.type == "vpc"][0], null)
+        pod_id    = try(ap.pod_id, null)
+        port      = try(ap.port, null)
+        sub_port  = try(ap.sub_port, null)
+        module    = try(ap.module, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.module)
+        channel   = try(ap.channel, null)
+        path_type = try(ap.path_type, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.path_type)
       }]
     }]
   }]
