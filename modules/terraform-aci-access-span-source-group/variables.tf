@@ -38,15 +38,15 @@ variable "sources" {
     l3out               = optional(string)
     vlan                = optional(number)
     access_paths = optional(list(object({
-      node_id  = number
-      node2_id = optional(number)
-      fex_id   = optional(number)
-      fex2_id  = optional(number)
-      pod_id   = optional(number, 1)
-      port     = optional(number)
-      sub_port = optional(number)
-      module   = optional(number, 1)
-      channel  = optional(string)
+      node_id   = number
+      node2_id  = optional(number)
+      fex_id    = optional(number)
+      fex2_id   = optional(number)
+      pod_id    = optional(number, 1)
+      port      = optional(number)
+      sub_port  = optional(number)
+      module    = optional(number, 1)
+      channel   = optional(string)
       path_type = optional(string, "vpc")
     })), [])
   }))
@@ -168,7 +168,7 @@ variable "sources" {
   validation {
     condition = alltrue([
       for s in var.sources : alltrue([
-        for ptype in s.access_paths: ptype.path_type == null || contains(["vpc", "component"], ptype.path_type)
+        for ptype in s.access_paths : ptype.path_type == null || contains(["vpc", "component"], ptype.path_type)
       ])
     ])
     error_message = "Source Access Path `module`: Valid values are `vpc` or `component`."
