@@ -33,6 +33,11 @@ module "aci-access-span-source-group" {
         },
         {
           node_id = 101
+          channel = "ipg_vpc_component"
+          path_type = component
+        },
+        {
+          node_id = 101
           fex_id  = 151
           port    = 1
         }
