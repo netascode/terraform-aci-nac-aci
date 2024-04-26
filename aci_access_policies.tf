@@ -692,7 +692,8 @@ locals {
         sub_port = try(ap.sub_port, null)
         module   = try(ap.module, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.module)
         channel  = try(ap.channel, null)
-        path_type = try(ap.path_type, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.path_type)
+        
+         = try(ap.path_type, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.path_type)
       }]
     }]
   }]

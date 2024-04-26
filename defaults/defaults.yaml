@@ -378,7 +378,6 @@ defaults:
             span_drop: false
             access_paths:
               module: 1
-              path_type: vpc
       smart_licensing:
         mode: "smart-licensing"
         url: "https://tools.cisco.com/its/service/oddce/services/DDCEService"
@@ -654,6 +653,7 @@ defaults:
             span_drop: false
             access_paths:
               module: 1
+              path_type: vpc
         filter_groups:
           name_suffix: ""
           entries:
