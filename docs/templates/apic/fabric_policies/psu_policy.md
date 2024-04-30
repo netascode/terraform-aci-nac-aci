@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Fabric Policies` » `Policies` » `Switch` » `Power Supply Redundancy`
 
-### Terraform modules
-
-* [PSU Policy](https://registry.terraform.io/modules/netascode/psu-policy/aci/latest)
 
 {{ doc_gen }}
 

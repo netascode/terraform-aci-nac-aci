@@ -3,9 +3,6 @@
 Location in GUI:
 `Admin` » `AAA` » `Authentication` » `TACACS`
 
-### Terraform modules
-
-* [TACACS](https://registry.terraform.io/modules/netascode/tacacs/aci/latest)
 
 {{ doc_gen }}
 

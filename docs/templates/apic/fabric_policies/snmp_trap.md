@@ -3,9 +3,6 @@
 Location in GUI:
 `Admin` » `External Data Collectors` » `Monitoring Destinations` » `SNMP`
 
-### Terraform modules
-
-* [SNMP Trap Policy](https://registry.terraform.io/modules/netascode/snmp-trap-policy/aci/latest)
 
 {{ doc_gen }}
 

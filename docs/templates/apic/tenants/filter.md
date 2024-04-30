@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `XXX` » `Contracts` » `Filters`
 
-### Terraform modules
-
-* [Filter](https://registry.terraform.io/modules/netascode/filter/aci/latest)
 
 {{ doc_gen }}
 

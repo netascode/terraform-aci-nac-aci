@@ -3,9 +3,6 @@
 Location in GUI:
 `System` » `System Settings` » `Date and Time`
 
-### Terraform modules
-
-* [Date Time Format](https://registry.terraform.io/modules/netascode/date-time-format/aci/latest)
 
 {{ doc_gen }}
 

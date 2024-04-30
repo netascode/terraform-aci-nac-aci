@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Pools` » `VLAN`
 
-### Terraform modules
-
-* [VLAN Pool](https://registry.terraform.io/modules/netascode/vlan-pool/aci/latest)
 
 {{ doc_gen }}
 

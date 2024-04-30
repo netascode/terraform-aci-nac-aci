@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Fabric Policies` » `Policies` » `Monitoring` » `Fabric Node Controls`
 
-### Terraform modules
-
-* [Node Control Policy](https://registry.terraform.io/modules/netascode/node-control-policy/aci/latest)
 
 {{ doc_gen }}
 

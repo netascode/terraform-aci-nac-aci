@@ -3,9 +3,6 @@
 Location in GUI:
 `Admin` » `Import/Export` » `Export Policies` » `Configuration`
 
-### Terraform modules
-
-* [Config Export](https://registry.terraform.io/modules/netascode/config-export/aci/latest)
 
 {{ doc_gen }}
 

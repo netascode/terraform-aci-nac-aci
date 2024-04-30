@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Fabric Policies` » `Pods` » `Policy Groups`
 
-### Terraform modules
-
-* [Fabric Pod Policy Group](https://registry.terraform.io/modules/netascode/fabric-pod-policy-group/aci/latest)
 
 {{ doc_gen }}
 

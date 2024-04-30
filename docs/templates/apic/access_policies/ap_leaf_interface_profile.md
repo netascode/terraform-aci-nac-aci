@@ -8,9 +8,6 @@ Leaf Interface Profiles can either be auto-generated, one per leaf, by providing
 Location in GUI:
 `Fabric` » `Access Policies` » `Interfaces` » `Leaf Interfaces` » `Profiles`
 
-### Terraform modules
-
-* [Access Leaf Interface Profile](https://registry.terraform.io/modules/netascode/access-leaf-interface-profile/aci/latest)
 
 {{ doc_gen }}
 

@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Switches` » `Leaf Switches` » `Policy Groups`
 
-### Terraform modules
-
-* [Access Leaf Switch Policy Group](https://registry.terraform.io/modules/netascode/access-leaf-switch-policy-group/aci/latest)
 
 {{ doc_gen }}
 

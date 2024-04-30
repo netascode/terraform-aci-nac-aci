@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `EIGRP` » `EIGRP Interface`
 
-### Terraform modules
-
-* [EIGRP Interface Policy](https://registry.terraform.io/modules/netascode/eigrp-interface-policy/aci/latest)
 
 {{ doc_gen }}
 

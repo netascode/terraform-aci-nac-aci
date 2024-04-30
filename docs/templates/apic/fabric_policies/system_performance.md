@@ -3,9 +3,6 @@
 Location in GUI:
 `System` » `System Settings` » `System Performance`
 
-### Terraform modules
-
-* [System Performance](https://registry.terraform.io/modules/netascode/system-performance/aci/latest)
 
 {{ doc_gen }}
 

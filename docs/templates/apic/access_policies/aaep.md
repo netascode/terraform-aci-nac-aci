@@ -11,9 +11,6 @@ apic:
     infra_vlan: 10
 ```
 
-### Terraform modules
-
-* [AAEP](https://registry.terraform.io/modules/netascode/aaep/aci/latest)
 
 {{ doc_gen }}
 

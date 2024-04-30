@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `XXX` » `Networking` » `VRFs`
 
-### Terraform modules
-
-* [VRF](https://registry.terraform.io/modules/netascode/vrf/aci/latest)
 
 {{ doc_gen }}
 

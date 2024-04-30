@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Global` » `QOS Class`
 
-### Terraform modules
-
-* [QoS](https://registry.terraform.io/modules/netascode/qos/aci/latest)
 
 {{ doc_gen }}
 

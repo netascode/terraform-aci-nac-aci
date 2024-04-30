@@ -3,9 +3,6 @@
 Location in GUI:
 `System` » `Smart Licensing`
 
-### Terraform modules
-
-* [Smart Licensing](https://registry.terraform.io/modules/netascode/smart-licensing/aci/latest)
 
 {{ doc_gen }}
 

@@ -15,9 +15,6 @@ Location in GUI:
 - `Tenants` » `XXX` » `Networking` » `L3outs`
 - `Tenants` » `XXX` » `Networking` » `SR MPLS VRF L3Outs`
 
-### Terraform modules
-
-- [L3out](https://registry.terraform.io/modules/netascode/l3out/aci/latest)
 - [L3out Node Profile](https://registry.terraform.io/modules/netascode/l3out-node-profile/aci/latest)
 - [L3out Interface Profile](https://registry.terraform.io/modules/netascode/l3out-interface-profile/aci/latest)
 

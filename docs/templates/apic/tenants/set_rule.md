@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `Set Rules`
 
-### Terraform modules
-
-* [Set Rule](https://registry.terraform.io/modules/netascode/set-rule/aci/latest)
 
 {{ doc_gen }}
 

@@ -3,9 +3,6 @@
 Location in GUI:
 `System` » `System Settings` » `COOP Group`
 
-### Terraform modules
-
-* [COOP Policy](https://registry.terraform.io/modules/netascode/coop-policy/aci/latest)
 
 {{ doc_gen }}
 

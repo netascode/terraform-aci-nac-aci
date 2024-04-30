@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `Route Tag`
 
-### Terraform modules
-
-* [Route Tag Policy](https://registry.terraform.io/modules/netascode/route-tag-policy/aci/latest)
 
 {{ doc_gen }}
 

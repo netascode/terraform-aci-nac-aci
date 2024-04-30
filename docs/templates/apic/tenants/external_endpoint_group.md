@@ -18,9 +18,6 @@ Location in GUI:
 - `Tenants` » `XXX` » `Networking` » `L3outs` » `XXX` » `External EPGs`
 - `Tenants` » `XXX` » `Networking` » `SR MPLS L3outs` » `XXX` » `External EPGs`
 
-### Terraform modules
-
-- [External Endpoint Group](https://registry.terraform.io/modules/netascode/external-endpoint-group/aci/latest)
 
 {{ doc_gen }}
 

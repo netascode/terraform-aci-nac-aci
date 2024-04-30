@@ -3,9 +3,6 @@
 Location in GUI:
 `System` » `System Settings` » `BGP Route Reflector`
 
-### Terraform modules
-
-* [BGP Policy](https://registry.terraform.io/modules/netascode/bgp-policy/aci/latest)
 
 {{ doc_gen }}
 

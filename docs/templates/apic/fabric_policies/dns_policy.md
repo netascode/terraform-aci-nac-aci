@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Fabric Policies` » `Policies` » `Global` » `DNS Profiles`
 
-### Terraform modules
-
-* [DNS Policy](https://registry.terraform.io/modules/netascode/dns-policy/aci/latest)
 
 {{ doc_gen }}
 

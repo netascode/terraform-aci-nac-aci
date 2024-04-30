@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `XXX` » `Application Profiles` » `XXX` » `Endpoint Security Groups`
 
-### Terraform modules
-
-* [Endpoint Security Group](https://registry.terraform.io/modules/netascode/endpoint-security-group/aci/latest)
 
 {{ doc_gen }}
 

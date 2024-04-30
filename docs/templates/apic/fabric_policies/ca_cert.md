@@ -3,9 +3,6 @@
 Location in GUI:
 `Admin` » `AAA` » `Security` » `Public Key Management` » `Certificate Authorities`
 
-### Terraform modules
-
-* [CA Certificate](https://registry.terraform.io/modules/netascode/ca-certificate/aci/latest)
 
 {{ doc_gen }}
 

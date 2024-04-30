@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Fabric Policies` » `Fabric Policies` » `Policies` » `Pod` » `Date and Time`
 
-### Terraform modules
-
-* [Date Time Policy](https://registry.terraform.io/modules/netascode/date-time-policy/aci/latest)
 
 {{ doc_gen }}
 

@@ -3,9 +3,6 @@
 Location in GUI:
 `System` » `System Settings` » `Endpoint Controls` » `Rogue EP Control`
 
-### Terraform modules
-
-* [Rogue Endpoint Control](https://registry.terraform.io/modules/netascode/rogue-endpoint-control/aci/latest)
 
 {{ doc_gen }}
 

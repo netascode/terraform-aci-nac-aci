@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Interface` » `CDP Interface`
 
-### Terraform modules
-
-* [CDP Policy](https://registry.terraform.io/modules/netascode/cdp-policy/aci/latest)
 
 {{ doc_gen }}
 

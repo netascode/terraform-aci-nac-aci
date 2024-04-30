@@ -3,9 +3,6 @@
 Location in GUI:
 `Admin` » `AAA` » `Authentication` » `Providers`
 
-### Terraform modules
-
-* [Radius](https://registry.terraform.io/modules/netascode/radius/aci/latest)
 
 {{ doc_gen }}
 

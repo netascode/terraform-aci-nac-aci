@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Interface` » `LLDP Interface`
 
-### Terraform modules
-
-* [LLDP Policy](https://registry.terraform.io/modules/netascode/lldp-policy/aci/latest)
 
 {{ doc_gen }}
 

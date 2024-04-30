@@ -136,9 +136,6 @@ The `{{ doc_gen }}` placeholder will be replaced by an auto-generated class diag
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Interface` » `CDP Interface`
 
-### Terraform modules
-
-* [CDP Policy](https://registry.terraform.io/modules/netascode/cdp-policy/aci/latest)
 
 {{ doc_gen }}
 

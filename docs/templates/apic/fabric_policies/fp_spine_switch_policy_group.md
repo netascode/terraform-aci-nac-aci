@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Fabric Policies` » `Switches` » `Spine Switches` » `Policy Groups`
 
-### Terraform modules
-
-* [Fabric Spine Switch Policy Group](https://registry.terraform.io/modules/netascode/fabric-spine-switch-policy-group/aci/latest)
 
 {{ doc_gen }}
 

@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Interface` » `Spanning Tree Interface`
 
-### Terraform modules
-
-* [Spanning Tree Policy](https://registry.terraform.io/modules/netascode/spanning-tree-policy/aci/latest)
 
 {{ doc_gen }}
 

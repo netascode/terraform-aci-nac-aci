@@ -8,9 +8,6 @@ Leaf Switch Profiles can either be auto-generated, one per leaf, by providing a 
 Location in GUI:
 `Fabric` » `Fabric Policies` » `Switches` » `Leaf Switches` » `Profiles`
 
-### Terraform modules
-
-* [Fabric Leaf Switch Profile](https://registry.terraform.io/modules/netascode/fabric-leaf-switch-profile/aci/latest)
 
 {{ doc_gen }}
 

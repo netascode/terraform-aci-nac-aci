@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `OSPF` » `OSPF Timer Policy`
 
-### Terraform modules
-
-* [OSPF Timer Policy](https://registry.terraform.io/modules/netascode/ospf-timer-policy/aci/latest)
 
 {{ doc_gen }}
 

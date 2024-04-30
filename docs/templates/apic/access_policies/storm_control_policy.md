@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Interface` » `Storm Control`
 
-### Terraform modules
-
-* [Storm Control Policy](https://registry.terraform.io/modules/netascode/storm-control-policy/aci/latest)
 
 {{ doc_gen }}
 

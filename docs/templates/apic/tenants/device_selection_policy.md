@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `XXX` » `Services` » `L4-L7` » `Device Selection Policies`
 
-### Terraform modules
-
-* [Device Selection Policy](https://registry.terraform.io/modules/netascode/device-selection-policy/aci/latest)
 
 {{ doc_gen }}
 

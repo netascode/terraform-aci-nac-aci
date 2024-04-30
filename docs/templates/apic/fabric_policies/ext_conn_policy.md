@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `infra` » `Policies` » `Protocol` » `Fabric Ext Connection Policies`
 
-### Terraform modules
-
-* [External Connectivity Policy](https://registry.terraform.io/modules/netascode/external-connectivity-policy/aci/latest)
 
 {{ doc_gen }}
 

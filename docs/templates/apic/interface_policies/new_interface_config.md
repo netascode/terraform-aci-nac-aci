@@ -5,9 +5,6 @@ The new interface configuration model is available from ACI 6.0(x).
 Location in GUI:
 `Fabric` » `Access Policies` » `Interface Configuration`
 
-### Terraform modules
-
-* [Interface Configuration](https://registry.terraform.io/modules/netascode/interface-configuration/aci/latest)
 
 {{ doc_gen }}
 

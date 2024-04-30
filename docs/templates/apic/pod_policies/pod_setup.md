@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Inventory` » `Pod Fabric Setup Policy`
 
-### Terraform modules
-
-* [Pod Setup](https://registry.terraform.io/modules/netascode/pod-setup/aci/latest)
 
 {{ doc_gen }}
 

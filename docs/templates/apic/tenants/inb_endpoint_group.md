@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `mgmt` » `Node Management EPGs`
 
-### Terraform modules
-
-* [Inband Endpoint Group](https://registry.terraform.io/modules/netascode/inband-endpoint-group/aci/latest)
 
 {{ doc_gen }}
 

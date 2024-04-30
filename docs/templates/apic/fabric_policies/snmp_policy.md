@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric Policies` » `Policies` » `Pod` » `SNMP`
 
-### Terraform modules
-
-* [SNMP Policy](https://registry.terraform.io/modules/netascode/snmp-policy/aci/latest)
 
 {{ doc_gen }}
 

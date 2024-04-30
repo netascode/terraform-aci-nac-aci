@@ -9,9 +9,6 @@ FEX Interface Profiles can either be auto-generated, one per FEX, by providing a
 Location in GUI:
 `Fabric` » `Access Policies` » `Interfaces` » `Leaf Interfaces` » `Profiles`
 
-### Terraform modules
-
-* [Access FEX Interface Profile](https://registry.terraform.io/modules/netascode/access-fex-interface-profile/aci/latest)
 
 {{ doc_gen }}
 

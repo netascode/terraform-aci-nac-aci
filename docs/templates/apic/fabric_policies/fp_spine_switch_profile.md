@@ -8,9 +8,6 @@ Spine Switch Profiles can either be auto-generated, one per spine, by providing 
 Location in GUI:
 `Fabric` » `Fabric Policies` » `Switches` » `Spine Switches` » `Profiles`
 
-### Terraform modules
-
-* [Fabric Spine Switch Profile](https://registry.terraform.io/modules/netascode/fabric-spine-switch-profile/aci/latest)
 
 {{ doc_gen }}
 

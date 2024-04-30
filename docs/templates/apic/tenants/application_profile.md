@@ -5,9 +5,6 @@ The `managed` flag indicates if an application profile should be created/modifie
 Location in GUI:
 `Tenants` » `XXX` » `Application Profiles`
 
-### Terraform modules
-
-* [Application Profile](https://registry.terraform.io/modules/netascode/application-profile/aci/latest)
 
 {{ doc_gen }}
 

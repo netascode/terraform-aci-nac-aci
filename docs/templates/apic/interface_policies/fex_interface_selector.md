@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Interfaces` » `Leaf Interfaces` » `Profiles` » `XXX`
 
-### Terraform modules
-
-* [Access FEX Interface Selector](https://registry.terraform.io/modules/netascode/access-fex-interface-selector/aci/latest)
 
 {{ doc_gen }}
 

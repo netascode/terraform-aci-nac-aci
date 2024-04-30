@@ -3,9 +3,6 @@
 Location in GUI:
 `Admin` » `AAA` » `Authentication` » `LDAP`
 
-### Terraform modules
-
-* [LDAP](https://registry.terraform.io/modules/netascode/ldap/aci/latest)
 
 {{ doc_gen }}
 

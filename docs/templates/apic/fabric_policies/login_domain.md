@@ -3,9 +3,6 @@
 Location in GUI:
 `Admin` » `AAA` » `Authentication` » `AAA`
 
-### Terraform modules
-
-* [Login Domain](https://registry.terraform.io/modules/netascode/login-domain/aci/latest)
 
 {{ doc_gen }}
 

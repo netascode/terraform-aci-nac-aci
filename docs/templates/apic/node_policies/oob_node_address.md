@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `mgmt` » `Node Management Addresses` » `Static Node Management Addresses`
 
-### Terraform modules
-
-* [OOB Node Address](https://registry.terraform.io/modules/netascode/oob-node-address/aci/latest)
 
 {{ doc_gen }}
 

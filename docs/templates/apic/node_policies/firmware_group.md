@@ -3,9 +3,6 @@
 Location in GUI:
 `Admin` » `Firmware` » `Nodes`
 
-### Terraform modules
-
-* [Firmware Group](https://registry.terraform.io/modules/netascode/firmware-group/aci/latest)
 
 {{ doc_gen }}
 

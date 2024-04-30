@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `BFD`
 
-### Terraform modules
-
-* [BFD Interface Policy](https://registry.terraform.io/modules/netascode/bfd-interface-policy/aci/latest)
 
 {{ doc_gen }}
 

@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `XXX` » `Contracts` » `Imported`
 
-### Terraform modules
-
-* [Imported Contract](https://registry.terraform.io/modules/netascode/imported-contract/aci/latest)
 
 {{ doc_gen }}
 

@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `infra` » `Policies` » `Protocol` » `MPLS Custom QoS Policy`
 
-### Terraform modules
-
-* [MPLS Custom QoS Policy](https://registry.terraform.io/modules/netascode/mpls-custom-qos-policy/aci/latest)
 
 {{ doc_gen }}
 

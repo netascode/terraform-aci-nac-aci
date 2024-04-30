@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Interface` » `Port Channel`
 
-### Terraform modules
-
-* [Port Channel Policy](https://registry.terraform.io/modules/netascode/port-channel-policy/aci/latest)
 
 {{ doc_gen }}
 

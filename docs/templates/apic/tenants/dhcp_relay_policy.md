@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `DHCP` » `Relay Policies`
 
-### Terraform modules
-
-* [DHCP Relay Policy](https://registry.terraform.io/modules/netascode/dhcp-relay-policy/aci/latest)
 
 {{ doc_gen }}
 

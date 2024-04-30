@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `XXX` » `Contracts` » `Standard`
 
-### Terraform modules
-
-* [Contract](https://registry.terraform.io/modules/netascode/contract/aci/latest)
 
 {{ doc_gen }}
 

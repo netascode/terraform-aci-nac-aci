@@ -8,9 +8,6 @@ vPC groups can be named according to a naming convention defined once, without h
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Switch` » `Virtual Port Channel default`
 
-### Terraform modules
-
-* [vPC Group](https://registry.terraform.io/modules/netascode/vpc-group/aci/latest)
 
 {{ doc_gen }}
 

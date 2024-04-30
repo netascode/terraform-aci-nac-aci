@@ -3,9 +3,6 @@
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Global` » `MCP Instance Policy default`
 
-### Terraform modules
-
-* [MCP](https://registry.terraform.io/modules/netascode/mcp/aci/latest)
 
 {{ doc_gen }}
 

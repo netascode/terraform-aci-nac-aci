@@ -3,9 +3,6 @@
 Location in GUI:
 `Admin` » `AAA` » `Security` » `Public Key Management` » `Key Rings`
 
-### Terraform modules
-
-* [Keyring](https://registry.terraform.io/modules/netascode/keyring/aci/latest)
 
 {{ doc_gen }}
 

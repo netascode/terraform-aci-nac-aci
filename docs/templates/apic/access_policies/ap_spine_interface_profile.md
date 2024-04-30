@@ -8,9 +8,6 @@ Spine Interface Profiles can either be auto-generated, one per spine, by providi
 Location in GUI:
 `Fabric` » `Access Policies` » `Interfaces` » `Spine Interfaces` » `Profiles`
 
-### Terraform modules
-
-* [Access Spine Interface Profile](https://registry.terraform.io/modules/netascode/access-spine-interface-profile/aci/latest)
 
 {{ doc_gen }}
 

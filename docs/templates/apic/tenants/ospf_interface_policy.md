@@ -3,9 +3,6 @@
 Location in GUI:
 `Tenants` » `XXX` » `Policies` » `Protocol` » `OSPF` » `OSPF Interface`
 
-### Terraform modules
-
-* [OSPF Interface Policy](https://registry.terraform.io/modules/netascode/ospf-interface-policy/aci/latest)
 
 {{ doc_gen }}
 

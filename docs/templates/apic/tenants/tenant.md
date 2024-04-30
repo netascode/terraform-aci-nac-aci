@@ -5,9 +5,6 @@ The `managed` flag indicates if a tenant should be created/modified/deleted or i
 Location in GUI:
 `Tenants`
 
-### Terraform modules
-
-* [Tenant](https://registry.terraform.io/modules/netascode/tenant/aci/latest)
 
 {{ doc_gen }}
 
