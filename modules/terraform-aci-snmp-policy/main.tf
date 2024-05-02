@@ -30,6 +30,7 @@ resource "aci_rest_managed" "snmpUserP" {
   class_name = "snmpUserP"
   content = {
     name     = each.value.name
+    descr    = each.value.description
     privType = each.value.privacy_type
     privKey  = sensitive(each.value.privacy_type != null && each.value.privacy_type != "none" ? each.value.privacy_key : null)
     authType = each.value.authorization_type
@@ -66,6 +67,7 @@ resource "aci_rest_managed" "snmpClientGrpP" {
   class_name = "snmpClientGrpP"
   content = {
     name = each.value.name
+    descr = each.value.description
   }
 }
 
