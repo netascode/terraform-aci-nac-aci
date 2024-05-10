@@ -1842,6 +1842,39 @@ module "aci_eigrp_interface_policy" {
   ]
 }
 
+locals {
+  bgp_route_summarization_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.bgp_route_summarization_policies, []) : {
+        key          = format("%s/%s", tenant.name, policy.name)
+        tenant       = tenant.name
+        name         = "${policy.name}${local.defaults.apic.tenants.policies.bgp_route_summarization_policies.name_suffix}"
+        description  = try(policy.description, "")
+        as_set       = try(policy.as_set, local.defaults.apic.tenants.policies.bgp_route_summarization_policies.as_set)
+        summary_only = try(policy.summary_only, local.defaults.apic.tenants.policies.bgp_route_summarization_policies.summary_only)
+        af_mcast     = try(policy.af_mcast, local.defaults.apic.tenants.policies.bgp_route_summarization_policies.af_mcast)
+        af_ucast     = try(policy.af_ucast, local.defaults.apic.tenants.policies.bgp_route_summarization_policies.af_ucast)
+      }
+    ]
+  ])
+}
+
+module "aci_bgp_route_summarization_policy" {
+  source = "./modules/terraform-aci-bgp-route-summarization-policy"
+
+  for_each     = { for pol in local.bgp_route_summarization_policies : pol.key => pol if local.modules.aci_bgp_route_summarization_policy && var.manage_tenants }
+  tenant       = each.value.tenant
+  name         = each.value.name
+  description  = each.value.description
+  as_set       = each.value.as_set
+  summary_only = each.value.summary_only
+  af_mcast     = each.value.af_mcast
+  af_ucast     = each.value.af_ucast
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
 
 locals {
   bgp_timer_policies = flatten([

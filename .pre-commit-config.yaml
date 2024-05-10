@@ -122,6 +122,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-route-summarization-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-route-summarization-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-timer-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-timer-policy/examples/complete"]
