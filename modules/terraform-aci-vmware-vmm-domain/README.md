@@ -18,6 +18,7 @@ module "aci_vmware_vmm_domain" {
   delimiter                   = "="
   tag_collection              = true
   vlan_pool                   = "VP1"
+  allocation                  = "static"
   vswitch_cdp_policy          = "CDP1"
   vswitch_lldp_policy         = "LLDP1"
   vswitch_port_channel_policy = "PC1"
@@ -82,6 +83,7 @@ module "aci_vmware_vmm_domain" {
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter (vCenter Port Group). | `string` | `""` | no |
 | <a name="input_tag_collection"></a> [tag\_collection](#input\_tag\_collection) | Tag collection. | `bool` | `false` | no |
 | <a name="input_vlan_pool"></a> [vlan\_pool](#input\_vlan\_pool) | Vlan pool name. | `string` | n/a | yes |
+| <a name="input_allocation"></a> [allocation](#input\_allocation) | Vlan pool allocation mode. Choices: `static`, `dynamic`. | `string` | `"dynamic"` | no |
 | <a name="input_vswitch_cdp_policy"></a> [vswitch\_cdp\_policy](#input\_vswitch\_cdp\_policy) | vSwitch CDP policy name. | `string` | `""` | no |
 | <a name="input_vswitch_lldp_policy"></a> [vswitch\_lldp\_policy](#input\_vswitch\_lldp\_policy) | vSwitch LLDP policy name. | `string` | `""` | no |
 | <a name="input_vswitch_port_channel_policy"></a> [vswitch\_port\_channel\_policy](#input\_vswitch\_port\_channel\_policy) | vSwitch port channel policy name. | `string` | `""` | no |

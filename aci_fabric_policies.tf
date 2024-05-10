@@ -534,6 +534,7 @@ module "aci_vmware_vmm_domain" {
   delimiter                   = try(each.value.delimiter, local.defaults.apic.fabric_policies.vmware_vmm_domains.delimiter)
   tag_collection              = try(each.value.tag_collection, local.defaults.apic.fabric_policies.vmware_vmm_domains.tag_collection)
   vlan_pool                   = "${each.value.vlan_pool}${local.defaults.apic.access_policies.vlan_pools.name_suffix}"
+  allocation                  = try(each.value.allocation, local.defaults.apic.fabric_policies.vmware_vmm_domains.allocation)
   vswitch_cdp_policy          = try(each.value.vswitch.cdp_policy, "")
   vswitch_lldp_policy         = try(each.value.vswitch.lldp_policy, "")
   vswitch_port_channel_policy = try(each.value.vswitch.port_channel_policy, "")

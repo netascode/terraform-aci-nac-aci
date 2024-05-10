@@ -21,6 +21,7 @@ module "aci_vmware_vmm_domain" {
   delimiter                   = "="
   tag_collection              = true
   vlan_pool                   = "VP1"
+  allocation                  = "static"
   vswitch_cdp_policy          = "CDP1"
   vswitch_lldp_policy         = "LLDP1"
   vswitch_port_channel_policy = "PC1"
