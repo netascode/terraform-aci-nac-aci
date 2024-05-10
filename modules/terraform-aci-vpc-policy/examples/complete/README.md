@@ -18,6 +18,7 @@ module "aci_vpc_policy" {
 
   name               = "VPC1"
   peer_dead_interval = 300
+  delay_restore_timer = 200
 }
 ```
 <!-- END_TF_DOCS -->
