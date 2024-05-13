@@ -222,5 +222,8 @@ variable "configuration_type" {
   type        = string
   default     = "separate"
 
-  validation = try(contains(["separate", "all"], var.configuration_type), false)
+  validation {
+    condition     = try(contains(["separate", "all"], var.configuration_type), false)
+    error_message = "Allowed values are `separete` or `all`."
+  }
 }
