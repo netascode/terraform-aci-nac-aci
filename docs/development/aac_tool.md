@@ -2,7 +2,7 @@
 
 ## Overview
 
-So called [mapping files](https://wwwin-github.cisco.com/netascode/aac-tool/tree/master/aac_tool/mappings/aac) are used to specify how data from the ACI object model maps to the AAC data model. Mappings are specified using YAML files and look like this:
+So called [mapping files](https://wwwin-github.cisco.com/netascode/aac-tool/tree/master/aac_tool/mappings/aci) are used to specify how data from the ACI object model maps to the AAC data model. Mappings are specified using YAML files and look like this:
 
 ```yaml
 ---
