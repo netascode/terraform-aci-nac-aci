@@ -35,6 +35,7 @@ module "aci_l3out_interface_profile" {
     description = "Interface 1"
     type        = "vpc"
     svi         = true
+    scope       = "local"
     vlan        = 5
     mac         = "12:34:56:78:90:AB"
     mtu         = "1500"

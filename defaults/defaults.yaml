@@ -802,6 +802,7 @@ defaults:
             mac: 00:22:BD:F8:19:FF
             mtu: inherit
             mode: regular
+            scope: local
             bgp_peers:
               allow_self_as: false
               as_override: false
@@ -869,6 +870,7 @@ defaults:
               mac: 00:22:BD:F8:19:FF
               mtu: inherit
               mode: regular
+              scope: local
               bgp_peers:
                 allow_self_as: false
                 as_override: false
