@@ -66,7 +66,7 @@ resource "aci_rest_managed" "snmpClientGrpP" {
   dn         = "${aci_rest_managed.snmpPol.dn}/clgrp-${each.value.name}"
   class_name = "snmpClientGrpP"
   content = {
-    name = each.value.name
+    name  = each.value.name
     descr = each.value.description
   }
 }
