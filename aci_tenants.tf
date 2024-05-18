@@ -1320,18 +1320,21 @@ locals {
   sr_mpls_l3outs = flatten([
     for tenant in local.tenants : [
       for l3out in try(tenant.sr_mpls_l3outs, []) : {
-        key                        = format("%s/%s", tenant.name, l3out.name)
-        tenant                     = tenant.name
-        name                       = "${l3out.name}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
-        alias                      = try(l3out.alias, "")
-        description                = try(l3out.description, "")
-        domain                     = try("${l3out.domain}${local.defaults.apic.access_policies.routed_domains.name_suffix}", "")
-        vrf                        = tenant.name == "infra" ? "overlay-1" : try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
-        transport_data_plane       = try(l3out.transport_data_plane, local.defaults.apic.tenants.sr_mpls_l3outs.transport_data_plane)
-        sr_mpls                    = true
-        sr_mpls_infra_l3out        = try(l3out.sr_mpls_infra_l3out, "")
-        sr_mpls_inbound_route_map  = try(l3out.inbound_route_map, "")
-        sr_mpls_outbound_route_map = try(l3out.outbound_route_map, "")
+        key                  = format("%s/%s", tenant.name, l3out.name)
+        tenant               = tenant.name
+        name                 = "${l3out.name}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
+        alias                = try(l3out.alias, "")
+        description          = try(l3out.description, "")
+        domain               = try("${l3out.domain}${local.defaults.apic.access_policies.routed_domains.name_suffix}", "")
+        vrf                  = tenant.name == "infra" ? "overlay-1" : try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
+        transport_data_plane = try(l3out.transport_data_plane, local.defaults.apic.tenants.sr_mpls_l3outs.transport_data_plane)
+        sr_mpls              = true
+        sr_mpls_infra_l3outs = [for infra_l3out in try(l3out.sr_mpls_infra_l3outs, []) : {
+          name                     = infra_l3out.name
+          outbound_route_map       = try(infra_l3out.outbound_route_map, "")
+          inbound_route_map        = try(infra_l3out.inbound_route_map, "")
+          external_endpoint_groups = [for eepg in try(infra_l3out.external_endpoint_groups, []) : eepg]
+        }]
       }
     ]
   ])
@@ -1340,17 +1343,15 @@ locals {
 module "aci_sr_mpls_l3out" {
   source = "./modules/terraform-aci-l3out"
 
-  for_each                   = { for l3out in local.sr_mpls_l3outs : l3out.key => l3out if try(local.modules.aci_sr_mpls_l3out, true) && var.manage_tenants }
-  tenant                     = each.value.tenant
-  name                       = each.value.name
-  alias                      = each.value.alias
-  description                = each.value.description
-  routed_domain              = each.value.domain
-  vrf                        = each.value.vrf
-  sr_mpls                    = each.value.sr_mpls
-  sr_mpls_infra_l3out        = each.value.sr_mpls_infra_l3out
-  sr_mpls_inbound_route_map  = each.value.sr_mpls_inbound_route_map
-  sr_mpls_outbound_route_map = each.value.sr_mpls_outbound_route_map
+  for_each             = { for l3out in local.sr_mpls_l3outs : l3out.key => l3out if try(local.modules.aci_sr_mpls_l3out, true) && var.manage_tenants }
+  tenant               = each.value.tenant
+  name                 = each.value.name
+  alias                = each.value.alias
+  description          = each.value.description
+  routed_domain        = each.value.domain
+  vrf                  = each.value.vrf
+  sr_mpls              = each.value.sr_mpls
+  sr_mpls_infra_l3outs = each.value.sr_mpls_infra_l3outs
 
   depends_on = [
     module.aci_tenant,
@@ -1514,7 +1515,6 @@ locals {
           contract_consumers          = try([for contract in epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_providers          = try([for contract in epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
-          sr_mpls_infra_l3out         = try(l3out.sr_mpls_infra_l3out, "")
           subnets = [for subnet in try(epg.subnets, []) : {
             name                           = try(subnet.name, "")
             prefix                         = subnet.prefix
@@ -1542,7 +1542,6 @@ module "aci_sr_mpls_external_endpoint_group" {
   contract_providers          = each.value.contract_providers
   contract_imported_consumers = each.value.contract_imported_consumers
   subnets                     = each.value.subnets
-  sr_mpls_infra_l3out         = each.value.sr_mpls_infra_l3out
 
   depends_on = [
     module.aci_tenant,
