@@ -1330,10 +1330,10 @@ locals {
         transport_data_plane = try(l3out.transport_data_plane, local.defaults.apic.tenants.sr_mpls_l3outs.transport_data_plane)
         sr_mpls              = true
         sr_mpls_infra_l3outs = [for infra_l3out in try(l3out.sr_mpls_infra_l3outs, []) : {
-          name               = infra_l3out.name
-          outbound_route_map = try(infra_l3out.outbound_route_map, "")
-          inbound_route_map  = try(infra_l3out.inbound_route_map, "")
-          external_epgs      = [for eepg in try(infra_l3out.external_epgs, []) : eepg]
+          name                     = infra_l3out.name
+          outbound_route_map       = try(infra_l3out.outbound_route_map, "")
+          inbound_route_map        = try(infra_l3out.inbound_route_map, "")
+          external_endpoint_groups = [for eepg in try(infra_l3out.external_endpoint_groups, []) : eepg]
         }]
       }
     ]
