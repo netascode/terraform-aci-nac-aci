@@ -3,8 +3,8 @@ variable "tenant" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.tenant))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -13,8 +13,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -24,8 +24,8 @@ variable "alias" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.alias))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.alias))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -212,27 +212,27 @@ variable "subnets" {
 
   validation {
     condition = alltrue([
-      for s in var.subnets : s.nd_ra_prefix_policy == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", s.nd_ra_prefix_policy))
+      for s in var.subnets : s.nd_ra_prefix_policy == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.nd_ra_prefix_policy))
     ])
-    error_message = "`nd_ra_prefix_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`nd_ra_prefix_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
       for s in var.subnets : alltrue([
-        for tag in coalesce(s.tags, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", tag.key))
+        for tag in coalesce(s.tags, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", tag.key))
       ])
     ])
-    error_message = "`tags.key`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`tags.key`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
       for s in var.subnets : alltrue([
-        for tag in coalesce(s.tags, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", tag.value))
+        for tag in coalesce(s.tags, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", tag.value))
       ])
     ])
-    error_message = "`tags.value`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`tags.value`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -243,9 +243,9 @@ variable "l3outs" {
 
   validation {
     condition = alltrue([
-      for l3out in var.l3outs : can(regex("^[a-zA-Z0-9_.-]{0,64}$", l3out))
+      for l3out in var.l3outs : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", l3out))
     ])
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -260,9 +260,9 @@ variable "dhcp_labels" {
 
   validation {
     condition = alltrue([
-      for l in var.dhcp_labels : l.dhcp_relay_policy == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", l.dhcp_relay_policy))
+      for l in var.dhcp_labels : l.dhcp_relay_policy == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", l.dhcp_relay_policy))
     ])
-    error_message = "`dhcp_relay_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`dhcp_relay_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -274,8 +274,8 @@ variable "dhcp_labels" {
 
   validation {
     condition = alltrue([
-      for l in var.dhcp_labels : l.dhcp_option_policy == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", l.dhcp_option_policy))
+      for l in var.dhcp_labels : l.dhcp_option_policy == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", l.dhcp_option_policy))
     ])
-    error_message = "`dhcp_option_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`dhcp_option_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

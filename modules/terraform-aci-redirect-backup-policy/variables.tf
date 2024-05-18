@@ -3,8 +3,8 @@ variable "tenant" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.tenant))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -13,8 +13,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -43,9 +43,9 @@ variable "l3_destinations" {
 
   validation {
     condition = alltrue([
-      for l3 in var.l3_destinations : can(regex("^[a-zA-Z0-9_.-]{0,64}$", l3.name))
+      for l3 in var.l3_destinations : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", l3.name))
     ])
-    error_message = "`l3_destinations.name` allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`l3_destinations.name` allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -57,8 +57,8 @@ variable "l3_destinations" {
 
   validation {
     condition = alltrue([
-      for l3 in var.l3_destinations : can(regex("^[a-zA-Z0-9_.-]{0,64}$", l3.redirect_health_group))
+      for l3 in var.l3_destinations : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", l3.redirect_health_group))
     ])
-    error_message = "`redirect_health_group` allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`redirect_health_group` allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

@@ -3,8 +3,8 @@ variable "tenant" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.tenant))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -13,8 +13,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -24,8 +24,8 @@ variable "alias" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.alias))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.alias))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -103,8 +103,8 @@ variable "physical_domain" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.physical_domain))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.physical_domain))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -125,8 +125,8 @@ variable "vmm_domain" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.vmm_domain))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.vmm_domain))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -154,16 +154,16 @@ variable "concrete_devices" {
 
   validation {
     condition = alltrue([
-      for c in var.concrete_devices : can(regex("^[a-zA-Z0-9_.-]{0,64}$", c.name))
+      for c in var.concrete_devices : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c.name))
     ])
-    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for c in var.concrete_devices : c.alias == null || try(can(regex("^[a-zA-Z0-9_.-]{0,64}$", c.alias)), false)
+      for c in var.concrete_devices : c.alias == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c.alias)), false)
     ])
-    error_message = "`alias`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`alias`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -189,9 +189,9 @@ variable "concrete_devices" {
 
   validation {
     condition = alltrue(flatten([
-      for c in var.concrete_devices : [for i in coalesce(c.interfaces, []) : i.alias == null || try(can(regex("^[a-zA-Z0-9_.-]{0,64}$", i.alias)), false)]
+      for c in var.concrete_devices : [for i in coalesce(c.interfaces, []) : i.alias == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", i.alias)), false)]
     ]))
-    error_message = "`interfaces.alias`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`interfaces.alias`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -245,9 +245,9 @@ variable "concrete_devices" {
 
   validation {
     condition = alltrue(flatten([
-      for c in var.concrete_devices : [for i in coalesce(c.interfaces, []) : i.channel == null || try(can(regex("^[a-zA-Z0-9_.-]{0,64}$", i.channel)), false)]
+      for c in var.concrete_devices : [for i in coalesce(c.interfaces, []) : i.channel == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", i.channel)), false)]
     ]))
-    error_message = "`interfaces.channel`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`interfaces.channel`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -266,16 +266,16 @@ variable "logical_interfaces" {
 
   validation {
     condition = alltrue([
-      for l in var.logical_interfaces : can(regex("^[a-zA-Z0-9_.-]{0,64}$", l.name))
+      for l in var.logical_interfaces : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", l.name))
     ])
-    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for l in var.logical_interfaces : l.alias == null || try(can(regex("^[a-zA-Z0-9_.-]{0,64}$", l.alias)), false)
+      for l in var.logical_interfaces : l.alias == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", l.alias)), false)
     ])
-    error_message = "`alias`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`alias`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -287,9 +287,9 @@ variable "logical_interfaces" {
 
   validation {
     condition = alltrue(flatten([
-      for l in var.logical_interfaces : [for c in coalesce(l.concrete_interfaces, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", c.device))]
+      for l in var.logical_interfaces : [for c in coalesce(l.concrete_interfaces, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c.device))]
     ]))
-    error_message = "`device`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`device`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {

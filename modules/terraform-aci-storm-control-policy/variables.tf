@@ -3,8 +3,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -14,8 +14,8 @@ variable "alias" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.alias))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.alias))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -170,5 +170,60 @@ variable "unknown_unicast_rate" {
   validation {
     condition     = try(contains(["defaultValue"], var.unknown_unicast_rate), false) || try(tonumber(var.unknown_unicast_rate) >= 0 && tonumber(var.unknown_unicast_rate) <= 100, false)
     error_message = "Allowed values are `defaultValue` or a number between 1 and 100."
+  }
+}
+
+variable "burst_pps" {
+  description = "Burst packets per second for all types of traffic."
+  type        = string
+  default     = "unspecified"
+
+  validation {
+    condition     = try(contains(["unspecified"], var.burst_pps), false) || try(tonumber(var.burst_pps) >= 1 && tonumber(var.burst_pps) <= 4882812, false)
+    error_message = "Allowed values are `unspecified` or a number between 1 and 4882812."
+  }
+}
+
+variable "burst_rate" {
+  description = "Burst rate for all types of traffic."
+  type        = string
+  default     = "100.000000"
+
+  validation {
+    condition     = try(contains(["defaultValue"], var.burst_rate), false) || try(tonumber(var.burst_rate) >= 0 && tonumber(var.burst_rate) <= 100, false)
+    error_message = "Allowed values are `defaultValue` or a number between 1 and 100."
+  }
+}
+
+variable "rate_pps" {
+  description = "Rate in packets per second for all types of traffic."
+  type        = string
+  default     = "unspecified"
+
+  validation {
+    condition     = try(contains(["unspecified"], var.rate_pps), false) || try(tonumber(var.rate_pps) >= 1 && tonumber(var.rate_pps) <= 4882812, false)
+    error_message = "Allowed values are `unspecified` or a number between 1 and 4882812."
+  }
+}
+
+variable "rate" {
+  description = "Rate for all types of traffic."
+  type        = string
+  default     = "100.000000"
+
+  validation {
+    condition     = try(contains(["defaultValue"], var.rate), false) || try(tonumber(var.rate) >= 0 && tonumber(var.rate) <= 100, false)
+    error_message = "Allowed values are `defaultValue` or a number between 1 and 100."
+  }
+}
+
+variable "configuration_type" {
+  description = "Storm control configuration type."
+  type        = string
+  default     = "separate"
+
+  validation {
+    condition     = try(contains(["separate", "all"], var.configuration_type), false)
+    error_message = "Allowed values are `separete` or `all`."
   }
 }

@@ -3,8 +3,8 @@ variable "tenant" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.tenant))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -13,8 +13,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -51,36 +51,36 @@ variable "providers_" {
 
   validation {
     condition = alltrue([
-      for p in var.providers_ : p.tenant == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", p.tenant))
+      for p in var.providers_ : p.tenant == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", p.tenant))
     ])
-    error_message = "`tenant`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`tenant`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for p in var.providers_ : p.application_profile == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", p.application_profile))
+      for p in var.providers_ : p.application_profile == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", p.application_profile))
     ])
-    error_message = "`application_profile`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`application_profile`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for p in var.providers_ : p.endpoint_group == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", p.endpoint_group))
+      for p in var.providers_ : p.endpoint_group == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", p.endpoint_group))
     ])
-    error_message = "`endpoint_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`endpoint_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for p in var.providers_ : p.l3out == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", p.l3out))
+      for p in var.providers_ : p.l3out == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", p.l3out))
     ])
-    error_message = "`l3out`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`l3out`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for p in var.providers_ : p.external_endpoint_group == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", p.external_endpoint_group))
+      for p in var.providers_ : p.external_endpoint_group == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", p.external_endpoint_group))
     ])
-    error_message = "`external_endpoint_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`external_endpoint_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

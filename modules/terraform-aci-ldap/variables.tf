@@ -72,9 +72,9 @@ variable "ldap_providers" {
 
   validation {
     condition = alltrue([
-      for p in var.ldap_providers : can(regex("^[a-zA-Z0-9_.-]{0,64}$", p.mgmt_epg_name))
+      for p in var.ldap_providers : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", p.mgmt_epg_name))
     ])
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -124,9 +124,9 @@ variable "group_map_rules" {
 
   validation {
     condition = alltrue([
-      for r in var.group_map_rules : can([for d in coalesce(r.security_domains, []) : [for role in coalesce(d.roles, []) : regex("^[a-zA-Z0-9_.:-]{0,64}$", role.name)]])
+      for r in var.group_map_rules : can([for d in coalesce(r.security_domains, []) : [for role in coalesce(d.roles, []) : regex("^[a-zA-Z0-9_.-]{0,64}$", role.name)]])
     ])
-    error_message = "`security_domains.roles.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    error_message = "`security_domains.roles.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
 
   validation {

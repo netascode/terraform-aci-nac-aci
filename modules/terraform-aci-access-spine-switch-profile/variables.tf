@@ -3,8 +3,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -15,9 +15,9 @@ variable "interface_profiles" {
 
   validation {
     condition = alltrue([
-      for ip in var.interface_profiles : can(regex("^[a-zA-Z0-9_.-]{0,64}$", ip))
+      for ip in var.interface_profiles : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", ip))
     ])
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -36,23 +36,23 @@ variable "selectors" {
 
   validation {
     condition = alltrue([
-      for s in var.selectors : can(regex("^[a-zA-Z0-9_.-]{0,64}$", s.name))
+      for s in var.selectors : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.name))
     ])
-    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for s in var.selectors : s.policy_group == null || can(regex("^[a-zA-Z0-9_.-]{0,64}$", s.policy_group))
+      for s in var.selectors : s.policy_group == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.policy_group))
     ])
-    error_message = "`policy_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`policy_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue(flatten([
-      for s in var.selectors : [for nb in coalesce(s.node_blocks, []) : can(regex("^[a-zA-Z0-9_.-]{0,64}$", nb.name))]
+      for s in var.selectors : [for nb in coalesce(s.node_blocks, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", nb.name))]
     ]))
-    error_message = "`node_blocks.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "`node_blocks.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {

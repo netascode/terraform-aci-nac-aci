@@ -123,7 +123,7 @@ variable "domains" {
     condition = alltrue([
       for d in var.domains : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", d.name))
     ])
-    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -153,7 +153,7 @@ variable "certificates" {
     condition = alltrue([
       for c in var.certificates : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", c.name))
     ])
-    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -169,7 +169,7 @@ variable "ssh_keys" {
     condition = alltrue([
       for s in var.ssh_keys : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", s.name))
     ])
-    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {

@@ -2129,13 +2129,16 @@ locals {
             description = try(comm.description, "")
           }
         ]
-        set_as_path          = try(policy.set_as_path.criteria, null) != null || try(policy.set_as_path.count, null) != null || try(policy.set_as_path.order, null) != null
-        set_as_path_criteria = try(policy.set_as_path.criteria, local.defaults.apic.tenants.policies.set_rules.set_as_path.criteria)
-        set_as_path_count    = try(policy.set_as_path.count, local.defaults.apic.tenants.policies.set_rules.set_as_path.count)
-        set_as_path_order    = try(policy.set_as_path.order, local.defaults.apic.tenants.policies.set_rules.set_as_path.order)
-        set_as_path_asn      = try(policy.set_as_path.asn, null)
-        next_hop_propagation = try(policy.next_hop_propagation, local.defaults.apic.tenants.policies.set_rules.next_hop_propagation)
-        multipath            = try(policy.multipath, local.defaults.apic.tenants.policies.set_rules.multipath)
+        set_as_path                    = try(policy.set_as_path.criteria, null) != null || try(policy.set_as_path.count, null) != null || try(policy.set_as_path.order, null) != null
+        set_as_path_criteria           = try(policy.set_as_path.criteria, local.defaults.apic.tenants.policies.set_rules.set_as_path.criteria)
+        set_as_path_count              = try(policy.set_as_path.count, local.defaults.apic.tenants.policies.set_rules.set_as_path.count)
+        set_as_path_order              = try(policy.set_as_path.order, local.defaults.apic.tenants.policies.set_rules.set_as_path.order)
+        set_as_path_asn                = try(policy.set_as_path.asn, null)
+        next_hop_propagation           = try(policy.next_hop_propagation, local.defaults.apic.tenants.policies.set_rules.next_hop_propagation)
+        multipath                      = try(policy.multipath, local.defaults.apic.tenants.policies.set_rules.multipath)
+        external_endpoint_group        = try(policy.external_endpoint_group.name, null) != null ? "${policy.external_endpoint_group.name}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}" : ""
+        external_endpoint_group_l3out  = try(policy.external_endpoint_group.l3out, null) != null ? "${policy.external_endpoint_group.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}" : ""
+        external_endpoint_group_tenant = try(policy.external_endpoint_group.tenant, tenant.name)
       }
     ]
   ])
@@ -2144,31 +2147,34 @@ locals {
 module "aci_set_rule" {
   source = "./modules/terraform-aci-set-rule"
 
-  for_each                    = { for rule in local.set_rules : rule.key => rule if local.modules.aci_set_rule && var.manage_tenants }
-  tenant                      = each.value.tenant
-  name                        = each.value.name
-  description                 = each.value.description
-  community                   = each.value.community
-  community_mode              = each.value.community_mode
-  tag                         = each.value.tag
-  dampening                   = each.value.dampening
-  dampening_half_life         = each.value.dampening_half_life
-  dampening_max_suppress_time = each.value.dampening_max_suppress_time
-  dampening_reuse_limit       = each.value.dampening_reuse_limit
-  dampening_suppress_limit    = each.value.dampening_suppress_limit
-  weight                      = each.value.weight
-  next_hop                    = each.value.next_hop
-  metric                      = each.value.metric
-  preference                  = each.value.preference
-  metric_type                 = each.value.metric_type
-  additional_communities      = each.value.additional_communities
-  set_as_path                 = each.value.set_as_path
-  set_as_path_criteria        = each.value.set_as_path_criteria
-  set_as_path_count           = each.value.set_as_path_count
-  set_as_path_order           = each.value.set_as_path_order
-  set_as_path_asn             = each.value.set_as_path_asn
-  next_hop_propagation        = each.value.next_hop_propagation
-  multipath                   = each.value.multipath
+  for_each                       = { for rule in local.set_rules : rule.key => rule if local.modules.aci_set_rule && var.manage_tenants }
+  tenant                         = each.value.tenant
+  name                           = each.value.name
+  description                    = each.value.description
+  community                      = each.value.community
+  community_mode                 = each.value.community_mode
+  tag                            = each.value.tag
+  dampening                      = each.value.dampening
+  dampening_half_life            = each.value.dampening_half_life
+  dampening_max_suppress_time    = each.value.dampening_max_suppress_time
+  dampening_reuse_limit          = each.value.dampening_reuse_limit
+  dampening_suppress_limit       = each.value.dampening_suppress_limit
+  weight                         = each.value.weight
+  next_hop                       = each.value.next_hop
+  metric                         = each.value.metric
+  preference                     = each.value.preference
+  metric_type                    = each.value.metric_type
+  additional_communities         = each.value.additional_communities
+  set_as_path                    = each.value.set_as_path
+  set_as_path_criteria           = each.value.set_as_path_criteria
+  set_as_path_count              = each.value.set_as_path_count
+  set_as_path_order              = each.value.set_as_path_order
+  set_as_path_asn                = each.value.set_as_path_asn
+  next_hop_propagation           = each.value.next_hop_propagation
+  multipath                      = each.value.multipath
+  external_endpoint_group        = each.value.external_endpoint_group
+  external_endpoint_group_l3out  = each.value.external_endpoint_group_l3out
+  external_endpoint_group_tenant = each.value.external_endpoint_group_tenant
 
   depends_on = [
     module.aci_tenant,

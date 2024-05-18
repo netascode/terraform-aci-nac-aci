@@ -125,7 +125,7 @@ resource "aci_rest_managed" "rtctrlSetASPathASN" {
 }
 
 resource "aci_rest_managed" "rtctrlSetNhUnchanged" {
-  count      = var.next_hop_propagation == true ? 1 : 0
+  count      = var.next_hop_propagation == true || var.multipath == true ? 1 : 0
   dn         = "${aci_rest_managed.rtctrlAttrP.dn}/nhunchanged"
   class_name = "rtctrlSetNhUnchanged"
   content = {
@@ -141,6 +141,24 @@ resource "aci_rest_managed" "rtctrlSetRedistMultipath" {
     "type" = "redist-multipath"
   }
   depends_on = [
-    aci_rest_managed.rtctrlSetNh
+    aci_rest_managed.rtctrlSetNhUnchanged
   ]
+}
+
+resource "aci_rest_managed" "rtctrlSetPolicyTag" {
+  count      = var.external_endpoint_group != "" && var.external_endpoint_group_l3out != "" ? 1 : 0
+  dn         = "${aci_rest_managed.rtctrlAttrP.dn}/sptag"
+  class_name = "rtctrlSetPolicyTag"
+  content = {
+    "type" = "policy-tag"
+  }
+}
+
+resource "aci_rest_managed" "rtctrlRsSetPolicyTagToInstP" {
+  count      = var.external_endpoint_group != "" && var.external_endpoint_group_l3out != "" ? 1 : 0
+  dn         = "${aci_rest_managed.rtctrlSetPolicyTag[0].dn}/rssetPolicyTagToInstP"
+  class_name = "rtctrlRsSetPolicyTagToInstP"
+  content = {
+    "tDn" = "uni/tn-${try(var.external_endpoint_group_tenant, var.tenant)}/out-${var.external_endpoint_group_l3out}/instP-${var.external_endpoint_group}"
+  }
 }
