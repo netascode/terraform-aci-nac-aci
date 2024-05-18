@@ -13,6 +13,19 @@ apic:
   access_policies:
     interface_policies:
       storm_control_policies:
+        - name: 20P
+          alias: 20P
+          burst_pps: unspecified
+          rate_pps: unspecified
+          burst_rate: 20
+          rate: 20
+```
+
+```yaml
+apic:
+  access_policies:
+    interface_policies:
+      storm_control_policies:
         - name: 10P
           alias: 10P
           broadcast_burst_pps: unspecified

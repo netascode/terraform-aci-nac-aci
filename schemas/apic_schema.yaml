@@ -1415,6 +1415,11 @@ ap_storm_control_policy:
   unknown_unicast_rate: any(num(min=0, max=100), regex('^(100|[1-9]?[0-9])(\.\d+)?$'), enum('defaultValue'), required=False)
   unknown_unicast_pps: any(int(min=1, max=4882812), enum('unspecified'), required=False)
   action: enum('drop', 'shutdown', required=False)
+  rate: any(num(min=0, max=100), regex('^(100|[1-9]?[0-9])(\.\d+)?$'), enum('defaultValue'), required=False)
+  rate_pps: any(int(min=1, max=4882812), enum('unspecified'), required=False)
+  burst_rate: any(num(min=0, max=100), regex('^(100|[1-9]?[0-9])(\.\d+)?$'), enum('defaultValue'), required=False)
+  burst_pps: any(int(min=1, max=4882812), enum('unspecified'), required=False)
+
 
 ap_leaf_interface_policy_group:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
