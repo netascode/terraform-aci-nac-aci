@@ -65,6 +65,11 @@ module "aci_storm_control_policy" {
 | <a name="input_unknown_unicast_burst_rate"></a> [unknown\_unicast\_burst\_rate](#input\_unknown\_unicast\_burst\_rate) | Unknown unicast burst rate. | `string` | `"100.000000"` | no |
 | <a name="input_unknown_unicast_pps"></a> [unknown\_unicast\_pps](#input\_unknown\_unicast\_pps) | Unknown unicast packets per second. | `string` | `"unspecified"` | no |
 | <a name="input_unknown_unicast_rate"></a> [unknown\_unicast\_rate](#input\_unknown\_unicast\_rate) | Unknown unicast rate. | `string` | `"100.000000"` | no |
+| <a name="input_burst_pps"></a> [burst\_pps](#input\_burst\_pps) | Burst packets per second for all types of traffic. | `string` | `"unspecified"` | no |
+| <a name="input_burst_rate"></a> [burst\_rate](#input\_burst\_rate) | Burst rate for all types of traffic. | `string` | `"100.000000"` | no |
+| <a name="input_rate_pps"></a> [rate\_pps](#input\_rate\_pps) | Rate in packets per second for all types of traffic. | `string` | `"unspecified"` | no |
+| <a name="input_rate"></a> [rate](#input\_rate) | Rate for all types of traffic. | `string` | `"100.000000"` | no |
+| <a name="input_configuration_type"></a> [configuration\_type](#input\_configuration\_type) | Storm control configuration type. | `string` | `"separate"` | no |
 
 ## Outputs
 
