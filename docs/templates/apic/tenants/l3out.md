@@ -318,6 +318,10 @@ apic:
       sr_mpls_l3outs:
         - name: ABC_SR_MPLS_L3OUT 
           vrf: VRF1
-          sr_mpls_infra_l3out: INFRA_SR_MPLS_L3
-          export_route_map: export-map
-          import_route_map: import-map
+          sr_mpls_infra_l3outs:
+            - name: INFRA_SR_MPLS_L3
+              outbound_route_map: export-map
+              inbound_route_map: import-map
+              external_endpoint_groups:
+                - ext-epg
+                - ext-epg2

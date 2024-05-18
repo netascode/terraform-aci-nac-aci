@@ -999,20 +999,33 @@ Verify SR MPLS L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface
 
 {% endfor %}
 
+{% for infra_l3out in l3out.sr_mpls_infra_l3outs | default([]) %}
+{% set infra_l3out_name = infra_l3out.name ~ defaults.apic.tenants.sr_mpls_l3outs.name_suffix %}
+
+Verify SR MPLS L3out {{ l3out_name }} Infra L3out {{ infra_l3out_name }} Configuration
+
+{% for epg in infra_l3out.external_endpoint_groups | default([]) %}
+{% set eepg_name = epg ~ defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.name_suffix %}
+    ${ext_epg}=   Set Variable   $..l3extOut.children[?(@.l3extConsLbl.attributes.name=={{ infra_l3out_name }})]..children[?(@.l3extRsLblToInstP.attributes.tDn=='uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/instP-{{ eepg_name}}')]
+    Log     ${r.json()}
+    Should Be Equal Value Json String   ${r.json()}   ${ext_epg}..l3extRsLblToInstP.attributes.tDn   uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/instP-{{ eepg_name}}
+{% endfor %}
 {% if l3out.inbound_route_map is defined %}
 
 Verify SR MPLS L3out {{ l3out_name }} Inbound Route Map
-    ${route_map}=   Set Variable   $..l3extOut.children[?(@.l3extConsLbl.attributes.name=={{ l3out.sr_mpls_infra_l3out }})]..children[?(@.l3extRsLblToProfile.attributes.direction=='import')]
+    ${route_map}=   Set Variable   $..l3extOut.children[?(@.l3extConsLbl.attributes.name=={{ infra_l3out_name }})]..children[?(@.l3extRsLblToProfile.attributes.direction=='import')]
     Should Be Equal Value Json String   ${r.json()}   ${route_map}..l3extRsLblToProfile.attributes.tDn   uni/tn-{{ tenant.name }}/prof-{{ l3out.inbound_route_map }}
 
 {% endif %}
-
 {% if l3out.outbound_route_map is defined %}
 
 Verify SR MPLS L3out {{ l3out_name }} Outbound Route Map
-    ${route_map}=   Set Variable    $..l3extOut.children[?(@.l3extConsLbl.attributes.name=={{ l3out.sr_mpls_infra_l3out }})]..children[?(@.l3extRsLblToProfile.attributes.direction=='export')]
+    ${route_map}=   Set Variable    $..l3extOut.children[?(@.l3extConsLbl.attributes.name=={{ infra_l3out_name }})]..children[?(@.l3extRsLblToProfile.attributes.direction=='export')]
     Should Be Equal Value Json String   ${r.json()}   ${route_map}..l3extRsLblToProfile.attributes.tDn   uni/tn-{{ tenant.name }}/prof-{{ l3out.outbound_route_map }}
 
 {% endif %}
+
+{% endfor %}
+
 
 {% endfor %}

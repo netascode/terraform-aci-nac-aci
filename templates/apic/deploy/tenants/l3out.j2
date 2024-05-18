@@ -1938,7 +1938,6 @@
                         }
                         {%- else %}
                         {%- set vrf_name = l3out.vrf ~ defaults.apic.tenants.vrfs.name_suffix %}
-                        {%- set infra_l3out_name = l3out.sr_mpls_infra_l3out ~ defaults.apic.tenants.sr_mpls_l3outs.name_suffix %}
 
                         {
                             "l3extRsEctx": {
@@ -1948,7 +1947,10 @@
                                     "tnFvCtxName": "{{ vrf_name }}"
                                 }
                             }
-                        },
+                        }
+                        
+                        {%- for infra_l3out in l3out.sr_mpls_infra_l3outs | default([]) %}
+                        {%- set infra_l3out_name = infra_l3out.name ~ defaults.apic.tenants.sr_mpls_l3outs.name_suffix %}{{ comma2() }}
                         {
                             "l3extConsLbl": {
                                 "attributes": {
@@ -1958,32 +1960,44 @@
                                 },
                                 "children": [
                                     {%- set comma6 = joiner(",") %}
-                                    {% if l3out.inbound_route_map is defined %}{{ comma6() }}
+                                    {% if infra_l3out.inbound_route_map is defined %}{{ comma6() }}
                                     {
                                         "l3extRsLblToProfile": {
                                             "attributes": {
                                                 "annotation": "orchestrator:aac",
                                                 "direction": "import",
-                                                "tDn": "uni/tn-{{ tenant.name }}/prof-{{ l3out.inbound_route_map }}"
+                                                "tDn": "uni/tn-{{ tenant.name }}/prof-{{ infra_l3out.inbound_route_map }}"
                                             }
                                         }
                                     }
                                     {%- endif %}
-                                    {%- if l3out.outbound_route_map is defined %}{{ comma6() }}
+                                    {%- if infra_l3out.outbound_route_map is defined %}{{ comma6() }}
                                     {
                                         "l3extRsLblToProfile": {
                                             "attributes": {
                                                 "annotation": "orchestrator:aac",
                                                 "direction": "export",
-                                                "tDn": "uni/tn-{{ tenant.name }}/prof-{{ l3out.outbound_route_map }}"
+                                                "tDn": "uni/tn-{{ tenant.name }}/prof-{{ infra_l3out.outbound_route_map }}"
                                             }
                                         }
                                     }
                                     {%- endif %}
+                                    {%- for epg in infra_l3out.external_endpoint_groups | default([]) %}
+                                    {%- set eepg_name = epg ~ defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.name_suffix %}{{ comma6() }}
+                                    {
+                                        "l3extRsLblToInstP": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tDn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/instP-{{ eepg_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor %}
 
                                 ]
                             }
                         }
+                        {%- endfor %}
                         {%- endif %}
 
                     ]

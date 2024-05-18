@@ -245,31 +245,6 @@
                             }
                         }
                         {%- endfor %}
-                        {%- set infra_l3out_name = l3out.sr_mpls_infra_l3out ~ defaults.apic.tenants.sr_mpls_l3outs.name_suffix %}{{ comma2() }}
-                        {
-                            "l3extConsLbl": {
-                                "attributes": {
-                                    "annotation": "orchestrator:aac",
-                                    "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/conslbl-{{ infra_l3out_name }}",
-                                    "name": "{{ infra_l3out_name }}"
-                                },
-                                "children": [
-                                    {%- set comma3 = joiner(",") %}
-                                    {%- for epg in l3out.external_endpoint_groups | default([]) %}{{ comma3() }}
-                                    {% set eepg_name = epg.name ~ defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.name_suffix %}
-                                    {
-                                        "l3extRsLblToInstP": {
-                                            "attributes": {
-                                                "annotation": "orchestrator:aac",
-                                                "tDn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/instP-{{ eepg_name }}"
-                                            }
-                                        }
-                                    }
-                                    {%- endfor %}
-
-                                ]
-                            }
-                        }
                         {%- endif %}
 
                     ]

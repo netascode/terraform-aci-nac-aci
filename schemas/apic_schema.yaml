@@ -2569,13 +2569,11 @@ ten_sr_mpls_l3outs:
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  sr_mpls_infra_l3out: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   transport_data_plane: enum('sr_mpls', 'mpls', required=False)
   node_profiles: list(include('ten_sr_mpls_l3outs_node_profiles'), required=False) # @name(SR MPLS L3out Node Profiles) @ref_name(Node Profile) @sheet_hidden()
   external_endpoint_groups: list(include('ten_sr_mpls_l3outs_external_endpoint_groups'), required=False) # @name(SR MPLS External EPGs) @ref_name(External EPG) @sheet_hidden()
-  inbound_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  outbound_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  sr_mpls_infra_l3outs: list(include('ten_sr_mpls_l3outs_infra_l3outs'), required=False)
 
 ten_sr_mpls_l3outs_node_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2659,6 +2657,12 @@ ten_sr_mpls_l3outs_external_endpoint_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(SR MPLS Ext EPGs Consumers) @sheet_hidden()
   providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(SR MPLS Ext EPGs Providers)@sheet_hidden()
   imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(SR MPLS Ext EPGs Imp Consumers) @sheet_hidden()
+
+ten_sr_mpls_l3outs_infra_l3outs:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  inbound_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  outbound_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  external_endpoint_groups: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'))
 
 ten_policies:
   ospf_interface_policies: list(include('ten_ospf_interface_policies'), required=False) # @sheet_hidden()
