@@ -270,9 +270,9 @@ resource "aci_rest_managed" "l3extRsLblToProfile_export" {
 }
 
 locals {
-  infra_l3out_external_epgs = flatten([
+  infra_l3out_external_endpoint_groups = flatten([
     for infra_l3out in var.sr_mpls_infra_l3outs : [
-      for eepg in try(infra_l3out.external_epgs, []) : {
+      for eepg in try(infra_l3out.external_endpoint_groups, []) : {
         name    = infra_l3out.name
         ext_epg = eepg
       }
@@ -281,7 +281,7 @@ locals {
 }
 
 resource "aci_rest_managed" "l3extRsLblToInstP" {
-  for_each   = { for eepg in local.infra_l3out_external_epgs : "${eepg.name}/${eepg.ext_epg}" => eepg }
+  for_each   = { for eepg in local.infra_l3out_external_endpoint_groups : "${eepg.name}/${eepg.ext_epg}" => eepg }
   dn         = "${aci_rest_managed.l3extConsLbl[each.value.name].dn}/rslblToInstP-[uni/tn-${var.tenant}/out-${var.name}/instP-${each.value.ext_epg}]"
   class_name = "l3extRsLblToInstP"
   content = {
