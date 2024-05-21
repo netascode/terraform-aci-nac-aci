@@ -121,9 +121,7 @@ module "aci_l3out" {
 | <a name="input_export_route_map_contexts"></a> [export\_route\_map\_contexts](#input\_export\_route\_map\_contexts) | List of export route map contexts. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Allowed values `order`: 0-9. Default value `order`: 0. | <pre>list(object({<br>    name        = string<br>    description = optional(string, "")<br>    action      = optional(string, "permit")<br>    order       = optional(number, 0)<br>    set_rule    = optional(string)<br>    match_rule  = optional(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_multipod"></a> [multipod](#input\_multipod) | Multipod L3out flag. | `bool` | `true` | no |
 | <a name="input_sr_mpls"></a> [sr\_mpls](#input\_sr\_mpls) | SR MPLS L3out flag. | `bool` | `false` | no |
-| <a name="input_sr_mpls_infra_l3out"></a> [sr\_mpls\_infra\_l3out](#input\_sr\_mpls\_infra\_l3out) | SR MPLS Infra L3Out name. | `string` | `""` | no |
-| <a name="input_sr_mpls_inbound_route_map"></a> [sr\_mpls\_inbound\_route\_map](#input\_sr\_mpls\_inbound\_route\_map) | SR MPLS Tenant L3out Inbound Route Map name. | `string` | `""` | no |
-| <a name="input_sr_mpls_outbound_route_map"></a> [sr\_mpls\_outbound\_route\_map](#input\_sr\_mpls\_outbound\_route\_map) | SR MPLS Tenant L3out Outbound Route Map name. | `string` | `""` | no |
+| <a name="input_sr_mpls_infra_l3outs"></a> [sr\_mpls\_infra\_l3outs](#input\_sr\_mpls\_infra\_l3outs) | SR MPLS Infra L3Outs. | <pre>list(object({<br>    name               = string<br>    outbound_route_map = optional(string, "")<br>    inbound_route_map  = optional(string, "")<br>    external_endpoint_groups      = optional(list(string), [])<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -148,6 +146,7 @@ module "aci_l3out" {
 | [aci_rest_managed.l3extRsEctx](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsInterleakPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsL3DomAtt](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extRsLblToInstP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsLblToProfile_export](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsLblToProfile_import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsRedistributePol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
