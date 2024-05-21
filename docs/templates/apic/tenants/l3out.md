@@ -245,6 +245,7 @@ apic:
                       export_route_control: ROUTE_MAP1
                       import_route_control: ROUTE_MAP2
           import_route_map:
+            name: example-import-name
             description: desc
             type: global
             contexts:
@@ -252,12 +253,15 @@ apic:
                 description: desc1
                 action: deny
                 order: 2
-                match_rule: MATCH1
+                match_rules:
+                - MATCH1
                 set_rule: SET1
           export_route_map:
+          name: example-export-name
             contexts:
               - name: CONTEXT1
-                match_rule: MATCH2
+                match_rules:
+                - MATCH2
                 set_rule: SET2
 ```
 

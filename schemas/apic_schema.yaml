@@ -2400,12 +2400,12 @@ ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state:
   ospf_neighbors: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_ospf_neighbors'), required=False) # @name(L3out Int Prof Exp St OSPF Nei) @sheet_hidden()
   bfd_neighbors: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_bfd_neighbors'), required=False) # @name(L3out Int Prof Exp St BFD Nei) @sheet_hidden()
 
-? ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_ospf_neighbors
-: ip: ip()
+ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_ospf_neighbors:
+  ip: ip()
   state: enum('full', 'down', required=False)
 
-? ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_bfd_neighbors
-: ip: ip()
+ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_bfd_neighbors:
+  ip: ip()
 
 ten_l3outs_external_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2454,11 +2454,13 @@ ten_l3outs_external_endpoint_groups_expected_state:
   maximum_minor_faults: int(min=0, required=False)
 
 ten_l3outs_import_route_map:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Import Route Map Description)
   type: enum('combinable', 'global', required=False) # @name(Import Route Map Type)
   contexts: list(include('ten_l3outs_route_map_context'), required=False) # @name(L3out Import Route Map Contexts)
 
 ten_l3outs_export_route_map:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Export Route Map Description)
   type: enum('combinable', 'global', required=False) # @name(Export Route Map Type)
   contexts: list(include('ten_l3outs_route_map_context'), required=False) # @name(L3out Export Route Map Contexts)
@@ -2478,7 +2480,7 @@ ten_l3outs_route_map_context:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   action: enum('permit', 'deny', required=False)
   order: int(min=0, max=9, required=False)
-  match_rule: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  match_rules: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False)
   set_rule: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_expected_state:
@@ -3339,8 +3341,8 @@ ten_ser_device_selection_policies_consumer_provider_external_endpoint_group:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(External EPG Name)
   redistribute: include('ten_ser_device_selection_policies_consumer_provider_external_endpoint_group_redistribute', required=False) # @flatten() @sheet_hidden()
 
-? ten_ser_device_selection_policies_consumer_provider_external_endpoint_group_redistribute
-: bgp: any(bool(), enum('enabled', 'disabled'), required=False) # @name(External EPG Redistribute BGP)
+ten_ser_device_selection_policies_consumer_provider_external_endpoint_group_redistribute:
+  bgp: any(bool(), enum('enabled', 'disabled'), required=False) # @name(External EPG Redistribute BGP)
   ospf: any(bool(), enum('enabled', 'disabled'), required=False) # @name(External EPG Redistribute OSPF)
   connected: any(bool(), enum('enabled', 'disabled'), required=False) # @name(External EPG Redistribute Connected)
   static: any(bool(), enum('enabled', 'disabled'), required=False) # @name(External EPG Redistribute Static)

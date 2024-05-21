@@ -392,13 +392,15 @@ apic:
                 description: desc1
                 action: deny
                 order: 2
-                match_rule: MATCH1
+                match_rules:
+                  - MATCH1
                 set_rule: SET1
               - name: CONTEXT2
           export_route_map:
             contexts:
               - name: CONTEXT2
-                match_rule: MATCH2
+                match_rules:
+                  - MATCH2
                 set_rule: SET2
         - name: L3OUT3
           vrf: VRF2

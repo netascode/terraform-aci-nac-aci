@@ -706,7 +706,12 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
 {% if l3out.import_route_map is defined %}
 
 Verify L3out {{ l3out_name }} Import Route Map
-    ${route_map}=   Set Variable   $..l3extOut.children[?(@.rtctrlProfile.attributes.name=='default-import')]
+    {% if l3out.import_route_map.name is defined %}
+        ${route_map}=   Set Variable   $..l3extOut.children[?(@.rtctrlProfile.attributes.name=={{ l3out.import_route_map.name }})]
+        Should Be Equal Value Json String   ${r.json()}   ${route_map}..rtctrlProfile.attributes.name   {{ l3out.import_route_map.name }}
+    {% else %}
+        ${route_map}=   Set Variable   $..l3extOut.children[?(@.rtctrlProfile.attributes.name=='default-import')]
+    {% endif %}
     Should Be Equal Value Json String   ${r.json()}   ${route_map}..rtctrlProfile.attributes.descr   {{ context.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${route_map}..rtctrlProfile.attributes.type   {{ l3out.import_route_map.type | default(defaults.apic.tenants.l3outs.import_route_map.type) }}
 
@@ -714,7 +719,11 @@ Verify L3out {{ l3out_name }} Import Route Map
 {% set context_name = context.name ~ defaults.apic.tenants.l3outs.import_route_map.contexts.name_suffix %}
 
 Verify L3out {{ l3out_name }} Import Route Map Context {{ context_name }}
-    ${route_map}=   Set Variable   $..l3extOut.children[?(@.rtctrlProfile.attributes.name=='default-import')]
+    {% if l3out.import_route_map.name is defined %}
+        ${route_map}=   Set Variable   $..l3extOut.children[?(@.rtctrlProfile.attributes.name=={{ l3out.import_route_map.name }})]
+    {% else %}
+        ${route_map}=   Set Variable   $..l3extOut.children[?(@.rtctrlProfile.attributes.name=='default-import')]
+    {% endif %}
     ${context}=   Set Variable   ${route_map}..rtctrlProfile.children[?(@.rtctrlCtxP.attributes.name=='{{ context_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${context}..rtctrlCtxP.attributes.name   {{ context_name }}
     Should Be Equal Value Json String   ${r.json()}   ${context}..rtctrlCtxP.attributes.descr   {{ context.description | default() }}
@@ -724,9 +733,12 @@ Verify L3out {{ l3out_name }} Import Route Map Context {{ context_name }}
 {% set rule_name = context.set_rule ~ defaults.apic.tenants.policies.set_rules.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${context}..rtctrlRsScopeToAttrP.attributes.tnRtctrlAttrPName   {{ rule_name }}
 {% endif %}
-{% if context.match_rule is defined %}
-{% set rule_name = context.match_rule ~ defaults.apic.tenants.policies.match_rules.name_suffix %}
-    Should Be Equal Value Json String   ${r.json()}   ${context}..rtctrlRsCtxPToSubjP.attributes.tnRtctrlSubjPName   {{ rule_name }}
+
+{% if context.match_rules is defined %}
+{% for rule in context.match_rules | default([]) %}
+{% set match_rule_name_with_suffix = rule ~ defaults.apic.tenants.policies.match_rules.name_suffix %}
+  Should Be Equal Value Json String   ${r.json()}   $..rtctrlCtxP.children[?(@.rtctrlRsCtxPToSubjP.attributes.tnRtctrlSubjPName=='{{ match_rule_name_with_suffix }}')]
+{% endfor %}
 {% endif %}
 
 {% endfor %}
@@ -736,7 +748,12 @@ Verify L3out {{ l3out_name }} Import Route Map Context {{ context_name }}
 {% if l3out.export_route_map is defined %}
 
 Verify L3out {{ l3out_name }} Export Route Map
-    ${route_map}=   Set Variable   $..l3extOut.children[?(@.rtctrlProfile.attributes.name=='default-export')]
+    {% if l3out.export_route_map.name is defined %}
+        ${route_map}=   Set Variable   $..l3extOut.children[?(@.rtctrlProfile.attributes.name=={{ l3out.export_route_map.name }})]
+        Should Be Equal Value Json String   ${r.json()}   ${route_map}..rtctrlProfile.attributes.name   {{ l3out.export_route_map.name }}
+    {% else %}
+        ${route_map}=   Set Variable   $..l3extOut.children[?(@.rtctrlProfile.attributes.name=='default-export')]
+    {% endif %}
     Should Be Equal Value Json String   ${r.json()}   ${route_map}..rtctrlProfile.attributes.descr   {{ context.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${route_map}..rtctrlProfile.attributes.type   {{ l3out.export_route_map.type | default(defaults.apic.tenants.l3outs.export_route_map.type) }}
 
@@ -744,7 +761,11 @@ Verify L3out {{ l3out_name }} Export Route Map
 {% set context_name = context.name ~ defaults.apic.tenants.l3outs.export_route_map.contexts.name_suffix %}
 
 Verify L3out {{ l3out_name }} Export Route Map Context {{ context_name }}
-    ${route_map}=   Set Variable   $..l3extOut.children[?(@.rtctrlProfile.attributes.name=='default-export')]
+    {% if l3out.export_route_map.name is defined %}
+        ${route_map}=   Set Variable   $..l3extOut.children[?(@.rtctrlProfile.attributes.name=={{ l3out.export_route_map.name }})]
+    {% else %}
+        ${route_map}=   Set Variable   $..l3extOut.children[?(@.rtctrlProfile.attributes.name=='default-export')]
+    {% endif %}
     ${context}=   Set Variable   ${route_map}..rtctrlProfile.children[?(@.rtctrlCtxP.attributes.name=='{{ context_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${context}..rtctrlCtxP.attributes.name   {{ context_name }}
     Should Be Equal Value Json String   ${r.json()}   ${context}..rtctrlCtxP.attributes.descr   {{ context.description | default() }}
@@ -754,9 +775,12 @@ Verify L3out {{ l3out_name }} Export Route Map Context {{ context_name }}
 {% set rule_name = context.set_rule ~ defaults.apic.tenants.policies.set_rules.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${context}..rtctrlRsScopeToAttrP.attributes.tnRtctrlAttrPName   {{ rule_name }}
 {% endif %}
-{% if context.match_rule is defined %}
-{% set rule_name = context.match_rule ~ defaults.apic.tenants.policies.match_rules.name_suffix %}
-    Should Be Equal Value Json String   ${r.json()}   ${context}..rtctrlRsCtxPToSubjP.attributes.tnRtctrlSubjPName   {{ rule_name }}
+
+{% if context.match_rules is defined %}
+{% for rule in context.match_rules | default([]) %}
+{% set match_rule_name_with_suffix = rule ~ defaults.apic.tenants.policies.match_rules.name_suffix %}
+  Should Be Equal Value Json String   ${r.json()}   $..rtctrlCtxP.children[?(@.rtctrlRsCtxPToSubjP.attributes.tnRtctrlSubjPName=='{{ match_rule_name_with_suffix }}')]
+{% endfor %}
 {% endif %}
 
 {% endfor %}

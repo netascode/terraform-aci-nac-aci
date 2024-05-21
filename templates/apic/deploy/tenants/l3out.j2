@@ -1334,8 +1334,13 @@
                             "rtctrlProfile": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
+                                    {% if l3out.import_route_map.name is defined %}
+                                    "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/prof-{{ l3out.import_route_map.name }}",
+                                    "name": "{{ l3out.import_route_map.name }}",
+                                    {% else %}
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/prof-default-import",
                                     "name": "default-import",
+                                    {% endif %}
                                     "descr": "{{ l3out.import_route_map.description | default() }}",
                                     "type": "{{ l3out.import_route_map.type | default(defaults.apic.tenants.l3outs.import_route_map.type) }}",
                                     "childAction": "deleteNonPresent"
@@ -1378,17 +1383,17 @@
                                                     }
                                                 }
                                                 {%- endif %}
-                                                {%- if context.match_rule is defined %}{{ comma4() }}
-                                                {% set rule_name = context.match_rule ~ defaults.apic.tenants.policies.match_rules.name_suffix %}
+                                                {%- for rule in context.match_rules | default([]) %}{{ comma4() }}
+                                                {% set match_rule_name = rule ~ defaults.apic.tenants.policies.match_rules.name_suffix %} 
                                                 {
                                                     "rtctrlRsCtxPToSubjP": {
                                                         "attributes": {
                                                             "annotation": "orchestrator:aac",
-                                                            "tnRtctrlSubjPName": "{{ rule_name }}"
+                                                            "tnRtctrlSubjPName": "{{ match_rule_name }}"
                                                         }
                                                     }
                                                 }
-                                                {%- endif %}
+                                                {%- endfor %}
 
                                             ]
                                         }
@@ -1404,8 +1409,13 @@
                             "rtctrlProfile": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
+                                    {% if l3out.export_route_map.name is defined %}
+                                    "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/prof-{{ l3out.export_route_map.name }}",
+                                    "name": "{{ l3out.export_route_map.name }}",
+                                    {% else %}
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/prof-default-export",
                                     "name": "default-export",
+                                    {% endif %}
                                     "descr": "{{ l3out.export_route_map.description | default() }}",
                                     "type": "{{ l3out.export_route_map.type | default(defaults.apic.tenants.l3outs.export_route_map.type) }}",
                                     "childAction": "deleteNonPresent"
@@ -1448,17 +1458,17 @@
                                                     }
                                                 }
                                                 {%- endif %}
-                                                {%- if context.match_rule is defined %}{{ comma4() }}
-                                                {% set rule_name = context.match_rule ~ defaults.apic.tenants.policies.match_rules.name_suffix %}
+                                                {%- for rule in context.match_rules | default([]) %}{{ comma4() }}
+                                                {% set match_rule_name = rule ~ defaults.apic.tenants.policies.match_rules.name_suffix %}
                                                 {
                                                     "rtctrlRsCtxPToSubjP": {
                                                         "attributes": {
                                                             "annotation": "orchestrator:aac",
-                                                            "tnRtctrlSubjPName": "{{ rule_name }}"
+                                                            "tnRtctrlSubjPName": "{{ match_rule_name }}"
                                                         }
                                                     }
                                                 }
-                                                {%- endif %}
+                                                {%- endfor %}
 
                                             ]
                                         }
