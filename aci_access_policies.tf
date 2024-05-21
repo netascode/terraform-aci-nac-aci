@@ -814,3 +814,18 @@ module "aci_vspan_session" {
     }]
   }]
 }
+
+module "aci_ptp_profile" {
+  source = "./modules/terraform-aci-ptp-profile"
+
+  for_each          = { for profile in try(local.access_policies.ptp_profiles, []) : profile.name => profile if local.modules.aci_ptp_profile && var.manage_access_policies }
+  name              = each.value.name
+  announce_interval = try(each.value.announce_interval, local.defaults.apic.access_policies.ptp_profiles.announce_interval)
+  announce_timeout  = try(each.value.announce_timeout, local.defaults.apic.access_policies.ptp_profiles.announce_timeout)
+  delay_interval    = try(each.value.delay_interval, local.defaults.apic.access_policies.ptp_profiles.delay_interval)
+  forwardable       = try(each.value.forwardable, local.defaults.apic.access_policies.ptp_profiles.forwardable)
+  priority          = try(each.value.priority, local.defaults.apic.access_policies.ptp_profiles.priority)
+  sync_interval     = try(each.value.sync_interval, local.defaults.apic.access_policies.ptp_profiles.sync_interval)
+  template          = try(each.value.template, local.defaults.apic.access_policies.ptp_profiles.template)
+  mismatch_handling = try(each.value.mismatch_handling, local.defaults.apic.access_policies.ptp_profiles.mismatch_handling)
+}

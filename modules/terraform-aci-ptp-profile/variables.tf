@@ -1,5 +1,5 @@
 variable "name" {
-  description = "Attachable access entity profile name."
+  description = "PTP Profile name."
   type        = string
 
   validation {
@@ -15,7 +15,7 @@ variable "announce_interval" {
 
   validation {
     condition     = var.announce_interval >= -3 && var.announce_interval <= 4
-    error_message = "Minimum value: 0. Maximum value: 4."
+    error_message = "Minimum value: -3. Maximum value: 4."
   }
 }
 
@@ -25,30 +25,26 @@ variable "announce_timeout" {
   default     = 3
 
   validation {
-    condition     = var.announce_timeout >= 0 && var.announce_timeout <= 10
-    error_message = "Minimum value: 0. Maximum value: 10."
+    condition     = var.announce_timeout >= 2 && var.announce_timeout <= 10
+    error_message = "Minimum value: 2. Maximum value: 10."
   }
 }
 
 variable "delay_interval" {
-  type = number 
-  default = -3
+  description = "Delay Interval. Minimum value: -4. Maximum value: 5"
+  type        = number
+  default     = -3
 
   validation {
-    condition = var.delay_interval >= -4 && var.delay_interval <= 5
+    condition     = var.delay_interval >= -4 && var.delay_interval <= 5
     error_message = "Minimum value: -4. Maximum value: 5."
   }
 }
 
 variable "forwardable" {
   description = "Destination MAC of PTP Messages"
-  default = true
-  type = bool
-
-  validation {
-    condition = var.forwardable == true || var.forwardable == false
-    error_message = "Allowed values: true, false."
-  }
+  default     = true
+  type        = bool
 }
 
 variable "priority" {
@@ -57,8 +53,8 @@ variable "priority" {
   default     = 128
 
   validation {
-    condition     = var.priority >= 1&& var.priority <= 255
-    error_message = "Minimum value: 0. Maximum value: 255."
+    condition     = var.priority >= 1 && var.priority <= 255
+    error_message = "Minimum value: 1. Maximum value: 255."
   }
 }
 
@@ -79,8 +75,8 @@ variable "template" {
   default     = "aes67"
 
   validation {
-    condition     = can(regex("^(aes67|smpte|telecom)$", var.template))
-    error_message = "Allowed values: aes67, smpte, telecom."
+    condition     = can(contains(["aes67", "smpte", "telecom"], var.template))
+    error_message = "Allowed values: `aes67`, `smpte` or `telecom`."
   }
 }
 
@@ -90,8 +86,7 @@ variable "mismatch_handling" {
   default     = "configured"
 
   validation {
-    condition     = can(regex("^(drop|configured|received)$", var.mismatch_handling))
-    error_message = "Allowed values: drop, configured, received."
+    condition     = can(contains(["drop", "configured", "received"], var.mismatch_handling))
+    error_message = "Allowed values: `drop`, `configured` or `received`."
   }
-  
 }

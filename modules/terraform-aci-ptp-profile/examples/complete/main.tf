@@ -1,4 +1,4 @@
-module "aci_aaep" {
+module "aci_ptp_profile" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-aaep"
   version = ">= 0.8.0"
 

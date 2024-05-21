@@ -3,12 +3,12 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Terraform ACI AAEP Module
+  # Terraform ACI PTP Profile Module
 
-  Manages ACI Attachable Access Entity Profile 
+  Manages ACI PTP Profile 
 
   Location in GUI:
-  `Fabric` » `Access Policies` » `Policies` » `Global` » `Attachable Access Entity Profiles`
+  `Fabric` » `Access Policies` » `Policies` » `Global` » `PTP User Profile`
 
   ## Examples
 

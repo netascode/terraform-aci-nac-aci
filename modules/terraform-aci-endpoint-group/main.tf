@@ -225,18 +225,18 @@ resource "aci_rest_managed" "fvRsPathAtt_port" {
 }
 
 resource "aci_rest_managed" "ptpEpgCfg_port" {
-  for_each   = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.port}-vl-${sp.vlan}") => sp if sp.ptp != null && sp.channel == null && sp.fex_id == null && sp.sub_port == null }
-  dn         = "${aci_rest_managed.fvAEPg.dn}/rspathAtt-[${format("topology/pod-%s/paths-%s/pathep-[eth%s/%s]", each.value.pod_id, each.value.node_id, each.value.module, each.value.port)}]/ptpEpgCfg"
+  for_each   = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.port}-vl-${sp.vlan}") => sp if sp.ptp_profile != null && sp.channel == null && sp.fex_id == null && sp.sub_port == null }
+  dn         = "${aci_rest_managed.fvRsPathAtt_port[each.key].dn}/ptpEpgCfg"
   class_name = "ptpEpgCfg"
   content = {
-    srcIp = each.value.ptp.src_ip
-    mode  = each.value.ptp.mode
+    srcIp   = each.value.ptp_source_ip
+    ptpMode = each.value.ptp_mode
   }
   child {
     class_name = "ptpRsProfile"
     rn         = "rsprofile"
     content = {
-      "tDn" = "uni/infra/ptpprofile-${each.value.ptp.profile}"
+      "tDn" = "uni/infra/ptpprofile-${each.value.ptp_profile}"
     }
   }
 }
@@ -254,18 +254,18 @@ resource "aci_rest_managed" "fvRsPathAtt_subport" {
 }
 
 resource "aci_rest_managed" "ptpEpgCfg_subport" {
-  for_each   = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.module}-${sp.port}-${sp.sub_port}-vl-${sp.vlan}-ptp" : "${sp.node_id}-${sp.port}-${sp.sub_port}-vl-${sp.vlan}-ptp") => sp if sp.ptp != null && sp.channel == null && sp.fex_id == null && sp.sub_port != null }
-  dn         = "${aci_rest_managed.fvAEPg.dn}/rspathAtt-[${format("topology/pod-%s/paths-%s/pathep-[eth%s/%s/%s]", each.value.pod_id, each.value.node_id, each.value.module, each.value.port, each.value.sub_port)}]/ptpEpgCfg"
+  for_each   = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.module}-${sp.port}-${sp.sub_port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.port}-${sp.sub_port}-vl-${sp.vlan}") => sp if sp.ptp_profile != null && sp.channel == null && sp.fex_id == null && sp.sub_port != null }
+  dn         = "${aci_rest_managed.ptpEpgCfg_subport[each.key].dn}/ptpEpgCfg"
   class_name = "ptpEpgCfg"
   content = {
-    srcIp   = each.value.ptp.src_ip
-    ptpMode = each.value.ptp.mode
+    srcIp   = each.value.ptp_source_ip
+    ptpMode = each.value.ptp_mode
   }
   child {
     class_name = "ptpRsProfile"
     rn         = "rsprofile"
     content = {
-      "tDn" = "uni/infra/ptpprofile-${each.value.ptp.profile}"
+      "tDn" = "uni/infra/ptpprofile-${each.value.ptp_profile}"
     }
   }
 }
@@ -283,18 +283,18 @@ resource "aci_rest_managed" "fvRsPathAtt_channel" {
 }
 
 resource "aci_rest_managed" "ptpEpgCfg_channel" {
-  for_each   = { for sp in var.static_ports : "${sp.node_id}-${sp.channel}-vl-${sp.vlan}" => sp if sp.ptp != null && sp.channel != null && sp.fex_id == null }
-  dn         = "${aci_rest_managed.fvAEPg.dn}/rspathAtt-[${format(each.value.node2_id != null ? "topology/pod-%s/protpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/pathep-[%[4]s]", each.value.pod_id, each.value.node_id, each.value.node2_id, each.value.channel)}]/ptpEpgCfg"
+  for_each   = { for sp in var.static_ports : "${sp.node_id}-${sp.channel}-vl-${sp.vlan}" => sp if sp.ptp_profile != null && sp.channel != null && sp.fex_id == null }
+  dn         = "${aci_rest_managed.ptpEpgCfg_channel[each.key].dn}/ptpEpgCfg"
   class_name = "ptpEpgCfg"
   content = {
-    srcIp = each.value.ptp.src_ip
-    mode  = each.value.ptp.mode
+    srcIp   = each.value.ptp_source_ip
+    ptpMode = each.value.ptp_mode
   }
   child {
     class_name = "ptpRsProfile"
     rn         = "rsprofile"
     content = {
-      "tDn" = "uni/infra/ptpprofile-${each.value.ptp.profile}"
+      "tDn" = "uni/infra/ptpprofile-${each.value.ptp_profile}"
     }
   }
 }
@@ -312,18 +312,18 @@ resource "aci_rest_managed" "fvRsPathAtt_fex_port" {
 }
 
 resource "aci_rest_managed" "ptpEpgCfg_fex_port" {
-  for_each   = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.fex_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.fex_id}-${sp.port}-vl-${sp.vlan}") => sp if sp.ptp != null && sp.channel == null && sp.fex_id != null }
-  dn         = "${aci_rest_managed.fvAEPg.dn}/rspathAtt-[${format("topology/pod-%s/paths-%s/extpaths-%s/pathep-[eth%s/%s]", each.value.pod_id, each.value.node_id, each.value.fex_id, each.value.module, each.value.port)}]/ptpEpgCfg"
+  for_each   = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.fex_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.fex_id}-${sp.port}-vl-${sp.vlan}") => sp if sp.ptp_profile != null && sp.channel == null && sp.fex_id != null }
+  dn         = "${aci_rest_managed.ptpEpgCfg_fex_port[each.key].dn}/ptpEpgCfg"
   class_name = "ptpEpgCfg"
   content = {
-    srcIp = each.value.ptp.src_ip
-    mode  = each.value.ptp.mode
+    srcIp   = each.value.ptp_source_ip
+    ptpMode = each.value.ptp_mode
   }
   child {
     class_name = "ptpRsProfile"
     rn         = "rsprofile"
     content = {
-      "tDn" = "uni/infra/ptpprofile-${each.value.ptp.profile}"
+      "tDn" = "uni/infra/ptpprofile-${each.value.ptp_profile}"
     }
   }
 }
@@ -341,18 +341,18 @@ resource "aci_rest_managed" "fvRsPathAtt_fex_channel" {
 }
 
 resource "aci_rest_managed" "ptpEpgCfg_fex_channel" {
-  for_each   = { for sp in var.static_ports : "${sp.node_id}-${sp.fex_id}-${sp.channel}-vl-${sp.vlan}" => sp if sp.ptp != null && sp.channel != null && sp.fex_id != null }
-  dn         = "${aci_rest_managed.fvAEPg.dn}/rspathAtt-[${format(each.value.node2_id != null && each.value.fex2_id != null ? "topology/pod-%s/protpaths-%s-%s/extprotpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/extpaths-%[4]s/pathep-[%[6]s]", each.value.pod_id, each.value.node_id, each.value.node2_id, each.value.fex_id, each.value.fex2_id, each.value.channel)}]/ptpEpgCfg"
+  for_each   = { for sp in var.static_ports : "${sp.node_id}-${sp.fex_id}-${sp.channel}-vl-${sp.vlan}" => sp if sp.ptp_profile != null && sp.channel != null && sp.fex_id != null }
+  dn         = "${aci_rest_managed.ptpEpgCfg_fex_channel[each.key].dn}/ptpEpgCfg"
   class_name = "ptpEpgCfg"
   content = {
-    srcIp = each.value.ptp.src_ip
-    mode  = each.value.ptp.mode
+    srcIp   = each.value.ptp_source_ip
+    ptpMode = each.value.ptp_mode
   }
   child {
     class_name = "ptpRsProfile"
     rn         = "rsprofile"
     content = {
-      "tDn" = "uni/infra/ptpprofile-${each.value.ptp.profile}"
+      "tDn" = "uni/infra/ptpprofile-${each.value.ptp_profile}"
     }
   }
 }
