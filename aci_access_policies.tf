@@ -332,6 +332,11 @@ module "aci_storm_control_policy" {
   unknown_unicast_burst_rate = try(each.value.unknown_unicast_burst_rate, local.defaults.apic.access_policies.interface_policies.storm_control_policies.unknown_unicast_burst_rate)
   unknown_unicast_pps        = try(each.value.unknown_unicast_pps, local.defaults.apic.access_policies.interface_policies.storm_control_policies.unknown_unicast_pps)
   unknown_unicast_rate       = try(each.value.unknown_unicast_rate, local.defaults.apic.access_policies.interface_policies.storm_control_policies.unknown_unicast_rate)
+  burst_pps                  = try(each.value.burst_pps, local.defaults.apic.access_policies.interface_policies.storm_control_policies.burst_pps)
+  burst_rate                 = try(each.value.burst_rate, local.defaults.apic.access_policies.interface_policies.storm_control_policies.burst_rate)
+  rate_pps                   = try(each.value.rate_pps, local.defaults.apic.access_policies.interface_policies.storm_control_policies.rate_pps)
+  rate                       = try(each.value.rate, local.defaults.apic.access_policies.interface_policies.storm_control_policies.rate)
+  configuration_type         = try(each.value.rate, each.value.rate_pps, each.value.burst_pps, each.value.burst_rate, false) == false ? "separate" : "all"
 }
 
 module "aci_access_leaf_interface_policy_group" {

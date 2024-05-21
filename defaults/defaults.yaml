@@ -493,6 +493,10 @@ defaults:
           unknown_unicast_burst_rate: "100.000000"
           unknown_unicast_rate: "100.000000"
           action: drop
+          rate: "100.000000"
+          rate_pps: unspecified
+          burst_rate: "100.000000"
+          burst_pps: unspecified
         spanning_tree_policies:
           name_suffix: ""
           bpdu_guard: false
