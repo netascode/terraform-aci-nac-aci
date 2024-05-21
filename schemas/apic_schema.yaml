@@ -2457,13 +2457,13 @@ ten_l3outs_import_route_map:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Import Route Map Description)
   type: enum('combinable', 'global', required=False) # @name(Import Route Map Type)
-  contexts: list(include('ten_l3outs_route_map_context'), required=False) # @name(L3out Import Route Map Contexts)
+  contexts: list(include('ten_l3outs_import_route_map_context'), required=False) # @name(L3out Import Route Map Contexts)
 
 ten_l3outs_export_route_map:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Export Route Map Description)
   type: enum('combinable', 'global', required=False) # @name(Export Route Map Type)
-  contexts: list(include('ten_l3outs_route_map_context'), required=False) # @name(L3out Export Route Map Contexts)
+  contexts: list(include('ten_l3outs_export_route_map_context'), required=False) # @name(L3out Export Route Map Contexts)
 
 ten_l3outs_default_route_leak_policy:
   always: any(bool(), enum('yes', 'no'), required=False)
@@ -2475,12 +2475,20 @@ ten_l3outs_redistribution_route_maps:
   source: enum('direct', 'attached-host', 'static', required=False)
   route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$')
 
-ten_l3outs_route_map_context:
+ten_l3outs_import_route_map_context:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   action: enum('permit', 'deny', required=False)
   order: int(min=0, max=9, required=False)
-  match_rules: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False)
+  match_rules: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out Import RM Con Match Rules)
+  set_rule: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+ten_l3outs_export_route_map_context:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  action: enum('permit', 'deny', required=False)
+  order: int(min=0, max=9, required=False)
+  match_rules: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(L3out Export RM Con Match Rules)
   set_rule: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_expected_state:
@@ -2657,14 +2665,14 @@ ten_sr_mpls_l3outs_external_endpoint_groups_subnets:
 
 ten_sr_mpls_l3outs_external_endpoint_groups_contracts:
   consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(SR MPLS Ext EPGs Consumers) @sheet_hidden()
-  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(SR MPLS Ext EPGs Providers)@sheet_hidden()
+  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(SR MPLS Ext EPGs Providers) @sheet_hidden()
   imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(SR MPLS Ext EPGs Imp Consumers) @sheet_hidden()
 
 ten_sr_mpls_l3outs_infra_l3outs:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   inbound_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   outbound_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  external_endpoint_groups: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'))
+  external_endpoint_groups: list(regex('^[a-zA-Z0-9_.:-]{1,64}$')) # @name(SR MPLS Infra Ext EPGs)
 
 ten_policies:
   ospf_interface_policies: list(include('ten_ospf_interface_policies'), required=False) # @sheet_hidden()
