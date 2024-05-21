@@ -2454,13 +2454,13 @@ ten_l3outs_external_endpoint_groups_expected_state:
   maximum_minor_faults: int(min=0, required=False)
 
 ten_l3outs_import_route_map:
-  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(Import Route Map Name)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Import Route Map Description)
   type: enum('combinable', 'global', required=False) # @name(Import Route Map Type)
   contexts: list(include('ten_l3outs_import_route_map_context'), required=False) # @name(L3out Import Route Map Contexts)
 
 ten_l3outs_export_route_map:
-  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(Export Route Map Name)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False) # @name(Export Route Map Description)
   type: enum('combinable', 'global', required=False) # @name(Export Route Map Type)
   contexts: list(include('ten_l3outs_export_route_map_context'), required=False) # @name(L3out Export Route Map Contexts)
