@@ -68,7 +68,7 @@ Verify VMware VMM Domain {{ vmm_name }} vCenter {{ vc_name }}
     Should Be Equal Value Json String   ${r.json()}    ${cp}..vmmCtrlrP.attributes.rootContName   {{ vc.datacenter }}
     Should Be Equal Value Json String   ${r.json()}    ${cp}..vmmCtrlrP.attributes.statsMode   {{ vc.statistics | default(defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.statistics) | cisco.aac.aac_bool("enabled") }}
     Should Be Equal Value Json String   ${r.json()}    ${cp}..vmmRsAcc.attributes.tDn   uni/vmmp-VMware/dom-{{ vmm_name }}/usracc-{{ vc_policy_name }}
-{% set mgmt_epg = vmm.mgmt_epg | default(defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.mgmt_epg) %}
+{% set mgmt_epg = vc.mgmt_epg | default(defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.mgmt_epg) %}
 {% if mgmt_epg == "inb" %}
     Should Be Equal Value Json String   ${r.json()}    ${cp}..vmmRsMgmtEPg.attributes.tDn   uni/tn-mgmt/mgmtp-default/inb-{{ apic.node_policies.inb_endpoint_group | default(defaults.apic.node_policies.inb_endpoint_group) }}
 {% endif %}

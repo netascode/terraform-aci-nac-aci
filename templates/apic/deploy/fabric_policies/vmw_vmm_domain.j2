@@ -150,7 +150,7 @@
                                             }
                                         }
                                     }
-                                    {%- set mgmt_epg = vmm.mgmt_epg | default(defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.mgmt_epg) %}
+                                    {%- set mgmt_epg = vc.mgmt_epg | default(defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.mgmt_epg) %}
                                     {%- if mgmt_epg == "inb" %},
                                     {
                                         "vmmRsMgmtEPg": {
