@@ -27,6 +27,7 @@
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
                                     "name": "{{ user.name }}",
+                                    "descr": "{{ user.description | default() }}",
                                     "privType": "{{ user.privacy_type | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.users.privacy_type) }}",
                                     {% if user.privacy_type | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.users.privacy_type) != "none" %}
                                     "privKey": "{{ user.privacy_key }}",
@@ -64,6 +65,7 @@
                             "snmpClientGrpP": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
+                                    "descr": "{{ client.description | default() }}",
                                     "name": "{{ snmp_client_name }}"
                                 },
                                 "children": [

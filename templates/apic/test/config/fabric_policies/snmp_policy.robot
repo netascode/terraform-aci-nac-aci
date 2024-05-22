@@ -27,6 +27,7 @@ Verify SNMP Policy '{{ snmp_policy_name }}' User '{{ user.name }}'
     [Documentation]    Verify whether a given user exists in ACI for SNMP Policy and it is configured as expected
     ${usr}=   Set Variable   $..snmpPol.children[?(@.snmpUserP.attributes.name=='{{ user.name }}')]
     Should Be Equal Value Json String   ${r.json()}     ${usr}..snmpUserP.attributes.name   {{ user.name }}
+    Should Be Equal Value Json String   ${r.json()}     ${usr}..snmpUserP.attributes.descr   {{ user.description | default() }}
     Should Be Equal Value Json String   ${r.json()}     ${usr}..snmpUserP.attributes.authType   {{ user.authorization_type | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.users.authorization_type) }}
     Should Be Equal Value Json String   ${r.json()}     ${usr}..snmpUserP.attributes.privType   {{ user.privacy_type | default(defaults.apic.fabric_policies.pod_policies.snmp_policies.users.privacy_type)}}
 {% endfor %}
@@ -52,6 +53,7 @@ Verify SNMP Policy '{{ snmp_policy_name }}' Client Group '{{ snmp_client_name }}
     ${client}=   Set Variable   $..snmpPol.children[?(@.snmpClientGrpP.attributes.name=='{{ snmp_client_name }}')]
     ${ent}=   Set Variable   ${client}..snmpClientGrpP.children[?(@.snmpClientP.attributes.name=='{{ client_entry.name }}')]
     Should Be Equal Value Json String   ${r.json()}     ${ent}..snmpClientP.attributes.name   {{ client_entry.name }}
+    Should Be Equal Value Json String   ${r.json()}     ${ent}..snmpClientP.attributes.descr   {{ client_entry.description | default() }}
     Should Be Equal Value Json String   ${r.json()}     ${ent}..snmpClientP.attributes.addr   {{ client_entry.ip }}
 {% endfor %}
 

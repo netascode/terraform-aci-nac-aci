@@ -200,6 +200,7 @@ fp_snmp_policy:
 
 fp_snmp_policy_user:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   privacy_type: enum('none', 'des', 'aes-128', required=False)
   privacy_key: str(min=8, max=130, required=False)
   authorization_type: enum('hmac-md5-96', 'hmac-sha1-96', 'hmac-sha2-224', 'hmac-sha2-256', 'hmac-sha2-384', 'hmac-sha2-512', required=False)
@@ -211,6 +212,7 @@ fp_snmp_policy_trap_forwarder:
 
 fp_snmp_policy_client:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   mgmt_epg: enum('inb', 'oob')
   entries: list(include('fp_snmp_policy_client_entry'), required=False) # @name(SNMP Client Entries)
 

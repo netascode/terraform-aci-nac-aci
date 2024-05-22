@@ -38,6 +38,7 @@ apic:
           contact: CONTACT
           users:
             - name: USER1
+              description: Description of USER1
               privacy_type: aes-128
               privacy_key: Key123456
               authorization_type: hmac-sha1-96
@@ -46,6 +47,7 @@ apic:
             - abcABC123
           clients:
             - name: CLIENTS
+              description: Description of CLIENTS
               mgmt_epg: inb
               entries:
                 - name: NMS1
