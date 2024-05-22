@@ -423,6 +423,15 @@ defaults:
         endpoint_groups:
           mode: regular
           deployment_immediacy: lazy
+      ptp_profiles:
+        announce_interval: 1
+        announce_timeout: 3
+        delay_interval: -3
+        sync_interval: -3
+        priority: 128
+        template: aes67
+        forwardable: true
+        mismatch_handling: configured
       switch_policies:
         vpc_policies:
           name_suffix: ""
@@ -958,6 +967,9 @@ defaults:
             module: 1
             mode: regular
             deployment_immediacy: lazy
+            ptp:
+              mode: multicast
+              source_ip: 0.0.0.0
           static_leafs:
             mode: regular
             deployment_immediacy: lazy

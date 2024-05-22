@@ -984,6 +984,7 @@ access_policies:
   physical_domains: list(include('ap_physical_domain'), required=False)
   routed_domains: list(include('ap_routed_domain'), required=False)
   aaeps: list(include('ap_aaep'), required=False) # @ref_name(AAEP)
+  ptp_profiles: list(include('ap_ptp_profiles'), required=False) # @ref_name(PTP Profile)
   switch_policies: include('ap_switch_policies', required=False)
   spine_switch_policy_groups: list(include('ap_spine_switch_policy_groups'), required=False)
   leaf_switch_policy_groups: list(include('ap_leaf_switch_policy_groups'), required=False) # @name(Access Leaf Switch Policy Group)
@@ -1045,6 +1046,17 @@ ap_aaep:
   vmware_vmm_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(AAEP VMware VMM Domains) @ref_name(VMware VMM Domain) @sheet_hidden()
   endpoint_groups: list(include('ap_aaep_endpoint_groups'), required=False) # @name(AAEP Endpoint Groups) @sheet_hidden()
   expected_state: include('ap_aaep_expected_state', required=False) # @no_external_doc() @name(AAEP Expected State) @sheet_hidden()
+
+ap_ptp_profiles:
+  name: regex('^[a-zA-Z0-9_.:-]{1,16}$')
+  announce_interval: int(min=-3, max=4, required=False)
+  announce_timeout: int(min=2, max=10, required=False)
+  delay_interval: int(min=-4, max=5, required=False)
+  sync_interval: int(min=-4, max=1, required=False)
+  priority: int(min=1, max=255, required=False)
+  template: enum('aes67','smpte','telecom',required=False)
+  forwardable: bool(required=False)
+  mismatch_handling: enum('drop','received','configured',required=False)
 
 ap_aaep_endpoint_groups:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1886,6 +1898,12 @@ ten_ap_endpoint_groups_static_ports:
   vlan: int(min=1, max=4096)
   deployment_immediacy: enum('immediate', 'lazy', required=False)
   mode: enum('regular', 'native', 'untagged', required=False)
+  ptp: include('ten_ap_endpoint_groups_static_ports_ptp', required=False) # @name(EPG Static Ports PTP) @sheet_hidden(
+
+ten_ap_endpoint_groups_static_ports_ptp:
+  mode: enum('multicast','multicast-master','unicast-master', required=False)
+  source_ip: ip(required=False)
+  profile: regex('^[a-zA-Z0-9_.:-]{1,16}$')
 
 ten_ap_endpoint_groups_static_leafs:
   node_id: int(min=1, max=4000)

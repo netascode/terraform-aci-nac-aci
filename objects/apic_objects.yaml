@@ -817,6 +817,16 @@ objects:
       - apic.access_policies.aaeps
     diff_paths:
       - apic.access_policies.infra_vlan
+  - name: PTP Profiles
+    template: ptp_profiles
+    folder: access_policies
+    min_version: 5.2.0
+    aci_classes:
+      - ptpProfile
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.ptp_profiles
   - name: CDP Interface Policy
     template: cdp_policy
     folder: access_policies

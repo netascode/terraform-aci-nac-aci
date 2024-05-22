@@ -144,6 +144,7 @@
                                         "fvRsPathAtt": {
                                             "attributes": {
                                                 "annotation": "orchestrator:aac",
+                                                "childAction": "deleteNonPresent",
                                                 "encap": "vlan-{{ sp.vlan }}",
                                                 "instrImedcy": "{{ sp.deployment_immediacy | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.deployment_immediacy)  }}",
                                                 "mode": "{{ sp.mode | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.mode) }}",
@@ -209,7 +210,28 @@
                                                         {% endif %}
                                                     {% endif %}
                                                 {% endif %}
-                                            }
+                                            }{% if sp.ptp is defined %}{{ comma3() }}
+                                            "children": [
+                                                {
+                                                    "ptpEpgCfg":{
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "srcIp": "{{ sp.ptp.source_ip | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.ptp.source_ip)}}",
+                                                            "ptpMode": "{{ sp.ptp.mode | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.ptp.mode) }}"
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "ptpRsProfile": {
+                                                                    "attributes": {
+                                                                        "tDn": "uni/infra/ptpprofile-{{sp.ptp.profile}}"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                            {% endif %}
                                         }
                                     }
                                     {%- endfor %}

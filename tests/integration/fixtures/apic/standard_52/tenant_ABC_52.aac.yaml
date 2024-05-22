@@ -30,6 +30,17 @@ apic:
           pim_destination_filter: TEST_MRM1
       application_profiles:
         - name: AP1
+          endpoint_groups:
+            - name: EPG4
+              bridge_domain: BD3
+              static_ports:
+                - node_id: 204
+                  port: 1
+                  vlan: 12
+                  ptp:
+                    mode: multicast
+                    source_ip: 1.1.1.1
+                    profile: test
           endpoint_security_groups:
             - name: ESG1
               description: ESG1 description

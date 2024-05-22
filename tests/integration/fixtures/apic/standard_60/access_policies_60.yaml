@@ -1,6 +1,15 @@
 ---
 apic:
   access_policies:
+    ptp_profiles:
+      - name: test
+        template: telecom
+        announce_interval: -3
+        delay_interval: -4
+        sync_interval: -4
+      - name: tes2
+      - name: test3
+        template: smpte
     interface_policies:
       link_level_policies:
         - name: 10G-sfp-10g-tx

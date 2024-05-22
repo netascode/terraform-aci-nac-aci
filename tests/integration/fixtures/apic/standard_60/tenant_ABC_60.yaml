@@ -1,0 +1,22 @@
+---
+apic:
+  tenants:
+    - name: ABC
+      vrfs:
+        - name: VRF1
+      bridge_domains:
+        - name: BD3
+          vrf: VRF1
+      application_profiles:
+        - name: AP1
+          endpoint_groups:
+            - name: EPG4
+              bridge_domain: BD3
+              static_ports:
+                - node_id: 204
+                  port: 1
+                  vlan: 12
+                  ptp:
+                    mode: multicast-master
+                    source_ip: 1.1.1.1
+                    profile: test
