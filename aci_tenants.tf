@@ -363,6 +363,9 @@ locals {
             vlan                 = try(sp.vlan, null)
             deployment_immediacy = try(sp.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.deployment_immediacy)
             mode                 = try(sp.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.mode)
+            ptp_source_ip        = try(sp.ptp.source_ip, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.ptp.source_ip)
+            ptp_mode             = try(sp.ptp.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.ptp.mode)
+            ptp_profile          = try(sp.ptp.profile, null)
           }]
           static_leafs = [for sl in try(epg.static_leafs, []) : {
             pod_id               = try(sl.pod_id, null)
@@ -442,6 +445,9 @@ module "aci_endpoint_group" {
     vlan                 = sp.vlan
     deployment_immediacy = sp.deployment_immediacy
     mode                 = sp.mode
+    ptp_source_ip        = sp.ptp_source_ip
+    ptp_mode             = sp.ptp_mode
+    ptp_profile          = sp.ptp_profile
   }]
   static_leafs = [for sl in try(each.value.static_leafs, []) : {
     pod_id               = sl.pod_id == null ? try([for node in try(local.node_policies.nodes, []) : node.pod if node.id == sl.node_id][0], local.defaults.apic.node_policies.nodes.pod) : sl.pod_id

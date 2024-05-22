@@ -482,6 +482,11 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-ptp/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ptp-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ptp-profile/examples/complete"]
+      - id: terraform-docs-system
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-qos"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-qos/examples/complete"]
