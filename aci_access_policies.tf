@@ -697,6 +697,7 @@ locals {
         sub_port = try(ap.sub_port, null)
         module   = try(ap.module, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.module)
         channel  = try(ap.channel, null)
+        type     = try(ap.type, null)
       }]
     }]
   }]
@@ -732,6 +733,7 @@ module "aci_access_span_source_group" {
       sub_port = ap.sub_port
       module   = ap.module
       channel  = ap.channel
+      type     = ap.type
     }]
   }]
 }
