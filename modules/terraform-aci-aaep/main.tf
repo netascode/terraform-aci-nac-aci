@@ -9,7 +9,8 @@ resource "aci_rest_managed" "infraAttEntityP" {
   dn         = "uni/infra/attentp-${var.name}"
   class_name = "infraAttEntityP"
   content = {
-    name = var.name
+    name  = var.name
+    descr = var.description
   }
 }
 
