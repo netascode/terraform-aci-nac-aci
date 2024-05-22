@@ -817,8 +817,8 @@ objects:
       - apic.access_policies.aaeps
     diff_paths:
       - apic.access_policies.infra_vlan
-  - name: PTP Profiles
-    template: ptp_profiles
+  - name: PTP Profile
+    template: ptp_profile
     folder: access_policies
     min_version: 5.2.0
     aci_classes:
