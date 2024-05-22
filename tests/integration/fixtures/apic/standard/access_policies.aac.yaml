@@ -87,6 +87,9 @@ apic:
                 - channel: VPC1
                   node_id: 101
                   node2_id: 102
+                - channel: VPC2
+                  node_id: 102
+                  type: component
         - name: SRC_GRP3
           destination:
             name: DST_GRP2

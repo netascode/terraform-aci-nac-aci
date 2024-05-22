@@ -1173,7 +1173,7 @@ ap_span_source_groups_sources_access_paths:
   fex_id: int(min=101, max=199, required=False)
   sub_port: int(min=1, max=16, required=False)
   channel: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  type: enum('access', 'vpc', 'pc', required=False)
+  type: enum('access', 'vpc', 'pc', 'component', required=False)
 
 ap_span_source_groups_expected_state:
   minimum_health: int(min=0, max=100, required=False)

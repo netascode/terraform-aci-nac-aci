@@ -23,6 +23,8 @@ apic:
             policy_group: ACC1
           - port: 5
             description: reserved
+          - port: 6
+            policy_group: VPC2
           - port: 10
             fex_id: 101
           - port: 53
@@ -43,6 +45,8 @@ apic:
         interfaces:
           - port: 2
             policy_group: VPC1
+          - port: 6
+            policy_group: VPC2
           - port: 54
             policy_group: ACC1
             type: uplink

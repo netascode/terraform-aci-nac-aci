@@ -36,7 +36,7 @@ Verify SPAN Source Group {{ span_name }} Source {{ source_name }}
 
 {% if path.node_id is defined and path.channel is not defined %}
     {% set query = "nodes[?id==`" ~ path.node_id ~ "`].pod" %}
-    {% set pod = path.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+    {% set pod = path.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default(defaults.apic.access_policies.span.source_groups.sources.access_paths.pod_id)) %}
     {% if path.sub_port is defined %}
     ${path}=   Set Variable   ${source}.children[?(@.spanRsSrcToPathEp.attributes.tDn=='topology/pod-{{ pod }}/paths-{{ path.node_id }}/pathep-[eth{{ path.module | default(defaults.apic.access_policies.span.source_groups.sources.access_paths.module) }}/{{ path.port }}/{{ path.sub_port }}]')].spanRsSrcToPathEp
     Should Be Equal Value Json String   ${r.json()}    ${path}.attributes.tDn   topology/pod-{{ pod }}/paths-{{ path.node_id }}/pathep-[eth{{ path.module | default(defaults.apic.access_policies.span.source_groups.sources.access_paths.module) }}/{{ path.port }}/{{ path.sub_port }}]
@@ -51,6 +51,11 @@ Verify SPAN Source Group {{ span_name }} Source {{ source_name }}
     {% set policy_group_name = path.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
     {% set query = "leaf_interface_policy_groups[?name==`" ~ path.channel ~ "`].type" %}
     {% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if path.node2_id is defined else 'pc') %}
+    {% if path.type is defined %}
+        {% set type = path.type %}
+    {% else %}
+        {% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if path.node2_id is defined else 'pc') %}
+    {% endif %}
     {% set query_sub_ports = "nodes[?interfaces[?sub_ports[?policy_group==`" ~ path.channel ~ "`]]].id" %}
     {% set id_sub_ports = (apic.interface_policies | default() | community.general.json_query(query_sub_ports)) %}
     {% set query_ports = "nodes[?interfaces[?policy_group==`" ~ path.channel ~ "`]].id" %}
@@ -63,7 +68,7 @@ Verify SPAN Source Group {{ span_name }} Source {{ source_name }}
             {% set node = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
         {% endif %}
         {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
-        {% set pod = path.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+        {% set pod = path.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default(defaults.apic.access_policies.span.source_groups.sources.access_paths.pod_id)) %}
         {% if type == 'vpc' %}
             {% if path.node2_id is defined %}
                 {% set node2 = path.node2_id %}
@@ -86,7 +91,7 @@ Verify SPAN Source Group {{ span_name }} Source {{ source_name }}
             {% set node = (apic.interface_policies | default() | community.general.json_query(query))[0] %}
         {% endif %}
         {% set query = "nodes[?id==`" ~ node ~ "`].pod" %}
-        {% set pod = path.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default('1')) %}
+        {% set pod = path.pod_id | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default(defaults.apic.access_policies.span.source_groups.sources.access_paths.pod_id)) %}
         {% if type == 'vpc' %}
             {% if path.node2_id is defined %}
                 {% set node2 = path.node2_id %}
