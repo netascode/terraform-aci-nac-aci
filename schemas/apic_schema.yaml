@@ -1559,7 +1559,7 @@ ap_leaf_switch_policy_groups:
 ap_dhcp_relay_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  providers: list(include('ap_dhcp_provider'), required=False) # @name(DHCP Relay Policy Providers) @sheet_hidden()
+  providers: list(include('ap_dhcp_provider'), required=False) # @name(Infra DHCP Relay Pol Providers) @sheet_hidden()
 
 ap_dhcp_provider:
   ip: ip()
