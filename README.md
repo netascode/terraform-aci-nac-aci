@@ -274,6 +274,7 @@ Additional example repositories:
 | <a name="module_aci_port_tracking"></a> [aci\_port\_tracking](#module\_aci\_port\_tracking) | ./modules/terraform-aci-port-tracking | n/a |
 | <a name="module_aci_psu_policy"></a> [aci\_psu\_policy](#module\_aci\_psu\_policy) | ./modules/terraform-aci-psu-policy | n/a |
 | <a name="module_aci_ptp"></a> [aci\_ptp](#module\_aci\_ptp) | ./modules/terraform-aci-ptp | n/a |
+| <a name="module_aci_ptp_profile"></a> [aci\_ptp\_profile](#module\_aci\_ptp\_profile) | ./modules/terraform-aci-ptp-profile | n/a |
 | <a name="module_aci_qos"></a> [aci\_qos](#module\_aci\_qos) | ./modules/terraform-aci-qos | n/a |
 | <a name="module_aci_qos_policy"></a> [aci\_qos\_policy](#module\_aci\_qos\_policy) | ./modules/terraform-aci-qos-policy | n/a |
 | <a name="module_aci_radius"></a> [aci\_radius](#module\_aci\_radius) | ./modules/terraform-aci-radius | n/a |

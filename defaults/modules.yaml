@@ -116,6 +116,7 @@ modules:
   aci_port_tracking: true
   aci_psu_policy: true
   aci_ptp: true
+  aci_ptp_profile: true
   aci_qos: true
   aci_qos_policy: true
   aci_radius: true

@@ -7,11 +7,11 @@ resource "aci_rest_managed" "stormctrlIfPol" {
     descr                    = var.description
     stormCtrlAction          = var.action
     type                     = "all"
-    isUcMcBcStormPktCfgValid = "Valid"
-    burstPps                 = "unspecified"
-    burstRate                = "100.000000"
-    rate                     = "100.000000"
-    ratePps                  = "unspecified"
+    isUcMcBcStormPktCfgValid = var.configuration_type == "separate" ? "Valid" : "Invalid"
+    burstPps                 = var.burst_pps
+    burstRate                = var.burst_rate
+    rate                     = var.rate
+    ratePps                  = var.rate_pps
     stormCtrlSoakInstCount   = "3"
     bcBurstPps               = var.broadcast_burst_pps
     bcBurstRate              = var.broadcast_burst_rate

@@ -332,6 +332,11 @@ module "aci_storm_control_policy" {
   unknown_unicast_burst_rate = try(each.value.unknown_unicast_burst_rate, local.defaults.apic.access_policies.interface_policies.storm_control_policies.unknown_unicast_burst_rate)
   unknown_unicast_pps        = try(each.value.unknown_unicast_pps, local.defaults.apic.access_policies.interface_policies.storm_control_policies.unknown_unicast_pps)
   unknown_unicast_rate       = try(each.value.unknown_unicast_rate, local.defaults.apic.access_policies.interface_policies.storm_control_policies.unknown_unicast_rate)
+  burst_pps                  = try(each.value.burst_pps, local.defaults.apic.access_policies.interface_policies.storm_control_policies.burst_pps)
+  burst_rate                 = try(each.value.burst_rate, local.defaults.apic.access_policies.interface_policies.storm_control_policies.burst_rate)
+  rate_pps                   = try(each.value.rate_pps, local.defaults.apic.access_policies.interface_policies.storm_control_policies.rate_pps)
+  rate                       = try(each.value.rate, local.defaults.apic.access_policies.interface_policies.storm_control_policies.rate)
+  configuration_type         = try(each.value.rate, each.value.rate_pps, each.value.burst_pps, each.value.burst_rate, false) == false ? "separate" : "all"
 }
 
 module "aci_access_leaf_interface_policy_group" {
@@ -692,6 +697,7 @@ locals {
         sub_port = try(ap.sub_port, null)
         module   = try(ap.module, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.module)
         channel  = try(ap.channel, null)
+        type     = try(ap.type, null)
       }]
     }]
   }]
@@ -727,6 +733,7 @@ module "aci_access_span_source_group" {
       sub_port = ap.sub_port
       module   = ap.module
       channel  = ap.channel
+      type     = ap.type
     }]
   }]
 }
@@ -813,6 +820,21 @@ module "aci_vspan_session" {
       channel  = ap.channel
     }]
   }]
+}
+
+module "aci_ptp_profile" {
+  source = "./modules/terraform-aci-ptp-profile"
+
+  for_each          = { for profile in try(local.access_policies.ptp_profiles, []) : profile.name => profile if local.modules.aci_ptp_profile && var.manage_access_policies }
+  name              = each.value.name
+  announce_interval = try(each.value.announce_interval, local.defaults.apic.access_policies.ptp_profiles.announce_interval)
+  announce_timeout  = try(each.value.announce_timeout, local.defaults.apic.access_policies.ptp_profiles.announce_timeout)
+  delay_interval    = try(each.value.delay_interval, local.defaults.apic.access_policies.ptp_profiles.delay_interval)
+  forwardable       = try(each.value.forwardable, local.defaults.apic.access_policies.ptp_profiles.forwardable)
+  priority          = try(each.value.priority, local.defaults.apic.access_policies.ptp_profiles.priority)
+  sync_interval     = try(each.value.sync_interval, local.defaults.apic.access_policies.ptp_profiles.sync_interval)
+  template          = try(each.value.template, local.defaults.apic.access_policies.ptp_profiles.template)
+  mismatch_handling = try(each.value.mismatch_handling, local.defaults.apic.access_policies.ptp_profiles.mismatch_handling)
 }
 
 locals {
