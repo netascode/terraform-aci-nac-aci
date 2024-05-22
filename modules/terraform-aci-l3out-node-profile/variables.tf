@@ -39,11 +39,11 @@ variable "nodes" {
     mpls_transport_loopback = optional(string)
     segment_id              = optional(number)
     static_routes = optional(list(object({
-      prefix       = string
-      description  = optional(string, "")
-      preference   = optional(number, 1)
-      bfd          = optional(bool, false)
-      track_policy = optional(string)
+      prefix      = string
+      description = optional(string, "")
+      preference  = optional(number, 1)
+      bfd         = optional(bool, false)
+      track_list  = optional(string)
       next_hops = optional(list(object({
         ip         = string
         preference = optional(number, 1)
