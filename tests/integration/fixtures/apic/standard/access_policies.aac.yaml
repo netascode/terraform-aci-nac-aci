@@ -270,6 +270,7 @@ apic:
         vlan_pool: ROUTED2
     aaeps:
       - name: AAEP1
+        description: My AAEP1
         infra_vlan: false
         physical_domains:
           - PHY1

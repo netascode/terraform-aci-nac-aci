@@ -12,6 +12,7 @@
                     "attributes": {
                         "annotation": "orchestrator:aac",
                         "name": "{{ aaep_name }}",
+                        "descr": "{{ aaep.description | default() }}",
                         "dn": "uni/infra/attentp-{{ aaep_name }}",
                         "childAction": "deleteNonPresent"
                     },

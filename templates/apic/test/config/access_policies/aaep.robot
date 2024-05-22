@@ -12,6 +12,7 @@ Verify AAEP {{ aaep_name }}
     ${r}=   GET On Session   apic   /api/mo/uni/infra/attentp-{{ aaep_name }}.json   params=rsp-subtree=full
     Set Suite Variable   ${r}
     Should Be Equal Value Json String   ${r.json()}    $..infraAttEntityP.attributes.name   {{ aaep_name }}
+    Should Be Equal Value Json String   ${r.json()}    $..infraAttEntityP.attributes.descr   {{ aaep.description | default() }}
 {% if aaep.infra_vlan | default(defaults.apic.access_policies.aaeps.infra_vlan) | cisco.aac.aac_bool("enabled") == 'enabled' %}
     Should Be Equal Value Json String   ${r.json()}    $..infraProvAcc..infraRsFuncToEpg.attributes.encap   vlan-{{ apic.access_policies.infra_vlan }}
 {% endif %}
