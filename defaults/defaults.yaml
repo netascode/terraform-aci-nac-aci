@@ -432,8 +432,6 @@ defaults:
         template: aes67
         forwardable: true
         mismatch_handling: configured
-      dhcp_relay_policies:
-        name_suffix: ""
       switch_policies:
         vpc_policies:
           name_suffix: ""
@@ -668,6 +666,7 @@ defaults:
             span_drop: false
             access_paths:
               module: 1
+              pod_id: 1
         filter_groups:
           name_suffix: ""
           entries:
