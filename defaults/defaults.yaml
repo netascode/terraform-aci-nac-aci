@@ -432,6 +432,8 @@ defaults:
         template: aes67
         forwardable: true
         mismatch_handling: configured
+      dhcp_relay_policies:
+        name_suffix: ""
       switch_policies:
         vpc_policies:
           name_suffix: ""

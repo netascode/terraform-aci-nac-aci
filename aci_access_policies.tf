@@ -836,3 +836,30 @@ module "aci_ptp_profile" {
   template          = try(each.value.template, local.defaults.apic.access_policies.ptp_profiles.template)
   mismatch_handling = try(each.value.mismatch_handling, local.defaults.apic.access_policies.ptp_profiles.mismatch_handling)
 }
+
+locals {
+  infra_dhcp_relay_policies = flatten([
+    for policy in try(local.access_policies.dhcp_relay_policies, []) : {
+      name        = "${policy.name}${local.defaults.apic.access_policies.dhcp_relay_policies.name_suffix}"
+      description = try(policy.description, "")
+      providers_ = [for provider in try(policy.providers, []) : {
+        ip                      = provider.ip
+        type                    = provider.type
+        tenant                  = try(provider.tenant, "")
+        application_profile     = try("${provider.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}", "")
+        endpoint_group          = try("${provider.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}", "")
+        l3out                   = try("${provider.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}", "")
+        external_endpoint_group = try("${provider.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}", "")
+      }]
+    }
+  ])
+}
+
+module "aci_infra_dhcp_relay_policy" {
+  source = "./modules/terraform-aci-infra-dhcp-relay-policy"
+
+  for_each    = { for policy in local.infra_dhcp_relay_policies : policy.name => policy if local.modules.aci_infra_dhcp_relay_policy && var.manage_access_policies }
+  name        = each.value.name
+  description = each.value.description
+  providers_  = each.value.providers_
+}
