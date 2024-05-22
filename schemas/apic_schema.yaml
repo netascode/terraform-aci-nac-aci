@@ -2250,6 +2250,7 @@ ten_l3outs_nodes_interfaces:
   bgp_peers: list(include('ten_l3outs_nodes_interfaces_bgp_peers'), required=False) # @name(L3out Node Interface BGP Peers)
   paths: list(include('ten_l3outs_nodes_interfaces_paths'), required=False) # @name(L3out Node Interface Paths)
   mode: enum('regular', 'native', 'untagged', required=False)
+  state: enum('local', 'vrf', required=False)
   expected_state: include('ten_l3outs_nodes_interfaces_expected_state', required=False) # @no_external_doc() @name(L3out Node Int Expected State) @sheet_hidden()
 
 ten_l3outs_nodes_interfaces_bgp_peers:
@@ -2395,6 +2396,7 @@ ten_l3outs_node_profiles_interface_profiles_interfaces:
   bgp_peers: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers'), required=False) # @name(L3out IP Interface BGP Peers) @sheet_hidden()
   paths: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces_paths'), required=False) # @name(L3out IP Interface Paths) @sheet_hidden()
   mode: enum('regular', 'native', 'untagged', required=False)
+  scope: enum('local', 'vrf', required=False)
   expected_state: include('ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state', required=False) # @no_external_doc() @name(L3out Int Prof Expected State) @sheet_hidden()
 
 ten_l3outs_node_profiles_interface_profiles_interfaces_bgp_peers:

@@ -220,6 +220,7 @@ apic:
               interfaces:
                 - channel: VPC1
                   svi: true
+                  scope: local
                   vlan: 301
                   ip_a: 14.14.14.1/24
                   ip_b: 14.14.14.2/24
