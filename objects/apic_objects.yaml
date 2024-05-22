@@ -1047,6 +1047,15 @@ objects:
       - health
     paths:
       - apic.access_policies.vspan.sessions
+  - name: DHCP Relay Policy
+    template: dhcp_relay_policy
+    folder: access_policies
+    aci_classes:
+      - dhcpRelayP
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.dhcp_relay_policies
   - name: Tenant
     template: tenant
     folder: tenants

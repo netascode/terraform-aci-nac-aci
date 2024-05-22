@@ -1000,6 +1000,7 @@ access_policies:
   qos: include('ap_qos', required=False) # @sheet_hidden()
   span: include('ap_span', required=False) # @sheet_hidden()
   vspan: include('ap_vspan', required=False) # @sheet_hidden()
+  dhcp_relay_policies: list(include('ap_dhcp_relay_policy'), required=False) # @name(Infra DHCP Relay Policies) @sheet_hidden()
 
 ap_vlan_pool:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1551,6 +1552,20 @@ ap_leaf_switch_policy_groups:
   netflow_node_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
   poe_node_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
   fast_link_failover_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+
+ap_dhcp_relay_policy:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  providers: list(include('ap_dhcp_provider'), required=False) # @name(DHCP Relay Policy Providers) @sheet_hidden()
+
+ap_dhcp_provider:
+  ip: ip()
+  type: enum('epg', 'external_epg')
+  tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  l3out: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  external_endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 pod_policies:
   pods: list(include('pp_pod'), required=False)
@@ -2817,7 +2832,7 @@ ten_dhcp_option_policy:
 
 ten_dhcp_provider:
   ip: ip()
-  type: enum('epg', 'external_epg', required=False)
+  type: enum('epg', 'external_epg')
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)

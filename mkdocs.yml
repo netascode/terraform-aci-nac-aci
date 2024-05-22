@@ -133,6 +133,7 @@ nav:
               - Physical Domain: data_model/apic/access_policies/physical_domain.md
               - Routed Domain: data_model/apic/access_policies/routed_domain.md
               - AAEP: data_model/apic/access_policies/aaep.md
+              - DHCP Relay Policy: data_model/apic/access_policies/dhcp_relay_policy.md
               - CDP Interface Policy: data_model/apic/access_policies/cdp_policy.md
               - LLDP Interface Policy: data_model/apic/access_policies/lldp_policy.md
               - Link Level Interface Policy: data_model/apic/access_policies/link_level_policy.md

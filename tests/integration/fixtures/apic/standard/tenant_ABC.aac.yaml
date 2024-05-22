@@ -145,6 +145,10 @@ apic:
           vrf: VRF2
           subnets:
             - ip: 2.2.2.2/24
+          dhcp_labels:
+            - dhcp_relay_policy: INFRA-DHCP-RELAY1
+              dhcp_option_policy: DHCP-OPTION1
+              scope: infra
       l3outs:
         - name: L3OUT1
           alias: L3OUT1-ALIAS

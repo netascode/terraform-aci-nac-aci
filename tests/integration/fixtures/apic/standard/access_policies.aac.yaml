@@ -574,3 +574,12 @@ apic:
               - name: BLK1
                 description: INT-DESC
                 from_port: 1
+    dhcp_relay_policies:
+      - name: INFRA-DHCP-RELAY1
+        description: "My Description"
+        providers:
+          - ip: 6.6.6.6
+            type: epg
+            tenant: ABC
+            application_profile: AP1
+            endpoint_group: EPG1

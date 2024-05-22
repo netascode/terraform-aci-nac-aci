@@ -1,0 +1,49 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [  
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.access_policies.dhcp_relay_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = policy.name ~ defaults.apic.access_policies.dhcp_relay_policies.name_suffix %}
+            {
+                "dhcpRelayP": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/infra/relayp-{{ policy_name }}",
+                        "owner": "infra",
+                        "descr": "{{ policy.description | default() }}",
+                        "name": "{{ policy_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for provider in policy.providers | default([]) %}{{ comma2() }}
+                        {
+                            "dhcpRsProv": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    {% if provider.type == "epg" %}
+                                    {% set ap_name = provider.application_profile ~ defaults.apic.tenants.application_profiles.name_suffix %}
+                                    {% set epg_name = provider.endpoint_group ~ defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix %}
+                                    "tDn": "uni/tn-{{ provider.tenant }}/ap-{{ ap_name }}/epg-{{ epg_name }}",
+                                    {% elif provider.type == "external_epg" %}
+                                    {% set l3out_name = provider.l3out ~ defaults.apic.tenants.l3outs.name_suffix %}
+                                    {% set eepg_name = provider.external_endpoint_group ~ defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix %}
+                                    "tDn": "uni/tn-{{ provider.tenant }}/out-{{ l3out_name }}/instP-{{ eepg_name }}",
+                                    {% endif %}
+                                    "addr": "{{ provider.ip }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}
