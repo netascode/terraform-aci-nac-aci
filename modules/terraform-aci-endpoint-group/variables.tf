@@ -426,14 +426,14 @@ variable "static_ports" {
 
   validation {
     condition = alltrue([
-      for sp in var.static_ports : sp.ptp == null || try(contains(["multicast", "multicast-master", "unicast-master"], sp.ptp_mode), false)
+      for sp in var.static_ports : try(contains(["multicast", "multicast-master", "unicast-master"], sp.ptp_mode), false)
     ])
     error_message = "`ptp_mode`: Allowed values are `multicast`, `multicast-master` or `unicast-master`."
   }
 
   validation {
     condition = alltrue([
-      for sp in var.static_ports : can(regex("^[a-zA-Z0-9_.:-]{0,16}$", sp.ptp_profile))
+      for sp in var.static_ports : sp.ptp_profile == null || can(regex("^[a-zA-Z0-9_.:-]{0,16}$", sp.ptp_profile))
     ])
     error_message = "`ptp_profile`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 16."
   }
