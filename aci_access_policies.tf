@@ -96,7 +96,7 @@ module "aci_bfd_ipv4_policy" {
   min_tx_interval           = try(each.value.min_transmit_interval, local.defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.min_transmit_interval)
   min_rx_interval           = try(each.value.min_receive_interval, local.defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.min_receive_interval)
   slow_timer_interval       = try(each.value.slow_timer_interval, local.defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.slow_timer_interval)
-  startup_timer_interval    = try(each.value.startup_timer_interval, local.defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.startup_timer_interval)
+  startup_timer_interval    = try(each.value.startup_timer_interval, null)
   echo_rx_interval          = try(each.value.echo_receive_interval, local.defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.echo_receive_interval)
   echo_frame_source_address = try(each.value.echo_frame_source_address, local.defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.echo_frame_source_address)
 }
@@ -112,7 +112,7 @@ module "aci_bfd_ipv6_policy" {
   min_tx_interval           = try(each.value.min_transmit_interval, local.defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.min_transmit_interval)
   min_rx_interval           = try(each.value.min_receive_interval, local.defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.min_receive_interval)
   slow_timer_interval       = try(each.value.slow_timer_interval, local.defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.slow_timer_interval)
-  startup_timer_interval    = try(each.value.startup_timer_interval, local.defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.startup_timer_interval)
+  startup_timer_interval    = try(each.value.startup_timer_interval, null)
   echo_rx_interval          = try(each.value.echo_receive_interval, local.defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.echo_receive_interval)
   echo_frame_source_address = try(each.value.echo_frame_source_address, local.defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.echo_frame_source_address)
 }

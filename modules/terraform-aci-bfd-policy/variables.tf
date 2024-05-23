@@ -76,10 +76,10 @@ variable "slow_timer_interval" {
 variable "startup_timer_interval" {
   description = "Startup timer interval. Minimum value: 0. Maximum value: 60."
   type        = number
-  default     = 10
+  default     = null
 
   validation {
-    condition     = var.startup_timer_interval >= 0 && var.startup_timer_interval <= 60
+    condition     = var.startup_timer_interval == null ? true : var.startup_timer_interval >= 0 && var.startup_timer_interval <= 60
     error_message = "Minimum value: 0. Maximum value: 60."
   }
 }
