@@ -1026,3 +1026,12 @@ module "aci_system_performance" {
   top_slowest_requests = try(local.fabric_policies.system_performance.top_slowest_requests, local.defaults.apic.fabric_policies.system_performance.top_slowest_requests)
   calculation_window   = try(local.fabric_policies.system_performance.calculation_window, local.defaults.apic.fabric_policies.system_performance.calculation_window)
 }
+
+module "aci_fabric_link_level_policy" {
+  source = "./modules/terraform-aci-fabric-link-level-policy"
+
+  for_each               = { for policy in try(local.fabric_policies.interface_policies.link_level_policies, []) : policy.name => policy if local.modules.aci_fabric_link_level_policy && var.manage_fabric_policies }
+  name                   = each.value.name
+  description            = try(each.value.description, "")
+  link_debounce_interval = try(each.value.link_debounce_interval, local.defaults.apic.fabric_policies.interface_policies.link_level_policies.link_debounce_interval)
+}

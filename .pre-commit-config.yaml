@@ -270,6 +270,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-wide-settings/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-link-level-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-link-level-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-filter"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-filter/examples/complete"]
