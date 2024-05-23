@@ -7,6 +7,7 @@ resource "aci_rest_managed" "l3extDomP" {
 }
 
 resource "aci_rest_managed" "infraRsVlanNs" {
+  count = var.vlan_pool != "" ? 1 : 0
   dn         = "${aci_rest_managed.l3extDomP.dn}/rsvlanNs"
   class_name = "infraRsVlanNs"
   content = {
