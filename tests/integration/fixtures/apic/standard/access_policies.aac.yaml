@@ -100,18 +100,6 @@ apic:
               endpoint_group: EPG1
               access_paths:
                 - channel: PC1
-        - name: SRC_GRP4
-          destination:
-            name: DST_GRP2
-          sources:
-            - name: SRC4
-              tenant: MSO1
-              l3out: L3OUT1
-              vlan: 123
-              access_paths:
-                - channel: VPC1
-                  node_id: 101
-                  type: "pc"
       filter_groups:
         - name: FLT_GRP1
           description: My SPAN Filter Groups
@@ -155,9 +143,6 @@ apic:
                 - node_id: 101
                   node2_id: 102
                   channel: VPC1
-                - node_id: 101
-                  channel: VPC2
-                  type: "pc"
               tenant: ABC
               application_profile: AP1
               endpoint_group: EPG1
