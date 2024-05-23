@@ -11,7 +11,7 @@ variable "name" {
 variable "vlan_pool" {
   description = "Vlan pool name."
   type        = string
-
+  default = ""
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.vlan_pool))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
