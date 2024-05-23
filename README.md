@@ -166,6 +166,8 @@ Additional example repositories:
 | <a name="module_aci_application_profile"></a> [aci\_application\_profile](#module\_aci\_application\_profile) | ./modules/terraform-aci-application-profile | n/a |
 | <a name="module_aci_banner"></a> [aci\_banner](#module\_aci\_banner) | ./modules/terraform-aci-banner | n/a |
 | <a name="module_aci_bfd_interface_policy"></a> [aci\_bfd\_interface\_policy](#module\_aci\_bfd\_interface\_policy) | ./modules/terraform-aci-bfd-interface-policy | n/a |
+| <a name="module_aci_bfd_ipv4_policy"></a> [aci\_bfd\_ipv4\_policy](#module\_aci\_bfd\_ipv4\_policy) | ./modules/terraform-aci-bfd-policy | n/a |
+| <a name="module_aci_bfd_ipv6_policy"></a> [aci\_bfd\_ipv6\_policy](#module\_aci\_bfd\_ipv6\_policy) | ./modules/terraform-aci-bfd-policy | n/a |
 | <a name="module_aci_bfd_multihop_node_policy"></a> [aci\_bfd\_multihop\_node\_policy](#module\_aci\_bfd\_multihop\_node\_policy) | ./modules/terraform-aci-bfd-multihop-node-policy | n/a |
 | <a name="module_aci_bgp_address_family_context_policy"></a> [aci\_bgp\_address\_family\_context\_policy](#module\_aci\_bgp\_address\_family\_context\_policy) | ./modules/terraform-aci-bgp-address-family-context-policy | n/a |
 | <a name="module_aci_bgp_best_path_policy"></a> [aci\_bgp\_best\_path\_policy](#module\_aci\_bgp\_best\_path\_policy) | ./modules/terraform-aci-bgp-best-path-policy | n/a |
