@@ -9,6 +9,7 @@
             {
                 "ptpProfile": {
                     "attributes": {
+                        "dn": "uni/infra/ptpprofile-{{ prof.name }}",
                         "annotation": "orchestrator:aac",
                         "name": "{{ prof.name }}",
                         "announceIntvl": "{{ prof.announce_interval | default(defaults.apic.access_policies.ptp_profiles.announce_interval) }}",
