@@ -308,6 +308,7 @@ Additional example repositories:
 | <a name="module_aci_tenant_span_destination_group"></a> [aci\_tenant\_span\_destination\_group](#module\_aci\_tenant\_span\_destination\_group) | ./modules/terraform-aci-tenant-span-destination-group | n/a |
 | <a name="module_aci_tenant_span_source_group"></a> [aci\_tenant\_span\_source\_group](#module\_aci\_tenant\_span\_source\_group) | ./modules/terraform-aci-tenant-span-source-group | n/a |
 | <a name="module_aci_trust_control_policy"></a> [aci\_trust\_control\_policy](#module\_aci\_trust\_control\_policy) | ./modules/terraform-aci-trust-control-policy | n/a |
+| <a name="module_aci_useg_endpoint_group"></a> [aci\_useg\_endpoint\_group](#module\_aci\_useg\_endpoint\_group) | ./modules/terraform-aci-useg-endpoint-group | n/a |
 | <a name="module_aci_user"></a> [aci\_user](#module\_aci\_user) | ./modules/terraform-aci-user | n/a |
 | <a name="module_aci_vlan_pool"></a> [aci\_vlan\_pool](#module\_aci\_vlan\_pool) | ./modules/terraform-aci-vlan-pool | n/a |
 | <a name="module_aci_vmware_vmm_domain"></a> [aci\_vmware\_vmm\_domain](#module\_aci\_vmware\_vmm\_domain) | ./modules/terraform-aci-vmware-vmm-domain | n/a |

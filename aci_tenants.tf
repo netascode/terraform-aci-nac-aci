@@ -486,6 +486,137 @@ module "aci_endpoint_group" {
 }
 
 locals {
+  useg_endpoint_groups = flatten([
+    for tenant in local.tenants : [
+      for ap in try(tenant.application_profiles, []) : [
+        for useg_epg in try(ap.useg_endpoint_groups, []) : {
+          key                         = format("%s/%s/%s", tenant.name, ap.name, useg_epg.name)
+          tenant                      = tenant.name
+          application_profile         = "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}"
+          name                        = "${useg_epg.name}${local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.name_suffix}"
+          alias                       = try(useg_epg.alias, "")
+          description                 = try(useg_epg.description, "")
+          flood_in_encap              = try(useg_epg.flood_in_encap, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.flood_in_encap)
+          intra_epg_isolation         = try(useg_epg.intra_epg_isolation, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.intra_epg_isolation)
+          preferred_group             = try(useg_epg.preferred_group, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.preferred_group)
+          qos_class                   = try(useg_epg.qos_class, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.qos_class)
+          custom_qos_policy           = try("${useg_epg.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+          bridge_domain               = try("${useg_epg.bridge_domain}${local.defaults.apic.tenants.bridge_domains.name_suffix}", "")
+          tags                        = try(useg_epg.tags, [])
+          trust_control_policy        = try("${useg_epg.trust_control_policy}${local.defaults.apic.tenants.policies.trust_control_policies.name_suffix}", "")
+          contract_consumers          = try([for contract in useg_epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
+          contract_providers          = try([for contract in useg_epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
+          contract_imported_consumers = try([for contract in useg_epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
+          contract_intra_epgs         = try([for contract in useg_epg.contracts.intra_epgs : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
+          physical_domains            = try([for domain in useg_epg.physical_domains : "${domain}${local.defaults.apic.access_policies.physical_domains.name_suffix}"], [])
+          useg_attributes_match_type  = try(useg_epg.useg_attributes.match_type, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.useg_attributes.match_type)
+          contract_masters = [for master in try(useg_epg.contracts.masters, []) : {
+            endpoint_group      = master.endpoint_group
+            application_profile = try(master.application_profile, "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}")
+          }]
+          useg_attributes_ip_statements = [for ip_statement in try(useg_epg.useg_attributes.ip_statements, []) : {
+            name           = ip_statement.name
+            use_epg_subnet = try(ip_statement.use_epg_subnet, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.useg_attributes.ip_statements.use_epg_subnet)
+            ip             = try(ip_statement.ip, "")
+          }]
+          useg_attributes_mac_statements = [for mac_statement in try(useg_epg.useg_attributes.mac_statements, []) : {
+            name = mac_statement.name
+            mac  = upper(mac_statement.mac)
+          }]
+          subnets = [for subnet in try(useg_epg.subnets, []) : {
+            description         = try(subnet.description, "")
+            ip                  = subnet.ip
+            public              = try(subnet.public, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.public)
+            shared              = try(subnet.shared, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.shared)
+            igmp_querier        = try(subnet.igmp_querier, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.igmp_querier)
+            nd_ra_prefix        = try(subnet.nd_ra_prefix, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.nd_ra_prefix)
+            no_default_gateway  = try(subnet.no_default_gateway, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.no_default_gateway)
+            nd_ra_prefix_policy = try("${subnet.nd_ra_prefix_policy}${local.defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix}", "")
+            next_hop_ip         = try(subnet.next_hop_ip, "")
+            anycast_mac         = try(subnet.anycast_mac, "")
+            nlb_group           = try(subnet.nlb_group, "0.0.0.0")
+            nlb_mac             = try(subnet.nlb_mac, "00:00:00:00:00:00")
+            nlb_mode            = try(subnet.nlb_mode, "")
+            ip_pools = [for pool in try(subnet.ip_pools, []) : {
+              name              = "${pool.name}${local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.ip_pools.name_suffix}"
+              start_ip          = try(pool.start_ip, "0.0.0.0")
+              end_ip            = try(pool.end_ip, "0.0.0.0")
+              dns_search_suffix = try(pool.dns_search_suffix, "")
+              dns_server        = try(pool.dns_server, "")
+              dns_suffix        = try(pool.dns_suffix, "")
+              wins_server       = try(pool.wins_server, "")
+            }]
+          }]
+          vmware_vmm_domains = [for vmm in try(useg_epg.vmware_vmm_domains, []) : {
+            name                 = "${vmm.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.name_suffix}"
+            deployment_immediacy = try(vmm.deployment_immediacy, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.vmware_vmm_domains.deployment_immediacy)
+            netflow              = try(vmm.netflow, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.vmware_vmm_domains.netflow)
+            elag                 = try(vmm.elag, "")
+            active_uplinks_order = try(vmm.active_uplinks_order, "")
+            standby_uplinks      = try(vmm.standby_uplinks, "")
+          }]
+          static_leafs = [for sl in try(useg_epg.static_leafs, []) : {
+            pod_id  = try(sl.pod_id, null)
+            node_id = try(sl.node_id, null)
+          }]
+          l4l7_address_pools = [for ap in try(useg_epg.l4l7_address_pools, []) : {
+            name            = ap.name
+            gateway_address = ap.gateway_address
+            from            = try(ap.from, "")
+            to              = try(ap.to, "")
+          }]
+        }
+      ]
+    ]
+  ])
+}
+
+module "aci_useg_endpoint_group" {
+  source = "./modules/terraform-aci-useg-endpoint-group"
+
+  for_each                    = { for epg in local.useg_endpoint_groups : epg.key => epg if local.modules.aci_useg_endpoint_group && var.manage_tenants }
+  tenant                      = each.value.tenant
+  application_profile         = each.value.application_profile
+  name                        = each.value.name
+  alias                       = each.value.alias
+  description                 = each.value.description
+  flood_in_encap              = each.value.flood_in_encap
+  intra_epg_isolation         = each.value.intra_epg_isolation
+  preferred_group             = each.value.preferred_group
+  qos_class                   = each.value.qos_class
+  custom_qos_policy           = each.value.custom_qos_policy
+  bridge_domain               = each.value.bridge_domain
+  tags                        = each.value.tags
+  trust_control_policy        = each.value.trust_control_policy
+  contract_consumers          = each.value.contract_consumers
+  contract_providers          = each.value.contract_providers
+  contract_imported_consumers = each.value.contract_imported_consumers
+  contract_intra_epgs         = each.value.contract_intra_epgs
+  contract_masters            = each.value.contract_masters
+  physical_domains            = each.value.physical_domains
+  match_type                  = each.value.useg_attributes_match_type
+  ip_statements               = each.value.useg_attributes_ip_statements
+  mac_statements              = each.value.useg_attributes_mac_statements
+  subnets                     = each.value.subnets
+  vmware_vmm_domains          = each.value.vmware_vmm_domains
+  static_leafs = [for sl in try(each.value.static_leafs, []) : {
+    pod_id  = sl.pod_id == null ? try([for node in try(local.node_policies.nodes, []) : node.pod if node.id == sl.node_id][0], local.defaults.apic.node_policies.nodes.pod) : sl.pod_id
+    node_id = sl.node_id
+  }]
+  l4l7_address_pools = each.value.l4l7_address_pools
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_application_profile,
+    module.aci_endpoint_group,
+    module.aci_bridge_domain,
+    module.aci_contract,
+    module.aci_imported_contract,
+    module.aci_vmware_vmm_domain,
+  ]
+}
+
+locals {
   endpoint_security_groups = flatten([
     for tenant in local.tenants : [
       for ap in try(tenant.application_profiles, []) : [

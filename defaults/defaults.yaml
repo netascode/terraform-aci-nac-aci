@@ -997,6 +997,35 @@ defaults:
               name_suffix: ""
               start_ip: 0.0.0.0
               end_ip: 0.0.0.0
+        useg_endpoint_groups:
+          name_suffix: ""
+          flood_in_encap: false
+          intra_epg_isolation: false
+          preferred_group: false
+          qos_class: level3
+          vmware_vmm_domains:
+            name_suffix: ""
+            deployment_immediacy: immediate
+            netflow: false
+          useg_attributes:
+            match_type: any
+            ip_statements:
+              use_epg_subnet: true
+          subnets:
+            primary_ip: false
+            public: false
+            private: true
+            shared: false
+            igmp_querier: false
+            nd_ra_prefix: true
+            no_default_gateway: false
+            virtual: false
+            nlb_group: 0.0.0.0
+            nlb_mac: 00:00:00:00:00:00
+            ip_pools:
+              name_suffix: ""
+              start_ip: 0.0.0.0
+              end_ip: 0.0.0.0
         endpoint_security_groups:
           name_suffix: ""
           shutdown: false

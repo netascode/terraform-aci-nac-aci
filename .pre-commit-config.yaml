@@ -190,6 +190,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-endpoint-group/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-useg-endpoint-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-useg-endpoint-group/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-endpoint-loop-protection"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-endpoint-loop-protection/examples/complete"]
