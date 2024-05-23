@@ -10,7 +10,7 @@ class Rule:
             ptp_profiles = inventory["apic"]["access_policies"]["ptp_profiles"]
 
             for ptp in ptp_profiles:
-                if ptp.get("template","aes67") == "aes67":
+                if ptp.get("template", "aes67") == "aes67":
                     if not 0 <= ptp.get("announce_interval", 1) <= 4:
                         results.append(
                             "apic.access_policies.ptp_profiles.announce_interval - "
@@ -38,8 +38,8 @@ class Rule:
                             + ptp.get("name")
                             + " is using AES67 where timeout is not in the range of 2 to 10."
                         )
-                        
-                elif ptp.get("template","aes67") == "smpte":
+
+                elif ptp.get("template", "aes67") == "smpte":
 
                     if not -3 <= ptp.get("announce_interval", 1) <= 1:
                         results.append(
@@ -69,22 +69,22 @@ class Rule:
                             + " is using SMPTE where timeout is not in the range of 2 to 10."
                         )
 
-                elif ptp.get("template","aes67") == "telecom":
-                    if ptp.get("announce_interval",1) != -3:
+                elif ptp.get("template", "aes67") == "telecom":
+                    if ptp.get("announce_interval", 1) != -3:
                         results.append(
                             "apic.access_policies.ptp_profiles.announce_interval - "
                             + ptp.get("name")
                             + " is using Telecom G.8275.1 where delay can only be -3."
                         )
-                    
-                    if ptp.get("delay_interval",-3) != -4:
+
+                    if ptp.get("delay_interval", -3) != -4:
                         results.append(
                             "apic.access_policies.ptp_profiles.delay_interval - "
                             + ptp.get("name")
                             + " is using Telecom G.8275.1 where delay can only be -4."
                         )
 
-                    if ptp.get("delay_interval",-3) != -4:
+                    if ptp.get("delay_interval", -3) != -4:
                         results.append(
                             "apic.access_policies.ptp_profiles.sync_interval - "
                             + ptp.get("name")
