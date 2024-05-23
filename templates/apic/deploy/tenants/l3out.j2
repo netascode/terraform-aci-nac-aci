@@ -1907,9 +1907,8 @@
 
                                 ]
                             }
-                        },
-                        {%- endfor %}
-
+                        }
+                        {%- endfor %}{{ comma2() }}
                         {
                             "bgpExtP": {
                                 "attributes": {
@@ -1917,7 +1916,7 @@
                                     "dn": "uni/tn-infra/out-{{ l3out_name }}/bgpExtP"
                                 }
                             }
-                        },
+                        }{{ comma2() }}
                         {% set domain_name = l3out.domain ~ defaults.apic.access_policies.routed_domains.name_suffix %}
                         {
                             "l3extRsL3DomAtt": {
@@ -1927,7 +1926,7 @@
                                     "tDn": "uni/l3dom-{{ domain_name }}"
                                 }
                             }
-                        },
+                        }{{ comma2() }}
                         {
                             "l3extRsEctx": {
                                 "attributes": {
@@ -1936,7 +1935,7 @@
                                     "tnFvCtxName": "overlay-1"
                                 }
                             }
-                        },
+                        }{{ comma2() }}
                         {
                             "l3extProvLbl": {
                                 "attributes": {
@@ -1947,8 +1946,7 @@
                             }
                         }
                         {%- else %}
-                        {%- set vrf_name = l3out.vrf ~ defaults.apic.tenants.vrfs.name_suffix %}
-
+                        {%- set vrf_name = l3out.vrf ~ defaults.apic.tenants.vrfs.name_suffix %}{{ comma2() }}
                         {
                             "l3extRsEctx": {
                                 "attributes": {
@@ -1958,7 +1956,6 @@
                                 }
                             }
                         }
-                        
                         {%- for infra_l3out in l3out.sr_mpls_infra_l3outs | default([]) %}
                         {%- set infra_l3out_name = infra_l3out.name ~ defaults.apic.tenants.sr_mpls_l3outs.name_suffix %}{{ comma2() }}
                         {
