@@ -216,6 +216,8 @@ nav:
               - OOB Contract: data_model/apic/tenants/oob_contract.md
               - MPLS Custom QoS Policy: data_model/apic/tenants/mpls_custom_qos_policy.md
               - BFD Multihop Policy: data_model/apic/tenants/bfd_multihop_node_policy.md
+              - Track List: data_model/apic/tenants/track_list.md
+              - Track Member: data_model/apic/tenants/track_member.md
       - NDO:
           - Overview: data_model/ndo_overview.md
           - Support Matrix: data_model/ndo_support_matrix.md

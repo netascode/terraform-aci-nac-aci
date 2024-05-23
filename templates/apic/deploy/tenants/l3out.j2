@@ -91,6 +91,16 @@
                                                                 }
                                                             }
                                                             {%- endfor %}
+                                                            {%- if sr.track_list is defined %}{{ comma5() }}
+                                                            {
+                                                                "ipRsRouteTrack": {
+                                                                    "attributes": {
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tDn": "uni/tn-{{ tenant.name }}/tracklist-{{ sr.track_list }}"
+                                                                    }
+                                                                }
+                                                            }
+                                                            {%- endif %}
 
                                                         ]
                                                     }
@@ -718,6 +728,16 @@
                                                                 }
                                                             }
                                                             {%- endfor %}
+                                                            {%- if sr.track_list is defined %}{{ comma5() }}
+                                                            {
+                                                                "ipRsRouteTrack": {
+                                                                    "attributes": {
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tDn": "uni/tn-{{ tenant.name }}/tracklist-{{ sr.track_list }}"
+                                                                    }
+                                                                }
+                                                            }
+                                                            {%- endif %}
 
                                                         ]
                                                     }

@@ -2224,6 +2224,7 @@ ten_l3outs_nodes_static_routes:
   preference: int(min=1, max=255, required=False)
   bfd: any(bool(), enum('enabled', 'disabled'), required=False)
   next_hops: list(include('ten_l3outs_nodes_static_routes_next_hops'), required=False) # @name(L3out Node SRoute Next Hops)
+  track_list: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_nodes_static_routes_next_hops:
   ip: ip()
@@ -2347,6 +2348,7 @@ ten_l3outs_node_profiles_nodes_static_routes:
   preference: int(min=1, max=255, required=False)
   bfd: any(bool(), enum('enabled', 'disabled'), required=False)
   next_hops: list(include('ten_l3outs_node_profiles_nodes_static_routes_next_hops'), required=False) # @name(L3out NP Node SRoute Next Hops) @sheet_hidden()
+  track_list: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_node_profiles_nodes_static_routes_next_hops:
   ip: ip()
@@ -2739,6 +2741,8 @@ ten_policies:
   bfd_multihop_node_policies: list(include('ten_bfd_multihop_node_policies'), required=False) # @sheet_hidden()
   nd_interface_policies: list(include('ten_nd_interface_policies'), required=False) # @sheet_hidden()
   nd_ra_prefix_policies: list(include('ten_nd_ra_prefix_policies'), required=False) # @sheet_hidden()
+  track_lists: list(include('ten_track_lists'), required=False) # @sheet_hidden()
+  track_members: list(include('ten_track_members'), required=False) # @sheet_hidden()
 
 ten_ospf_interface_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -3179,6 +3183,24 @@ ten_nd_ra_prefix_policies_expected_state:
   maximum_critical_faults: int(min=0, required=False)
   maximum_major_faults: int(min=0, required=False)
   maximum_minor_faults: int(min=0, required=False)
+
+ten_track_lists:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  type: enum('percentage', 'weight', required=False)
+  percentage_up: int(min=0, max=100, required=False)
+  percentage_down: int(min=0, max=100, required=False)
+  weight_up: int(min=0, max=255, required=False)
+  weight_down: int(min=0, max=255, required=False)
+  track_members: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False)
+
+ten_track_members:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  destination_ip: ip()
+  scope_type: enum('l3out','bd')
+  scope: str()
+  ip_sla_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$')
 
 ten_services:
   l4l7_devices: list(include('ten_ser_l4l7_devices'), required=False) # @ref_name(L4L7 Device) @sheet_hidden()

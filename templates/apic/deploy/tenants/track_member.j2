@@ -1,0 +1,44 @@
+{# iterate_list apic.tenants name item[2] #}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for member in tenant.policies.track_members | default([]) %}{{ comma1() }}
+            {
+                "fvTrackMember": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ member.name }}",
+                        "dn": "uni/tn-{{ tenant.name }}/trackmember-{{ member.name }}",
+                        "descr": "{{ member.description | default() }}",
+                        "dstIpAddr": "{{ member.destination_ip }}",
+                        {% if member.scope_type == "l3out" %}
+                        "scopeDn": "uni/tn-{{ tenant.name }}/out-{{ member.scope }}"
+                        {% elif member.scope_type == "bd" %}
+                        "scopeDn": "uni/tn-{{ tenant.name }}/BD-{{ member.scope }}"
+                        {% endif %}
+                    },
+                    "children": [
+                        {
+                            "fvRsIpslaMonPol": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "tDn": "uni/tn-{{ tenant.name }}/ipslaMonitoringPol-{{ member.ip_sla_policy }}"
+                                }
+                            }
+                        }
+
+                    ]
+                }
+            }
+
+            {%- endfor %}
+
+        ]
+    }
+}

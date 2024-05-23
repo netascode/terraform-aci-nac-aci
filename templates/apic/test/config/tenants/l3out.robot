@@ -121,6 +121,9 @@ Verify L3out {{ l3out_name }} Node {{ node.node_id }} Static Route {{ sr.prefix 
     Should Be Equal Value Json String   ${r.json()}   ${route}..ipRouteP.attributes.descr   {{ sr.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${route}..ipRouteP.attributes.pref   {{ sr.preference | default(defaults.apic.tenants.l3outs.nodes.static_routes.preference) }}
     Should Be Equal Value Json String   ${r.json()}   ${route}..ipRouteP.attributes.rtCtrl   {% if sr.bfd | default(defaults.apic.tenants.l3outs.nodes.static_routes.bfd) | cisco.aac.aac_bool("enabled") == "enabled" %}bfd{% endif %} 
+{% if sr.track_list is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${route}..ipRsRouteTrack.attributes.tDn  uni/tn-{{ tenant.name }}/tracklist-{{ sr.track_list}}
+{% endif %}
 
 {% for nh in sr.next_hops | default([]) %}
 
@@ -409,6 +412,9 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Node {{ node.node
     Should Be Equal Value Json String   ${r.json()}   ${route}..ipRouteP.attributes.descr   {{ sr.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${route}..ipRouteP.attributes.pref   {{ sr.preference | default(defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.preference) }}
     Should Be Equal Value Json String   ${r.json()}   ${route}..ipRouteP.attributes.rtCtrl   {% if sr.bfd | default(defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd) | cisco.aac.aac_bool("enabled") == "enabled" %}bfd{% endif %} 
+{% if sr.track_list is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${route}..ipRsRouteTrack.attributes.tDn  uni/tn-{{ tenant.name }}/tracklist-{{ sr.track_list}}
+{% endif %}
 
 {% for nh in sr.next_hops | default([]) %}
 

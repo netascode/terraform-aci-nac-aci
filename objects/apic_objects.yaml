@@ -1883,6 +1883,30 @@ tenant_objects:
       - config
     paths:
       - apic.tenants.policies.nd_ra_prefix_policies
+  - name: Track List
+    template: track_list
+    folder: tenants
+    aci_classes:
+      - fvTrackList
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.track_lists
+  - name: Track Member
+    template: track_member
+    folder: tenants
+    aci_classes:
+      - fvTrackMember
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.track_members
 
 test_objects:
   - name: System

@@ -40,6 +40,7 @@ apic:
                   description: My Desc
                   next_hops:
                     - ip: 6.6.6.6
+                  track_list: TRACK_POL
               interfaces:
                 - node_id: 101
                   port: 10

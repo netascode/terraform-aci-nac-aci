@@ -1316,6 +1316,13 @@ defaults:
           auto_configuration: true
           on_link: true
           router_address: false
+        track_lists:
+          name_suffix: ""
+          type: percentage
+          percentage_up: 0
+          percentage_down: 1
+          weight_up: 0
+          weight_down: 1
       services:
         l4l7_devices:
           name_suffix: ""

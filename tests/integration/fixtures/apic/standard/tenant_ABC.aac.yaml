@@ -215,6 +215,7 @@ apic:
                       preference: 2
                       type: prefix
                     - ip: 7.1.1.1
+                  track_list: TRACK_LIST_1
               interfaces:
                 - port: 10
                   description: My Desc
@@ -1049,6 +1050,25 @@ apic:
             reachable_time: 10000
             retransmit_timer: 20
           - name: ND_INT2
+        track_lists:
+          - name: TRACK_LIST_1
+            type: percentage
+            percentage_up: 10
+            percentage_down: 2
+            track_members:
+              - TRACK_MEM1
+              - TRACK_MEM2
+        track_members:
+          - name: TRACK_MEM1
+            destination_ip: 10.2.3.4
+            scope_type: l3out
+            scope: L3OUT1
+            ip_sla_policy: EXAMPLE
+          - name: TRACK_MEM2
+            destination_ip: 1.2.3.4
+            scope_type: bd
+            scope: BD1
+            ip_sla_policy: EXAMPLE
       services:
         l4l7_devices:
           - name: DEV1

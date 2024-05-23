@@ -1,0 +1,47 @@
+{# iterate_list apic.tenants name item[2] #}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for track_list in tenant.policies.track_lists | default([]) %}{{ comma1() }}
+            {% set list_name = track_list.name ~ defaults.apic.tenants.policies.track_lists.name_suffix %}
+            {
+                "fvTrackList": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ list_name }}",
+                        "dn": "uni/tn-{{ tenant.name }}/tracklist-{{ list_name }}",
+                        "descr": "{{ track_list.description | default() }}",
+                        "percentageDown": "{{ track_list.percentage_down | default(defaults.apic.tenants.policies.track_lists.percentage_down) }}",
+                        "percentageUp": "{{ track_list.percentage_up | default(defaults.apic.tenants.policies.track_lists.percentage_up) }}",
+                        "type": "{{ track_list.type | default(defaults.apic.tenants.policies.track_lists.type) }}",
+                        "weightDown": "{{ track_list.weight_down | default(defaults.apic.tenants.policies.track_lists.weight_down) }}",
+                        "weightUp": "{{ track_list.weight_up | default(defaults.apic.tenants.policies.track_lists.weight_up) }}"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for member in track_list.track_members | default([]) %}{{ comma2() }}
+                        {
+                            "fvRsOtmListMember": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "tDn": "uni/tn-{{ tenant.name }}/trackmember-{{ member }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+
+            {%- endfor %}
+
+        ]
+    }
+}

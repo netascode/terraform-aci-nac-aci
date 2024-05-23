@@ -12,7 +12,7 @@ apic:
   tenants:
     - name: ABC
       policies:
-        nd_ra prefix_policies:
+        nd_ra_prefix_policies:
           - name: ND-RA-PREFIX1
             auto_configuration: true
             on_link: true
