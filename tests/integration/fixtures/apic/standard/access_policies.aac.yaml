@@ -377,7 +377,7 @@ apic:
           broadcast_rate: "20.000000"
         - name: 30P
           rate: "30.000000"
-          burst_rate: "40.00000"
+          burst_rate: "40.000000"
 
     spine_interface_policy_groups:
       - name: IPN1
