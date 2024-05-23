@@ -231,7 +231,7 @@ resource "aci_rest_managed" "fvRsDomAtt" {
 }
 
 resource "aci_rest_managed" "fvRsNodeAtt" {
-  for_each   = { for sp in var.static_leafs : "${sp.node_id}" => sp }
+  for_each   = { for sp in var.static_leafs : sp.node_id => sp }
   dn         = "${aci_rest_managed.fvAEPg.dn}/rsnodeAtt-[${format("topology/pod-%s/node-%s", each.value.pod_id, each.value.node_id)}]"
   class_name = "fvRsNodeAtt"
   content = {
