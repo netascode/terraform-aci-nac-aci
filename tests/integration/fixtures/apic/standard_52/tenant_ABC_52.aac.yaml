@@ -149,3 +149,6 @@ apic:
             router_lifetime: 1000
             reachable_time: 10000
             retransmit_timer: 20
+        set_rules:
+          - name: SET3
+            multipath: true

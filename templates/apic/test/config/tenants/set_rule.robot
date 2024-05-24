@@ -51,7 +51,7 @@ Verify Set Rule {{ rule_name }}
     Should Be Equal Value Json String   ${r.json()}   $..rtctrlSetASPathASN.attributes.order   {{ rule.set_as_path.order | default(defaults.apic.tenants.policies.set_rules.set_as_path.order) }}
 {% endif %}
 {% endif %}
-{% if rule.next_hop_propagation | default(defaults.apic.tenants.policies.set_rules.next_hop_propagation) | cisco.aac.aac_bool("enabled") == 'enabled' %}
+{% if (rule.next_hop_propagation | default(defaults.apic.tenants.policies.set_rules.next_hop_propagation) | cisco.aac.aac_bool("enabled") == 'enabled') or (rule.multipath | default(defaults.apic.tenants.policies.set_rules.multipath) | cisco.aac.aac_bool("enabled") == 'enabled') %}
     Should Be Equal Value Json String   ${r.json()}   $..rtctrlSetNhUnchanged.attributes.type   nh-unchanged
 {% endif %}
 {% if rule.multipath | default(defaults.apic.tenants.policies.set_rules.multipath) | cisco.aac.aac_bool("enabled") == 'enabled' %}
