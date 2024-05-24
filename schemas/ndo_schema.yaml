@@ -245,6 +245,7 @@ t_ap_epg_sites_vmware_vmm_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   deployment_immediacy: enum('immediate', 'lazy', required=False)
   resolution_immediacy: enum('immediate', 'lazy', 'pre-provision', required=False)
+  custom_epg_name: regex('^.{1,80}$', required=False)
   vlan_mode: enum('static', 'dynamic', required=False)
   vlan: int(min=1, max=4096, required=False)
   u_segmentation: any(bool(), enum('enabled', 'disabled'), required=False)

@@ -572,6 +572,9 @@
                                     "domainType": "vmmDomain",
                                     "deployImmediacy": "{{ vmm.deployment_immediacy | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.deployment_immediacy) }}",
                                     "resolutionImmediacy": "{{ vmm.resolution_immediacy | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.resolution_immediacy) }}",
+                                    {% if vmm.custom_epg_name is defined %}
+                                    "customEpgName": "{{ vmm.custom_epg_name  }}",
+                                    {% endif %}
                                     "vlanEncapMode": "{{ vmm.vlan_mode | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.vlan_mode) }}",
                                     {% if vmm.vlan_mode | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.vlan_mode) == "static" %}
                                     "portEncapVlan": {

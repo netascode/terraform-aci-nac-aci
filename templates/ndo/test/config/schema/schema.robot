@@ -118,6 +118,9 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
     Should Be Equal Value Json String   ${r.json()}   ${vmm}.portEncapVlan.vlan   {{ vmm.vlan }}
     Should Be Equal Value Json String   ${r.json()}   ${vmm}.portEncapVlan.vlanType   vlan
 {% endif %}
+{% if vmm.custom_epg_name is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${vmm}.customEpgName   {{ vmm.custom_epg_name }}
+{% endif %}
 {% if vmm.u_segmentation | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.u_segmentation) | cisco.aac.aac_bool(True) %}
     Should Be Equal Value Json Boolean   ${r.json()}   ${vmm}.allowMicroSegmentation   True
 {% if vmm.vlan_mode | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.vmware_vmm_domains.vlan_mode) == 'static' %}

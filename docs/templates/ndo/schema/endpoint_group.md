@@ -51,6 +51,7 @@ ndo:
                         - name: ANS-VMM1
                           deployment_immediacy: lazy
                           resolution_immediacy: immediate
+                          custom_epg_name: aci_epg1
                           vlan_mode: static
                           vlan: 123
                           u_segmentation: true
