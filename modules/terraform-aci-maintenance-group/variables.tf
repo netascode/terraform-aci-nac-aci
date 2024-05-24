@@ -14,7 +14,7 @@ variable "target_version" {
   default     = ""
 
   validation {
-    condition     = can(regex("n\\d+-\\d+\\.\\d+\\(\\w+\\)", var.name))
+    condition     = can(regex("n\\d+-\\d+\\.\\d+\\(\\w+\\)", var.target_version))
     error_message = "Invalid version number."
   }
 }
