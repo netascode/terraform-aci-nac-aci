@@ -76,8 +76,9 @@ Verify Access Leaf Switch Profile {{ leaf_switch_profile_name }} Selector {{ lea
 {% for intp in prof.interface_profiles | default([]) %}
 {% set leaf_interface_profile_name = intp ~ defaults.apic.access_policies.leaf_interface_profiles.name_suffix %}
 
-Verify Access Leaf Switch Profile {{ leaf_switch_profile_name }} Interface Profile
-    Should Be Equal Value Json String   ${r.json()}    $..infraRsAccPortP.attributes.tDn   uni/infra/accportprof-{{ leaf_interface_profile_name }}
+Verify Access Leaf Switch Profile {{ leaf_switch_profile_name }} Interface Profile {{ leaf_interface_profile_name }}
+    ${block}=   Get Value From Json    ${r.json()}    $..infraNodeP.children[?(@.infraRsAccPortP.attributes.tDn=='uni/infra/accportprof-{{ leaf_interface_profile_name }}')]
+    Should Be Equal Value Json String   ${block}   $..infraRsAccPortP.attributes.tDn   uni/infra/accportprof-{{ leaf_interface_profile_name }}
 
 {% endfor %}
 {% endfor %}
