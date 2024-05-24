@@ -22,8 +22,8 @@ Verify Firmware Group {{ update_group_name }}
 {% if node.update_group is defined and node.update_group == update_group_name %}
 
 Verify Firmware Group {{ update_group_name }} Node {{ node.id }}
-    ${node}=   Set Variable   $..firmwareFwGrp.children[?(@.fabricNodeBlk.attributes.name=='{{ node.id }}')]
-    Should Be Equal Value Json String   ${r.json()}    ${node}..fabricNodeBlk.attributes.name   {{ node.id }}
+    ${node}=   Set Variable   $..firmwareFwGrp.children[?(@.fabricNodeBlk.attributes.name=='blk{{ node.id }}-{{ node.id }}')]
+    Should Be Equal Value Json String   ${r.json()}    ${node}..fabricNodeBlk.attributes.name   blk{{ node.id }}-{{ node.id }}
     Should Be Equal Value Json String   ${r.json()}    ${node}..fabricNodeBlk.attributes.from_   {{ node.id }}
     Should Be Equal Value Json String   ${r.json()}    ${node}..fabricNodeBlk.attributes.to_   {{ node.id }}
 
