@@ -111,6 +111,9 @@
                     "ipDataPlaneLearning": "{{ vrf.data_plane_learning | default(defaults.ndo.schemas.templates.vrfs.data_plane_learning) | cisco.aac.aac_bool("enabled") }}",
                     "preferredGroup": {% if vrf.preferred_group | default(defaults.ndo.schemas.templates.vrfs.preferred_group) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     "l3MCast": {% if vrf.l3_multicast | default(defaults.ndo.schemas.templates.vrfs.l3_multicast) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                    {% if vrf.site_aware_policy_enforcement is defined %}
+                    "siteAwarePolicyEnforcementMode": {% if vrf.site_aware_policy_enforcement %}true{% else %}false{% endif %},
+                    {% endif %}                    
                     "vzAnyEnabled": {% if vrf.vzany | default(defaults.ndo.schemas.templates.vrfs.vzany) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     "vzAnyConsumerContracts": [
                         {% set comma3 = joiner(",") %}

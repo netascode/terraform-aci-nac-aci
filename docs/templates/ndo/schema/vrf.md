@@ -21,6 +21,7 @@ ndo:
               preferred_group: false
               l3_multicast: true
               vzany: true
+              site_aware_policy_enforcement: true
               contracts:
                 consumers:
                   - name: CONTRACT2

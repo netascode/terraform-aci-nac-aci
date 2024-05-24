@@ -297,6 +297,7 @@ t_vrfs:
   vzany: any(bool(), enum('enabled', 'disabled'), required=False)
   sites: list(include('t_vrf_sites'), required=False) # @name(VRF Sites) @ref_name(Site)
   contracts: include('t_vrfs_contracts', required=False) # @flatten()
+  site_aware_policy_enforcement: bool(required=False)
 
 t_vrfs_contracts:
   consumers: list(include('t_vrfs_contracts_consumers'), required=False) # @name(VRF Consumers)

@@ -222,6 +222,9 @@ Verify Schema {{ schema.name }} Template {{ template.name }} VRF {{ vrf_name }}
     Should Be Equal Value Json String   ${r.json()}   ${vrf}.ipDataPlaneLearning   {{ vrf.data_plane_learning | default(defaults.ndo.schemas.templates.vrfs.data_plane_learning) | cisco.aac.aac_bool("enabled") }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.preferredGroup   {{ vrf.preferred_group | default(defaults.ndo.schemas.templates.vrfs.preferred_group) | cisco.aac.aac_bool(True) }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.l3MCast   {{ vrf.l3_multicast | default(defaults.ndo.schemas.templates.vrfs.l3_multicast) | cisco.aac.aac_bool(True) }}
+    {% if vrf.site_aware_policy_enforcement is defined %}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.siteAwarePolicyEnforcementMode   {{ vrf.site_aware_policy_enforcement }}
+    {% endif %}
     Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.vzAnyEnabled   {{ vrf.vzany | default(defaults.ndo.schemas.templates.vrfs.vzany) | cisco.aac.aac_bool(True) }}
 {% for contract in vrf.contracts.consumers | default([]) %}
 {% set contract_name = contract.name ~ defaults.ndo.schemas.templates.contracts.name_suffix %}

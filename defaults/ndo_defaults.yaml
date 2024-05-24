@@ -106,6 +106,7 @@ defaults:
           preferred_group: false
           l3_multicast: false
           vzany: false
+          site_aware_policy_enforcement: false
           sites:
             regions:
               vpn_gateway: false
