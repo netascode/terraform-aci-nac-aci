@@ -26,13 +26,13 @@ variable "auto" {
 }
 
 variable "fec_mode" {
-  description = "Forward error correction (FEC) mode. Choices: `inherit`, `cl91-rs-fec`, `cl74-fc-fec`, `ieee-rs-fec`, `cons16-rs-fec`, `disable-fec`."
+  description = "Forward error correction (FEC) mode. Choices: `inherit`, `cl91-rs-fec`, `cl74-fc-fec`, `ieee-rs-fec`, `cons16-rs-fec`, `disable-fec`, `auto-fec`."
   type        = string
   default     = "inherit"
 
   validation {
-    condition     = contains(["inherit", "cl91-rs-fec", "cl74-fc-fec", "ieee-rs-fec", "cons16-rs-fec", "disable-fec"], var.fec_mode)
-    error_message = "Allowed values: `inherit`, `cl91-rs-fec`, `cl74-fc-fec`, `ieee-rs-fec`, `cons16-rs-fec`, `disable-fec`."
+    condition     = contains(["inherit", "cl91-rs-fec", "cl74-fc-fec", "ieee-rs-fec", "cons16-rs-fec", "disable-fec", "auto-fec"], var.fec_mode)
+    error_message = "Allowed values: `inherit`, `cl91-rs-fec`, `cl74-fc-fec`, `ieee-rs-fec`, `cons16-rs-fec`, `disable-fec`, `auto-fec`."
   }
 }
 
