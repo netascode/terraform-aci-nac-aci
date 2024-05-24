@@ -7,6 +7,7 @@ resource "aci_rest_managed" "maintMaintP" {
     graceful  = "no"
     notifCond = "notifyOnlyOnFailures"
     runMode   = "pauseOnlyOnFailures"
+    version   = var.target_version != "" ? var.target_version : null
   }
 }
 
