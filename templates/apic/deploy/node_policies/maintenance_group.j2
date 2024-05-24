@@ -14,6 +14,9 @@
                         "adminSt": "untriggered",
                         "graceful": "no",
                         "name": "{{ update_group_name }}",
+                        {% if group.target_version is defined %}
+                        "version": "{{ group.target_version }}",
+                        {% endif %}
                         "dn": "uni/fabric/maintpol-{{ update_group_name }}",
                         "notifCond": "notifyOnlyOnFailures",
                         "runMode": "pauseOnlyOnFailures"
@@ -23,7 +26,7 @@
                             "maintRsPolScheduler": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
-                                    {% if group.scheduler is defined%}
+                                    {% if group.scheduler is defined %}
                                         {% set scheduler_name = group.scheduler ~ defaults.apic.fabric_policies.schedulers.name_suffix %}
                                     {% endif %}
                                     "tnTrigSchedPName": "{{ group.scheduler_name | default(defaults.apic.node_policies.update_groups.scheduler) }}"

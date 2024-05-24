@@ -1611,6 +1611,7 @@ np_expected_state:
 np_update_group:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   scheduler: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  target_version: regex('n\d+-\d+\.\d+\(\w+\)', required=False)
 
 np_vpc_group:
   mode: enum('explicit', 'consecutive', 'reciprocal', required=False)

@@ -11,6 +11,11 @@ Resource        ../../apic_common.resource
 Verify Maintenance Policy {{ update_group_name }}
     ${r}=   GET On Session   apic   /api/mo/uni/fabric/maintpol-{{ update_group_name }}.json   params=rsp-subtree=full
     Should Be Equal Value Json String   ${r.json()}    $..maintMaintP.attributes.name   {{ update_group_name }}
+
+{% if group.target_version is defined%}
+    Should Be Equal Value Json String   ${r.json()}    $..maintMaintP.attributes.target_version   {{ group.target_version }}
+{% endif %}
+
 {% if group.scheduler is defined%}
     {% set scheduler_name = group.scheduler ~ defaults.apic.fabric_policies.schedulers.name_suffix %}
 {% endif %}
