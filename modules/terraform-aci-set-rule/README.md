@@ -34,12 +34,17 @@ module "aci_set_rule" {
       description = "My Community"
     }
   ]
-  set_as_path          = true
-  set_as_path_criteria = "prepend"
-  set_as_path_count    = 0
-  set_as_path_asn      = 65001
-  set_as_path_order    = 5
-
+  set_as_paths = [
+    {
+      criteria = "prepend"
+      asns = [
+        {
+          number = 65001
+          order  = 5
+        }
+      ]
+    }
+  ]
   next_hop_propagation = true
   multipath            = true
 }
@@ -79,11 +84,7 @@ module "aci_set_rule" {
 | <a name="input_metric"></a> [metric](#input\_metric) | Metric. Allowed values `metric`: 0-4294967295. | `number` | `null` | no |
 | <a name="input_metric_type"></a> [metric\_type](#input\_metric\_type) | Metric Type. Choice `metric_type`: `ospf-type1` or `ospf-type1`. | `string` | `""` | no |
 | <a name="input_additional_communities"></a> [additional\_communities](#input\_additional\_communities) | Additional communities. | <pre>list(object({<br>    community   = string<br>    description = optional(string, "")<br>  }))</pre> | `[]` | no |
-| <a name="input_set_as_path"></a> [set\_as\_path](#input\_set\_as\_path) | AS-Path Set. Flag to set AS Path. | `bool` | `false` | no |
-| <a name="input_set_as_path_criteria"></a> [set\_as\_path\_criteria](#input\_set\_as\_path\_criteria) | AS-PATH Criteria. Choices `set_as_path_criteria`: `prepend` or `prepend-last-as`. | `string` | `"prepend"` | no |
-| <a name="input_set_as_path_count"></a> [set\_as\_path\_count](#input\_set\_as\_path\_count) | AS-PATH Count. Allowed values `set_as_path_count`: 0-10. | `number` | `1` | no |
-| <a name="input_set_as_path_order"></a> [set\_as\_path\_order](#input\_set\_as\_path\_order) | AS-PATH Order. Allowed values `set_as_path_order`: 0-31. | `number` | `0` | no |
-| <a name="input_set_as_path_asn"></a> [set\_as\_path\_asn](#input\_set\_as\_path\_asn) | AS-PATH ASN. Allowed values `set_as_path_asn`: 0-65535. | `number` | `null` | no |
+| <a name="input_set_as_paths"></a> [set\_as\_paths](#input\_set\_as\_paths) | AS-Path Set List. | <pre>list(object({<br>    criteria = optional(string, "prepend")<br>    count    = optional(number, 1)<br>    asns = list(object({<br>      order      = optional(number, 0)<br>      asn_number = number<br>    }))<br>  }))</pre> | `[]` | no |
 | <a name="input_next_hop_propagation"></a> [next\_hop\_propagation](#input\_next\_hop\_propagation) | Next Hop Propagation. | `bool` | `false` | no |
 | <a name="input_multipath"></a> [multipath](#input\_multipath) | Multipath. | `bool` | `false` | no |
 | <a name="input_external_endpoint_group"></a> [external\_endpoint\_group](#input\_external\_endpoint\_group) | External endpoint group name. | `string` | `""` | no |
