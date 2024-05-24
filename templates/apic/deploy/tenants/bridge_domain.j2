@@ -86,7 +86,10 @@
                                     "ip": "{{ subnet.ip }}",
                                     "preferred": "{{ subnet.primary_ip | default(defaults.apic.tenants.bridge_domains.subnets.primary_ip) | cisco.aac.aac_bool("yes") }}",
                                     "scope": "{{ scope | join(',') }}",
-                                    "virtual": "{{ subnet.virtual | default(defaults.apic.tenants.bridge_domains.subnets.virtual) | cisco.aac.aac_bool("yes") }}"
+                                    {%- if subnet.ip_dataplane_learning is defined %}
+                                    "ipDPLearning": "{{ 'enabled' if subnet.ip_dataplane_learning else 'disabled' }}",
+                                    {%- endif %}
+                                    "virtual": "{{ subnet.virtual | default(defaults.apic.tenants.bridge_domains.subnets.virtual) | cisco.aac.aac_bool("yes") }}"                                    
                                 }
                                 {%- if subnet.nd_ra_prefix_policy is defined %},
                                 {%- set nd_ra_prefix_policy_name = subnet.nd_ra_prefix_policy ~ defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix %}

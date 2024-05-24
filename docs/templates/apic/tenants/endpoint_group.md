@@ -120,6 +120,7 @@ apic:
                   nd_ra_prefix: true
                   no_default_gateway: true
                   nd_ra_prefix_policy: ND-RA-PREFIX1
+                  ip_dataplane_learning: false
               tags:
                 - tag1
                 - tag2

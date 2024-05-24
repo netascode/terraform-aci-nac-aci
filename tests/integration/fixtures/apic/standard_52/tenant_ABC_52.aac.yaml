@@ -28,6 +28,9 @@ apic:
           l3_multicast: true
           pim_source_filter: TEST_MRM1
           pim_destination_filter: TEST_MRM1
+          subnets:
+            - ip: 198.168.1.254/24
+              ip_dataplane_learning: false
       application_profiles:
         - name: AP1
           endpoint_groups:

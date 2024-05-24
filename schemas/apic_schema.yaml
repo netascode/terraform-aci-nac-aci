@@ -1864,6 +1864,7 @@ ten_bridge_domain_subnets:
   nd_ra_prefix: any(bool(), enum('yes', 'no'), required=False)
   no_default_gateway: any(bool(), enum('yes', 'no'), required=False)
   nd_ra_prefix_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  ip_dataplane_learning: bool(required=False)
 
 ten_bridge_domain_expected_state:
   minimum_health: int(min=0, max=100, required=False)
@@ -1980,6 +1981,7 @@ ten_ap_endpoint_groups_subnets:
   nlb_mac: mac(required=False)
   ip_pools: list(include('ten_ap_endpoint_groups_subnets_ip_address_pools'), required=False) # @name(EPG Subnet IP Pools) @sheet_hidden()
   nd_ra_prefix_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  ip_dataplane_learning: bool(required=False)
 
 ten_ap_endpoint_groups_subnets_ip_address_pools:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

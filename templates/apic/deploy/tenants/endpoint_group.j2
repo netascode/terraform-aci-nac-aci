@@ -385,6 +385,9 @@
                                                 "ip": "{{ subnet.ip }}",
                                                 "scope": "{{ scope | join(',') }}",
                                                 "virtual": "{{ subnet.virtual | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.virtual) | cisco.aac.aac_bool("yes") }}",
+                                                {%- if subnet.ip_dataplane_learning is defined %}
+                                                "ipDPLearning": "{{ 'enabled' if subnet.ip_dataplane_learning else 'disabled' }}",
+                                                {%- endif %}                                                
                                                 "childAction": "deleteNonPresent"
                                             },
                                             "children": [

@@ -67,6 +67,7 @@ apic:
               nd_ra_prefix: true
               no_default_gateway: false
               nd_ra_prefix_policy: ND-RA-PREFIX1
+              ip_dataplane_learning: false
           l3outs:
             - L3OUT1
           dhcp_labels:

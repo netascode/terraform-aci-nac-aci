@@ -279,6 +279,9 @@ Verify Endpoint Group {{ epg_name }} Subnet {{ subnet.ip }}
     Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.attributes.descr   {{ subnet.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.attributes.scope   {{ scope | join(',') }}
     Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.attributes.virtual   {{ subnet.virtual | default(defaults.apic.tenants.application_profiles.endpoint_groups.subnets.virtual) | cisco.aac.aac_bool("yes") }}           
+{% if subnet.ip_dataplane_learning is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}..fvSubnet.attributes.ipDPLearning   {{ 'enabled' if subnet.ip_dataplane_learning else 'disabled' }}
+{% endif %}
 {% if subnet.next_hop_ip is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${subnet}..ipNexthopEpP.attributes.nhAddr   {{ subnet.next_hop_ip }} 
 {% elif subnet.anycast_mac is defined %}
