@@ -38,7 +38,7 @@ module "aci_routed_domain" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Routed domain name. | `string` | n/a | yes |
-| <a name="input_vlan_pool"></a> [vlan\_pool](#input\_vlan\_pool) | Vlan pool name. | `string` | n/a | no |
+| <a name="input_vlan_pool"></a> [vlan\_pool](#input\_vlan\_pool) | Vlan pool name. | `string` | `""` | no |
 | <a name="input_vlan_pool_allocation"></a> [vlan\_pool\_allocation](#input\_vlan\_pool\_allocation) | Vlan pool allocation mode. Choices: `static`, `dynamic`. | `string` | `"static"` | no |
 | <a name="input_security_domains"></a> [security\_domains](#input\_security\_domains) | Security domains associated to routed domain | `list(string)` | `[]` | no |
 
