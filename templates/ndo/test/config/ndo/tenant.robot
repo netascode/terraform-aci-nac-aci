@@ -34,8 +34,8 @@ Verify Tenant {{ tenant.name }} Site {{ site.name }}
 
 {% for user in tenant.users | default([]) %}
 
-Verify Tenant {{ tenant.name }} User {{ user }}
-    ${user_id}=   Ndo Lookup   tenants/allowed-users   {{ user.domain | default('Local') }}/{{ user.name }}
+Verify Tenant {{ tenant.name }} User {{ user.name }}
+    ${user_id}=   Ndo Lookup   users   {{ user.name }}
     ${user}=   Set Variable   $..tenants[?(@.name=='{{ tenant.name }}')].userAssociations[?(@.userId=='${user_id}')]
     Should Be Equal Value Json String   ${r.json()}   ${user}.userId   ${user_id}
 
