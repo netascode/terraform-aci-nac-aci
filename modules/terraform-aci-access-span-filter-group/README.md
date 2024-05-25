@@ -4,7 +4,7 @@
 Manages ACI Access SPAN Filter Group
 
 Location in GUI:
-`Fabric` » `Access Policies` » `Policies` » `Troubleshooting` » `SPAN` » `SPAN Filter Groups` 
+`Fabric` » `Access Policies` » `Policies` » `Troubleshooting` » `SPAN` » `SPAN Filter Groups`
 
 ## Examples
 
