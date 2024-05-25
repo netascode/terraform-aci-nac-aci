@@ -1186,10 +1186,11 @@ defaults:
             max_suppress_time: 60
             reuse_limit: 750
             suppress_limit: 2000
-          set_as_path:
+          set_as_paths:
             criteria: "prepend"
-            count: 1
-            order: 0
+            count: 0
+            asns:
+              order: 0
           next_hop_propagation: false
           multipath: false
         bfd_interface_policies:
