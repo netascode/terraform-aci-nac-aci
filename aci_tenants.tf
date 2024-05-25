@@ -2147,11 +2147,18 @@ locals {
             description = try(comm.description, "")
           }
         ]
-        set_as_path                    = try(policy.set_as_path.criteria, null) != null || try(policy.set_as_path.count, null) != null || try(policy.set_as_path.order, null) != null
-        set_as_path_criteria           = try(policy.set_as_path.criteria, local.defaults.apic.tenants.policies.set_rules.set_as_path.criteria)
-        set_as_path_count              = try(policy.set_as_path.count, local.defaults.apic.tenants.policies.set_rules.set_as_path.count)
-        set_as_path_order              = try(policy.set_as_path.order, local.defaults.apic.tenants.policies.set_rules.set_as_path.order)
-        set_as_path_asn                = try(policy.set_as_path.asn, null)
+        set_as_paths = [
+          for as_path in try(policy.set_as_paths, []) : {
+            criteria = try(as_path.criteria, local.defaults.apic.tenants.policies.set_rules.set_as_paths.criteria)
+            count    = try(as_path.count, local.defaults.apic.tenants.policies.set_rules.set_as_paths.count)
+            asns = [
+              for asn in try(as_path.asns, []) : {
+                asn_number = asn.number
+                order      = try(asn.order, local.defaults.apic.tenants.policies.set_rules.set_as_paths.asns.order)
+              }
+            ]
+          }
+        ]
         next_hop_propagation           = try(policy.next_hop_propagation, local.defaults.apic.tenants.policies.set_rules.next_hop_propagation)
         multipath                      = try(policy.multipath, local.defaults.apic.tenants.policies.set_rules.multipath)
         external_endpoint_group        = try(policy.external_endpoint_group.name, null) != null ? "${policy.external_endpoint_group.name}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}" : ""
@@ -2183,11 +2190,7 @@ module "aci_set_rule" {
   preference                     = each.value.preference
   metric_type                    = each.value.metric_type
   additional_communities         = each.value.additional_communities
-  set_as_path                    = each.value.set_as_path
-  set_as_path_criteria           = each.value.set_as_path_criteria
-  set_as_path_count              = each.value.set_as_path_count
-  set_as_path_order              = each.value.set_as_path_order
-  set_as_path_asn                = each.value.set_as_path_asn
+  set_as_paths                   = each.value.set_as_paths
   next_hop_propagation           = each.value.next_hop_propagation
   multipath                      = each.value.multipath
   external_endpoint_group        = each.value.external_endpoint_group

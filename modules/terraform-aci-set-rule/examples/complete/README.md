@@ -37,12 +37,17 @@ module "aci_set_rule" {
       description = "My Community"
     }
   ]
-  set_as_path          = true
-  set_as_path_criteria = "prepend"
-  set_as_path_count    = 0
-  set_as_path_asn      = 65001
-  set_as_path_order    = 5
-
+  set_as_paths = [
+    {
+      criteria = "prepend"
+      asns = [
+        {
+          number = 65001
+          order  = 5
+        }
+      ]
+    }
+  ]
   next_hop_propagation = true
   multipath            = true
 }
