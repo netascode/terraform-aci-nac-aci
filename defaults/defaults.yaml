@@ -443,23 +443,22 @@ defaults:
           profile: dual-stack
         mst_policies:
           name_suffix: ""
-        bfd_policies:
-          bfd_ipv4_policies:
-            name_suffix: ""
-            detection_multiplier: 3
-            min_transmit_interval: 50
-            min_receive_interval: 50
-            slow_timer_interval: 2000
-            echo_receive_interval: 50
-            echo_frame_source_address: 0.0.0.0
-          bfd_ipv6_policies:
-            name_suffix: ""
-            detection_multiplier: 3
-            min_transmit_interval: 50
-            min_receive_interval: 50
-            slow_timer_interval: 2000
-            echo_receive_interval: 50
-            echo_frame_source_address: 0.0.0.0
+        bfd_ipv4_policies:
+          name_suffix: ""
+          detection_multiplier: 3
+          min_transmit_interval: 50
+          min_receive_interval: 50
+          slow_timer_interval: 2000
+          echo_receive_interval: 50
+          echo_frame_source_address: 0.0.0.0
+        bfd_ipv6_policies:
+          name_suffix: ""
+          detection_multiplier: 3
+          min_transmit_interval: 50
+          min_receive_interval: 50
+          slow_timer_interval: 2000
+          echo_receive_interval: 50
+          echo_frame_source_address: 0.0.0.0
       spine_switch_policy_groups:
         name_suffix: ""
       leaf_switch_policy_groups:
