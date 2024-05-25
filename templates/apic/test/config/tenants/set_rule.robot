@@ -43,13 +43,18 @@ Verify Set Rule {{ rule_name }}
 {% if rule.metric_type is defined %}
     Should Be Equal Value Json String   ${r.json()}   $..rtctrlSetRtMetricType.attributes.metricType   {{ rule.metric_type }}
 {% endif %}
-{% if rule.set_as_path is defined %}
-    Should Be Equal Value Json String   ${r.json()}   $..rtctrlSetASPath.attributes.criteria   {{ rule.set_as_path.criteria | default(defaults.apic.tenants.policies.set_rules.set_as_path.criteria) }}
-    Should Be Equal Value Json String   ${r.json()}   $..rtctrlSetASPath.attributes.lastnum   {{ rule.set_as_path.count | default(defaults.apic.tenants.policies.set_rules.set_as_path.count) }}
-{% if rule.set_as_path.criteria == 'prepend' %}
-    Should Be Equal Value Json String   ${r.json()}   $..rtctrlSetASPathASN.attributes.asn   {{ rule.set_as_path.asn }}
-    Should Be Equal Value Json String   ${r.json()}   $..rtctrlSetASPathASN.attributes.order   {{ rule.set_as_path.order | default(defaults.apic.tenants.policies.set_rules.set_as_path.order) }}
+{% if rule.set_as_paths is defined %}
+{% for as_path_criteria_item in rule.set_as_paths | default([]) %}
+{% if as_path_criteria_item.criteria == 'prepend' %}
+{% for asn_item in as_path_criteria_item.asns | default([]) %}
+    Should Be Equal Value Json String   ${r.json()}   $..rtctrlSetASPath.children[?(@.rtctrlSetASPathASN.attributes.asn =='{{ asn_item.number }}')]
+    Should Be Equal Value Json String   ${r.json()}   $..rtctrlSetASPath.children[?(@.rtctrlSetASPathASN.attributes.order =='{{ asn_item.order | default(defaults.apic.tenants.policies.set_rules.set_as_paths.asns.order) }}')]
+{% endfor %}
 {% endif %}
+{% if as_path_criteria_item.criteria == 'prepend-last-as' %}
+    Should Be Equal Value Json String   ${r.json()}   $..rtctrlSetASPath[?(@.attributes.lastnum =='{{ as_path_criteria_item.count | default(defaults.apic.tenants.policies.set_rules.set_as_paths.count) }}')]
+{% endif %}
+{% endfor %}
 {% endif %}
 {% if (rule.next_hop_propagation | default(defaults.apic.tenants.policies.set_rules.next_hop_propagation) | cisco.aac.aac_bool("enabled") == 'enabled') or (rule.multipath | default(defaults.apic.tenants.policies.set_rules.multipath) | cisco.aac.aac_bool("enabled") == 'enabled') %}
     Should Be Equal Value Json String   ${r.json()}   $..rtctrlSetNhUnchanged.attributes.type   nh-unchanged

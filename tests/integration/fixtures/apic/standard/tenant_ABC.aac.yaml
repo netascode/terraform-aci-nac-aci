@@ -843,14 +843,16 @@ apic:
             additional_communities:
               - description: "Additional Communities"
                 community: regular:as2-nn2:34:3456
-            set_as_path:
-              criteria: prepend-last-as
-              count: 2
+            set_as_paths:
+              - criteria: prepend-last-as
+                count: 2
           - name: SET2
-            set_as_path:
-              criteria: prepend
-              asn: 12345
-              count: 0
+            set_as_paths:
+              - criteria: prepend
+                asns:
+                  - number: 12345
+                  - number: 12346
+                    order: 1
         bgp_timer_policies:
           - name: BGP-TIMER1
             description: BGP_POLICY

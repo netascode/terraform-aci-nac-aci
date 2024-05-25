@@ -2917,7 +2917,7 @@ ten_set_rule:
   metric_type: enum('ospf-type1', 'ospf-type2', required=False)
   dampening: include('ten_set_rule_dampening', required=False) # @name(Set Rule Dampening) @sheet_hidden()
   additional_communities: list(include('ten_set_rule_additional_communities'), required=False) # @name(Set Rule Additional Communities)
-  set_as_path: include('ten_set_rule_set_as_path', required=False) # @name(Set Rule AS Path)
+  set_as_paths: list(include('ten_set_rule_set_as_path'), required=False) # @name(Set Rule AS Path)
   next_hop_propagation: any(bool(), enum('enabled', 'disabled'), required=False)
   multipath: any(bool(), enum('enabled', 'disabled'), required=False)
   external_endpoint_group: include('ten_set_rule_external_endpoint_group', required=False) # @name(Set Rule Ext EPG) @sheet_hidden()
@@ -2935,7 +2935,10 @@ ten_set_rule_additional_communities:
 ten_set_rule_set_as_path:
   criteria: enum('prepend', 'prepend-last-as', required=False)
   count: int(min=0, max=10, required=False)
-  asn: int(min=0, max=65535, required=False)
+  asns: list(include('ten_set_rule_set_as_path_asn'), required=False) # @name(Abstraction of AS Path ASN) rtctrlSetASPathASN
+
+ten_set_rule_set_as_path_asn:
+  number: int(min=0, max=65535)
   order: int(min=0, max=31, required=False)
 
 ten_set_rule_external_endpoint_group:

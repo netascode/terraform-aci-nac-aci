@@ -126,32 +126,37 @@
                             }
                         }                        
                         {%- endfor %}
-                        {%- if rule.set_as_path is defined %}{{ comma2() }}
+                        {%- for as_path in rule.set_as_paths | default([]) %}{{ comma2() }}
                         {
                             "rtctrlSetASPath": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
-                                    "criteria": "{{ rule.set_as_path.criteria | default(defaults.apic.tenants.policies.set_rules.set_as_path.criteria) }}",
-                                    "lastnum": "{{ rule.set_as_path.count | default(defaults.apic.tenants.policies.set_rules.set_as_path.count) }}",
+                                    "criteria": "{{ as_path.criteria | default(defaults.apic.tenants.policies.set_rules.set_as_paths.criteria) }}",
+                                    {% if as_path.criteria == 'prepend-last-as' %}
+                                    "lastnum": "{{ as_path.count | default(defaults.apic.tenants.policies.set_rules.set_as_paths.count) }}",
+                                    {% endif %}
                                     "type": "as-path",
                                     "childAction": "deleteNonPresent"
                                 },
                                 "children": [
-                                    {% if rule.set_as_path.criteria == 'prepend' %}
+                                    {% if as_path.criteria == 'prepend' %}
+                                    {%- set comma3 = joiner(",") %}
+                                    {%- for asn_entry in as_path.asns | default([]) %}{{ comma3() }}
                                     {
                                         "rtctrlSetASPathASN": {
                                             "attributes": {
                                                 "annotation": "orchestrator:aac",
-                                                "asn": "{{ rule.set_as_path.asn }}",
-                                                "order": "{{ rule.set_as_path.order | default(defaults.apic.tenants.policies.set_rules.set_as_path.order) }}"
+                                                "asn": "{{ asn_entry.number }}",
+                                                "order": "{{ asn_entry.order | default(defaults.apic.tenants.policies.set_rules.set_as_paths.asns.order ) }}"
                                             }
                                         }
                                     }
+                                    {%- endfor %}
                                     {% endif %}
                                 ]
                             }
                         }
-                        {%- endif %}
+                        {%- endfor %}
                         {%- if (rule.next_hop_propagation | default(defaults.apic.tenants.policies.set_rules.next_hop_propagation) | cisco.aac.aac_bool("enabled") == 'enabled') or (rule.multipath | default(defaults.apic.tenants.policies.set_rules.multipath) | cisco.aac.aac_bool("enabled") == 'enabled') %}{{ comma2() }}
                         {
                             "rtctrlSetNhUnchanged": {
