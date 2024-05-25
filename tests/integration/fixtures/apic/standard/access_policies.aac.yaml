@@ -253,6 +253,7 @@ apic:
           maximum_minor_faults: 1000
       - name: ROUTED2
         vlan_pool: ROUTED2
+      - name: ROUTED3
     aaeps:
       - name: AAEP1
         description: My AAEP1

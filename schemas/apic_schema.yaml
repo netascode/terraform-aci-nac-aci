@@ -1031,7 +1031,7 @@ ap_physical_domain_expected_state:
 
 ap_routed_domain:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  vlan_pool: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  vlan_pool: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   expected_state: include('ap_routed_domain_expected_state', required=False) # @no_external_doc() @name(Routed Domain Expected State) @sheet_hidden()
   security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Routed Domain Sec Domain) @sheet_hidden()
 

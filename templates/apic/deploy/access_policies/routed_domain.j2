@@ -24,7 +24,8 @@
                         "dn": "uni/l3dom-{{ domain_name }}"
                     },
                     "children": [
-                        {%- set comma2 = joiner(",") %}{{ comma2() }} 
+                        {%- set comma2 = joiner(",") %}
+                        {%- if domain.vlan_pool is defined %}{{ comma2() }}
                         {
                             "infraRsVlanNs": {
                                 "attributes": {
@@ -36,6 +37,7 @@
                                 }
                             }
                         }
+                        {%- endif %}
                         {%- for sd in domain.security_domains | default([]) %}{{ comma2() }}
                         {
                             "aaaDomainRef": {
