@@ -309,6 +309,8 @@ Additional example repositories:
 | <a name="module_aci_tenant"></a> [aci\_tenant](#module\_aci\_tenant) | ./modules/terraform-aci-tenant | n/a |
 | <a name="module_aci_tenant_span_destination_group"></a> [aci\_tenant\_span\_destination\_group](#module\_aci\_tenant\_span\_destination\_group) | ./modules/terraform-aci-tenant-span-destination-group | n/a |
 | <a name="module_aci_tenant_span_source_group"></a> [aci\_tenant\_span\_source\_group](#module\_aci\_tenant\_span\_source\_group) | ./modules/terraform-aci-tenant-span-source-group | n/a |
+| <a name="module_aci_track_list"></a> [aci\_track\_list](#module\_aci\_track\_list) | ./modules/terraform-aci-track-list | n/a |
+| <a name="module_aci_track_member"></a> [aci\_track\_member](#module\_aci\_track\_member) | ./modules/terraform-aci-track-member | n/a |
 | <a name="module_aci_trust_control_policy"></a> [aci\_trust\_control\_policy](#module\_aci\_trust\_control\_policy) | ./modules/terraform-aci-trust-control-policy | n/a |
 | <a name="module_aci_user"></a> [aci\_user](#module\_aci\_user) | ./modules/terraform-aci-user | n/a |
 | <a name="module_aci_vlan_pool"></a> [aci\_vlan\_pool](#module\_aci\_vlan\_pool) | ./modules/terraform-aci-vlan-pool | n/a |

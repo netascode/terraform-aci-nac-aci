@@ -33,10 +33,9 @@ module "aci_routed_domain" {
 
   for_each             = { for rd in try(local.access_policies.routed_domains, []) : rd.name => rd if local.modules.aci_routed_domain && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.routed_domains.name_suffix}"
-  vlan_pool            = "${each.value.vlan_pool}${local.defaults.apic.access_policies.vlan_pools.name_suffix}"
+  vlan_pool            = try("${each.value.vlan_pool}${local.defaults.apic.access_policies.routed_domains.name_suffix}", "")
   vlan_pool_allocation = [for vp in try(local.access_policies.vlan_pools, []) : try(vp.allocation, local.defaults.apic.access_policies.vlan_pools.allocation) if vp.name == each.value.vlan_pool][0]
   security_domains     = try(each.value.security_domains, [])
-
   depends_on = [
     module.aci_vlan_pool,
   ]

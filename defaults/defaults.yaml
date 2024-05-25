@@ -1202,10 +1202,11 @@ defaults:
             max_suppress_time: 60
             reuse_limit: 750
             suppress_limit: 2000
-          set_as_path:
+          set_as_paths:
             criteria: "prepend"
-            count: 1
-            order: 0
+            count: 0
+            asns:
+              order: 0
           next_hop_propagation: false
           multipath: false
         bfd_interface_policies:
@@ -1332,6 +1333,13 @@ defaults:
           auto_configuration: true
           on_link: true
           router_address: false
+        track_lists:
+          name_suffix: ""
+          type: percentage
+          percentage_up: 0
+          percentage_down: 1
+          weight_up: 0
+          weight_down: 1
       services:
         l4l7_devices:
           name_suffix: ""

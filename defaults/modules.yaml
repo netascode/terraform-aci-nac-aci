@@ -145,6 +145,8 @@ modules:
   aci_tenant: true
   aci_tenant_span_destination_group: true
   aci_tenant_span_source_group: true
+  aci_track_list: true
+  aci_track_member: true
   aci_trust_control_policy: true
   aci_user: true
   aci_vlan_pool: true

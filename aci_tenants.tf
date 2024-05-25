@@ -187,16 +187,17 @@ locals {
         igmp_interface_policy      = try("${bd.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
         igmp_snooping_policy       = try("${bd.igmp_snooping_policy}${local.defaults.apic.tenants.policies.igmp_snooping_policies.name_suffix}", "")
         subnets = [for subnet in try(bd.subnets, []) : {
-          ip                  = subnet.ip
-          description         = try(subnet.description, "")
-          primary_ip          = try(subnet.primary_ip, local.defaults.apic.tenants.bridge_domains.subnets.primary_ip)
-          public              = try(subnet.public, local.defaults.apic.tenants.bridge_domains.subnets.public)
-          shared              = try(subnet.shared, local.defaults.apic.tenants.bridge_domains.subnets.shared)
-          igmp_querier        = try(subnet.igmp_querier, local.defaults.apic.tenants.bridge_domains.subnets.igmp_querier)
-          nd_ra_prefix        = try(subnet.nd_ra_prefix, local.defaults.apic.tenants.bridge_domains.subnets.nd_ra_prefix)
-          no_default_gateway  = try(subnet.no_default_gateway, local.defaults.apic.tenants.bridge_domains.subnets.no_default_gateway)
-          virtual             = try(subnet.virtual, local.defaults.apic.tenants.bridge_domains.subnets.virtual)
-          nd_ra_prefix_policy = try("${subnet.nd_ra_prefix_policy}${local.defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix}", "")
+          ip                    = subnet.ip
+          description           = try(subnet.description, "")
+          primary_ip            = try(subnet.primary_ip, local.defaults.apic.tenants.bridge_domains.subnets.primary_ip)
+          public                = try(subnet.public, local.defaults.apic.tenants.bridge_domains.subnets.public)
+          shared                = try(subnet.shared, local.defaults.apic.tenants.bridge_domains.subnets.shared)
+          igmp_querier          = try(subnet.igmp_querier, local.defaults.apic.tenants.bridge_domains.subnets.igmp_querier)
+          nd_ra_prefix          = try(subnet.nd_ra_prefix, local.defaults.apic.tenants.bridge_domains.subnets.nd_ra_prefix)
+          no_default_gateway    = try(subnet.no_default_gateway, local.defaults.apic.tenants.bridge_domains.subnets.no_default_gateway)
+          virtual               = try(subnet.virtual, local.defaults.apic.tenants.bridge_domains.subnets.virtual)
+          nd_ra_prefix_policy   = try("${subnet.nd_ra_prefix_policy}${local.defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix}", "")
+          ip_dataplane_learning = try(subnet.ip_dataplane_learning, null)
         }]
         l3outs = try(bd.l3outs, null) != null ? [for l3out in bd.l3outs : "${l3out}${local.defaults.apic.tenants.l3outs.name_suffix}"] : []
         dhcp_labels = [for label in try(bd.dhcp_labels, []) : {
@@ -308,19 +309,20 @@ locals {
             application_profile = try(master.application_profile, "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}")
           }]
           subnets = [for subnet in try(epg.subnets, []) : {
-            description         = try(subnet.description, "")
-            ip                  = subnet.ip
-            public              = try(subnet.public, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.public)
-            shared              = try(subnet.shared, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.shared)
-            igmp_querier        = try(subnet.igmp_querier, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.igmp_querier)
-            nd_ra_prefix        = try(subnet.nd_ra_prefix, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.nd_ra_prefix)
-            no_default_gateway  = try(subnet.no_default_gateway, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.no_default_gateway)
-            nd_ra_prefix_policy = try("${subnet.nd_ra_prefix_policy}${local.defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix}", "")
-            next_hop_ip         = try(subnet.next_hop_ip, "")
-            anycast_mac         = try(subnet.anycast_mac, "")
-            nlb_group           = try(subnet.nlb_group, "0.0.0.0")
-            nlb_mac             = try(subnet.nlb_mac, "00:00:00:00:00:00")
-            nlb_mode            = try(subnet.nlb_mode, "")
+            description           = try(subnet.description, "")
+            ip                    = subnet.ip
+            public                = try(subnet.public, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.public)
+            shared                = try(subnet.shared, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.shared)
+            igmp_querier          = try(subnet.igmp_querier, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.igmp_querier)
+            nd_ra_prefix          = try(subnet.nd_ra_prefix, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.nd_ra_prefix)
+            no_default_gateway    = try(subnet.no_default_gateway, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.no_default_gateway)
+            nd_ra_prefix_policy   = try("${subnet.nd_ra_prefix_policy}${local.defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix}", "")
+            ip_dataplane_learning = try(subnet.ip_dataplane_learning, null)
+            next_hop_ip           = try(subnet.next_hop_ip, "")
+            anycast_mac           = try(subnet.anycast_mac, "")
+            nlb_group             = try(subnet.nlb_group, "0.0.0.0")
+            nlb_mac               = try(subnet.nlb_mac, "00:00:00:00:00:00")
+            nlb_mode              = try(subnet.nlb_mode, "")
             ip_pools = [for pool in try(subnet.ip_pools, []) : {
               name              = "${pool.name}${local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.ip_pools.name_suffix}"
               start_ip          = try(pool.start_ip, "0.0.0.0")
@@ -809,6 +811,7 @@ locals {
               prefix      = sr.prefix
               preference  = try(sr.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.preference)
               bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
+              track_list  = try(sr.track_list, null)
               next_hops = [for nh in try(sr.next_hops, []) : {
                 ip         = nh.ip
                 preference = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
@@ -889,6 +892,7 @@ locals {
             prefix      = sr.prefix
             preference  = try(sr.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.preference)
             bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
+            track_list  = try(sr.track_list, null)
             next_hops = [for nh in try(sr.next_hops, []) : {
               ip         = nh.ip
               preference = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
@@ -2143,11 +2147,18 @@ locals {
             description = try(comm.description, "")
           }
         ]
-        set_as_path                    = try(policy.set_as_path.criteria, null) != null || try(policy.set_as_path.count, null) != null || try(policy.set_as_path.order, null) != null
-        set_as_path_criteria           = try(policy.set_as_path.criteria, local.defaults.apic.tenants.policies.set_rules.set_as_path.criteria)
-        set_as_path_count              = try(policy.set_as_path.count, local.defaults.apic.tenants.policies.set_rules.set_as_path.count)
-        set_as_path_order              = try(policy.set_as_path.order, local.defaults.apic.tenants.policies.set_rules.set_as_path.order)
-        set_as_path_asn                = try(policy.set_as_path.asn, null)
+        set_as_paths = [
+          for as_path in try(policy.set_as_paths, []) : {
+            criteria = try(as_path.criteria, local.defaults.apic.tenants.policies.set_rules.set_as_paths.criteria)
+            count    = try(as_path.count, local.defaults.apic.tenants.policies.set_rules.set_as_paths.count)
+            asns = [
+              for asn in try(as_path.asns, []) : {
+                asn_number = asn.number
+                order      = try(asn.order, local.defaults.apic.tenants.policies.set_rules.set_as_paths.asns.order)
+              }
+            ]
+          }
+        ]
         next_hop_propagation           = try(policy.next_hop_propagation, local.defaults.apic.tenants.policies.set_rules.next_hop_propagation)
         multipath                      = try(policy.multipath, local.defaults.apic.tenants.policies.set_rules.multipath)
         external_endpoint_group        = try(policy.external_endpoint_group.name, null) != null ? "${policy.external_endpoint_group.name}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}" : ""
@@ -2179,11 +2190,7 @@ module "aci_set_rule" {
   preference                     = each.value.preference
   metric_type                    = each.value.metric_type
   additional_communities         = each.value.additional_communities
-  set_as_path                    = each.value.set_as_path
-  set_as_path_criteria           = each.value.set_as_path_criteria
-  set_as_path_count              = each.value.set_as_path_count
-  set_as_path_order              = each.value.set_as_path_order
-  set_as_path_asn                = each.value.set_as_path_asn
+  set_as_paths                   = each.value.set_as_paths
   next_hop_propagation           = each.value.next_hop_propagation
   multipath                      = each.value.multipath
   external_endpoint_group        = each.value.external_endpoint_group
@@ -3248,4 +3255,68 @@ module "aci_tenant_span_source_group" {
   depends_on = [
     module.aci_tenant,
   ]
+}
+
+locals {
+  track_lists = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.track_lists, []) : {
+        key             = format("%s/%s", tenant.name, policy.name)
+        tenant          = tenant.name
+        name            = "${policy.name}${local.defaults.apic.tenants.policies.track_lists.name_suffix}"
+        description     = try(policy.description, "")
+        type            = try(policy.type, local.defaults.apic.tenants.policies.track_lists.type)
+        percentage_up   = try(policy.percentage_up, local.defaults.apic.tenants.policies.track_lists.percentage_up)
+        percentage_down = try(policy.percentage_down, local.defaults.apic.tenants.policies.track_lists.percentage_down)
+        weight_up       = try(policy.weight_up, local.defaults.apic.tenants.policies.track_lists.weight_up)
+        weight_down     = try(policy.weight_down, local.defaults.apic.tenants.policies.track_lists.weight_down)
+        track_members   = try(policy.track_members, [])
+      }
+    ]
+  ])
+}
+
+module "aci_track_list" {
+  source = "./modules/terraform-aci-track-list"
+
+  for_each        = { for track_list in local.track_lists : track_list.key => track_list if local.modules.aci_track_list && var.manage_tenants }
+  tenant          = each.value.tenant
+  name            = each.value.name
+  description     = each.value.description
+  type            = each.value.type
+  percentage_up   = each.value.percentage_up
+  percentage_down = each.value.percentage_down
+  weight_up       = each.value.weight_up
+  weight_down     = each.value.weight_down
+  track_members   = each.value.track_members
+}
+
+locals {
+  track_members = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.track_members, []) : {
+        key            = format("%s/%s", tenant.name, policy.name)
+        tenant         = tenant.name
+        name           = policy.name
+        description    = try(policy.description, "")
+        destination_ip = policy.destination_ip
+        scope_type     = policy.scope_type
+        scope          = policy.scope
+        ip_sla_policy  = policy.ip_sla_policy
+      }
+    ]
+  ])
+}
+
+module "aci_track_member" {
+  source = "./modules/terraform-aci-track-member"
+
+  for_each       = { for member in local.track_members : member.key => member if local.modules.aci_track_member && var.manage_tenants }
+  tenant         = each.value.tenant
+  name           = each.value.name
+  description    = each.value.description
+  destination_ip = each.value.destination_ip
+  scope_type     = each.value.scope_type
+  scope          = each.value.scope
+  ip_sla_policy  = each.value.ip_sla_policy
 }
