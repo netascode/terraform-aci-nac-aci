@@ -14,4 +14,6 @@ apic:
     leaf_switch_policy_groups:
       - name: ALL_LEAFS
         forwarding_scale_policy: HIGH-DUAL-STACK
+        bfd_ipv4_policy: BFD-IPV4-POLICY
+        bfd_ipv6_policy: BFD-IPV6-POLICY
 ```

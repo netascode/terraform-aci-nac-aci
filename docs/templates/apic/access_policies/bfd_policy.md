@@ -1,30 +1,20 @@
----
+# BFD Switch Policy
+
+Location in GUI:
+`Fabric` » `Access Policies` » `Policies` » `Switch` » `BFD`
+
+
+{{ doc_gen }}
+
+### Examples
+
+```yaml
 apic:
   access_policies:
-    ptp_profiles:
-      - name: test
-        template: telecom
-        announce_interval: -3
-        delay_interval: -4
-        sync_interval: -4
-      - name: tes2
-      - name: test3
-        template: smpte
-    interface_policies:
-      link_level_policies:
-        - name: 10G-sfp-10g-tx
-          speed: 10G
-          auto: true
-          fec_mode: inherit
-          physical_media_type: sfp-10g-tx
-        - name: 10G-auto
-          speed: 10G
-          auto: true
-          fec_mode: inherit
     switch_policies:
       bfd_policies:
         bfd_ipv4_policies:
-          - name: BFD-IPV4-POLICY-6
+          - name: BFD-IPV4-POLICY
             description: BFD IPv4 Policy
             detection_multiplier: 5
             min_transmit_interval: 100
@@ -33,7 +23,7 @@ apic:
             startup_timer_interval: 10
             echo_receive_interval: 50
         bfd_ipv6_policies:
-          - name: BFD-IPV6-POLICY-6
+          - name: BFD-IPV6-POLICY
             description: BFD IPv6 Policy
             detection_multiplier: 5
             min_transmit_interval: 100
@@ -41,3 +31,4 @@ apic:
             slow_timer_interval: 3000
             startup_timer_interval: 10
             echo_receive_interval: 50
+```

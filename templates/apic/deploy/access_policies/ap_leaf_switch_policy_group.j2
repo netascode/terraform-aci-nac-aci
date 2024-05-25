@@ -15,7 +15,8 @@
                         "dn": "uni/infra/funcprof/accnodepgrp-{{ policy_group_name }}"
                     },
                     "children": [
-                        {% if pg.forwarding_scale_policy is defined %}
+                        {% set comma2 = joiner(",") %}
+                        {% if pg.forwarding_scale_policy is defined %}{{ comma2() }}
                         {% set forwarding_scale_policy_name = pg.forwarding_scale_policy ~ defaults.apic.access_policies.switch_policies.forwarding_scale_policies.name_suffix %}
                         {
                             "infraRsTopoctrlFwdScaleProfPol": {
@@ -25,7 +26,29 @@
                                 }
                             }
                         }
-                        {% endif %}
+                        {%- endif %}
+                        {%- if pg.bfd_ipv4_policy is defined %}{{ comma2() }}
+                        {% set bfd_ipv4_policy_name = pg.bfd_ipv4_policy ~ defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.name_suffix %}
+                        {
+                            "infraRsBfdIpv4InstPol": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "tnBfdIpv4InstPolName": "{{ bfd_ipv4_policy_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        {%- if pg.bfd_ipv6_policy is defined %}{{ comma2() }}
+                        {% set bfd_ipv6_policy_name = pg.bfd_ipv6_policy ~ defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.name_suffix %}
+                        {
+                            "infraRsBfdIpv6InstPol": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "tnBfdIpv6InstPolName ": "{{ bfd_ipv6_policy_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
                     ]
                 }
             }

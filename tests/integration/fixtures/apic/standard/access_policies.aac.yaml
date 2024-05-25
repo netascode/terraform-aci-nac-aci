@@ -391,16 +391,37 @@ apic:
           profile: high-dual-stack
         - name: DUAL-STACK
           profile: dual-stack
+      bfd_policies:
+        bfd_ipv4_policies:
+          - name: BFD-IPV4-POLICY
+            description: BFD IPv4 Policy
+            detection_multiplier: 5
+            min_transmit_interval: 100
+            min_receive_interval: 50
+            slow_timer_interval: 3000
+            echo_receive_interval: 50
+        bfd_ipv6_policies:
+          - name: BFD-IPV6-POLICY
+            description: BFD IPv6 Policy
+            detection_multiplier: 5
+            min_transmit_interval: 100
+            min_receive_interval: 50
+            slow_timer_interval: 3000
+            echo_receive_interval: 50
 
     spine_switch_policy_groups:
       - name: ALL_SPINES
         lldp_policy: LLDP-ENABLED
+        bfd_ipv4_policy: BFD-IPV4-POLICY
+        bfd_ipv6_policy: BFD-IPV6-POLICY
       - name: DISABLE_LLDP
         lldp_policy: LLDP-DISABLED
 
     leaf_switch_policy_groups:
       - name: ALL_LEAFS
         forwarding_scale_policy: HIGH-DUAL-STACK
+        bfd_ipv4_policy: BFD-IPV4-POLICY
+        bfd_ipv6_policy: BFD-IPV6-POLICY
       - name: DUAL-STACK
         forwarding_scale_policy: DUAL-STACK
 

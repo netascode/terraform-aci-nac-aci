@@ -145,6 +145,7 @@ nav:
               - Storm Control Interface Policy: data_model/apic/access_policies/storm_control_policy.md
               - MST Switch Policy: data_model/apic/access_policies/mst_policy.md
               - VPC Switch Policy: data_model/apic/access_policies/vpc_policy.md
+              - BFD Switch Policy: data_model/apic/access_policies/bfd_policy.md
               - Forwarding Scale Switch Policy: data_model/apic/access_policies/forwarding_scale_policy.md
               - Access Leaf Switch Policy Group: data_model/apic/access_policies/ap_leaf_switch_policy_group.md
               - Access Spine Switch Policy Group: data_model/apic/access_policies/ap_spine_switch_policy_group.md

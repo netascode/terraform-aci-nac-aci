@@ -162,6 +162,20 @@ class Rule:
                 "apic.access_policies.leaf_switch_policy_groups.forwarding_scale_policy",
             ],
         },
+        {
+            "key": "apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.name",
+            "references": [
+                "apic.access_policies.leaf_switch_policy_groups.bfd_ipv4_policy",
+                "apic.access_policies.spine_switch_policy_groups.bfd_ipv4_policy",
+            ],
+        },
+        {
+            "key": "apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.name",
+            "references": [
+                "apic.access_policies.leaf_switch_policy_groups.bfd_ipv6_policy",
+                "apic.access_policies.spine_switch_policy_groups.bfd_ipv6_policy",
+            ],
+        },
     ]
 
     @classmethod

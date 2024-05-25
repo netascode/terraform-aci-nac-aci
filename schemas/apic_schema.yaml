@@ -1462,6 +1462,7 @@ ap_spine_interface_policy_group:
 ap_switch_policies:
   mst_policies: list(include('ap_mst_policy'), required=False) # @ref_name(MST Policy) @sheet_hidden()
   vpc_policies: list(include('ap_vpc_policy'), required=False) # @sheet_hidden()
+  bfd_policies: include('ap_bfd_policy', required=False) # @ref_name(BFD Policy) @sheet_hidden()
   forwarding_scale_policies: list(include('ap_forwarding_scale_policy'), required=False) # @sheet_hidden()
 
 ap_mst_policy:
@@ -1482,6 +1483,21 @@ ap_mst_policy_instance_vlan_range:
 ap_vpc_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   peer_dead_interval: int(min=5, max=600, required=False)
+
+ap_bfd_policy:
+  bfd_ipv4_policies: list(include('ap_bfd_ipv4_ipv6_policy'), required=False) # @ref_name(BFD IPv4 Policy) @sheet_hidden()
+  bfd_ipv6_policies: list(include('ap_bfd_ipv4_ipv6_policy'), required=False) # @ref_name(BFD IPv6 Policy) @sheet_hidden()
+
+ap_bfd_ipv4_ipv6_policy:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  detection_multiplier: int(min=1, max=50, required=False)
+  min_transmit_interval: int(min=50, max=999, required=False)
+  min_receive_interval: int(min=50, max=999, required=False)
+  slow_timer_interval: int(min=1000, max=30000, required=False)
+  startup_timer_interval: int(min=0, max=60, required=False)
+  echo_receive_interval: int(min=0, max=999, required=False)
+  echo_frame_source_address: ip(required=False)
 
 ap_forwarding_scale_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1535,15 +1551,15 @@ ap_spine_switch_policy_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   lldp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   coop_spine_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
-  bfd_ipv4_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
-  bfd_ipv6_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  bfd_ipv4_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  bfd_ipv6_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   cdp_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
 
 ap_leaf_switch_policy_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   forwarding_scale_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  bfd_ipv4_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
-  bfd_ipv6_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
+  bfd_ipv4_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  bfd_ipv6_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   equipment_flash_config_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
   fibre_channel_node_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()
   fibre_channel_san_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @no_doc()

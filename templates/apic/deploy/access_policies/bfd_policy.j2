@@ -1,0 +1,56 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies | default([]) %}{{ comma1() }}
+            {% set bfd_ipv4_policy_name = policy.name ~ defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.name_suffix %}
+            {
+                "bfdIpv4InstPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ bfd_ipv4_policy_name }}",
+                        "dn": "uni/infra/bfdIpv4Inst-{{ bfd_ipv4_policy_name }}",
+                        "descr": "{{ policy.description | default() }}",
+                        "detectMult": "{{ policy.detection_multiplier | default(defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.detection_multiplier) }}",
+                        "minTxIntvl": "{{ policy.min_transmit_interval | default(defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.min_transmit_interval) }}",
+                        "minRxIntvl": "{{ policy.min_receive_interval | default(defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.min_receive_interval) }}",
+                        "slowIntvl": "{{ policy.slow_timer_interval | default(defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.slow_timer_interval) }}",
+                        {% if policy.startup_timer_interval is defined %}
+                        "startupIntvl": "{{ policy.startup_timer_interval }}",
+                        {% endif %}
+                        "echoRxIntvl": "{{ policy.echo_receive_interval | default(defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.echo_receive_interval) }}",
+                        "echoSrcAddr": "{{ policy.echo_frame_source_address | default(defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.echo_frame_source_address) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+            {%- for policy in apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies | default([]) %}{{ comma1() }}
+            {% set bfd_ipv6_policy_name = policy.name ~ defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.name_suffix %}
+            {
+                "bfdIpv6InstPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ bfd_ipv6_policy_name }}",
+                        "dn": "uni/infra/bfdIpv6Inst-{{ bfd_ipv6_policy_name }}",
+                        "descr": "{{ policy.description | default() }}",
+                        "detectMult": "{{ policy.detection_multiplier | default(defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.detection_multiplier) }}",
+                        "minTxIntvl": "{{ policy.min_transmit_interval | default(defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.min_transmit_interval) }}",
+                        "minRxIntvl": "{{ policy.min_receive_interval | default(defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.min_receive_interval) }}",
+                        "slowIntvl": "{{ policy.slow_timer_interval | default(defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.slow_timer_interval) }}",
+                        {% if policy.startup_timer_interval is defined %}
+                        "startupIntvl": "{{ policy.startup_timer_interval }}",
+                        {% endif %}
+                        "echoRxIntvl": "{{ policy.echo_receive_interval | default(defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.echo_receive_interval) }}",
+                        "echoSrcAddr": "{{ policy.echo_frame_source_address | default(defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.echo_frame_source_address) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

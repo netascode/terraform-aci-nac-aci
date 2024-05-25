@@ -11,6 +11,8 @@ Location in GUI:
 apic:
   access_policies:
     spine_switch_policy_groups:
-      - name: SPINE-PG1
-        lldp_policy: LLDP-ON
+      - name: ALL_SPINES
+        lldp_policy: LLDP-ENABLED
+        bfd_ipv4_policy: BFD-IPV4-POLICY
+        bfd_ipv6_policy: BFD-IPV6-POLICY
 ```

@@ -96,6 +96,7 @@ This table provides an overview of which object is supported in combination with
 [MST Switch Policy](./apic/access_policies/mst_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [vPC Switch Policy](./apic/access_policies/vpc_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Forwarding Scale Switch Policy](./apic/access_policies/forwarding_scale_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
+[BFD Switch Policy](./apic/access_policies/bfd_policy.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Access Spine Switch Policy Group](./apic/access_policies/ap_spine_switch_policy_group.md) | :material-check: | :material-check: | :material-check: |
 [Access Leaf Switch Policy Group](./apic/access_policies/ap_leaf_switch_policy_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Access Spine Interface Policy Group](./apic/access_policies/ap_spine_interface_policy_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
