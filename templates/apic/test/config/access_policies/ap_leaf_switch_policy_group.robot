@@ -16,11 +16,11 @@ Verify Leaf Switch Policy Group {{ policy_group_name }}
     Should Be Equal Value Json String   ${r.json()}    $..infraRsTopoctrlFwdScaleProfPol.attributes.tnTopoctrlFwdScaleProfilePolName   {{ forwarding_scale_policy_name }}
 {% endif %}
 {% if pg.bfd_ipv4_policy is defined %}
-{% set bfd_ipv4_policy = pg.bfd_ipv4_policy ~ defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.name_suffix %}
+{% set bfd_ipv4_policy = pg.bfd_ipv4_policy ~ defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}    $..infraRsBfdIpv4InstPol.attributes.tnBfdIpv4InstPolName   {{ bfd_ipv4_policy }}
 {% endif %}
 {% if pg.bfd_ipv6_policy is defined %}
-{% set bfd_ipv6_policy = pg.bfd_ipv6_policy ~ defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.name_suffix %}
+{% set bfd_ipv6_policy = pg.bfd_ipv6_policy ~ defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}    $..infraRsBfdIpv6InstPol.attributes.tnBfdIpv6InstPolName   {{ bfd_ipv6_policy }}
 {% endif %}
 

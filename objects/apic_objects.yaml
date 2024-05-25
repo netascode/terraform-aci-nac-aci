@@ -953,8 +953,8 @@ objects:
     test_types:
       - config
     paths:
-      - apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies
-      - apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies
+      - apic.access_policies.switch_policies.bfd_ipv4_policies
+      - apic.access_policies.switch_policies.bfd_ipv6_policies
   - name: Forwarding Scale Switch Policy
     template: forwarding_scale_policy
     folder: access_policies

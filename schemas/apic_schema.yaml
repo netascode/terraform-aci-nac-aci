@@ -1462,7 +1462,8 @@ ap_spine_interface_policy_group:
 ap_switch_policies:
   mst_policies: list(include('ap_mst_policy'), required=False) # @ref_name(MST Policy) @sheet_hidden()
   vpc_policies: list(include('ap_vpc_policy'), required=False) # @sheet_hidden()
-  bfd_policies: include('ap_bfd_policy', required=False) # @ref_name(BFD Policy) @sheet_hidden()
+  bfd_ipv4_policies: list(include('ap_bfd_ipv4_ipv6_policy'), required=False) # @ref_name(BFD IPv4 Policy) @sheet_hidden()
+  bfd_ipv6_policies: list(include('ap_bfd_ipv4_ipv6_policy'), required=False) # @ref_name(BFD IPv6 Policy) @sheet_hidden()
   forwarding_scale_policies: list(include('ap_forwarding_scale_policy'), required=False) # @sheet_hidden()
 
 ap_mst_policy:
@@ -1483,10 +1484,6 @@ ap_mst_policy_instance_vlan_range:
 ap_vpc_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   peer_dead_interval: int(min=5, max=600, required=False)
-
-ap_bfd_policy:
-  bfd_ipv4_policies: list(include('ap_bfd_ipv4_ipv6_policy'), required=False) # @ref_name(BFD IPv4 Policy) @sheet_hidden()
-  bfd_ipv6_policies: list(include('ap_bfd_ipv4_ipv6_policy'), required=False) # @ref_name(BFD IPv6 Policy) @sheet_hidden()
 
 ap_bfd_ipv4_ipv6_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

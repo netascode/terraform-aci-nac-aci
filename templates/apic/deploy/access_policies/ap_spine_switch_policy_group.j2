@@ -28,7 +28,7 @@
                         }
                         {%- endif %}
                         {%- if pg.bfd_ipv4_policy is defined %}{{ comma2() }}
-                        {% set bfd_ipv4_policy_name = pg.bfd_ipv4_policy ~ defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv4_policies.name_suffix %}
+                        {% set bfd_ipv4_policy_name = pg.bfd_ipv4_policy ~ defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix %}
                         {
                             "infraRsSpineBfdIpv4InstPol": {
                                 "attributes": {
@@ -39,7 +39,7 @@
                         }
                         {%- endif %}
                         {%- if pg.bfd_ipv6_policy is defined %}{{ comma2() }}
-                        {% set bfd_ipv6_policy_name = pg.bfd_ipv6_policy ~ defaults.apic.access_policies.switch_policies.bfd_policies.bfd_ipv6_policies.name_suffix %}
+                        {% set bfd_ipv6_policy_name = pg.bfd_ipv6_policy ~ defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix %}
                         {
                             "infraRsSpineBfdIpv6InstPol": {
                                 "attributes": {
