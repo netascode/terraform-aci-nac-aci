@@ -84,6 +84,38 @@ module "aci_vpc_policy" {
   peer_dead_interval = try(each.value.peer_dead_interval, local.defaults.apic.access_policies.switch_policies.vpc_policies.peer_dead_interval)
 }
 
+module "aci_bfd_ipv4_policy" {
+  source = "./modules/terraform-aci-bfd-policy"
+
+  for_each                  = { for bfd in try(local.access_policies.switch_policies.bfd_ipv4_policies, []) : bfd.name => bfd if local.modules.aci_bfd_policy && var.manage_access_policies }
+  name                      = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix}"
+  type                      = "ipv4"
+  description               = try(each.value.description, "")
+  detection_multiplier      = try(each.value.detection_multiplier, local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.detection_multiplier)
+  min_tx_interval           = try(each.value.min_transmit_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.min_transmit_interval)
+  min_rx_interval           = try(each.value.min_receive_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.min_receive_interval)
+  slow_timer_interval       = try(each.value.slow_timer_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.slow_timer_interval)
+  startup_timer_interval    = try(each.value.startup_timer_interval, null)
+  echo_rx_interval          = try(each.value.echo_receive_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.echo_receive_interval)
+  echo_frame_source_address = try(each.value.echo_frame_source_address, local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.echo_frame_source_address)
+}
+
+module "aci_bfd_ipv6_policy" {
+  source = "./modules/terraform-aci-bfd-policy"
+
+  for_each                  = { for bfd in try(local.access_policies.switch_policies.bfd_ipv6_policies, []) : bfd.name => bfd if local.modules.aci_bfd_policy && var.manage_access_policies }
+  name                      = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix}"
+  type                      = "ipv6"
+  description               = try(each.value.description, "")
+  detection_multiplier      = try(each.value.detection_multiplier, local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.detection_multiplier)
+  min_tx_interval           = try(each.value.min_transmit_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.min_transmit_interval)
+  min_rx_interval           = try(each.value.min_receive_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.min_receive_interval)
+  slow_timer_interval       = try(each.value.slow_timer_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.slow_timer_interval)
+  startup_timer_interval    = try(each.value.startup_timer_interval, null)
+  echo_rx_interval          = try(each.value.echo_receive_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.echo_receive_interval)
+  echo_frame_source_address = try(each.value.echo_frame_source_address, local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.echo_frame_source_address)
+}
+
 module "aci_forwarding_scale_policy" {
   source = "./modules/terraform-aci-forwarding-scale-policy"
 
@@ -98,21 +130,29 @@ module "aci_access_leaf_switch_policy_group" {
   for_each                = { for pg in try(local.access_policies.leaf_switch_policy_groups, []) : pg.name => pg if local.modules.aci_access_leaf_switch_policy_group && var.manage_access_policies }
   name                    = "${each.value.name}${local.defaults.apic.access_policies.leaf_switch_policy_groups.name_suffix}"
   forwarding_scale_policy = try("${each.value.forwarding_scale_policy}${local.defaults.apic.access_policies.switch_policies.forwarding_scale_policies.name_suffix}", "")
+  bfd_ipv4_policy         = try("${each.value.bfd_ipv4_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix}", "")
+  bfd_ipv6_policy         = try("${each.value.bfd_ipv6_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_forwarding_scale_policy,
+    module.aci_bfd_ipv4_policy,
+    module.aci_bfd_ipv6_policy,
   ]
 }
 
 module "aci_access_spine_switch_policy_group" {
   source = "./modules/terraform-aci-access-spine-switch-policy-group"
 
-  for_each    = { for pg in try(local.access_policies.spine_switch_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_switch_policy_group && var.manage_access_policies }
-  name        = "${each.value.name}${local.defaults.apic.access_policies.spine_switch_policy_groups.name_suffix}"
-  lldp_policy = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
+  for_each        = { for pg in try(local.access_policies.spine_switch_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_switch_policy_group && var.manage_access_policies }
+  name            = "${each.value.name}${local.defaults.apic.access_policies.spine_switch_policy_groups.name_suffix}"
+  lldp_policy     = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
+  bfd_ipv4_policy = try("${each.value.bfd_ipv4_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix}", "")
+  bfd_ipv6_policy = try("${each.value.bfd_ipv6_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_lldp_policy,
+    module.aci_bfd_ipv4_policy,
+    module.aci_bfd_ipv6_policy,
   ]
 }
 

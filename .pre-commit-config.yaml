@@ -106,6 +106,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bfd-multihop-node-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bfd-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bfd-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-address-family-context-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-address-family-context-policy/examples/complete"]
