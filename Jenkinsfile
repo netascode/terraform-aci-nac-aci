@@ -34,6 +34,8 @@ pipeline {
         stage('Lint') {
             steps {
                 sh 'yamllint -s .'
+                sh 'flake8'
+                sh 'black --check .'
                 sh 'pytest -m validate'
             }
         }

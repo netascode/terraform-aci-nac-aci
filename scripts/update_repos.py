@@ -10,7 +10,7 @@ import tempfile
 
 REPOS = [
     {
-        "url": "https://{}@wwwin-github.cisco.com/netascode/ansible-aac.git",
+        "url": "https://{}@wwwin-github.cisco.com/netascode/nac-aci-ansible-collection.git",
         "type": "internal",
         "commit_message": "Nac updates",
         "directories": [

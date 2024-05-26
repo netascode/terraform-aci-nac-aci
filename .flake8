@@ -1,0 +1,16 @@
+[flake8]
+exclude = .venv,.git,.tox,docs,venv,bin,lib,deps,build,ansible_collections
+# To work with Black
+max-line-length = 88
+# D202 No blank lines allowed after function docstring
+# E203: Whitespace before ':'
+# E402: Module level import not at top of file
+# E501: line too long
+# W503: Line break occurred before a binary operator
+ignore =
+    D202,
+    E203,
+    E402,
+    E501,
+    W503,
+    Q000

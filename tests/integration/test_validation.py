@@ -2,7 +2,6 @@
 
 # Copyright: (c) 2022, Daniel Schmidt <danischm@cisco.com>
 
-import os
 import errorhandler
 import pytest
 from iac_validate.validator import Validator

@@ -114,7 +114,11 @@ class Ndo(object):
         obj = check_cache(key)
         if obj and use_cache:
             return obj
-        self.lookup_cache[path] = self._query_objs(path, key=container, api_version=API_ENDPOINT_MAPPINGS.get(path, {}).get("api_version","v1"))
+        self.lookup_cache[path] = self._query_objs(
+            path,
+            key=container,
+            api_version=API_ENDPOINT_MAPPINGS.get(path, {}).get("api_version", "v1"),
+        )
         obj = check_cache(key)
         if obj:
             return obj
@@ -122,5 +126,5 @@ class Ndo(object):
 
     @keyword("NDO Lookup")
     def lookup(self, path, key):
-        key_id = API_ENDPOINT_MAPPINGS.get(path, {}).get("id_key","id")
+        key_id = API_ENDPOINT_MAPPINGS.get(path, {}).get("id_key", "id")
         return self._lookup(path, key).get(key_id)

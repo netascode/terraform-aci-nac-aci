@@ -26,7 +26,14 @@ class Rule:
                     for k in regular_epg_names:
                         for v in useg_epg_names:
                             if k == v:
-                                results.append("Regular EPG and uSeg EPG have duplicated name - " + str(k) + " in application profile " + app.get("name") + " of tenant " + tenant.get("name"))
+                                results.append(
+                                    "Regular EPG and uSeg EPG have duplicated name - "
+                                    + str(k)
+                                    + " in application profile "
+                                    + app.get("name")
+                                    + " of tenant "
+                                    + tenant.get("name")
+                                )
 
         except KeyError:
             pass

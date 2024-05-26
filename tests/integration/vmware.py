@@ -3,7 +3,6 @@
 # Copyright: (c) 2022, Daniel Schmidt <danischm@cisco.com>
 
 import atexit
-import time
 
 from pyVim.connect import Disconnect, SmartConnect
 from pyVmomi import vim
