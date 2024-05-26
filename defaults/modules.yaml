@@ -42,6 +42,7 @@ modules:
   aci_dhcp_relay_policy: true
   aci_dns_policy: true
   aci_endpoint_group: true
+  aci_useg_endpoint_group: true
   aci_endpoint_loop_protection: true
   aci_endpoint_security_group: true
   aci_eigrp_interface_policy: true
