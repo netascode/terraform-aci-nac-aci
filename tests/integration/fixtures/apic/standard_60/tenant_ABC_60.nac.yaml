@@ -2,16 +2,10 @@
 apic:
   tenants:
     - name: ABC
-      vrfs:
-        - name: VRF1
-      bridge_domains:
-        - name: BD3
-          vrf: VRF1
       application_profiles:
         - name: AP1
           endpoint_groups:
-            - name: EPG4
-              bridge_domain: BD3
+            - name: EPG1
               static_ports:
                 - node_id: 204
                   port: 1
@@ -20,3 +14,10 @@ apic:
                     mode: multicast-master
                     source_ip: 1.1.1.1
                     profile: test
+      policies:
+        set_rules:
+          - name: SET3
+            external_endpoint_group:
+              name: L3OUT1-EPG1
+              l3out: L3OUT1
+              tenant: ABC
