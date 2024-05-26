@@ -2,18 +2,6 @@
 apic:
   tenants:
     - name: ABC
-      application_profiles:
-        - name: AP1
-          endpoint_groups:
-            - name: EPG1
-              static_ports:
-                - node_id: 204
-                  port: 1
-                  vlan: 12
-                  ptp:
-                    mode: multicast-master
-                    source_ip: 1.1.1.1
-                    profile: test
       policies:
         set_rules:
           - name: SET3
