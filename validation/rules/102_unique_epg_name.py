@@ -31,4 +31,3 @@ class Rule:
         except KeyError:
             pass
         return results
-
