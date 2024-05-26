@@ -77,7 +77,8 @@
                                                 "childAction": "deleteNonPresent"
                                             },
                                             "children": [
-                                                {%- if vmm.elag is defined %},
+                                                {%- set comma4 = joiner(",") %}
+                                                {%- if vmm.elag is defined %}{{ comma4() }}
                                                 {
                                                     "fvAEPgLagPolAtt": {
                                                         "attributes": {
@@ -96,7 +97,7 @@
                                                     }
                                                 }
                                                 {%- endif %}
-                                                {%- if vmm.active_uplinks_order is defined or vmm.standby_uplinks is defined %},
+                                                {%- if vmm.active_uplinks_order is defined or vmm.standby_uplinks is defined %}{{ comma4() }}
                                                 {
                                                     "fvUplinkOrderCont": {
                                                         "attributes": {
@@ -279,7 +280,7 @@
                                                         "attributes": {
                                                             "annotation": "orchestrator:aac",
                                                             "name": "{{ ip_statement.name }}",
-                                                            "usefvSubnet": "{{ 'yes' if ip_statement.use_epg_subnet | default(defaults.apic.tenants.application_profiles.useg_endpoint_groups.useg_attributes.ip_statements.use_epg_subnet) else 'no' }}"
+                                                            "usefvSubnet": "{{ 'yes' if ip_statement.use_epg_subnet | default(defaults.apic.tenants.application_profiles.useg_endpoint_groups.useg_attributes.ip_statements.use_epg_subnet) else 'no' }}",
                                                             "ip": "{{ '0.0.0.0' if ip_statement.use_epg_subnet | default(defaults.apic.tenants.application_profiles.useg_endpoint_groups.useg_attributes.ip_statements.use_epg_subnet) else ip_statement.ip }}"
                                                         }
                                                     }
@@ -341,7 +342,7 @@
                                                         }
                                                     }
                                                 }
-                                                {%- endif%}
+                                                {%- endif %}
 
                                             ]
                                         }
