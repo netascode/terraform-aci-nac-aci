@@ -142,6 +142,7 @@ This table provides an overview of which object is supported in combination with
 [External Endpoint Group](./apic/tenants/external_endpoint_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Application Profile](./apic/tenants/application_profile.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Endpoint Group](./apic/tenants/endpoint_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
+[uSeg Endpoint Group](./apic/tenants/useg_endpoint_group.md) | :material-check: | :material-check: | :material-check: |
 [Endpoint Security Group](./apic/tenants/endpoint_security_group.md) | :material-check: | :material-check: | :material-check:
 [Contract](./apic/tenants/contract.md) | :material-check: | :material-check: | :material-check: | :material-check:
 [Imported Contract](./apic/tenants/imported_contract.md) | :material-check: | :material-check: | :material-check: | :material-check:

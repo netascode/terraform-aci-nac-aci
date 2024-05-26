@@ -1892,6 +1892,7 @@ ten_application_profiles:
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   endpoint_groups: list(include('ten_ap_endpoint_groups'), required=False) # @ref_name(Endpoint Group)
+  useg_endpoint_groups: list(include('ten_ap_useg_endpoint_groups'), required=False) # @ref_name(uSeg Endpoint Group)
   endpoint_security_groups: list(include('ten_ap_endpoint_security_groups'), required=False) # @ref_name(Endpoint Security Group) @sheet_hidden()
   expected_state: include('ten_ap_expected_state', required=False) # @no_external_doc() @name(AP Expected State) @sheet_hidden()
 
@@ -2022,6 +2023,78 @@ ten_ap_endpoint_groups_expected_state:
   maximum_critical_faults: int(min=0, required=False)
   maximum_major_faults: int(min=0, required=False)
   maximum_minor_faults: int(min=0, required=False)
+
+ten_ap_useg_endpoint_groups:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  flood_in_encap: bool(required=False)
+  intra_epg_isolation: bool(required=False)
+  preferred_group: bool(required=False)
+  bridge_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  physical_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(uSeg EPG Physical Domains) @ref_name(Physical Domain)
+  vmware_vmm_domains: list(include('ten_ap_useg_endpoint_groups_vmware_vmm_domains'), required=False) # @name(uSeg EPG VMware VMM Domains)
+  static_leafs: list(include('ten_ap_useg_endpoint_groups_static_leafs'), required=False) # @name(uSeg EPG Static Leafs) @sheet_hidden()
+  useg_attributes: include('ten_ap_useg_endpoint_groups_useg_attributes', required=False) # @no_external_doc() @name(uSeg EPG uSeg Attributes) @sheet_hidden()
+  subnets: list(include('ten_ap_useg_endpoint_groups_subnets'), required=False) # @name(uSeg EPG Subnets) @ref_name(Subnet)
+  contracts: include('ten_ap_useg_endpoint_groups_contracts', required=False) # @flatten()
+  qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
+  custom_qos_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  tags: list(regex('^[a-zA-Z0-9_.-]{1,64}$'), required=False) # @name(uSeg EPG Tags) @sheet_hidden()
+  trust_control_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(uSeg EPG Trust Control Policy) @sheet_hidden()
+  l4l7_address_pools: list(include('ten_ap_endpoint_groups_l4l7_address_pools'), required=False) # @name(uSeg EPG L4L7 Address Pools) @sheet_hidden()
+  expected_state: include('ten_ap_endpoint_groups_expected_state', required=False) # @no_external_doc() @name(uSeg EPG Expected State) @sheet_hidden()
+
+ten_ap_useg_endpoint_groups_vmware_vmm_domains:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  deployment_immediacy: enum('immediate', 'lazy', required=False)
+  elag: regex('^[a-zA-Z0-9_.:-]{1,16}$', required=False)
+  netflow: bool(required=False)
+  active_uplinks_order: regex('^(\d+(,\d+)*)?$', required=False)
+  standby_uplinks: regex('^(\d+(,\d+)*)?$', required=False)
+
+ten_ap_useg_endpoint_groups_static_leafs:
+  node_id: int(min=1, max=4000)
+  pod_id: int(min=1, max=255, required=False)
+
+ten_ap_useg_endpoint_groups_useg_attributes:
+  match_type: enum('any', 'all', required=False)
+  ip_statements: list(include('ten_ap_useg_endpointgroups_useg_attributes_ip'), required=False) # @name(uSeg EPG uSeg Attribute IP type statements) @sheet_hidden()
+  mac_statements: list(include('ten_ap_useg_endpointgroups_useg_attributes_mac'), required=False) # @name(uSeg EPG uSeg Attribute MAC type statements) @sheet_hidden()
+
+ten_ap_useg_endpointgroups_useg_attributes_ip:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  use_epg_subnet: bool(required=False)
+  ip: ip(required=False)
+
+ten_ap_useg_endpointgroups_useg_attributes_mac:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  mac: mac()
+
+ten_ap_useg_endpoint_groups_subnets:
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  ip: ip()
+  public: bool(required=False)
+  private: bool(required=False)
+  shared: bool(required=False)
+  igmp_querier: bool(required=False)
+  nd_ra_prefix: bool(required=False)
+  no_default_gateway: bool(required=False)
+  virtual: bool(required=False)
+  next_hop_ip: ip(required=False)
+  anycast_mac: mac(required=False)
+  nlb_mode: enum('mode-mcast-igmp', 'mode-uc', 'mode-mcast-static', required=False)
+  nlb_group: ip(required=False)
+  nlb_mac: mac(required=False)
+  ip_pools: list(include('ten_ap_endpoint_groups_subnets_ip_address_pools'), required=False) # @name(uSeg EPG Subnet IP Pools) @sheet_hidden()
+  nd_ra_prefix_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+ten_ap_useg_endpoint_groups_contracts:
+  consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(uSeg EPG Consumers) @ref_name(Contract)
+  providers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(uSeg EPG Providers) @ref_name(Contract)
+  imported_consumers: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(uSeg EPG Imported Consumers) @ref_name(Contract) @sheet_hidden()
+  intra_epgs: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(uSeg EPG Intra-EPG Contracts) @ref_name(Contract) @sheet_hidden()
+  masters: list(include('ten_ap_endpoint_groups_contracts_masters'), required=False) # @name(uSeg EPG Contract Masters)
 
 ten_ap_endpoint_security_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

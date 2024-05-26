@@ -1333,6 +1333,8 @@ tenant_objects:
     folder: tenants
     aci_classes:
       - fvAEPg
+    match_attribute: isAttrBasedEPg
+    match_attribute_value: "no"
     scope:
       - user
       - mgmt
@@ -1341,6 +1343,21 @@ tenant_objects:
       - health
     paths:
       - apic.tenants.application_profiles.endpoint_groups
+  - name: uSeg Endpoint Group
+    template: useg_endpoint_group
+    folder: tenants
+    aci_classes:
+      - fvAEPg
+    match_attribute: isAttrBasedEPg
+    match_attribute_value: "yes"
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+      - health
+    paths:
+      - apic.tenants.application_profiles.useg_endpoint_groups
   - name: Endpoint Security Group
     template: endpoint_security_group
     folder: tenants
