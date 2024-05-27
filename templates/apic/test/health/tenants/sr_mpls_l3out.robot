@@ -1,37 +1,38 @@
 {# iterate_list apic.tenants name item[2] #}
 *** Settings ***
-Documentation   Verify L3out Health
+Documentation   Verify SR MPLS L3out Health
 Suite Setup     Login APIC
 Default Tags    apic   day2   health   tenants   non-critical
 Resource        ../../../apic_common.resource
 
 *** Test Cases ***
 {% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
-{% for l3out in tenant.l3outs | default([]) %}
-{% set l3out_name = l3out.name ~ defaults.apic.tenants.l3outs.name_suffix %}
+{% for l3out in tenant.sr_mpls_l3outs | default([]) %}
+{% set l3out_name = l3out.name ~ defaults.apic.tenants.sr_mpls_l3outs.name_suffix %}
 
 {% if l3out.expected_state.maximum_critical_faults is defined or l3out.expected_state.maximum_major_faults is defined or l3out.expected_state.maximum_minor_faults is defined %}
-Verify L3out {{ l3out_name }} Faults
+Verify SR MPLS L3out {{ l3out_name }} Faults
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/fltCnts.json
-    ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
+     ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
     ${major}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.maj
     ${minor}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.minor
 {% if l3out.expected_state.maximum_critical_faults is defined %}
     Run Keyword If   ${critical}[0] > {{ l3out.expected_state.maximum_critical_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ l3out_name }} has ${critical}[0] critical faults"
 {% endif %}
-{% if l3out.expected_state.maximum_major_faults is defined %}
-    Run Keyword If   ${major}[0] > {{ l3out.expected_state.maximum_major_faults }}   Run Keyword And Continue On Failure
+{% if out.expected_state.maximum_major_faults is defined %}
+    Run Keyword If   ${major}[0] > {{ out.expected_state.maximum_major_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ l3out_name }} has ${major}[0] major faults"
 {% endif %}
-{% if l3out.expected_state.maximum_minor_faults is defined %}
-    Run Keyword If   ${minor}[0] > {{ l3out.expected_state.maximum_minor_faults }}   Run Keyword And Continue On Failure
+{% if out.expected_state.maximum_minor_faults is defined %}
+    Run Keyword If   ${minor}[0] > {{ out.expected_state.maximum_minor_faults }}   Run Keyword And Continue On Failure
     ...   Fail  "{{ l3out_name }} has ${minor}[0] minor faults"
+
 {% endif %}
 {% endif %}
 
 {% if 'pre-check' in robot_include_tags | default() %}
-Verify L3out {{ l3out_name }} Faults Pre-Check
+Verify SR MPLS L3out {{ l3out_name }} Faults Pre-Check
     [Tags]   pre-check
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/fltCnts.json
     ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
@@ -43,7 +44,7 @@ Verify L3out {{ l3out_name }} Faults Pre-Check
 {% endif %}
 
 {% if 'post-check' in robot_include_tags | default() %}
-Verify L3out {{ l3out_name }} Faults Post-Check
+Verify SR MPLS L3out {{ l3out_name }} Faults Post-Check
     [Tags]   post-check
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/fltCnts.json
     ${critical}=   Get Value From Json   ${r.json()}   $..faultCounts.attributes.crit
