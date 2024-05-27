@@ -2059,8 +2059,8 @@ ten_ap_useg_endpoint_groups_static_leafs:
 
 ten_ap_useg_endpoint_groups_useg_attributes:
   match_type: enum('any', 'all', required=False)
-  ip_statements: list(include('ten_ap_useg_endpointgroups_useg_attributes_ip'), required=False) # @name(uSeg EPG uSeg Attribute IP type statements) @sheet_hidden()
-  mac_statements: list(include('ten_ap_useg_endpointgroups_useg_attributes_mac'), required=False) # @name(uSeg EPG uSeg Attribute MAC type statements) @sheet_hidden()
+  ip_statements: list(include('ten_ap_useg_endpointgroups_useg_attributes_ip'), required=False) # @name(uSeg EPG Attribute IP type) @sheet_hidden()
+  mac_statements: list(include('ten_ap_useg_endpointgroups_useg_attributes_mac'), required=False) # @name(uSeg EPG Attribute MAC type) @sheet_hidden()
 
 ten_ap_useg_endpointgroups_useg_attributes_ip:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
