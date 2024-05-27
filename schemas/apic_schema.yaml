@@ -3284,7 +3284,7 @@ ten_track_lists:
   percentage_down: int(min=0, max=100, required=False)
   weight_up: int(min=0, max=255, required=False)
   weight_down: int(min=0, max=255, required=False)
-  track_members: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False)
+  track_members: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(Track Member List)
 
 ten_track_members:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
