@@ -1245,7 +1245,7 @@ tenant_objects:
       - pimExtP
     match_dn: 'uni\/tn-%%TENANT%%\/out-.*'
     match_attribute: mplsEnabled
-    match_attribute_value: "no"
+    match_attribute_not_value: "yes"
     match_attribute_class: l3extOut
     delete_ignore:
       - uni/tn-common/out-default/rsectx

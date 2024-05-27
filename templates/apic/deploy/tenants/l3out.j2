@@ -23,7 +23,6 @@
                         "annotation": "orchestrator:aac",
                         "descr": "{{ l3out.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}",
-                        "mplsEnabled": "no",
                         "name": "{{ l3out_name }}",
                         "nameAlias": "{{ l3out.alias | default() }}",
                         "targetDscp": "{{ l3out.target_dscp | default(defaults.apic.tenants.l3outs.target_dscp) }}",
