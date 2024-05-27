@@ -1083,7 +1083,7 @@ ap_mcp:
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
   frequency_sec: int(min=0, max=300, required=False)
   frequency_msec: int(min=0, max=999, required=False)
-  initial_delay: int(min=1, max=1800, required=False)
+  initial_delay: int(min=0, max=1800, required=False)
   loop_detection: int(min=1, max=255, required=False)
   per_vlan: any(bool(), enum('enabled', 'disabled'), required=False)
   key: str()
