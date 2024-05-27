@@ -1058,11 +1058,12 @@ objects:
       - health
     paths:
       - apic.access_policies.vspan.sessions
-  - name: DHCP Relay Policy
-    template: dhcp_relay_policy
+  - name: Infra DHCP Relay Policy
+    template: infra_dhcp_relay_policy
     folder: access_policies
     aci_classes:
       - dhcpRelayP
+    match_dn: 'uni\/infra.*'
     test_types:
       - config
     paths:
