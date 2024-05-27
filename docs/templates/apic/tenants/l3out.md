@@ -10,6 +10,19 @@ L3out Node and Interface Profiles can either be auto-generated, one per L3out, o
 
 **routed interface** - `vlan: <null>`, `svi: false`, `ip: <not null>`
 
+The following table maps the subnet flags of external endpoint groups to the corresponding GUI terminology:
+
+|Subnet Flag|GUI Terminology|
+|---|---|
+|`import_security`|`External Subnets for External EPG`|
+|`shared_security`|`Shared Security Import Subnet`|
+|`import_route_control`|`Import Route Control Subnet`|
+|`export_route_control`|`Export Route Control Subnet`|
+|`shared_route_control`|`Shared Route Control Subnet`|
+|`aggregate_import_route_control`|`Aggregate Export`|
+|`aggregate_export_route_control`|`Aggregate Import`|
+|`aggregate_shared_route_control`|`Aggregate Shared Routes`|
+
 Location in GUI:
 
 - `Tenants` » `XXX` » `Networking` » `L3outs`
@@ -45,6 +58,13 @@ apic:
                   bgp_peers:
                     - ip: 14.14.14.14
                       remote_as: 65010
+          external_endpoint_groups:
+            - name: EXT-EPG1
+              subnets:
+                - prefix: 0.0.0.0/0
+              contracts:
+                consumers:
+                  - CON1
 ```
 
 SVI example:
@@ -165,6 +185,10 @@ apic:
                       bgp_peers:
                         - ip: 14.14.14.14
                           remote_as: 65010
+          external_endpoint_groups:
+            - name: EXT-EPG1
+              subnets:
+                - prefix: 0.0.0.0/0
 ```
 
 Full example:
@@ -261,4 +285,32 @@ apic:
                 match_rules:
                 - MATCH2
                 set_rule: SET2
+          external_endpoint_groups:
+            - name: EXT-EPG1
+              alias: ABC-EXT-EPG1
+              description: My Desc
+              preferred_group: false
+              qos_class: level4
+              target_dscp: CS5
+              route_control_profiles:
+                - name: IMPORT-RCP1
+                  direction: import
+              subnets:
+                - name: ALL
+                  prefix: 0.0.0.0/0
+                  import_route_control: false
+                  export_route_control: false
+                  shared_route_control: false
+                  import_security: true
+                  shared_security: false
+                  route_control_profiles:          
+                    - name: EXPORT-RCP1
+                      direction: export
+              contracts:
+                consumers:
+                  - CON1
+                providers:
+                  - CON1
+                imported_consumers:
+                  - IMPORT-CON1
 ```

@@ -1,5 +1,18 @@
 # SR MPLS L3out
 
+The following table maps the subnet flags of external endpoint groups to the corresponding GUI terminology:
+
+|Subnet Flag|GUI Terminology|
+|---|---|
+|`import_security`|`External Subnets for External EPG`|
+|`shared_security`|`Shared Security Import Subnet`|
+|`import_route_control`|`Import Route Control Subnet`|
+|`export_route_control`|`Export Route Control Subnet`|
+|`shared_route_control`|`Shared Route Control Subnet`|
+|`aggregate_import_route_control`|`Aggregate Export`|
+|`aggregate_export_route_control`|`Aggregate Import`|
+|`aggregate_shared_route_control`|`Aggregate Shared Routes`|
+
 Location in GUI:
 
 - `Tenants` » `XXX` » `Networking` » `SR MPLS VRF L3Outs`
@@ -72,3 +85,19 @@ apic:
               external_endpoint_groups:
                 - ext-epg
                 - ext-epg2
+          external_endpoint_groups:
+            - name: ext-epg
+              subnets:
+                - name: ALL
+                  prefix: 0.0.0.0/0
+                  route_leaking: true
+                  security: true
+                  aggregate_shared_route_control: true
+              contracts:
+                consumers:
+                  - CON1
+                providers:
+                  - CON1
+                imported_consumers:
+                  - IMPORT-CON1
+```
