@@ -100,7 +100,7 @@
                                                 "weight": "{{ dest.weight }}",
                                                 {% endif %}
                                                 {% if dest.pod is defined %}
-                                                "podId": "{{ dest.pod }},"
+                                                "podId": "{{ dest.pod }}",
                                                 {% endif %}
                                                 "descr": "{{ dest.description | default() }}"
                                             },
