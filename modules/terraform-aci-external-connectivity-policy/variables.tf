@@ -37,7 +37,7 @@ variable "site_id" {
 }
 
 variable "peering_type" {
-  description = "the specific type of the object or component."
+  description = "the specific type of the object or component. Choices: `automatic_with_full_mesh`, `automatic_with_rr`."
   type        = string
   default     = "automatic_with_full_mesh"
 
