@@ -1095,6 +1095,8 @@ defaults:
       contracts:
         name_suffix: ""
         scope: context
+        apply_both_directions: true
+        reverse_filter_ports: true
         qos_class: unspecified
         target_dscp: unspecified
         subjects:

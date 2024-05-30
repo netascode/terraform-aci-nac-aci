@@ -1728,18 +1728,23 @@ locals {
         qos_class   = try(contract.qos_class, local.defaults.apic.tenants.contracts.qos_class)
         target_dscp = try(contract.target_dscp, local.defaults.apic.tenants.contracts.target_dscp)
         subjects = [for subject in try(contract.subjects, []) : {
-          name          = "${subject.name}${local.defaults.apic.tenants.contracts.subjects.name_suffix}"
-          alias         = try(subject.alias, "")
-          description   = try(subject.description, "")
-          service_graph = try("${subject.service_graph}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}", null)
-          qos_class     = try(subject.qos_class, local.defaults.apic.tenants.contracts.subjects.qos_class)
-          target_dscp   = try(subject.target_dscp, local.defaults.apic.tenants.contracts.subjects.target_dscp)
+          name                               = "${subject.name}${local.defaults.apic.tenants.contracts.subjects.name_suffix}"
+          alias                              = try(subject.alias, "")
+          description                        = try(subject.description, "")
+          apply_both_directions              = try(subject.apply_both_directions, true)
+          reverse_filter_ports               = try(subject.reverse_filter_ports, true)
+          service_graph                      = try("${subject.service_graph}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}", null)
+          service_graph_consumer_to_provider = try("${subject.service_graph_consumer_to_provider}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}", null)
+          service_graph_provider_to_consumer = try("${subject.service_graph_provider_to_consumer}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}", null)
+          qos_class                          = try(subject.qos_class, local.defaults.apic.tenants.contracts.subjects.qos_class)
+          target_dscp                        = try(subject.target_dscp, local.defaults.apic.tenants.contracts.subjects.target_dscp)
           filters = [for filter in try(subject.filters, []) : {
-            filter   = "${filter.filter}${local.defaults.apic.tenants.filters.name_suffix}"
-            action   = try(filter.action, local.defaults.apic.tenants.contracts.subjects.filters.action)
-            priority = try(filter.priority, local.defaults.apic.tenants.contracts.subjects.filters.priority)
-            log      = try(filter.log, local.defaults.apic.tenants.contracts.subjects.filters.log)
-            no_stats = try(filter.no_stats, local.defaults.apic.tenants.contracts.subjects.filters.no_stats)
+            filter     = "${filter.filter}${local.defaults.apic.tenants.filters.name_suffix}"
+            action     = try(filter.action, local.defaults.apic.tenants.contracts.subjects.filters.action)
+            priority   = try(filter.priority, local.defaults.apic.tenants.contracts.subjects.filters.priority)
+            log        = try(filter.log, local.defaults.apic.tenants.contracts.subjects.filters.log)
+            no_stats   = try(filter.no_stats, local.defaults.apic.tenants.contracts.subjects.filters.no_stats)
+            directions = try(filter.directions, [])
           }]
         }]
       }

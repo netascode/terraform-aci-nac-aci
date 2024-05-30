@@ -2,13 +2,15 @@ module "aci_contract" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-contract"
   version = ">= 0.8.0"
 
-  tenant      = "ABC"
-  name        = "CON1"
-  alias       = "CON1-ALIAS"
-  description = "My Description"
-  scope       = "global"
-  qos_class   = "level4"
-  target_dscp = "CS0"
+  tenant                = "ABC"
+  name                  = "CON1"
+  alias                 = "CON1-ALIAS"
+  description           = "My Description"
+  apply_both_directions = true
+  reverse_filter_ports  = true
+  scope                 = "global"
+  qos_class             = "level4"
+  target_dscp           = "CS0"
   subjects = [{
     name          = "SUB1"
     alias         = "SUB1-ALIAS"
