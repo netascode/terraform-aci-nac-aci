@@ -492,6 +492,7 @@ module "aci_external_connectivity_policy" {
   route_target = try(local.fabric_policies.external_connectivity_policy.route_target, local.defaults.apic.fabric_policies.external_connectivity_policy.route_target)
   fabric_id    = try(local.fabric_policies.external_connectivity_policy.fabric_id, local.defaults.apic.fabric_policies.external_connectivity_policy.fabric_id)
   site_id      = try(local.fabric_policies.external_connectivity_policy.site_id, local.defaults.apic.fabric_policies.external_connectivity_policy.site_id)
+  peering_type = try(local.fabric_policies.external_connectivity_policy.peering_type, local.defaults.apic.fabric_policies.external_connectivity_policy.peering_type)
   bgp_password = try(local.fabric_policies.external_connectivity_policy.bgp_password, null)
   routing_profiles = [for rp in try(local.fabric_policies.external_connectivity_policy.routing_profiles, []) : {
     name        = rp.name

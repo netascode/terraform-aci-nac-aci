@@ -25,7 +25,7 @@ resource "aci_rest_managed" "fvPeeringP" {
   dn         = "${aci_rest_managed.fvFabricExtConnP.dn}/peeringP"
   class_name = "fvPeeringP"
   content = {
-    type     = "automatic_with_full_mesh"
+    type     = var.peering_type
     password = var.bgp_password
   }
 

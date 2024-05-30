@@ -36,6 +36,17 @@ variable "site_id" {
   }
 }
 
+variable "peering_type" {
+  description = "the specific type of the object or component."
+  type        = string
+  default     = "automatic_with_full_mesh"
+
+  validation {
+    condition     = contains(["automatic_with_full_mesh", "automatic_with_rr"], var.peering_type)
+    error_message = "Allowed values are `automatic_with_full_mesh` or `automatic_with_rr`."
+  }
+}
+
 variable "bgp_password" {
   description = "BGP password."
   type        = string
