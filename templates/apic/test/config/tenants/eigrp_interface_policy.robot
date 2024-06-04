@@ -10,10 +10,10 @@ Resource        ../../../apic_common.resource
 {% for eip in tenant.policies.eigrp_interface_policies | default([]) %}
 {% set policy_name = eip.name ~ defaults.apic.tenants.policies.eigrp_interface_policies.name_suffix %}
 {% set ctrl = [] %}
-{% if eip.split_horizon | default(defaults.apic.tenants.policies.eigrp_interface_policies.split_horizon) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("split-horizon")] %}{% endif %}
 {% if eip.bfd | default(defaults.apic.tenants.policies.eigrp_interface_policies.bfd) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("bfd")] %}{% endif %}
 {% if eip.self_nexthop | default(defaults.apic.tenants.policies.eigrp_interface_policies.self_nexthop) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("nh-self")] %}{% endif %}
 {% if eip.passive_interface | default(defaults.apic.tenants.policies.eigrp_interface_policies.passive_interface) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("passive")] %}{% endif %}
+{% if eip.split_horizon | default(defaults.apic.tenants.policies.eigrp_interface_policies.split_horizon) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("split-horizon")] %}{% endif %}
 
 Verify EIGRP Interface Policy {{ policy_name }}
     ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/eigrpIfPol-{{ policy_name }}.json
