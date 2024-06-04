@@ -13,7 +13,7 @@ Verify Date and Time Policy {{ date_time_policy_name }}
     Should Be Equal Value Json String   ${r.json()}    $..datetimePol.attributes.name   {{ date_time_policy_name }}
     Should Be Equal Value Json String   ${r.json()}    $..datetimePol.attributes.StratumValue   {{ policy.apic_ntp_server_master_stratum | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.apic_ntp_server_master_stratum) }}
     Should Be Equal Value Json String   ${r.json()}    $..datetimePol.attributes.adminSt   {{ policy.ntp_admin_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_admin_state) | cisco.aac.aac_bool("enabled") }}
-    Should Be Equal Value Json String   ${r.json()}    $..datetimePol.attributes.authSt   {{ policys.ntp_auth_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_auth_state) | cisco.aac.aac_bool("enabled") }}
+    Should Be Equal Value Json String   ${r.json()}    $..datetimePol.attributes.authSt   {{ policy.ntp_auth_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.ntp_auth_state) | cisco.aac.aac_bool("enabled") }}
     Should Be Equal Value Json String   ${r.json()}    $..datetimePol.attributes.serverState   {{ policy.apic_ntp_server_state | default(defaults.apic.fabric_policies.pod_policies.date_time_policies.apic_ntp_server_state) | cisco.aac.aac_bool("enabled") }}
 
 {% for server in policy.ntp_servers | default([]) %}
