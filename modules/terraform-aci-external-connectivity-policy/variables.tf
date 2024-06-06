@@ -37,13 +37,13 @@ variable "site_id" {
 }
 
 variable "peering_type" {
-  description = "Peering type. Choices: `automatic_with_full_mesh`, `automatic_with_rr`."
+  description = "Peering type. Choices: `full_mesh`, `route_reflector`."
   type        = string
-  default     = "automatic_with_full_mesh"
+  default     = "full_mesh"
 
   validation {
-    condition     = contains(["automatic_with_full_mesh", "automatic_with_rr"], var.peering_type)
-    error_message = "Allowed values are `automatic_with_full_mesh` or `automatic_with_rr`."
+    condition     = contains(["full_mesh", "route_reflector"], var.peering_type)
+    error_message = "Allowed values are `full_mesh` or `route_reflector`."
   }
 }
 

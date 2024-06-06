@@ -6,7 +6,7 @@ module "aci_external_connectivity_policy" {
   route_target = "extended:as2-nn4:5:17"
   fabric_id    = 2
   site_id      = 2
-  peering_type = "automatic_with_rr"
+  peering_type = "route_reflector"
   bgp_password = "SECRETPW"
   routing_profiles = [{
     name        = "PROF1"
