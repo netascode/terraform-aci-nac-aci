@@ -22,6 +22,7 @@ locals {
       for interface in try(node.interfaces, []) : {
         key                   = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.from_module), interface.port)
         name                  = replace(format("%s:%s", try(interface.module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module), interface.port), "/^(?P<mod>.+):(?P<port>.+)$/", replace(replace(try(local.access_policies.leaf_interface_selector_name, local.defaults.apic.access_policies.leaf_interface_selector_name), "\\g<mod>", "$${mod}"), "\\g<port>", "$${port}"))
+        pod_id                = try(local.nodes.pod, local.defaults.apic.node_policies.nodes.pod)
         node_id               = node.id
         module                = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
         port                  = interface.port
@@ -56,6 +57,7 @@ module "aci_access_leaf_interface_selector_auto" {
   policy_group_type     = each.value.policy_group_type
   port_blocks           = each.value.port_blocks
   shutdown              = each.value.shutdown
+  pod_id                = try(local.nodes.pod, local.defaults.apic.node_policies.nodes.pod)
   node_id               = each.value.node_id
   module                = each.value.module
   port                  = each.value.port
@@ -72,6 +74,7 @@ locals {
         for sub in try(interface.sub_ports, []) : {
           key                   = format("%s/%s/%s/%s", node.id, try(interface.module, local.defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.from_module), interface.port, sub.port)
           name                  = replace(format("%s:%s:%s", try(interface.module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module), interface.port, sub.port), "/^(?P<mod>.+):(?P<port>.+):(?P<sport>.+)$/", replace(replace(replace(try(local.access_policies.leaf_interface_selector_sub_port_name, local.defaults.apic.access_policies.leaf_interface_selector_sub_port_name), "\\g<mod>", "$${mod}"), "\\g<port>", "$${port}"), "\\g<sport>", "$${sport}"))
+          pod_id                = try(local.nodes.pod, local.defaults.apic.node_policies.nodes.pod)
           node_id               = node.id
           module                = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
           port                  = interface.port
@@ -109,6 +112,7 @@ module "aci_access_leaf_interface_selector_sub_auto" {
   policy_group_type     = each.value.policy_group_type
   sub_port_blocks       = each.value.sub_port_blocks
   shutdown              = each.value.shutdown
+  pod_id                = try(local.nodes.pod, local.defaults.apic.node_policies.nodes.pod)
   node_id               = each.value.node_id
   module                = each.value.module
   port                  = each.value.port
@@ -163,6 +167,7 @@ locals {
       for interface in try(node.interfaces, []) : {
         key               = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.from_module), interface.port)
         name              = replace(format("%s:%s", try(interface.module, local.defaults.apic.access_policies.spine_interface_profiles.selectors.port_blocks.from_module), interface.port), "/^(?P<mod>.+):(?P<port>.+)$/", replace(replace(try(local.access_policies.spine_interface_selector_name, local.defaults.apic.access_policies.spine_interface_selector_name), "\\g<mod>", "$${mod}"), "\\g<port>", "$${port}"))
+        pod_id            = try(local.nodes.pod, local.defaults.apic.node_policies.nodes.pod)
         node_id           = node.id
         module            = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
         port              = interface.port
@@ -188,6 +193,7 @@ module "aci_access_spine_interface_selector_auto" {
   for_each          = { for selector in local.access_spine_interface_selectors : selector.key => selector if local.modules.aci_access_spine_interface_selector && var.manage_interface_policies }
   name              = each.value.name
   shutdown          = each.value.shutdown
+  pod_id            = try(local.nodes.pod, local.defaults.apic.node_policies.nodes.pod)
   node_id           = each.value.node_id
   module            = each.value.module
   port              = each.value.port
