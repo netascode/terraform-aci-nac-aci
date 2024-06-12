@@ -173,53 +173,46 @@ variable "additional_communities" {
   }
 }
 
-variable "set_as_path" {
-  description = "AS-Path Set. Flag to set AS Path."
-  type        = bool
-  default     = false
-}
-
-variable "set_as_path_criteria" {
-  description = "AS-PATH Criteria. Choices `set_as_path_criteria`: `prepend` or `prepend-last-as`."
-  type        = string
-  default     = "prepend"
+variable "set_as_paths" {
+  description = "AS-Path Set List."
+  type = list(object({
+    criteria = optional(string, "prepend")
+    count    = optional(number, 1)
+    asns = list(object({
+      order      = optional(number, 0)
+      asn_number = number
+    }))
+  }))
+  default = []
 
   validation {
-    condition     = contains(["prepend", "prepend-last-as"], var.set_as_path_criteria)
-    error_message = "Valid values for `set_as_path_criteria` are `prepend` or `prepend-last-as`."
+    condition = alltrue([
+      for c in var.set_as_paths : c.criteria == null || contains(["prepend", "prepend-last-as"], c.criteria)
+    ])
+    error_message = "Valid values for `criteria` are `prepend` or `prepend-last-as`."
   }
-}
-
-variable "set_as_path_count" {
-  description = "AS-PATH Count. Allowed values `set_as_path_count`: 0-10."
-  type        = number
-  default     = 1
 
   validation {
-    condition     = var.set_as_path_count >= 0 && var.set_as_path_count <= 10
-    error_message = "`set_as_path_count` minimum value: `0`. Maximum value: `10`."
+    condition = alltrue([
+      for c in var.set_as_paths : c.count == null || c.count >= 0 && c.count <= 10
+    ])
+    error_message = "`count` minimum value: `0`. Maximum value: `10`."
   }
-}
-
-variable "set_as_path_order" {
-  description = "AS-PATH Order. Allowed values `set_as_path_order`: 0-31."
-  type        = number
-  default     = 0
 
   validation {
-    condition     = var.set_as_path_order >= 0 && var.set_as_path_order <= 31
-    error_message = "`set_as_path_order` minimum value: `0`. Maximum value: `31`."
+    condition = alltrue(flatten([
+      for c in var.set_as_paths : [
+        for a in c.asns : a.order == null || try(a.order >= 0 && a.order <= 31, false)
+    ]]))
+    error_message = "`order` minimum value: `0`. Maximum value: `31`."
   }
-}
-
-variable "set_as_path_asn" {
-  description = "AS-PATH ASN. Allowed values `set_as_path_asn`: 0-65535."
-  type        = number
-  default     = null
 
   validation {
-    condition     = var.set_as_path_asn == null || try(var.set_as_path_asn >= 0 && var.set_as_path_asn <= 65535, false)
-    error_message = "`set_as_path_asn` minimum value: `0`. Maximum value: `65535`."
+    condition = alltrue(flatten([
+      for c in var.set_as_paths : [
+        for a in c.asns : try(a.asn_number >= 0 && a.asn_number <= 65535, false)
+    ]]))
+    error_message = "`asn` minimum value: `0`. Maximum value: `65535`."
   }
 }
 
