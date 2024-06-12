@@ -8,6 +8,17 @@ variable "name" {
   }
 }
 
+variable "target_version" {
+  description = "Target version."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = var.target_version == "" || can(regex("n\\d+-\\d+\\.\\d+\\(\\w+\\)", var.target_version))
+    error_message = "Invalid version number."
+  }
+}
+
 variable "node_ids" {
   description = "List of node IDs. Minimum value: 1. Maximum value: 4000."
   type        = list(number)

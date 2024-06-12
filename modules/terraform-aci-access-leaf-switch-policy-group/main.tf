@@ -13,3 +13,19 @@ resource "aci_rest_managed" "infraRsTopoctrlFwdScaleProfPol" {
     tnTopoctrlFwdScaleProfilePolName = var.forwarding_scale_policy
   }
 }
+
+resource "aci_rest_managed" "infraRsBfdIpv4InstPol" {
+  dn         = "${aci_rest_managed.infraAccNodePGrp.dn}/rsbfdIpv4InstPol"
+  class_name = "infraRsBfdIpv4InstPol"
+  content = {
+    tnBfdIpv4InstPolName = var.bfd_ipv4_policy
+  }
+}
+
+resource "aci_rest_managed" "infraRsBfdIpv6InstPol" {
+  dn         = "${aci_rest_managed.infraAccNodePGrp.dn}/rsbfdIpv6InstPol"
+  class_name = "infraRsBfdIpv6InstPol"
+  content = {
+    tnBfdIpv6InstPolName = var.bfd_ipv6_policy
+  }
+}

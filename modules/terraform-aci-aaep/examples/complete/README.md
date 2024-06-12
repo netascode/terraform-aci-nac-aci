@@ -17,6 +17,7 @@ module "aci_aaep" {
   version = ">= 0.8.0"
 
   name               = "AAEP1"
+  description        = "AAEP1 Description"
   infra_vlan         = 10
   physical_domains   = ["PD1"]
   routed_domains     = ["RD1"]

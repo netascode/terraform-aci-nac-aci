@@ -25,10 +25,10 @@ resource "aci_rest_managed" "firmwareRsFwgrpp" {
 
 resource "aci_rest_managed" "fabricNodeBlk" {
   for_each   = toset([for id in var.node_ids : tostring(id)])
-  dn         = "${aci_rest_managed.firmwareFwGrp.dn}/nodeblk-${each.value}"
+  dn         = "${aci_rest_managed.firmwareFwGrp.dn}/nodeblk-blk${each.value}-${each.value}"
   class_name = "fabricNodeBlk"
   content = {
-    name  = each.value
+    name  = "blk${each.value}-${each.value}"
     from_ = each.value
     to_   = each.value
   }

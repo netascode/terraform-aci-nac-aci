@@ -10,7 +10,7 @@ resource "aci_rest_managed" "fabricSetupP" {
 
 resource "aci_rest_managed" "fabricExtRoutablePodSubnet" {
   for_each   = { for extpool in var.external_tep_pools : extpool.prefix => extpool }
-  dn         = "uni/controller/setuppol/setupp-${var.pod_id}/extrtpodsubnet-[${each.value.prefix}]"
+  dn         = "${aci_rest_managed.fabricSetupP.dn}/extrtpodsubnet-[${each.value.prefix}]"
   class_name = "fabricExtRoutablePodSubnet"
   content = {
     pool                = each.value.prefix
