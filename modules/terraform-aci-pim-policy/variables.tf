@@ -23,11 +23,6 @@ variable "auth_key" {
   type        = string
   default     = ""
   sensitive   = true
-
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,130}$", var.auth_key))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 130."
-  }
 }
 
 variable "auth_type" {

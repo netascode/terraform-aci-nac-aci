@@ -7,6 +7,7 @@ resource "aci_rest_managed" "maintMaintP" {
     graceful  = "no"
     notifCond = "notifyOnlyOnFailures"
     runMode   = "pauseOnlyOnFailures"
+    version   = var.target_version != "" ? var.target_version : null
   }
 }
 
@@ -37,10 +38,10 @@ resource "aci_rest_managed" "maintRsMgrpp" {
 
 resource "aci_rest_managed" "fabricNodeBlk" {
   for_each   = toset([for id in var.node_ids : tostring(id)])
-  dn         = "${aci_rest_managed.maintMaintGrp.dn}/nodeblk-${each.value}"
+  dn         = "${aci_rest_managed.maintMaintGrp.dn}/nodeblk-blk${each.value}-${each.value}"
   class_name = "fabricNodeBlk"
   content = {
-    name  = each.value
+    name  = "blk${each.value}-${each.value}"
     from_ = each.value
     to_   = each.value
   }

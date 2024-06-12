@@ -23,6 +23,7 @@ locals {
         ip_shared       = int.ip_shared
         tDn             = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]")
         multipod_direct = int.multipod_direct
+        scope           = int.scope
       }
     } if int.floating_svi == false
   ])
@@ -76,6 +77,7 @@ locals {
         mtu          = int.mtu
         node_id      = int.node_id
         pod_id       = int.pod_id
+        scope        = int.scope
       }
     } if int.floating_svi == true
   ])
@@ -263,7 +265,6 @@ resource "aci_rest_managed" "l3extRsPathL3OutAtt" {
   content = {
     addr             = each.value.ip
     descr            = each.value.description
-    encapScope       = "local"
     ifInstT          = each.value.vlan != null ? (each.value.svi == "yes" ? "ext-svi" : "sub-interface") : "l3-port"
     autostate        = each.value.autostate
     encap            = each.value.vlan != null ? "vlan-${each.value.vlan}" : null
@@ -274,6 +275,7 @@ resource "aci_rest_managed" "l3extRsPathL3OutAtt" {
     mtu              = each.value.mtu
     tDn              = each.value.tDn
     isMultiPodDirect = each.value.multipod_direct ? "yes" : null
+    encapScope       = each.value.svi == "yes" ? each.value.scope == "vrf" ? "ctx" : "local" : null
   }
 }
 
@@ -332,7 +334,6 @@ resource "aci_rest_managed" "l3extVirtualLIfP" {
     addr       = each.value.ip
     autostate  = each.value.autostate
     descr      = each.value.description
-    encapScope = "local"
     ifInstT    = "ext-svi"
     encap      = "vlan-${each.value.vlan}"
     ipv6Dad    = "enabled"
@@ -341,6 +342,7 @@ resource "aci_rest_managed" "l3extVirtualLIfP" {
     mode       = each.value.mode
     mtu        = each.value.mtu
     nodeDn     = "topology/pod-${each.value.pod_id}/node-${each.value.node_id}"
+    encapScope = each.value.scope == "vrf" ? "ctx" : "local"
   }
 }
 

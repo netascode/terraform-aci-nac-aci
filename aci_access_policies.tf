@@ -33,10 +33,9 @@ module "aci_routed_domain" {
 
   for_each             = { for rd in try(local.access_policies.routed_domains, []) : rd.name => rd if local.modules.aci_routed_domain && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.routed_domains.name_suffix}"
-  vlan_pool            = "${each.value.vlan_pool}${local.defaults.apic.access_policies.vlan_pools.name_suffix}"
-  vlan_pool_allocation = [for vp in try(local.access_policies.vlan_pools, []) : try(vp.allocation, local.defaults.apic.access_policies.vlan_pools.allocation) if vp.name == each.value.vlan_pool][0]
+  vlan_pool            = try("${each.value.vlan_pool}${local.defaults.apic.access_policies.routed_domains.name_suffix}", "")
+  vlan_pool_allocation = try(each.value.vlan_pool, "") != "" ? [for vp in try(local.access_policies.vlan_pools, []) : try(vp.allocation, local.defaults.apic.access_policies.vlan_pools.allocation) if vp.name == each.value.vlan_pool][0] : "static"
   security_domains     = try(each.value.security_domains, [])
-
   depends_on = [
     module.aci_vlan_pool,
   ]
@@ -47,6 +46,7 @@ module "aci_aaep" {
 
   for_each           = { for aaep in try(local.access_policies.aaeps, []) : aaep.name => aaep if local.modules.aci_aaep && var.manage_access_policies }
   name               = "${each.value.name}${local.defaults.apic.access_policies.aaeps.name_suffix}"
+  description        = try(each.value.description, "")
   infra_vlan         = try(each.value.infra_vlan, local.defaults.apic.access_policies.aaeps.infra_vlan) == true ? try(local.access_policies.infra_vlan, 0) : 0
   physical_domains   = [for dom in try(each.value.physical_domains, []) : "${dom}${local.defaults.apic.access_policies.physical_domains.name_suffix}"]
   routed_domains     = [for dom in try(each.value.routed_domains, []) : "${dom}${local.defaults.apic.access_policies.routed_domains.name_suffix}"]
@@ -84,6 +84,38 @@ module "aci_vpc_policy" {
   peer_dead_interval = try(each.value.peer_dead_interval, local.defaults.apic.access_policies.switch_policies.vpc_policies.peer_dead_interval)
 }
 
+module "aci_bfd_ipv4_policy" {
+  source = "./modules/terraform-aci-bfd-policy"
+
+  for_each                  = { for bfd in try(local.access_policies.switch_policies.bfd_ipv4_policies, []) : bfd.name => bfd if local.modules.aci_bfd_policy && var.manage_access_policies }
+  name                      = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix}"
+  type                      = "ipv4"
+  description               = try(each.value.description, "")
+  detection_multiplier      = try(each.value.detection_multiplier, local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.detection_multiplier)
+  min_tx_interval           = try(each.value.min_transmit_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.min_transmit_interval)
+  min_rx_interval           = try(each.value.min_receive_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.min_receive_interval)
+  slow_timer_interval       = try(each.value.slow_timer_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.slow_timer_interval)
+  startup_timer_interval    = try(each.value.startup_timer_interval, null)
+  echo_rx_interval          = try(each.value.echo_receive_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.echo_receive_interval)
+  echo_frame_source_address = try(each.value.echo_frame_source_address, local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.echo_frame_source_address)
+}
+
+module "aci_bfd_ipv6_policy" {
+  source = "./modules/terraform-aci-bfd-policy"
+
+  for_each                  = { for bfd in try(local.access_policies.switch_policies.bfd_ipv6_policies, []) : bfd.name => bfd if local.modules.aci_bfd_policy && var.manage_access_policies }
+  name                      = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix}"
+  type                      = "ipv6"
+  description               = try(each.value.description, "")
+  detection_multiplier      = try(each.value.detection_multiplier, local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.detection_multiplier)
+  min_tx_interval           = try(each.value.min_transmit_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.min_transmit_interval)
+  min_rx_interval           = try(each.value.min_receive_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.min_receive_interval)
+  slow_timer_interval       = try(each.value.slow_timer_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.slow_timer_interval)
+  startup_timer_interval    = try(each.value.startup_timer_interval, null)
+  echo_rx_interval          = try(each.value.echo_receive_interval, local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.echo_receive_interval)
+  echo_frame_source_address = try(each.value.echo_frame_source_address, local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.echo_frame_source_address)
+}
+
 module "aci_forwarding_scale_policy" {
   source = "./modules/terraform-aci-forwarding-scale-policy"
 
@@ -98,21 +130,29 @@ module "aci_access_leaf_switch_policy_group" {
   for_each                = { for pg in try(local.access_policies.leaf_switch_policy_groups, []) : pg.name => pg if local.modules.aci_access_leaf_switch_policy_group && var.manage_access_policies }
   name                    = "${each.value.name}${local.defaults.apic.access_policies.leaf_switch_policy_groups.name_suffix}"
   forwarding_scale_policy = try("${each.value.forwarding_scale_policy}${local.defaults.apic.access_policies.switch_policies.forwarding_scale_policies.name_suffix}", "")
+  bfd_ipv4_policy         = try("${each.value.bfd_ipv4_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix}", "")
+  bfd_ipv6_policy         = try("${each.value.bfd_ipv6_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_forwarding_scale_policy,
+    module.aci_bfd_ipv4_policy,
+    module.aci_bfd_ipv6_policy,
   ]
 }
 
 module "aci_access_spine_switch_policy_group" {
   source = "./modules/terraform-aci-access-spine-switch-policy-group"
 
-  for_each    = { for pg in try(local.access_policies.spine_switch_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_switch_policy_group && var.manage_access_policies }
-  name        = "${each.value.name}${local.defaults.apic.access_policies.spine_switch_policy_groups.name_suffix}"
-  lldp_policy = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
+  for_each        = { for pg in try(local.access_policies.spine_switch_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_switch_policy_group && var.manage_access_policies }
+  name            = "${each.value.name}${local.defaults.apic.access_policies.spine_switch_policy_groups.name_suffix}"
+  lldp_policy     = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
+  bfd_ipv4_policy = try("${each.value.bfd_ipv4_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix}", "")
+  bfd_ipv6_policy = try("${each.value.bfd_ipv6_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_lldp_policy,
+    module.aci_bfd_ipv4_policy,
+    module.aci_bfd_ipv6_policy,
   ]
 }
 
@@ -332,6 +372,11 @@ module "aci_storm_control_policy" {
   unknown_unicast_burst_rate = try(each.value.unknown_unicast_burst_rate, local.defaults.apic.access_policies.interface_policies.storm_control_policies.unknown_unicast_burst_rate)
   unknown_unicast_pps        = try(each.value.unknown_unicast_pps, local.defaults.apic.access_policies.interface_policies.storm_control_policies.unknown_unicast_pps)
   unknown_unicast_rate       = try(each.value.unknown_unicast_rate, local.defaults.apic.access_policies.interface_policies.storm_control_policies.unknown_unicast_rate)
+  burst_pps                  = try(each.value.burst_pps, local.defaults.apic.access_policies.interface_policies.storm_control_policies.burst_pps)
+  burst_rate                 = try(each.value.burst_rate, local.defaults.apic.access_policies.interface_policies.storm_control_policies.burst_rate)
+  rate_pps                   = try(each.value.rate_pps, local.defaults.apic.access_policies.interface_policies.storm_control_policies.rate_pps)
+  rate                       = try(each.value.rate, local.defaults.apic.access_policies.interface_policies.storm_control_policies.rate)
+  configuration_type         = try(each.value.rate, each.value.rate_pps, each.value.burst_pps, each.value.burst_rate, false) == false ? "separate" : "all"
 }
 
 module "aci_access_leaf_interface_policy_group" {
@@ -692,6 +737,7 @@ locals {
         sub_port = try(ap.sub_port, null)
         module   = try(ap.module, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.module)
         channel  = try(ap.channel, null)
+        type     = try(ap.type, null)
       }]
     }]
   }]
@@ -727,6 +773,7 @@ module "aci_access_span_source_group" {
       sub_port = ap.sub_port
       module   = ap.module
       channel  = ap.channel
+      type     = ap.type
     }]
   }]
 }
@@ -813,4 +860,46 @@ module "aci_vspan_session" {
       channel  = ap.channel
     }]
   }]
+}
+
+module "aci_ptp_profile" {
+  source = "./modules/terraform-aci-ptp-profile"
+
+  for_each          = { for profile in try(local.access_policies.ptp_profiles, []) : profile.name => profile if local.modules.aci_ptp_profile && var.manage_access_policies }
+  name              = each.value.name
+  announce_interval = try(each.value.announce_interval, local.defaults.apic.access_policies.ptp_profiles.announce_interval)
+  announce_timeout  = try(each.value.announce_timeout, local.defaults.apic.access_policies.ptp_profiles.announce_timeout)
+  delay_interval    = try(each.value.delay_interval, local.defaults.apic.access_policies.ptp_profiles.delay_interval)
+  forwardable       = try(each.value.forwardable, local.defaults.apic.access_policies.ptp_profiles.forwardable)
+  priority          = try(each.value.priority, local.defaults.apic.access_policies.ptp_profiles.priority)
+  sync_interval     = try(each.value.sync_interval, local.defaults.apic.access_policies.ptp_profiles.sync_interval)
+  template          = try(each.value.template, local.defaults.apic.access_policies.ptp_profiles.template)
+  mismatch_handling = try(each.value.mismatch_handling, local.defaults.apic.access_policies.ptp_profiles.mismatch_handling)
+}
+
+locals {
+  infra_dhcp_relay_policies = flatten([
+    for policy in try(local.access_policies.dhcp_relay_policies, []) : {
+      name        = "${policy.name}${local.defaults.apic.access_policies.dhcp_relay_policies.name_suffix}"
+      description = try(policy.description, "")
+      providers_ = [for provider in try(policy.providers, []) : {
+        ip                      = provider.ip
+        type                    = provider.type
+        tenant                  = try(provider.tenant, "")
+        application_profile     = try("${provider.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}", "")
+        endpoint_group          = try("${provider.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}", "")
+        l3out                   = try("${provider.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}", "")
+        external_endpoint_group = try("${provider.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}", "")
+      }]
+    }
+  ])
+}
+
+module "aci_infra_dhcp_relay_policy" {
+  source = "./modules/terraform-aci-infra-dhcp-relay-policy"
+
+  for_each    = { for policy in local.infra_dhcp_relay_policies : policy.name => policy if local.modules.aci_infra_dhcp_relay_policy && var.manage_access_policies }
+  name        = each.value.name
+  description = each.value.description
+  providers_  = each.value.providers_
 }

@@ -16,8 +16,8 @@ variable "initial_delay" {
   default     = 180
 
   validation {
-    condition     = var.initial_delay >= 1 && var.initial_delay <= 1800
-    error_message = "Minimum value: 1. Maximum value: 1800."
+    condition     = var.initial_delay >= 0 && var.initial_delay <= 1800
+    error_message = "Minimum value: 0. Maximum value: 1800."
   }
 }
 

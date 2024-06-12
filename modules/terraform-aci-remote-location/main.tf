@@ -17,7 +17,7 @@ resource "aci_rest_managed" "fileRemotePath" {
   }
 
   lifecycle {
-    ignore_changes = [content["userPasswd"]]
+    ignore_changes = [content["userPasswd"], content["identityPrivateKeyContents"], content["identityPublicKeyContents"], content["identityPrivateKeyPassphrase"]]
   }
 }
 

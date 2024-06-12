@@ -187,16 +187,17 @@ locals {
         igmp_interface_policy      = try("${bd.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
         igmp_snooping_policy       = try("${bd.igmp_snooping_policy}${local.defaults.apic.tenants.policies.igmp_snooping_policies.name_suffix}", "")
         subnets = [for subnet in try(bd.subnets, []) : {
-          ip                  = subnet.ip
-          description         = try(subnet.description, "")
-          primary_ip          = try(subnet.primary_ip, local.defaults.apic.tenants.bridge_domains.subnets.primary_ip)
-          public              = try(subnet.public, local.defaults.apic.tenants.bridge_domains.subnets.public)
-          shared              = try(subnet.shared, local.defaults.apic.tenants.bridge_domains.subnets.shared)
-          igmp_querier        = try(subnet.igmp_querier, local.defaults.apic.tenants.bridge_domains.subnets.igmp_querier)
-          nd_ra_prefix        = try(subnet.nd_ra_prefix, local.defaults.apic.tenants.bridge_domains.subnets.nd_ra_prefix)
-          no_default_gateway  = try(subnet.no_default_gateway, local.defaults.apic.tenants.bridge_domains.subnets.no_default_gateway)
-          virtual             = try(subnet.virtual, local.defaults.apic.tenants.bridge_domains.subnets.virtual)
-          nd_ra_prefix_policy = try("${subnet.nd_ra_prefix_policy}${local.defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix}", "")
+          ip                    = subnet.ip
+          description           = try(subnet.description, "")
+          primary_ip            = try(subnet.primary_ip, local.defaults.apic.tenants.bridge_domains.subnets.primary_ip)
+          public                = try(subnet.public, local.defaults.apic.tenants.bridge_domains.subnets.public)
+          shared                = try(subnet.shared, local.defaults.apic.tenants.bridge_domains.subnets.shared)
+          igmp_querier          = try(subnet.igmp_querier, local.defaults.apic.tenants.bridge_domains.subnets.igmp_querier)
+          nd_ra_prefix          = try(subnet.nd_ra_prefix, local.defaults.apic.tenants.bridge_domains.subnets.nd_ra_prefix)
+          no_default_gateway    = try(subnet.no_default_gateway, local.defaults.apic.tenants.bridge_domains.subnets.no_default_gateway)
+          virtual               = try(subnet.virtual, local.defaults.apic.tenants.bridge_domains.subnets.virtual)
+          nd_ra_prefix_policy   = try("${subnet.nd_ra_prefix_policy}${local.defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix}", "")
+          ip_dataplane_learning = try(subnet.ip_dataplane_learning, null)
         }]
         l3outs = try(bd.l3outs, null) != null ? [for l3out in bd.l3outs : "${l3out}${local.defaults.apic.tenants.l3outs.name_suffix}"] : []
         dhcp_labels = [for label in try(bd.dhcp_labels, []) : {
@@ -308,19 +309,20 @@ locals {
             application_profile = try(master.application_profile, "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}")
           }]
           subnets = [for subnet in try(epg.subnets, []) : {
-            description         = try(subnet.description, "")
-            ip                  = subnet.ip
-            public              = try(subnet.public, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.public)
-            shared              = try(subnet.shared, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.shared)
-            igmp_querier        = try(subnet.igmp_querier, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.igmp_querier)
-            nd_ra_prefix        = try(subnet.nd_ra_prefix, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.nd_ra_prefix)
-            no_default_gateway  = try(subnet.no_default_gateway, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.no_default_gateway)
-            nd_ra_prefix_policy = try("${subnet.nd_ra_prefix_policy}${local.defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix}", "")
-            next_hop_ip         = try(subnet.next_hop_ip, "")
-            anycast_mac         = try(subnet.anycast_mac, "")
-            nlb_group           = try(subnet.nlb_group, "0.0.0.0")
-            nlb_mac             = try(subnet.nlb_mac, "00:00:00:00:00:00")
-            nlb_mode            = try(subnet.nlb_mode, "")
+            description           = try(subnet.description, "")
+            ip                    = subnet.ip
+            public                = try(subnet.public, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.public)
+            shared                = try(subnet.shared, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.shared)
+            igmp_querier          = try(subnet.igmp_querier, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.igmp_querier)
+            nd_ra_prefix          = try(subnet.nd_ra_prefix, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.nd_ra_prefix)
+            no_default_gateway    = try(subnet.no_default_gateway, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.no_default_gateway)
+            nd_ra_prefix_policy   = try("${subnet.nd_ra_prefix_policy}${local.defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix}", "")
+            ip_dataplane_learning = try(subnet.ip_dataplane_learning, null)
+            next_hop_ip           = try(subnet.next_hop_ip, "")
+            anycast_mac           = try(subnet.anycast_mac, "")
+            nlb_group             = try(subnet.nlb_group, "0.0.0.0")
+            nlb_mac               = try(subnet.nlb_mac, "00:00:00:00:00:00")
+            nlb_mode              = try(subnet.nlb_mode, "")
             ip_pools = [for pool in try(subnet.ip_pools, []) : {
               name              = "${pool.name}${local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.ip_pools.name_suffix}"
               start_ip          = try(pool.start_ip, "0.0.0.0")
@@ -363,6 +365,9 @@ locals {
             vlan                 = try(sp.vlan, null)
             deployment_immediacy = try(sp.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.deployment_immediacy)
             mode                 = try(sp.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.mode)
+            ptp_source_ip        = try(sp.ptp.source_ip, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.ptp.source_ip)
+            ptp_mode             = try(sp.ptp.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.ptp.mode)
+            ptp_profile          = try(sp.ptp.profile, null)
           }]
           static_leafs = [for sl in try(epg.static_leafs, []) : {
             pod_id               = try(sl.pod_id, null)
@@ -442,6 +447,9 @@ module "aci_endpoint_group" {
     vlan                 = sp.vlan
     deployment_immediacy = sp.deployment_immediacy
     mode                 = sp.mode
+    ptp_source_ip        = sp.ptp_source_ip
+    ptp_mode             = sp.ptp_mode
+    ptp_profile          = sp.ptp_profile
   }]
   static_leafs = [for sl in try(each.value.static_leafs, []) : {
     pod_id               = sl.pod_id == null ? try([for node in try(local.node_policies.nodes, []) : node.pod if node.id == sl.node_id][0], local.defaults.apic.node_policies.nodes.pod) : sl.pod_id
@@ -476,6 +484,137 @@ module "aci_endpoint_group" {
     module.aci_imported_contract,
     module.aci_vmware_vmm_domain,
     module.aci_vlan_pool,
+  ]
+}
+
+locals {
+  useg_endpoint_groups = flatten([
+    for tenant in local.tenants : [
+      for ap in try(tenant.application_profiles, []) : [
+        for useg_epg in try(ap.useg_endpoint_groups, []) : {
+          key                         = format("%s/%s/%s", tenant.name, ap.name, useg_epg.name)
+          tenant                      = tenant.name
+          application_profile         = "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}"
+          name                        = "${useg_epg.name}${local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.name_suffix}"
+          alias                       = try(useg_epg.alias, "")
+          description                 = try(useg_epg.description, "")
+          flood_in_encap              = try(useg_epg.flood_in_encap, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.flood_in_encap)
+          intra_epg_isolation         = try(useg_epg.intra_epg_isolation, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.intra_epg_isolation)
+          preferred_group             = try(useg_epg.preferred_group, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.preferred_group)
+          qos_class                   = try(useg_epg.qos_class, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.qos_class)
+          custom_qos_policy           = try("${useg_epg.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+          bridge_domain               = try("${useg_epg.bridge_domain}${local.defaults.apic.tenants.bridge_domains.name_suffix}", "")
+          tags                        = try(useg_epg.tags, [])
+          trust_control_policy        = try("${useg_epg.trust_control_policy}${local.defaults.apic.tenants.policies.trust_control_policies.name_suffix}", "")
+          contract_consumers          = try([for contract in useg_epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
+          contract_providers          = try([for contract in useg_epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
+          contract_imported_consumers = try([for contract in useg_epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
+          contract_intra_epgs         = try([for contract in useg_epg.contracts.intra_epgs : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
+          physical_domains            = try([for domain in useg_epg.physical_domains : "${domain}${local.defaults.apic.access_policies.physical_domains.name_suffix}"], [])
+          useg_attributes_match_type  = try(useg_epg.useg_attributes.match_type, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.useg_attributes.match_type)
+          contract_masters = [for master in try(useg_epg.contracts.masters, []) : {
+            endpoint_group      = master.endpoint_group
+            application_profile = try(master.application_profile, "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}")
+          }]
+          useg_attributes_ip_statements = [for ip_statement in try(useg_epg.useg_attributes.ip_statements, []) : {
+            name           = ip_statement.name
+            use_epg_subnet = try(ip_statement.use_epg_subnet, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.useg_attributes.ip_statements.use_epg_subnet)
+            ip             = try(ip_statement.ip, "")
+          }]
+          useg_attributes_mac_statements = [for mac_statement in try(useg_epg.useg_attributes.mac_statements, []) : {
+            name = mac_statement.name
+            mac  = upper(mac_statement.mac)
+          }]
+          subnets = [for subnet in try(useg_epg.subnets, []) : {
+            description         = try(subnet.description, "")
+            ip                  = subnet.ip
+            public              = try(subnet.public, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.public)
+            shared              = try(subnet.shared, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.shared)
+            igmp_querier        = try(subnet.igmp_querier, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.igmp_querier)
+            nd_ra_prefix        = try(subnet.nd_ra_prefix, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.nd_ra_prefix)
+            no_default_gateway  = try(subnet.no_default_gateway, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.no_default_gateway)
+            nd_ra_prefix_policy = try("${subnet.nd_ra_prefix_policy}${local.defaults.apic.tenants.policies.nd_ra_prefix_policies.name_suffix}", "")
+            next_hop_ip         = try(subnet.next_hop_ip, "")
+            anycast_mac         = try(subnet.anycast_mac, "")
+            nlb_group           = try(subnet.nlb_group, "0.0.0.0")
+            nlb_mac             = try(subnet.nlb_mac, "00:00:00:00:00:00")
+            nlb_mode            = try(subnet.nlb_mode, "")
+            ip_pools = [for pool in try(subnet.ip_pools, []) : {
+              name              = "${pool.name}${local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.ip_pools.name_suffix}"
+              start_ip          = try(pool.start_ip, "0.0.0.0")
+              end_ip            = try(pool.end_ip, "0.0.0.0")
+              dns_search_suffix = try(pool.dns_search_suffix, "")
+              dns_server        = try(pool.dns_server, "")
+              dns_suffix        = try(pool.dns_suffix, "")
+              wins_server       = try(pool.wins_server, "")
+            }]
+          }]
+          vmware_vmm_domains = [for vmm in try(useg_epg.vmware_vmm_domains, []) : {
+            name                 = "${vmm.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.name_suffix}"
+            deployment_immediacy = try(vmm.deployment_immediacy, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.vmware_vmm_domains.deployment_immediacy)
+            netflow              = try(vmm.netflow, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.vmware_vmm_domains.netflow)
+            elag                 = try(vmm.elag, "")
+            active_uplinks_order = try(vmm.active_uplinks_order, "")
+            standby_uplinks      = try(vmm.standby_uplinks, "")
+          }]
+          static_leafs = [for sl in try(useg_epg.static_leafs, []) : {
+            pod_id  = try(sl.pod_id, null)
+            node_id = try(sl.node_id, null)
+          }]
+          l4l7_address_pools = [for ap in try(useg_epg.l4l7_address_pools, []) : {
+            name            = ap.name
+            gateway_address = ap.gateway_address
+            from            = try(ap.from, "")
+            to              = try(ap.to, "")
+          }]
+        }
+      ]
+    ]
+  ])
+}
+
+module "aci_useg_endpoint_group" {
+  source = "./modules/terraform-aci-useg-endpoint-group"
+
+  for_each                    = { for epg in local.useg_endpoint_groups : epg.key => epg if local.modules.aci_useg_endpoint_group && var.manage_tenants }
+  tenant                      = each.value.tenant
+  application_profile         = each.value.application_profile
+  name                        = each.value.name
+  alias                       = each.value.alias
+  description                 = each.value.description
+  flood_in_encap              = each.value.flood_in_encap
+  intra_epg_isolation         = each.value.intra_epg_isolation
+  preferred_group             = each.value.preferred_group
+  qos_class                   = each.value.qos_class
+  custom_qos_policy           = each.value.custom_qos_policy
+  bridge_domain               = each.value.bridge_domain
+  tags                        = each.value.tags
+  trust_control_policy        = each.value.trust_control_policy
+  contract_consumers          = each.value.contract_consumers
+  contract_providers          = each.value.contract_providers
+  contract_imported_consumers = each.value.contract_imported_consumers
+  contract_intra_epgs         = each.value.contract_intra_epgs
+  contract_masters            = each.value.contract_masters
+  physical_domains            = each.value.physical_domains
+  match_type                  = each.value.useg_attributes_match_type
+  ip_statements               = each.value.useg_attributes_ip_statements
+  mac_statements              = each.value.useg_attributes_mac_statements
+  subnets                     = each.value.subnets
+  vmware_vmm_domains          = each.value.vmware_vmm_domains
+  static_leafs = [for sl in try(each.value.static_leafs, []) : {
+    pod_id  = sl.pod_id == null ? try([for node in try(local.node_policies.nodes, []) : node.pod if node.id == sl.node_id][0], local.defaults.apic.node_policies.nodes.pod) : sl.pod_id
+    node_id = sl.node_id
+  }]
+  l4l7_address_pools = each.value.l4l7_address_pools
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_application_profile,
+    module.aci_endpoint_group,
+    module.aci_bridge_domain,
+    module.aci_contract,
+    module.aci_imported_contract,
+    module.aci_vmware_vmm_domain,
   ]
 }
 
@@ -700,6 +839,7 @@ locals {
           source    = try(routemap.source, local.defaults.apic.tenants.l3outs.redistribution_route_maps.source)
           route_map = "${routemap.route_map}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}"
         }]
+        import_route_map_name        = try(l3out.import_route_map.name, "default-import")
         import_route_map_description = try(l3out.import_route_map.description, "")
         import_route_map_type        = try(l3out.import_route_map.type, local.defaults.apic.tenants.l3outs.import_route_map.type)
         import_route_map_contexts = [for context in try(l3out.import_route_map.contexts, []) : {
@@ -708,8 +848,9 @@ locals {
           action      = try(context.action, local.defaults.apic.tenants.l3outs.import_route_map.contexts.action)
           order       = try(context.order, local.defaults.apic.tenants.l3outs.import_route_map.contexts.order)
           set_rule    = try("${context.set_rule}${local.defaults.apic.tenants.policies.set_rules.name_suffix}", "")
-          match_rule  = try("${context.match_rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}", "")
+          match_rules = [for rule in try(context.match_rules, []) : "${rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}"]
         }]
+        export_route_map_name        = try(l3out.export_route_map.name, "default-export")
         export_route_map_description = try(l3out.export_route_map.description, "")
         export_route_map_type        = try(l3out.export_route_map.type, local.defaults.apic.tenants.l3outs.export_route_map.type)
         export_route_map_contexts = [for context in try(l3out.export_route_map.contexts, []) : {
@@ -718,7 +859,7 @@ locals {
           action      = try(context.action, local.defaults.apic.tenants.l3outs.export_route_map.contexts.action)
           order       = try(context.order, local.defaults.apic.tenants.l3outs.export_route_map.contexts.order)
           set_rule    = try("${context.set_rule}${local.defaults.apic.tenants.policies.set_rules.name_suffix}", "")
-          match_rule  = try("${context.match_rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}", "")
+          match_rules = [for rule in try(context.match_rules, []) : "${rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}"]
         }]
       }
     ]
@@ -759,9 +900,11 @@ module "aci_l3out" {
   default_route_leak_policy_context_scope = each.value.default_route_leak_policy_context_scope
   default_route_leak_policy_outside_scope = each.value.default_route_leak_policy_outside_scope
   redistribution_route_maps               = each.value.redistribution_route_maps
+  import_route_map_name                   = each.value.import_route_map_name
   import_route_map_description            = each.value.import_route_map_description
   import_route_map_type                   = each.value.import_route_map_type
   import_route_map_contexts               = each.value.import_route_map_contexts
+  export_route_map_name                   = each.value.export_route_map_name
   export_route_map_description            = each.value.export_route_map_description
   export_route_map_type                   = each.value.export_route_map_type
   export_route_map_contexts               = each.value.export_route_map_contexts
@@ -799,6 +942,7 @@ locals {
               prefix      = sr.prefix
               preference  = try(sr.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.preference)
               bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
+              track_list  = try(sr.track_list, null)
               next_hops = [for nh in try(sr.next_hops, []) : {
                 ip         = nh.ip
                 preference = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
@@ -879,6 +1023,7 @@ locals {
             prefix      = sr.prefix
             preference  = try(sr.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.preference)
             bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
+            track_list  = try(sr.track_list, null)
             next_hops = [for nh in try(sr.next_hops, []) : {
               ip         = nh.ip
               preference = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
@@ -983,6 +1128,7 @@ locals {
               ip_a            = try(int.ip_a, null)
               ip_b            = try(int.ip_b, null)
               ip_shared       = try(int.ip_shared, null)
+              scope           = try(int.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.scope)
               multipod_direct = tenant.name == "infra" ? try(int.multipod_direct, false) : false
               bgp_peers = [for peer in try(int.bgp_peers, []) : {
                 ip                               = peer.ip
@@ -1071,6 +1217,7 @@ module "aci_l3out_interface_profile_manual" {
     ip_shared       = int.ip_shared
     bgp_peers       = int.bgp_peers
     paths           = int.paths
+    scope           = int.scope
     multipod_direct = int.multipod_direct
   }]
 
@@ -1124,6 +1271,7 @@ locals {
             ip_a            = try(int.ip_a, null)
             ip_b            = try(int.ip_b, null)
             ip_shared       = try(int.ip_shared, null)
+            scope           = try(int.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.scope)
             multipod_direct = tenant.name == "infra" ? try(int.multipod_direct, false) : false
             bgp_peers = [for peer in try(int.bgp_peers, []) : {
               ip                               = peer.ip
@@ -1210,6 +1358,7 @@ module "aci_l3out_interface_profile_auto" {
     ip_shared       = int.ip_shared
     bgp_peers       = int.bgp_peers
     paths           = int.paths
+    scope           = int.scope
     multipod_direct = int.multipod_direct
   }]
 
@@ -1320,18 +1469,21 @@ locals {
   sr_mpls_l3outs = flatten([
     for tenant in local.tenants : [
       for l3out in try(tenant.sr_mpls_l3outs, []) : {
-        key                        = format("%s/%s", tenant.name, l3out.name)
-        tenant                     = tenant.name
-        name                       = "${l3out.name}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
-        alias                      = try(l3out.alias, "")
-        description                = try(l3out.description, "")
-        domain                     = try("${l3out.domain}${local.defaults.apic.access_policies.routed_domains.name_suffix}", "")
-        vrf                        = tenant.name == "infra" ? "overlay-1" : try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
-        transport_data_plane       = try(l3out.transport_data_plane, local.defaults.apic.tenants.sr_mpls_l3outs.transport_data_plane)
-        sr_mpls                    = true
-        sr_mpls_infra_l3out        = try(l3out.sr_mpls_infra_l3out, "")
-        sr_mpls_inbound_route_map  = try(l3out.inbound_route_map, "")
-        sr_mpls_outbound_route_map = try(l3out.outbound_route_map, "")
+        key                  = format("%s/%s", tenant.name, l3out.name)
+        tenant               = tenant.name
+        name                 = "${l3out.name}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
+        alias                = try(l3out.alias, "")
+        description          = try(l3out.description, "")
+        domain               = try("${l3out.domain}${local.defaults.apic.access_policies.routed_domains.name_suffix}", "")
+        vrf                  = tenant.name == "infra" ? "overlay-1" : try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
+        transport_data_plane = try(l3out.transport_data_plane, local.defaults.apic.tenants.sr_mpls_l3outs.transport_data_plane)
+        sr_mpls              = true
+        sr_mpls_infra_l3outs = [for infra_l3out in try(l3out.sr_mpls_infra_l3outs, []) : {
+          name                     = infra_l3out.name
+          outbound_route_map       = try(infra_l3out.outbound_route_map, "")
+          inbound_route_map        = try(infra_l3out.inbound_route_map, "")
+          external_endpoint_groups = [for eepg in try(infra_l3out.external_endpoint_groups, []) : eepg]
+        }]
       }
     ]
   ])
@@ -1340,17 +1492,15 @@ locals {
 module "aci_sr_mpls_l3out" {
   source = "./modules/terraform-aci-l3out"
 
-  for_each                   = { for l3out in local.sr_mpls_l3outs : l3out.key => l3out if try(local.modules.aci_sr_mpls_l3out, true) && var.manage_tenants }
-  tenant                     = each.value.tenant
-  name                       = each.value.name
-  alias                      = each.value.alias
-  description                = each.value.description
-  routed_domain              = each.value.domain
-  vrf                        = each.value.vrf
-  sr_mpls                    = each.value.sr_mpls
-  sr_mpls_infra_l3out        = each.value.sr_mpls_infra_l3out
-  sr_mpls_inbound_route_map  = each.value.sr_mpls_inbound_route_map
-  sr_mpls_outbound_route_map = each.value.sr_mpls_outbound_route_map
+  for_each             = { for l3out in local.sr_mpls_l3outs : l3out.key => l3out if try(local.modules.aci_sr_mpls_l3out, true) && var.manage_tenants }
+  tenant               = each.value.tenant
+  name                 = each.value.name
+  alias                = each.value.alias
+  description          = each.value.description
+  routed_domain        = each.value.domain
+  vrf                  = each.value.vrf
+  sr_mpls              = each.value.sr_mpls
+  sr_mpls_infra_l3outs = each.value.sr_mpls_infra_l3outs
 
   depends_on = [
     module.aci_tenant,
@@ -1514,7 +1664,6 @@ locals {
           contract_consumers          = try([for contract in epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_providers          = try([for contract in epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
-          sr_mpls_infra_l3out         = try(l3out.sr_mpls_infra_l3out, "")
           subnets = [for subnet in try(epg.subnets, []) : {
             name                           = try(subnet.name, "")
             prefix                         = subnet.prefix
@@ -1542,7 +1691,6 @@ module "aci_sr_mpls_external_endpoint_group" {
   contract_providers          = each.value.contract_providers
   contract_imported_consumers = each.value.contract_imported_consumers
   subnets                     = each.value.subnets
-  sr_mpls_infra_l3out         = each.value.sr_mpls_infra_l3out
 
   depends_on = [
     module.aci_tenant,
@@ -2163,11 +2311,18 @@ locals {
             description = try(comm.description, "")
           }
         ]
-        set_as_path                    = try(policy.set_as_path.criteria, null) != null || try(policy.set_as_path.count, null) != null || try(policy.set_as_path.order, null) != null
-        set_as_path_criteria           = try(policy.set_as_path.criteria, local.defaults.apic.tenants.policies.set_rules.set_as_path.criteria)
-        set_as_path_count              = try(policy.set_as_path.count, local.defaults.apic.tenants.policies.set_rules.set_as_path.count)
-        set_as_path_order              = try(policy.set_as_path.order, local.defaults.apic.tenants.policies.set_rules.set_as_path.order)
-        set_as_path_asn                = try(policy.set_as_path.asn, null)
+        set_as_paths = [
+          for as_path in try(policy.set_as_paths, []) : {
+            criteria = try(as_path.criteria, local.defaults.apic.tenants.policies.set_rules.set_as_paths.criteria)
+            count    = try(as_path.count, local.defaults.apic.tenants.policies.set_rules.set_as_paths.count)
+            asns = [
+              for asn in try(as_path.asns, []) : {
+                asn_number = asn.number
+                order      = try(asn.order, local.defaults.apic.tenants.policies.set_rules.set_as_paths.asns.order)
+              }
+            ]
+          }
+        ]
         next_hop_propagation           = try(policy.next_hop_propagation, local.defaults.apic.tenants.policies.set_rules.next_hop_propagation)
         multipath                      = try(policy.multipath, local.defaults.apic.tenants.policies.set_rules.multipath)
         external_endpoint_group        = try(policy.external_endpoint_group.name, null) != null ? "${policy.external_endpoint_group.name}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}" : ""
@@ -2199,11 +2354,7 @@ module "aci_set_rule" {
   preference                     = each.value.preference
   metric_type                    = each.value.metric_type
   additional_communities         = each.value.additional_communities
-  set_as_path                    = each.value.set_as_path
-  set_as_path_criteria           = each.value.set_as_path_criteria
-  set_as_path_count              = each.value.set_as_path_count
-  set_as_path_order              = each.value.set_as_path_order
-  set_as_path_asn                = each.value.set_as_path_asn
+  set_as_paths                   = each.value.set_as_paths
   next_hop_propagation           = each.value.next_hop_propagation
   multipath                      = each.value.multipath
   external_endpoint_group        = each.value.external_endpoint_group
@@ -3268,4 +3419,68 @@ module "aci_tenant_span_source_group" {
   depends_on = [
     module.aci_tenant,
   ]
+}
+
+locals {
+  track_lists = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.track_lists, []) : {
+        key             = format("%s/%s", tenant.name, policy.name)
+        tenant          = tenant.name
+        name            = "${policy.name}${local.defaults.apic.tenants.policies.track_lists.name_suffix}"
+        description     = try(policy.description, "")
+        type            = try(policy.type, local.defaults.apic.tenants.policies.track_lists.type)
+        percentage_up   = try(policy.percentage_up, local.defaults.apic.tenants.policies.track_lists.percentage_up)
+        percentage_down = try(policy.percentage_down, local.defaults.apic.tenants.policies.track_lists.percentage_down)
+        weight_up       = try(policy.weight_up, local.defaults.apic.tenants.policies.track_lists.weight_up)
+        weight_down     = try(policy.weight_down, local.defaults.apic.tenants.policies.track_lists.weight_down)
+        track_members   = try(policy.track_members, [])
+      }
+    ]
+  ])
+}
+
+module "aci_track_list" {
+  source = "./modules/terraform-aci-track-list"
+
+  for_each        = { for track_list in local.track_lists : track_list.key => track_list if local.modules.aci_track_list && var.manage_tenants }
+  tenant          = each.value.tenant
+  name            = each.value.name
+  description     = each.value.description
+  type            = each.value.type
+  percentage_up   = each.value.percentage_up
+  percentage_down = each.value.percentage_down
+  weight_up       = each.value.weight_up
+  weight_down     = each.value.weight_down
+  track_members   = each.value.track_members
+}
+
+locals {
+  track_members = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.track_members, []) : {
+        key            = format("%s/%s", tenant.name, policy.name)
+        tenant         = tenant.name
+        name           = policy.name
+        description    = try(policy.description, "")
+        destination_ip = policy.destination_ip
+        scope_type     = policy.scope_type
+        scope          = policy.scope
+        ip_sla_policy  = policy.ip_sla_policy
+      }
+    ]
+  ])
+}
+
+module "aci_track_member" {
+  source = "./modules/terraform-aci-track-member"
+
+  for_each       = { for member in local.track_members : member.key => member if local.modules.aci_track_member && var.manage_tenants }
+  tenant         = each.value.tenant
+  name           = each.value.name
+  description    = each.value.description
+  destination_ip = each.value.destination_ip
+  scope_type     = each.value.scope_type
+  scope          = each.value.scope
+  ip_sla_policy  = each.value.ip_sla_policy
 }
