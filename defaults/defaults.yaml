@@ -426,6 +426,17 @@ defaults:
         endpoint_groups:
           mode: regular
           deployment_immediacy: lazy
+      ptp_profiles:
+        announce_interval: 1
+        announce_timeout: 3
+        delay_interval: -3
+        sync_interval: -3
+        priority: 128
+        template: aes67
+        forwardable: true
+        mismatch_handling: configured
+      dhcp_relay_policies:
+        name_suffix: ""
       switch_policies:
         vpc_policies:
           name_suffix: ""
@@ -435,6 +446,22 @@ defaults:
           profile: dual-stack
         mst_policies:
           name_suffix: ""
+        bfd_ipv4_policies:
+          name_suffix: ""
+          detection_multiplier: 3
+          min_transmit_interval: 50
+          min_receive_interval: 50
+          slow_timer_interval: 2000
+          echo_receive_interval: 50
+          echo_frame_source_address: 0.0.0.0
+        bfd_ipv6_policies:
+          name_suffix: ""
+          detection_multiplier: 3
+          min_transmit_interval: 50
+          min_receive_interval: 50
+          slow_timer_interval: 2000
+          echo_receive_interval: 50
+          echo_frame_source_address: 0.0.0.0
       spine_switch_policy_groups:
         name_suffix: ""
       leaf_switch_policy_groups:
@@ -496,6 +523,10 @@ defaults:
           unknown_unicast_burst_rate: "100.000000"
           unknown_unicast_rate: "100.000000"
           action: drop
+          rate: "100.000000"
+          rate_pps: unspecified
+          burst_rate: "100.000000"
+          burst_pps: unspecified
         spanning_tree_policies:
           name_suffix: ""
           bpdu_guard: false
@@ -656,6 +687,7 @@ defaults:
             span_drop: false
             access_paths:
               module: 1
+              pod_id: 1
         filter_groups:
           name_suffix: ""
           entries:
@@ -805,6 +837,7 @@ defaults:
             mac: 00:22:BD:F8:19:FF
             mtu: inherit
             mode: regular
+            scope: local
             bgp_peers:
               allow_self_as: false
               as_override: false
@@ -872,6 +905,7 @@ defaults:
               mac: 00:22:BD:F8:19:FF
               mtu: inherit
               mode: regular
+              scope: local
               bgp_peers:
                 allow_self_as: false
                 as_override: false
@@ -957,6 +991,9 @@ defaults:
             module: 1
             mode: regular
             deployment_immediacy: lazy
+            ptp:
+              mode: multicast
+              source_ip: 0.0.0.0
           static_leafs:
             mode: regular
             deployment_immediacy: lazy
@@ -964,6 +1001,35 @@ defaults:
             name_suffix: ""
             ip: "0.0.0.0"
             module: 1
+          subnets:
+            primary_ip: false
+            public: false
+            private: true
+            shared: false
+            igmp_querier: false
+            nd_ra_prefix: true
+            no_default_gateway: false
+            virtual: false
+            nlb_group: 0.0.0.0
+            nlb_mac: 00:00:00:00:00:00
+            ip_pools:
+              name_suffix: ""
+              start_ip: 0.0.0.0
+              end_ip: 0.0.0.0
+        useg_endpoint_groups:
+          name_suffix: ""
+          flood_in_encap: false
+          intra_epg_isolation: false
+          preferred_group: false
+          qos_class: level3
+          vmware_vmm_domains:
+            name_suffix: ""
+            deployment_immediacy: immediate
+            netflow: false
+          useg_attributes:
+            match_type: any
+            ip_statements:
+              use_epg_subnet: true
           subnets:
             primary_ip: false
             public: false
@@ -1168,10 +1234,11 @@ defaults:
             max_suppress_time: 60
             reuse_limit: 750
             suppress_limit: 2000
-          set_as_path:
+          set_as_paths:
             criteria: "prepend"
-            count: 1
-            order: 0
+            count: 0
+            asns:
+              order: 0
           next_hop_propagation: false
           multipath: false
         bfd_interface_policies:
@@ -1298,6 +1365,13 @@ defaults:
           auto_configuration: true
           on_link: true
           router_address: false
+        track_lists:
+          name_suffix: ""
+          type: percentage
+          percentage_up: 0
+          percentage_down: 1
+          weight_up: 0
+          weight_down: 1
       services:
         l4l7_devices:
           name_suffix: ""

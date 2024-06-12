@@ -1,8 +1,28 @@
-## 0.8.2 (unreleased)
+## 0.9.0
 
 - Add support for PBR L1L2 destinations
 - Add support for additional AAA security management settings
 - Add support for syslog show timezone
+- Enhance set rules to support external EPG classification
+- Add support for colon character in contract names
+- Add support for all types of storm control attributes
+- Add support for multiple SR/MPLS Infra L3outs
+- BREAKING CHANGE: Add support for multiple match rules to L3out route maps
+- Add support for PTP profiles
+- Add support for vPC component SPAN source
+- Add support for Infra DHCP relay policies
+- Support for descriptions on SNMP policy user and client group
+- Add L3out SVI encapsulation scope
+- Add description to AAEP
+- Add track lists and track members
+- Add auto FEC mode to link level policies
+- Support IP data plane learning at subnet level
+- Align naming standard for fabricNodeBlk objects to what APIC uses
+- Add target version to update groups
+- Make routed domain vlan pool optional
+- BREAKING CHANGE: Add support for multiple ASN entries in AS path prepending
+- Add support for BFD switch policies
+- Add support for uSeg EPGs
 
 ## 0.8.1
 

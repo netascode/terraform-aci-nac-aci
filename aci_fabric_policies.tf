@@ -216,6 +216,7 @@ module "aci_snmp_policy" {
   communities = try(each.value.communities, [])
   users = [for user in try(each.value.users, []) : {
     name               = user.name
+    description        = try(user.description, "")
     privacy_type       = try(user.privacy_type, local.defaults.apic.fabric_policies.pod_policies.snmp_policies.users.privacy_type)
     privacy_key        = try(user.privacy_key, null)
     authorization_type = try(user.authorization_type, local.defaults.apic.fabric_policies.pod_policies.snmp_policies.users.authorization_type)
@@ -227,6 +228,7 @@ module "aci_snmp_policy" {
   }]
   clients = [for client in try(each.value.clients, []) : {
     name          = "${client.name}${local.defaults.apic.fabric_policies.pod_policies.snmp_policies.clients.name_suffix}"
+    description   = try(client.description, "")
     mgmt_epg_type = client.mgmt_epg
     mgmt_epg_name = client.mgmt_epg == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
     entries = [for entry in try(client.entries, []) : {

@@ -199,6 +199,7 @@ variable "interfaces" {
     ip_a            = optional(string)
     ip_b            = optional(string)
     ip_shared       = optional(string)
+    scope           = optional(string, "local")
     multipod_direct = optional(bool, false)
     bgp_peers = optional(list(object({
       ip                               = string
@@ -319,6 +320,13 @@ variable "interfaces" {
       for i in var.interfaces : i.channel == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", i.channel)), false)
     ])
     error_message = "`channel`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`, `:`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for i in var.interfaces : i.scope == null || try(contains(["local", "vrf"], i.scope), false)
+    ])
+    error_message = "`scope`: Allowed values are `local` or `vrf`"
   }
 
   validation {

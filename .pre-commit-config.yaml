@@ -106,6 +106,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bfd-multihop-node-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bfd-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bfd-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-address-family-context-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-address-family-context-policy/examples/complete"]
@@ -174,6 +178,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-dhcp-relay-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-infra-dhcp-relay-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-infra-dhcp-relay-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-dns-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-dns-policy/examples/complete"]
@@ -185,6 +193,10 @@ repos:
         args: ["./modules/terraform-aci-endpoint-group"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-endpoint-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-useg-endpoint-group"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-useg-endpoint-group/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-endpoint-loop-protection"]
       - id: terraform-docs-system
@@ -486,6 +498,11 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-ptp/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ptp-profile"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ptp-profile/examples/complete"]
+      - id: terraform-docs-system
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-qos"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-qos/examples/complete"]
@@ -593,6 +610,10 @@ repos:
         args: ["./modules/terraform-aci-tenant-span-source-group"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-tenant-span-source-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-track-list"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-track-member"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-trust-control-policy"]
       - id: terraform-docs-system

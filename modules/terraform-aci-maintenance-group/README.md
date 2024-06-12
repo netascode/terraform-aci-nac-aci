@@ -36,6 +36,7 @@ module "aci_maintenance_group" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Maintenance group name. | `string` | n/a | yes |
+| <a name="input_target_version"></a> [target\_version](#input\_target\_version) | Target version. | `string` | `""` | no |
 | <a name="input_node_ids"></a> [node\_ids](#input\_node\_ids) | List of node IDs. Minimum value: 1. Maximum value: 4000. | `list(number)` | `[]` | no |
 
 ## Outputs
