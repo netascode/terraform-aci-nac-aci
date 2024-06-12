@@ -9,9 +9,10 @@ module "aci_firmware_group" {
 module "aci_maintenance_group" {
   source = "./modules/terraform-aci-maintenance-group"
 
-  for_each = { for np in try(local.node_policies.update_groups, {}) : np.name => np if local.modules.aci_maintenance_group && var.manage_node_policies }
-  name     = "${each.value.name}${local.defaults.apic.node_policies.update_groups.name_suffix}"
-  node_ids = [for node in try(local.node_policies.nodes, []) : node.id if try(node.update_group, "") == each.value.name]
+  for_each       = { for np in try(local.node_policies.update_groups, {}) : np.name => np if local.modules.aci_maintenance_group && var.manage_node_policies }
+  name           = "${each.value.name}${local.defaults.apic.node_policies.update_groups.name_suffix}"
+  target_version = try(each.value.target_version, "")
+  node_ids       = [for node in try(local.node_policies.nodes, []) : node.id if try(node.update_group, "") == each.value.name]
 }
 
 module "aci_vpc_group" {

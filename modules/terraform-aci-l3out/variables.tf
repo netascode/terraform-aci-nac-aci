@@ -260,6 +260,17 @@ variable "redistribution_route_maps" {
   }
 }
 
+variable "import_route_map_name" {
+  description = "Import Route Map Name. Default value: `default-import`"
+  type        = string
+  default     = "default-import"
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.import_route_map_name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "import_route_map_description" {
   description = "Import route map description."
   type        = string
@@ -290,7 +301,7 @@ variable "import_route_map_contexts" {
     action      = optional(string, "permit")
     order       = optional(number, 0)
     set_rule    = optional(string)
-    match_rule  = optional(string)
+    match_rules = optional(list(string), [])
   }))
   default = []
 
@@ -330,10 +341,23 @@ variable "import_route_map_contexts" {
   }
 
   validation {
-    condition = alltrue([
-      for c in var.import_route_map_contexts : c.match_rule == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c.match_rule)), false)
-    ])
-    error_message = "`match_rule`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    condition = alltrue(flatten([
+      for c in var.import_route_map_contexts : [
+        for r in c.match_rules : r == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", r)), false)
+      ]
+    ]))
+    error_message = "`match_rules`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "export_route_map_name" {
+  description = "Export Route Map Name. Default value: `default-export`"
+  type        = string
+  default     = "default-export"
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.export_route_map_name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -367,7 +391,7 @@ variable "export_route_map_contexts" {
     action      = optional(string, "permit")
     order       = optional(number, 0)
     set_rule    = optional(string)
-    match_rule  = optional(string)
+    match_rules = optional(list(string), [])
   }))
   default = []
 
@@ -407,10 +431,12 @@ variable "export_route_map_contexts" {
   }
 
   validation {
-    condition = alltrue([
-      for c in var.export_route_map_contexts : c.match_rule == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c.match_rule)), false)
-    ])
-    error_message = "`match_rule`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    condition = alltrue(flatten([
+      for c in var.export_route_map_contexts : [
+        for r in c.match_rules : r == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", r)), false)
+      ]
+    ]))
+    error_message = "`match_rules`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -426,35 +452,43 @@ variable "sr_mpls" {
   default     = false
 }
 
-variable "sr_mpls_infra_l3out" {
-  description = "SR MPLS Infra L3Out name."
-  type        = string
-  default     = ""
+variable "sr_mpls_infra_l3outs" {
+  description = "SR MPLS Infra L3Outs."
+  type = list(object({
+    name                     = string
+    outbound_route_map       = optional(string, "")
+    inbound_route_map        = optional(string, "")
+    external_endpoint_groups = optional(list(string), [])
+  }))
+  default = []
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.sr_mpls_infra_l3out))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    condition = alltrue([
+      for i in var.sr_mpls_infra_l3outs : can(regex("^[a-zA-Z0-9_.-]{0,64}$", i.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
-}
-
-variable "sr_mpls_inbound_route_map" {
-  description = "SR MPLS Tenant L3out Inbound Route Map name."
-  type        = string
-  default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.sr_mpls_inbound_route_map))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    condition = alltrue([
+      for i in var.sr_mpls_infra_l3outs : can(regex("^[a-zA-Z0-9_.-]{0,64}$", i.outbound_route_map))
+    ])
+    error_message = "`outbound_route_map`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
-}
-
-variable "sr_mpls_outbound_route_map" {
-  description = "SR MPLS Tenant L3out Outbound Route Map name."
-  type        = string
-  default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.sr_mpls_outbound_route_map))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    condition = alltrue([
+      for i in var.sr_mpls_infra_l3outs : can(regex("^[a-zA-Z0-9_.-]{0,64}$", i.inbound_route_map))
+    ])
+    error_message = "`inbound_route_map`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for i in var.sr_mpls_infra_l3outs : alltrue([
+        for e in i.external_endpoint_groups : can(regex("^[a-zA-Z0-9_.-]{0,64}$", e))
+      ])
+    ])
+    error_message = "`external_endpoint_groups`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
 }

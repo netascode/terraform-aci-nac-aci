@@ -221,14 +221,15 @@ variable "physical_domains" {
 variable "subnets" {
   description = "List of subnets. Default value `public`: `false`. Default value `shared`: `false`. Default value `igmp_querier`: `false`. Default value `nd_ra_prefix`: `true`. Default value `no_default_gateway`: `false`. `nlb_mode` allowed values: `mode-mcast-igmp`, `mode-uc` or `mode-mcast-static`."
   type = list(object({
-    description         = optional(string, "")
-    ip                  = string
-    public              = optional(bool, false)
-    shared              = optional(bool, false)
-    igmp_querier        = optional(bool, false)
-    nd_ra_prefix        = optional(bool, true)
-    no_default_gateway  = optional(bool, false)
-    nd_ra_prefix_policy = optional(string, "")
+    description           = optional(string, "")
+    ip                    = string
+    public                = optional(bool, false)
+    shared                = optional(bool, false)
+    igmp_querier          = optional(bool, false)
+    nd_ra_prefix          = optional(bool, true)
+    no_default_gateway    = optional(bool, false)
+    nd_ra_prefix_policy   = optional(string, "")
+    ip_dataplane_learning = optional(bool, null)
     ip_pools = optional(list(object({
       name              = string
       start_ip          = optional(string, "0.0.0.0")
@@ -411,9 +412,32 @@ variable "static_ports" {
     channel              = optional(string)
     deployment_immediacy = optional(string, "lazy")
     mode                 = optional(string, "regular")
+    ptp_source_ip        = optional(string, "0.0.0.0")
+    ptp_mode             = optional(string, "multicast")
+    ptp_profile          = optional(string)
   }))
   default = []
 
+  validation {
+    condition = alltrue([
+      for sp in var.static_ports : can(regex("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", sp.ptp_source_ip))
+    ])
+    error_message = "`ptp_source_ip` is not a valid IPv4 address."
+  }
+
+  validation {
+    condition = alltrue([
+      for sp in var.static_ports : try(contains(["multicast", "multicast-master", "unicast-master"], sp.ptp_mode), false)
+    ])
+    error_message = "`ptp_mode`: Allowed values are `multicast`, `multicast-master` or `unicast-master`."
+  }
+
+  validation {
+    condition = alltrue([
+      for sp in var.static_ports : sp.ptp_profile == null || can(regex("^[a-zA-Z0-9_.:-]{0,16}$", sp.ptp_profile))
+    ])
+    error_message = "`ptp_profile`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 16."
+  }
 
   validation {
     condition = alltrue([

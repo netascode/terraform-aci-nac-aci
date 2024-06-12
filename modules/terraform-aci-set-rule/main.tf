@@ -104,23 +104,38 @@ resource "aci_rest_managed" "rtctrlSetAddComm" {
 }
 
 resource "aci_rest_managed" "rtctrlSetASPath" {
-  count      = var.set_as_path != false ? 1 : 0
-  dn         = "${aci_rest_managed.rtctrlAttrP.dn}/saspath-${var.set_as_path_criteria}"
+  for_each   = { for as_path in var.set_as_paths : as_path.criteria => as_path }
+  dn         = "${aci_rest_managed.rtctrlAttrP.dn}/saspath-${each.value.criteria}"
   class_name = "rtctrlSetASPath"
   content = {
-    "criteria" = var.set_as_path_criteria
-    "lastnum"  = var.set_as_path_count
+    "criteria" = each.value.criteria
+    "lastnum"  = each.value.count
     "type"     = "as-path"
   }
 }
 
+locals {
+  set_as_paths_prepend = flatten([
+    for as_path in var.set_as_paths : [
+      for asn in try(as_path.asns, []) : {
+        key = "${as_path.criteria}/${asn.order}"
+        value = {
+          asn      = asn.asn_number
+          order    = asn.order
+          criteria = as_path.criteria
+        }
+      }
+    ] if as_path.criteria == "prepend"
+  ])
+}
+
 resource "aci_rest_managed" "rtctrlSetASPathASN" {
-  count      = var.set_as_path != false && var.set_as_path_criteria == "prepend" && var.set_as_path_asn != null ? 1 : 0
-  dn         = "${aci_rest_managed.rtctrlSetASPath[0].dn}/asn-${var.set_as_path_order}"
+  for_each   = { for as_path in local.set_as_paths_prepend : as_path.key => as_path.value }
+  dn         = "${aci_rest_managed.rtctrlSetASPath[each.value.criteria].dn}/asn-${each.value.order}"
   class_name = "rtctrlSetASPathASN"
   content = {
-    "asn"   = var.set_as_path_asn
-    "order" = var.set_as_path_order
+    "asn"   = each.value.asn
+    "order" = each.value.order
   }
 }
 

@@ -9,6 +9,7 @@ locals {
           description = sr.description
           preference  = sr.preference
           bfd         = sr.bfd
+          track_list  = sr.track_list
         }
       }
     ]
@@ -66,6 +67,15 @@ resource "aci_rest_managed" "ipRouteP" {
     descr  = each.value.description
     pref   = each.value.preference
     rtCtrl = each.value.bfd == true ? "bfd" : ""
+  }
+}
+
+resource "aci_rest_managed" "ipRsRouteTrack" {
+  for_each   = { for item in local.static_routes : item.key => item.value if item.value.track_list != null }
+  dn         = "${aci_rest_managed.ipRouteP[each.key].dn}/rsRouteTrack"
+  class_name = "ipRsRouteTrack"
+  content = {
+    tDn = "uni/tn-${var.tenant}/tracklist-${each.value.track_list}"
   }
 }
 

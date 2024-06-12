@@ -22,6 +22,7 @@ modules:
   aci_banner: true
   aci_bfd_interface_policy: true
   aci_bfd_multihop_node_policy: true
+  aci_bfd_policy: true
   aci_bgp_address_family_context_policy: true
   aci_bgp_best_path_policy: true
   aci_bgp_peer_prefix_policy: true
@@ -41,6 +42,7 @@ modules:
   aci_dhcp_relay_policy: true
   aci_dns_policy: true
   aci_endpoint_group: true
+  aci_useg_endpoint_group: true
   aci_endpoint_loop_protection: true
   aci_endpoint_security_group: true
   aci_eigrp_interface_policy: true
@@ -74,6 +76,7 @@ modules:
   aci_imported_l4l7_device: true
   aci_inband_endpoint_group: true
   aci_inband_node_address: true
+  aci_infra_dhcp_relay_policy: true
   aci_infra_dscp_translation_policy: true
   aci_interface_configuration: true
   aci_interface_type: true
@@ -115,6 +118,7 @@ modules:
   aci_port_tracking: true
   aci_psu_policy: true
   aci_ptp: true
+  aci_ptp_profile: true
   aci_qos: true
   aci_qos_policy: true
   aci_radius: true
@@ -142,6 +146,8 @@ modules:
   aci_tenant: true
   aci_tenant_span_destination_group: true
   aci_tenant_span_source_group: true
+  aci_track_list: true
+  aci_track_member: true
   aci_trust_control_policy: true
   aci_user: true
   aci_vlan_pool: true
