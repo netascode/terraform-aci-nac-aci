@@ -82,7 +82,7 @@ module "aci_vpc_policy" {
   for_each           = { for vpc in try(local.access_policies.switch_policies.vpc_policies, []) : vpc.name => vpc if local.modules.aci_vpc_policy && var.manage_access_policies }
   name               = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.vpc_policies.name_suffix}"
   peer_dead_interval = try(each.value.peer_dead_interval, local.defaults.apic.access_policies.switch_policies.vpc_policies.peer_dead_interval)
-  delay_restore_timer = try(each.value.delay_restore_timer, local.defaults.apic.access_policies.switch_policies.vpc_policies.delay_restore_timer)
+  delay_restore_timer = try(each.value.delay_restore_timer, null)
 }
 
 module "aci_bfd_ipv4_policy" {

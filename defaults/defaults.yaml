@@ -438,7 +438,6 @@ defaults:
         vpc_policies:
           name_suffix: ""
           peer_dead_interval: 200
-          delay_restore_timer: 120
         forwarding_scale_policies:
           name_suffix: ""
           profile: dual-stack

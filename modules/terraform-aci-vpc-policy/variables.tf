@@ -22,10 +22,10 @@ variable "peer_dead_interval" {
 variable "delay_restore_timer" {
   description = "Delay restore timer. Minimum value: 120. Maximum value: 600."
   type        = number
-  default     = 120
+  default     = null
 
   validation {
-    condition     = var.delay_restore_timer >= 120 && var.delay_restore_timer <= 600
+    condition     = var.delay_restore_timer == null ? true : var.delay_restore_timer >= 120 && var.delay_restore_timer <= 600
     error_message = "Minimum value: 120. Maximum value: 600."
   }
 }
