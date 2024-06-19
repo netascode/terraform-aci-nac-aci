@@ -13,8 +13,9 @@ module "aci_vpc_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-vpc-policy"
   version = ">= 0.8.0"
 
-  name               = "VPC1"
-  peer_dead_interval = 300
+  name                = "VPC1"
+  peer_dead_interval  = 300
+  delay_restore_timer = 200
 }
 ```
 
@@ -37,6 +38,7 @@ module "aci_vpc_policy" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | VPC policy name. | `string` | n/a | yes |
 | <a name="input_peer_dead_interval"></a> [peer\_dead\_interval](#input\_peer\_dead\_interval) | Peer dead interval. Minimum value: 5. Maximum value: 600. | `number` | `200` | no |
+| <a name="input_delay_restore_timer"></a> [delay\_restore\_timer](#input\_delay\_restore\_timer) | Delay restore timer. Minimum value: 120. Maximum value: 600. | `number` | `null` | no |
 
 ## Outputs
 
