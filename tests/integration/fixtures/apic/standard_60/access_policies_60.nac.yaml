@@ -21,3 +21,8 @@ apic:
           speed: 10G
           auto: true
           fec_mode: inherit
+
+    switch_policies:
+      vpc_policies:
+        - name: VPC400
+          delay_restore_timer: 210

@@ -1484,6 +1484,7 @@ ap_mst_policy_instance_vlan_range:
 ap_vpc_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   peer_dead_interval: int(min=5, max=600, required=False)
+  delay_restore_timer: int(min=120, max=600, required=False)
 
 ap_bfd_ipv4_ipv6_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

@@ -14,6 +14,9 @@
                         "name": "{{ vpc_policy_name }}",
                         "dn": "uni/fabric/vpcInst-{{ vpc_policy_name }}",
                         "deadIntvl": "{{ policy.peer_dead_interval | default(defaults.apic.access_policies.switch_policies.vpc_policies.peer_dead_interval) }}"
+                        {% if policy.delay_restore_timer is defined %},
+                        "delayRestoreTmr": "{{ policy.delay_restore_timer }}"
+                        {% endif %}
                     }
                 }
             }

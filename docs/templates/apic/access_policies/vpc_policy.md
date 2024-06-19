@@ -15,4 +15,5 @@ apic:
       vpc_policies:
         - name: VPC300
           peer_dead_interval: 300
+          delay_restore_timer: 210
 ```
