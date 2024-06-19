@@ -36,6 +36,17 @@ variable "site_id" {
   }
 }
 
+variable "peering_type" {
+  description = "Peering type. Choices: `full_mesh`, `route_reflector`."
+  type        = string
+  default     = "full_mesh"
+
+  validation {
+    condition     = contains(["full_mesh", "route_reflector"], var.peering_type)
+    error_message = "Allowed values are `full_mesh` or `route_reflector`."
+  }
+}
+
 variable "bgp_password" {
   description = "BGP password."
   type        = string
