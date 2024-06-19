@@ -21,7 +21,11 @@
                             "fvPeeringP": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
-                                    "type": "automatic_with_full_mesh"
+                                    {% set peering_type = apic.fabric_policies.external_connectivity_policy.peering_type | default(defaults.apic.fabric_policies.external_connectivity_policy.peering_type) %}
+                                    {% if peering_type == "full_mesh" %}{% set type = "automatic_with_full_mesh" %}
+                                    {% elif peering_type == "route_reflector" %}{% set type = "automatic_with_rr" %}
+                                    {% endif %}
+                                    "type": "{{ type }}"
                                     {%- if apic.fabric_policies.external_connectivity_policy.bgp_password is defined %},
                                     "password": "{{ apic.fabric_policies.external_connectivity_policy.bgp_password }}"
                                     {% endif %}

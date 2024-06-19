@@ -586,6 +586,7 @@ apic:
     external_connectivity_policy:
       name: IPN
       site_id: 1
+      peering_type: route_reflector
       bgp_password: cisco
       routing_profiles:
         - name: IPN1

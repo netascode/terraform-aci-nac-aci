@@ -418,6 +418,7 @@ fp_external_connectivity_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   fabric_id: int(min=0, max=1000, required=False)
   site_id: int(min=0, max=1000, required=False)
+  peering_type: enum('full_mesh', 'route_reflector', required=False)
   bgp_password: str(required=False)
   route_target: str(required=False)
   routing_profiles: list(include('fp_external_connectivity_policy_routing_profiles'), required=False) # @name(Ext Conn Policy Route Profiles) @ref_name(External Conn Policy Route Profile) @sheet_hidden()
