@@ -18,3 +18,14 @@ variable "peer_dead_interval" {
     error_message = "Minimum value: 5. Maximum value: 600."
   }
 }
+
+variable "delay_restore_timer" {
+  description = "Delay restore timer. Minimum value: 120. Maximum value: 600."
+  type        = number
+  default     = null
+
+  validation {
+    condition     = var.delay_restore_timer == null ? true : var.delay_restore_timer >= 120 && var.delay_restore_timer <= 600
+    error_message = "Minimum value: 120. Maximum value: 600."
+  }
+}
