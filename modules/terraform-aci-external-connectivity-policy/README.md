@@ -17,6 +17,7 @@ module "aci_external_connectivity_policy" {
   route_target = "extended:as2-nn4:5:17"
   fabric_id    = 2
   site_id      = 2
+  peering_type = "route_reflector"
   bgp_password = "SECRETPW"
   routing_profiles = [{
     name        = "PROF1"
@@ -55,6 +56,7 @@ module "aci_external_connectivity_policy" {
 | <a name="input_route_target"></a> [route\_target](#input\_route\_target) | Route target. | `string` | `"extended:as2-nn4:5:16"` | no |
 | <a name="input_fabric_id"></a> [fabric\_id](#input\_fabric\_id) | Fabric ID. Minimum value: 1. Maximum value: 65535. | `number` | `1` | no |
 | <a name="input_site_id"></a> [site\_id](#input\_site\_id) | Site ID. Minimum value: 0. Maximum value: 1000. | `number` | `0` | no |
+| <a name="input_peering_type"></a> [peering\_type](#input\_peering\_type) | Peering type. Choices: `full_mesh`, `route_reflector`. | `string` | `"full_mesh"` | no |
 | <a name="input_bgp_password"></a> [bgp\_password](#input\_bgp\_password) | BGP password. | `string` | `""` | no |
 | <a name="input_routing_profiles"></a> [routing\_profiles](#input\_routing\_profiles) | External routing profiles. | <pre>list(object({<br>    name        = string<br>    description = optional(string, "")<br>    subnets     = optional(list(string), [])<br>  }))</pre> | `[]` | no |
 | <a name="input_data_plane_teps"></a> [data\_plane\_teps](#input\_data\_plane\_teps) | Data plane TEPs. Allowed values `pod_id`: 1-255. | <pre>list(object({<br>    pod_id = number<br>    ip     = string<br>  }))</pre> | `[]` | no |
