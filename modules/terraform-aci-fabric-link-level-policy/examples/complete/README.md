@@ -13,7 +13,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_fabric_link_level_policy" {
-  source  = "netascode/nac-aci/aci//moduless/terraform-aci-fabric-link-level-policy"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-link-level-policy"
   version = ">= 0.0.1"
 
   name         = "name"

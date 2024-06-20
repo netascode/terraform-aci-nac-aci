@@ -25,7 +25,7 @@ variable "link_debounce_interval" {
   default     = 0
 
   validation {
-    condition     = var.link_debounce_interval == 0 || (var.link_debounce_interval >= 0 && var.link_debounce_interval <= 5000)
-    error_message = "Allowed values: 0-5000."
+    condition     = var.link_debounce_interval >= 0 && var.link_debounce_interval <= 5000
+    error_message = "Minimum value: 0. Maximum value: 5000."
   }
 }
