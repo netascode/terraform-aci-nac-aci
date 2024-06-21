@@ -213,6 +213,7 @@ defaults:
         access_mode: read-write
         delimiter: ""
         tag_collection: false
+        allocation: dynamic
         vswitch:
           enhanced_lags:
             name_suffix: ""

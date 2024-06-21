@@ -38,6 +38,7 @@ apic:
         delimiter: '|'
         tag_collection: true
         vlan_pool: VMM1
+        allocation: dynamic
         vswitch:
           cdp_policy: CDP-ENABLED
           lldp_policy: LLDP-ENABLED

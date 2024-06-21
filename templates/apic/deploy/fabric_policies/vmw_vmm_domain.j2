@@ -171,7 +171,7 @@
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
                                     {% set vlan_pool_name = vmm.vlan_pool ~ defaults.apic.access_policies.vlan_pools.name_suffix %}
-                                    "tDn": "uni/infra/vlanns-[{{ vlan_pool_name }}]-dynamic"
+                                    "tDn": "uni/infra/vlanns-[{{ vlan_pool_name }}]-{{ vmm.allocation | default(defaults.apic.fabric_policies.vmware_vmm_domains.allocation) }}"
                                 }
                             }
                         }

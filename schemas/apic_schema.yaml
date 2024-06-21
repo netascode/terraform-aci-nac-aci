@@ -455,6 +455,7 @@ fp_vmware_vmm_domains:
   delimiter: regex('^[|~!@^+=]$', required=False)
   tag_collection: any(bool(), enum('yes', 'no'), required=False)
   vlan_pool: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  allocation: enum('dynamic', 'static', required=False)
   security_domains: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VMWare VMM Domain Sec Domain)
   vswitch: include('fp_vmware_vmm_domains_vswitch', required=False) # @flatten()
   credential_policies: list(include('fp_vmware_vmm_domains_credential_policies'), required=False) # @name(VMware VMM Dom Cred Policies)

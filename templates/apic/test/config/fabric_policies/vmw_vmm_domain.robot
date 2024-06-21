@@ -30,6 +30,9 @@ Verify VMware VMM Domain {{ vmm_name }}
 {% set mtu_policy_name = vmm.vswitch.mtu_policy ~ defaults.apic.fabric_policies.l2_mtu_policies.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}    $..vmmRsVswitchOverrideMtuPol.attributes.tDn   uni/fabric/l2pol-{{ mtu_policy_name }}
 {% endif %}
+{% if vmm.vlan_pool is defined %}
+    Should Be Equal Value Json String   ${r.json()}    $..infraRsVlanNs.attributes.tDn   uni/infra/vlanns-[{{ vmm.vlan_pool }}]-{{ vmm.allocation | default(defaults.apic.fabric_policies.vmware_vmm_domains.allocation) }}
+{% endif %}
 
 {% for elag in vmm.vswitch.enhanced_lags | default([]) %}
 {% set elag_name = elag.name ~ defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.name_suffix %}

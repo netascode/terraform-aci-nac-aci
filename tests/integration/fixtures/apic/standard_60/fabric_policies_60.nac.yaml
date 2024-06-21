@@ -28,3 +28,8 @@ apic:
             - hostname_ip: 3.3.3.1
               priority: 1
             - hostname_ip: 3.3.3.2
+
+    vmware_vmm_domains:
+      - name: VMM2
+        vlan_pool: STATIC1
+        allocation: static
