@@ -206,7 +206,7 @@ Verify L3out {{ l3out_name }} Node {{ node.node_id }} Interface {{ loop.index }}
 {% else %}
     {% set policy_group_name = int.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
     {% set query = "leaf_interface_policy_groups[?name==`" ~ int.channel ~ "`].type" %}
-    {% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if int.node2_id is defined else 'pc') %}
+    {% set type = (apic.access_policies | default() | community.general.json_query(query))[0] | default('vpc' if int.node2_id is defined else 'pc') %}
     {% if int.node_id is defined %}
         {% set node_ = int.node_id %}
     {% else %}
@@ -538,7 +538,7 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
 {% else %}
     {% set policy_group_name = int.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
     {% set query = "leaf_interface_policy_groups[?name==`" ~ int.channel ~ "`].type" %}
-    {% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if int.node2_id is defined else 'pc') %}
+    {% set type = (apic.access_policies | default() | community.general.json_query(query))[0] | default('vpc' if int.node2_id is defined else 'pc') %}
     {% if int.node_id is defined %}
         {% set node_ = int.node_id %}
     {% else %}

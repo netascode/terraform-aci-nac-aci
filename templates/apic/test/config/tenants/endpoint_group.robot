@@ -84,7 +84,7 @@ Verify Endpoint Group {{ epg_name }} VMM Domain {{ vmm_name }}
     {% else %}
         {% set policy_group_name = sp.channel ~ defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix %}
         {% set query = "leaf_interface_policy_groups[?name==`" ~ sp.channel ~ "`].type" %}
-        {% set type = (apic.access_policies | community.general.json_query(query))[0] | default('vpc' if sp.node2_id is defined else 'pc') %}
+        {% set type = (apic.access_policies | default() | community.general.json_query(query))[0] | default('vpc' if sp.node2_id is defined else 'pc') %}
         {% set query_sub_ports = "nodes[?interfaces[?sub_ports[?policy_group==`" ~ sp.channel ~ "`]]].id" %}
         {% set id_sub_ports = (apic.interface_policies | default() | community.general.json_query(query_sub_ports)) %}
         {% set query_ports = "nodes[?interfaces[?policy_group==`" ~ sp.channel ~ "`]].id" %}
