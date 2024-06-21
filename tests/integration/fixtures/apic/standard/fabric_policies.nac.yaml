@@ -746,3 +746,9 @@ apic:
     l2_mtu_policies:
       - name: L2_8950
         port_mtu_size: 8950
+
+    interface_policies:
+      link_level_policies:
+        - name: link-level-policy1
+          description: Fabric Link Level Policy1
+          link_debounce_interval: 100

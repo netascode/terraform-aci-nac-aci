@@ -1,0 +1,25 @@
+{
+    "fabricInst": {
+        "attributes": {
+            "dn": "uni/fabric"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.fabric_policies.interface_policies.link_level_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = policy.name ~ defaults.apic.fabric_policies.interface_policies.link_level_policies.name_suffix %}
+            {
+                "fabricFIfPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ policy_name }}",
+                        "descr": "{{ policy.description | default() }}",
+                        "dn": "uni/fabric/fintfpol-{{ policy_name }}",
+                        "linkDebounce": "{{ policy.link_debounce_interval | default(defaults.apic.fabric_policies.interface_policies.link_level_policies.link_debounce_interval) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

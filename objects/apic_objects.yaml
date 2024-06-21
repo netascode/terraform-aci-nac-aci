@@ -1120,6 +1120,15 @@ objects:
       - apic.node_policies.nodes.id
       - apic.node_policies.nodes.role
       - apic.node_policies.nodes.fabric_policy_group
+  - name: Fabric Link Level Interface Policy
+    template: link_level_policy
+    folder: fabric_policies
+    aci_classes:
+      - fabricFIfPol
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.interface_policies.link_level_policies
 
 
 spine_objects:

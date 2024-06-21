@@ -85,6 +85,7 @@ fabric_policies:
   smart_licensing: include('fp_smart_licensing', required=False)
   l2_mtu_policies: list(include('fp_l2_mtu_policies'), required=False) # @name(L2 MTU Policy) @sheet_hidden()
   system_performance: include('fp_system_performance', required=False) # @name (System Performance) @sheet_hidden()
+  interface_policies: include('fp_interface_policies', required=False)
 
 fp_banners:
   apic_gui_alias: str(required=False)
@@ -968,6 +969,14 @@ fp_system_performance:
   response_threshold: int(min=40, max=85000, required=False)
   top_slowest_requests: int(min=1, max=10, required=False) # @description(top slowest in UI in API is topNRequests)
   calculation_window: int(min=30, max=300, required=False) # @description(frequency in UI calculation_window in API)
+
+fp_interface_policies:
+  link_level_policies: list(include('fp_link_level_policy'), required=False)
+
+fp_link_level_policy:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  link_debounce_interval: int(min=0, max=5000, required=False)
 
 access_policies:
   leaf_switch_profile_name: str(min=1, max=64, required=False)
