@@ -14,7 +14,7 @@ Verify External Connectivity Policy
     Should Be Equal Value Json String   ${r.json()}    $..fvFabricExtConnP.attributes.rt   {{ apic.fabric_policies.external_connectivity_policy.route_target | default(defaults.apic.fabric_policies.external_connectivity_policy.route_target) }}
     Should Be Equal Value Json String   ${r.json()}    $..fvFabricExtConnP.attributes.id   {{ apic.fabric_policies.external_connectivity_policy.fabric_id | default(defaults.apic.fabric_policies.external_connectivity_policy.fabric_id) }}
     Should Be Equal Value Json String   ${r.json()}    $..fvFabricExtConnP.attributes.siteId   {{ apic.fabric_policies.external_connectivity_policy.site_id | default(defaults.apic.fabric_policies.external_connectivity_policy.site_id) }}
-    {% set peering_type = apic.fabric_policies.external_connectivity_policy.peering_type ~ defaults.apic.fabric_policies.external_connectivity_policy.peering_type %}
+    {% set peering_type = apic.fabric_policies.external_connectivity_policy.peering_type | default(defaults.apic.fabric_policies.external_connectivity_policy.peering_type) %}
     {% if peering_type == "full_mesh" %}{% set type = "automatic_with_full_mesh" %}
     {% elif peering_type == "route_reflector" %}{% set type = "automatic_with_rr" %}
     {% endif %}
