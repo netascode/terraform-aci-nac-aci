@@ -77,18 +77,23 @@ variable "target_dscp" {
 variable "subjects" {
   description = "List of contract subjects. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Choices `priority`: `default`, `level1`, `level2`, `level3`. Default value `priority`: `default`. Default value `log`: `false`. Default value `no_stats`: `false`. Choices `qos_class`: `unspecified`, `level1`, `level2`, `level3`, `level4`, `level5` or`level6`. Default value `qos_class`: `unspecified`. Choices `dscp_target` : `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6` `CS7` or a number between 0 and 63. Default value `dscp_target`: `unspecified`"
   type = list(object({
-    name          = string
-    alias         = optional(string, "")
-    description   = optional(string, "")
-    service_graph = optional(string)
-    qos_class     = optional(string, "unspecified")
-    target_dscp   = optional(string, "unspecified")
+    name                               = string
+    alias                              = optional(string, "")
+    description                        = optional(string, "")
+    apply_both_directions              = optional(bool, true)
+    reverse_filter_ports               = optional(bool, true)
+    service_graph                      = optional(string)
+    service_graph_consumer_to_provider = optional(string)
+    service_graph_provider_to_consumer = optional(string)
+    qos_class                          = optional(string, "unspecified")
+    target_dscp                        = optional(string, "unspecified")
     filters = optional(list(object({
-      filter   = string
-      action   = optional(string, "permit")
-      priority = optional(string, "default")
-      log      = optional(bool, false)
-      no_stats = optional(bool, false)
+      filter     = string
+      action     = optional(string, "permit")
+      priority   = optional(string, "default")
+      log        = optional(bool, false)
+      no_stats   = optional(bool, false)
+      directions = optional(list(string), [])
     })), [])
   }))
   default = []
@@ -116,6 +121,13 @@ variable "subjects" {
 
   validation {
     condition = alltrue([
+      for s in var.subjects : s.reverse_filter_ports == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", s.description))
+    ])
+    error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  validation {
+    condition = alltrue([
       for s in var.subjects : try(contains(["unspecified", "level1", "level2", "level3", "level4", "level5", "level6"], s.qos_class), false)
     ])
     error_message = "`qos_class`: Allowed values are `unspecified`, `level1`, `level2`, `level3`, `level4`, `level5` or`level6`"
@@ -133,6 +145,20 @@ variable "subjects" {
       for s in var.subjects : s.service_graph == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.service_graph))
     ])
     error_message = "`service_graph`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for s in var.subjects : s.service_graph_provider_to_consumer == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.service_graph_provider_to_consumer))
+    ])
+    error_message = "`service_graph_provider_to_consumer`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for s in var.subjects : s.service_graph_consumer_to_provider == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.service_graph_consumer_to_provider))
+    ])
+    error_message = "`service_graph_consumer_to_provider`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
@@ -154,5 +180,26 @@ variable "subjects" {
       for s in var.subjects : [for f in coalesce(s.filters, []) : f.priority == null || try(contains(["default", "level1", "level2", "level3"], f.priority), false)]
     ]))
     error_message = "`priority`: Allowed values are `default`, `level1`, `level2` or `level3`."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for s in var.subjects : [for f in coalesce(s.filters, []) : [for d in f.directions : try(contains(["provider_to_consumer", "consumer_to_provider"], d), false)]
+    ]]))
+    error_message = "`directions`: Allowed values are `provider_to_consumer`, `consumer_to_provider`."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for s in var.subjects : [for f in coalesce(s.filters, []) : length(f.directions) > 0 if s.apply_both_directions == false]
+    ]))
+    error_message = "`directions`: One of the following values must be provided when apply_both_directions is set to false. Allowed values are: `provider_to_consumer`, `consumer_to_provider`."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for s in var.subjects : [for f in coalesce(s.filters, []) : length(distinct(f.directions)) == length(f.directions) && length(f.directions) < 3 if s.apply_both_directions == false]
+    ]))
+    error_message = "`directions`: Allowed values are `provider_to_consumer`, `consumer_to_provider`. Each value can only be provided once."
   }
 }
