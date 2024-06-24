@@ -31,6 +31,14 @@ resource "aci_rest_managed" "infraPortBlk" {
   }
 }
 
+resource "aci_rest_managed" "fabricRsOosPath" {
+  dn           = "uni/fabric/outofsvc/rsoosPath-[topology/pod-${var.pod_id}/paths-${var.node_id}/pathep-[eth${var.module}/${var.port}]]"  
+  class_name = "fabricRsOosPath"
+  content = {
+    lc  = var.shutdown ? "blacklist" : "in-service"
+  }
+}
+
 resource "aci_rest_managed" "infraSubPortBlk" {
   for_each   = { for block in var.sub_port_blocks : block.name => block }
   dn         = "${aci_rest_managed.infraHPortS.dn}/subportblk-${each.value.name}"

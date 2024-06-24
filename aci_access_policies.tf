@@ -491,6 +491,8 @@ module "aci_access_leaf_interface_selector_manual" {
   policy_group_type     = each.value.policy_group_type
   port_blocks           = each.value.port_blocks
   sub_port_blocks       = each.value.sub_port_blocks
+  node_id               = each.value.node_id
+  port                  = each.value.port
 
   depends_on = [
     module.aci_access_leaf_interface_policy_group,
@@ -591,6 +593,8 @@ module "aci_access_spine_interface_selector_manual" {
   name              = each.value.name
   policy_group      = each.value.policy_group
   port_blocks       = each.value.port_blocks
+  node_id           = each.value.node_id
+  port              = each.value.port
 
   depends_on = [
     module.aci_access_spine_interface_policy_group,
