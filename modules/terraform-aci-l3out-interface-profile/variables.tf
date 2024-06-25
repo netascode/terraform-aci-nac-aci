@@ -235,6 +235,8 @@ variable "interfaces" {
       elag              = optional(string)
       floating_ip       = string
     })), [])
+    micro_bfd_destination_ip = optional(string, "")
+    micro_bfd_start_timer    = optional(number, 0)
   }))
   default = []
 
@@ -397,6 +399,13 @@ variable "interfaces" {
       for i in var.interfaces : [for p in coalesce(i.paths, []) : p.elag == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", p.elag)))]
     ]))
     error_message = "`paths.elag`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for i in var.interfaces : i.micro_bfd_start_timer == null || try(i.micro_bfd_start_timer == 0 || try(i.micro_bfd_start_timer >= 60 && i.micro_bfd_start_timer <= 6000, false), false)
+    ])
+    error_message = "`interfaces.micro_bfd_start_timer`: Minimum value: `60`. Maximum value: `6000`."
   }
 }
 
