@@ -972,7 +972,7 @@ fp_system_performance:
   calculation_window: int(min=30, max=300, required=False) # @description(frequency in UI calculation_window in API)
 
 fp_interface_policies:
-  link_level_policies: list(include('fp_link_level_policy'), required=False)
+  link_level_policies: list(include('fp_link_level_policy'), required=False) # @name(Fabric Link Level Policies)
 
 fp_link_level_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1369,7 +1369,7 @@ ap_spine_interface_profiles_expected_state:
 ap_interface_policies:
   cdp_policies: list(include('ap_cdp_policy'), required=False)
   lldp_policies: list(include('ap_lldp_policy'), required=False)
-  link_level_policies: list(include('ap_link_level_policy'), required=False)
+  link_level_policies: list(include('ap_link_level_policy'), required=False) # @name(Access Link Level Policies)
   port_channel_policies: list(include('ap_port_channel_policy'), required=False)
   port_channel_member_policies: list(include('ap_port_channel_member_policy'), required=False)
   spanning_tree_policies: list(include('ap_spanning_tree_policy'), required=False)
