@@ -78,6 +78,7 @@ locals {
         node_id      = int.node_id
         pod_id       = int.pod_id
         scope        = int.scope
+        ip_shared    = int.ip_shared
       }
     } if int.floating_svi == true
   ])
@@ -343,6 +344,15 @@ resource "aci_rest_managed" "l3extVirtualLIfP" {
     mtu        = each.value.mtu
     nodeDn     = "topology/pod-${each.value.pod_id}/node-${each.value.node_id}"
     encapScope = each.value.scope == "vrf" ? "ctx" : "local"
+  }
+}
+
+resource "aci_rest_managed" "l3extIp_floating" {
+  for_each   = { for item in local.floating_interfaces : item.key => item.value if item.value.ip_shared != null }
+  dn         = "${aci_rest_managed.l3extVirtualLIfP[each.key].dn}/addr-[${each.value.ip_shared}]"
+  class_name = "l3extIp"
+  content = {
+    addr = each.value.ip_shared
   }
 }
 
