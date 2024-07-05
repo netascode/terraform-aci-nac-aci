@@ -300,6 +300,17 @@ module "aci_link_level_policy" {
   physical_media_type = try(each.value.physical_media_type, null)
 }
 
+module "aci_macsec_policy" {
+  source = "./modules/terraform-aci-macsec-policy"
+
+  for_each    = { for macsec in try(local.access_policies.interface_policies.macsec_policies, []) : macsec.name => macsec if local.modules.aci_macsec_policy && var.manage_access_policies }
+  name        = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.macsec_policies.name_suffix}"
+  description = try(each.value.description, "")
+  secPolicy   = each.value.security_policy
+  keychain    = try(each.value.keycain,[]) #todo
+  admin_state = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.macsec_policies.admin_state)
+}
+
 module "aci_port_channel_policy" {
   source = "./modules/terraform-aci-port-channel-policy"
 

@@ -1,0 +1,15 @@
+apic:
+  access_policies:
+    interface_policies:
+      macsec_policies:
+        - name: ""
+          mode: ""
+          keychain:
+            - description: ""
+              keys:
+                - name: ""
+                  preshared_key: ""
+                  key_start: ""
+                  key_end: ""
+                  
+              
