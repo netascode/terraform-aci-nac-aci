@@ -20,8 +20,8 @@ variable "description" {
 
 variable "admin_state" {
   description = "Administrative state of MACsec Parameter Policy."
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "cipherSuite" {
@@ -40,7 +40,7 @@ variable "confidentiality_offset" {
   default     = "offset-0"
 
   validation {
-    condition     = contains(["offset-0", "offset-30", "offset-50"],var.confidentiality_offset)
+    condition     = contains(["offset-0", "offset-30", "offset-50"], var.confidentiality_offset)
     error_message = "Allowed values: `offset-0`, `offset-30`, `offset-50`"
   }
 }
@@ -49,7 +49,7 @@ variable "key_server_priority" {
   description = "Key Server Priority. Minimum value: `0`. Maximum value: `255`. Default: `16`"
   type        = number
   default     = 16
-  
+
   validation {
     condition     = var.key_server_priority >= 0 && var.key_server_priority <= 255
     error_message = "Minimum value: `0`. Maximum value: `255`."
@@ -80,7 +80,7 @@ variable "key_expiry_time" {
 
 variable "security_policy" {
   description = "Security Policy. Choices are: `must-secure` or `should-secure`."
-  type = string
+  type        = string
 
   validation {
     condition     = contains(["should-secure", "must-secure"], var.security_policy)

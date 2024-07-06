@@ -20,7 +20,7 @@
 #             endTime: ""
 
 resource "aci_rest_managed" "macsecKeyChainPol" {
-  dn = "uni/infra/macsecpcont/keychainp-${var.name}"
+  dn         = "uni/infra/macsecpcont/keychainp-${var.name}"
   class_name = "macsecKeyChainPol"
   content = {
     name  = var.name
@@ -46,16 +46,16 @@ locals {
 }
 
 resource "aci_rest_managed" "macsecKeyPol" {
-  for_each = local.key_policies
+  for_each   = local.key_policies
   dn         = "${each.value.tDn}/keyp-${each.local.keyName}"
   class_name = "macsecKeyPol"
   content = {
-    name    = each.local.name
-    keyName = each.local.keyName
-    descr   = each.local.description
-    keyName = each.local.keyName
+    name         = each.local.name
+    keyName      = each.local.keyName
+    descr        = each.local.description
+    keyName      = each.local.keyName
     preSharedKey = each.local.preSharedKey
-    startTime = each.local.startTime
-    endTime = each.local.endTime
+    startTime    = each.local.startTime
+    endTime      = each.local.endTime
   }
 }

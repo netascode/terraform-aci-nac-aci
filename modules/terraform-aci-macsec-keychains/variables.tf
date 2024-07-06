@@ -1,6 +1,6 @@
 variable "name" {
   description = "MACsec Key Policy Name"
-  type = string
+  type        = string
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
@@ -10,8 +10,8 @@ variable "name" {
 
 variable "description" {
   description = "MACsec Policy description"
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.description))
@@ -21,8 +21,8 @@ variable "description" {
 
 variable "key_policies" {
   description = "Key Polices for Key Chain"
-  type = list(map(string))
-  default = []
+  type        = list(map(string))
+  default     = []
 
   validation {
     condition = alltrue([
