@@ -40,7 +40,7 @@ variable "confidentiality_offset" {
   default     = "offset-0"
 
   validation {
-    condition     = contains(["offset-0", "offset-30", "offset-50"])
+    condition     = contains(["offset-0", "offset-30", "offset-50"],var.confidentiality_offset)
     error_message = "Allowed values: `offset-0`, `offset-30`, `offset-50`"
   }
 }
