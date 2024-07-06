@@ -475,6 +475,17 @@ defaults:
           name_suffix: ""
           node_blocks:
             name_suffix: ""
+      macsec_parameter_policies:
+        name_suffix: ""
+        admin_state: true
+        cipher_suite: gcm-aes-xpn-256
+        key_server_priority: 16
+        window_size: 64
+        key_expiry_time: "disabled"
+        security_policy: "should-secure"
+        confidentiality_offset: "offset-0"
+      macsec_key_policies:
+        name_suffix: ""
       interface_policies:
         cdp_policies:
           name_suffix: ""
@@ -485,10 +496,6 @@ defaults:
           speed: inherit
           auto: true
           fec_mode: inherit
-        macsec_policies:
-          name_suffix: ""
-          security_policy: "should-secure"
-          admin_state: true
         port_channel_policies:
           name_suffix: ""
           min_links: 1

@@ -300,15 +300,28 @@ module "aci_link_level_policy" {
   physical_media_type = try(each.value.physical_media_type, null)
 }
 
-module "aci_macsec_policy" {
-  source = "./modules/terraform-aci-macsec-policy"
+module "aci_macsec_parameters_policy" {
+  source = "./modules/terraform-aci-macsec-parameters-policy"
 
-  for_each    = { for macsec in try(local.access_policies.interface_policies.macsec_policies, []) : macsec.name => macsec if local.modules.aci_macsec_policy && var.manage_access_policies }
-  name        = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.macsec_policies.name_suffix}"
+  for_each    = { for mpp in try(local.access_policies.macsec_parameters_policies, []) : mpp.name => mpp if local.modules.aci_macsec_parameters_policy && var.manage_access_policies }
+  name        = "${each.value.name}${local.defaults.apic.access_policies.macsec_parameters_policies.name_suffix}"
   description = try(each.value.description, "")
-  secPolicy   = each.value.security_policy
-  keychain    = try(each.value.keycain,[]) #todo
-  admin_state = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.macsec_policies.admin_state)
+  admin_state = try(each.value.admin_state, local.defaults.apic.access_policies.macsec_parameters_policies.admin_state)
+  cipher_suite = try(each.value.cipher_suite, local.defaults.apic.access_policies.macsec_parameters_policies.cipher_suite)
+  key_server_priority = try(each.value.key_server_priority, local.defaults.apic.access_policies.macsec_parameters_policies.key_server_priority)
+  window_size = try(each.value.window_size, local.defaults.apic.access_policies.macsec_parameters_policies.window_size)
+  key_expiry_time = try(each.value.key_expiry_time, local.defaults.apic.access_policies.macsec_parameters_policies.key_expiry_time)
+  security_policy = try(each.value.security_policy, local.defaults.apic.access_policies.macsec_parameters_policies.security_policy)
+  confidentiality_offset = try(each.value.confidentiality_offset, local.defaults.apic.access_policies.macsec_parameters_policies.confidentiality_offset)
+}
+
+module "aci_macsec_keychains" {
+  source = "./modules/terraform-aci-macsec-keychains"
+
+  for_each      = { for mkc in try(local.access_policies.macsec_keychains, []) : mkc.name => mkc if local.modules.aci_macsec_keychains && var.manage_access_policies }
+  name          = "${each.value.name}${local.defaults.apic.access_policies.macsec_keychains.name_suffix}"
+  description   = try(each.value.description, "")
+  key_policies  = try(each.value.key_policies, [])
 }
 
 module "aci_port_channel_policy" {
