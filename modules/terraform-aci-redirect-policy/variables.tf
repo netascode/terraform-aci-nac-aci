@@ -161,6 +161,13 @@ variable "l3_destinations" {
 
   validation {
     condition = alltrue([
+      for l3 in var.l3_destinations : l3.name == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", l3.name))
+    ])
+    error_message = "`name` allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
       for l3 in var.l3_destinations : l3.pod_id == null || (l3.pod_id >= 1 && l3.pod_id <= 255)
     ])
     error_message = "`pod_id`: Minimum value: 1. Maximum value: 255."
