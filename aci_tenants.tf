@@ -2999,6 +2999,7 @@ locals {
         redirect_backup_policy = try("${policy.redirect_backup_policy}${local.defaults.apic.tenants.services.redirect_backup_policies.name_suffix}", "")
         l3_destinations = [for dest in try(policy.l3_destinations, []) : {
           description           = try(dest.description, "")
+          name                  = try(dest.name, "")
           ip                    = dest.ip
           ip_2                  = try(dest.ip_2, null)
           mac                   = try(dest.mac, null)

@@ -19,6 +19,7 @@ module "aci_redirect_policy" {
   redirect_backup_policy = "REDIRECT_BCK1"
   l3_destinations = [{
     description           = "L3 description"
+    name                  = "L3_DEST1"
     ip                    = "1.1.1.1"
     ip_2                  = "1.1.1.2"
     mac                   = "00:01:02:03:04:05"

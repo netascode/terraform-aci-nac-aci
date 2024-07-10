@@ -143,6 +143,7 @@ variable "l3_destinations" {
   description = "List of L3 destinations. Allowed values `pod`: 1-255."
   type = list(object({
     description           = optional(string, "")
+    name                  = optional(string, "")
     ip                    = string
     ip_2                  = optional(string)
     mac                   = optional(string)
