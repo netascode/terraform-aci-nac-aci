@@ -24,7 +24,7 @@ jobs:
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.5.7
+          terraform_version: 1.9.2
 
       - name: Tflint Setup
         uses: terraform-linters/setup-tflint@v4
@@ -47,14 +47,14 @@ jobs:
           ACI_USERNAME: admin
           ACI_PASSWORD: "!v3G@!4@Y"
           ACI_URL: "https://sandboxapicdc.cisco.com"
-        run: terraform test -junit-xml=test-report.xml
+        run: terraform test # -junit-xml=test-report.xml
 
-      - name: Publish Integration Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
-        with:
-          junit_files: test-report.xml
-          check_name: "Integration Test Results"
+      # - name: Publish Integration Test Results
+      #   uses: EnricoMi/publish-unit-test-result-action@v2
+      #   if: always()
+      #   with:
+      #     junit_files: test-report.xml
+      #     check_name: "Integration Test Results"
 
       - name: Webex Notification
         if: always() && github.event_name != 'pull_request'
