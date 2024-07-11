@@ -32,7 +32,7 @@ jobs:
       - name: Terraform Docs Setup
         run: |
           mkdir terraform-docs && cd terraform-docs
-          curl -sSLo terraform-docs.tar.gz https://terraform-docs.io/dl/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz
+          curl -sSLo terraform-docs.tar.gz https://terraform-docs.io/dl/v0.18.0/terraform-docs-v0.18.0-linux-amd64.tar.gz
           tar -xzf terraform-docs.tar.gz
           chmod +x terraform-docs
           echo "$GITHUB_WORKSPACE/terraform-docs" >> $GITHUB_PATH

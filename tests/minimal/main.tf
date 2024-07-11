@@ -1,3 +1,5 @@
+# tflint-ignore-file: terraform_unused_declarations
+
 data "aci_rest_managed" "fvnsVlanInstP" {
   dn = "uni/infra/vlanns-[VLAN_POOL_1]-static"
 }
