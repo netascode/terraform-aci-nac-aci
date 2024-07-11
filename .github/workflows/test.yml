@@ -47,7 +47,9 @@ jobs:
           ACI_USERNAME: admin
           ACI_PASSWORD: "!v3G@!4@Y"
           ACI_URL: "https://sandboxapicdc.cisco.com"
-        run: terraform test # -junit-xml=test-report.xml
+        run: |
+          terraform init
+          terraform test # -junit-xml=test-report.xml
 
       # - name: Publish Integration Test Results
       #   uses: EnricoMi/publish-unit-test-result-action@v2
