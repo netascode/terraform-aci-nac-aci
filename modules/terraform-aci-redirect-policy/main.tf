@@ -40,11 +40,12 @@ resource "aci_rest_managed" "vnsRedirectDest" {
   dn         = "${aci_rest_managed.vnsSvcRedirectPol.dn}/RedirectDest_ip-[${each.value.ip}]"
   class_name = "vnsRedirectDest"
   content = {
-    descr = each.value.description
-    ip    = each.value.ip
-    ip2   = each.value.ip_2 != null ? each.value.ip_2 : "0.0.0.0"
-    mac   = each.value.mac != null ? each.value.mac : "00:00:00:00:00:00"
-    podId = each.value.pod_id
+    descr    = each.value.description
+    destName = each.value.name
+    ip       = each.value.ip
+    ip2      = each.value.ip_2 != null ? each.value.ip_2 : "0.0.0.0"
+    mac      = each.value.mac != null ? each.value.mac : "00:00:00:00:00:00"
+    podId    = each.value.pod_id
   }
 
   depends_on = [
