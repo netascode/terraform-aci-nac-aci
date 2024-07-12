@@ -60,6 +60,7 @@ apic:
             redirect_backup_policy: L4L7_REDIRECT_BACKUP1
             l3_destinations:
               - description: My Desc
+                name: L3_DEST1
                 ip: 1.1.1.1
                 ip_2:
                 mac: 00:00:00:11:22:33

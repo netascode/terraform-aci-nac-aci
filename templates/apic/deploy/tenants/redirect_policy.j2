@@ -65,6 +65,7 @@
                                             "attributes": {
                                                 "annotation": "orchestrator:aac",
                                                 "descr": "{{ dest.description | default() }}",
+                                                "destName": "{{ dest.name | default() }}",
                                                 "ip": "{{ dest.ip }}",
                                                 "ip2": "{{ dest.ip_2 | default() }}",
                                                 "mac": "{{ dest.mac | default("00:00:00:00:00:00") }}",

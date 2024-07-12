@@ -3409,6 +3409,7 @@ ten_ser_redirect_policies_l1l2_destinations_concrete_interface:
 
 ten_ser_redirect_policies_l3_destinations:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   ip: ip()
   ip_2: ip(required=False)
   mac: mac(required=False)

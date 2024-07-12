@@ -1291,6 +1291,7 @@ apic:
             ip_sla_policy: EXAMPLE
             l3_destinations:
               - description: My Desc
+                name: L3_DEST1
                 ip: 1.1.1.1
                 mac: 00:00:00:11:22:33
                 pod: 1

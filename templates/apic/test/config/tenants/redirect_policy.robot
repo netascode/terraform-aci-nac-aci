@@ -47,6 +47,7 @@ Verify Redirect Policy {{ pol_name }} Backup Policy
 Verify Redirect Policy {{ pol_name }} L3 Destination {{ dest.ip }}
     ${dest}=   Set Variable   $..vnsSvcRedirectPol.children[?(@.vnsRedirectDest.attributes.ip=='{{ dest.ip }}')].vnsRedirectDest
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.descr   {{ dest.description | default() }}
+    Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.destName   {{ dest.name | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.ip   {{ dest.ip }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.ip2   {{ dest.ip_2 | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${dest}.attributes.mac   {{ dest.mac | default("00:00:00:00:00:00") }}
