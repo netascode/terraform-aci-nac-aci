@@ -186,6 +186,7 @@ locals {
         vrf                        = "${bd.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}"
         igmp_interface_policy      = try("${bd.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
         igmp_snooping_policy       = try("${bd.igmp_snooping_policy}${local.defaults.apic.tenants.policies.igmp_snooping_policies.name_suffix}", "")
+        nd_interface_policy        = try("${bd.nd_interface_policy}${local.defaults.apic.tenants.policies.nd_interface_policies.name_suffix}", "")
         subnets = [for subnet in try(bd.subnets, []) : {
           ip                    = subnet.ip
           description           = try(subnet.description, "")
@@ -237,6 +238,7 @@ module "aci_bridge_domain" {
   vrf                        = each.value.vrf
   igmp_interface_policy      = each.value.igmp_interface_policy
   igmp_snooping_policy       = each.value.igmp_snooping_policy
+  nd_interface_policy        = each.value.nd_interface_policy
   subnets                    = each.value.subnets
   l3outs                     = each.value.l3outs
   dhcp_labels                = each.value.dhcp_labels
