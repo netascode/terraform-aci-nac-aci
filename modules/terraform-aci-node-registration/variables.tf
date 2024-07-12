@@ -29,6 +29,17 @@ variable "pod_id" {
   }
 }
 
+variable "role" {
+  description = "Node role. Choices: `leaf`, `spine`."
+  type        = string
+  default     = "unspecified"
+
+  validation {
+    condition     = contains(["leaf", "spine"], var.type)
+    error_message = "Allowed values: `leaf` or `spine`."
+  }
+}
+
 variable "serial_number" {
   description = "Serial number."
   type        = string
