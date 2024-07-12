@@ -31,6 +31,8 @@ defaults:
         detection_interval: 60
         detection_multiplier: 4
         action: bd-learn-disable
+        bd_learn_disable: true
+        port_disable: false
       rogue_ep_control:
         admin_state: true
         detection_interval: 30

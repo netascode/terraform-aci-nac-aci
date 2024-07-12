@@ -27,8 +27,9 @@ module "aci_endpoint_loop_protection" {
   source = "./modules/terraform-aci-endpoint-loop-protection"
 
   count                = local.modules.aci_endpoint_loop_protection == true && var.manage_fabric_policies ? 1 : 0
-  action               = try(local.fabric_policies.ep_loop_protection.action, local.defaults.apic.fabric_policies.ep_loop_protection.action)
   admin_state          = try(local.fabric_policies.ep_loop_protection.admin_state, local.defaults.apic.fabric_policies.ep_loop_protection.admin_state)
+  bd_learn_disable     = try(local.fabric_policies.ep_loop_protection.bd_learn_disable, local.fabric_policies.ep_loop_protection.action == "bd-learn-disable" ? true : false, local.defaults.apic.fabric_policies.ep_loop_protection.bd_learn_disable)
+  port_disable         = try(local.fabric_policies.ep_loop_protection.port_disable, local.fabric_policies.ep_loop_protection.action == "port-disable" ? true : false, local.defaults.apic.fabric_policies.ep_loop_protection.port_disable)
   detection_interval   = try(local.fabric_policies.ep_loop_protection.detection_interval, local.defaults.apic.fabric_policies.ep_loop_protection.detection_interval)
   detection_multiplier = try(local.fabric_policies.ep_loop_protection.detection_multiplier, local.defaults.apic.fabric_policies.ep_loop_protection.detection_multiplier)
 }
