@@ -112,4 +112,10 @@ Verify Bridge Domain {{ bd_name }} IGMP Snooping Policy
 
 {% endif %}
 
+{% if bd.nd_interface_policy is defined %}
+{% set nd_interface_policy_name = bd.nd_interface_policy ~ defaults.apic.tenants.policies.nd_interface_policies.name_suffix %}
+Verify Bridge Domain {{ bd_name }} ND Interface Policy
+    Should Be Equal Value Json String   ${r.json()}   $..fvBD.children..fvRsBDToNdP.attributes.tnNdIfPolName   {{ nd_interface_policy_name }}
+{% endif %}
+
 {% endfor %}

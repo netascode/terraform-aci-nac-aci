@@ -103,6 +103,7 @@ apic:
           advertise_host_routes: true
           l3_multicast: false
           vrf: VRF1
+          nd_interface_policy: ND_INT1
           subnets:
             - ip: 1.1.1.1/24
               description: My Desc

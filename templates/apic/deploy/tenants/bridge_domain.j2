@@ -222,7 +222,18 @@
                             }
                         }
                         {%- endif %}
-
+                        {%- if bd.nd_interface_policy is defined %}{{ comma2() }}
+                        {% set nd_interface_policy_name = bd.nd_interface_policy ~ defaults.apic.tenants.policies.nd_interface_policies.name_suffix %}
+                        {
+                            "fvRsBDToNdP": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "tnNdIfPolName": "{{ nd_interface_policy_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        
                     ]
                 }
             }

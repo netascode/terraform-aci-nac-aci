@@ -1876,6 +1876,7 @@ ten_bridge_domains:
   dhcp_labels: list(include('ten_dhcp_labels'), required=False) # @name(Bridge Domain DHCP Labels) @sheet_hidden()
   igmp_interface_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   igmp_snooping_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  nd_interface_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   expected_state: include('ten_bridge_domain_expected_state', required=False) # @no_external_doc() @name(Bridge Domain Expected State) @sheet_hidden()
 
 ten_bridge_domain_subnets:
