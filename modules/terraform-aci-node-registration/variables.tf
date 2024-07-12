@@ -35,7 +35,7 @@ variable "role" {
   default     = "unspecified"
 
   validation {
-    condition     = contains(["leaf", "spine"], var.type)
+    condition     = contains(["leaf", "spine"], var.role)
     error_message = "Allowed values: `leaf` or `spine`."
   }
 }
