@@ -13,3 +13,50 @@ apic:
                   ip: 13.13.16.1/24
                   vlan: 4
                   multipod_direct: true
+        - name: IPN-BGP
+          multipod: true
+          vrf: overlay-1
+          domain: ANS-L3
+          nodes:
+            - node_id: 2001
+              pod_id: 2
+              router_id: 200.200.200.1
+              interfaces:
+                - port: 1
+                  ip: 22.22.22.1/24
+                  vlan: 4
+                  bgp_peers:
+                    - ip: 22.22.22.2
+                      remote_as: 65222
+                      bfd: true
+                - port: 2
+                  ip: 22.22.23.1/24
+                  vlan: 4
+                  bgp_peers:
+                    - ip: 22.22.23.2
+                      remote_as: 65222
+          external_endpoint_groups:
+            - name: ALL
+        - name: RL-L3OUT-BGP
+          remote_leaf: true
+          vrf: overlay-1
+          domain: ANS-L3
+          nodes:
+            - node_id: 302
+              router_id: 32.32.32.1
+              interfaces:
+                - port: 1
+                  ip: 23.23.23.1/24
+                  vlan: 4
+                  bgp_peers:
+                    - ip: 23.23.23.2
+                      remote_as: 65333
+                      bfd: true
+                - port: 2
+                  ip: 23.23.24.1/24
+                  vlan: 4
+                  bgp_peers:
+                    - ip: 23.23.24.2
+                      remote_as: 65333
+          external_endpoint_groups:
+            - name: ALL

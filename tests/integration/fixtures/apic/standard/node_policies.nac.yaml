@@ -75,3 +75,11 @@ apic:
         oob_address: 10.51.77.96/24
         oob_gateway: 10.51.77.254
         remote_pool_id: 2
+      - id: 2001
+        pod: 2
+        role: spine
+        serial_number: TEP-1-2001
+        name: SPINE2001
+        update_group: MG1
+        fabric_policy_group: ALL_SPINES
+        access_policy_group: ALL_SPINES
