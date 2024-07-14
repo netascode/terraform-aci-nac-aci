@@ -46,6 +46,17 @@ variable "vlan_pool" {
   }
 }
 
+variable "allocation" {
+  description = "Vlan pool allocation mode. Choices: `static`, `dynamic`."
+  type        = string
+  default     = "dynamic"
+
+  validation {
+    condition     = contains(["static", "dynamic"], var.allocation)
+    error_message = "Allowed values are `static` or `dynamic`."
+  }
+}
+
 variable "vswitch_cdp_policy" {
   description = "vSwitch CDP policy name."
   type        = string

@@ -16,6 +16,7 @@ module "aci_node_registration" {
   name           = "LEAF105"
   node_id        = 105
   pod_id         = 2
+  role           = "leaf"
   serial_number  = "ABCDEFGHIJKLMN"
   type           = "remote-leaf-wan"
   remote_pool_id = 2
@@ -42,6 +43,7 @@ module "aci_node_registration" {
 | <a name="input_name"></a> [name](#input\_name) | Node name. | `string` | n/a | yes |
 | <a name="input_node_id"></a> [node\_id](#input\_node\_id) | Node ID. Minimum value: 1. Maximum value: 4000. | `number` | n/a | yes |
 | <a name="input_pod_id"></a> [pod\_id](#input\_pod\_id) | Pod ID. Minimum value: 1. Maximum value: 255. | `number` | `1` | no |
+| <a name="input_role"></a> [role](#input\_role) | Node role. Choices: `leaf`, `spine`. | `string` | `"unspecified"` | no |
 | <a name="input_serial_number"></a> [serial\_number](#input\_serial\_number) | Serial number. | `string` | n/a | yes |
 | <a name="input_type"></a> [type](#input\_type) | Node type. Choices: `remote-leaf-wan`, `virtual`, `tier-2-leaf`, `unspecified`. | `string` | `"unspecified"` | no |
 | <a name="input_remote_pool_id"></a> [remote\_pool\_id](#input\_remote\_pool\_id) | Remote Pool ID. Minimum value: 0. Maximum value: 255 | `number` | `0` | no |

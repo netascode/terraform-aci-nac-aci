@@ -86,7 +86,7 @@ Additional example repositories:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.6.1 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.15.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.3.0 |
 | <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 0.2.5 |
 
@@ -203,6 +203,7 @@ Additional example repositories:
 | <a name="module_aci_fabric_leaf_switch_policy_group"></a> [aci\_fabric\_leaf\_switch\_policy\_group](#module\_aci\_fabric\_leaf\_switch\_policy\_group) | ./modules/terraform-aci-fabric-leaf-switch-policy-group | n/a |
 | <a name="module_aci_fabric_leaf_switch_profile_auto"></a> [aci\_fabric\_leaf\_switch\_profile\_auto](#module\_aci\_fabric\_leaf\_switch\_profile\_auto) | ./modules/terraform-aci-fabric-leaf-switch-profile | n/a |
 | <a name="module_aci_fabric_leaf_switch_profile_manual"></a> [aci\_fabric\_leaf\_switch\_profile\_manual](#module\_aci\_fabric\_leaf\_switch\_profile\_manual) | ./modules/terraform-aci-fabric-leaf-switch-profile | n/a |
+| <a name="module_aci_fabric_link_level_policy"></a> [aci\_fabric\_link\_level\_policy](#module\_aci\_fabric\_link\_level\_policy) | ./modules/terraform-aci-fabric-link-level-policy | n/a |
 | <a name="module_aci_fabric_pod_policy_group"></a> [aci\_fabric\_pod\_policy\_group](#module\_aci\_fabric\_pod\_policy\_group) | ./modules/terraform-aci-fabric-pod-policy-group | n/a |
 | <a name="module_aci_fabric_pod_profile_auto"></a> [aci\_fabric\_pod\_profile\_auto](#module\_aci\_fabric\_pod\_profile\_auto) | ./modules/terraform-aci-fabric-pod-profile | n/a |
 | <a name="module_aci_fabric_pod_profile_manual"></a> [aci\_fabric\_pod\_profile\_manual](#module\_aci\_fabric\_pod\_profile\_manual) | ./modules/terraform-aci-fabric-pod-profile | n/a |

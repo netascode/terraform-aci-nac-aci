@@ -494,6 +494,7 @@ module "aci_external_connectivity_policy" {
   route_target = try(local.fabric_policies.external_connectivity_policy.route_target, local.defaults.apic.fabric_policies.external_connectivity_policy.route_target)
   fabric_id    = try(local.fabric_policies.external_connectivity_policy.fabric_id, local.defaults.apic.fabric_policies.external_connectivity_policy.fabric_id)
   site_id      = try(local.fabric_policies.external_connectivity_policy.site_id, local.defaults.apic.fabric_policies.external_connectivity_policy.site_id)
+  peering_type = try(local.fabric_policies.external_connectivity_policy.peering_type, local.defaults.apic.fabric_policies.external_connectivity_policy.peering_type)
   bgp_password = try(local.fabric_policies.external_connectivity_policy.bgp_password, null)
   routing_profiles = [for rp in try(local.fabric_policies.external_connectivity_policy.routing_profiles, []) : {
     name        = rp.name
@@ -536,6 +537,7 @@ module "aci_vmware_vmm_domain" {
   delimiter                   = try(each.value.delimiter, local.defaults.apic.fabric_policies.vmware_vmm_domains.delimiter)
   tag_collection              = try(each.value.tag_collection, local.defaults.apic.fabric_policies.vmware_vmm_domains.tag_collection)
   vlan_pool                   = "${each.value.vlan_pool}${local.defaults.apic.access_policies.vlan_pools.name_suffix}"
+  allocation                  = try(each.value.allocation, local.defaults.apic.fabric_policies.vmware_vmm_domains.allocation)
   vswitch_cdp_policy          = try(each.value.vswitch.cdp_policy, "")
   vswitch_lldp_policy         = try(each.value.vswitch.lldp_policy, "")
   vswitch_port_channel_policy = try(each.value.vswitch.port_channel_policy, "")
@@ -1027,4 +1029,13 @@ module "aci_system_performance" {
   response_threshold   = try(local.fabric_policies.system_performance.response_threshold, local.defaults.apic.fabric_policies.system_performance.response_threshold)
   top_slowest_requests = try(local.fabric_policies.system_performance.top_slowest_requests, local.defaults.apic.fabric_policies.system_performance.top_slowest_requests)
   calculation_window   = try(local.fabric_policies.system_performance.calculation_window, local.defaults.apic.fabric_policies.system_performance.calculation_window)
+}
+
+module "aci_fabric_link_level_policy" {
+  source = "./modules/terraform-aci-fabric-link-level-policy"
+
+  for_each               = { for policy in try(local.fabric_policies.interface_policies.link_level_policies, []) : policy.name => policy if local.modules.aci_fabric_link_level_policy && var.manage_fabric_policies }
+  name                   = each.value.name
+  description            = try(each.value.description, "")
+  link_debounce_interval = try(each.value.link_debounce_interval, local.defaults.apic.fabric_policies.interface_policies.link_level_policies.link_debounce_interval)
 }

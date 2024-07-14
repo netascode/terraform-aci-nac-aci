@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
 # Terraform ACI PTP Profile Module
 
-Manages ACI PTP Profile
+Manages ACI PTP Profile 
 
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Global` » `PTP User Profile`
