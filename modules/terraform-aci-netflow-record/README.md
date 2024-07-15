@@ -1,67 +1,21 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI VSPAN Session Module
+# Terraform ACI Netflow Record Module
 
-Manages ACI VSPAN Session
+Manages ACI Netflow Records
 
 Location in GUI:
-`Fabric` » `Access Policies` » `Policies` » `Troubleshooting` » `VSPAN` » `VSPAN Sessions`
+`Fabric` » `Access Policies` » `Policies` » `Interface Policies` » `NetFlow` » `Netflow Records`
 
 ## Examples
 
 ```hcl
-module "aci_access_vspan_session" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-vspan-session"
-  version = ">= 0.8.0"
+module "aci_netflow_record" {
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-netflow-record"
+  version = ">= 0.9.0"
 
-  name                    = "SESSION1"
-  description             = "VSPAN Session 1"
-  admin_state             = true
-  destination_name        = "DST_GRP1"
-  destination_description = "Destination Group 1"
-  sources = [
-    {
-      description         = "Source 1"
-      name                = "SRC1"
-      direction           = "both"
-      tenant              = "TENANT-1"
-      application_profile = "AP1"
-      endpoint_group      = "EGP1"
-      endpoint            = "00:50:56:96:6B:4F"
-      access_paths = [
-        {
-          node_id = 101
-          port    = 3
-        },
-        {
-          node_id = 101
-          port    = 1
-        }
-      ]
-    },
-    {
-      description         = "Source 2"
-      name                = "SRC2"
-      direction           = "in"
-      tenant              = "TENANT-2"
-      application_profile = "AP1"
-      endpoint_group      = "EGP1"
-      access_paths = [
-        {
-          node_id = 101
-          port    = 1
-        },
-        {
-          node_id  = 101
-          node2_id = 102
-          channel  = VPC1
-        },
-        {
-          node_id = 101
-          channel = PC1
-        }
-      ]
-    }
-  ]
+  name             = "RECORD1"
+  description      = "Netflow record 1"
+  match_parameters = ["dst-ip", "src-ip"]
 }
 ```
 
@@ -82,32 +36,20 @@ module "aci_access_vspan_session" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name"></a> [name](#input\_name) | VSPAN session name. | `string` | n/a | yes |
-| <a name="input_description"></a> [description](#input\_description) | VSPAN session description. | `string` | `""` | no |
-| <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | VSPAN session administrative state. | `bool` | `true` | no |
-| <a name="input_destination_name"></a> [destination\_name](#input\_destination\_name) | VSPAN session destination group name. | `string` | n/a | yes |
-| <a name="input_destination_description"></a> [destination\_description](#input\_destination\_description) | VSPAN session destination group description. | `string` | `""` | no |
-| <a name="input_sources"></a> [sources](#input\_sources) | List of VSPAN session sources. Allowed values `direction`: `in`, `out`, `both`. | <pre>list(object({<br>    description         = optional(string, "")<br>    name                = string<br>    direction           = optional(string, "both")<br>    tenant              = optional(string)<br>    application_profile = optional(string)<br>    endpoint_group      = optional(string)<br>    endpoint            = optional(string)<br>    access_paths = optional(list(object({<br>      node_id  = number<br>      node2_id = optional(number)<br>      fex_id   = optional(number)<br>      fex2_id  = optional(number)<br>      pod_id   = optional(number, 1)<br>      port     = optional(number)<br>      sub_port = optional(number)<br>      module   = optional(number, 1)<br>      channel  = optional(string)<br>    })), [])<br>  }))</pre> | `[]` | no |
+| <a name="input_name"></a> [name](#input\_name) | Netflow Record name. | `string` | n/a | yes |
+| <a name="input_description"></a> [description](#input\_description) | Netflow Record description. | `string` | `""` | no |
+| <a name="input_match_parameters"></a> [match\_parameters](#input\_match\_parameters) | Netflow Record match parameters. Allowed values: `dst-ip`, `dst-ipv4`, `dst-ipv6`, `dst-mac`, `dst-port`, `ethertype`, `proto`, `src-ip`, `src-ipv4`, `src-ipv6`, `src-mac`, `src-port`, `tos`, `vlan`, `unspecified`. | `list(string)` | `[]` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `spanVSrcGrp` object. |
-| <a name="output_name"></a> [name](#output\_name) | VSPAN session name. |
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `netflowRecordPol` object. |
+| <a name="output_name"></a> [name](#output\_name) | Netflow Record name. |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aci_rest_managed.spanRsSrcToEpg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanRsSrcToPathEp_channel](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanRsSrcToPathEp_fex_channel](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanRsSrcToPathEp_fex_port](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanRsSrcToPathEp_port](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanRsSrcToPathEp_subport](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanRsSrcToVPort](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanSpanLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanVSrc](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanVSrcGrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.netflowRecordPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

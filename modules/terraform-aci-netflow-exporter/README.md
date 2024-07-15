@@ -1,67 +1,30 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI VSPAN Session Module
+# Terraform ACI Netflow Exporter Module
 
-Manages ACI VSPAN Session
+Manages ACI Netflow Exporters
 
 Location in GUI:
-`Fabric` » `Access Policies` » `Policies` » `Troubleshooting` » `VSPAN` » `VSPAN Sessions`
+`Fabric` » `Access Policies` » `Policies` » `Interface Policies` » `NetFlow` » `Netflow Exporters`
 
 ## Examples
 
 ```hcl
-module "aci_access_vspan_session" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-vspan-session"
-  version = ">= 0.8.0"
+module "aci_netflow_monitor" {
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-netflow-exporter"
+  version = ">= 0.9.0"
 
-  name                    = "SESSION1"
-  description             = "VSPAN Session 1"
-  admin_state             = true
-  destination_name        = "DST_GRP1"
-  destination_description = "Destination Group 1"
-  sources = [
-    {
-      description         = "Source 1"
-      name                = "SRC1"
-      direction           = "both"
-      tenant              = "TENANT-1"
-      application_profile = "AP1"
-      endpoint_group      = "EGP1"
-      endpoint            = "00:50:56:96:6B:4F"
-      access_paths = [
-        {
-          node_id = 101
-          port    = 3
-        },
-        {
-          node_id = 101
-          port    = 1
-        }
-      ]
-    },
-    {
-      description         = "Source 2"
-      name                = "SRC2"
-      direction           = "in"
-      tenant              = "TENANT-2"
-      application_profile = "AP1"
-      endpoint_group      = "EGP1"
-      access_paths = [
-        {
-          node_id = 101
-          port    = 1
-        },
-        {
-          node_id  = 101
-          node2_id = 102
-          channel  = VPC1
-        },
-        {
-          node_id = 101
-          channel = PC1
-        }
-      ]
-    }
-  ]
+  name                = "EXPORTER1"
+  description         = "Netflow exporter 1"
+  source_type         = "custom-src-ip"
+  source_ip           = "172.16.0.0/20"
+  destination_port    = "1234"
+  destination_ip      = "10.1.1.1"
+  dscp                = "AF12"
+  epg_type            = "epg"
+  tenant              = "ABC"
+  application_profile = "AP1"
+  endpoint_group      = "EPG1"
+  vrf                 = "VRF1"
 }
 ```
 
@@ -82,32 +45,33 @@ module "aci_access_vspan_session" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name"></a> [name](#input\_name) | VSPAN session name. | `string` | n/a | yes |
-| <a name="input_description"></a> [description](#input\_description) | VSPAN session description. | `string` | `""` | no |
-| <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | VSPAN session administrative state. | `bool` | `true` | no |
-| <a name="input_destination_name"></a> [destination\_name](#input\_destination\_name) | VSPAN session destination group name. | `string` | n/a | yes |
-| <a name="input_destination_description"></a> [destination\_description](#input\_destination\_description) | VSPAN session destination group description. | `string` | `""` | no |
-| <a name="input_sources"></a> [sources](#input\_sources) | List of VSPAN session sources. Allowed values `direction`: `in`, `out`, `both`. | <pre>list(object({<br>    description         = optional(string, "")<br>    name                = string<br>    direction           = optional(string, "both")<br>    tenant              = optional(string)<br>    application_profile = optional(string)<br>    endpoint_group      = optional(string)<br>    endpoint            = optional(string)<br>    access_paths = optional(list(object({<br>      node_id  = number<br>      node2_id = optional(number)<br>      fex_id   = optional(number)<br>      fex2_id  = optional(number)<br>      pod_id   = optional(number, 1)<br>      port     = optional(number)<br>      sub_port = optional(number)<br>      module   = optional(number, 1)<br>      channel  = optional(string)<br>    })), [])<br>  }))</pre> | `[]` | no |
+| <a name="input_name"></a> [name](#input\_name) | Netflow Exporter name. | `string` | n/a | yes |
+| <a name="input_description"></a> [description](#input\_description) | Netflow Exporter description. | `string` | `""` | no |
+| <a name="input_dscp"></a> [dscp](#input\_dscp) | Netflow Exporter DSCP. Choices: `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS3`, `AF31`, `AF32`, `AF33`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6`, `CS7`, `unspecified` or a number between `0` and `63`. | `string` | `"unspecified"` | no |
+| <a name="input_destination_ip"></a> [destination\_ip](#input\_destination\_ip) | Netflow Exporter destination address. | `string` | n/a | yes |
+| <a name="input_destination_port"></a> [destination\_port](#input\_destination\_port) | Netflow Exporter destination port. | `string` | n/a | yes |
+| <a name="input_source_ip"></a> [source\_ip](#input\_source\_ip) | Netflow Exporter source address. | `string` | `"0.0.0.0"` | no |
+| <a name="input_source_type"></a> [source\_type](#input\_source\_type) | Netflow Exporter source type. Allowed values: `custom-src-ip`, `inband-mgmt-ip`, `oob-mgmt-ip`, `ptep`. | `string` | n/a | yes |
+| <a name="input_epg_type"></a> [epg\_type](#input\_epg\_type) | Netflow Exporter EPG type. Allowed values: `epg`, `external_epg`. | `string` | n/a | yes |
+| <a name="input_tenant"></a> [tenant](#input\_tenant) | Netflow Exporter tenant name. | `string` | n/a | yes |
+| <a name="input_application_profile"></a> [application\_profile](#input\_application\_profile) | Netflow Exporter application profile name. | `string` | n/a | yes |
+| <a name="input_endpoint_group"></a> [endpoint\_group](#input\_endpoint\_group) | Netflow Exporter endpoint group name. | `string` | n/a | yes |
+| <a name="input_vrf"></a> [vrf](#input\_vrf) | Netflow Exporter VRF name. | `string` | n/a | yes |
+| <a name="input_l3out"></a> [l3out](#input\_l3out) | Netflow Exporter L3out name. | `string` | n/a | yes |
+| <a name="input_external_endpoint_group"></a> [external\_endpoint\_group](#input\_external\_endpoint\_group) | Netflow Exporter external endpoint group name. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `spanVSrcGrp` object. |
-| <a name="output_name"></a> [name](#output\_name) | VSPAN session name. |
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `netflowExporterPol` object. |
+| <a name="output_name"></a> [name](#output\_name) | Netflow Exporter name. |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aci_rest_managed.spanRsSrcToEpg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanRsSrcToPathEp_channel](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanRsSrcToPathEp_fex_channel](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanRsSrcToPathEp_fex_port](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanRsSrcToPathEp_port](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanRsSrcToPathEp_subport](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanRsSrcToVPort](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanSpanLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanVSrc](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.spanVSrcGrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.netflowExporterPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.netflowRsExporterToCtx](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.netflowRsExporterToEPg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

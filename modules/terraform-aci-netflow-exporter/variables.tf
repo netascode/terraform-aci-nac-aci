@@ -41,7 +41,7 @@ variable "destination_port" {
   type        = string
 
   validation {
-    condition     = var.port >= 0 && var.port <= 65535
+    condition     = var.destination_port >= 0 && var.destination_port <= 65535
     error_message = "Minimum value: 0, Maximum value: 65535."
   }
 }
@@ -68,7 +68,7 @@ variable "epg_type" {
   type        = string
 
   validation {
-    condition     = contains(["epg", "external_epg"], var.source_type)
+    condition     = contains(["epg", "external_epg"], var.epg_type)
     error_message = "Allowed values: `epg`, `external_epg`."
   }
 }
