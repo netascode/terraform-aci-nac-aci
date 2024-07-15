@@ -15,6 +15,10 @@ resource "aci_rest_managed" "macsecRsToKeyChainPol" {
   content = {
     tDn = "uni/infra/macsecpcont/keychainp-${var.macsec_keychain_policy}"
   }
+
+  depends_on = [
+    aci_rest_managed.macsecIfPol
+  ]
 }
 
 resource "aci_rest_managed" "macsecRsToParamPol" {
@@ -24,4 +28,8 @@ resource "aci_rest_managed" "macsecRsToParamPol" {
   content = {
     tDn = "uni/infra/macsecpcont/paramp-${var.macsec_parameters_policy}"
   }
+  
+  depends_on = [
+    aci_rest_managed.macsecIfPol
+  ]
 }
