@@ -335,7 +335,7 @@ locals {
 module "aci_macsec_keychains" {
   source = "./modules/terraform-aci-macsec-keychains"
 
-  for_each      = { for mkc in local.local.macsec_keychain_policies : mkc.name => mkc if local.modules.aci_macsec_keychains && var.manage_access_policies }
+  for_each      = { for mkc in local.macsec_keychain_policies : mkc.name => mkc if local.modules.aci_macsec_keychains && var.manage_access_policies }
   name          = "${each.value.name}${local.defaults.apic.access_policies.macsec_keychains.name_suffix}"
   description   = each.value.description
   key_policies  = each.value.key_policies
