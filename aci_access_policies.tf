@@ -342,6 +342,16 @@ module "aci_macsec_keychains" {
   key_policies = each.value.key_policies
 }
 
+module "aci_macsec_interface_policy" {
+  source = "./modules/terraform-aci-macsec-interface-policy"
+
+  for_each                 = { for mip in local.access_policies.macsec_interface_policies : mip.name => mip if local.modules.aci_macsec_interface_policy && var.manage_access_policies}
+  name                     = "${each.value.name}${local.defaults.apic.access_policies.macsec_interface_policies.name_suffix}"
+  admin_state              = try(each.value.admin_state, local.defaults.apic.access_policies.macsec_interface_policies.admin_state)
+  macsec_keychain_policy   = each.value.macsec_keychain_policy
+  macsec_parameters_policy = each.value.macsec_parameters_policy
+}
+
 module "aci_port_channel_policy" {
   source = "./modules/terraform-aci-port-channel-policy"
 

@@ -488,6 +488,9 @@ defaults:
         name_suffix: ""
         startTime: "now"
         endTime: "infinite"
+      macsec_interface_policies:
+        name_suffix: ""
+        admin_state: true
       interface_policies:
         cdp_policies:
           name_suffix: ""
