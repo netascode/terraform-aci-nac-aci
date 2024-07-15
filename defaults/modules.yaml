@@ -92,6 +92,8 @@ modules:
   aci_link_level_policy: true
   aci_lldp_policy: true
   aci_login_domain: true
+  aci_macsec_parameters_policy: true
+  aci_macsec_keychains: true
   aci_maintenance_group: true
   aci_management_access_policy: true
   aci_match_rule: true
