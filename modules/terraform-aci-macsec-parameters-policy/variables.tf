@@ -69,12 +69,12 @@ variable "window_size" {
 
 variable "key_expiry_time" {
   description = "SAK Expiry Time (in seconds). Values are `0` (disabled); or Minimum value `60`, Maximum value `2592000`"
-  type        = number
-  default     = 0
+  type        = string
+  default     = "disabled"
 
   validation {
-    condition     = var.key_expiry_time == 0 || (var.key_expiry_time >= 60 && var.key_expiry_time <= 2592000)
-    error_message = "Allowed values: `0` (disabled); or Minimum value `60`, Maximum value `2592000`"
+    condition     = var.key_expiry_time == "disabled" || toint(var.key_expiry_tim)e == 0 || (toint(var.key_expiry_time) >= 60 && toint(var.key_expiry_time) <= 2592000)
+    error_message = "Allowed values: `disabled`, `0` (disabled); or Minimum value `60`, Maximum value `2592000`"
   }
 }
 
