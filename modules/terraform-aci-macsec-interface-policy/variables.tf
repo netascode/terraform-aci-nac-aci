@@ -19,7 +19,7 @@ variable "macsec_parameters_policy" {
   type = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.macsec_parameters_policy))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
@@ -29,7 +29,7 @@ variable "macsec_keychain_policy" {
   type = string
   
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.macsec_keychain_policy))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
