@@ -484,11 +484,11 @@ defaults:
         key_expiry_time: "disabled"
         security_policy: "should-secure"
         confidentiality_offset: "offset-0"
-      macsec_keychains:
+      macsec_keychain_policies:
         name_suffix: ""
         startTime: "now"
         endTime: "infinite"
-      macsec_interface_policies:
+      macsec_interfaces_policies:
         name_suffix: ""
         admin_state: true
       interface_policies:

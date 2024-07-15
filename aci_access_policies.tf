@@ -333,19 +333,19 @@ locals {
   ])
 }
 
-module "aci_macsec_keychains" {
-  source = "./modules/terraform-aci-macsec-keychains"
+module "aci_macsec_keychain_policies" {
+  source = "./modules/terraform-aci-macsec-keychain-policies"
 
-  for_each     = { for mkc in local.macsec_keychain_policies : mkc.name => mkc if local.modules.aci_macsec_keychains && var.manage_access_policies }
+  for_each     = { for mkc in local.macsec_keychain_policies : mkc.name => mkc if local.modules.aci_macsec_keychain_policies && var.manage_access_policies }
   name         = "${each.value.name}${local.defaults.apic.access_policies.macsec_keychains.name_suffix}"
   description  = each.value.description
   key_policies = each.value.key_policies
 }
 
-module "aci_macsec_interface_policy" {
-  source = "./modules/terraform-aci-macsec-interface-policy"
+module "aci_macsec_interfaces_policy" {
+  source = "./modules/terraform-aci-macsec-interfaces-policy"
 
-  for_each                 = { for mip in local.access_policies.macsec_interface_policies : mip.name => mip if local.modules.aci_macsec_interface_policy && var.manage_access_policies}
+  for_each                 = { for mip in local.access_policies.macsec_interface_policies : mip.name => mip if local.modules.aci_macsec_interfaces_policy && var.manage_access_policies}
   name                     = "${each.value.name}${local.defaults.apic.access_policies.macsec_interface_policies.name_suffix}"
   admin_state              = try(each.value.admin_state, local.defaults.apic.access_policies.macsec_interface_policies.admin_state)
   macsec_keychain_policy   = each.value.macsec_keychain_policy
