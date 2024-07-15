@@ -24,13 +24,13 @@ variable "admin_state" {
   default     = true
 }
 
-variable "cipherSuite" {
+variable "cipher_Suite" {
   description = "Ciper Suite. Choices: `gcm-aes-128`, `gcm-aes-128`, `gcm-aes-xpn-128`, `gcm-aes-xpn-256`.  Deafult is `gcm-aes-xpn-256`."
   type        = string
   default     = "gcm-aes-xpn-256"
 
   validation {
-    condition     = contains(["gcm-aes-128", "gcm-aes-128", "gcm-aes-xpn-128", "gcm-aes-xpn-256"], var.cipherSuite)
+    condition     = contains(["gcm-aes-128", "gcm-aes-128", "gcm-aes-xpn-128", "gcm-aes-xpn-256"], var.cipher_Suite)
     error_message = "Allowed values: `gcm-aes-128`, `gcm-aes-128`, `gcm-aes-xpn-128`, `gcm-aes-xpn-256`."
   }
 }

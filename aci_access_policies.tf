@@ -307,7 +307,7 @@ module "aci_macsec_parameters_policy" {
   name        = "${each.value.name}${local.defaults.apic.access_policies.macsec_parameters_policies.name_suffix}"
   description = try(each.value.description, "")
   admin_state = try(each.value.admin_state, local.defaults.apic.access_policies.macsec_parameters_policies.admin_state)
-  cipherSuite = try(each.value.cipherSuite, local.defaults.apic.access_policies.macsec_parameters_policies.cipherSuite)
+  cipher_Suite = try(each.value.cipher_Suite, local.defaults.apic.access_policies.macsec_parameters_policies.cipher_Suite)
   key_server_priority = try(each.value.key_server_priority, local.defaults.apic.access_policies.macsec_parameters_policies.key_server_priority)
   window_size = try(each.value.window_size, local.defaults.apic.access_policies.macsec_parameters_policies.window_size)
   key_expiry_time = try(each.value.key_expiry_time, local.defaults.apic.access_policies.macsec_parameters_policies.key_expiry_time)

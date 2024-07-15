@@ -3,7 +3,7 @@
 #     macsec_parameter_policies:
 #       - name: ""
 #         description: ""
-#         cipherSuite: ""
+#         cipher_Suite: ""
 #         confidentiality_offset: ""
 #         key_server_priority: ""
 #         window_size: ""
@@ -20,7 +20,7 @@
 #             endTime: ""
 
 resource "aci_rest_managed" "macsecKeyChainPol" {
-  for_each = { for kp in var.key_policies: kp => kp.name }
+  for_each = { for kp in var.key_policies: kp.name => kp }
   dn         = "uni/infra/macsecpcont/keychainp-${var.name}"
   class_name = "macsecKeyChainPol"
   content = {
