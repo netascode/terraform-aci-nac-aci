@@ -6,9 +6,9 @@ resource "aci_rest_managed" "macsecParamPol" {
     descr         = var.description
     confOffset    = var.confidentiality_offset
     keySvrPrio    = var.key_server_priority
-    cipher_Suite   = var.cipher_Suite
+    cipherSuite   = var.cipher_suite
     replayWindow  = var.window_size
-    sakExpiryTime = var.key_expiry_time
+    sakExpiryTime = var.key_expiry_time == 0 ? "disabled" : var.key_expiry_time
     secPolicy     = var.security_policy
   }
 }

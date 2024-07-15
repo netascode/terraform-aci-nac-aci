@@ -24,13 +24,13 @@ variable "admin_state" {
   default     = true
 }
 
-variable "cipher_Suite" {
+variable "cipher_suite" {
   description = "Ciper Suite. Choices: `gcm-aes-128`, `gcm-aes-128`, `gcm-aes-xpn-128`, `gcm-aes-xpn-256`.  Deafult is `gcm-aes-xpn-256`."
   type        = string
   default     = "gcm-aes-xpn-256"
 
   validation {
-    condition     = contains(["gcm-aes-128", "gcm-aes-128", "gcm-aes-xpn-128", "gcm-aes-xpn-256"], var.cipher_Suite)
+    condition     = contains(["gcm-aes-128", "gcm-aes-128", "gcm-aes-xpn-128", "gcm-aes-xpn-256"], var.cipher_suite)
     error_message = "Allowed values: `gcm-aes-128`, `gcm-aes-128`, `gcm-aes-xpn-128`, `gcm-aes-xpn-256`."
   }
 }
@@ -69,12 +69,12 @@ variable "window_size" {
 
 variable "key_expiry_time" {
   description = "SAK Expiry Time (in seconds). Values are `0` (disabled); or Minimum value `60`, Maximum value `2592000`"
-  type        = string
-  default     = "disabled"
+  type        = number
+  default     = 0
 
   validation {
-    condition     = var.key_expiry_time == "disabled" || tonumber(var.key_expiry_time) == 0 || ((var.key_expiry_time) >= 60 && tonumber(var.key_expiry_time) <= 2592000)
-    error_message = "Allowed values: `disabled`, `0` (disabled); or Minimum value `60`, Maximum value `2592000`"
+    condition     = var.key_expiry_time == 0 || (var.key_expiry_time >= 60 && var.key_expiry_time <= 2592000)
+    error_message = "Allowed values: `0` (disabled); or Minimum value `60`, Maximum value `2592000`"
   }
 }
 
