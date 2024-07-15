@@ -321,11 +321,12 @@ locals {
       name = "${mkc.name}${local.defaults.apic.access_policies.macsec_keychains.name_suffix}"
       description = try(mkc.description, "")
       key_policies = [for kp in try(mkc.key_policies, []) : {
-        name = kp.name
-        keyName = kp.keyName
+        name         = kp.name
+        keyName      = kp.keyName
         preSharedKey = kp.preSharedKey
-        startTime = try(kp.startTime, local.defaults.apic.access_policies.macsec_keychains.startTime)
-        endTime = try(kp.endTime, local.defaults.apic.access_policies.macsec_keychains.endTime)
+        description  = try(kp.description, "")
+        startTime    = try(kp.startTime, local.defaults.apic.access_policies.macsec_keychains.startTime)
+        endTime      = try(kp.endTime, local.defaults.apic.access_policies.macsec_keychains.endTime)
       }
       ]
     }
