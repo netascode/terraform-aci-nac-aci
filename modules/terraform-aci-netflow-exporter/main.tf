@@ -8,7 +8,7 @@ resource "aci_rest_managed" "netflowExporterPol" {
     dstAddr      = var.destination_ip
     dstPort      = var.destination_port
     sourceIpType = var.source_type
-    srcAddr      = var.source_address
+    srcAddr      = var.source_ip
   }
 }
 
