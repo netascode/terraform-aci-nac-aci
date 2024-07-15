@@ -475,7 +475,7 @@ defaults:
           name_suffix: ""
           node_blocks:
             name_suffix: ""
-      macsec_parameter_policies:
+      macsec_parameters_policies:
         name_suffix: ""
         admin_state: true
         cipher_suite: gcm-aes-xpn-256
