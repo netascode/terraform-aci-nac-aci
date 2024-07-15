@@ -26,9 +26,9 @@ variable "key_policies" {
 
   validation {
     condition = alltrue([
-      for kp in var.key_policies : can(regex("^[a-fA-F0-9]{0,64}$", kp.name))
+      for kp in var.key_policies : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", kp.name))
     ])
-    error_message = "`name`: Allowed characters: `a`-`f`, `A`-`F`, `0`-`9`. Maximum characters: 64."
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`. Maximum characters: 64."
   }
 
   validation {

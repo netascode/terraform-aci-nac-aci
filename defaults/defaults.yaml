@@ -484,8 +484,10 @@ defaults:
         key_expiry_time: "disabled"
         security_policy: "should-secure"
         confidentiality_offset: "offset-0"
-      macsec_key_policies:
+      macsec_keychains:
         name_suffix: ""
+        startTime: "now"
+        endTime: "infinite"
       interface_policies:
         cdp_policies:
           name_suffix: ""
