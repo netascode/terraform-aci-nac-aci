@@ -4,7 +4,7 @@
 Manages ACI Infra DHCP Relay Policy
 
 Location in GUI:
-`Fabric` » `Access Policies` » `Policies` » `Global` » `DHCP Relay`  
+`Fabric` » `Access Policies` » `Policies` » `Global` » `DHCP Relay`
 
 ## Examples
 
