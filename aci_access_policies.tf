@@ -912,7 +912,7 @@ module "aci_netflow_exporter" {
   name                    = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_exporters.name_suffix}"
   description             = try(each.value.description, "")
   destination_port        = each.value.destination_port
-  desination_ip           = each.value.destination_ip
+  destination_ip          = each.value.destination_ip
   dscp                    = try(each.value.dscp, local.defaults.apic.access_policies.interface_policies.netflow_exporters.dscp)
   source_type             = try(each.value.source_type, local.defaults.apic.access_policies.interface_policies.netflow_exporters.source_type)
   source_ip               = try(each.value.source_ip, local.defaults.apic.access_policies.interface_policies.netflow_exporters.source_ip)
