@@ -182,3 +182,12 @@ resource "aci_rest_managed" "rtdmcRsFilterToRtMapPol_destination" {
     tDn = "uni/tn-${var.tenant}/rtmap-${var.pim_destination_filter}"
   }
 }
+
+resource "aci_rest_managed" "fvRsBDToNdP" {
+  count      = var.nd_interface_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvBD.dn}/rsBDToNdP"
+  class_name = "fvRsBDToNdP"
+  content = {
+    tnNdIfPolName = var.nd_interface_policy
+  }
+}

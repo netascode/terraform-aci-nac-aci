@@ -9,7 +9,7 @@ repos:
       - id: terraform_tflint
 
   - repo: https://github.com/terraform-docs/terraform-docs
-    rev: v0.16.0
+    rev: v0.18.0
     hooks:
       - id: terraform-docs-system
         args: ["./examples/vlan_pool_yaml"]
@@ -281,6 +281,10 @@ repos:
         args: ["./modules/terraform-aci-fabric-wide-settings"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-wide-settings/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-link-level-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-link-level-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-filter"]
       - id: terraform-docs-system

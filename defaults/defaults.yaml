@@ -192,6 +192,7 @@ defaults:
         name_suffix: ""
         fabric_id: 1
         site_id: 1
+        peering_type: full_mesh
         route_target: extended:as2-nn4:5:16
         routing_profiles:
           name_suffix: ""
@@ -212,6 +213,7 @@ defaults:
         access_mode: read-write
         delimiter: ""
         tag_collection: false
+        allocation: dynamic
         vswitch:
           enhanced_lags:
             name_suffix: ""
@@ -391,6 +393,10 @@ defaults:
         response_threshold: 85000
         top_slowest_requests: 5
         calculation_window: 300
+      interface_policies:
+        link_level_policies:
+          name_suffix: ""
+          link_debounce_interval: 0
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"

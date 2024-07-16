@@ -14,7 +14,7 @@ resource "aci_rest_managed" "infraRsVlanNs" {
   dn         = "${aci_rest_managed.vmmDomP.dn}/rsvlanNs"
   class_name = "infraRsVlanNs"
   content = {
-    tDn = "uni/infra/vlanns-[${var.vlan_pool}]-dynamic"
+    tDn = "uni/infra/vlanns-[${var.vlan_pool}]-${var.allocation}"
   }
 }
 

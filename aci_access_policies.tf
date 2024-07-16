@@ -33,7 +33,7 @@ module "aci_routed_domain" {
 
   for_each             = { for rd in try(local.access_policies.routed_domains, []) : rd.name => rd if local.modules.aci_routed_domain && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.routed_domains.name_suffix}"
-  vlan_pool            = try("${each.value.vlan_pool}${local.defaults.apic.access_policies.routed_domains.name_suffix}", "")
+  vlan_pool            = try("${each.value.vlan_pool}${local.defaults.apic.access_policies.vlan_pools.name_suffix}", "")
   vlan_pool_allocation = try(each.value.vlan_pool, "") != "" ? [for vp in try(local.access_policies.vlan_pools, []) : try(vp.allocation, local.defaults.apic.access_policies.vlan_pools.allocation) if vp.name == each.value.vlan_pool][0] : "static"
   security_domains     = try(each.value.security_domains, [])
   depends_on = [
@@ -79,9 +79,10 @@ module "aci_mst_policy" {
 module "aci_vpc_policy" {
   source = "./modules/terraform-aci-vpc-policy"
 
-  for_each           = { for vpc in try(local.access_policies.switch_policies.vpc_policies, []) : vpc.name => vpc if local.modules.aci_vpc_policy && var.manage_access_policies }
-  name               = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.vpc_policies.name_suffix}"
-  peer_dead_interval = try(each.value.peer_dead_interval, local.defaults.apic.access_policies.switch_policies.vpc_policies.peer_dead_interval)
+  for_each            = { for vpc in try(local.access_policies.switch_policies.vpc_policies, []) : vpc.name => vpc if local.modules.aci_vpc_policy && var.manage_access_policies }
+  name                = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.vpc_policies.name_suffix}"
+  peer_dead_interval  = try(each.value.peer_dead_interval, local.defaults.apic.access_policies.switch_policies.vpc_policies.peer_dead_interval)
+  delay_restore_timer = try(each.value.delay_restore_timer, null)
 }
 
 module "aci_bfd_ipv4_policy" {

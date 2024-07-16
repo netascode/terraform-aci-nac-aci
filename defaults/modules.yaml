@@ -65,6 +65,7 @@ modules:
   aci_fabric_spine_switch_policy_group: true
   aci_fabric_spine_switch_profile: true
   aci_fabric_wide_settings: true
+  aci_fabric_link_level_policy: true
   aci_filter: true
   aci_firmware_group: true
   aci_forwarding_scale_policy: true
