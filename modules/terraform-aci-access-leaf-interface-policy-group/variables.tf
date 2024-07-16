@@ -74,6 +74,17 @@ variable "lldp_policy" {
   }
 }
 
+variable "macsec_policy" {
+  description = "MACsec policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.macsec_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "spanning_tree_policy" {
   description = "Spanning tree policy name."
   type        = string
