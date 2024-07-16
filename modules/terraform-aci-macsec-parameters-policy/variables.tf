@@ -34,6 +34,7 @@ variable "cipher_suite" {
     error_message = "Allowed values: `gcm-aes-128`, `gcm-aes-128`, `gcm-aes-xpn-128`, `gcm-aes-xpn-256`."
   }
 }
+
 variable "confidentiality_offset" {
   description = "Confidentiality Offset. Choices: `offset-0`, `offset-30`, `offset-50`. Default is `offset-0`."
   type        = string

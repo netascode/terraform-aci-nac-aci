@@ -303,30 +303,30 @@ module "aci_link_level_policy" {
 module "aci_macsec_parameters_policy" {
   source = "./modules/terraform-aci-macsec-parameters-policy"
 
-  for_each               = { for mpp in try(local.access_policies.macsec_parameters_policies, []) : mpp.name => mpp if local.modules.aci_macsec_parameters_policy && var.manage_access_policies }
-  name                   = "${each.value.name}${local.defaults.apic.access_policies.macsec_parameters_policies.name_suffix}"
+  for_each               = { for mpp in try(local.access_policies.interface_policies.macsec_parameters_policies, []) : mpp.name => mpp if local.modules.aci_macsec_parameters_policy && var.manage_access_policies }
+  name                   = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.name_suffix}"
   description            = try(each.value.description, "")
-  admin_state            = try(each.value.admin_state, local.defaults.apic.access_policies.macsec_parameters_policies.admin_state)
-  cipher_suite           = try(each.value.cipher_suite, local.defaults.apic.access_policies.macsec_parameters_policies.cipher_suite)
-  key_server_priority    = try(each.value.key_server_priority, local.defaults.apic.access_policies.macsec_parameters_policies.key_server_priority)
-  window_size            = try(each.value.window_size, local.defaults.apic.access_policies.macsec_parameters_policies.window_size)
-  key_expiry_time        = try(each.value.key_expiry_time, local.defaults.apic.access_policies.macsec_parameters_policies.key_expiry_time) == "disabled" || try(each.value.key_expiry_time, local.defaults.apic.access_policies.macsec_parameters_policies.key_expiry_time) == 0 ? 0 : each.value.key_expiry_time
-  security_policy        = try(each.value.security_policy, local.defaults.apic.access_policies.macsec_parameters_policies.security_policy)
-  confidentiality_offset = try(each.value.confidentiality_offset, local.defaults.apic.access_policies.macsec_parameters_policies.confidentiality_offset)
+  admin_state            = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.admin_state)
+  cipher_suite           = try(each.value.cipher_suite, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.cipher_suite)
+  key_server_priority    = try(each.value.key_server_priority, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.key_server_priority)
+  window_size            = try(each.value.window_size, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.window_size)
+  key_expiry_time        = try(each.value.key_expiry_time, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.key_expiry_time) == "disabled" || try(each.value.key_expiry_time, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.key_expiry_time) == 0 ? 0 : each.value.key_expiry_time
+  security_policy        = try(each.value.security_policy, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.security_policy)
+  confidentiality_offset = try(each.value.confidentiality_offset, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.confidentiality_offset)
 }
 
 locals {
   macsec_keychain_policies = flatten([
-    for mkc in try(local.access_policies.macsec_keychain_policies, []) : {
-      name        = "${mkc.name}${local.defaults.apic.access_policies.macsec_keychain_policies.name_suffix}"
+    for mkc in try(local.access_policies.interface_policies.macsec_keychain_policies, []) : {
+      name        = "${mkc.name}${local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.name_suffix}"
       description = try(mkc.description, "")
       key_policies = [for kp in try(mkc.key_policies, []) : {
         name         = kp.name
         keyName      = kp.keyName
         preSharedKey = kp.preSharedKey
         description  = try(kp.description, "")
-        startTime    = try(kp.startTime, local.defaults.apic.access_policies.macsec_keychain_policies.startTime)
-        endTime      = try(kp.endTime, local.defaults.apic.access_policies.macsec_keychain_policies.endTime)
+        startTime    = try(kp.startTime, local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.startTime)
+        endTime      = try(kp.endTime, local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.endTime)
         }
       ]
     }
@@ -337,7 +337,7 @@ module "aci_macsec_keychain_policies" {
   source = "./modules/terraform-aci-macsec-keychain-policies"
 
   for_each     = { for mkc in try(local.macsec_keychain_policies, [] ) : mkc.name => mkc if local.modules.aci_macsec_keychain_policies && var.manage_access_policies }
-  name         = "${each.value.name}${local.defaults.apic.access_policies.macsec_keychain_policies.name_suffix}"
+  name         = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.name_suffix}"
   description  = each.value.description
   key_policies = each.value.key_policies
 }
@@ -345,9 +345,9 @@ module "aci_macsec_keychain_policies" {
 module "aci_macsec_interfaces_policy" {
   source = "./modules/terraform-aci-macsec-interfaces-policy"
 
-  for_each                 = { for mip in try(local.access_policies.macsec_interfaces_policy, []) : mip.name => mip if local.modules.aci_macsec_interfaces_policy && var.manage_access_policies}
-  name                     = "${each.value.name}${local.defaults.apic.access_policies.macsec_interfaces_policy.name_suffix}"
-  admin_state              = try(each.value.admin_state, local.defaults.apic.access_policies.macsec_interfaces_policy.admin_state)
+  for_each                 = { for mip in try(local.access_policies.interface_policies.macsec_interfaces_policy, []) : mip.name => mip if local.modules.aci_macsec_interfaces_policy && var.manage_access_policies}
+  name                     = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policy.name_suffix}"
+  admin_state              = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policy.admin_state)
   macsec_keychain_policy   = each.value.macsec_keychain_policy
   macsec_parameters_policy = each.value.macsec_parameters_policy
 
@@ -448,6 +448,7 @@ module "aci_access_leaf_interface_policy_group" {
   cdp_policy                 = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
   lldp_policy                = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
   spanning_tree_policy       = try("${each.value.spanning_tree_policy}${local.defaults.apic.access_policies.interface_policies.spanning_tree_policies.name_suffix}", "")
+  macsec_policy              = try("${each.value.macsec_policy}","")
   mcp_policy                 = try("${each.value.mcp_policy}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}", "")
   l2_policy                  = try("${each.value.l2_policy}${local.defaults.apic.access_policies.interface_policies.l2_policies.name_suffix}", "")
   storm_control_policy       = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")
@@ -462,6 +463,7 @@ module "aci_access_leaf_interface_policy_group" {
     module.aci_spanning_tree_policy,
     module.aci_mcp_policy,
     module.aci_l2_policy,
+    module.aci_macsec_interfaces_policy,
     module.aci_storm_control_policy,
     module.aci_port_channel_policy,
     module.aci_port_channel_member_policy,

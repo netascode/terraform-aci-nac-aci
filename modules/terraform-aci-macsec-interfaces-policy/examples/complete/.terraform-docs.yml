@@ -3,9 +3,9 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Terraform ACI MACsec Interface Policy Module
+  # Terraform ACI MACsec Interfaces Policy Module
 
-  Manages ACI MACsec Interface Policy
+  Manages ACI MACsec Interfaces Policy
 
   Location in GUI:
   `Fabric` » `Access Policies` » `Policies` » `Interface` » `MACsec` » `Interfaces`

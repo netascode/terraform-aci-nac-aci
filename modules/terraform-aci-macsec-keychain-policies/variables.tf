@@ -45,7 +45,4 @@ variable "key_policies" {
     error_message = "`keyName`: Allowed characters: `a`-`f`, `A`-`F`, `0`-`9`. Maximum characters: 64."
   }
 
-  # Validate startTime ?
-
-  # Validate endTime ?
 }
