@@ -1126,6 +1126,7 @@ locals {
               pod_id          = try(int.pod_id, null)
               module          = try(int.module, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.module)
               port            = try(int.port, null)
+              sub_port        = try(int.sub_port, null)
               channel         = try("${int.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", null)
               ip_a            = try(int.ip_a, null)
               ip_b            = try(int.ip_b, null)
@@ -1213,6 +1214,7 @@ module "aci_l3out_interface_profile_manual" {
     pod_id          = int.pod_id == null ? try([for node in local.node_policies.nodes : node.pod if node.id == int.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) : int.pod_id
     module          = int.module
     port            = int.port
+    sub_port        = int.sub_port
     channel         = int.channel
     ip_a            = int.ip_a
     ip_b            = int.ip_b
@@ -1269,6 +1271,7 @@ locals {
             pod_id          = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.nodes.interfaces.pod)
             module          = try(int.module, local.defaults.apic.tenants.l3outs.nodes.interfaces.module)
             port            = try(int.port, null)
+            sub_port        = try(int.sub_port, null)
             channel         = try("${int.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", null)
             ip_a            = try(int.ip_a, null)
             ip_b            = try(int.ip_b, null)
@@ -1354,6 +1357,7 @@ module "aci_l3out_interface_profile_auto" {
     pod_id          = int.pod_id
     module          = int.module
     port            = int.port
+    sub_port        = int.sub_port
     channel         = int.channel
     ip_a            = int.ip_a
     ip_b            = int.ip_b
