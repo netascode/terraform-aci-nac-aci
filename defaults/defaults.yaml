@@ -1107,6 +1107,7 @@ defaults:
           name_suffix: ""
           qos_class: unspecified
           target_dscp: unspecified
+          reverse_filter_ports: true
           filters:
             action: permit
             priority: default
