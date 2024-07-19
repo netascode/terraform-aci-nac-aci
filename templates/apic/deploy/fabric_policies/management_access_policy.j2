@@ -67,6 +67,7 @@
                             "commHttps": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
+                                    "accessControlAllowOrigins": "{{ policy.https.allow_origins | default() }}",
                                     "adminSt": "{{ policy.https.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.admin_state) | cisco.aac.aac_bool("enabled") }}",
                                     "clientCertAuthState": "{{ policy.https.client_cert_auth_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.client_cert_auth_state) | cisco.aac.aac_bool("enabled") }}",
                                     "dhParam": "{{ policy.https.dh | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.https.dh) }}",
@@ -96,6 +97,7 @@
                             "commHttp": {
                                 "attributes": {
                                     "annotation": "orchestrator:aac",
+                                    "accessControlAllowOrigins": "{{ policy.http.allow_origins | default() }}",
                                     "adminSt": "{{ policy.http.admin_state | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.http.admin_state) | cisco.aac.aac_bool("enabled") }}",
                                     "name": "http",
                                     "port": "{{ policy.http.port | default(defaults.apic.fabric_policies.pod_policies.management_access_policies.http.port) }}",

@@ -267,10 +267,12 @@ fp_management_access_policy_https:
   tlsv1_2: any(bool(), enum('yes', 'no'), required=False)
   tlsv1_3: any(bool(), enum('yes', 'no'), required=False)
   key_ring: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  allow_origins: regex('^[a-zA-Z0-9-_:/.,]{1,256}$', required=False)
 
 fp_management_access_policy_http:
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
   port: int(min=1, max=65535, required=False)
+  allow_origins: regex('^[a-zA-Z0-9-_:/.,]{1,256}$', required=False)
 
 fp_pod_policy_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
