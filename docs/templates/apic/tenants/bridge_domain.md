@@ -51,7 +51,6 @@ apic:
               description: My Desc
               primary_ip: true
               public: true
-              private: false
               shared: true
               virtual: false
               igmp_querier: true
@@ -61,7 +60,6 @@ apic:
               description: My IPv6 Desc
               primary_ip: true
               public: true
-              private: false
               shared: false
               virtual: false
               igmp_querier: true

@@ -61,8 +61,7 @@ Verify Bridge Domain {{ bd_name }} DHCP Relay Policy {{ dhcp_relay_policy_name }
 
 {% for subnet in bd.subnets | default([]) %}
 {% set scope = [] %}
-{% if subnet.private | default(defaults.apic.tenants.bridge_domains.subnets.private) and not (subnet.public | default(defaults.apic.tenants.bridge_domains.subnets.public)) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("private")] %}{% endif %}
-{% if subnet.public | default(defaults.apic.tenants.bridge_domains.subnets.public) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("public")] %}{% endif %}
+{% if subnet.public | default(defaults.apic.tenants.bridge_domains.subnets.public) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("public")] %}{% else %}{% set scope = scope + [("private")] %}{% endif %}
 {% if subnet.shared | default(defaults.apic.tenants.bridge_domains.subnets.shared) | cisco.aac.aac_bool("yes") == "yes" %}{% set scope = scope + [("shared")] %}{% endif %}
 {% set ctrl = [] %}
 {% if subnet.nd_ra_prefix | default(defaults.apic.tenants.bridge_domains.subnets.nd_ra_prefix) | cisco.aac.aac_bool("yes") == "yes" %}{% set ctrl = ctrl + [("nd")] %}{% endif %}

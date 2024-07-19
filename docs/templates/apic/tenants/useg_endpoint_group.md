@@ -93,7 +93,6 @@ apic:
                 - ip: 5.50.6.1/30
                   description: My Desc
                   public: true
-                  private: false
                   shared: true
                   igmp_querier: true
                   nd_ra_prefix: true
@@ -128,7 +127,6 @@ apic:
                 - ip: fd00:0:abcd:2::2/64
                   description: My IPv6 Desc
                   public: true
-                  private: false
                   shared: false
                   igmp_querier: true
                   nd_ra_prefix: true

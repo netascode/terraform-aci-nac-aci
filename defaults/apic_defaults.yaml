@@ -779,7 +779,6 @@ defaults:
         subnets:
           primary_ip: false
           public: false
-          private: true
           shared: false
           virtual: false
           igmp_querier: false
@@ -1007,7 +1006,6 @@ defaults:
           subnets:
             primary_ip: false
             public: false
-            private: true
             shared: false
             igmp_querier: false
             nd_ra_prefix: true
@@ -1036,7 +1034,6 @@ defaults:
           subnets:
             primary_ip: false
             public: false
-            private: true
             shared: false
             igmp_querier: false
             nd_ra_prefix: true

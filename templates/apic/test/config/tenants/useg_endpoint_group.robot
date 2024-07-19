@@ -133,8 +133,7 @@ Verify uSeg Endpoint Group {{ epg_name }} uSeg Attributes MAC Statement {{ mac_s
 
 {% for subnet in epg.subnets | default([]) %}
 {% set scope = [] %}
-{% if subnet.private | default(defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.private) %}{% set scope = scope + [("private")] %}{% endif %}
-{% if subnet.public | default(defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.public) %}{% set scope = scope + [("public")] %}{% endif %}
+{% if subnet.public | default(defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.public) %}{% set scope = scope + [("public")] %}{% else %}{% set scope = scope + [("private")] %}{% endif %}
 {% if subnet.shared | default(defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.shared) %}{% set scope = scope + [("shared")] %}{% endif %}
 {% set ctrl = [] %}
 {% if subnet.nd_ra_prefix | default(defaults.apic.tenants.application_profiles.useg_endpoint_groups.subnets.nd_ra_prefix) %}{% set ctrl = ctrl + [("nd")] %}{% endif %}

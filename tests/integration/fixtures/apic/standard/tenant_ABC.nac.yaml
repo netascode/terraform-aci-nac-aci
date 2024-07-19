@@ -109,20 +109,16 @@ apic:
               description: My Desc
               primary_ip: true
               public: true
-              private: false
               shared: true
               virtual: false
               igmp_querier: true
               nd_ra_prefix: true
               no_default_gateway: false
             - ip: 1.1.2.1/24
-              public: true
-              private: true
             - ip: fd00:0:abcd:1::1/64
               description: My IPv6 Desc
               primary_ip: true
               public: true
-              private: false
               shared: false
               virtual: false
               igmp_querier: true
@@ -542,7 +538,6 @@ apic:
                 - ip: 5.50.5.1/30
                   description: My Desc
                   public: true
-                  private: false
                   shared: true
                   igmp_querier: true
                   nd_ra_prefix: true
@@ -577,7 +572,6 @@ apic:
                 - ip: fd00:0:abcd:2::2/64
                   description: My IPv6 Desc
                   public: true
-                  private: false
                   shared: false
                   igmp_querier: true
                   nd_ra_prefix: true
@@ -661,7 +655,6 @@ apic:
                 - ip: 5.50.6.1/30
                   description: My Desc
                   public: true
-                  private: false
                   shared: true
                   igmp_querier: true
                   nd_ra_prefix: true
@@ -696,7 +689,6 @@ apic:
                 - ip: fd00:0:abcd:2::2/64
                   description: My IPv6 Desc
                   public: true
-                  private: false
                   shared: false
                   igmp_querier: true
                   nd_ra_prefix: true
