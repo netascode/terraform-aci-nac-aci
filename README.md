@@ -261,6 +261,9 @@ Additional example repositories:
 | <a name="module_aci_multicast_route_map"></a> [aci\_multicast\_route\_map](#module\_aci\_multicast\_route\_map) | ./modules/terraform-aci-multicast-route-map | n/a |
 | <a name="module_aci_nd_interface_policy"></a> [aci\_nd\_interface\_policy](#module\_aci\_nd\_interface\_policy) | ./modules/terraform-aci-nd-interface-policy | n/a |
 | <a name="module_aci_nd_ra_prefix_policy"></a> [aci\_nd\_ra\_prefix\_policy](#module\_aci\_nd\_ra\_prefix\_policy) | ./modules/terraform-aci-nd-ra-prefix-policy | n/a |
+| <a name="module_aci_netflow_exporter"></a> [aci\_netflow\_exporter](#module\_aci\_netflow\_exporter) | ./modules/terraform-aci-netflow-exporter | n/a |
+| <a name="module_aci_netflow_monitor"></a> [aci\_netflow\_monitor](#module\_aci\_netflow\_monitor) | ./modules/terraform-aci-netflow-monitor | n/a |
+| <a name="module_aci_netflow_record"></a> [aci\_netflow\_record](#module\_aci\_netflow\_record) | ./modules/terraform-aci-netflow-record | n/a |
 | <a name="module_aci_node_control_policy"></a> [aci\_node\_control\_policy](#module\_aci\_node\_control\_policy) | ./modules/terraform-aci-node-control-policy | n/a |
 | <a name="module_aci_node_registration"></a> [aci\_node\_registration](#module\_aci\_node\_registration) | ./modules/terraform-aci-node-registration | n/a |
 | <a name="module_aci_oob_contract"></a> [aci\_oob\_contract](#module\_aci\_oob\_contract) | ./modules/terraform-aci-oob-contract | n/a |

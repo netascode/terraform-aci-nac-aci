@@ -3,12 +3,12 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Terraform ACI Infra DHCP Relay Policy Module
+  # Terraform ACI Netflow Record Module
 
-  Manages ACI Infra DHCP Relay Policy
+  Manages ACI Netflow Records
 
   Location in GUI:
-  `Fabric` » `Access Policies` » `Policies` » `Global` » `DHCP Relay`
+  `Fabric` » `Access Policies` » `Policies` » `Interface Policies` » `NetFlow` » `Netflow Records`
 
   ## Examples
 
