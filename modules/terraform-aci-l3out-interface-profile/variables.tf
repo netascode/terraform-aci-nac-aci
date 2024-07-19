@@ -403,9 +403,9 @@ variable "interfaces" {
 
   validation {
     condition = alltrue([
-      for i in var.interfaces : i.micro_bfd_start_timer == null || try(i.micro_bfd_start_timer == 0 || try(i.micro_bfd_start_timer >= 60 && i.micro_bfd_start_timer <= 6000, false), false)
+      for i in var.interfaces : i.micro_bfd_start_timer == null || try(i.micro_bfd_start_timer == 0 || try(i.micro_bfd_start_timer >= 60 && i.micro_bfd_start_timer <= 3600, false), false)
     ])
-    error_message = "`interfaces.micro_bfd_start_timer`: Minimum value: `60`. Maximum value: `6000`."
+    error_message = "`interfaces.micro_bfd_start_timer`: Minimum value: `60`. Maximum value: `3600`."
   }
 }
 
