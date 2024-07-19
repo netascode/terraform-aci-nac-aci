@@ -167,6 +167,18 @@
                             }
                         }
                         {%- endif %}
+                        {%- for monitor in pg.netflow_monitor_policies | default([]) %}{{ comma1() }}
+                        {% set monitor_name = monitor.name ~ defaults.apic.access_policies.interface_policies.netflow_monitors.name_suffix %}
+                        {
+                            "infraRsNetflowMonitorPol": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "fltType": "{{ monitor.ip_filter_type | default(defaults.apic.access_policies.leaf_interface_policy_groups.netflow_monitor_policies.ip_filter_type )}}",
+                                    "tnNetflowMonitorPolName": "{{ monitor_name }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
 
                     ]
                 }

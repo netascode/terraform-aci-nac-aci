@@ -927,6 +927,33 @@ objects:
       - config
     paths:
       - apic.access_policies.interface_policies.storm_control_policies
+  - name: Netflow Exporter
+    template: netflow_exporter
+    folder: access_policies
+    aci_classes:
+      - netflowExporterPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.interface_policies.netflow_exporter
+  - name: Netflow Record
+    template: netflow_record
+    folder: access_policies
+    aci_classes:
+      - netflowRecordPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.interface_policies.netflow_record
+  - name: Netflow Monitor
+    template: netflow_monitor
+    folder: access_policies
+    aci_classes:
+      - netflowMonitorPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.interface_policies.netflow_monitor
   - name: MST Switch Policy
     template: mst_policy
     folder: access_policies

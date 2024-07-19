@@ -1,0 +1,26 @@
+ {
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for record in apic.access_policies.interface_policies.netflow_records | default([]) %}{{ comma1() }}
+            {% set record_name = record.name ~ defaults.apic.access_policies.interface_policies.netflow_records.name_suffix %}
+            {
+                "netflowRecordPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ record_name }}",
+                        "descr": "{{ record.description | default() }}",
+                        "dn": "uni/infra/recordpol-{{ record_name }}",
+                        "match": "{{ record.match_parameters | default() | sort() | join(',')  }}",
+                        "childAction": "deleteNonPresent"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

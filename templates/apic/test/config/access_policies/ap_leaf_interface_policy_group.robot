@@ -71,5 +71,17 @@ Verify Leaf Interface Policy Group {{ policy_group_name }}
 {% set aaep_name = pg.aaep ~ defaults.apic.access_policies.aaeps.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}    $..infraRsAttEntP.attributes.tDn   uni/infra/attentp-{{ aaep_name }}
 {% endif %}
+{% for monitor in pg.netflow_monitor_policies | default([]) %}
+{% set monitor_name = monitor.name ~ defaults.apic.access_policies.interface_policies.netflow_monitors.name_suffix %}
+{% if pg.type == "breakout" %}
+    ${mon}=   Set Variable   $..infraBrkoutPortGrp.children[?(@.infraRsNetflowMonitorPol.attributes.tnNetflowMonitorPolName=='{{ monitor_name }}')].infraRsNetflowMonitorPol
+{% elif pg.type in ["vpc", "pc"] %}
+    ${mon}=   Set Variable   $..infraAccBndlGrp.children[?(@.infraRsNetflowMonitorPol.attributes.tnNetflowMonitorPolName=='{{ monitor_name }}')].infraRsNetflowMonitorPol
+{% else %}
+    ${mon}=   Set Variable   $..infraAccPortGrp.children[?(@.infraRsNetflowMonitorPol.attributes.tnNetflowMonitorPolName=='{{ monitor_name }}')].infraRsNetflowMonitorPol
+{% endif %}
+    Should Be Equal Value Json String   ${r.json()}    ${mon}.attributes.tnNetflowMonitorPolName   {{ monitor_name }}
+    Should Be Equal Value Json String   ${r.json()}    ${mon}.attributes.fltType   {{ monitor.ip_filter_type | default(defaults.apic.access_policies.leaf_interface_policy_groups.netflow_monitor_policies.ip_filter_type) }}
+{% endfor %}
 
 {% endfor %}

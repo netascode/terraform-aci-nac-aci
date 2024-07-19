@@ -1,0 +1,62 @@
+ {
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for exporter in apic.access_policies.interface_policies.netflow_exporters | default([]) %}{{ comma1() }}
+            {% set exporter_name = exporter.name ~ defaults.apic.access_policies.interface_policies.netflow_exporters.name_suffix %}
+            {
+                "netflowExporterPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ exporter_name }}",
+                        "descr": "{{ exporter.description | default() }}",
+                        "dn": "uni/infra/exporterpol-{{ exporter_name }}",
+                        "dscp": "{{ exporter.dscp | default(defaults.apic.access_policies.interface_policies.netflow_exporters.dscp) }}",
+                        "dstAddr": "{{ exporter.destination_ip }}",
+                        "dstPort": "{{ exporter.destination_port }}",
+                        "sourceIpType": "{{ exporter.source_type | default(defaults.apic.access_policies.interface_policies.netflow_exporters.source_type) }}",
+                        "srcAddr": "{{ exporter.source_ip | default(defaults.apic.access_policies.interface_policies.netflow_exporters.source_ip) }}",
+                        "ver": "v9",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- if exporter.epg_type is defined %}{{ comma2() }}
+                        {
+                            "netflowRsExporterToEPg": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    {% if exporter.epg_type == "epg" %}
+                                    {% set ap_name = exporter.application_profile ~ defaults.apic.tenants.application_profiles.name_suffix %}
+                                    {% set epg_name = exporter.endpoint_group ~ defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix %}
+                                    "tDn": "uni/tn-{{ exporter.tenant }}/ap-{{ ap_name }}/epg-{{ epg_name }}"
+                                    {% elif exporter.epg_type == "external_epg" %}
+                                    {% set l3out_name = exporter.l3out ~ defaults.apic.tenants.l3outs.name_suffix %}
+                                    {% set eepg_name = exporter.external_endpoint_group ~ defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix %}
+                                    "tDn": "uni/tn-{{ exporter.tenant }}/out-{{ l3out_name }}/instP-{{ eepg_name }}"
+                                    {% endif %}
+                                }
+                            }
+                        },
+                        {
+                            "netflowRsExporterToCtx": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    {% set vrf_name = exporter.vrf ~ defaults.apic.tenants.vrfs.name_suffix %}
+                                    "tDn": "uni/tn-{{ exporter.tenant }}/ctx-{{ vrf_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
+                        
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

@@ -41,4 +41,7 @@ apic:
         port_channel_policy: LACP-ACTIVE
         port_channel_member_policy: FAST
         aaep: AAEP1
+        netflow_monitor_policies:
+          - name: MONITOR1
+            ip_filter_type: ipv6
 ```

@@ -1378,6 +1378,9 @@ ap_interface_policies:
   mcp_policies: list(include('ap_mcp_policy'), required=False)
   l2_policies: list(include('ap_l2_policy'), required=False)
   storm_control_policies: list(include('ap_storm_control_policy'), required=False)
+  netflow_exporters: list(include('ap_netflow_exporters'), required=False) # @name(Netflow Exporters) @ref_name(Netflow Exporters) @sheet_hidden()
+  netflow_monitors: list(include('ap_netflow_monitors'), required=False) # @name(Netflow Monitors) @ref_name(Netflow Monitors) @sheet_hidden()
+  netflow_records: list(include('ap_netflow_records'), required=False) # @name(Netflow Records) @ref_name(Netflow Records) @sheet_hidden()
 
 ap_cdp_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1449,6 +1452,33 @@ ap_storm_control_policy:
   burst_rate: any(num(min=0, max=100), regex('^(100|[1-9]?[0-9])(\.\d+)?$'), enum('defaultValue'), required=False)
   burst_pps: any(int(min=1, max=4882812), enum('unspecified'), required=False)
 
+ap_netflow_exporters:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  source_type: enum('custom-src-ip', 'inband-mgmt-ip', 'oob-mgmt-ip', 'ptep', required=False)
+  source_ip: ip(required=False)
+  destination_port: int(min=0, max=65535)
+  destination_ip: ip()
+  dscp: any(enum('unspecified', 'CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7'), int(min=0, max=63), required=False)
+  epg_type: enum('epg', 'external_epg', required=False)
+  tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  application_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  l3out: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  external_endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+ap_netflow_monitors:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  flow_record: str(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False)
+  flow_exporters: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False)
+
+ap_netflow_records:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  match_parameters: list(enum('dst-ip', 'dst-ipv4', 'dst-ipv6', 'dst-mac', 'dst-port', 'ethertype', 'proto', 'src-ip', 'src-ipv4', 'src-ipv6', 'src-mac', 'src-port', 'tos', 'vlan', 'unspecified'), required=False)
+
 
 ap_leaf_interface_policy_group:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1465,6 +1495,11 @@ ap_leaf_interface_policy_group:
   port_channel_member_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   storm_control_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   aaep: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  netflow_monitor_policies: list(include('ap_interface_netflow_monitor_policies'), required=False)
+
+ap_interface_netflow_monitor_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  ip_filter_type: enum('ipv4', 'ipv6', 'ce', 'unspecified', required=False)
 
 ap_spine_interface_policy_group:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

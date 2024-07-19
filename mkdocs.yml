@@ -157,6 +157,9 @@ nav:
               - Access SPAN Destination Group: data_model/apic/access_policies/ap_span_destination_group.md
               - Access VSPAN Destination Group: data_model/apic/access_policies/vspan_destination_group.md
               - Access VSPAN Session: data_model/apic/access_policies/vspan_session.md
+              - Netflow Exporter: data_model/apic/access_policies/netflow_exporter.md
+              - Netflow Monitor: data_model/apic/access_policies/netflow_monitor.md
+              - Netflow Record: data_model/apic/access_policies/netflow_record.md
           - Pod Policies:
               - Pod Setup: data_model/apic/pod_policies/pod_setup.md
           - Node Policies:

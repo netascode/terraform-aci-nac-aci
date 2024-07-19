@@ -364,6 +364,57 @@ apic:
         - name: 30P
           rate: "30.000000"
           burst_rate: "40.000000"
+      netflow_exporters:
+        - name: EXPORTER1
+          description: exporter 1
+          source_type: custom-src-ip
+          source_ip: 1.1.1.1/20
+          destination_port: 1234
+          destination_ip: 2.2.2.2
+          dscp: AF11
+          epg_type: epg
+          tenant: ABC
+          application_profile: AP1
+          endpoint_group: EPG1
+          vrf: VRF1
+        - name: EXPORTER2
+          source_type: oob-mgmt-ip
+          destination_port: 5555
+          destination_ip: 3.3.3.3
+          epg_type: external_epg
+          tenant: ABC
+          l3out: L3OUT1
+          external_endpoint_group: L3OUT1-EPG1
+          vrf: VRF1
+        - name: EXPORTER3
+          source_type: ptep
+          destination_port: 123
+          destination_ip: 1.2.3.4
+      netflow_monitors:
+        - name: MONITOR1
+          description: monitor 1
+          flow_record: RECORD1
+          flow_exporters:
+            - EXPORTER1
+            - EXPORTER2
+        - name: MONITOR2
+          flow_record: RECORD2
+          flow_exporters:
+            - EXPORTER2
+        - name: MONITOR3
+      netflow_records:
+        - name: RECORD1
+          description: record 1
+          match_parameters:
+            - dst-ip
+            - src-ip
+            - dst-port
+            - src-port
+        - name: RECORD2
+          match_parameters:
+            - ethertype
+            - dst-mac
+        - name: RECORD3
 
     spine_interface_policy_groups:
       - name: IPN1
@@ -489,6 +540,10 @@ apic:
         port_channel_policy: LACP-ACTIVE
         port_channel_member_policy: FAST
         aaep: AAEP1
+        netflow_monitor_policies:
+          - name: MONITOR1
+            ip_filter_type: ipv6
+          - name: MONITOR2
       - name: PC1
         type: pc
         link_level_policy: 10G
@@ -511,6 +566,11 @@ apic:
         port_channel_policy: LACP-ACTIVE
         port_channel_member_policy: FAST
         aaep: AAEP1
+        netflow_monitor_policies:
+          - name: MONITOR1
+            ip_filter_type: ce
+          - name: MONITOR2
+            ip_filter_type: ipv4
       - name: VPC2
         type: vpc
         aaep: AAEP1
