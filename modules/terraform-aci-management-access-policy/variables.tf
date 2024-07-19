@@ -236,6 +236,17 @@ variable "https_keyring" {
   }
 }
 
+variable "https_allow_origins" {
+  description = "HTTPS allow origins."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9-_:/.,]{0,256}$", var.https_allow_origins))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `,` `:`, `-` `/`. Maximum characters: 256."
+  }
+}
+
 variable "http_admin_state" {
   description = "HTTP admin state."
   type        = bool
@@ -250,5 +261,16 @@ variable "http_port" {
   validation {
     condition     = var.http_port >= 1 && var.http_port <= 65535
     error_message = "Minimum value: 1. Maximum value: 65535."
+  }
+}
+
+variable "http_allow_origins" {
+  description = "HTTP allow origins."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9-_:/.,]{0,256}$", var.http_allow_origins))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `,` `:`, `-` `/`. Maximum characters: 256."
   }
 }

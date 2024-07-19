@@ -534,9 +534,20 @@ defaults:
           name_suffix: ""
           bpdu_guard: false
           bpdu_filter: false
+        netflow_exporters:
+          name_suffix: ""
+          source_type: custom-src-ip
+          source_ip: 0.0.0.0
+          dscp: CS2
+        netflow_monitors:
+          name_suffix: ""
+        netflow_records:
+          name_suffix: ""
       leaf_interface_policy_groups:
         name_suffix: ""
         map: none
+        netflow_monitor_policies:
+          ip_filter_type: ipv4
       spine_interface_policy_groups:
         name_suffix: ""
       spine_interface_profiles:
@@ -779,7 +790,6 @@ defaults:
         subnets:
           primary_ip: false
           public: false
-          private: true
           shared: false
           virtual: false
           igmp_querier: false
@@ -1007,7 +1017,6 @@ defaults:
           subnets:
             primary_ip: false
             public: false
-            private: true
             shared: false
             igmp_querier: false
             nd_ra_prefix: true
@@ -1036,7 +1045,6 @@ defaults:
           subnets:
             primary_ip: false
             public: false
-            private: true
             shared: false
             igmp_querier: false
             nd_ra_prefix: true

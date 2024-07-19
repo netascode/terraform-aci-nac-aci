@@ -103,6 +103,9 @@ modules:
   aci_multicast_route_map: true
   aci_nd_interface_policy: true
   aci_nd_ra_prefix_policy: true
+  aci_netflow_exporter: true
+  aci_netflow_record: true
+  aci_netflow_monitor: true
   aci_node_control_policy: true
   aci_node_registration: true
   aci_oob_contract: true
