@@ -183,6 +183,12 @@ variable "igmp_snooping_policy" {
   default     = ""
 }
 
+variable "nd_interface_policy" {
+  description = "ND interface policy."
+  type        = string
+  default     = ""
+}
+
 variable "subnets" {
   description = "List of subnets. Default value `primary_ip`: `false`. Default value `public`: `false`. Default value `shared`: `false`. Default value `igmp_querier`: `false`. Default value `nd_ra_prefix`: `true`. Default value `no_default_gateway`: `false`. Default value `virtual`: `false`."
   type = list(object({

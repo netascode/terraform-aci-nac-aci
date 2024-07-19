@@ -24,7 +24,7 @@ jobs:
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.5.7
+          terraform_version: 1.9.2
 
       - name: Tflint Setup
         uses: terraform-linters/setup-tflint@v4
@@ -32,7 +32,7 @@ jobs:
       - name: Terraform Docs Setup
         run: |
           mkdir terraform-docs && cd terraform-docs
-          curl -sSLo terraform-docs.tar.gz https://terraform-docs.io/dl/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz
+          curl -sSLo terraform-docs.tar.gz https://terraform-docs.io/dl/v0.18.0/terraform-docs-v0.18.0-linux-amd64.tar.gz
           tar -xzf terraform-docs.tar.gz
           chmod +x terraform-docs
           echo "$GITHUB_WORKSPACE/terraform-docs" >> $GITHUB_PATH
@@ -47,14 +47,16 @@ jobs:
           ACI_USERNAME: admin
           ACI_PASSWORD: "!v3G@!4@Y"
           ACI_URL: "https://sandboxapicdc.cisco.com"
-        run: terraform test -junit-xml=test-report.xml
+        run: |
+          terraform init
+          terraform test # -junit-xml=test-report.xml
 
-      - name: Publish Integration Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
-        with:
-          junit_files: test-report.xml
-          check_name: "Integration Test Results"
+      # - name: Publish Integration Test Results
+      #   uses: EnricoMi/publish-unit-test-result-action@v2
+      #   if: always()
+      #   with:
+      #     junit_files: test-report.xml
+      #     check_name: "Integration Test Results"
 
       - name: Webex Notification
         if: always() && github.event_name != 'pull_request'
