@@ -322,11 +322,11 @@ locals {
       description = try(mkc.description, "")
       key_policies = [for kp in try(mkc.key_policies, []) : {
         name         = kp.name
-        keyName      = kp.keyName
-        preSharedKey = kp.preSharedKey
+        key_name      = kp.key_name
+        pre_shared_key = kp.pre_shared_key
         description  = try(kp.description, "")
-        startTime    = try(kp.startTime, local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.startTime)
-        endTime      = try(kp.endTime, local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.endTime)
+        start_time    = try(kp.start_time, local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.start_time)
+        end_time      = try(kp.end_time, local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.end_time)
         }
       ]
     }
@@ -448,7 +448,7 @@ module "aci_access_leaf_interface_policy_group" {
   cdp_policy                 = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
   lldp_policy                = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
   spanning_tree_policy       = try("${each.value.spanning_tree_policy}${local.defaults.apic.access_policies.interface_policies.spanning_tree_policies.name_suffix}", "")
-  macsec_policy              = try(each.value.macsec_policy, "")
+  macsec_policy              = try("${each.value.macsec_policy}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policy.name_suffix}", "")
   mcp_policy                 = try("${each.value.mcp_policy}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}", "")
   l2_policy                  = try("${each.value.l2_policy}${local.defaults.apic.access_policies.interface_policies.l2_policies.name_suffix}", "")
   storm_control_policy       = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")

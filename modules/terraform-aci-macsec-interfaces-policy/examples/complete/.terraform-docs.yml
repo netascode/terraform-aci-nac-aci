@@ -5,30 +5,20 @@ formatter: markdown table
 content: |-
   # Terraform ACI MACsec Interfaces Policy Module
 
-  Manages ACI MACsec Interfaces Policy
+  To run this example you need to execute:
 
-  Location in GUI:
-  `Fabric` » `Access Policies` » `Policies` » `Interface` » `MACsec` » `Interfaces`
+  ```bash
+  $ terraform init
+  $ terraform plan
+  $ terraform apply
+  ```
 
-  ## Examples
+  Note that this example will create resources. Resources can be destroyed with `terraform destroy`.
 
   ```hcl
   {{ include "./main.tf" }}
   ```
 
-  {{ .Requirements }}
-
-  {{ .Providers }}
-
-  {{ .Inputs }}
-
-  {{ .Outputs }}
-
-  {{ .Resources }}
-
 output:
   file: README.md
   mode: replace
-
-sort:
-  enabled: false

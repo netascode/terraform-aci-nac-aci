@@ -1,6 +1,6 @@
-output "id" {
-  value       = aci_rest_managed.macsecIfPol.id
-  description = "MACsec Interface Policy id"
+output "dn" {
+  value       = aci_rest_managed.macsecIfPol.content.dn
+  description = "MACsec Interface Policy dn"
 }
 
 output "name" {

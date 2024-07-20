@@ -9,27 +9,19 @@ resource "aci_rest_managed" "macsecIfPol" {
 }
 
 resource "aci_rest_managed" "macsecRsToKeyChainPol" {
-  dn         = "uni/infra/macsecifp-${var.name}/rsToKeyChainPol"
+  dn         = "${aci_rest_managed.macsecIfPol.dn}/rsToKeyChainPol"
   class_name = "macsecRsToKeyChainPol"
 
   content = {
     tDn = "uni/infra/macsecpcont/keychainp-${var.macsec_keychain_policy}"
   }
-
-  depends_on = [
-    aci_rest_managed.macsecIfPol
-  ]
 }
 
 resource "aci_rest_managed" "macsecRsToParamPol" {
-  dn         = "uni/infra/macsecifp-${var.name}/rsToParamPol"
+  dn         = "${aci_rest_managed.macsecIfPol.dn}/rsToParamPol"
   class_name = "macsecRsToParamPol"
 
   content = {
     tDn = "uni/infra/macsecpcont/paramp-${var.macsec_parameters_policy}"
   }
-
-  depends_on = [
-    aci_rest_managed.macsecIfPol
-  ]
 }

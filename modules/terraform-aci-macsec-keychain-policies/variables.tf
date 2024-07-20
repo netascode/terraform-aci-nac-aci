@@ -21,7 +21,14 @@ variable "description" {
 
 variable "key_policies" {
   description = "Key Polices for Key Chain"
-  type        = list(map(string))
+  type = list(map({
+    name           = string
+    key_name       = string
+    pre_shared_key = string
+    description    = optional(string, "")
+    start_time     = optional(string, "now")
+    end_time       = optional(string, "infinite")
+  }))
   default     = []
 
   validation {
@@ -33,16 +40,22 @@ variable "key_policies" {
 
   validation {
     condition = alltrue([
-      for kp in var.key_policies : can(regex("^[a-fA-F0-9]{0,64}$", kp.keyName))
+      for kp in var.key_policies : can(regex("^[a-fA-F0-9]{0,64}$", kp.key_name))
     ])
     error_message = "`keyName`: Allowed characters: `a`-`f`, `A`-`F`, `0`-`9`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for kp in var.key_policies : can(regex("^[a-fA-F0-9]{0,64}$", kp.preSharedKey))
+      for kp in var.key_policies : can(regex("^[a-fA-F0-9]{0,64}$", kp.pre_shared_key))
     ])
     error_message = "`keyName`: Allowed characters: `a`-`f`, `A`-`F`, `0`-`9`. Maximum characters: 64."
   }
 
+  validation {
+    condition = alltrue([
+      for kp in var.key_policies : kp.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", kp.description))
+    ])
+    error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
 }
