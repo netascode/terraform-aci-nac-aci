@@ -4,6 +4,6 @@ output "name" {
 }
 
 output "dn" {
-  value       = aci_rest_managed.macsecKeyChainPol.content.dn
+  value       = aci_rest_managed.macsecKeyChainPol.id
   description = "MACsec KeyChain Policy dn"
 }
