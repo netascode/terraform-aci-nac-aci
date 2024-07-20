@@ -37,7 +37,7 @@ resource "aci_rest_managed" "infraRsLldpIfPol" {
 }
 
 resource "aci_rest_managed" "infraRsMacsecIfPol" {
-  count      = var.type != "breakout" ? 1 : 0
+  count      = var.macsec_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rsmacsecIfPol"
   class_name = "infraRsMacsecIfPol"
   content = {
