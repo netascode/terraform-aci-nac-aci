@@ -1,5 +1,5 @@
 output "dn" {
-  value       = aci_rest_managed.macsecIfPol.content.dn
+  value       = aci_rest_managed.macsecIfPol.id
   description = "MACsec Interface Policy dn"
 }
 

@@ -22,7 +22,7 @@ resource "aci_rest_managed" "macsecKeyPol" {
   }
 
   lifecycle {
-    ignore_changes = [content["start_time"], content["pre_shared_key"]]
+    ignore_changes = [content["startTime"], content["preSharedKey"]]
   }
 
   depends_on = [

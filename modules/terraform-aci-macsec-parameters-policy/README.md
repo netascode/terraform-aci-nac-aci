@@ -56,6 +56,7 @@ module "aci_macsec_parameters_policy" {
 | Name | Description |
 |------|-------------|
 | <a name="output_name"></a> [name](#output\_name) | MACsec Parameter Policy name |
+| <a name="output_dn"></a> [dn](#output\_dn) | MACsec Parameter Policy dn |
 
 ## Resources
 
