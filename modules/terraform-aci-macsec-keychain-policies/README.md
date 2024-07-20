@@ -16,12 +16,12 @@ module "aci_macsec_keychain_policies" {
   name        = "macsec-keychain-pol"
   description = "Keychain Description"
   key_policies = [{
-    name         = "keypolicy1"
-    description  = "Key Policy Description"
-    keyName      = "deadbeef9898765431"
-    preSharedKey = "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
-    startTime    = "now"
-    endTime      = "infinite"
+    name           = "keypolicy1"
+    description    = "Key Policy Description"
+    key_name       = "deadbeef9898765431"
+    pre_shared_key = "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
+    start_time     = "now"
+    end_time       = "infinite"
   }]
 }
 ```
@@ -45,13 +45,14 @@ module "aci_macsec_keychain_policies" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | MACsec Key Policy Name | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | MACsec Policy description | `string` | `""` | no |
-| <a name="input_key_policies"></a> [key\_policies](#input\_key\_policies) | Key Polices for Key Chain | `list(map(string))` | `[]` | no |
+| <a name="input_key_policies"></a> [key\_policies](#input\_key\_policies) | Key Polices for Key Chain | <pre>list(object({<br>    name           = string<br>    key_name       = string<br>    pre_shared_key = string<br>    description    = optional(string, "")<br>    start_time     = optional(string, "now")<br>    end_time       = optional(string, "infinite")<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_name"></a> [name](#output\_name) | MACsec KeyChain Policy name |
+| <a name="output_dn"></a> [dn](#output\_dn) | MACsec KeyChain Policy dn |
 
 ## Resources
 

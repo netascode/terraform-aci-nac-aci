@@ -1,12 +1,15 @@
 <!-- BEGIN_TF_DOCS -->
 # Terraform ACI MACsec Interfaces Policy Module
 
-Manages ACI MACsec Interfaces Policy
+To run this example you need to execute:
 
-Location in GUI:
-`Fabric` » `Access Policies` » `Policies` » `Interface` » `MACsec` » `Interfaces`
+```bash
+$ terraform init
+$ terraform plan
+$ terraform apply
+```
 
-## Examples
+Note that this example will create resources. Resources can be destroyed with `terraform destroy`.
 
 ```hcl
 module "aci_macsec_interfaces_policy" {
@@ -19,27 +22,4 @@ module "aci_macsec_interfaces_policy" {
   macsec_keychain_policy   = "macsec-keychain-policy"
 }
 ```
-
-## Requirements
-
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
-
-## Providers
-
-No providers.
-
-## Inputs
-
-No inputs.
-
-## Outputs
-
-No outputs.
-
-## Resources
-
-No resources.
 <!-- END_TF_DOCS -->

@@ -46,7 +46,7 @@ module "aci_macsec_interfaces_policy" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_id"></a> [id](#output\_id) | MACsec Interface Policy id |
+| <a name="output_dn"></a> [dn](#output\_dn) | MACsec Interface Policy dn |
 | <a name="output_name"></a> [name](#output\_name) | MACsec Interface Policy name |
 
 ## Resources

@@ -1,12 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
 # Terraform ACI MACsec Keychain Policies Module
 
-Manages ACI MACsec Keychain Policy
-
-Location in GUI:
-`Fabric` » `Access Policies` » `Policies` » `Interface` » `MACsec` » `MACsec KeyChain Policies`
-
-To run this example you need to execute:
+  To run this example you need to execute:
 
 ```bash
 $ terraform init
@@ -24,12 +19,12 @@ module "aci_macsec_keychain_policies" {
   name        = "macsec-keychain-pol"
   description = "Keychain Description"
   key_policies = [{
-    name         = "keypolicy1"
-    description  = "Key Policy Description"
-    keyName      = "deadbeef9898765431"
-    preSharedKey = "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
-    startTime    = "now"
-    endTime      = "infinite"
+    name           = "keypolicy1"
+    description    = "Key Policy Description"
+    key_name       = "deadbeef9898765431"
+    pre_shared_key = "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
+    start_time     = "now"
+    end_time       = "infinite"
   }]
 }
 ```

@@ -21,7 +21,7 @@ variable "description" {
 
 variable "key_policies" {
   description = "Key Polices for Key Chain"
-  type = list(map({
+  type = list(object({
     name           = string
     key_name       = string
     pre_shared_key = string
@@ -29,7 +29,7 @@ variable "key_policies" {
     start_time     = optional(string, "now")
     end_time       = optional(string, "infinite")
   }))
-  default     = []
+  default = []
 
   validation {
     condition = alltrue([
