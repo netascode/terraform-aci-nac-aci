@@ -16,7 +16,7 @@ resource "aci_rest_managed" "macsecKeyPol" {
     name         = each.value.name
     keyName      = each.value.key_name
     descr        = each.value.description
-    preSharedKey = each.value.pre_shared_key
+    preSharedKey = sensitive(each.value.pre_shared_key)
     startTime    = each.value.start_time
     endTime      = each.value.end_time
   }

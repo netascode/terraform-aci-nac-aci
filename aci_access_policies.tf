@@ -345,9 +345,9 @@ module "aci_macsec_keychain_policies" {
 module "aci_macsec_interfaces_policy" {
   source = "./modules/terraform-aci-macsec-interfaces-policy"
 
-  for_each                 = { for mip in try(local.access_policies.interface_policies.macsec_interfaces_policy, []) : mip.name => mip if local.modules.aci_macsec_interfaces_policy && var.manage_access_policies }
-  name                     = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policy.name_suffix}"
-  admin_state              = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policy.admin_state)
+  for_each                 = { for mip in try(local.access_policies.interface_policies.macsec_interfaces_policies, []) : mip.name => mip if local.modules.aci_macsec_interfaces_policy && var.manage_access_policies }
+  name                     = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.name_suffix}"
+  admin_state              = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.admin_state)
   macsec_keychain_policy   = each.value.macsec_keychain_policy
   macsec_parameters_policy = each.value.macsec_parameters_policy
 
@@ -448,7 +448,7 @@ module "aci_access_leaf_interface_policy_group" {
   cdp_policy                 = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
   lldp_policy                = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
   spanning_tree_policy       = try("${each.value.spanning_tree_policy}${local.defaults.apic.access_policies.interface_policies.spanning_tree_policies.name_suffix}", "")
-  macsec_policy              = try("${each.value.macsec_policy}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policy.name_suffix}", "")
+  macsec_interface_policy    = try("${each.value.macsec_interface_policy}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.name_suffix}", "")
   mcp_policy                 = try("${each.value.mcp_policy}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}", "")
   l2_policy                  = try("${each.value.l2_policy}${local.defaults.apic.access_policies.interface_policies.l2_policies.name_suffix}", "")
   storm_control_policy       = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")

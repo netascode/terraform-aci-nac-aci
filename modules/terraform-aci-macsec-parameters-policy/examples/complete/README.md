@@ -18,7 +18,6 @@ module "aci_macsec_parameters_policy" {
 
   name                   = "macsecparam1"
   description            = "macsecparam1 description"
-  admin_state            = true
   confidentiality_offset = "offset-30"
   key_server_priority    = 128
   cipher_suite           = "gcm-aes-128"
