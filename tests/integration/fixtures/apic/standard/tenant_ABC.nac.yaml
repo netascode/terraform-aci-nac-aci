@@ -321,6 +321,7 @@ apic:
                   interfaces:
                     - node_id: 101
                       port: 11
+                      sub_port: 2
                       ip: 8.8.8.8/24
                       bgp_peers:
                         - ip: 8.8.8.9

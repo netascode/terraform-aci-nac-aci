@@ -420,7 +420,7 @@
                                                             "mode": "{{ int.mode | default(defaults.apic.tenants.l3outs.nodes.interfaces.mode) }}",
                                                             "mtu": "{{ int.mtu | default(defaults.apic.tenants.l3outs.nodes.interfaces.mtu) }}",
                                                             {% if type == 'ap' %}
-                                                            "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) }}/paths-{{ node.node_id }}/pathep-[eth{{ int.module | default(defaults.apic.tenants.l3outs.nodes.interfaces.module) }}/{{ int.port }}]",
+                                                            "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) }}/paths-{{ node.node_id }}/pathep-[eth{{ int.module | default(defaults.apic.tenants.l3outs.nodes.interfaces.module) }}/{{ int.port }}{% if int.sub_port is defined %}/{{ int.sub_port }}{% endif %}]",
                                                             {% elif type == 'pc' %}
                                                             "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) }}/paths-{{ node }}/pathep-[{{ policy_group_name }}]",
                                                             {% elif type == 'vpc' %}
@@ -1026,30 +1026,30 @@
                                                     "l3extRsPathL3OutAtt": {
                                                         "attributes": {
                                                             "annotation": "orchestrator:aac",
-                                                            "addr": "{{ defaults.apic.tenants.l3outs.nodes.interfaces.ip if type == 'vpc' else int.ip }}",
-                                                            "autostate": "{{ 'enabled' if int.autostate | default(defaults.apic.tenants.l3outs.nodes.interfaces.autostate) else 'disabled'}}",
+                                                            "addr": "{{ defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.ip if type == 'vpc' else int.ip }}",
+                                                            "autostate": "{{ 'enabled' if int.autostate | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.autostate) else 'disabled'}}",
                                                             "descr": "{{ int.description | default() }}",
-                                                            "encapScope": "{{ 'ctx' if int.scope | default(defaults.apic.tenants.l3outs.nodes.interfaces.scope) == 'vrf' and int.svi | default(defaults.apic.tenants.l3outs.nodes.interfaces.svi) else 'local' }}",
+                                                            "encapScope": "{{ 'ctx' if int.scope | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.scope) == 'vrf' and int.svi | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.svi) else 'local' }}",
                                                             {% if int.vlan is defined %}
-                                                            "ifInstT": "{{ 'ext-svi' if int.svi | default(defaults.apic.tenants.l3outs.nodes.interfaces.svi) | cisco.aac.aac_bool("yes") == 'yes' else 'sub-interface'}}",
+                                                            "ifInstT": "{{ 'ext-svi' if int.svi | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.svi) | cisco.aac.aac_bool("yes") == 'yes' else 'sub-interface'}}",
                                                             "encap": "vlan-{{ int.vlan }}",
                                                             {% else %}
                                                             "ifInstT": "l3-port",
                                                             {% endif %}
-                                                            {% if int.multipod_direct is defined and int.multipod_direct | default(defaults.apic.tenants.l3outs.nodes.interfaces.multipod_direct) %}
+                                                            {% if int.multipod_direct is defined and int.multipod_direct | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.multipod_direct) %}
                                                             "isMultiPodDirect": "yes",
                                                             {% endif %}
                                                             "ipv6Dad": "enabled",
                                                             "llAddr": "::",
-                                                            "mac": "{{ int.mac | default(defaults.apic.tenants.l3outs.nodes.interfaces.mac) }}",
-                                                            "mode": "{{ int.mode | default(defaults.apic.tenants.l3outs.nodes.interfaces.mode) }}",
-                                                            "mtu": "{{ int.mtu | default(defaults.apic.tenants.l3outs.nodes.interfaces.mtu) }}",
+                                                            "mac": "{{ int.mac | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mac) }}",
+                                                            "mode": "{{ int.mode | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mode) }}",
+                                                            "mtu": "{{ int.mtu | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mtu) }}",
                                                             {% if type == 'ap' %}
-                                                            "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) }}/paths-{{ int.node_id }}/pathep-[eth{{ int.module | default(defaults.apic.tenants.l3outs.nodes.interfaces.module) }}/{{ int.port }}]",
+                                                            "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) }}/paths-{{ int.node_id }}/pathep-[eth{{ int.module | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.module) }}/{{ int.port }}{% if int.sub_port is defined %}/{{ int.sub_port }}{% endif %}]",
                                                             {% elif type == 'pc' %}
-                                                            "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) }}/paths-{{ node }}/pathep-[{{ policy_group_name }}]",
+                                                            "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) }}/paths-{{ node }}/pathep-[{{ policy_group_name }}]",
                                                             {% elif type == 'vpc' %}
-                                                            "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.nodes.interfaces.pod) }}/protpaths-{{ node }}-{{ node2 }}/pathep-[{{ policy_group_name }}]",
+                                                            "tDn": "topology/pod-{{ pod | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) }}/protpaths-{{ node }}-{{ node2 }}/pathep-[{{ policy_group_name }}]",
                                                             {% endif %}
                                                             "childAction": "deleteNonPresent"
                                                         },
@@ -1061,7 +1061,7 @@
                                                             "addr": "{{ int.ip }}",
                                                             "autostate": "{{ 'enabled' if int.autostate | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.autostate) else 'disabled'}}",
                                                             "descr": "{{ int.description | default() }}",
-                                                            "encapScope": "{{ 'ctx' if int.scope | default(defaults.apic.tenants.l3outs.nodes.interfaces.scope) == 'vrf' else 'local' }}",
+                                                            "encapScope": "{{ 'ctx' if int.scope | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.scope) == 'vrf' else 'local' }}",
                                                             "ifInstT": "ext-svi",
                                                             "encap": "vlan-{{ int.vlan }}",
                                                             "ipv6Dad": "enabled",
