@@ -15,6 +15,9 @@ Verify Node {{ node.id }} Registration
     Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.nodeId   {{ node.id }}
     Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.role   {{ node.role }}
     Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.podId   {{ node.pod | default(defaults.apic.node_policies.nodes.pod) }}
+{% if node.set_role | default(defaults.apic.node_policies.nodes.set_role) %}
+    Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.role   {{ node.role }}
+{% endif %}
 {% if node.role == "leaf" and node.type is defined %}
     Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.nodeType   {{ node.type }}
 {% endif %}
