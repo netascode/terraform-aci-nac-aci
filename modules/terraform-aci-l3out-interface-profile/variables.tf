@@ -187,6 +187,7 @@ variable "interfaces" {
     pod_id          = optional(number, 1)
     module          = optional(number, 1)
     port            = optional(number)
+    sub_port        = optional(number)
     channel         = optional(string)
     ip              = optional(string)
     svi             = optional(bool, false)
@@ -313,6 +314,13 @@ variable "interfaces" {
       for i in var.interfaces : i.port == null || try(i.port >= 1 && i.port <= 127, false)
     ])
     error_message = "`port`: Minimum value: `1`. Maximum value: `127`."
+  }
+
+  validation {
+    condition = alltrue([
+      for i in var.interfaces : i.sub_port == null || try(i.sub_port >= 1 && i.sub_port <= 16, false)
+    ])
+    error_message = "`sub_port`: Minimum value: `1`. Maximum value: `16`."
   }
 
   validation {
