@@ -924,10 +924,10 @@ module "aci_netflow_exporter" {
   epg_type                = try(each.value.epg_type, "")
   tenant                  = try(each.value.tenant, "")
   application_profile     = try("${each.value.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}", "")
-  endpoint_group          = try("${each.value.endpoint_group}${local.defaults.apic.tenants.endpoint_groups.name_suffix}", "")
+  endpoint_group          = try("${each.value.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}", "")
   vrf                     = try("${each.value.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
   l3out                   = try("${each.value.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}", "")
-  external_endpoint_group = try("${each.value.external_endpoint_group}${local.defaults.apic.tenants.external_endpoint_groups.name_suffix}", "")
+  external_endpoint_group = try("${each.value.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}", "")
 }
 
 module "aci_netflow_monitor" {
