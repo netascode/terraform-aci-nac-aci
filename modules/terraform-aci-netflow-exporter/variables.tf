@@ -69,7 +69,7 @@ variable "epg_type" {
   default     = ""
 
   validation {
-    condition     = contains(["epg", "external_epg"], var.epg_type)
+    condition     = contains(["", "epg", "external_epg"], var.epg_type)
     error_message = "Allowed values: `epg`, `external_epg`."
   }
 }
