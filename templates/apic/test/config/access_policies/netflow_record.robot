@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation   Verify Netflow Record
 Suite Setup     Login APIC
-Default Tags    apic   day2   config   access_policies    netflow
+Default Tags    apic   day2   config   access_policies
 Resource        ../../apic_common.resource
 
 *** Test Cases ***
