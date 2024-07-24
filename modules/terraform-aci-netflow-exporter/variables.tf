@@ -66,6 +66,7 @@ variable "source_type" {
 variable "epg_type" {
   description = "Netflow Exporter EPG type. Allowed values: `epg`, `external_epg`."
   type        = string
+  default     = ""
 
   validation {
     condition     = contains(["epg", "external_epg"], var.epg_type)
@@ -76,6 +77,7 @@ variable "epg_type" {
 variable "tenant" {
   description = "Netflow Exporter tenant name."
   type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
@@ -86,6 +88,7 @@ variable "tenant" {
 variable "application_profile" {
   description = "Netflow Exporter application profile name."
   type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.application_profile))
@@ -96,6 +99,7 @@ variable "application_profile" {
 variable "endpoint_group" {
   description = "Netflow Exporter endpoint group name."
   type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.endpoint_group))
@@ -106,6 +110,7 @@ variable "endpoint_group" {
 variable "vrf" {
   description = "Netflow Exporter VRF name."
   type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.vrf))
@@ -116,6 +121,7 @@ variable "vrf" {
 variable "l3out" {
   description = "Netflow Exporter L3out name."
   type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.l3out))
@@ -126,6 +132,7 @@ variable "l3out" {
 variable "external_endpoint_group" {
   description = "Netflow Exporter external endpoint group name."
   type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.external_endpoint_group))

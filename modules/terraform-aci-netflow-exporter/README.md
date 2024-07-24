@@ -52,13 +52,13 @@ module "aci_netflow_monitor" {
 | <a name="input_destination_port"></a> [destination\_port](#input\_destination\_port) | Netflow Exporter destination port. | `string` | n/a | yes |
 | <a name="input_source_ip"></a> [source\_ip](#input\_source\_ip) | Netflow Exporter source address. | `string` | `"0.0.0.0"` | no |
 | <a name="input_source_type"></a> [source\_type](#input\_source\_type) | Netflow Exporter source type. Allowed values: `custom-src-ip`, `inband-mgmt-ip`, `oob-mgmt-ip`, `ptep`. | `string` | n/a | yes |
-| <a name="input_epg_type"></a> [epg\_type](#input\_epg\_type) | Netflow Exporter EPG type. Allowed values: `epg`, `external_epg`. | `string` | n/a | yes |
-| <a name="input_tenant"></a> [tenant](#input\_tenant) | Netflow Exporter tenant name. | `string` | n/a | yes |
-| <a name="input_application_profile"></a> [application\_profile](#input\_application\_profile) | Netflow Exporter application profile name. | `string` | n/a | yes |
-| <a name="input_endpoint_group"></a> [endpoint\_group](#input\_endpoint\_group) | Netflow Exporter endpoint group name. | `string` | n/a | yes |
-| <a name="input_vrf"></a> [vrf](#input\_vrf) | Netflow Exporter VRF name. | `string` | n/a | yes |
-| <a name="input_l3out"></a> [l3out](#input\_l3out) | Netflow Exporter L3out name. | `string` | n/a | yes |
-| <a name="input_external_endpoint_group"></a> [external\_endpoint\_group](#input\_external\_endpoint\_group) | Netflow Exporter external endpoint group name. | `string` | n/a | yes |
+| <a name="input_epg_type"></a> [epg\_type](#input\_epg\_type) | Netflow Exporter EPG type. Allowed values: `epg`, `external_epg`. | `string` | `""` | no |
+| <a name="input_tenant"></a> [tenant](#input\_tenant) | Netflow Exporter tenant name. | `string` | `""` | no |
+| <a name="input_application_profile"></a> [application\_profile](#input\_application\_profile) | Netflow Exporter application profile name. | `string` | `""` | no |
+| <a name="input_endpoint_group"></a> [endpoint\_group](#input\_endpoint\_group) | Netflow Exporter endpoint group name. | `string` | `""` | no |
+| <a name="input_vrf"></a> [vrf](#input\_vrf) | Netflow Exporter VRF name. | `string` | `""` | no |
+| <a name="input_l3out"></a> [l3out](#input\_l3out) | Netflow Exporter L3out name. | `string` | `""` | no |
+| <a name="input_external_endpoint_group"></a> [external\_endpoint\_group](#input\_external\_endpoint\_group) | Netflow Exporter external endpoint group name. | `string` | `""` | no |
 
 ## Outputs
 
