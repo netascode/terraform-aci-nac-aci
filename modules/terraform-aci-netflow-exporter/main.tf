@@ -9,6 +9,7 @@ resource "aci_rest_managed" "netflowExporterPol" {
     dstPort      = var.destination_port
     sourceIpType = var.source_type
     srcAddr      = var.source_ip
+    ver          = "v9"
   }
 }
 
