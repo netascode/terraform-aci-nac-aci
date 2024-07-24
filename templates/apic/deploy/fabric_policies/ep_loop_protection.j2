@@ -1,8 +1,21 @@
+{% set action = [] %}
+{% if apic.fabric_policies.ep_loop_protection.action is defined %}
+{% if apic.fabric_policies.ep_loop_protection.action == 'bd-learn-disable' %}{% set action = action + [("bd-learn-disable")] %}
+{% elif apic.fabric_policies.ep_loop_protection.action == 'port-disable' %}{% set action = action + [("port-disable")] %}
+{% endif %}
+{% elif defaults.apic.fabric_policies.ep_loop_protection.action is defined %}
+{% if defaults.apic.fabric_policies.ep_loop_protection.action == 'bd-learn-disable' %}{% set action = action + [("bd-learn-disable")] %}
+{% elif defaults.apic.fabric_policies.ep_loop_protection.action == 'port-disable' %}{% set action = action + [("port-disable")] %}
+{% endif %}
+{% else %}
+{% if apic.fabric_policies.ep_loop_protection.bd_learn_disable | default(defaults.apic.fabric_policies.ep_loop_protection.bd_learn_disable) %}{% set action = action + [("bd-learn-disable")] %}{% endif %}
+{% if apic.fabric_policies.ep_loop_protection.port_disable | default(defaults.apic.fabric_policies.ep_loop_protection.port_disable) %}{% set action = action + [("port-disable")] %}{% endif %}
+{% endif %}
 {
     "epLoopProtectP": {
         "attributes": {
             "annotation": "orchestrator:aac",
-            "action": "{{ apic.fabric_policies.ep_loop_protection.action | default(defaults.apic.fabric_policies.ep_loop_protection.action) }}",
+            "action": "{{ action | join(',') }}",
             "adminSt": "{{ apic.fabric_policies.ep_loop_protection.admin_state | default(defaults.apic.fabric_policies.ep_loop_protection.admin_state) | cisco.aac.aac_bool("enabled") }}",
             "dn": "uni/infra/epLoopProtectP-default",
             "loopDetectIntvl": "{{ apic.fabric_policies.ep_loop_protection.detection_interval | default(defaults.apic.fabric_policies.ep_loop_protection.detection_interval) }}",

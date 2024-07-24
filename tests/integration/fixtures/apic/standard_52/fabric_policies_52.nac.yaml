@@ -53,3 +53,7 @@ apic:
       delay: 130
       min_links: 1
       include_apic: true
+    ep_loop_protection:
+      admin_state: true
+      detection_interval: 180
+      detection_multiplier: 10

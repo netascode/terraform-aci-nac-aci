@@ -15,5 +15,6 @@ apic:
       admin_state: true
       detection_interval: 180
       detection_multiplier: 10
-      action: port-disable
+      port_disable: true
+      bd_learn_disable: false
 ```

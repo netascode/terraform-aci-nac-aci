@@ -3,3 +3,8 @@ apic:
   fabric_policies:
     global_settings:
       remote_leaf_direct: false
+    ep_loop_protection:
+      admin_state: true
+      detection_interval: 180
+      detection_multiplier: 10
+      action: port-disable

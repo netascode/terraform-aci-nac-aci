@@ -99,6 +99,8 @@ fp_ep_loop_protection:
   detection_interval: int(min=30, max=300, required=False)
   detection_multiplier: int(min=1, max=255, required=False)
   action: enum('bd-learn-disable', 'port-disable', required=False)
+  bd_learn_disable: bool(required=False)
+  port_disable: bool(required=False)
 
 fp_rogue_ep_control:
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
