@@ -13,8 +13,9 @@ module "aci_endpoint_loop_protection" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-endpoint-loop-protection"
   version = ">= 0.8.0"
 
-  action               = "bd-learn-disable"
   admin_state          = true
+  bd_learn_disable     = true
+  port_disable         = false
   detection_interval   = 90
   detection_multiplier = 10
 }
@@ -37,7 +38,8 @@ module "aci_endpoint_loop_protection" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_action"></a> [action](#input\_action) | Action. Choices: `bd-learn-disable`, `port-disable`. | `string` | `"port-disable"` | no |
+| <a name="input_bd_learn_disable"></a> [bd\_learn\_disable](#input\_bd\_learn\_disable) | Action: BD Learn Disable. | `bool` | `false` | no |
+| <a name="input_port_disable"></a> [port\_disable](#input\_port\_disable) | Action: Port Disable. | `bool` | `true` | no |
 | <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | Admin state. | `bool` | `false` | no |
 | <a name="input_detection_interval"></a> [detection\_interval](#input\_detection\_interval) | Detection interval. Minimum value: 30. Maximum value: 300. | `number` | `60` | no |
 | <a name="input_detection_multiplier"></a> [detection\_multiplier](#input\_detection\_multiplier) | Detection multiplier. Minimum value: 1. Maximum value: 255. | `number` | `4` | no |

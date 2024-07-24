@@ -1,12 +1,13 @@
-variable "action" {
-  description = "Action. Choices: `bd-learn-disable`, `port-disable`."
-  type        = string
-  default     = "port-disable"
+variable "bd_learn_disable" {
+  description = "Action: BD Learn Disable."
+  type        = bool
+  default     = false
+}
 
-  validation {
-    condition     = contains(["bd-learn-disable", "port-disable"], var.action)
-    error_message = "Allowed values are `bd-learn-disable` or `port-disable`."
-  }
+variable "port_disable" {
+  description = "Action: Port Disable."
+  type        = bool
+  default     = true
 }
 
 variable "admin_state" {
