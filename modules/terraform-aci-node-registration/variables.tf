@@ -32,10 +32,10 @@ variable "pod_id" {
 variable "role" {
   description = "Node role. Choices: `leaf`, `spine`."
   type        = string
-  default     = "unspecified"
+  default     = null
 
   validation {
-    condition     = contains(["leaf", "spine"], var.role)
+    condition     = var.role == null ? true : contains(["leaf", "spine"], var.role)
     error_message = "Allowed values: `leaf` or `spine`."
   }
 }
