@@ -725,6 +725,7 @@ defaults:
         mode: explicit
       nodes:
         pod: 1
+        set_role: false
 
     interface_policies:
       nodes:
