@@ -397,7 +397,11 @@ module "aci_access_leaf_interface_policy_group" {
   storm_control_policy       = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")
   port_channel_policy        = try("${each.value.port_channel_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix}", "")
   port_channel_member_policy = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
-  aaep                       = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
+  netflow_monitor_policies = [for monitor in try(each.value.netflow_monitor_policies, []) : {
+    name           = "${monitor.name}${local.defaults.apic.access_policies.interface_policies.netflow_monitors.name_suffix}"
+    ip_filter_type = try(monitor.ip_filter_type, local.defaults.apic.access_policies.leaf_interface_policy_groups.netflow_monitor_policies.ip_filter_type)
+  }]
+  aaep = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
 
   depends_on = [
     module.aci_link_level_policy,
@@ -409,6 +413,7 @@ module "aci_access_leaf_interface_policy_group" {
     module.aci_storm_control_policy,
     module.aci_port_channel_policy,
     module.aci_port_channel_member_policy,
+    module.aci_netflow_monitor,
     module.aci_aaep,
   ]
 }
