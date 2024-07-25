@@ -30,7 +30,8 @@ defaults:
         admin_state: false
         detection_interval: 60
         detection_multiplier: 4
-        action: bd-learn-disable
+        bd_learn_disable: true
+        port_disable: false
       rogue_ep_control:
         admin_state: true
         detection_interval: 30
@@ -871,6 +872,8 @@ defaults:
               multicast_address_family: true
               admin_state: true
               as_propagate: none
+            micro_bfd:
+              start_timer: 0
         node_profiles:
           name_suffix: ""
           bgp_peers:
@@ -939,6 +942,8 @@ defaults:
                 multicast_address_family: true
                 admin_state: true
                 as_propagate: none
+              micro_bfd:
+                start_timer: 0
         external_endpoint_groups:
           name_suffix: ""
           preferred_group: false
