@@ -1,21 +1,20 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI Fabric Link Level Policy
+# Terraform ACI SR MPLS Global Configuration
 
 Description
 
 Location in GUI:
-`Fabric` » `Fabric Policies` » `Policies` » `Interface` » `Link Level`
+`Tenants` » `infra` » `Policies` » `Protocol` » `MPLS Global Configuration`
 
 ## Examples
 
 ```hcl
-module "aci_fabric_link_level_policy" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-link-level-policy"
+module "aci_sr_mpls_global_configuration" {
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-sr-mpls-global-configuration"
   version = ">= 0.0.1"
 
-  name         = "name"
-  descr        = "My Description"
-  linkDebounce = 1000
+  sr_global_block_minimum: 16000
+  sr_global_block_maximum: 275999
 }
 ```
 
@@ -23,7 +22,7 @@ module "aci_fabric_link_level_policy" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
 | <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
 
 ## Providers
@@ -36,20 +35,19 @@ module "aci_fabric_link_level_policy" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name"></a> [name](#input\_name) | Fabric link level policy name. | `string` | n/a | yes |
-| <a name="input_description"></a> [description](#input\_description) | Fabric link level policy description. | `string` | `""` | no |
-| <a name="input_link_debounce_interval"></a> [link\_debounce\_interval](#input\_link\_debounce\_interval) | Link debounce interval. Minimum value: 0. Maximum value: 5000. | `number` | `0` | no |
+| <a name="input_sr_global_block_minimum"></a> [sr\_global\_block\_minimum](#input\_sr\_global\_block\_minimum) | SR Global Block Minimum. Minimum value: 16000. Maximum value: 471804. | `number` | n/a | yes |
+| <a name="input_sr_global_block_maximum"></a> [sr\_global\_block\_maximum](#input\_sr\_global\_block\_maximum) | SR Global Block Maximum. Minimum value: 16000. Maximum value: 471804. | `number` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `fabricFIfPol` object. |
-| <a name="output_name"></a> [name](#output\_name) | Fabric link level policy name. |
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `mplsSrgbLabelPol` object. |
+| <a name="output_name"></a> [name](#output\_name) | SR MPLS global configuration name. |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aci_rest_managed.fabricFIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.mplsSrgbLabelPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->
