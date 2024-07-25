@@ -397,7 +397,11 @@ module "aci_access_leaf_interface_policy_group" {
   storm_control_policy       = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")
   port_channel_policy        = try("${each.value.port_channel_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix}", "")
   port_channel_member_policy = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
-  aaep                       = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
+  netflow_monitor_policies = [for monitor in try(each.value.netflow_monitor_policies, []) : {
+    name           = "${monitor.name}${local.defaults.apic.access_policies.interface_policies.netflow_monitors.name_suffix}"
+    ip_filter_type = try(monitor.ip_filter_type, local.defaults.apic.access_policies.leaf_interface_policy_groups.netflow_monitor_policies.ip_filter_type)
+  }]
+  aaep = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
 
   depends_on = [
     module.aci_link_level_policy,
@@ -409,6 +413,7 @@ module "aci_access_leaf_interface_policy_group" {
     module.aci_storm_control_policy,
     module.aci_port_channel_policy,
     module.aci_port_channel_member_policy,
+    module.aci_netflow_monitor,
     module.aci_aaep,
   ]
 }
@@ -903,4 +908,43 @@ module "aci_infra_dhcp_relay_policy" {
   name        = each.value.name
   description = each.value.description
   providers_  = each.value.providers_
+}
+
+module "aci_netflow_exporter" {
+  source = "./modules/terraform-aci-netflow-exporter"
+
+  for_each                = { for exporter in try(local.access_policies.interface_policies.netflow_exporters, []) : exporter.name => exporter if local.modules.aci_netflow_exporter && var.manage_access_policies }
+  name                    = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_exporters.name_suffix}"
+  description             = try(each.value.description, "")
+  destination_port        = each.value.destination_port
+  destination_ip          = each.value.destination_ip
+  dscp                    = try(each.value.dscp, local.defaults.apic.access_policies.interface_policies.netflow_exporters.dscp)
+  source_type             = try(each.value.source_type, local.defaults.apic.access_policies.interface_policies.netflow_exporters.source_type)
+  source_ip               = try(each.value.source_ip, local.defaults.apic.access_policies.interface_policies.netflow_exporters.source_ip)
+  epg_type                = try(each.value.epg_type, "")
+  tenant                  = try(each.value.tenant, "")
+  application_profile     = try("${each.value.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}", "")
+  endpoint_group          = try("${each.value.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}", "")
+  vrf                     = try("${each.value.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
+  l3out                   = try("${each.value.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}", "")
+  external_endpoint_group = try("${each.value.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}", "")
+}
+
+module "aci_netflow_monitor" {
+  source = "./modules/terraform-aci-netflow-monitor"
+
+  for_each       = { for monitor in try(local.access_policies.interface_policies.netflow_monitors, []) : monitor.name => monitor if local.modules.aci_netflow_monitor && var.manage_access_policies }
+  name           = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_monitors.name_suffix}"
+  description    = try(each.value.description, "")
+  flow_record    = try("${each.value.flow_record}${local.defaults.apic.access_policies.interface_policies.netflow_records.name_suffix}", "")
+  flow_exporters = [for exporter in try(each.value.flow_exporters, []) : "${exporter}${local.defaults.apic.access_policies.interface_policies.netflow_exporters.name_suffix}"]
+}
+
+module "aci_netflow_record" {
+  source = "./modules/terraform-aci-netflow-record"
+
+  for_each         = { for record in try(local.access_policies.interface_policies.netflow_records, []) : record.name => record if local.modules.aci_netflow_record && var.manage_access_policies }
+  name             = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_records.name_suffix}"
+  description      = try(each.value.description, "")
+  match_parameters = try(each.value.match_parameters, [])
 }

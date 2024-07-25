@@ -15,6 +15,10 @@ resource "aci_rest_managed" "l3extOut" {
     targetDscp    = var.target_dscp
     enforceRtctrl = join(",", concat(var.export_route_control_enforcement == true ? ["export"] : [], var.import_route_control_enforcement == true ? ["import"] : []))
   }
+
+  lifecycle {
+    ignore_changes = [annotation]
+  }
 }
 
 resource "aci_rest_managed" "ospfExtP" {
@@ -58,6 +62,10 @@ resource "aci_rest_managed" "l3extRsEctx" {
   class_name = "l3extRsEctx"
   content = {
     tnFvCtxName = var.vrf
+  }
+
+  lifecycle {
+    ignore_changes = [annotation]
   }
 }
 

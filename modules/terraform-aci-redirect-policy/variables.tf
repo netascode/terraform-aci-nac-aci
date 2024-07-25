@@ -143,6 +143,7 @@ variable "l3_destinations" {
   description = "List of L3 destinations. Allowed values `pod`: 1-255."
   type = list(object({
     description           = optional(string, "")
+    name                  = optional(string, "")
     ip                    = string
     ip_2                  = optional(string)
     mac                   = optional(string)
@@ -156,6 +157,13 @@ variable "l3_destinations" {
       for l3 in var.l3_destinations : l3.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", l3.description))
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  validation {
+    condition = alltrue([
+      for l3 in var.l3_destinations : l3.name == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", l3.name))
+    ])
+    error_message = "`name` allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {

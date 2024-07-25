@@ -9,7 +9,7 @@ repos:
       - id: terraform_tflint
 
   - repo: https://github.com/terraform-docs/terraform-docs
-    rev: v0.16.0
+    rev: v0.18.0
     hooks:
       - id: terraform-docs-system
         args: ["./examples/vlan_pool_yaml"]
@@ -425,6 +425,18 @@ repos:
         args: ["./modules/terraform-aci-multicast-route-map"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-multicast-route-map/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-netflow-exporter"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-netflow-exporter/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-netflow-monitor"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-netflow-monitor/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-netflow-record"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-netflow-record/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-nd-interface-policy"]
       - id: terraform-docs-system

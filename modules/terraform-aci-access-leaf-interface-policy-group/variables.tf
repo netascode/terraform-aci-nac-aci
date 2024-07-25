@@ -151,3 +151,18 @@ variable "aaep" {
   }
 }
 
+variable "netflow_monitor_policies" {
+  description = "List of Netflow Monitor policies. Choices `ip_filter_type`: `ipv4, `ipv6`, `ce`, `unspecified`."
+  type = list(object({
+    name           = string
+    ip_filter_type = optional(string, "ipv4")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for flt in var.netflow_monitor_policies : try(contains(["ipv4", "ipv6", "ce", "unspecified"], flt.ip_filter_type))
+    ])
+    error_message = "`ip_filter_type`: Allowed values: `ipv4, `ipv6`, `ce`, `unspecified`"
+  }
+}

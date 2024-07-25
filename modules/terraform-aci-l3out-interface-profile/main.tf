@@ -1,7 +1,7 @@
 locals {
   interfaces = flatten([
     for int in var.interfaces : {
-      key = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]")
+      key = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : (int.sub_port != null ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}/${int.sub_port}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]"))
       value = {
         ip                       = int.type != "vpc" ? int.ip : "0.0.0.0"
         svi                      = int.svi == true ? "yes" : "no"
@@ -21,7 +21,7 @@ locals {
         ip_a                     = int.ip_a
         ip_b                     = int.ip_b
         ip_shared                = int.ip_shared
-        tDn                      = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]")
+        tDn                      = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : (int.sub_port != null ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}/${int.sub_port}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]"))
         multipod_direct          = int.multipod_direct
         scope                    = int.scope
         micro_bfd_destination_ip = int.micro_bfd_destination_ip
@@ -32,9 +32,9 @@ locals {
   bgp_peers = flatten([
     for int in var.interfaces : [
       for peer in coalesce(int.bgp_peers, []) : {
-        key = "${int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]")}/${peer.ip}"
+        key = "${int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : (int.sub_port != null ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}/${int.sub_port}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]"))}/${peer.ip}"
         value = {
-          interface                        = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]")
+          interface                        = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : (int.sub_port != null ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}/${int.sub_port}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]"))
           ip                               = peer.ip
           remote_as                        = peer.remote_as
           description                      = peer.description
@@ -392,16 +392,16 @@ resource "aci_rest_managed" "bgpPeerP" {
   content = {
     addr             = each.value.ip
     descr            = each.value.description
-    ctrl             = var.remote_leaf == true ? "allow-self-as" : (join(",", concat(each.value.allow_self_as == true ? ["allow-self-as"] : [], each.value.as_override == true ? ["as-override"] : [], each.value.disable_peer_as_check == true ? ["dis-peer-as-check"] : [], each.value.next_hop_self == true ? ["nh-self"] : [], each.value.send_community == true ? ["send-com"] : [], each.value.send_ext_community == true ? ["send-ext-com"] : [], var.transport_data_plane == "mpls" ? ["segment-routing-disable"] : [])))
+    ctrl             = (var.remote_leaf || var.multipod) && var.tenant == "infra" ? "allow-self-as" : (join(",", concat(each.value.allow_self_as == true ? ["allow-self-as"] : [], each.value.as_override == true ? ["as-override"] : [], each.value.disable_peer_as_check == true ? ["dis-peer-as-check"] : [], each.value.next_hop_self == true ? ["nh-self"] : [], each.value.send_community == true ? ["send-com"] : [], each.value.send_ext_community == true ? ["send-ext-com"] : [], var.transport_data_plane == "mpls" ? ["segment-routing-disable"] : [])))
     password         = sensitive(each.value.password)
     allowedSelfAsCnt = each.value.allowed_self_as_count
     peerCtrl         = join(",", concat(each.value.bfd == true ? ["bfd"] : [], each.value.disable_connected_check == true ? ["dis-conn-check"] : []))
     ttl              = each.value.ttl
     weight           = each.value.weight
     privateASctrl    = join(",", concat(each.value.remove_all_private_as == true ? ["remove-all"] : [], each.value.remove_private_as == true ? ["remove-exclusive"] : [], each.value.replace_private_as_with_local_as == true ? ["replace-as"] : []))
-    addrTCtrl        = var.remote_leaf == true ? "af-ucast" : (join(",", concat(each.value.multicast_address_family == true && var.sr_mpls == false ? ["af-mcast"] : [], var.sr_mpls == true ? ["af-label-ucast"] : [], each.value.unicast_address_family == true ? ["af-ucast"] : [])))
+    addrTCtrl        = (var.remote_leaf || var.multipod) && var.tenant == "infra" ? "af-ucast" : (join(",", concat(each.value.multicast_address_family == true && var.sr_mpls == false ? ["af-mcast"] : [], var.sr_mpls == true ? ["af-label-ucast"] : [], each.value.unicast_address_family == true ? ["af-ucast"] : [])))
     adminSt          = each.value.admin_state == true ? "enabled" : "disabled"
-    connectivityType = var.remote_leaf == true && var.multipod == false && var.tenant == "infra" ? "multipod,multisite" : (var.remote_leaf == false && var.multipod == true && var.tenant == "infra" ? "multipod" : null)
+    connectivityType = (var.remote_leaf || var.multipod) && var.tenant == "infra" ? "multipod,multisite" : null
   }
 
   lifecycle {

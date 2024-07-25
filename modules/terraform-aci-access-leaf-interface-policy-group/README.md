@@ -60,6 +60,7 @@ module "aci_access_leaf_interface_policy_group" {
 | <a name="input_port_channel_policy"></a> [port\_channel\_policy](#input\_port\_channel\_policy) | Port channel policy name. | `string` | `""` | no |
 | <a name="input_port_channel_member_policy"></a> [port\_channel\_member\_policy](#input\_port\_channel\_member\_policy) | Port channel member policy name. | `string` | `""` | no |
 | <a name="input_aaep"></a> [aaep](#input\_aaep) | Attachable access entity profile name. | `string` | `""` | no |
+| <a name="input_netflow_monitor_policies"></a> [netflow\_monitor\_policies](#input\_netflow\_monitor\_policies) | List of Netflow Monitor policies. Choices `ip_filter_type`: `ipv4, `ipv6`, `ce`, `unspecified`.` | <pre>list(object({<br>    name           = string<br>    ip_filter_type = optional(string, "ipv4")<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -82,6 +83,7 @@ module "aci_access_leaf_interface_policy_group" {
 | [aci_rest_managed.infraRsLacpPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsLldpIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsMcpIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraRsNetflowMonitorPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsStormctrlIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsStpIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->
