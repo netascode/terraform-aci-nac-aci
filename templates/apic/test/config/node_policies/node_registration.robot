@@ -13,7 +13,6 @@ Verify Node {{ node.id }} Registration
     Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.serial   {{ node.serial_number }}
     Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.name   {{ node.name }}
     Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.nodeId   {{ node.id }}
-    Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.role   {{ node.role }}
     Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.podId   {{ node.pod | default(defaults.apic.node_policies.nodes.pod) }}
 {% if node.set_role | default(defaults.apic.node_policies.nodes.set_role) %}
     Should Be Equal Value Json String   ${r.json()}    $..fabricNodeIdentP.attributes.role   {{ node.role }}

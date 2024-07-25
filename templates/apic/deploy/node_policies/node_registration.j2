@@ -21,7 +21,6 @@
                                     "dn": "uni/controller/nodeidentpol/nodep-{{ node.serial_number }}",
                                     "nodeId": "{{ node.id }}",
                                     "podId": "{{ node.pod | default(defaults.apic.node_policies.nodes.pod) }}",
-                                    "role": "{{ node.role }}",
                                     "serial": "{{ node.serial_number }}"
                                     {%- if node.set_role | default(defaults.apic.node_policies.nodes.set_role) %},
                                     "role": "{{ node.role }}"
