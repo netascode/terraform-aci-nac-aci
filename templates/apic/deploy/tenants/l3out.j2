@@ -652,6 +652,18 @@
                                                                 }
                                                             }
                                                             {%- endfor %}
+                                                            {%- if int.micro_bfd is defined %}{{ comma5() }}
+                                                            {
+                                                                "bfdMicroBfdP": {
+                                                                    "attributes": {
+                                                                        "adminState": "yes",
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "dst": "{{ int.micro_bfd.destination_ip }}",
+                                                                        "stTm": "{{ int.micro_bfd.start_timer | default(defaults.apic.tenants.l3outs.nodes.interfaces.micro_bfd.start_timer )}}"
+                                                                    }
+                                                                }
+                                                            }
+                                                            {%- endif %}
 
                                                         ]
                                                     }
@@ -1277,6 +1289,18 @@
                                                                 }
                                                             }
                                                             {%- endfor %}
+                                                            {%- if int.micro_bfd is defined %}{{ comma5() }}
+                                                            {
+                                                                "bfdMicroBfdP": {
+                                                                    "attributes": {
+                                                                        "adminState": "yes",
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "dst": "{{ int.micro_bfd.destination_ip }}",
+                                                                        "stTm": "{{ int.micro_bfd.start_timer | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.micro_bfd.start_timer )}}"
+                                                                    }
+                                                                }
+                                                            }
+                                                            {%- endif %}
 
                                                         ]
                                                     }

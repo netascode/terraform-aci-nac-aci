@@ -266,6 +266,15 @@ apic:
                       peer_prefix_policy: BGP_PP1
                       export_route_control: ROUTE_MAP1
                       import_route_control: ROUTE_MAP2
+                - channel: PC1
+                  vlan: 311
+                  ip: 24.24.24.1/24
+                  bgp_peers:
+                    - ip: 24.24.24.2
+                      remote_as: 65010
+                  micro_bfd:
+                    destination_ip: 24.24.24.2
+                    start_timer: 120
           import_route_map:
             name: example-import-name
             description: desc

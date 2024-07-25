@@ -872,6 +872,8 @@ defaults:
               multicast_address_family: true
               admin_state: true
               as_propagate: none
+            micro_bfd:
+              start_timer: 0
         node_profiles:
           name_suffix: ""
           bgp_peers:
@@ -940,6 +942,8 @@ defaults:
                 multicast_address_family: true
                 admin_state: true
                 as_propagate: none
+              micro_bfd:
+                start_timer: 0
         external_endpoint_groups:
           name_suffix: ""
           preferred_group: false

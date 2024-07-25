@@ -2394,6 +2394,7 @@ ten_l3outs_nodes_interfaces:
   mode: enum('regular', 'native', 'untagged', required=False)
   state: enum('local', 'vrf', required=False)
   expected_state: include('ten_l3outs_nodes_interfaces_expected_state', required=False) # @no_external_doc() @name(L3out Node Int Expected State) @sheet_hidden()
+  micro_bfd: include('ten_l3outs_nodes_interfaces_micro_bfd', required=False)
 
 ten_l3outs_nodes_interfaces_bgp_peers:
   ip: ip()
@@ -2439,6 +2440,10 @@ ten_l3outs_nodes_interfaces_expected_state_ospf_neighbors:
 
 ten_l3outs_nodes_interfaces_expected_state_bfd_neighbors:
   ip: ip()
+
+ten_l3outs_nodes_interfaces_micro_bfd:
+  destination_ip: ip()
+  start_timer: any(int(min=60, max=3600), int(min=0, max=0), required=False)
 
 ten_l3outs_node_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

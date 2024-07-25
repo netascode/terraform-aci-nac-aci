@@ -381,6 +381,12 @@ Verify L3out {{ l3out_name }} Node {{ node.node_id }} Interface {{ loop.index }}
 
 {% endfor %}
 
+{% if int.micro_bfd is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${int}..bfdMicroBfdP.attributes.adminState   yes
+    Should Be Equal Value Json String   ${r.json()}   ${int}..bfdMicroBfdP.attributes.dst   {{ int.micro_bfd.destination_ip }}
+    Should Be Equal Value Json String   ${r.json()}   ${int}..bfdMicroBfdP.attributes.stTm   {{ int.micro_bfd.start_timer | default(defaults.apic.tenants.l3outs.nodes.interfaces.micro_bfd.start_timer )}}
+{% endif %}
+
 {% endfor %}
 
 {% endfor %}
@@ -724,6 +730,12 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
 {% endif %}
 
 {% endfor %}
+
+{% if int.micro_bfd is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${int}..bfdMicroBfdP.attributes.adminState   yes
+    Should Be Equal Value Json String   ${r.json()}   ${int}..bfdMicroBfdP.attributes.dst   {{ int.micro_bfd.destination_ip }}
+    Should Be Equal Value Json String   ${r.json()}   ${int}..bfdMicroBfdP.attributes.stTm   {{ int.micro_bfd.start_timer | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.micro_bfd.start_timer )}}
+{% endif %}
 
 {% endfor %}
 

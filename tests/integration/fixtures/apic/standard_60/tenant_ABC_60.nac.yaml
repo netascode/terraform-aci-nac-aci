@@ -2,6 +2,23 @@
 apic:
   tenants:
     - name: ABC
+      vrfs:
+        - name: VRF1
+      l3outs:
+        - name: L3OUT_MICROBFD
+          vrf: VRF1
+          domain: ROUTED1
+          nodes:
+            - node_id: 101
+              router_id: 5.5.5.5
+              router_id_as_loopback: false
+              interfaces:
+                - channel: PC1
+                  node_id: 101
+                  ip: 3.3.3.1/24
+                  micro_bfd:
+                    destination_ip: 3.3.3.2
+                    start_timer: 120
       policies:
         set_rules:
           - name: SET3
