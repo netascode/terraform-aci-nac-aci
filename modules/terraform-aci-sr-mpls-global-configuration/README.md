@@ -13,8 +13,8 @@ module "aci_sr_mpls_global_configuration" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-sr-mpls-global-configuration"
   version = ">= 0.0.1"
 
-  sr_global_block_minimum: 16000
-  sr_global_block_maximum: 275999
+  sr_global_block_minimum = 16000
+  sr_global_block_maximum = 275999
 }
 ```
 
@@ -43,7 +43,6 @@ module "aci_sr_mpls_global_configuration" {
 | Name | Description |
 |------|-------------|
 | <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `mplsSrgbLabelPol` object. |
-| <a name="output_name"></a> [name](#output\_name) | SR MPLS global configuration name. |
 
 ## Resources
 
