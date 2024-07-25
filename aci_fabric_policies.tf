@@ -1042,3 +1042,11 @@ module "aci_fabric_link_level_policy" {
   description            = try(each.value.description, "")
   link_debounce_interval = try(each.value.link_debounce_interval, local.defaults.apic.fabric_policies.interface_policies.link_level_policies.link_debounce_interval)
 }
+
+module "aci_sr_mpls_global_configuration" {
+  source = "./modules/terraform-aci-sr-mpls-global-configuration"
+
+  count                   = local.modules.aci_sr_mpls_global_configuration == true && var.manage_fabric_policies ? 1 : 0
+  sr_global_block_minimum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum)
+  sr_global_block_maximum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum)
+}

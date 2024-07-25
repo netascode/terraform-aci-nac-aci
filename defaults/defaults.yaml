@@ -398,6 +398,9 @@ defaults:
         link_level_policies:
           name_suffix: ""
           link_debounce_interval: 0
+      sr_mpls_global_configuration:
+        sr_global_block_minimum: 16000
+        sr_global_block_maximum: 23999
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
