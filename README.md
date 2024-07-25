@@ -257,6 +257,7 @@ Additional example repositories:
 | <a name="module_aci_mcp"></a> [aci\_mcp](#module\_aci\_mcp) | ./modules/terraform-aci-mcp | n/a |
 | <a name="module_aci_mcp_policy"></a> [aci\_mcp\_policy](#module\_aci\_mcp\_policy) | ./modules/terraform-aci-mcp-policy | n/a |
 | <a name="module_aci_monitoring_policy"></a> [aci\_monitoring\_policy](#module\_aci\_monitoring\_policy) | ./modules/terraform-aci-monitoring-policy | n/a |
+| <a name="module_aci_mpls_custom_qos_policy"></a> [aci\_mpls\_custom\_qos\_policy](#module\_aci\_mpls\_custom\_qos\_policy) | ./modules/terraform-aci-mpls-custom-qos-policy | n/a |
 | <a name="module_aci_mst_policy"></a> [aci\_mst\_policy](#module\_aci\_mst\_policy) | ./modules/terraform-aci-mst-policy | n/a |
 | <a name="module_aci_multicast_route_map"></a> [aci\_multicast\_route\_map](#module\_aci\_multicast\_route\_map) | ./modules/terraform-aci-multicast-route-map | n/a |
 | <a name="module_aci_nd_interface_policy"></a> [aci\_nd\_interface\_policy](#module\_aci\_nd\_interface\_policy) | ./modules/terraform-aci-nd-interface-policy | n/a |

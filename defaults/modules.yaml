@@ -99,6 +99,7 @@ modules:
   aci_mcp: true
   aci_mcp_policy: true
   aci_monitoring_policy: true
+  aci_mpls_custom_qos_policy: true
   aci_mst_policy: true
   aci_multicast_route_map: true
   aci_nd_interface_policy: true

@@ -418,6 +418,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-monitoring-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-mpls-custom-qos-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-mpls-custom-qos-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-mst-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-mst-policy/examples/complete"]
