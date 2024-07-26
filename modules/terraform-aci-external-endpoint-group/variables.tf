@@ -114,7 +114,7 @@ variable "subnets" {
     aggregate_import_route_control = optional(bool, false)
     aggregate_export_route_control = optional(bool, false)
     aggregate_shared_route_control = optional(bool, false)
-    bgp_route_summarization        = optional(bool, false)
+    bgp_route_summarization_policy = string
     ospf_route_summarization       = optional(bool, false)
     route_control_profiles = optional(list(object({
       name      = string
