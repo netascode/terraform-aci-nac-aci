@@ -50,7 +50,7 @@ variable "ingress_rules" {
 
   validation {
     condition = alltrue([
-      for ing in var.ingress_rules : try(ing.exp_to >= 0 && ing.exp_to <= 7, false) || ing.exp_to == "unspecified"
+      for ing in var.ingress_rules : ing.exp_to == null || try(ing.exp_to >= 0 && ing.exp_to <= 7, false) || ing.exp_to == "unspecified"
     ])
     error_message = "`exp_to`: Allowed values are `unspecified` or a number between 0 and 7."
   }
