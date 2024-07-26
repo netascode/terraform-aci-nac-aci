@@ -1167,6 +1167,8 @@ locals {
                 elag              = try(path.elag, null)
                 floating_ip       = path.floating_ip
               }]
+              micro_bfd_destination_ip = try(int.micro_bfd.destination_ip, null)
+              micro_bfd_start_timer    = try(int.micro_bfd.start_timer, null)
             }]
           }
         ]
@@ -1199,30 +1201,32 @@ module "aci_l3out_interface_profile_manual" {
   qos_class                    = each.value.qos_class
   custom_qos_policy            = each.value.custom_qos_policy
   interfaces = [for int in try(each.value.interfaces, []) : {
-    ip              = int.ip
-    svi             = int.svi
-    floating_svi    = int.floating_svi
-    autostate       = int.autostate
-    vlan            = int.vlan
-    description     = int.description
-    type            = int.type
-    mac             = int.mac
-    mtu             = int.mtu
-    mode            = int.mode
-    node_id         = int.node_id
-    node2_id        = int.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == int.channel][0][1] : int.node2_id
-    pod_id          = int.pod_id == null ? try([for node in local.node_policies.nodes : node.pod if node.id == int.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) : int.pod_id
-    module          = int.module
-    port            = int.port
-    sub_port        = int.sub_port
-    channel         = int.channel
-    ip_a            = int.ip_a
-    ip_b            = int.ip_b
-    ip_shared       = int.ip_shared
-    bgp_peers       = int.bgp_peers
-    paths           = int.paths
-    scope           = int.scope
-    multipod_direct = int.multipod_direct
+    ip                       = int.ip
+    svi                      = int.svi
+    floating_svi             = int.floating_svi
+    autostate                = int.autostate
+    vlan                     = int.vlan
+    description              = int.description
+    type                     = int.type
+    mac                      = int.mac
+    mtu                      = int.mtu
+    mode                     = int.mode
+    node_id                  = int.node_id
+    node2_id                 = int.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == int.channel][0][1] : int.node2_id
+    pod_id                   = int.pod_id == null ? try([for node in local.node_policies.nodes : node.pod if node.id == int.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) : int.pod_id
+    module                   = int.module
+    port                     = int.port
+    sub_port                 = int.sub_port
+    channel                  = int.channel
+    ip_a                     = int.ip_a
+    ip_b                     = int.ip_b
+    ip_shared                = int.ip_shared
+    bgp_peers                = int.bgp_peers
+    paths                    = int.paths
+    scope                    = int.scope
+    multipod_direct          = int.multipod_direct
+    micro_bfd_destination_ip = int.micro_bfd_destination_ip
+    micro_bfd_start_timer    = int.micro_bfd_start_timer
   }]
 
   depends_on = [
@@ -1312,6 +1316,8 @@ locals {
               elag              = try(path.elag, null)
               floating_ip       = path.floating_ip
             }]
+            micro_bfd_destination_ip = try(int.micro_bfd.destination_ip, null)
+            micro_bfd_start_timer    = try(int.micro_bfd.start_timer, null)
           }
         ]])
       } if length(try(l3out.nodes, [])) != 0
@@ -1342,30 +1348,32 @@ module "aci_l3out_interface_profile_auto" {
   qos_class                    = each.value.qos_class
   custom_qos_policy            = each.value.custom_qos_policy
   interfaces = [for int in try(each.value.interfaces, []) : {
-    ip              = int.ip
-    svi             = int.svi
-    autostate       = int.autostate
-    floating_svi    = int.floating_svi
-    vlan            = int.vlan
-    description     = int.description
-    type            = int.type
-    mac             = int.mac
-    mtu             = int.mtu
-    mode            = int.mode
-    node_id         = int.node_id
-    node2_id        = int.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == int.channel][0][1] : int.node2_id
-    pod_id          = int.pod_id
-    module          = int.module
-    port            = int.port
-    sub_port        = int.sub_port
-    channel         = int.channel
-    ip_a            = int.ip_a
-    ip_b            = int.ip_b
-    ip_shared       = int.ip_shared
-    bgp_peers       = int.bgp_peers
-    paths           = int.paths
-    scope           = int.scope
-    multipod_direct = int.multipod_direct
+    ip                       = int.ip
+    svi                      = int.svi
+    autostate                = int.autostate
+    floating_svi             = int.floating_svi
+    vlan                     = int.vlan
+    description              = int.description
+    type                     = int.type
+    mac                      = int.mac
+    mtu                      = int.mtu
+    mode                     = int.mode
+    node_id                  = int.node_id
+    node2_id                 = int.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == int.channel][0][1] : int.node2_id
+    pod_id                   = int.pod_id
+    module                   = int.module
+    port                     = int.port
+    sub_port                 = int.sub_port
+    channel                  = int.channel
+    ip_a                     = int.ip_a
+    ip_b                     = int.ip_b
+    ip_shared                = int.ip_shared
+    bgp_peers                = int.bgp_peers
+    paths                    = int.paths
+    scope                    = int.scope
+    multipod_direct          = int.multipod_direct
+    micro_bfd_destination_ip = int.micro_bfd_destination_ip
+    micro_bfd_start_timer    = int.micro_bfd_start_timer
   }]
 
   depends_on = [
