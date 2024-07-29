@@ -21,6 +21,7 @@ locals {
         ip_a                     = int.ip_a
         ip_b                     = int.ip_b
         ip_shared                = int.ip_shared
+        lladdr                   = int.lladdr
         tDn                      = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : (int.sub_port != null ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}/${int.sub_port}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]"))
         multipod_direct          = int.multipod_direct
         scope                    = int.scope
@@ -271,7 +272,7 @@ resource "aci_rest_managed" "l3extRsPathL3OutAtt" {
     autostate        = each.value.autostate
     encap            = each.value.vlan != null ? "vlan-${each.value.vlan}" : null
     ipv6Dad          = "enabled"
-    llAddr           = "::"
+    llAddr           = each.value.lladdr
     mac              = each.value.mac
     mode             = each.value.mode
     mtu              = each.value.mtu
