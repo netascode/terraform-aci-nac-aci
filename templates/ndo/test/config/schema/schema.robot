@@ -74,9 +74,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
     Should Be Equal Value Json String   ${r.json()}   ${subnet}.scope   {{ subnet.scope | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.scope) }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.shared   {{ subnet.shared | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.shared) | cisco.aac.aac_bool(True) }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.noDefaultGateway   {{ subnet.no_default_gateway | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.no_default_gateway) | cisco.aac.aac_bool(True) }}
-{% if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %}
     Should Be Equal Value Json Boolean   ${r.json()}   ${subnet}.primary   {{ subnet.primary | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.subnets.primary) | cisco.aac.aac_bool(True) }}
-{% endif %}
 {% endfor %}
 
 {% for site in epg.sites | default([]) %}
@@ -262,11 +260,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
     Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.optimizeWanBandwidth   {{ bd.optimize_wan_bandwidth | default(defaults.ndo.schemas.templates.bridge_domains.optimize_wan_bandwidth) | cisco.aac.aac_bool(True) }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.l2Stretch   {{ bd.l2_stretch | default(defaults.ndo.schemas.templates.bridge_domains.l2_stretch) | cisco.aac.aac_bool(True) }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.l3MCast   {{ bd.l3_multicast | default(defaults.ndo.schemas.templates.bridge_domains.l3_multicast) | cisco.aac.aac_bool(True) }}
-{% if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %}
     Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.unicastRouting  {{ bd.unicast_routing | default(defaults.ndo.schemas.templates.bridge_domains.unicast_routing) | cisco.aac.aac_bool(True) }}
-{% endif %}
-
-{% if ndo.version | default(defaults.ndo.version) is version('3.1.1g', '>=') %}
 {% if bd.virtual_mac is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${bd}.vmac   {{ bd.virtual_mac }}
 {% endif %}
@@ -274,7 +268,6 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
     Should Be Equal Value Json String   ${r.json()}   ${bd}.unkMcastAct   {{ bd.unknown_ipv4_multicast | default(defaults.ndo.schemas.templates.bridge_domains.unknown_ipv4_multicast) }}
     Should Be Equal Value Json String   ${r.json()}   ${bd}.v6unkMcastAct   {{ bd.unknown_ipv6_multicast | default(defaults.ndo.schemas.templates.bridge_domains.unknown_ipv6_multicast) }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.arpFlood   {{ bd.arp_flooding | default(defaults.ndo.schemas.templates.bridge_domains.arp_flooding) | cisco.aac.aac_bool(True) }}
-{% endif %}
 
 {% if bd.dhcp_relay_policy is defined %}
 {% set dhcp_relay_policy_name = bd.dhcp_relay_policy ~ defaults.ndo.policies.dhcp_relays.name_suffix %}
@@ -285,7 +278,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
 {% endif %}
 {% endif %}
 
-{% if bd.dhcp_policies is defined and ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %}
+{% if bd.dhcp_policies is defined %}
 {% for pol in  bd.dhcp_policies | default([]) %}
 {% set dhcp_relay_policy_name = pol.dhcp_relay_policy ~ defaults.ndo.policies.dhcp_relays.name_suffix %}
     ${dhcp}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].bds[?(@.name=='{{ bd_name }}')].dhcpLabels[?(@.name=='{{ dhcp_relay_policy_name }}')]                     

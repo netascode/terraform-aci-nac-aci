@@ -1,7 +1,6 @@
 ---
 defaults:
   ndo:
-    version: "3.7.2h"
     remote_locations:
       port: 22
       path: "/"
