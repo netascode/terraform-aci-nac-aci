@@ -84,10 +84,10 @@ resource "aci_rest_managed" "l3extRsSubnetToProfile" {
 }
 
 resource "aci_rest_managed" "l3extRsSubnetToRtSumm" {
-  for_each = { for subnet in var.subnets : subnet.prefix => subnet if subnet.bgp_route_summarization_policy != "" || subnet.ospf_route_summarization }
+  for_each = { for subnet in var.subnets : subnet.prefix => subnet if subnet.bgp_route_summarization || subnet.ospf_route_summarization }
   dn         = "${aci_rest_managed.l3extSubnet[each.value.prefix].dn}/rsSubnetToRtSumm"
   class_name = "l3extRsSubnetToRtSumm"
   content = {
-    tDn = each.value.bgp_route_summarization_policy != "" ? "uni/tn-${var.tenant}/bgprtsum-${each.value.bgp_route_summarization_policy}" : "uni/tn-common/ospfrtsumm-default"
+    tDn = each.value.bgp_route_summarization ? (each.value.bgp_route_summarization_policy != "" ? "uni/tn-${var.tenant}/bgprtsum-${each.value.bgp_route_summarization_policy}" : "uni/tn-common/bgprtsum-default") : (each.value.ospf_route_summarization ? "uni/tn-common/ospfrtsumm-default" : null)
   }
 }

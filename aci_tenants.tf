@@ -1414,6 +1414,7 @@ locals {
             aggregate_import_route_control = try(subnet.aggregate_import_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_import_route_control)
             aggregate_export_route_control = try(subnet.aggregate_export_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_export_route_control)
             aggregate_shared_route_control = try(subnet.aggregate_shared_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_shared_route_control)
+            bgp_route_summarization        = try(subnet.bgp_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.bgp_route_summarization)
             bgp_route_summarization_policy = try(subnet.bgp_route_summarization_policy, "")
             ospf_route_summarization       = try(subnet.ospf_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ospf_route_summarization)
             route_control_profiles = [for rcp in try(subnet.route_control_profiles, []) : {
