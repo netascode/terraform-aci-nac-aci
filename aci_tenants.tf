@@ -1222,6 +1222,7 @@ module "aci_l3out_interface_profile_manual" {
     ip_a                     = int.ip_a
     ip_b                     = int.ip_b
     ip_shared                = int.ip_shared
+    lladdr                   = int.lladdr
     bgp_peers                = int.bgp_peers
     paths                    = int.paths
     scope                    = int.scope
