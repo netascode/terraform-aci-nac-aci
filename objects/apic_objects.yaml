@@ -1546,6 +1546,18 @@ tenant_objects:
       - config
     paths:
       - apic.tenants.policies.set_rules
+  - name: BGP Route Summarization Policy
+    template: bgp_route_summarization_policy
+    folder: tenants
+    aci_classes:
+      - bgpRtSummPol
+    scope:
+      - user
+      - mgmt
+    test_types:
+      - config
+    paths:
+      - apic.tenants.policies.bgp_route_summarization_policies
   - name: BGP Timer Policy
     template: bgp_timer_policy
     folder: tenants

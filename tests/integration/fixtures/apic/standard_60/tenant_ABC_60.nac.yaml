@@ -26,3 +26,10 @@ apic:
               name: L3OUT1-EPG1
               l3out: L3OUT1
               tenant: ABC
+        bgp_route_summarization_policies:
+          - name: BGP_ROUTE_SUMMARIZATION1
+            description: BGP_Route_Summarization_Policy
+            as_set: true
+            summary_only: false
+            af_mcast: false
+            af_ucast: true

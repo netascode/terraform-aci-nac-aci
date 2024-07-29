@@ -196,6 +196,7 @@ nav:
               - Set Rule: data_model/apic/tenants/set_rule.md
               - BGP Timer Policy: data_model/apic/tenants/bgp_timer_policy.md
               - BGP Peer Prefix Policy: data_model/apic/tenants/bgp_peer_prefix_policy.md
+              - BGP Route Summarization Policy: data_model/apic/tenants/bgp_route_summarization_policy.md
               - BGP Best Path Policy: data_model/apic/tenants/bgp_best_path_policy.md
               - Tenant SPAN Source Group: data_model/apic/tenants/tenant_span_source_group.md
               - Tenant SPAN Destination Group: data_model/apic/tenants/tenant_span_destination_group.md

@@ -2864,6 +2864,7 @@ ten_policies:
   ospf_interface_policies: list(include('ten_ospf_interface_policies'), required=False) # @sheet_hidden()
   eigrp_interface_policies: list(include('ten_eigrp_interface_policies'), required=False) # @sheet_hidden()
   ospf_timer_policies: list(include('ten_ospf_timer_policies'), required=False) # @sheet_hidden()
+  bgp_route_summarization_policies: list(include('ten_bgp_route_summarization_policy'), required=False) # @sheet_hidden()
   bgp_timer_policies: list(include('ten_bgp_timer_policy'), required=False) # @sheet_hidden()
   bgp_peer_prefix_policies: list(include('ten_bgp_peer_prefix_policies'), required=False) # @sheet_hidden()
   bgp_best_path_policies: list(include('ten_bgp_best_path_policy'), required=False) # @sheet_hidden()
@@ -2949,6 +2950,14 @@ ten_bgp_peer_prefix_policies:
   max_prefixes: int(min=1, max=300000, required=False)
   threshold: int(min=1, max=100, required=False)
   restart_time: int(min=1, max=65535, required=False)
+
+ten_bgp_route_summarization_policy:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  as_set: bool(required=False)
+  summary_only: bool(required=False)
+  af_mcast: bool(required=False)
+  af_ucast: bool(required=False)
 
 ten_bgp_timer_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

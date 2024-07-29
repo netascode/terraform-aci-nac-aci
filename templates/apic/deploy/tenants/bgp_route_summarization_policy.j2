@@ -1,0 +1,36 @@
+{# iterate_list apic.tenants name item[2] #}
+{% set tenant = ((apic | default()) | community.general.json_query('tenants[?name==`' ~ item[2] ~ '`]'))[0] %}
+{
+    "fvTenant": {
+        "attributes": {
+            "dn": "uni/tn-{{ tenant.name }}",
+            "name": "{{ tenant.name }}"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for brs in tenant.policies.bgp_route_summarization_policies | default([]) %}{{ comma1() }}
+            {% set bgp_route_summarization_name = brs.name ~ defaults.apic.tenants.policies.bgp_route_summarization_policies.name_suffix %}
+            {% set ctrl = [] %}
+            {% if brs.as_set | default(defaults.apic.tenants.policies.bgp_route_summarization_policies.as_set) %}{% set ctrl = ctrl + [("as-set")] %}{% endif %}
+            {% if brs.summary_only | default(defaults.apic.tenants.policies.brs.bgp_route_summarization_policies) %}{% set ctrl = ctrl + [("summary-only")] %}{% endif %}
+            {% set addrTCtrl = [] %}
+            {% if brs.af_mcast | default(defaults.apic.tenants.policies.bgp_route_summarization_policies.af_mcast) %}{% set addrTCtrl = addrTCtrl + [("af-mcast")] %}{% endif %}
+            {% if brs.af_ucast | default(defaults.apic.tenants.policies.bgp_route_summarization_policies.af_ucast) %}{% set addrTCtrl = addrTCtrl + [("af-ucast")] %}{% endif %}
+            {
+
+                "bgpRtSummPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ bgp_route_summarization_name }}",
+                        "descr": "{{ brs.description | default() }}",
+                        "dn": "uni/tn-{{ tenant.name }}/bgprtsum-{{ bgp_route_summarization_name }}",
+                        "ctrl": "{{ ctrl | join(',') }}",
+                        "addrTCtrl": "{{ addrTCtrl | join(',') }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}
