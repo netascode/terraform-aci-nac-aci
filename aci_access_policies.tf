@@ -288,6 +288,7 @@ module "aci_data_plane_policing_policy" {
   name                 = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.name_suffix}"
   admin_state          = each.value.admin_state
   description          = try(each.value.description, "")
+  policer_policy_type  = try(each.value.policer_policy_type, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.policer_policy_type)
   type                 = try(each.value.type, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.type)
   mode                 = try(each.value.mode, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.mode)
   sharing_mode         = try(each.value.sharing_mode, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.sharing_mode)
