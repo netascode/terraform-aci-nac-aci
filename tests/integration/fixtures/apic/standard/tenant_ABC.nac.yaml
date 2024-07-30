@@ -376,6 +376,7 @@ apic:
                 - prefix: 10.0.0.0/8
                   export_route_control: true
                   bgp_route_summarization: true
+                  bgp_route_summarization_policy: "BGP_RS_POLICY1"
               contracts:
                 consumers:
                   - CON1
