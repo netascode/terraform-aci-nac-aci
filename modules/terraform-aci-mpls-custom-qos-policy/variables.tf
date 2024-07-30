@@ -35,7 +35,7 @@ variable "ingress_rules" {
   type = list(object({
     priority    = optional(string, "unspecified")
     exp_from    = string
-    exp_to      = optional(string)
+    exp_to      = string
     dscp_target = optional(string, "unspecified")
     cos_target  = optional(string, "unspecified")
   }))
@@ -50,21 +50,21 @@ variable "ingress_rules" {
 
   validation {
     condition = alltrue([
-      for ing in var.ingress_rules : ing.exp_to == null || try(ing.exp_to >= 0 && ing.exp_to <= 7, false) || ing.exp_to == "unspecified"
+      for ing in var.ingress_rules : try(ing.exp_to >= 0 && ing.exp_to <= 7, false) || ing.exp_to == "unspecified"
     ])
     error_message = "`exp_to`: Allowed values are `unspecified` or a number between 0 and 7."
   }
 
   validation {
     condition = alltrue([
-      for ing in var.ingress_rules : ing.priority == null || try(contains(["unspecified", "level1", "level2", "level3", "level4", "level5", "level6", ], ing.priority), false)
+      for ing in var.ingress_rules : try(contains(["unspecified", "level1", "level2", "level3", "level4", "level5", "level6", ], ing.priority), false)
     ])
     error_message = "`priority`: Allowed values are `unspecified`, `level1`, `level2`, `level3`, `level4`, `level5` or `level6`"
   }
 
   validation {
     condition = alltrue([
-      for ing in var.ingress_rules : ing.dscp_target == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS3", "AF31", "AF32", "AF33", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], ing.dscp_target), false) || try(tonumber(ing.dscp_target) >= 0 && tonumber(ing.dscp_target) <= 63, false)
+      for ing in var.ingress_rules : try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS3", "AF31", "AF32", "AF33", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], ing.dscp_target), false) || try(tonumber(ing.dscp_target) >= 0 && tonumber(ing.dscp_target) <= 63, false)
     ])
     error_message = "`dscp_target`: Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS3`, `AF31`, `AF32`, `AF33`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6`, `CS7` or a number between 0 and 63."
   }
@@ -81,7 +81,7 @@ variable "egress_rules" {
   description = "QoS Policy DSCP Dot1p Classifiers. Allowed values `exp_target` and `cos_target`: `unspecified` or a number between 0 and 7. Allowed values `dscp_from` and `dscp_to` : `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS3`, `AF31`, `AF32`, `AF33`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6`, `CS7` or a number between 0 and 63."
   type = list(object({
     dscp_from  = string
-    dscp_to    = optional(string)
+    dscp_to    = string
     exp_target = optional(string, "unspecified")
     cos_target = optional(string, "unspecified")
   }))
@@ -96,7 +96,7 @@ variable "egress_rules" {
 
   validation {
     condition = alltrue([
-      for eg in var.egress_rules : eg.dscp_to == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS3", "AF31", "AF32", "AF33", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], eg.dscp_to), false) || try(tonumber(eg.dscp_to) >= 0 && tonumber(eg.dscp_to) <= 63, false)
+      for eg in var.egress_rules : try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS3", "AF31", "AF32", "AF33", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], eg.dscp_to), false) || try(tonumber(eg.dscp_to) >= 0 && tonumber(eg.dscp_to) <= 63, false)
     ])
     error_message = "`dscp_to`: Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS3`, `AF31`, `AF32`, `AF33`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6`, `CS7` or a number between 0 and 63."
   }
@@ -105,7 +105,7 @@ variable "egress_rules" {
     condition = alltrue([
       for eg in var.egress_rules : eg.exp_target == "unspecified" || try(eg.exp_target >= 0 && eg.exp_target <= 7, false)
     ])
-    error_message = "`dscp_target`: Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS3`, `AF31`, `AF32`, `AF33`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6`, `CS7` or a number between 0 and 63."
+    error_message = "`exp_target`: Allowed values are `unspecified` or a number between 0 and 7."
   }
 
   validation {
