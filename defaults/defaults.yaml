@@ -484,7 +484,7 @@ defaults:
       interface_policies:
         cdp_policies:
           name_suffix: ""
-        data_plane_policing_polcies:
+        data_plane_policing_policies:
           name_suffix: ""
           admin_state: true
           policer_policy_type: access
