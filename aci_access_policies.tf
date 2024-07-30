@@ -284,7 +284,7 @@ module "aci_cdp_policy" {
 module "aci_data_plane_policing_policy" {
   source = "./modules/terraform-aci-data-plane-policing-policy"
 
-  for_each             = { for dpp in try(local.access_policies.interface_policies.data_plane_policing_polcies, []) : dpp.name => dpp if local.modules.aci_data_plane_policing_policy && var.manage_access_policies }
+  for_each             = { for dpp in try(local.access_policies.interface_policies.data_plane_policing_policies, []) : dpp.name => dpp if local.modules.aci_data_plane_policing_policy && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.name_suffix}"
   admin_state          = each.value.admin_state
   description          = try(each.value.description, "")

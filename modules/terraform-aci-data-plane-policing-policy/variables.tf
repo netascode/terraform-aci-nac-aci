@@ -74,7 +74,7 @@ variable "pir" {
   description = "Peak Information Rate (2R3C policer only). Allowed Values: A number between 0 and 4,398,046,510,080."
 
   validation {
-    condition     = try(var.pir >= 0 && var.pir <= 4398046510080, false)
+    condition     = var.pir == null || try(var.pir >= 0 && var.pir <= 4398046510080, false)
     error_message = "Allowed Values: A number between `0` and `4,398,046,510,080`."
   }
 }
@@ -85,7 +85,7 @@ variable "pir_unit" {
   default     = "unspecified"
 
   validation {
-    condition     = try(contains(["unspecified", "bits", "kilo", "mega", "giga"], var.pir_unit), false)
+    condition     = var.pir_unit == null || try(contains(["unspecified", "bits", "kilo", "mega", "giga"], var.pir_unit), false)
     error_message = "Allowed Values: `unspecified`, `bits`, `kilo`, `mega`, `giga`."
   }
 }
@@ -117,7 +117,7 @@ variable "burst_excessive" {
   default     = "unspecified"
 
   validation {
-    condition     = try(contains(["unspecified"], var.burst_excessive), false) || try(tonumber(var.burst_excessive) >= 0 && tonumber(var.burst_excessive) <= 549755813760, false)
+    condition     = var.burst_excessive == null || try(contains(["unspecified"], var.burst_excessive), false) || try(tonumber(var.burst_excessive) >= 0 && tonumber(var.burst_excessive) <= 549755813760, false)
     error_message = "Allowed Values: `unspecified`, or a number between `0` and `549,755,813,760`."
   }
 }
@@ -128,7 +128,7 @@ variable "burst_excessive_unit" {
   default     = "unspecified"
 
   validation {
-    condition     = try(contains(["unspecified", "byte", "kilo", "mega", "giga", "msec", "usec"], var.burst_excessive_unit), false)
+    condition     = var.burst_excessive_unit == null || try(contains(["unspecified", "byte", "kilo", "mega", "giga", "msec", "usec"], var.burst_excessive_unit), false)
     error_message = "Allowed values: `unspecified`, `byte`, `kilo`, `mega`, `giga`, `msec`, `usec`."
   }
 }
@@ -238,7 +238,7 @@ variable "violate_mark_cos" {
   default     = "unspecified"
 
   validation {
-    condition     = var.violate_mark_cos == "unspecified" || try(tonumber(var.violate_mark_cos) >= 0 && tonumber(var.violate_mark_cos) <= 7, false)
+    condition     = var.violate_mark_cos == null || var.violate_mark_cos == "unspecified" || try(tonumber(var.violate_mark_cos) >= 0 && tonumber(var.violate_mark_cos) <= 7, false)
     error_message = "Allowed Values: `unspecified` or a number between 0 and 7."
   }
 }
