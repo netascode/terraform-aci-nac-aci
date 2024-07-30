@@ -13,7 +13,7 @@ variables {
         banners = {
           apic_cli_banner = "CLI Banner"
         }
-        global_settings = { 
+        global_settings = {
           reallocate_gipo = true
         }
       }
