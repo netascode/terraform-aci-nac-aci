@@ -19,13 +19,13 @@ resource "aci_rest_managed" "qosDppPol" {
     burst           = var.burst
     burstUnit       = var.burst_unit
     conformAction   = var.conform_action
-    conformMarkCos  = var.conform_action == "mark" ? var.conform_mark_qos : null
+    conformMarkCos  = var.conform_action == "mark" ? var.conform_mark_cos : null
     conformMarkDscp = var.conform_action == "mark" ? var.conform_mark_dscp : null
     exceedAction    = var.exceed_action
-    exceedMarkCos   = var.exceed_action == "mark" ? var.exceed_mark_qos : null
+    exceedMarkCos   = var.exceed_action == "mark" ? var.exceed_mark_cos : null
     exceedMarkDscp  = var.exceed_action == "mark" ? var.exceed_mark_dscp : null
     violateAction   = var.violate_action
-    violateMarkCos  = var.violate_action == "mark" ? var.violate_mark_qos : null
+    violateMarkCos  = var.violate_action == "mark" ? var.violate_mark_cos : null
     violateMarkDscp = var.violate_action == "mark" ? var.violate_mark_dscp : null
   }
 }
