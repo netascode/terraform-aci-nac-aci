@@ -95,7 +95,7 @@ variable "rate" {
   description = "Committed Information Rate. Allowed Values: A number between 0 and 4,398,046,510,080."
 
   validation {
-    condition     = try(var.pir >= 0 && var.pir <= 4398046510080, false)
+    condition     = try(var.rate >= 0 && var.rate <= 4398046510080, false)
     error_message = "Allowed Values: A number between `0` and `4,398,046,510,080`."
   }
 }
@@ -162,8 +162,8 @@ variable "conform_action" {
 
   validation {
     condition = try(contains(["transmit", "drop", "mark"], var.conform_action), false)
+    error_message = "Allowed Values: `transmit`, `drop`, or `mark`."
   }
-  error_message = "Allowed Values: `transmit`, `drop`, or `mark`."
 }
 
 variable "conform_mark_cos" {
@@ -184,6 +184,7 @@ variable "conform_mark_dscp" {
 
   validation {
     condition = var.conform_mark_dscp == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS3", "AF31", "AF32", "AF33", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], var.conform_mark_dscp), false) || try(tonumber(var.conform_mark_dscp) >= 0 && tonumber(var.conform_mark_dscp) <= 63, false)
+    error_message = "Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS3`, `AF31`, `AF32`, `AF33`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6`, `CS7` or a number between 0 and 63."
   }
 }
 
@@ -194,8 +195,8 @@ variable "exceed_action" {
 
   validation {
     condition = try(contains(["transmit", "drop", "mark"], var.exceed_action), false)
+    error_message = "Allowed Values: `transmit`, `drop`, or `mark`."
   }
-  error_message = "Allowed Values: `transmit`, `drop`, or `mark`."
 }
 
 variable "exceed_mark_cos" {
@@ -216,6 +217,7 @@ variable "exceed_mark_dscp" {
 
   validation {
     condition = var.exceed_mark_dscp == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS3", "AF31", "AF32", "AF33", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], var.exceed_mark_dscp), false) || try(tonumber(var.exceed_mark_dscp) >= 0 && tonumber(var.exceed_mark_dscp) <= 63, false)
+    error_message = "Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS3`, `AF31`, `AF32`, `AF33`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6`, `CS7` or a number between 0 and 63."
   }
 }
 
@@ -226,8 +228,8 @@ variable "violate_action" {
 
   validation {
     condition = try(contains(["transmit", "drop", "mark"], var.violate_action), false)
+    error_message = "Allowed Values: `transmit`, `drop`, or `mark`."
   }
-  error_message = "Allowed Values: `transmit`, `drop`, or `mark`."
 }
 
 variable "violate_mark_cos" {
@@ -248,5 +250,6 @@ variable "violate_mark_dscp" {
 
   validation {
     condition = var.violate_mark_dscp == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS3", "AF31", "AF32", "AF33", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], var.violate_mark_dscp), false) || try(tonumber(var.violate_mark_dscp) >= 0 && tonumber(var.violate_mark_dscp) <= 63, false)
+    error_message = "Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS3`, `AF31`, `AF32`, `AF33`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6`, `CS7` or a number between 0 and 63."
   }
 }
