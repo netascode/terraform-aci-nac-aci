@@ -297,13 +297,13 @@ module "aci_data_plane_policing_policy" {
   burst                = try(each.value.burst, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst)
   burst_unit           = try(each.value.burst_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst_unit)
   conform_action       = try(each.value.conform_action, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.conform_action)
-  conform_mark_qos     = try(each.value.conform_action == "mark", false) ? try(each.value.conform_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.conform_mark_cos) : null
+  conform_mark_cos     = try(each.value.conform_action == "mark", false) ? try(each.value.conform_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.conform_mark_cos) : null
   conform_mark_dscp    = try(each.value.conform_action == "mark", false) ? try(each.value.conform_mark_dscp, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.conform_mark_dscp) : null
   exceed_action        = try(each.value.exceed_action, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.exceed_action)
-  exceed_mark_qos      = try(each.value.exceed_action == "mark", false) ? try(each.value.exceed_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.exceed_mark_cos) : null
+  exceed_mark_cos      = try(each.value.exceed_action == "mark", false) ? try(each.value.exceed_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.exceed_mark_cos) : null
   exceed_mark_dscp     = try(each.value.exceed_action == "mark", false) ? try(each.value.exceed_mark_dscp, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.exceed_mark_dscp) : null
   violate_action       = try(each.value.violate_action, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_action)
-  violate_mark_qos     = try(each.value.violate_action == "mark", false) ? try(each.value.violate_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_mark_cos) : null
+  violate_mark_cos     = try(each.value.violate_action == "mark", false) ? try(each.value.violate_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_mark_cos) : null
   violate_mark_dscp    = try(each.value.violate_action == "mark", false) ? try(each.value.violate_mark_dscp, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_mark_dscp) : null
   pir                  = try(each.value.type == "2R3C", false) ? each.value.pir : null
   pir_unit             = try(each.value.type == "2R3C", false) ? try(each.value.pir_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.pir_unit) : null
