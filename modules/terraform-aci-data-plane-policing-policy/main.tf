@@ -1,6 +1,7 @@
 resource "aci_rest_managed" "qosDppPol" {
-  count      = var.policer_policy_type == "access" ? 1 : 0
-  dn         = "uni/infra/qosdpppol-${var.name}"
+  # count      = var.policer_policy_type == "access" ? 1 : 0
+  # dn         = "uni/infra/qosdpppol-${var.name}"
+  dn         = try(var.policer_policy_type == "access", false) ? "uni/infra/qosdpppol-${var.name}" : "uni/tn-common/qosdpppol-${var.name}"
   class_name = "qosDppPol"
 
   content = {
