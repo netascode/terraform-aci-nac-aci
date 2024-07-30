@@ -484,6 +484,28 @@ defaults:
       interface_policies:
         cdp_policies:
           name_suffix: ""
+        data_plane_policing_polcies:
+          name_suffix: ""
+          admin_state: true
+          policer_policy_type: access
+          type: 1R2C
+          mode: bit
+          sharing_mode: dedicated
+          pir_unit: unspecified
+          rate_unit: unspecified
+          burst_excessive: unspecified
+          burst_excessive_unit: unspecified
+          burst: unspecified
+          burst_unit: unspecified
+          conform_action: transmit
+          conform_mark_cos: unspecified
+          conform_mark_dscp: unspecified
+          exceed_action: transmit
+          exceed_mark_cos: unspecified
+          exceed_mark_dscp: unspecified
+          violate_action: transmit
+          violate_mark_cos: unspecified
+          violate_mark_dscp: unspecified
         lldp_policies:
           name_suffix: ""
         link_level_policies:

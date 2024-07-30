@@ -35,6 +35,7 @@ modules:
   aci_config_passphrase: true
   aci_contract: true
   aci_coop_policy: true
+  aci_data_plane_policing_policy: true
   aci_date_time_format: true
   aci_date_time_policy: true
   aci_device_selection_policy: true
