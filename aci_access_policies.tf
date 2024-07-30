@@ -281,6 +281,35 @@ module "aci_cdp_policy" {
   admin_state = each.value.admin_state
 }
 
+module "aci_data_plane_policing_policy" {
+  source = "./modules/terraform-aci-data-plane-policing-policy"
+
+  for_each             = { for dpp in try(local.access_policies.interface_policies.data_plane_policing_polcies, []) : dpp.name => dpp if local.modules.aci_data_plane_policing_policy && var.manage_access_policies }
+  name                 = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.name_suffix}"
+  admin_state          = each.value.admin_state
+  description          = try(each.value.description, "")
+  type                 = try(each.value.type, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.type)
+  mode                 = try(each.value.mode, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.mode)
+  sharing_mode         = try(each.value.sharing_mode, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.sharing_mode)
+  rate                 = each.value.rate
+  rate_unit            = try(each.value.rate_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.rate_unit)
+  burst                = try(each.value.burst, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst)
+  burst_unit           = try(each.value.burst_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst_unit)
+  conform_action       = try(each.value.conform_action, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.conform_action)
+  conform_mark_qos     = try(each.value.conform_action == "mark", false) ? try(each.value.conform_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.conform_mark_cos) : null
+  conform_mark_dscp    = try(each.value.conform_action == "mark", false) ? try(each.value.conform_mark_dscp, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.conform_mark_dscp) : null
+  exceed_action        = try(each.value.exceed_action, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.exceed_action)
+  exceed_mark_qos      = try(each.value.exceed_action == "mark", false) ? try(each.value.exceed_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.exceed_mark_cos) : null
+  exceed_mark_dscp     = try(each.value.exceed_action == "mark", false) ? try(each.value.exceed_mark_dscp, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.exceed_mark_dscp) : null
+  violate_action       = try(each.value.violate_action, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_action)
+  violate_mark_qos     = try(each.value.violate_action == "mark", false) ? try(each.value.violate_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_mark_cos) : null
+  violate_mark_dscp    = try(each.value.violate_action == "mark", false) ? try(each.value.violate_mark_dscp, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_mark_dscp) : null
+  pir                  = try(each.value.type == "2R3C", false) ? each.value.pir : null
+  pir_unit             = try(each.value.type == "2R3C", false) ? try(each.value.pir_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.pir_unit) : null
+  burst_excessive      = try(each.value.type == "2R3C", false) ? each.value.burst_excessive : null
+  burst_excessive_unit = try(each.value.type == "2R3C", false) ? try(each.value.burst_excessive_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst_excessive_unit) : null
+}
+
 module "aci_lldp_policy" {
   source = "./modules/terraform-aci-lldp-policy"
 
