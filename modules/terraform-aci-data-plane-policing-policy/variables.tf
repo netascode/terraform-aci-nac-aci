@@ -172,7 +172,7 @@ variable "conform_mark_cos" {
   default     = "unspecified"
 
   validation {
-    condition     = var.conform_mark_cos == "unspecified" || try(tonumber(var.conform_mark_cos) >= 0 && tonumber(var.conform_mark_cos) <= 7, false)
+    condition     = var.conform_mark_cos == null || var.conform_mark_cos == "unspecified" || try(tonumber(var.conform_mark_cos) >= 0 && tonumber(var.conform_mark_cos) <= 7, false)
     error_message = "Allowed Values: `unspecified` or a number between 0 and 7."
   }
 }
@@ -205,7 +205,7 @@ variable "exceed_mark_cos" {
   default     = "unspecified"
 
   validation {
-    condition     = var.exceed_mark_cos == "unspecified" || try(tonumber(var.exceed_mark_cos) >= 0 && tonumber(var.exceed_mark_cos) <= 7, false)
+    condition     = var.exceed_mark_cos == null || var.exceed_mark_cos == "unspecified" || try(tonumber(var.exceed_mark_cos) >= 0 && tonumber(var.exceed_mark_cos) <= 7, false)
     error_message = "Allowed Values: `unspecified` or a number between 0 and 7."
   }
 }
