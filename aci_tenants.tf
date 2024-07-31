@@ -488,7 +488,7 @@ module "aci_endpoint_group" {
     module.aci_imported_contract,
     module.aci_vmware_vmm_domain,
     module.aci_vlan_pool,
-    module.module.aci_tenant_data_plane_policing_policy
+    module.aci_tenant_data_plane_policing_policy,
   ]
 }
 
@@ -2495,7 +2495,6 @@ locals {
         tenant       = tenant.name
         name         = "${policy.name}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}"
         admin_state          = try(policy.admin_state, local.defaults.apic.tenants.policies.data_plane_policing_policies.admin_state)
-        policer_policy_type  = try(policy.policer_policy_type, local.defaults.apic.tenants.policies.data_plane_policing_policies.policer_policy_type)
         type                 = try(policy.type, local.defaults.apic.tenants.policies.data_plane_policing_policies.type)
         mode                 = try(policy.mode, local.defaults.apic.tenants.policies.data_plane_policing_policies.mode)
         sharing_mode         = try(policy.sharing_mode, local.defaults.apic.tenants.policies.data_plane_policing_policies.sharing_mode)
@@ -2525,10 +2524,10 @@ locals {
 module "aci_tenant_data_plane_policing_policy" {
   source = "./modules/terraform-aci-tenant-data-plane-policing-policy"
 
-  for_each             = { for dpp in try(local.data_plane_policing_policies, []) : dpp.name => dpp if local.modules.aci_tenant_data_plane_policing_policy && var.tenants }
+  for_each             = { for dpp in try(local.data_plane_policing_policies, []) : dpp.name => dpp if local.modules.aci_tenant_data_plane_policing_policy && var.manage_tenants }
   name                 = "${each.value.name}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}"
+  tenant               = each.value.tenant
   admin_state          = each.value.admin_state
-  policer_policy_type  = each.value.policer_policy_type
   type                 = each.value.type
   mode                 = each.value.mode
   sharing_mode         = each.value.sharing_mode
@@ -2549,6 +2548,10 @@ module "aci_tenant_data_plane_policing_policy" {
   pir_unit             = each.value.pir_unit
   burst_excessive      = each.value.burst_excessive
   burst_excessive_unit = each.value.burst_excessive_unit
+
+  depends_on = [
+    module.aci_tenant,
+  ]
 }
 
 module "aci_bgp_peer_prefix_policy" {

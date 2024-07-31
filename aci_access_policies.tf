@@ -287,7 +287,6 @@ module "aci_data_plane_policing_policy" {
   for_each             = { for dpp in try(local.access_policies.interface_policies.data_plane_policing_policies, []) : dpp.name => dpp if local.modules.aci_data_plane_policing_policy && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.name_suffix}"
   admin_state          = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.admin_state)
-  policer_policy_type  = try(each.value.policer_policy_type, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.policer_policy_type)
   type                 = try(each.value.type, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.type)
   mode                 = try(each.value.mode, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.mode)
   sharing_mode         = try(each.value.sharing_mode, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.sharing_mode)
