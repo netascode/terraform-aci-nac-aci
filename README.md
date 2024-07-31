@@ -173,6 +173,7 @@ Additional example repositories:
 | <a name="module_aci_bgp_best_path_policy"></a> [aci\_bgp\_best\_path\_policy](#module\_aci\_bgp\_best\_path\_policy) | ./modules/terraform-aci-bgp-best-path-policy | n/a |
 | <a name="module_aci_bgp_peer_prefix_policy"></a> [aci\_bgp\_peer\_prefix\_policy](#module\_aci\_bgp\_peer\_prefix\_policy) | ./modules/terraform-aci-bgp-peer-prefix-policy | n/a |
 | <a name="module_aci_bgp_policy"></a> [aci\_bgp\_policy](#module\_aci\_bgp\_policy) | ./modules/terraform-aci-bgp-policy | n/a |
+| <a name="module_aci_bgp_route_summarization_policy"></a> [aci\_bgp\_route\_summarization\_policy](#module\_aci\_bgp\_route\_summarization\_policy) | ./modules/terraform-aci-bgp-route-summarization-policy | n/a |
 | <a name="module_aci_bgp_timer_policy"></a> [aci\_bgp\_timer\_policy](#module\_aci\_bgp\_timer\_policy) | ./modules/terraform-aci-bgp-timer-policy | n/a |
 | <a name="module_aci_bridge_domain"></a> [aci\_bridge\_domain](#module\_aci\_bridge\_domain) | ./modules/terraform-aci-bridge-domain | n/a |
 | <a name="module_aci_ca_certificate"></a> [aci\_ca\_certificate](#module\_aci\_ca\_certificate) | ./modules/terraform-aci-ca-certificate | n/a |

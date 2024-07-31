@@ -36,6 +36,7 @@ module "aci_external_endpoint_group" {
     aggregate_export_route_control = true
     aggregate_shared_route_control = true
     bgp_route_summarization        = true
+    bgp_route_summarization_policy = "BGP_RS_Policy1"
   }]
   contract_consumers          = ["CON1"]
   contract_providers          = ["CON1"]

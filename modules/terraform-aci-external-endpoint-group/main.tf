@@ -88,6 +88,6 @@ resource "aci_rest_managed" "l3extRsSubnetToRtSumm" {
   dn         = "${aci_rest_managed.l3extSubnet[each.value.prefix].dn}/rsSubnetToRtSumm"
   class_name = "l3extRsSubnetToRtSumm"
   content = {
-    tDn = each.value.bgp_route_summarization ? "uni/tn-common/bgprtsum-default" : "uni/tn-common/ospfrtsumm-default"
+    tDn = each.value.bgp_route_summarization ? (each.value.bgp_route_summarization_policy != "" ? "uni/tn-${var.tenant}/bgprtsum-${each.value.bgp_route_summarization_policy}" : "uni/tn-common/bgprtsum-default") : (each.value.ospf_route_summarization ? "uni/tn-common/ospfrtsumm-default" : null)
   }
 }

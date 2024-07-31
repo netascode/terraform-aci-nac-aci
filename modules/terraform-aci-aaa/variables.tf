@@ -16,12 +16,12 @@ variable "default_fallback_check" {
 }
 
 variable "default_realm" {
-  description = "Default realm. Choices: `local`, `tacacs`, `radius`."
+  description = "Default realm. Choices: `local`, `tacacs`, `radius`, `ldap`."
   type        = string
   default     = "local"
 
   validation {
-    condition     = contains(["local", "tacacs", "radius"], var.default_realm)
+    condition     = contains(["local", "tacacs", "radius", "ldap"], var.default_realm)
     error_message = "Valid values are `local`, `tacacs` or `radius`."
   }
 }
@@ -38,12 +38,12 @@ variable "default_login_domain" {
 }
 
 variable "console_realm" {
-  description = "Console realm. Choices: `local`, `tacacs`, `radius`."
+  description = "Console realm. Choices: `local`, `tacacs`, `radius`, `ldap`."
   type        = string
   default     = "local"
 
   validation {
-    condition     = contains(["local", "tacacs", "radius"], var.console_realm)
+    condition     = contains(["local", "tacacs", "radius", "ldap"], var.console_realm)
     error_message = "Valid values are `local`, `tacacs` or `radius`."
   }
 }
