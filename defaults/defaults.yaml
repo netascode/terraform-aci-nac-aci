@@ -491,6 +491,8 @@ defaults:
           type: 1R2C
           mode: bit
           sharing_mode: dedicated
+          rate: 0
+          pir: 0
           pir_unit: unspecified
           rate_unit: unspecified
           burst_excessive: unspecified
@@ -1166,6 +1168,30 @@ defaults:
           priority: 1
           lsa_retransmit_interval: 5
           lsa_transmit_delay: 1
+        data_plane_policing_policies:
+          name_suffix: ""
+          admin_state: true
+          policer_policy_type: access
+          type: 1R2C
+          mode: bit
+          sharing_mode: dedicated
+          rate: 0
+          pir: 0
+          pir_unit: unspecified
+          rate_unit: unspecified
+          burst_excessive: unspecified
+          burst_excessive_unit: unspecified
+          burst: unspecified
+          burst_unit: unspecified
+          conform_action: transmit
+          conform_mark_cos: unspecified
+          conform_mark_dscp: unspecified
+          exceed_action: transmit
+          exceed_mark_cos: unspecified
+          exceed_mark_dscp: unspecified
+          violate_action: transmit
+          violate_mark_cos: unspecified
+          violate_mark_dscp: unspecified
         eigrp_interface_policies:
           name_suffix: ""
           bfd: false

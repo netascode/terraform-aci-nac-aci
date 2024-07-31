@@ -8,10 +8,32 @@ variable "name" {
   }
 }
 
+variable "tenant" {
+  type        = string
+  description = "Name of tenant for Data Plane Policing policy."
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "admin_state" {
   type        = bool
   default     = true
   description = "Administrative state of Data Plane Policing policy."
+}
+
+
+variable "policer_policy_type" {
+  type        = string
+  description = "Type of policy. Allowed Values: `access` or `tenant`"
+  default = "access"
+
+  validation {
+    condition     = try(contains(["access", "tenant"], var.policer_policy_type), false)
+    error_message = "Allowed Values: `access` or `tenant`."
+  }
 }
 
 variable "type" {

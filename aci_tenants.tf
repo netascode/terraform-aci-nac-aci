@@ -298,6 +298,7 @@ locals {
           preferred_group             = try(epg.preferred_group, local.defaults.apic.tenants.application_profiles.endpoint_groups.preferred_group)
           qos_class                   = try(epg.qos_class, local.defaults.apic.tenants.application_profiles.endpoint_groups.qos_class)
           custom_qos_policy           = try("${epg.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+          data_plane_policing_policy  = try("${epg.data_plane_policing_policy}", "")
           bridge_domain               = try("${epg.bridge_domain}${local.defaults.apic.tenants.bridge_domains.name_suffix}", "")
           tags                        = try(epg.tags, [])
           trust_control_policy        = try("${epg.trust_control_policy}${local.defaults.apic.tenants.policies.trust_control_policies.name_suffix}", "")
@@ -425,6 +426,7 @@ module "aci_endpoint_group" {
   preferred_group             = each.value.preferred_group
   qos_class                   = each.value.qos_class
   custom_qos_policy           = each.value.custom_qos_policy
+  data_plane_policing_policy  = each.value.data_plane_policing_policy 
   bridge_domain               = each.value.bridge_domain
   tags                        = each.value.tags
   trust_control_policy        = each.value.trust_control_policy
@@ -486,6 +488,7 @@ module "aci_endpoint_group" {
     module.aci_imported_contract,
     module.aci_vmware_vmm_domain,
     module.aci_vlan_pool,
+    module.module.aci_tenant_data_plane_policing_policy
   ]
 }
 
@@ -2436,6 +2439,70 @@ locals {
       }
     ]
   ])
+}
+
+locals {
+  data_plane_policing_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.data_plane_policing_policies, []) : {
+        key          = format("%s/%s", tenant.name, policy.name)
+        tenant       = tenant.name
+        name         = "${policy.name}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}"
+        admin_state          = try(policy.admin_state, local.defaults.apic.tenants.policies.data_plane_policing_policies.admin_state)
+        policer_policy_type  = try(policy.policer_policy_type, local.defaults.apic.tenants.policies.data_plane_policing_policies.policer_policy_type)
+        type                 = try(policy.type, local.defaults.apic.tenants.policies.data_plane_policing_policies.type)
+        mode                 = try(policy.mode, local.defaults.apic.tenants.policies.data_plane_policing_policies.mode)
+        sharing_mode         = try(policy.sharing_mode, local.defaults.apic.tenants.policies.data_plane_policing_policies.sharing_mode)
+        rate                 = try(policy.rate, local.defaults.apic.tenants.policies.data_plane_policing_policies.rate)
+        rate_unit            = try(policy.rate_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.rate_unit)
+        burst                = try(policy.burst, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst)
+        burst_unit           = try(policy.burst_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_unit)
+        conform_action       = try(policy.conform_action, local.defaults.apic.tenants.policies.data_plane_policing_policies.conform_action)
+        conform_mark_cos     = try(policy.conform_action == "mark", false) ? try(policy.conform_mark_cos, local.defaults.apic.tenants.policies.data_plane_policing_policies.conform_mark_cos) : null
+        conform_mark_dscp    = try(policy.conform_action == "mark", false) ? try(policy.conform_mark_dscp, local.defaults.apic.tenants.policies.data_plane_policing_policies.conform_mark_dscp) : null
+        exceed_action        = try(policy.exceed_action, local.defaults.apic.tenants.policies.data_plane_policing_policies.exceed_action)
+        exceed_mark_cos      = try(policy.exceed_action == "mark", false) ? try(policy.exceed_mark_cos, local.defaults.apic.tenants.policies.data_plane_policing_policies.exceed_mark_cos) : null
+        exceed_mark_dscp     = try(policy.exceed_action == "mark", false) ? try(policy.exceed_mark_dscp, local.defaults.apic.tenants.policies.data_plane_policing_policies.exceed_mark_dscp) : null
+        violate_action       = try(policy.violate_action, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_action)
+        violate_mark_cos     = try(policy.violate_action == "mark", false) ? try(policy.violate_mark_cos, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_mark_cos) : null
+        violate_mark_dscp    = try(policy.violate_action == "mark", false) ? try(policy.violate_mark_dscp, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_mark_dscp) : null
+        pir                  = try(policy.type == "2R3C", false) ? try(policy.pir, local.defaults.apic.tenants.policies.data_plane_policing_policies.pir) : null
+        pir_unit             = try(policy.type == "2R3C", false) ? try(policy.pir_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.pir_unit) : null
+        burst_excessive      = try(policy.type == "2R3C", false) ? try(policy.burst_excessive, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_excessive) : null
+        burst_excessive_unit = try(policy.type == "2R3C", false) ? try(policy.burst_excessive_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_excessive_unit) : null
+
+      }
+    ]
+  ])
+}
+
+module "aci_tenant_data_plane_policing_policy" {
+  source = "./modules/terraform-aci-tenant-data-plane-policing-policy"
+
+  for_each             = { for dpp in try(local.data_plane_policing_policies, []) : dpp.name => dpp if local.modules.aci_tenant_data_plane_policing_policy && var.tenants }
+  name                 = "${each.value.name}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}"
+  admin_state          = each.value.admin_state
+  policer_policy_type  = each.value.policer_policy_type
+  type                 = each.value.type
+  mode                 = each.value.mode
+  sharing_mode         = each.value.sharing_mode
+  rate                 = each.value.rate
+  rate_unit            = each.value.rate_unit
+  burst                = each.value.burst
+  burst_unit           = each.value.burst_unit
+  conform_action       = each.value.conform_action
+  conform_mark_cos     = each.value.conform_mark_cos
+  conform_mark_dscp    = each.value.conform_mark_dscp
+  exceed_action        = each.value.exceed_action
+  exceed_mark_cos      = each.value.exceed_mark_cos
+  exceed_mark_dscp     = each.value.exceed_mark_dscp
+  violate_action       = each.value.violate_action
+  violate_mark_cos     = each.value.violate_mark_cos
+  violate_mark_dscp    = each.value.violate_mark_dscp
+  pir                  = each.value.pir
+  pir_unit             = each.value.pir_unit
+  burst_excessive      = each.value.burst_excessive
+  burst_excessive_unit = each.value.burst_excessive_unit
 }
 
 module "aci_bgp_peer_prefix_policy" {

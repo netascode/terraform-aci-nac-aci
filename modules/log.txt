@@ -1,0 +1,17 @@
+2024-07-30T20:21:15.912-0400 [INFO]  Terraform version: 1.8.4
+2024-07-30T20:21:15.913-0400 [DEBUG] using github.com/hashicorp/go-tfe v1.51.0
+2024-07-30T20:21:15.913-0400 [DEBUG] using github.com/hashicorp/hcl/v2 v2.20.0
+2024-07-30T20:21:15.913-0400 [DEBUG] using github.com/hashicorp/terraform-svchost v0.1.1
+2024-07-30T20:21:15.913-0400 [DEBUG] using github.com/zclconf/go-cty v1.14.3
+2024-07-30T20:21:15.914-0400 [INFO]  Go runtime version: go1.22.1
+2024-07-30T20:21:15.914-0400 [INFO]  CLI args: []string{"C:\\Users\\wdbyrd\\AppData\\Local\\Microsoft\\WindowsApps\\terraform.exe", "apply", "-auto-approve"}
+2024-07-30T20:21:15.929-0400 [DEBUG] Attempting to open CLI config file: C:\Users\wdbyrd\AppData\Roaming\terraform.rc
+2024-07-30T20:21:15.929-0400 [DEBUG] File doesn't exist, but doesn't need to. Ignoring.
+2024-07-30T20:21:15.930-0400 [DEBUG] ignoring non-existing provider search directory terraform.d/plugins
+2024-07-30T20:21:15.931-0400 [DEBUG] ignoring non-existing provider search directory C:\Users\wdbyrd\AppData\Roaming\terraform.d\plugins
+2024-07-30T20:21:15.931-0400 [DEBUG] ignoring non-existing provider search directory C:\Users\wdbyrd\AppData\Roaming\HashiCorp\Terraform\plugins
+2024-07-30T20:21:15.931-0400 [INFO]  CLI command args: []string{"apply", "-auto-approve"}
+2024-07-30T20:21:15.933-0400 [DEBUG] New state was assigned lineage "ed579121-6f06-1a4f-5322-12f5eb25f7b7"
+2024-07-30T20:21:15.933-0400 [DEBUG] checking for provisioner in "."
+2024-07-30T20:21:15.933-0400 [DEBUG] checking for provisioner in "C:\\Users\\wdbyrd\\AppData\\Local\\Microsoft\\WindowsApps"
+2024-07-30T20:21:15.934-0400 [INFO]  backend/local: starting Apply operation
