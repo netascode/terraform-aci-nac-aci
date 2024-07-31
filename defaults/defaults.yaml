@@ -487,7 +487,6 @@ defaults:
         data_plane_policing_policies:
           name_suffix: ""
           admin_state: true
-          policer_policy_type: access
           type: 1R2C
           mode: bit
           sharing_mode: dedicated
@@ -1171,7 +1170,6 @@ defaults:
         data_plane_policing_policies:
           name_suffix: ""
           admin_state: true
-          policer_policy_type: access
           type: 1R2C
           mode: bit
           sharing_mode: dedicated

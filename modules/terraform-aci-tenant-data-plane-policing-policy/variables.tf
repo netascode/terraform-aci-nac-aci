@@ -24,18 +24,6 @@ variable "admin_state" {
   description = "Administrative state of Data Plane Policing policy."
 }
 
-
-variable "policer_policy_type" {
-  type        = string
-  description = "Type of policy. Allowed Values: `access` or `tenant`"
-  default = "access"
-
-  validation {
-    condition     = try(contains(["access", "tenant"], var.policer_policy_type), false)
-    error_message = "Allowed Values: `access` or `tenant`."
-  }
-}
-
 variable "type" {
   type        = string
   description = "Policer Type. Allowed Values: `1R2C` or `2R3C`."
@@ -81,12 +69,12 @@ variable "pir" {
 
 variable "pir_unit" {
   type        = string
-  description = "Peak Rate Unit. Allowed Values: `unspecified`, `bits`, `kilo`, `mega`, `giga`."
+  description = "Peak Rate Unit. Allowed Values: `unspecified`, `kilo`, `mega`, `giga`."
   default     = "unspecified"
 
   validation {
-    condition     = var.pir_unit == null || try(contains(["unspecified", "bits", "kilo", "mega", "giga"], var.pir_unit), false)
-    error_message = "Allowed Values: `unspecified`, `bits`, `kilo`, `mega`, `giga`."
+    condition     = var.pir_unit == null || try(contains(["unspecified", "kilo", "mega", "giga"], var.pir_unit), false)
+    error_message = "Allowed Values: `unspecified`, `kilo`, `mega`, `giga`."
   }
 }
 
@@ -102,12 +90,12 @@ variable "rate" {
 
 variable "rate_unit" {
   type        = string
-  description = "Committed Rate Unit. Allowed Values: `unspecified`, `bits`, `kilo`, `mega`, `giga`."
+  description = "Committed Rate Unit. Allowed Values: `unspecified`, `kilo`, `mega`, `giga`."
   default     = "unspecified"
 
   validation {
-    condition     = try(contains(["unspecified", "bits", "kilo", "mega", "giga"], var.rate_unit), false)
-    error_message = "Allowed Values: `unspecified`, `bits`, `kilo`, `mega`, `giga`."
+    condition     = try(contains(["unspecified", "kilo", "mega", "giga"], var.rate_unit), false)
+    error_message = "Allowed Values: `unspecified`, `kilo`, `mega`, `giga`."
   }
 }
 
@@ -146,12 +134,12 @@ variable "burst" {
 
 variable "burst_unit" {
   type        = string
-  description = "Burst unit.  Allowed values: `unspecified`, `byte`, `kilo`, `mega`, `giga`, `msec`, `usec`."
+  description = "Burst unit.  Allowed values: `unspecified`, `kilo`, `mega`, `giga`, `msec`, `usec`."
   default     = "unspecified"
 
   validation {
-    condition     = try(contains(["unspecified", "byte", "kilo", "mega", "giga", "msec", "usec"], var.burst_unit), false)
-    error_message = "Allowed values: `unspecified`, `byte`, `kilo`, `mega`, `giga`, `msec`, `usec`."
+    condition     = try(contains(["unspecified", "kilo", "mega", "giga", "msec", "usec"], var.burst_unit), false)
+    error_message = "Allowed values: `unspecified`, `kilo`, `mega`, `giga`, `msec`, `usec`."
   }
 }
 
