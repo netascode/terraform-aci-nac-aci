@@ -1167,6 +1167,8 @@ locals {
                 elag              = try(path.elag, null)
                 floating_ip       = path.floating_ip
               }]
+              micro_bfd_destination_ip = try(int.micro_bfd.destination_ip, null)
+              micro_bfd_start_timer    = try(int.micro_bfd.start_timer, null)
             }]
           }
         ]
@@ -1199,30 +1201,32 @@ module "aci_l3out_interface_profile_manual" {
   qos_class                    = each.value.qos_class
   custom_qos_policy            = each.value.custom_qos_policy
   interfaces = [for int in try(each.value.interfaces, []) : {
-    ip              = int.ip
-    svi             = int.svi
-    floating_svi    = int.floating_svi
-    autostate       = int.autostate
-    vlan            = int.vlan
-    description     = int.description
-    type            = int.type
-    mac             = int.mac
-    mtu             = int.mtu
-    mode            = int.mode
-    node_id         = int.node_id
-    node2_id        = int.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == int.channel][0][1] : int.node2_id
-    pod_id          = int.pod_id == null ? try([for node in local.node_policies.nodes : node.pod if node.id == int.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) : int.pod_id
-    module          = int.module
-    port            = int.port
-    sub_port        = int.sub_port
-    channel         = int.channel
-    ip_a            = int.ip_a
-    ip_b            = int.ip_b
-    ip_shared       = int.ip_shared
-    bgp_peers       = int.bgp_peers
-    paths           = int.paths
-    scope           = int.scope
-    multipod_direct = int.multipod_direct
+    ip                       = int.ip
+    svi                      = int.svi
+    floating_svi             = int.floating_svi
+    autostate                = int.autostate
+    vlan                     = int.vlan
+    description              = int.description
+    type                     = int.type
+    mac                      = int.mac
+    mtu                      = int.mtu
+    mode                     = int.mode
+    node_id                  = int.node_id
+    node2_id                 = int.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == int.channel][0][1] : int.node2_id
+    pod_id                   = int.pod_id == null ? try([for node in local.node_policies.nodes : node.pod if node.id == int.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.pod) : int.pod_id
+    module                   = int.module
+    port                     = int.port
+    sub_port                 = int.sub_port
+    channel                  = int.channel
+    ip_a                     = int.ip_a
+    ip_b                     = int.ip_b
+    ip_shared                = int.ip_shared
+    bgp_peers                = int.bgp_peers
+    paths                    = int.paths
+    scope                    = int.scope
+    multipod_direct          = int.multipod_direct
+    micro_bfd_destination_ip = int.micro_bfd_destination_ip
+    micro_bfd_start_timer    = int.micro_bfd_start_timer
   }]
 
   depends_on = [
@@ -1312,6 +1316,8 @@ locals {
               elag              = try(path.elag, null)
               floating_ip       = path.floating_ip
             }]
+            micro_bfd_destination_ip = try(int.micro_bfd.destination_ip, null)
+            micro_bfd_start_timer    = try(int.micro_bfd.start_timer, null)
           }
         ]])
       } if length(try(l3out.nodes, [])) != 0
@@ -1342,30 +1348,32 @@ module "aci_l3out_interface_profile_auto" {
   qos_class                    = each.value.qos_class
   custom_qos_policy            = each.value.custom_qos_policy
   interfaces = [for int in try(each.value.interfaces, []) : {
-    ip              = int.ip
-    svi             = int.svi
-    autostate       = int.autostate
-    floating_svi    = int.floating_svi
-    vlan            = int.vlan
-    description     = int.description
-    type            = int.type
-    mac             = int.mac
-    mtu             = int.mtu
-    mode            = int.mode
-    node_id         = int.node_id
-    node2_id        = int.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == int.channel][0][1] : int.node2_id
-    pod_id          = int.pod_id
-    module          = int.module
-    port            = int.port
-    sub_port        = int.sub_port
-    channel         = int.channel
-    ip_a            = int.ip_a
-    ip_b            = int.ip_b
-    ip_shared       = int.ip_shared
-    bgp_peers       = int.bgp_peers
-    paths           = int.paths
-    scope           = int.scope
-    multipod_direct = int.multipod_direct
+    ip                       = int.ip
+    svi                      = int.svi
+    autostate                = int.autostate
+    floating_svi             = int.floating_svi
+    vlan                     = int.vlan
+    description              = int.description
+    type                     = int.type
+    mac                      = int.mac
+    mtu                      = int.mtu
+    mode                     = int.mode
+    node_id                  = int.node_id
+    node2_id                 = int.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == int.channel][0][1] : int.node2_id
+    pod_id                   = int.pod_id
+    module                   = int.module
+    port                     = int.port
+    sub_port                 = int.sub_port
+    channel                  = int.channel
+    ip_a                     = int.ip_a
+    ip_b                     = int.ip_b
+    ip_shared                = int.ip_shared
+    bgp_peers                = int.bgp_peers
+    paths                    = int.paths
+    scope                    = int.scope
+    multipod_direct          = int.multipod_direct
+    micro_bfd_destination_ip = int.micro_bfd_destination_ip
+    micro_bfd_start_timer    = int.micro_bfd_start_timer
   }]
 
   depends_on = [
@@ -1407,6 +1415,7 @@ locals {
             aggregate_export_route_control = try(subnet.aggregate_export_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_export_route_control)
             aggregate_shared_route_control = try(subnet.aggregate_shared_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_shared_route_control)
             bgp_route_summarization        = try(subnet.bgp_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.bgp_route_summarization)
+            bgp_route_summarization_policy = try(subnet.bgp_route_summarization_policy, "")
             ospf_route_summarization       = try(subnet.ospf_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ospf_route_summarization)
             route_control_profiles = [for rcp in try(subnet.route_control_profiles, []) : {
               name      = rcp.name
@@ -1996,6 +2005,39 @@ module "aci_eigrp_interface_policy" {
   ]
 }
 
+locals {
+  bgp_route_summarization_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.bgp_route_summarization_policies, []) : {
+        key          = format("%s/%s", tenant.name, policy.name)
+        tenant       = tenant.name
+        name         = "${policy.name}${local.defaults.apic.tenants.policies.bgp_route_summarization_policies.name_suffix}"
+        description  = try(policy.description, "")
+        as_set       = try(policy.as_set, local.defaults.apic.tenants.policies.bgp_route_summarization_policies.as_set)
+        summary_only = try(policy.summary_only, local.defaults.apic.tenants.policies.bgp_route_summarization_policies.summary_only)
+        af_mcast     = try(policy.af_mcast, local.defaults.apic.tenants.policies.bgp_route_summarization_policies.af_mcast)
+        af_ucast     = try(policy.af_ucast, local.defaults.apic.tenants.policies.bgp_route_summarization_policies.af_ucast)
+      }
+    ]
+  ])
+}
+
+module "aci_bgp_route_summarization_policy" {
+  source = "./modules/terraform-aci-bgp-route-summarization-policy"
+
+  for_each     = { for pol in local.bgp_route_summarization_policies : pol.key => pol if local.modules.aci_bgp_route_summarization_policy && var.manage_tenants }
+  tenant       = each.value.tenant
+  name         = each.value.name
+  description  = each.value.description
+  as_set       = each.value.as_set
+  summary_only = each.value.summary_only
+  af_mcast     = each.value.af_mcast
+  af_ucast     = each.value.af_ucast
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
 
 locals {
   bgp_timer_policies = flatten([

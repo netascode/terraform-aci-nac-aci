@@ -1,7 +1,6 @@
 ---
 defaults:
   apic:
-    version: "5.2.1g"
     auto_generate_switch_pod_profiles: false
     auto_generate_pod_profiles: false
     auto_generate_fabric_leaf_switch_interface_profiles: false
@@ -875,6 +874,8 @@ defaults:
               multicast_address_family: true
               admin_state: true
               as_propagate: none
+            micro_bfd:
+              start_timer: 0
         node_profiles:
           name_suffix: ""
           bgp_peers:
@@ -943,6 +944,8 @@ defaults:
                 multicast_address_family: true
                 admin_state: true
                 as_propagate: none
+              micro_bfd:
+                start_timer: 0
         external_endpoint_groups:
           name_suffix: ""
           preferred_group: false
@@ -1193,6 +1196,12 @@ defaults:
         bgp_best_path_policies:
           name_suffix: ""
           control_type: ""
+        bgp_route_summarization_policies:
+          name_suffix: ""
+          as_set: false
+          summary_only: false
+          af_mcast: false
+          af_ucast: true
         bgp_timer_policies:
           name_suffix: ""
           keepalive_interval: 60
