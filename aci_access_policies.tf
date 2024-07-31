@@ -286,13 +286,12 @@ module "aci_data_plane_policing_policy" {
 
   for_each             = { for dpp in try(local.access_policies.interface_policies.data_plane_policing_policies, []) : dpp.name => dpp if local.modules.aci_data_plane_policing_policy && var.manage_access_policies }
   name                 = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.name_suffix}"
-  admin_state          = each.value.admin_state
-  description          = try(each.value.description, "")
+  admin_state          = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.admin_state)
   policer_policy_type  = try(each.value.policer_policy_type, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.policer_policy_type)
   type                 = try(each.value.type, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.type)
   mode                 = try(each.value.mode, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.mode)
   sharing_mode         = try(each.value.sharing_mode, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.sharing_mode)
-  rate                 = each.value.rate
+  rate                 = try(each.value.rate, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.rate)
   rate_unit            = try(each.value.rate_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.rate_unit)
   burst                = try(each.value.burst, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst)
   burst_unit           = try(each.value.burst_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst_unit)
@@ -305,9 +304,9 @@ module "aci_data_plane_policing_policy" {
   violate_action       = try(each.value.violate_action, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_action)
   violate_mark_cos     = try(each.value.violate_action == "mark", false) ? try(each.value.violate_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_mark_cos) : null
   violate_mark_dscp    = try(each.value.violate_action == "mark", false) ? try(each.value.violate_mark_dscp, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_mark_dscp) : null
-  pir                  = try(each.value.type == "2R3C", false) ? each.value.pir : null
+  pir                  = try(each.value.type == "2R3C", false) ? try(each.value.pir, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.pir) : null
   pir_unit             = try(each.value.type == "2R3C", false) ? try(each.value.pir_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.pir_unit) : null
-  burst_excessive      = try(each.value.type == "2R3C", false) ? each.value.burst_excessive : null
+  burst_excessive      = try(each.value.type == "2R3C", false) ? try(each.value.burst_excessive, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst_excessive) : null
   burst_excessive_unit = try(each.value.type == "2R3C", false) ? try(each.value.burst_excessive_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst_excessive_unit) : null
 }
 
@@ -413,29 +412,28 @@ module "aci_storm_control_policy" {
 module "aci_access_leaf_interface_policy_group" {
   source = "./modules/terraform-aci-access-leaf-interface-policy-group"
 
-  for_each                   = { for pg in try(local.access_policies.leaf_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_leaf_interface_policy_group && var.manage_access_policies }
-  name                       = "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}"
-  description                = try(each.value.description, "")
-  type                       = each.value.type
-  map                        = try(each.value.map, local.defaults.apic.access_policies.leaf_interface_policy_groups.map)
-  link_level_policy          = try("${each.value.link_level_policy}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}", "")
-  cdp_policy                 = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
-  lldp_policy                = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
-  spanning_tree_policy       = try("${each.value.spanning_tree_policy}${local.defaults.apic.access_policies.interface_policies.spanning_tree_policies.name_suffix}", "")
-  mcp_policy                 = try("${each.value.mcp_policy}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}", "")
-  l2_policy                  = try("${each.value.l2_policy}${local.defaults.apic.access_policies.interface_policies.l2_policies.name_suffix}", "")
-  storm_control_policy       = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")
-  port_channel_policy        = try("${each.value.port_channel_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix}", "")
-  port_channel_member_policy = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
-  netflow_monitor_policies = [for monitor in try(each.value.netflow_monitor_policies, []) : {
-    name           = "${monitor.name}${local.defaults.apic.access_policies.interface_policies.netflow_monitors.name_suffix}"
-    ip_filter_type = try(monitor.ip_filter_type, local.defaults.apic.access_policies.leaf_interface_policy_groups.netflow_monitor_policies.ip_filter_type)
-  }]
-  aaep = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
+  for_each                           = { for pg in try(local.access_policies.leaf_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_leaf_interface_policy_group && var.manage_access_policies }
+  name                               = "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}"
+  description                        = try(each.value.description, "")
+  type                               = each.value.type
+  map                                = try(each.value.map, local.defaults.apic.access_policies.leaf_interface_policy_groups.map)
+  link_level_policy                  = try("${each.value.link_level_policy}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}", "")
+  cdp_policy                         = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
+  egress_data_plane_policing_policy  = try("${each.value.egress_data_plane_policing_policy}${local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.name_suffix}","")
+  ingress_data_plane_policing_policy = try("${each.value.ingress_data_plane_policing_policy}${local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.name_suffix}","")
+  lldp_policy                        = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
+  spanning_tree_policy               = try("${each.value.spanning_tree_policy}${local.defaults.apic.access_policies.interface_policies.spanning_tree_policies.name_suffix}", "")
+  mcp_policy                         = try("${each.value.mcp_policy}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}", "")
+  l2_policy                          = try("${each.value.l2_policy}${local.defaults.apic.access_policies.interface_policies.l2_policies.name_suffix}", "")
+  storm_control_policy               = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")
+  port_channel_policy                = try("${each.value.port_channel_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix}", "")
+  port_channel_member_policy         = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
+  aaep                               = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
 
   depends_on = [
     module.aci_link_level_policy,
     module.aci_cdp_policy,
+    module.aci_data_plane_policing_policy,
     module.aci_lldp_policy,
     module.aci_spanning_tree_policy,
     module.aci_mcp_policy,
