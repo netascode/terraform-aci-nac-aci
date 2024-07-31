@@ -12,7 +12,10 @@ module "aci_l3out_node_profile" {
     pod_id                = 2
     router_id             = "2.2.2.2"
     router_id_as_loopback = false
-    loopback              = "12.12.12.12"
+    loopbacks = [
+      "12.12.12.12",
+      "fd12:3456:789a:1::1"
+    ]
     static_routes = [{
       prefix      = "0.0.0.0/0"
       description = "Default Route"

@@ -29,6 +29,17 @@ locals {
       ]
     ]
   ])
+  loopback_list = flatten([
+    for node in var.nodes : [
+      for lp in coalesce(node.loopbacks, []) : {
+        key   = "${node.node_id}/${lp}"
+        value = {
+          ip  = lp
+          node = node.node_id
+        }
+      }
+    ]
+  ])
 }
 
 resource "aci_rest_managed" "l3extLNodeP" {
@@ -50,11 +61,11 @@ resource "aci_rest_managed" "l3extRsNodeL3OutAtt" {
 }
 
 resource "aci_rest_managed" "l3extLoopBackIfP" {
-  for_each   = { for node in var.nodes : node.node_id => node if node.router_id_as_loopback == false && node.loopback != null }
-  dn         = "${aci_rest_managed.l3extRsNodeL3OutAtt[each.key].dn}/lbp-[${each.value.loopback}]"
+  for_each   = { for item in local.loopback_list : item.key => item.value }
+  dn         = "${aci_rest_managed.l3extRsNodeL3OutAtt[each.value.node].dn}/lbp-[${each.value.ip}]"
   class_name = "l3extLoopBackIfP"
   content = {
-    addr = each.value.loopback
+    addr = each.value.ip
   }
 }
 
