@@ -2865,7 +2865,7 @@ ten_policies:
   ospf_interface_policies: list(include('ten_ospf_interface_policies'), required=False) # @sheet_hidden()
   eigrp_interface_policies: list(include('ten_eigrp_interface_policies'), required=False) # @sheet_hidden()
   ospf_timer_policies: list(include('ten_ospf_timer_policies'), required=False) # @sheet_hidden()
-  bgp_route_summarization_policies: list(include('ten_bgp_route_summarization_policy'), required=False) # @sheet_hidden()
+  bgp_route_summarization_policies: list(include('ten_bgp_route_summarization_policy'), required=False) # @name(BGP Route Summarization) @sheet_hidden()
   bgp_timer_policies: list(include('ten_bgp_timer_policy'), required=False) # @sheet_hidden()
   bgp_peer_prefix_policies: list(include('ten_bgp_peer_prefix_policies'), required=False) # @sheet_hidden()
   bgp_best_path_policies: list(include('ten_bgp_best_path_policy'), required=False) # @sheet_hidden()
