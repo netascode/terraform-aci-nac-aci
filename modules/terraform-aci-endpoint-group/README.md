@@ -149,6 +149,7 @@ module "aci_endpoint_group" {
 | <a name="input_static_endpoints"></a> [static\_endpoints](#input\_static\_endpoints) | List of static endpoints. Format `mac`: `12:34:56:78:9A:BC`. Choices `type`: `silent-host`, `tep`, `vep`. Allowed values `node_id`, `node2_id`: `1` - `4000`. Allowed values `vlan`: `1` - `4096`. Allowed values `pod_id`: `1` - `255`. Default value `pod_id`: `1`. Allowed values `port`: `1` - `127`. Allowed values `module`: `1` - `9`. Default value `module`: `1`. | <pre>list(object({<br>    name           = optional(string, "")<br>    alias          = optional(string, "")<br>    mac            = string<br>    ip             = optional(string, "0.0.0.0")<br>    type           = string<br>    node_id        = optional(number)<br>    node2_id       = optional(number)<br>    vlan           = optional(number)<br>    pod_id         = optional(number, 1)<br>    port           = optional(number)<br>    module         = optional(number, 1)<br>    channel        = optional(string)<br>    additional_ips = optional(list(string), [])<br>  }))</pre> | `[]` | no |
 | <a name="input_l4l7_virtual_ips"></a> [l4l7\_virtual\_ips](#input\_l4l7\_virtual\_ips) | List of EPG L4/L7 Virtual IPs. | <pre>list(object({<br>    ip          = string<br>    description = optional(string, "")<br>  }))</pre> | `[]` | no |
 | <a name="input_l4l7_address_pools"></a> [l4l7\_address\_pools](#input\_l4l7\_address\_pools) | List of EPG L4/L7 Address Pools. | <pre>list(object({<br>    name            = string<br>    gateway_address = string<br>    from            = optional(string, "")<br>    to              = optional(string, "")<br>  }))</pre> | `[]` | no |
+| <a name="input_data_plane_policing_policy"></a> [data\_plane\_policing\_policy](#input\_data\_plane\_policing\_policy) | Data Plane Policing Policy to apply to EPG. | `string` | `""` | no |
 
 ## Outputs
 
@@ -173,6 +174,7 @@ module "aci_endpoint_group" {
 | [aci_rest_managed.fvRsCustQosPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsDomAtt](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsDomAtt_vmm](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsDppPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsIntraEpg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsNdPfxPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsNodeAtt](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

@@ -657,9 +657,9 @@ variable "l4l7_address_pools" {
 }
 
 variable "data_plane_policing_policy" {
-  type = string
+  type        = string
   description = "Data Plane Policing Policy to apply to EPG."
-  default = ""
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.data_plane_policing_policy))

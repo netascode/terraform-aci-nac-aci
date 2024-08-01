@@ -1,0 +1,34 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  # Terraform Tenant Data Plane Policing Policy Module
+
+  Manages ACI Tenant Data Plane Policing Policy
+
+  Location in GUI:
+  `Tenants` » `Policies` » `Protocol` » `Data Plane Policing`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

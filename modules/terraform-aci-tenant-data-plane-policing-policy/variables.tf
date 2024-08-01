@@ -149,7 +149,7 @@ variable "conform_action" {
   default     = "transmit"
 
   validation {
-    condition = try(contains(["transmit", "drop", "mark"], var.conform_action), false)
+    condition     = try(contains(["transmit", "drop", "mark"], var.conform_action), false)
     error_message = "Allowed Values: `transmit`, `drop`, or `mark`."
   }
 }
@@ -171,7 +171,7 @@ variable "conform_mark_dscp" {
   default     = "unspecified"
 
   validation {
-    condition = var.conform_mark_dscp == null || var.conform_mark_dscp == "unspecified" || try(tonumber(var.conform_mark_dscp) >= 0 && tonumber(var.conform_mark_dscp) <= 63, false)
+    condition     = var.conform_mark_dscp == null || var.conform_mark_dscp == "unspecified" || try(tonumber(var.conform_mark_dscp) >= 0 && tonumber(var.conform_mark_dscp) <= 63, false)
     error_message = "Allowed values are `unspecified` or a number between 0 and 63."
   }
 }
@@ -182,7 +182,7 @@ variable "exceed_action" {
   default     = "transmit"
 
   validation {
-    condition = try(contains(["transmit", "drop", "mark"], var.exceed_action), false)
+    condition     = try(contains(["transmit", "drop", "mark"], var.exceed_action), false)
     error_message = "Allowed Values: `transmit`, `drop`, or `mark`."
   }
 }
@@ -204,7 +204,7 @@ variable "exceed_mark_dscp" {
   default     = "unspecified"
 
   validation {
-    condition = var.exceed_mark_dscp == null || var.exceed_mark_dscp == "unspecified" || try(tonumber(var.exceed_mark_dscp) >= 0 && tonumber(var.exceed_mark_dscp) <= 63, false)
+    condition     = var.exceed_mark_dscp == null || var.exceed_mark_dscp == "unspecified" || try(tonumber(var.exceed_mark_dscp) >= 0 && tonumber(var.exceed_mark_dscp) <= 63, false)
     error_message = "Allowed values are `unspecified` or a number between 0 and 63."
   }
 }
@@ -215,7 +215,7 @@ variable "violate_action" {
   default     = "transmit"
 
   validation {
-    condition = try(contains(["transmit", "drop", "mark"], var.violate_action), false)
+    condition     = try(contains(["transmit", "drop", "mark"], var.violate_action), false)
     error_message = "Allowed Values: `transmit`, `drop`, or `mark`."
   }
 }
@@ -237,7 +237,7 @@ variable "violate_mark_dscp" {
   default     = "unspecified"
 
   validation {
-    condition = var.violate_mark_dscp == null || var.violate_mark_dscp == "unspecified" || try(tonumber(var.violate_mark_dscp) >= 0 && tonumber(var.violate_mark_dscp) <= 63, false)
+    condition     = var.violate_mark_dscp == null || var.violate_mark_dscp == "unspecified" || try(tonumber(var.violate_mark_dscp) >= 0 && tonumber(var.violate_mark_dscp) <= 63, false)
     error_message = "Allowed values are `unspecified` or a number between 0 and 63."
   }
 }
