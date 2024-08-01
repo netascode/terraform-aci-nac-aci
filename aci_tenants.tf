@@ -365,6 +365,7 @@ locals {
             sub_port             = try(sp.sub_port, null)
             module               = try(sp.module, null)
             vlan                 = try(sp.vlan, null)
+            primary_vlan         = try(sp.primary_vlan, null)
             deployment_immediacy = try(sp.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.deployment_immediacy)
             mode                 = try(sp.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.mode)
             ptp_source_ip        = try(sp.ptp.source_ip, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.ptp.source_ip)
@@ -447,6 +448,7 @@ module "aci_endpoint_group" {
     sub_port             = sp.sub_port
     module               = sp.module
     vlan                 = sp.vlan
+    primary_vlan         = sp.primary_vlan
     deployment_immediacy = sp.deployment_immediacy
     mode                 = sp.mode
     ptp_source_ip        = sp.ptp_source_ip
