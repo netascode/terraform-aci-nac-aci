@@ -29,7 +29,7 @@ resource "aci_rest_managed" "infraRsCdpIfPol" {
 
 resource "aci_rest_managed" "infraRsQosEgressDppIfPol" {
   count      = var.type != "breakout" ? 1 : 0
-  dn = "${aci_rest_managed.infraAccGrp.dn}/rsQosEgressDppIfPol"
+  dn         = "${aci_rest_managed.infraAccGrp.dn}/rsQosEgressDppIfPol"
   class_name = "infraRsQosEgressDppIfPol"
   content = {
     tnQosDppPolName = var.egress_data_plane_policing_policy
@@ -38,7 +38,7 @@ resource "aci_rest_managed" "infraRsQosEgressDppIfPol" {
 
 resource "aci_rest_managed" "infraRsQosIngressDppIfPol" {
   count      = var.type != "breakout" ? 1 : 0
-  dn = "${aci_rest_managed.infraAccGrp.dn}/rsQosIngressDppIfPol"
+  dn         = "${aci_rest_managed.infraAccGrp.dn}/rsQosIngressDppIfPol"
   class_name = "infraRsQosIngressDppIfPol"
   content = {
     tnQosDppPolName = var.ingress_data_plane_policing_policy

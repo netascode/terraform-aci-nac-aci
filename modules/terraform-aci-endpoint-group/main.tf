@@ -49,7 +49,7 @@ resource "aci_rest_managed" "fvRsBd" {
 }
 
 resource "aci_rest_managed" "fvRsDppPol" {
-  dn =   "${aci_rest_managed.fvAEPg.dn}/rsdppPol"
+  dn         = "${aci_rest_managed.fvAEPg.dn}/rsdppPol"
   class_name = "fvRsDppPol"
   content = {
     tnQosDppPolName = var.data_plane_policing_policy

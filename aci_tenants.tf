@@ -298,7 +298,7 @@ locals {
           preferred_group             = try(epg.preferred_group, local.defaults.apic.tenants.application_profiles.endpoint_groups.preferred_group)
           qos_class                   = try(epg.qos_class, local.defaults.apic.tenants.application_profiles.endpoint_groups.qos_class)
           custom_qos_policy           = try("${epg.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
-          data_plane_policing_policy  = try("${epg.data_plane_policing_policy}", "")
+          data_plane_policing_policy  = try("${epg.data_plane_policing_policy}${local.defaults.apic.tenants.policies.data_plane_policing_policy.name_suffix}", "")
           bridge_domain               = try("${epg.bridge_domain}${local.defaults.apic.tenants.bridge_domains.name_suffix}", "")
           tags                        = try(epg.tags, [])
           trust_control_policy        = try("${epg.trust_control_policy}${local.defaults.apic.tenants.policies.trust_control_policies.name_suffix}", "")
@@ -426,7 +426,7 @@ module "aci_endpoint_group" {
   preferred_group             = each.value.preferred_group
   qos_class                   = each.value.qos_class
   custom_qos_policy           = each.value.custom_qos_policy
-  data_plane_policing_policy  = each.value.data_plane_policing_policy 
+  data_plane_policing_policy  = each.value.data_plane_policing_policy
   bridge_domain               = each.value.bridge_domain
   tags                        = each.value.tags
   trust_control_policy        = each.value.trust_control_policy
@@ -2491,9 +2491,9 @@ locals {
   data_plane_policing_policies = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.policies.data_plane_policing_policies, []) : {
-        key          = format("%s/%s", tenant.name, policy.name)
-        tenant       = tenant.name
-        name         = "${policy.name}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}"
+        key                  = format("%s/%s", tenant.name, policy.name)
+        tenant               = tenant.name
+        name                 = "${policy.name}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}"
         admin_state          = try(policy.admin_state, local.defaults.apic.tenants.policies.data_plane_policing_policies.admin_state)
         type                 = try(policy.type, local.defaults.apic.tenants.policies.data_plane_policing_policies.type)
         mode                 = try(policy.mode, local.defaults.apic.tenants.policies.data_plane_policing_policies.mode)
