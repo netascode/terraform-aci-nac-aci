@@ -1,5 +1,5 @@
 resource "aci_rest_managed" "qosDppPol" {
-  dn         = "uni/infra/qosdpppol-${var.name}"
+  dn         = try(var.tenant != null, false) ? "uni/tn-${var.tenant}/qosdpppol-${var.name}" : "uni/infra/qosdpppol-${var.name}"
   class_name = "qosDppPol"
 
   content = {

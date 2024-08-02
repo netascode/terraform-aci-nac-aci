@@ -2522,9 +2522,9 @@ locals {
 }
 
 module "aci_tenant_data_plane_policing_policy" {
-  source = "./modules/terraform-aci-tenant-data-plane-policing-policy"
+  source = "./modules/terraform-aci-data-plane-policing-policy"
 
-  for_each             = { for dpp in try(local.data_plane_policing_policies, []) : dpp.name => dpp if local.modules.aci_tenant_data_plane_policing_policy && var.manage_tenants }
+  for_each             = { for dpp in try(local.data_plane_policing_policies, []) : dpp.name => dpp if local.modules.aci_data_plane_policing_policy && var.manage_tenants }
   name                 = "${each.value.name}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}"
   tenant               = each.value.tenant
   admin_state          = each.value.admin_state
