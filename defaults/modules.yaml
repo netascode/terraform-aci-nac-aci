@@ -146,7 +146,6 @@ modules:
   aci_system_performance: true
   aci_tacacs: true
   aci_tenant: true
-  aci_tenant_data_plane_policing_policy: true
   aci_tenant_span_destination_group: true
   aci_tenant_span_source_group: true
   aci_track_list: true
