@@ -11,7 +11,7 @@ variable "name" {
 variable "tenant" {
   type        = string
   description = "Tenant for Data Plane Policing policy."
-  default = null
+  default     = null
 
   validation {
     condition     = var.tenant == null ? true : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
