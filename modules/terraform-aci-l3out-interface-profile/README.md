@@ -115,6 +115,8 @@ module "aci_l3out_interface_profile" {
 | <a name="input_remote_leaf"></a> [remote\_leaf](#input\_remote\_leaf) | Remote leaf L3out flag. | `bool` | `false` | no |
 | <a name="input_sr_mpls"></a> [sr\_mpls](#input\_sr\_mpls) | SR MPLS L3out flag. | `bool` | `false` | no |
 | <a name="input_transport_data_plane"></a> [transport\_data\_plane](#input\_transport\_data\_plane) | Transport Data Plane. Allowed values: `sr_mpls`, `mpls`. Default value: `sr_mpls`. | `string` | `"sr_mpls"` | no |
+| <a name="input_ingress_data_plane_policing_policy"></a> [ingress\_data\_plane\_policing\_policy](#input\_ingress\_data\_plane\_policing\_policy) | Ingress Data Plane Policing policy name. | `string` | `""` | no |
+| <a name="input_egress_data_plane_policing_policy"></a> [egress\_data\_plane\_policing\_policy](#input\_egress\_data\_plane\_policing\_policy) | Egress Data Plane Policing policy name. | `string` | `""` | no |
 
 ## Outputs
 
@@ -155,6 +157,8 @@ module "aci_l3out_interface_profile" {
 | [aci_rest_managed.l3extMember_A](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extMember_B](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsDynPathAtt](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extRsEgressQosDppPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extRsIngressQosDppPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsLIfPCustQosPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsPathL3OutAtt](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsVSwitchEnhancedLagPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
