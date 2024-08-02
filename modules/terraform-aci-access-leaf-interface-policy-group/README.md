@@ -54,6 +54,8 @@ module "aci_access_leaf_interface_policy_group" {
 | <a name="input_cdp_policy"></a> [cdp\_policy](#input\_cdp\_policy) | CDP policy name. | `string` | `""` | no |
 | <a name="input_ingress_data_plane_policing_policy"></a> [ingress\_data\_plane\_policing\_policy](#input\_ingress\_data\_plane\_policing\_policy) | Ingress Data Plane Policing policy name. | `string` | `""` | no |
 | <a name="input_egress_data_plane_policing_policy"></a> [egress\_data\_plane\_policing\_policy](#input\_egress\_data\_plane\_policing\_policy) | Egress Data Plane Policing policy name. | `string` | `""` | no |
+| <a name="input_ingress_data_plane_policing_policy"></a> [ingress\_data\_plane\_policing\_policy](#input\_ingress\_data\_plane\_policing\_policy) | Ingress Data Plane Policing policy name. | `string` | `""` | no |
+| <a name="input_egress_data_plane_policing_policy"></a> [egress\_data\_plane\_policing\_policy](#input\_egress\_data\_plane\_policing\_policy) | Egress Data Plane Policing policy name. | `string` | `""` | no |
 | <a name="input_lldp_policy"></a> [lldp\_policy](#input\_lldp\_policy) | LLDP policy name. | `string` | `""` | no |
 | <a name="input_spanning_tree_policy"></a> [spanning\_tree\_policy](#input\_spanning\_tree\_policy) | Spanning tree policy name. | `string` | `""` | no |
 | <a name="input_mcp_policy"></a> [mcp\_policy](#input\_mcp\_policy) | MCP policy name. | `string` | `""` | no |
