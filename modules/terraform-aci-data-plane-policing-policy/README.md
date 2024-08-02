@@ -56,6 +56,7 @@ module "aci_data_plane_policing_policy" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Name of Data Plane Policing policy. | `string` | n/a | yes |
+| <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant for Data Plane Policing policy. | `string` | `null` | no |
 | <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | Administrative state of Data Plane Policing policy. | `bool` | `true` | no |
 | <a name="input_type"></a> [type](#input\_type) | Policer Type. Allowed Values: `1R2C` or `2R3C`. | `string` | `"1R2C"` | no |
 | <a name="input_mode"></a> [mode](#input\_mode) | Policer Mode.  Allowed Values: `bit` or `packet`. | `string` | `"bit"` | no |

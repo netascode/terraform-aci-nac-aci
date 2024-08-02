@@ -313,7 +313,7 @@ Additional example repositories:
 | <a name="module_aci_system_performance"></a> [aci\_system\_performance](#module\_aci\_system\_performance) | ./modules/terraform-aci-system-performance | n/a |
 | <a name="module_aci_tacacs"></a> [aci\_tacacs](#module\_aci\_tacacs) | ./modules/terraform-aci-tacacs | n/a |
 | <a name="module_aci_tenant"></a> [aci\_tenant](#module\_aci\_tenant) | ./modules/terraform-aci-tenant | n/a |
-| <a name="module_aci_tenant_data_plane_policing_policy"></a> [aci\_tenant\_data\_plane\_policing\_policy](#module\_aci\_tenant\_data\_plane\_policing\_policy) | ./modules/terraform-aci-tenant-data-plane-policing-policy | n/a |
+| <a name="module_aci_tenant_data_plane_policing_policy"></a> [aci\_tenant\_data\_plane\_policing\_policy](#module\_aci\_tenant\_data\_plane\_policing\_policy) | ./modules/terraform-aci-data-plane-policing-policy | n/a |
 | <a name="module_aci_tenant_span_destination_group"></a> [aci\_tenant\_span\_destination\_group](#module\_aci\_tenant\_span\_destination\_group) | ./modules/terraform-aci-tenant-span-destination-group | n/a |
 | <a name="module_aci_tenant_span_source_group"></a> [aci\_tenant\_span\_source\_group](#module\_aci\_tenant\_span\_source\_group) | ./modules/terraform-aci-tenant-span-source-group | n/a |
 | <a name="module_aci_track_list"></a> [aci\_track\_list](#module\_aci\_track\_list) | ./modules/terraform-aci-track-list | n/a |
