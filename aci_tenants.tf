@@ -1532,8 +1532,8 @@ locals {
           l3out                    = l3out.name
           name                     = "${np.name}${local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.name_suffix}"
           sr_mpls                  = true
-          mpls_custom_qos_policy   = try(np.mpls_custom_qos_policy, null)
-          bfd_multihop_node_policy = try(np.bfd_multihop_node_policy, null)
+          mpls_custom_qos_policy   = try(np.mpls_custom_qos_policy, "")
+          bfd_multihop_node_policy = try(np.bfd_multihop_node_policy, "")
           nodes = [for node in try(np.nodes, []) : {
             node_id                 = node.node_id
             pod_id                  = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
