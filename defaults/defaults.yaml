@@ -491,6 +491,21 @@ defaults:
           speed: inherit
           auto: true
           fec_mode: inherit
+        macsec_parameters_policies:
+          name_suffix: ""
+          cipher_suite: gcm-aes-xpn-256
+          key_server_priority: 16
+          window_size: 64
+          key_expiry_time: "disabled"
+          security_policy: "should-secure"
+          confidentiality_offset: "offset-0"
+        macsec_keychain_policies:
+          name_suffix: ""
+          start_time: "now"
+          end_time: "infinite"
+        macsec_interfaces_policies:
+          name_suffix: ""
+          admin_state: true
         port_channel_policies:
           name_suffix: ""
           min_links: 1
