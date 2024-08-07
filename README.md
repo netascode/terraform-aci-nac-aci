@@ -285,6 +285,7 @@ Additional example repositories:
 | <a name="module_aci_qos"></a> [aci\_qos](#module\_aci\_qos) | ./modules/terraform-aci-qos | n/a |
 | <a name="module_aci_qos_policy"></a> [aci\_qos\_policy](#module\_aci\_qos\_policy) | ./modules/terraform-aci-qos-policy | n/a |
 | <a name="module_aci_radius"></a> [aci\_radius](#module\_aci\_radius) | ./modules/terraform-aci-radius | n/a |
+| <a name="module_aci_rbac_node_rule"></a> [aci\_rbac\_node\_rule](#module\_aci\_rbac\_node\_rule) | ./modules/terraform-aci-rbac-node-rule | n/a |
 | <a name="module_aci_redirect_backup_policy"></a> [aci\_redirect\_backup\_policy](#module\_aci\_redirect\_backup\_policy) | ./modules/terraform-aci-redirect-backup-policy | n/a |
 | <a name="module_aci_redirect_health_group"></a> [aci\_redirect\_health\_group](#module\_aci\_redirect\_health\_group) | ./modules/terraform-aci-redirect-health-group | n/a |
 | <a name="module_aci_redirect_policy"></a> [aci\_redirect\_policy](#module\_aci\_redirect\_policy) | ./modules/terraform-aci-redirect-policy | n/a |

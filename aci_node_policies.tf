@@ -78,3 +78,14 @@ module "aci_oob_node_address" {
   v6_gateway     = try(each.value.oob_v6_gateway, "::")
   endpoint_group = try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group)
 }
+
+module "aci_rbac_node_rule" {
+  source = "./modules/terraform-aci-rbac-node-rule"
+
+  for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && length(try(node.security_domains, [])) != 0 && local.modules.aci_rbac_node_rule && var.manage_node_policies }
+  node_id  = each.key
+  port_rules = [for sd in each.value.security_domains : {
+    name   = sd
+    domain = sd
+  }]
+}

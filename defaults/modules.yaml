@@ -127,6 +127,7 @@ modules:
   aci_qos: true
   aci_qos_policy: true
   aci_radius: true
+  aci_rbac_node_rule: true
   aci_redirect_backup_policy: true
   aci_redirect_health_group: true
   aci_redirect_policy: true
