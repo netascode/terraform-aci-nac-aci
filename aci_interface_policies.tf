@@ -181,17 +181,18 @@ locals {
   new_leaf_interface_configuration = flatten([
     for node in local.nodes : [
       for interface in try(node.interfaces, []) : {
-        key               = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
-        node_id           = node.id
-        module            = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
-        port              = interface.port
-        policy_group_type = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == interface.policy_group][0], "access")
-        policy_group      = try("${interface.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "system-ports-default")
-        breakout          = try(interface.breakout, "none")
-        fex_id            = try(interface.fex_id, "unspecified")
-        description       = try(interface.description, "")
-        shutdown          = try(interface.shutdown, false)
-        role              = node.role
+        key                        = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
+        node_id                    = node.id
+        module                     = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+        port                       = interface.port
+        policy_group_type          = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == interface.policy_group][0], "access")
+        policy_group               = try("${interface.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "system-ports-default")
+        breakout                   = try(interface.breakout, "none")
+        fex_id                     = try(interface.fex_id, "unspecified")
+        description                = try(interface.description, "")
+        shutdown                   = try(interface.shutdown, false)
+        role                       = node.role
+        port_channel_member_policy = try(interface.port_channel_member_policy, "")
       } if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if node.role == "leaf" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
   ])
@@ -200,17 +201,18 @@ locals {
 module "aci_leaf_interface_configuration" {
   source = "./modules/terraform-aci-interface-configuration"
 
-  for_each          = { for int in local.new_leaf_interface_configuration : int.key => int if local.modules.aci_interface_configuration && var.manage_interface_policies }
-  node_id           = each.value.node_id
-  module            = each.value.module
-  port              = each.value.port
-  policy_group_type = each.value.policy_group_type
-  policy_group      = each.value.policy_group
-  breakout          = each.value.breakout
-  fex_id            = each.value.fex_id
-  description       = each.value.description
-  shutdown          = each.value.shutdown
-  role              = each.value.role
+  for_each                   = { for int in local.new_leaf_interface_configuration : int.key => int if local.modules.aci_interface_configuration && var.manage_interface_policies }
+  node_id                    = each.value.node_id
+  module                     = each.value.module
+  port                       = each.value.port
+  policy_group_type          = each.value.policy_group_type
+  policy_group               = each.value.policy_group
+  breakout                   = each.value.breakout
+  fex_id                     = each.value.fex_id
+  description                = each.value.description
+  shutdown                   = each.value.shutdown
+  role                       = each.value.role
+  port_channel_member_policy = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
 }
 
 locals {

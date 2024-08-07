@@ -48,6 +48,7 @@ module "aci_interface_configuration" {
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_role"></a> [role](#input\_role) | Node role. Allowed values: `leaf`, `spine`. | `string` | `"leaf"` | no |
 | <a name="input_shutdown"></a> [shutdown](#input\_shutdown) | Shutdown interface. | `bool` | `false` | no |
+| <a name="input_port_channel_member_policy"></a> [port\_channel\_member\_policy](#input\_port\_channel\_member\_policy) | Port Channel Member Policy. | `string` | `""` | no |
 
 ## Outputs
 
