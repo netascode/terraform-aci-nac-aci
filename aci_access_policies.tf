@@ -455,6 +455,7 @@ locals {
         key = "${profile.name}/${selector.name}"
         value = {
           name              = "${selector.name}${local.defaults.apic.access_policies.leaf_interface_profiles.selectors.name_suffix}"
+          description       = try(selector.description, "")
           profile_name      = "${profile.name}${local.defaults.apic.access_policies.leaf_interface_profiles.name_suffix}"
           fex_id            = try(selector.fex_id, 0)
           fex_profile       = try("${selector.fex_profile}${local.defaults.apic.access_policies.fex_interface_profiles.name_suffix}", "")
@@ -490,6 +491,7 @@ module "aci_access_leaf_interface_selector_manual" {
   for_each              = { for selector in local.leaf_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_leaf_interface_selector && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies }
   interface_profile     = each.value.profile_name
   name                  = each.value.name
+  description           = each.value.description
   fex_id                = each.value.fex_id
   fex_interface_profile = each.value.fex_profile
   policy_group          = each.value.policy_group

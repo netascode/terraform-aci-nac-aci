@@ -218,6 +218,7 @@ resource "aci_rest_managed" "fvRsPathAtt_port" {
   dn         = "${aci_rest_managed.fvAEPg.dn}/rspathAtt-[${format("topology/pod-%s/paths-%s/pathep-[eth%s/%s]", each.value.pod_id, each.value.node_id, each.value.module, each.value.port)}]"
   class_name = "fvRsPathAtt"
   content = {
+    descr       = each.value.description
     tDn         = format("topology/pod-%s/paths-%s/pathep-[eth%s/%s]", each.value.pod_id, each.value.node_id, each.value.module, each.value.port)
     encap       = "vlan-${each.value.vlan}"
     mode        = each.value.mode
