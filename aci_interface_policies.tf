@@ -205,7 +205,7 @@ module "aci_leaf_interface_configuration" {
   node_id           = each.value.node_id
   module            = each.value.module
   port              = each.value.port
-  policy_group_type  = each.value.policy_group_type
+  policy_group_type = each.value.policy_group_type
   policy_group      = each.value.policy_group
   breakout          = each.value.breakout
   fex_id            = each.value.fex_id
