@@ -12,5 +12,6 @@ resource "aci_rest_managed" "infraPortConfig" {
     role         = var.role
     shutdown     = var.shutdown ? "yes" : "no"
     subPort      = var.sub_port
+    pcMember     = (var.policy_group_type == "pc" || var.policy_group_type == "vpc") && var.role == "leaf" ? var.port_channel_member_policy : ""
   }
 }
