@@ -3,6 +3,7 @@ resource "aci_rest_managed" "infraHPortS" {
   class_name = "infraHPortS"
   content = {
     name = var.name
+    descr = var.description
     type = "range"
   }
 }
