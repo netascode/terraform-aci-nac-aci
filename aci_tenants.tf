@@ -927,12 +927,14 @@ locals {
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : [
         for np in try(l3out.node_profiles, []) : {
-          key         = format("%s/%s/%s", tenant.name, l3out.name, np.name)
-          tenant      = tenant.name
-          l3out       = l3out.name
-          name        = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
-          multipod    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
-          remote_leaf = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
+          key                = format("%s/%s/%s", tenant.name, l3out.name, np.name)
+          tenant             = tenant.name
+          l3out              = l3out.name
+          name               = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
+          multipod           = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
+          remote_leaf        = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
+          bgp_timer_policy   = try("${np.bgp.timer_policy}${local.defaults.apic.tenants.policies.bgp_timer_policies.name_suffix}", "")
+          bgp_as_path_policy = try("${np.bgp.as_path_policy}${local.defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix}", "")
           nodes = [for node in try(np.nodes, []) : {
             node_id               = node.node_id
             pod_id                = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
@@ -989,14 +991,16 @@ locals {
 module "aci_l3out_node_profile_manual" {
   source = "./modules/terraform-aci-l3out-node-profile"
 
-  for_each    = { for np in local.node_profiles_manual : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
-  tenant      = each.value.tenant
-  l3out       = each.value.l3out
-  name        = each.value.name
-  multipod    = each.value.multipod
-  remote_leaf = each.value.remote_leaf
-  nodes       = each.value.nodes
-  bgp_peers   = each.value.bgp_peers
+  for_each           = { for np in local.node_profiles_manual : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
+  tenant             = each.value.tenant
+  l3out              = each.value.l3out
+  name               = each.value.name
+  multipod           = each.value.multipod
+  remote_leaf        = each.value.remote_leaf
+  bgp_timer_policy   = each.value.bgp_timer_policy
+  bgp_as_path_policy = each.value.bgp_as_path_policy
+  nodes              = each.value.nodes
+  bgp_peers          = each.value.bgp_peers
 
   depends_on = [
     module.aci_tenant,
@@ -1008,12 +1012,14 @@ locals {
   node_profiles_auto = flatten([
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : {
-        key         = format("%s/%s", tenant.name, l3out.name)
-        tenant      = tenant.name
-        l3out       = l3out.name
-        name        = l3out.name
-        multipod    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
-        remote_leaf = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
+        key                = format("%s/%s", tenant.name, l3out.name)
+        tenant             = tenant.name
+        l3out              = l3out.name
+        name               = l3out.name
+        multipod           = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
+        remote_leaf        = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
+        bgp_timer_policy   = try("${l3out.bgp.timer_policy}${local.defaults.apic.tenants.policies.bgp_timer_policies.name_suffix}", "")
+        bgp_as_path_policy = try("${l3out.bgp.as_path_policy}${local.defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix}", "")
         nodes = [for node in try(l3out.nodes, []) : {
           node_id               = node.node_id
           pod_id                = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.nodes.pod)
@@ -1069,14 +1075,16 @@ locals {
 module "aci_l3out_node_profile_auto" {
   source = "./modules/terraform-aci-l3out-node-profile"
 
-  for_each    = { for np in local.node_profiles_auto : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
-  tenant      = each.value.tenant
-  l3out       = each.value.l3out
-  name        = each.value.name
-  multipod    = each.value.multipod
-  remote_leaf = each.value.remote_leaf
-  nodes       = each.value.nodes
-  bgp_peers   = each.value.bgp_peers
+  for_each           = { for np in local.node_profiles_auto : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
+  tenant             = each.value.tenant
+  l3out              = each.value.l3out
+  name               = each.value.name
+  multipod           = each.value.multipod
+  remote_leaf        = each.value.remote_leaf
+  bgp_timer_policy   = each.value.bgp_timer_policy
+  bgp_as_path_policy = each.value.bgp_as_path_policy
+  nodes              = each.value.nodes
+  bgp_peers          = each.value.bgp_peers
 
   depends_on = [
     module.aci_tenant,

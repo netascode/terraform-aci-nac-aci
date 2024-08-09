@@ -95,6 +95,8 @@ module "aci_l3out_node_profile" {
 | <a name="input_bgp_infra_peers"></a> [bgp\_infra\_peers](#input\_bgp\_infra\_peers) | List of BGP EVPN peers for SR MPLS L3out. Allowed values `remote_as`: 0-4294967295. Default value `allow_self_as`: false. Default value `disable_peer_as_check`: false. Default value `bfd`: false. Default value `ttl`: 2. Default value `admin_state`: true. Allowed values `local_as`: 0-4294967295. Choices `as_propagate`: `none`, `no-prepend`, `replace-as`, `dual-as`. Default value `as_propagate`: `none`. | <pre>list(object({<br>    ip                    = string<br>    remote_as             = string<br>    description           = optional(string, "")<br>    allow_self_as         = optional(bool, false)<br>    disable_peer_as_check = optional(bool, false)<br>    password              = optional(string)<br>    bfd                   = optional(bool, false)<br>    ttl                   = optional(number, 1)<br>    admin_state           = optional(bool, true)<br>    local_as              = optional(number)<br>    as_propagate          = optional(string, "none")<br>    peer_prefix_policy    = optional(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_mpls_custom_qos_policy"></a> [mpls\_custom\_qos\_policy](#input\_mpls\_custom\_qos\_policy) | MPLS Customer QoS Policy | `string` | `""` | no |
 | <a name="input_bfd_multihop_node_policy"></a> [bfd\_multihop\_node\_policy](#input\_bfd\_multihop\_node\_policy) | BFD Multihop Node Policy | `string` | `""` | no |
+| <a name="input_bgp_timer_policy"></a> [bgp\_timer\_policy](#input\_bgp\_timer\_policy) | Node Profile's BGP Timer Policy | `string` | `""` | no |
+| <a name="input_bgp_as_path_policy"></a> [bgp\_as\_path\_policy](#input\_bgp\_as\_path\_policy) | Node Profile's BGP AS-Path Policy | `string` | `""` | no |
 
 ## Outputs
 
@@ -115,6 +117,9 @@ module "aci_l3out_node_profile" {
 | [aci_rest_managed.bgpLocalAsnP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.bgpLocalAsnP-bgpInfraPeerP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.bgpPeerP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.bgpProtP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.bgpRsBestPathCtrlPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.bgpRsBgpNodeCtxPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.bgpRsPeerPfxPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.bgpRsPeerPfxPol-bgpInfraPeerP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.bgpRsPeerToProfile_export](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
