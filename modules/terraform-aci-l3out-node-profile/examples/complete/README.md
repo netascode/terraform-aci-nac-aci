@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_l3out_node_profile" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-l3out-node-profile"
-  version = ">= 0.8.0"
+  version = ">= 0.9.1"
 
   tenant             = "ABC"
   l3out              = "L3OUT1"
