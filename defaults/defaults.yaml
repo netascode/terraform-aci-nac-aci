@@ -441,6 +441,96 @@ defaults:
       dhcp_relay_policies:
         name_suffix: ""
       switch_policies:
+        copp_leaf:
+          name_suffix: ""
+          type: default
+          custom_values:
+            acl_log_rate: default
+            acl_log_burst: default
+            arp_rate: default
+            arp_burst: default
+            bgp_rate: default
+            bgp_burst: default
+            cdp_rate: default
+            cdp_burst: default
+            coop_rate: default
+            coop_burst: default
+            dhcp_rate: default
+            dhcp_burst: default
+            eigrp_rate: default
+            eigrp_burst: default
+            glean_rate: default
+            glean_burst: default
+            icmp_rate: default
+            icmp_burst: default
+            ifc_rate: default
+            ifc_burst: default
+            ifc_other_rate: default
+            ifc_other_burst: default
+            ifc_span_rate: default
+            ifc_span_burst: default
+            igmp_rate: default
+            igmp_burst: default
+            infra_arp_rate: default
+            infra_arp_burst: default
+            isis_rate: default
+            isis_burst: default
+            lacp_rate: default
+            lacp_burst: default
+            lldp_rate: default
+            lldp_burst: default
+            mcp_rate: default
+            mcp_burst: default
+            nd_rate: default
+            nd_burst: default
+            ospf_rate: default
+            ospf_burst: default
+            permit_log_rate: default
+            permit_log_burst: default
+            pim_rate: default
+            pim_burst: default
+            stp_rate: default
+            stp_burst: default
+            tor_glean_rate: default
+            tor_glean_burst: default
+            traceroute_rate: default
+            traceroute_burst: default
+        copp_spine:
+          name_suffix: ""
+          type: default
+          custom_values:
+            arp_rate: default
+            arp_burst: default
+            bgp_rate: default
+            bgp_burst: default
+            cdp_rate: default
+            cdp_burst: default
+            coop_rate: default
+            coop_burst: default
+            dhcp_rate: default
+            dhcp_burst: default
+            glean_rate: default
+            glean_burst: default
+            ifc_rate: default
+            ifc_burst: default
+            ifc_other_rate: default
+            ifc_other_burst: default
+            ifc_span_rate: default
+            ifc_span_burst: default
+            igmp_rate: default
+            igmp_burst: default
+            infra_arp_rate: default
+            infra_arp_burst: default
+            isis_rate: default
+            isis_burst: default
+            lldp_rate: default
+            lldp_burst: default
+            ospf_rate: default
+            ospf_burst: default
+            tor_glean_rate: default
+            tor_glean_burst: default
+            traceroute_rate: default
+            traceroute_burst: default
         vpc_policies:
           name_suffix: ""
           peer_dead_interval: 200
@@ -482,6 +572,11 @@ defaults:
           node_blocks:
             name_suffix: ""
       interface_policies:
+        copp_policies:
+          name_suffix: ""
+          rate: 10
+          burst: 10
+          match_protocols: ""
         cdp_policies:
           name_suffix: ""
         lldp_policies:

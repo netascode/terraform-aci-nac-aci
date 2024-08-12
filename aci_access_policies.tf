@@ -133,27 +133,31 @@ module "aci_access_leaf_switch_policy_group" {
   forwarding_scale_policy = try("${each.value.forwarding_scale_policy}${local.defaults.apic.access_policies.switch_policies.forwarding_scale_policies.name_suffix}", "")
   bfd_ipv4_policy         = try("${each.value.bfd_ipv4_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix}", "")
   bfd_ipv6_policy         = try("${each.value.bfd_ipv6_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix}", "")
+  copp_leaf_policy        = try("${each.value.copp_leaf_policy}${local.defaults.apic.access_policies.switch_policies.copp_leaf.name_suffix}", "")
 
   depends_on = [
     module.aci_forwarding_scale_policy,
     module.aci_bfd_ipv4_policy,
     module.aci_bfd_ipv6_policy,
+    module.aci_access_leaf_copp_policy,
   ]
 }
 
 module "aci_access_spine_switch_policy_group" {
   source = "./modules/terraform-aci-access-spine-switch-policy-group"
 
-  for_each        = { for pg in try(local.access_policies.spine_switch_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_switch_policy_group && var.manage_access_policies }
-  name            = "${each.value.name}${local.defaults.apic.access_policies.spine_switch_policy_groups.name_suffix}"
-  lldp_policy     = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
-  bfd_ipv4_policy = try("${each.value.bfd_ipv4_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix}", "")
-  bfd_ipv6_policy = try("${each.value.bfd_ipv6_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix}", "")
+  for_each          = { for pg in try(local.access_policies.spine_switch_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_switch_policy_group && var.manage_access_policies }
+  name              = "${each.value.name}${local.defaults.apic.access_policies.spine_switch_policy_groups.name_suffix}"
+  lldp_policy       = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
+  bfd_ipv4_policy   = try("${each.value.bfd_ipv4_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix}", "")
+  bfd_ipv6_policy   = try("${each.value.bfd_ipv6_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix}", "")
+  copp_spine_policy = try("${each.value.copp_spine_policy}${local.defaults.apic.access_policies.switch_policies.copp_spine.name_suffix}", "")
 
   depends_on = [
     module.aci_lldp_policy,
     module.aci_bfd_ipv4_policy,
     module.aci_bfd_ipv6_policy,
+    module.aci_access_spine_copp_policy,
   ]
 }
 
@@ -273,6 +277,30 @@ module "aci_access_spine_switch_configuration" {
   ]
 }
 
+locals {
+  copp = flatten([
+    for pol in try(local.access_policies.interface_policies.copp_policies, []) : {
+      name        = "${pol.name}${local.defaults.apic.access_policies.interface_policies.copp_policies.name_suffix}"
+      description = try(pol.description, "")
+      protocol_policies = [for pp in try(pol.protocol_policies, []) : {
+        name            = "${pp.name}${local.defaults.apic.access_policies.interface_policies.copp_policies.name_suffix}"
+        rate            = try(pp.rate, local.defaults.apic.access_policies.interface_policies.copp_policies.rate)
+        burst           = try(pp.burst, local.defaults.apic.access_policies.interface_policies.copp_policies.burst)
+        match_protocols = try(pp.match_protocols, null)
+      }]
+    }
+  ])
+}
+
+module "aci_copp_interface_policy" {
+  source = "./modules/terraform-aci-copp-interface-policy"
+
+  for_each          = { for copp in try(local.copp, []) : copp.name => copp if local.modules.aci_copp_interface_policy && var.manage_access_policies }
+  name              = each.value.name
+  description       = each.value.description
+  protocol_policies = each.value.protocol_policies
+}
+
 module "aci_cdp_policy" {
   source = "./modules/terraform-aci-cdp-policy"
 
@@ -390,6 +418,7 @@ module "aci_access_leaf_interface_policy_group" {
   map                        = try(each.value.map, local.defaults.apic.access_policies.leaf_interface_policy_groups.map)
   link_level_policy          = try("${each.value.link_level_policy}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}", "")
   cdp_policy                 = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
+  copp_policy                = try("${each.value.copp_policy}${local.defaults.apic.access_policies.interface_policies.copp_policies.name_suffix}", "")
   lldp_policy                = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
   spanning_tree_policy       = try("${each.value.spanning_tree_policy}${local.defaults.apic.access_policies.interface_policies.spanning_tree_policies.name_suffix}", "")
   mcp_policy                 = try("${each.value.mcp_policy}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}", "")
@@ -406,6 +435,7 @@ module "aci_access_leaf_interface_policy_group" {
   depends_on = [
     module.aci_link_level_policy,
     module.aci_cdp_policy,
+    module.aci_copp_interface_policy,
     module.aci_lldp_policy,
     module.aci_spanning_tree_policy,
     module.aci_mcp_policy,
@@ -947,4 +977,108 @@ module "aci_netflow_record" {
   name             = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_records.name_suffix}"
   description      = try(each.value.description, "")
   match_parameters = try(each.value.match_parameters, [])
+}
+
+module "aci_access_leaf_copp_policy" {
+  source = "./modules/terraform-aci-access-leaf-copp-policy"
+
+  for_each    = { for pol in try(local.access_policies.leaf_copp_policies, []) : pol.name => pol if local.modules.aci_access_leaf_copp_policy && var.manage_access_policies }
+  name        = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.copp_leaf.name_suffix}"
+  description = try(each.value.description, "")
+  type        = try(each.value.type, local.defaults.apic.access_policies.switch_policies.copp_leaf.type)
+  custom_values = {
+    arp_rate         = try(each.value.custom_values.arp_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.arp_rate)
+    arp_burst        = try(each.value.custom_values.arp_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.arp_burst)
+    acl_log_rate     = try(each.value.custom_values.acl_log_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.acl_log_rate)
+    acl_log_burst    = try(each.value.custom_values.acl_log_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.acl_log_burst)
+    bgp_rate         = try(each.value.custom_values.bgp_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.bgp_rate)
+    bgp_burst        = try(each.value.custom_values.bgp_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.bgp_burst)
+    cdp_rate         = try(each.value.custom_values.cdp_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.cdp_rate)
+    cdp_burst        = try(each.value.custom_values.cdp_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.cdp_burst)
+    coop_rate        = try(each.value.custom_values.coop_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.coop_rate)
+    coop_burst       = try(each.value.custom_values.coop_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.coop_burst)
+    dhcp_rate        = try(each.value.custom_values.dhcp_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.dhcp_rate)
+    dhcp_burst       = try(each.value.custom_values.dhcp_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.dhcp_burst)
+    eigrp_rate       = try(each.value.custom_values.eigrp_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.eigrp_rate)
+    eigrp_burst      = try(each.value.custom_values.eigrp_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.eigrp_burst)
+    glean_rate       = try(each.value.custom_values.glean_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.glean_rate)
+    glean_burst      = try(each.value.custom_values.glean_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.glean_burst)
+    icmp_rate        = try(each.value.custom_values.icmp_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.icmp_rate)
+    icmp_burst       = try(each.value.custom_values.icmp_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.icmp_burst)
+    ifc_rate         = try(each.value.custom_values.ifc_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.ifc_rate)
+    ifc_burst        = try(each.value.custom_values.ifc_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.ifc_burst)
+    ifc_other_rate   = try(each.value.custom_values.ifc_other_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.ifc_other_rate)
+    ifc_other_burst  = try(each.value.custom_values.ifc_other_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.ifc_other_burst)
+    ifc_span_rate    = try(each.value.custom_values.ifc_span_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.ifc_span_rate)
+    ifc_span_burst   = try(each.value.custom_values.ifc_span_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.ifc_span_burst)
+    igmp_rate        = try(each.value.custom_values.igmp_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.igmp_rate)
+    igmp_burst       = try(each.value.custom_values.igmp_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.igmp_burst)
+    infra_arp_rate   = try(each.value.custom_values.infra_arp_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.infra_arp_rate)
+    infra_arp_burst  = try(each.value.custom_values.infra_arp_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.infra_arp_burst)
+    isis_rate        = try(each.value.custom_values.isis_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.isis_rate)
+    isis_burst       = try(each.value.custom_values.isis_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.isis_burst)
+    lacp_rate        = try(each.value.custom_values.lacp_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.lacp_rate)
+    lacp_burst       = try(each.value.custom_values.lacp_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.lacp_burst)
+    lldp_rate        = try(each.value.custom_values.lldp_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.lldp_rate)
+    lldp_burst       = try(each.value.custom_values.lldp_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.lldp_burst)
+    mcp_rate         = try(each.value.custom_values.mcp_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.mcp_rate)
+    mcp_burst        = try(each.value.custom_values.mcp_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.mcp_burst)
+    nd_rate          = try(each.value.custom_values.nd_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.nd_rate)
+    nd_burst         = try(each.value.custom_values.nd_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.nd_burst)
+    ospf_rate        = try(each.value.custom_values.ospf_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.ospf_rate)
+    ospf_burst       = try(each.value.custom_values.ospf_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.ospf_burst)
+    permit_log_rate  = try(each.value.custom_values.permit_log_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.permit_log_rate)
+    permit_log_burst = try(each.value.custom_values.permit_log_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.permit_log_burst)
+    pim_rate         = try(each.value.custom_values.pim_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.pim_rate)
+    pim_burst        = try(each.value.custom_values.pim_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.pim_burst)
+    stp_rate         = try(each.value.custom_values.stp_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.stp_rate)
+    stp_burst        = try(each.value.custom_values.stp_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.stp_burst)
+    tor_glean_rate   = try(each.value.custom_values.tor_glean_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.tor_glean_rate)
+    tor_glean_burst  = try(each.value.custom_values.tor_glean_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.tor_glean_burst)
+    traceroute_rate  = try(each.value.custom_values.traceroute_rate, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.traceroute_rate)
+    traceroute_burst = try(each.value.custom_values.traceroute_burst, local.defaults.apic.access_policies.switch_policies.copp_leaf.custom_values.traceroute_burst)
+  }
+}
+
+module "aci_access_spine_copp_policy" {
+  source = "./modules/terraform-aci-access-spine-copp-policy"
+
+  for_each    = { for pol in try(local.access_policies.spine_copp_policies, []) : pol.name => pol if local.modules.aci_access_spine_copp_policy && var.manage_access_policies }
+  name        = "${each.value.name}${local.defaults.apic.access_policies.switch_policies.copp_spine.name_suffix}"
+  description = try(each.value.description, "")
+  type        = try(each.value.type, local.defaults.apic.access_policies.switch_policies.copp_spine.type)
+  custom_values = {
+    arp_rate         = try(each.value.custom_values.arp_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.arp_rate)
+    arp_burst        = try(each.value.custom_values.arp_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.arp_burst)
+    bgp_rate         = try(each.value.custom_values.bgp_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.bgp_rate)
+    bgp_burst        = try(each.value.custom_values.bgp_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.bgp_burst)
+    cdp_rate         = try(each.value.custom_values.cdp_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.cdp_rate)
+    cdp_burst        = try(each.value.custom_values.cdp_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.cdp_burst)
+    coop_rate        = try(each.value.custom_values.coop_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.coop_rate)
+    coop_burst       = try(each.value.custom_values.coop_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.coop_burst)
+    dhcp_rate        = try(each.value.custom_values.dhcp_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.dhcp_rate)
+    dhcp_burst       = try(each.value.custom_values.dhcp_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.dhcp_burst)
+    glean_rate       = try(each.value.custom_values.glean_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.glean_rate)
+    glean_burst      = try(each.value.custom_values.glean_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.glean_burst)
+    ifc_rate         = try(each.value.custom_values.ifc_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.ifc_rate)
+    ifc_burst        = try(each.value.custom_values.ifc_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.ifc_burst)
+    ifc_other_rate   = try(each.value.custom_values.ifc_other_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.ifc_other_rate)
+    ifc_other_burst  = try(each.value.custom_values.ifc_other_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.ifc_other_burst)
+    ifc_span_rate    = try(each.value.custom_values.ifc_span_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.ifc_span_rate)
+    ifc_span_burst   = try(each.value.custom_values.ifc_span_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.ifc_span_burst)
+    igmp_rate        = try(each.value.custom_values.igmp_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.igmp_rate)
+    igmp_burst       = try(each.value.custom_values.igmp_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.igmp_burst)
+    infra_arp_rate   = try(each.value.custom_values.infra_arp_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.infra_arp_rate)
+    infra_arp_burst  = try(each.value.custom_values.infra_arp_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.infra_arp_burst)
+    isis_rate        = try(each.value.custom_values.isis_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.isis_rate)
+    isis_burst       = try(each.value.custom_values.isis_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.isis_burst)
+    lldp_rate        = try(each.value.custom_values.lldp_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.lldp_rate)
+    lldp_burst       = try(each.value.custom_values.lldp_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.lldp_burst)
+    ospf_rate        = try(each.value.custom_values.ospf_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.ospf_rate)
+    ospf_burst       = try(each.value.custom_values.ospf_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.ospf_burst)
+    tor_glean_rate   = try(each.value.custom_values.tor_glean_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.tor_glean_rate)
+    tor_glean_burst  = try(each.value.custom_values.tor_glean_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.tor_glean_burst)
+    traceroute_rate  = try(each.value.custom_values.traceroute_rate, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.traceroute_rate)
+    traceroute_burst = try(each.value.custom_values.traceroute_burst, local.defaults.apic.access_policies.switch_policies.copp_spine.custom_values.traceroute_burst)
+  }
 }

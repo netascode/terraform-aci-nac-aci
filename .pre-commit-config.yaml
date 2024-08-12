@@ -34,6 +34,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-fex-interface-selector/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-leaf-copp-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-leaf-copp-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-leaf-interface-policy-group"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-leaf-interface-policy-group/examples/complete"]
@@ -65,6 +69,10 @@ repos:
         args: ["./modules/terraform-aci-access-span-source-group"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-span-source-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-spine-copp-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-spine-copp-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-spine-interface-policy-group"]
       - id: terraform-docs-system
@@ -161,6 +169,11 @@ repos:
         args: ["./modules/terraform-aci-coop-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-coop-policy/examples/complete"]
+      - id: terraform-docs-system
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-copp-interface-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-copp-interface-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-date-time-format"]
       - id: terraform-docs-system

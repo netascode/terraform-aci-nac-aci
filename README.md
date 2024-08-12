@@ -140,6 +140,7 @@ Additional example repositories:
 | <a name="module_aci_access_fex_interface_profile_manual"></a> [aci\_access\_fex\_interface\_profile\_manual](#module\_aci\_access\_fex\_interface\_profile\_manual) | ./modules/terraform-aci-access-fex-interface-profile | n/a |
 | <a name="module_aci_access_fex_interface_selector_auto"></a> [aci\_access\_fex\_interface\_selector\_auto](#module\_aci\_access\_fex\_interface\_selector\_auto) | ./modules/terraform-aci-access-fex-interface-selector | n/a |
 | <a name="module_aci_access_fex_interface_selector_manual"></a> [aci\_access\_fex\_interface\_selector\_manual](#module\_aci\_access\_fex\_interface\_selector\_manual) | ./modules/terraform-aci-access-fex-interface-selector | n/a |
+| <a name="module_aci_access_leaf_copp_policy"></a> [aci\_access\_leaf\_copp\_policy](#module\_aci\_access\_leaf\_copp\_policy) | ./modules/terraform-aci-access-leaf-copp-policy | n/a |
 | <a name="module_aci_access_leaf_interface_policy_group"></a> [aci\_access\_leaf\_interface\_policy\_group](#module\_aci\_access\_leaf\_interface\_policy\_group) | ./modules/terraform-aci-access-leaf-interface-policy-group | n/a |
 | <a name="module_aci_access_leaf_interface_profile_auto"></a> [aci\_access\_leaf\_interface\_profile\_auto](#module\_aci\_access\_leaf\_interface\_profile\_auto) | ./modules/terraform-aci-access-leaf-interface-profile | n/a |
 | <a name="module_aci_access_leaf_interface_profile_manual"></a> [aci\_access\_leaf\_interface\_profile\_manual](#module\_aci\_access\_leaf\_interface\_profile\_manual) | ./modules/terraform-aci-access-leaf-interface-profile | n/a |
@@ -153,6 +154,7 @@ Additional example repositories:
 | <a name="module_aci_access_span_destination_group"></a> [aci\_access\_span\_destination\_group](#module\_aci\_access\_span\_destination\_group) | ./modules/terraform-aci-access-span-destination-group | n/a |
 | <a name="module_aci_access_span_filter_group"></a> [aci\_access\_span\_filter\_group](#module\_aci\_access\_span\_filter\_group) | ./modules/terraform-aci-access-span-filter-group | n/a |
 | <a name="module_aci_access_span_source_group"></a> [aci\_access\_span\_source\_group](#module\_aci\_access\_span\_source\_group) | ./modules/terraform-aci-access-span-source-group | n/a |
+| <a name="module_aci_access_spine_copp_policy"></a> [aci\_access\_spine\_copp\_policy](#module\_aci\_access\_spine\_copp\_policy) | ./modules/terraform-aci-access-spine-copp-policy | n/a |
 | <a name="module_aci_access_spine_interface_policy_group"></a> [aci\_access\_spine\_interface\_policy\_group](#module\_aci\_access\_spine\_interface\_policy\_group) | ./modules/terraform-aci-access-spine-interface-policy-group | n/a |
 | <a name="module_aci_access_spine_interface_profile_auto"></a> [aci\_access\_spine\_interface\_profile\_auto](#module\_aci\_access\_spine\_interface\_profile\_auto) | ./modules/terraform-aci-access-spine-interface-profile | n/a |
 | <a name="module_aci_access_spine_interface_profile_manual"></a> [aci\_access\_spine\_interface\_profile\_manual](#module\_aci\_access\_spine\_interface\_profile\_manual) | ./modules/terraform-aci-access-spine-interface-profile | n/a |
@@ -182,6 +184,7 @@ Additional example repositories:
 | <a name="module_aci_config_passphrase"></a> [aci\_config\_passphrase](#module\_aci\_config\_passphrase) | ./modules/terraform-aci-config-passphrase | n/a |
 | <a name="module_aci_contract"></a> [aci\_contract](#module\_aci\_contract) | ./modules/terraform-aci-contract | n/a |
 | <a name="module_aci_coop_policy"></a> [aci\_coop\_policy](#module\_aci\_coop\_policy) | ./modules/terraform-aci-coop-policy | n/a |
+| <a name="module_aci_copp_interface_policy"></a> [aci\_copp\_interface\_policy](#module\_aci\_copp\_interface\_policy) | ./modules/terraform-aci-copp-interface-policy | n/a |
 | <a name="module_aci_date_time_format"></a> [aci\_date\_time\_format](#module\_aci\_date\_time\_format) | ./modules/terraform-aci-date-time-format | n/a |
 | <a name="module_aci_date_time_policy"></a> [aci\_date\_time\_policy](#module\_aci\_date\_time\_policy) | ./modules/terraform-aci-date-time-policy | n/a |
 | <a name="module_aci_device_selection_policy"></a> [aci\_device\_selection\_policy](#module\_aci\_device\_selection\_policy) | ./modules/terraform-aci-device-selection-policy | n/a |
