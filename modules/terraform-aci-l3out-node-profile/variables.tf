@@ -47,6 +47,7 @@ variable "nodes" {
       next_hops = optional(list(object({
         ip         = string
         preference = optional(number, 1)
+        description = optional(string, "")
         type       = optional(string, "prefix")
       })), [])
     })), [])

@@ -22,6 +22,7 @@ locals {
           value = {
             static_route = "${node.node_id}/${sr.prefix}"
             ip           = nh.ip
+            description  = nh.description
             preference   = nh.preference == 0 ? "unspecified" : nh.preference
             type         = nh.type
           }
@@ -86,6 +87,7 @@ resource "aci_rest_managed" "ipNexthopP" {
   content = {
     nhAddr = each.value.ip
     pref   = each.value.preference
+    descr  = each.value.description
     type   = each.value.type
   }
 }
