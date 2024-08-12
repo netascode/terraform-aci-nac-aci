@@ -1113,7 +1113,7 @@ locals {
             dhcp_labels = [for label in try(ip.dhcp_labels, []) : {
               dhcp_relay_policy  = try("${label.dhcp_relay_policy}${local.defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix}", "")
               dhcp_option_policy = try("${label.dhcp_option_policy}${local.defaults.apic.tenants.policies.dhcp_option_policies.name_suffix}", "")
-              scope              = try(label.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.scope)
+              scope              = try(label.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.dhcp_labels.scope)
               }
             ]
             interfaces = [for int in try(ip.interfaces, []) : {
