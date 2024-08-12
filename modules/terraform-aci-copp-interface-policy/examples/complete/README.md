@@ -13,7 +13,8 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_copp_interface_policy" {
-  source = "./modules/terraform-aci-copp-interface-policy"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-copp-interface-policy"
+  version = ">= 0.8.0"
 
   name        = "COPP1"
   description = "COPP1 Description"

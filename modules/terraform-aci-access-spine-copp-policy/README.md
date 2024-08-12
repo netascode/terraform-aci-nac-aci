@@ -49,7 +49,9 @@ module "aci_access_spine_copp_policy" {
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `coppSpineProfile` object. |
 
 ## Resources
 
