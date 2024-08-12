@@ -949,6 +949,7 @@ locals {
                 ip         = nh.ip
                 preference = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
                 type       = try(nh.type, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type)
+                description = try(nh.description, "")
               }]
             }]
           }]
