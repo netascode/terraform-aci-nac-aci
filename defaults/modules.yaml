@@ -46,6 +46,8 @@ modules:
   aci_useg_endpoint_group: true
   aci_endpoint_loop_protection: true
   aci_endpoint_security_group: true
+  aci_endpoint_mac_tag_policy: true
+  aci_endpoint_ip_tag_policy: true
   aci_eigrp_interface_policy: true
   aci_error_disabled_recovery: true
   aci_external_connectivity_policy: true
