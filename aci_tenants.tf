@@ -3529,7 +3529,7 @@ module "aci_endpoint_mac_tag_policy" {
   depends_on = [
     module.aci_tenant,
     module.aci_vrf,
-    module.aci_bridge_domain
+    module.aci_bridge_domain,
   ]
 }
 

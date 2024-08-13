@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# Ednpoint MAC Tag Example
+# Endpoint MAC Tag Example
 
 To run this example you need to execute:
 

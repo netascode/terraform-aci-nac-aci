@@ -3,7 +3,7 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Ednpoint IP Tag Example
+  # Endpoint IP Tag Example
 
   To run this example you need to execute:
 

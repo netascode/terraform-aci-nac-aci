@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# Ednpoint IP Tag Example
+# Endpoint IP Tag Example
 
 To run this example you need to execute:
 
