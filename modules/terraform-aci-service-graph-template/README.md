@@ -54,7 +54,6 @@ module "aci_service_graph_template" {
 | <a name="input_template_type"></a> [template\_type](#input\_template\_type) | Template type. Choices: `FW_TRANS`, `FW_ROUTED`, `ADC_ONE_ARM`, `ADC_TWO_ARM`, `OTHER`, `CLOUD_NATIVE_LB`, `CLOUD_VENDOR_LB`, `CLOUD_NATIVE_FW`, `CLOUD_VENDOR_FW`. | `string` | `"OTHER"` | no |
 | <a name="input_redirect"></a> [redirect](#input\_redirect) | Redirect. | `bool` | `false` | no |
 | <a name="input_share_encapsulation"></a> [share\_encapsulation](#input\_share\_encapsulation) | Share encapsulation. | `bool` | `false` | no |
-| <a name="input_device_imported"></a> [device\_imported](#input\_device\_imported) | Flag to define a device as being imported from another Tenant | `bool` | `false` | no |
 | <a name="input_device_name"></a> [device\_name](#input\_device\_name) | L4L7 device name. | `string` | n/a | yes |
 | <a name="input_device_tenant"></a> [device\_tenant](#input\_device\_tenant) | L4L7 device tenant name. | `string` | `""` | no |
 | <a name="input_device_function"></a> [device\_function](#input\_device\_function) | L4L7 device function. Choices: `None`, `GoTo`, `GoThrough`, `L2`, `L1`. | `string` | `"GoTo"` | no |

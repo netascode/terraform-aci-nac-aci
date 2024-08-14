@@ -63,12 +63,6 @@ variable "share_encapsulation" {
   default     = false
 }
 
-variable "device_imported" {
-  description = "Flag to define a device as being imported from another Tenant"
-  type        = bool
-  default     = false
-}
-
 variable "device_name" {
   description = "L4L7 device name."
   type        = string
