@@ -1445,6 +1445,8 @@ defaults:
             direct_connect: false
           provider:
             direct_connect: false
+          device:
+            imported: false
         device_selection_policies:
           consumer:
             l3_destination: true

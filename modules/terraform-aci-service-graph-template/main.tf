@@ -99,7 +99,7 @@ resource "aci_rest_managed" "vnsRsNodeToLDev" {
   dn         = "${aci_rest_managed.vnsAbsNode.dn}/rsNodeToLDev"
   class_name = "vnsRsNodeToLDev"
   content = {
-    tDn = "uni/tn-${var.device_tenant != "" ? var.device_tenant : var.tenant}/lDevVip-${var.device_name}"
+    tDn = var.device_imported == false ? "uni/tn-${var.device_tenant != "" ? var.device_tenant : var.tenant}/lDevVip-${var.device_name}" : "uni/tn-${var.tenant}/lDevIf-[uni/tn-${var.device_tenant}/lDevVip-${var.device_name}]"
   }
 }
 
