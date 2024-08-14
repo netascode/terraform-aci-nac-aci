@@ -99,7 +99,7 @@ resource "aci_rest_managed" "vnsRsNodeToLDev" {
   dn         = "${aci_rest_managed.vnsAbsNode.dn}/rsNodeToLDev"
   class_name = "vnsRsNodeToLDev"
   content = {
-    tDn = var.device_tenant == var.tenant ? "uni/tn-${var.device_tenant != "" ? var.device_tenant : var.tenant}/lDevVip-${var.device_name}" : "uni/tn-${var.tenant}/lDevIf-[uni/tn-${var.device_tenant}/lDevVip-${var.device_name}]"
+    tDn = try(var.device_tenant, var.tenant) == var.tenant ? "uni/tn-${var.tenant}/lDevVip-${var.device_name}" : "uni/tn-${var.tenant}/lDevIf-[uni/tn-${var.device_tenant}/lDevVip-${var.device_name}]"
   }
 }
 
