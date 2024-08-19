@@ -47,6 +47,7 @@ module "aci_l3out_interface_profile" {
     ip_a        = "1.1.1.2/24"
     ip_b        = "1.1.1.3/24"
     ip_shared   = "1.1.1.1/24"
+    lladdr      = "fe80::ffff:ffff:ffff:ffff"
     bgp_peers = [{
       ip                               = "4.4.4.4"
       remote_as                        = 12345
