@@ -292,7 +292,7 @@ resource "aci_rest_managed" "l3extRsLblToProfile_import" {
 }
 
 resource "aci_rest_managed" "l3extRsLblToProfile_export" {
-  for_each   = { for infra_l3out in var.sr_mpls_infra_l3outs : infra_l3out.name => infra_l3out }
+  for_each   = { for infra_l3out in var.sr_mpls_infra_l3outs : infra_l3out.name => infra_l3out if infra_l3out.outbound_route_map != "" }
   dn         = "${aci_rest_managed.l3extConsLbl[each.value.name].dn}/rslblToProfile-[uni/tn-${var.tenant}/prof-${each.value.outbound_route_map}]-export"
   class_name = "l3extRsLblToProfile"
   content = {
