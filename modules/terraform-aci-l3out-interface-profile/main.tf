@@ -351,7 +351,7 @@ resource "aci_rest_managed" "l3extVirtualLIfP" {
     ifInstT    = "ext-svi"
     encap      = "vlan-${each.value.vlan}"
     ipv6Dad    = "enabled"
-    llAddr     = "::"
+    llAddr     = each.value.lladdr
     mac        = each.value.mac
     mode       = each.value.mode
     mtu        = each.value.mtu
