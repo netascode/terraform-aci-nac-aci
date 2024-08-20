@@ -809,13 +809,15 @@
                                     {%- if current_site == site.name %}{{ comma4() }}
                                     {% set device_name = site.device ~ defaults.ndo.schemas.templates.service_graphs.device_name_suffix %}
                                     {% set logical_interface_name = site.logical_interface ~ defaults.ndo.schemas.templates.service_graphs.logical_interface_name_suffix %}
-                                    {% set redirect_policy_name = site.redirect_policy ~ defaults.ndo.schemas.templates.service_graphs.redirect_policy_name_suffix %}
                                     "clusterInterface": {
                                         "dn": "uni/tn-{{ site.tenant | default(template.tenant) }}/lDevVip-{{ device_name }}/lIf-{{ logical_interface_name }}"
                                     },
+                                    {%- if site.redirect_policy is defined %}
+                                    {% set redirect_policy_name = site.redirect_policy ~ defaults.ndo.schemas.templates.service_graphs.redirect_policy_name_suffix %}
                                     "redirectPolicy": {
                                         "dn": "uni/tn-{{ site.tenant | default(template.tenant) }}/svcCont/svcRedirectPol-{{ redirect_policy_name }}"
                                     },
+                                    {%- endif %}
                                     "subnets": []
                                     {%- endif %}
                                     {%- endfor %}
@@ -827,13 +829,15 @@
                                     {%- if current_site == site.name %}{{ comma4() }}
                                     {% set device_name = site.device ~ defaults.ndo.schemas.templates.service_graphs.device_name_suffix %}
                                     {% set logical_interface_name = site.logical_interface ~ defaults.ndo.schemas.templates.service_graphs.logical_interface_name_suffix %}
-                                    {% set redirect_policy_name = site.redirect_policy ~ defaults.ndo.schemas.templates.service_graphs.redirect_policy_name_suffix %}
                                     "clusterInterface": {
                                         "dn": "uni/tn-{{ site.tenant | default(template.tenant) }}/lDevVip-{{ device_name }}/lIf-{{ logical_interface_name }}"
                                     },
+                                    {%- if site.redirect_policy is defined %}
+                                    {% set redirect_policy_name = site.redirect_policy ~ defaults.ndo.schemas.templates.service_graphs.redirect_policy_name_suffix %}
                                     "redirectPolicy": {
                                         "dn": "uni/tn-{{ site.tenant | default(template.tenant) }}/svcCont/svcRedirectPol-{{ redirect_policy_name }}"
                                     },
+                                    {%- endif %}
                                     "subnets": []
                                     {%- endif %}
                                     {%- endfor %}

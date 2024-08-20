@@ -514,7 +514,7 @@ t_contracts_service_graph_nodes_prov_sites:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @ref_table(ndo.tenants)
   device: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   logical_interface: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  redirect_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  redirect_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 t_contracts_service_graph_nodes_con:
   bridge_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(Consumer Bridge Domain Name)
@@ -527,7 +527,7 @@ t_contracts_service_graph_nodes_con_sites:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @ref_table(ndo.tenants)
   device: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   logical_interface: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  redirect_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  redirect_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 t_service_graphs:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
