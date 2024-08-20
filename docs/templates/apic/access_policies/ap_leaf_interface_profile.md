@@ -31,6 +31,7 @@ apic:
       - name: LEAF1001
         selectors:
           - name: SEL1
+            description: Leaf Interface Profile Description
             policy_group: 10G-SERVER
             port_blocks:
               - name: BLOCK1

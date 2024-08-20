@@ -34,6 +34,7 @@ Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }}
 Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector {{ leaf_interface_selector_name }}
     ${sel}=   Set Variable   $..infraAccPortP.children[?(@.infraHPortS.attributes.name=='{{ leaf_interface_selector_name }}')]
     Should Be Equal Value Json String   ${r.json()}    ${sel}..infraHPortS.attributes.name   {{ leaf_interface_selector_name }}
+    Should Be Equal Value Json String   ${r.json()}    ${sel}..infraHPortS.attributes.descr   {{ sel.description | default() }}
 {% if sel.fex_id is defined %}
 {% set fex_profile_name = sel.fex_profile ~ defaults.apic.access_policies.fex_interface_profiles.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}    ${sel}..infraRsAccBaseGrp.attributes.fexId   {{ sel.fex_id }}

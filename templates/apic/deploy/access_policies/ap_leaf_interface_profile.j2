@@ -42,6 +42,7 @@
                                     "annotation": "orchestrator:aac",
                                     "dn": "uni/infra/accportprof-{{ leaf_interface_profile_name }}/hports-{{ leaf_interface_selector_name }}-typ-range",
                                     "name": "{{ leaf_interface_selector_name }}",
+                                    "descr": "{{ sel.description | default() }}"
                                     "type": "range",
                                     "childAction": "deleteNonPresent"
                                 },

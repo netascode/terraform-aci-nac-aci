@@ -136,6 +136,7 @@ Verify Endpoint Group {{ epg_name }} VMM Domain {{ vmm_name }}
 Verify Endpoint Group {{ epg_name }} Static Ports {{ sp_tdn }}
     ${sp}=   Set Variable   $..fvAEPg.children[?(@.fvRsPathAtt.attributes.tDn=='{{ sp_tdn }}')].fvRsPathAtt
     Should Be Equal Value Json String   ${r.json()}   ${sp}.attributes.encap   vlan-{{ sp.vlan }}
+    Should Be Equal Value Json String   ${r.json()}   ${sp}.attributes.descr   {{ sp.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${sp}.attributes.instrImedcy   {{ sp.deployment_immediacy | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.deployment_immediacy) }}
     Should Be Equal Value Json String   ${r.json()}   ${sp}.attributes.mode   {{ sp.mode | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.mode) }}
     Should Be Equal Value Json String   ${r.json()}   ${sp}.attributes.tDn   {{ sp_tdn }}

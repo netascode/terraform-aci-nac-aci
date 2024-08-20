@@ -1288,6 +1288,7 @@ ap_leaf_interface_profiles:
 
 ap_leaf_interface_profiles_selectors:
   name: regex('^[a-zA-Z0-9_.,:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   fex_id: int(min=101, max=199, required=False)
   fex_profile: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -1985,6 +1986,7 @@ ten_ap_endpoint_groups_static_ports:
   deployment_immediacy: enum('immediate', 'lazy', required=False)
   mode: enum('regular', 'native', 'untagged', required=False)
   ptp: include('ten_ap_endpoint_groups_static_ports_ptp', required=False) # @name(EPG Static Ports PTP) @sheet_hidden(
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
 
 ten_ap_endpoint_groups_static_ports_ptp:
   mode: enum('multicast','multicast-master','unicast-master', required=False)

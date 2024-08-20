@@ -64,6 +64,7 @@ apic:
                   standby_uplinks: 3,4
               static_ports:
                 - node_id: 101
+                  description: Static Port Description
                   port: 10
                   vlan: 135
                   mode: regular
