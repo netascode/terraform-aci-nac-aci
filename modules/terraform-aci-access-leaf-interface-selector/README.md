@@ -52,6 +52,7 @@ module "aci_access_leaf_interface_selector" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_interface_profile"></a> [interface\_profile](#input\_interface\_profile) | Leaf interface profile name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Leaf interface selector name. | `string` | n/a | yes |
+| <a name="input_description"></a> [description](#input\_description) | Leaf interface selector description. | `string` | `""` | no |
 | <a name="input_fex_id"></a> [fex\_id](#input\_fex\_id) | FEX ID. Allowed values: 101-199. `0` meaning no FEX. | `number` | `0` | no |
 | <a name="input_fex_interface_profile"></a> [fex\_interface\_profile](#input\_fex\_interface\_profile) | FEX interface profile name. | `string` | `""` | no |
 | <a name="input_policy_group_type"></a> [policy\_group\_type](#input\_policy\_group\_type) | Interface policy group type. Choices: `access`, `pc`, `vpc`, `breakout`. | `string` | `"access"` | no |

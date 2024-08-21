@@ -2,9 +2,9 @@ resource "aci_rest_managed" "infraHPortS" {
   dn         = "uni/infra/accportprof-${var.interface_profile}/hports-${var.name}-typ-range"
   class_name = "infraHPortS"
   content = {
-    name = var.name
+    name  = var.name
     descr = var.description
-    type = "range"
+    type  = "range"
   }
 }
 
