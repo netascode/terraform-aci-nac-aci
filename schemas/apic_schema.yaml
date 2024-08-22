@@ -1983,6 +1983,7 @@ ten_ap_endpoint_groups_static_ports:
   sub_port: int(min=1, max=16, required=False)
   channel: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   vlan: int(min=1, max=4096)
+  primary_vlan: int(min=1, max=4096, required=False)
   deployment_immediacy: enum('immediate', 'lazy', required=False)
   mode: enum('regular', 'native', 'untagged', required=False)
   ptp: include('ten_ap_endpoint_groups_static_ports_ptp', required=False) # @name(EPG Static Ports PTP) @sheet_hidden(

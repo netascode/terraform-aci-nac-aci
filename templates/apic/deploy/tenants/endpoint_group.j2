@@ -147,6 +147,9 @@
                                                 "descr": "{{ sp.description | default() }}",
                                                 "childAction": "deleteNonPresent",
                                                 "encap": "vlan-{{ sp.vlan }}",
+                                                {%- if sp.primary_vlan is defined %}
+                                                "primaryEncap": "vlan-{{ sp.primary_vlan}}",
+                                                {%- endif %}
                                                 "instrImedcy": "{{ sp.deployment_immediacy | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.deployment_immediacy)  }}",
                                                 "mode": "{{ sp.mode | default(defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.mode) }}",
                                                 {% if sp.node_id is defined and sp.channel is not defined %}

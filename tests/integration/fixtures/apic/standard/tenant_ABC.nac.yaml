@@ -473,6 +473,7 @@ apic:
                   description: My Static Ports Description
                   port: 10
                   vlan: 135
+                  primary_vlan: 136
                   mode: regular
                   deployment_immediacy: lazy
                 - node_id: 101

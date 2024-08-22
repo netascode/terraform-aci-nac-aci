@@ -73,6 +73,7 @@ apic:
                 - pod_id: 1
                   node_id: 101
                   vlan: 135
+                  primary_vlan: 136
                   mode: regular
                   deployment_immediacy: lazy
               static_endpoints:
