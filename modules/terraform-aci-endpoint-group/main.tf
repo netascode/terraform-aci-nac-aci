@@ -219,7 +219,7 @@ resource "aci_rest_managed" "fvRsPathAtt_port" {
   class_name = "fvRsPathAtt"
   content = {
     tDn          = format("topology/pod-%s/paths-%s/pathep-[eth%s/%s]", each.value.pod_id, each.value.node_id, each.value.module, each.value.port)
-    descr       = each.value.description
+    descr        = each.value.description
     encap        = "vlan-${each.value.vlan}"
     primaryEncap = "vlan-${each.value.primary_vlan}"
     mode         = each.value.mode
