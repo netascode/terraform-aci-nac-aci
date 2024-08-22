@@ -42,6 +42,7 @@ module "aci_banner" {
 | <a name="input_apic_gui_alias"></a> [apic\_gui\_alias](#input\_apic\_gui\_alias) | APIC GUI alias. | `string` | `""` | no |
 | <a name="input_apic_cli_banner"></a> [apic\_cli\_banner](#input\_apic\_cli\_banner) | APIC CLI banner. | `string` | `""` | no |
 | <a name="input_switch_cli_banner"></a> [switch\_cli\_banner](#input\_switch\_cli\_banner) | Switch CLI banner. | `string` | `""` | no |
+| <a name="input_escape_html"></a> [escape\_html](#input\_escape\_html) | Enable escape HTML characters for banner. | `bool` | `true` | no |
 
 ## Outputs
 
