@@ -2916,7 +2916,7 @@ locals {
         promiscuous_mode = try(device.promiscuous_mode, local.defaults.apic.tenants.services.l4l7_devices.promiscuous_mode)
         service_type     = try(device.service_type, local.defaults.apic.tenants.services.l4l7_devices.service_type)
         trunking         = try(device.trunking, local.defaults.apic.tenants.services.l4l7_devices.trunking)
-        active_active    = try(device.trunking, local.defaults.apic.tenants.services.l4l7_devices.active_active)
+        active_active    = try(device.active_active, local.defaults.apic.tenants.services.l4l7_devices.active_active)
         physical_domain  = try(device.physical_domain, "")
         vmm_provider     = "VMware"
         vmm_domain       = try(device.vmware_vmm_domain, "")

@@ -94,7 +94,7 @@ resource "aci_rest_managed" "vnsCIf" {
     name      = each.value.interface
     nameAlias = each.value.alias
     vnicName  = each.value.vnic_name
-    vlan      = each.value.vlan != null && var.active_active == true ? "vlan-${each.value.vlan}" : null
+    encap     = each.value.vlan != null && var.active_active == true ? "vlan-${each.value.vlan}" : null
   }
 }
 
