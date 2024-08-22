@@ -438,6 +438,7 @@ module "aci_endpoint_group" {
   subnets                     = each.value.subnets
   vmware_vmm_domains          = each.value.vmware_vmm_domains
   static_ports = [for sp in try(each.value.static_ports, []) : {
+    description          = sp.description
     node_id              = sp.node_id
     node2_id             = sp.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == sp.channel][0][1] : sp.node2_id
     fex_id               = sp.fex_id
