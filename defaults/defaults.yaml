@@ -25,6 +25,7 @@ defaults:
         apic_gui_banner_url: ""
         apic_cli_banner: ""
         switch_cli_banner: ""
+        escape_html: true
       ep_loop_protection:
         admin_state: false
         detection_interval: 60
