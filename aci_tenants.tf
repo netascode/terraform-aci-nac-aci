@@ -356,6 +356,7 @@ locals {
           static_ports = [for sp in try(epg.static_ports, []) : {
             node_id = try(sp.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == sp.channel][0][0], null)
             # set node2_id to "vpc" if channel IPG is vPC, otherwise "null"
+            description          = try(sp.description, "")
             node2_id             = try(sp.node2_id, [for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == sp.channel && pg.type == "vpc"][0], null)
             fex_id               = try(sp.fex_id, null)
             fex2_id              = try(sp.fex2_id, null)
