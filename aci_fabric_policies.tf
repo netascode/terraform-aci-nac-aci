@@ -21,6 +21,7 @@ module "aci_banner" {
   apic_gui_alias          = try(local.fabric_policies.banners.apic_gui_alias, "")
   apic_cli_banner         = try(local.fabric_policies.banners.apic_cli_banner, "")
   switch_cli_banner       = try(local.fabric_policies.banners.switch_cli_banner, "")
+  escape_html             = try(local.fabric_policies.banners.escape_html, local.defaults.apic.fabric_policies.banners.escape_html)
 }
 
 module "aci_endpoint_loop_protection" {
