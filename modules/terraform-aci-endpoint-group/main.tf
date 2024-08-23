@@ -250,6 +250,7 @@ resource "aci_rest_managed" "fvRsPathAtt_subport" {
   class_name = "fvRsPathAtt"
   content = {
     tDn          = format("topology/pod-%s/paths-%s/pathep-[eth%s/%s/%s]", each.value.pod_id, each.value.node_id, each.value.module, each.value.port, each.value.sub_port)
+    descr        = each.value.description
     encap        = "vlan-${each.value.vlan}"
     primaryEncap = "vlan-${each.value.primary_vlan}"
     mode         = each.value.mode
@@ -280,6 +281,7 @@ resource "aci_rest_managed" "fvRsPathAtt_channel" {
   class_name = "fvRsPathAtt"
   content = {
     tDn          = format(each.value.node2_id != null ? "topology/pod-%s/protpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/pathep-[%[4]s]", each.value.pod_id, each.value.node_id, each.value.node2_id, each.value.channel)
+    descr        = each.value.description
     encap        = "vlan-${each.value.vlan}"
     primaryEncap = "vlan-${each.value.primary_vlan}"
     mode         = each.value.mode
@@ -310,6 +312,7 @@ resource "aci_rest_managed" "fvRsPathAtt_fex_port" {
   class_name = "fvRsPathAtt"
   content = {
     tDn          = format("topology/pod-%s/paths-%s/extpaths-%s/pathep-[eth%s/%s]", each.value.pod_id, each.value.node_id, each.value.fex_id, each.value.module, each.value.port)
+    descr        = each.value.description
     encap        = "vlan-${each.value.vlan}"
     primaryEncap = "vlan-${each.value.primary_vlan}"
     mode         = each.value.mode
@@ -340,6 +343,7 @@ resource "aci_rest_managed" "fvRsPathAtt_fex_channel" {
   class_name = "fvRsPathAtt"
   content = {
     tDn          = format(each.value.node2_id != null && each.value.fex2_id != null ? "topology/pod-%s/protpaths-%s-%s/extprotpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/extpaths-%[4]s/pathep-[%[6]s]", each.value.pod_id, each.value.node_id, each.value.node2_id, each.value.fex_id, each.value.fex2_id, each.value.channel)
+    descr        = each.value.description
     encap        = "vlan-${each.value.vlan}"
     primaryEncap = "vlan-${each.value.primary_vlan}"
     mode         = each.value.mode
