@@ -1122,6 +1122,12 @@ locals {
             igmp_interface_policy        = try("${ip.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
             qos_class                    = try(ip.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
             custom_qos_policy            = try("${ip.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+            dhcp_labels = [for label in try(ip.dhcp_labels, []) : {
+              dhcp_relay_policy  = try("${label.dhcp_relay_policy}${local.defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix}", "")
+              dhcp_option_policy = try("${label.dhcp_option_policy}${local.defaults.apic.tenants.policies.dhcp_option_policies.name_suffix}", "")
+              scope              = try(label.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.dhcp_labels.scope)
+              }
+            ]
             interfaces = [for int in try(ip.interfaces, []) : {
               ip              = try(int.ip, "")
               svi             = try(int.svi, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.svi)
@@ -1212,6 +1218,7 @@ module "aci_l3out_interface_profile_manual" {
   igmp_interface_policy        = each.value.igmp_interface_policy
   qos_class                    = each.value.qos_class
   custom_qos_policy            = each.value.custom_qos_policy
+  dhcp_labels                  = each.value.dhcp_labels
   interfaces = [for int in try(each.value.interfaces, []) : {
     ip                       = int.ip
     svi                      = int.svi
@@ -1270,6 +1277,12 @@ locals {
         igmp_interface_policy        = try("${l3out.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
         qos_class                    = try(l3out.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
         custom_qos_policy            = try("${l3out.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+        dhcp_labels = [for label in try(l3out.dhcp_labels, []) : {
+          dhcp_relay_policy  = try("${label.dhcp_relay_policy}${local.defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix}", "")
+          dhcp_option_policy = try("${label.dhcp_option_policy}${local.defaults.apic.tenants.policies.dhcp_option_policies.name_suffix}", "")
+          scope              = try(label.scope, local.defaults.apic.tenants.l3outs.dhcp_labels.scope)
+          }
+        ]
         interfaces = flatten([for node in try(l3out.nodes, []) : [
           for int in try(node.interfaces, []) : {
             ip              = try(int.ip, "")
@@ -1359,6 +1372,7 @@ module "aci_l3out_interface_profile_auto" {
   igmp_interface_policy        = each.value.igmp_interface_policy
   qos_class                    = each.value.qos_class
   custom_qos_policy            = each.value.custom_qos_policy
+  dhcp_labels                  = each.value.dhcp_labels
   interfaces = [for int in try(each.value.interfaces, []) : {
     ip                       = int.ip
     svi                      = int.svi
