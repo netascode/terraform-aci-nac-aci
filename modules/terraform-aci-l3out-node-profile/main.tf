@@ -50,6 +50,15 @@ resource "aci_rest_managed" "l3extRsNodeL3OutAtt" {
   }
 }
 
+resource "aci_rest_managed" "bgpProtP" {
+  for_each   = { for node in var.nodes : node.node_id => node }
+  dn         = "${aci_rest_managed.l3extLNodeP.dn}/bgpProtP"
+  class_name = "bgpProtP"
+  content = {
+    tnBgpCtxPolName = each.value.bgp_protocol_profile
+  }
+}
+
 resource "aci_rest_managed" "l3extLoopBackIfP" {
   for_each   = { for node in var.nodes : node.node_id => node if node.router_id_as_loopback == false && node.loopback != null }
   dn         = "${aci_rest_managed.l3extRsNodeL3OutAtt[each.key].dn}/lbp-[${each.value.loopback}]"

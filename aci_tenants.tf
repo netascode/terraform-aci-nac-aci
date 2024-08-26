@@ -938,6 +938,7 @@ locals {
             pod_id                = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
             router_id             = node.router_id
             router_id_as_loopback = try(node.router_id_as_loopback, local.defaults.apic.tenants.l3outs.node_profiles.nodes.router_id_as_loopback)
+            bgp_protocol_profile  = try("${node.bgp_protocol_profile}${local.defaults.apic.tenants.policies.bgp_timer_policies.name_suffix}", "")
             loopback              = try(node.loopback, null)
             static_routes = [for sr in try(node.static_routes, []) : {
               description = try(sr.description, "")
@@ -1021,6 +1022,7 @@ locals {
           router_id             = node.router_id
           router_id_as_loopback = try(node.router_id_as_loopback, local.defaults.apic.tenants.l3outs.nodes.router_id_as_loopback)
           loopback              = try(node.loopback, null)
+          bgp_protocol_profile  = try("${node.bgp_protocol_profile}${local.defaults.apic.tenants.policies.bgp_timer_policies.name_suffix}", "")
           static_routes = [for sr in try(node.static_routes, []) : {
             description = try(sr.description, "")
             prefix      = sr.prefix

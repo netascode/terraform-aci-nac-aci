@@ -35,6 +35,7 @@ variable "nodes" {
     pod_id                  = optional(number, 1)
     router_id               = string
     router_id_as_loopback   = optional(bool, true)
+    bgp_protocol_profile    = optional(string)
     loopback                = optional(string)
     mpls_transport_loopback = optional(string)
     segment_id              = optional(number)
@@ -66,6 +67,13 @@ variable "nodes" {
       for n in var.nodes : n.pod_id == null || try(n.pod_id >= 1 && n.pod_id <= 255, false)
     ])
     error_message = "`pod_id`: Minimum value: `1`. Maximum value: `255`."
+  }
+
+  validation {
+    condition = alltrue([
+      for n in var.nodes : n.bgp_protocol_profile == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", n.bgp_protocol_profile)), false)
+    ])
+    error_message = "`bgp_protocol_profile`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 
   validation {
