@@ -156,6 +156,9 @@ apic:
           vrf: VRF1
           domain: ROUTED1
           bfd_policy: BFD1
+          bgp:
+            timer_policy: BGP-TIMER1
+            as_path_policy: BGP-BEST-PATH1
           ospf:
             area: backbone
             area_type: regular
@@ -280,6 +283,9 @@ apic:
           l3_multicast_ipv4: true
           node_profiles:
             - name: NP1
+              bgp:
+                timer_policy: BGP-TIMER1
+                as_path_policy: BGP-BEST-PATH1
               bgp_peers:
                 - ip: 14.14.14.16
                   remote_as: 65010

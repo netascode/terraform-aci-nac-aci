@@ -675,6 +675,43 @@
                                             ]
                                         }
                                     }
+                                    {%- if l3out.bgp is defined %}{{ comma3() }}
+                                    {
+                                        "bgpProtP": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "childAction": "deleteNonPresent"
+                                            },
+                                            "children": [
+                                                {%- set comma4 = joiner(",") %}
+                                                {%- if l3out.bgp.timer_policy is defined %}{{ comma4() }}
+                                                {% set bgp_timer_policy_name = l3out.bgp.timer_policy ~ defaults.apic.tenants.policies.bgp_timer_policies.name_suffix %}
+                                                {
+                                                    "bgpRsBgpNodeCtxPol": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "tnBgpCtxPolName": "{{ bgp_timer_policy_name }}"
+                                                        }
+                                                    }
+                                                }
+                                                {%- endif%}
+                                                {%- if l3out.bgp.as_path_policy is defined %}{{ comma4() }}
+                                                {% set bgp_as_path_policy_name = l3out.bgp.as_path_policy ~ defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix %}
+                                                {
+                                                    "bgpRsBestPathCtrlPol": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "tnBgpBestPathCtrlPolName": "{{ bgp_as_path_policy_name }}"
+                                                        }
+                                                    }
+                                                }
+                                                {%- endif%}
+
+                                            ]
+                                        }
+                                    }
+                                    {%- endif %}
+
                                 ]
                             }
                         }
@@ -1311,6 +1348,42 @@
                                         }
                                     }
                                     {%- endfor %}
+                                    {%- if np.bgp is defined %}{{ comma3() }}
+                                    {
+                                        "bgpProtP": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "childAction": "deleteNonPresent"
+                                            },
+                                            "children": [
+                                                {%- set comma4 = joiner(",") %}
+                                                {%- if np.bgp.timer_policy is defined %}{{ comma4() }}
+                                                {% set bgp_timer_policy_name = np.bgp.timer_policy ~ defaults.apic.tenants.policies.bgp_timer_policies.name_suffix %}
+                                                {
+                                                    "bgpRsBgpNodeCtxPol": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "tnBgpCtxPolName": "{{ bgp_timer_policy_name }}"
+                                                        }
+                                                    }
+                                                }
+                                                {%- endif%}
+                                                {%- if np.bgp.as_path_policy is defined %}{{ comma4() }}
+                                                {% set bgp_as_path_policy_name = np.bgp.as_path_policy ~ defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix %}
+                                                {
+                                                    "bgpRsBestPathCtrlPol": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "tnBgpBestPathCtrlPolName": "{{ bgp_as_path_policy_name }}"
+                                                        }
+                                                    }
+                                                }
+                                                {% endif%}
+
+                                            ]
+                                        }
+                                    }
+                                    {%- endif %}
 
                                 ]
                             }

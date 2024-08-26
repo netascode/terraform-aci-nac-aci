@@ -2280,6 +2280,7 @@ ten_l3outs:
   target_dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7', 'unspecified'), int(min=0, max=63), required=False)
   vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   domain: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  bgp: include('ten_l3outs_bgp', required=False)
   ospf: include('ten_l3outs_ospf', required=False) # @name(L3out OSPF)
   eigrp: include('ten_l3outs_eigrp', required=False) # @name(L3out EIGRP)
   bfd_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -2304,6 +2305,10 @@ ten_l3outs:
   expected_state: include('ten_l3outs_expected_state', required=False) # @no_external_doc() @name(L3out Expected State) @sheet_hidden()
   import_route_control_enforcement: bool(required=False)
   export_route_control_enforcement: bool(required=False)
+
+ten_l3outs_bgp:
+  timer_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  as_path_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_ospf:
   ospf_interface_profile_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -2450,6 +2455,7 @@ ten_l3outs_nodes_interfaces_micro_bfd:
 
 ten_l3outs_node_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  bgp: include('ten_l3outs_bgp', required=False)
   bgp_peers: list(include('ten_l3outs_node_profiles_bgp_peers'), required=False) # @name(L3out Node Profile BGP Peers) @sheet_hidden()
   nodes: list(include('ten_l3outs_node_profiles_nodes'), required=False) # @name(L3out Node Profile Nodes) @ref_name(Node) @key(node_id) @sheet_hidden()
   interface_profiles: list(include('ten_l3outs_node_profiles_interface_profiles'), required=False) # @name(L3out Interface Profiles) @ref_name(Interface Profile) @sheet_hidden()

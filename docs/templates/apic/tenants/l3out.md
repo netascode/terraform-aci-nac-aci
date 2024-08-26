@@ -167,6 +167,9 @@ apic:
           domain: ROUTED1
           node_profiles:
             - name: NODE_101
+              bgp:
+                timer_policy: BGP_TIMER1
+                as_path_policy: BGP_AS_PATH1
               nodes:
                 - node_id: 101
                   router_id: 5.5.5.5
@@ -209,6 +212,9 @@ apic:
           vrf: VRF1
           domain: ROUTED1
           bfd_policy: BFD1
+          bgp:
+            timer_policy: BGP_TIMER1
+            as_path_policy: BGP_AS_PATH1
           ospf:
             area: 0
             area_type: regular

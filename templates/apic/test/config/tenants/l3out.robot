@@ -391,6 +391,22 @@ Verify L3out {{ l3out_name }} Node {{ node.node_id }} Interface {{ loop.index }}
 
 {% endfor %}
 
+{% if l3out.bgp is defined %}
+
+Verify L3out {{ l3out_name }} BGP Protocol Profile
+
+{% if l3out.bgp.timer_policy is defined %}
+{% set bgp_timer_policy_name = l3out.bgp.timer_policy ~ defaults.apic.tenants.policies.bgp_timer_policies.name_suffix %}                             
+    Should Be Equal Value Json String   ${r.json()}   $..bgpRsBgpNodeCtxPol.attributes.tnBgpCtxPolName   {{ bgp_timer_policy_name }}
+{% endif %}
+
+{% if l3out.bgp.as_path_policy is defined %}
+{% set bgp_as_path_policy_name = l3out.bgp.as_path_policy ~ defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix %}                            
+    Should Be Equal Value Json String   ${r.json()}   $..bgpRsBestPathCtrlPol.attributes.tnBgpBestPathCtrlPolName   {{ bgp_as_path_policy_name }}
+{% endif %}
+
+{% endif %}
+
 {% endif %}
 
 {% for np in l3out.node_profiles | default([]) %}
@@ -740,6 +756,22 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
 {% endfor %}
 
 {% endfor %}
+
+{% if np.bgp is defined %}
+
+Verify L3out {{ l3out_name }} BGP Protocol Profile
+
+{% if np.bgp.timer_policy is defined %}
+{% set bgp_timer_policy_name = l3out.bgp.timer_policy ~ defaults.apic.tenants.policies.bgp_timer_policies.name_suffix %}                       
+    Should Be Equal Value Json String   ${r.json()}   $..bgpRsBgpNodeCtxPol.attributes.tnBgpCtxPolName   {{ bgp_timer_policy_name }}
+{% endif %}
+
+{% if np.bgp.as_path_policy is defined %}
+{% set bgp_as_path_policy_name = l3out.bgp.as_path_policy ~ defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix %}                            
+    Should Be Equal Value Json String   ${r.json()}   $..bgpRsBestPathCtrlPol.attributes.tnBgpBestPathCtrlPolName   {{ bgp_as_path_policy_name }}
+{% endif %}
+
+{% endif %}
 
 {% endfor %}
 
