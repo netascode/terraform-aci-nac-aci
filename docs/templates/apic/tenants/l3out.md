@@ -180,6 +180,10 @@ apic:
                         - ip: 6.6.6.6
               interface_profiles:
                 - name: NODE_101
+                  dhcp_labels:
+                    - dhcp_relay_policy: DHCP-RELAY1
+                      dhcp_option_policy: DHCP-OPTION1
+                      scope: tenant
                   interfaces:
                     - node_id: 101
                       port: 10
@@ -212,6 +216,10 @@ apic:
           vrf: VRF1
           domain: ROUTED1
           bfd_policy: BFD1
+          dhcp_labels:
+            - dhcp_relay_policy: DHCP-RELAY1
+              dhcp_option_policy: DHCP-OPTION1
+              scope: tenant
           bgp:
             timer_policy: BGP_TIMER1
             as_path_policy: BGP_AS_PATH1

@@ -671,6 +671,32 @@
                                                 {%- endfor %}
 
                                                 {%- endfor %}
+                                                {%- for dhcp_label in l3out.dhcp_labels | default([]) %}{{ comma4() }}
+                                                {% set dhcp_relay_policy_name = dhcp_label.dhcp_relay_policy ~ defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix %}
+                                                {
+                                                    "dhcpLbl": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "name": "{{ dhcp_relay_policy_name }}",
+                                                            "owner": "{{ dhcp_label.scope | default(defaults.apic.tenants.l3outs.dhcp_labels.scope) }}",
+                                                            "childAction": "deleteNonPresent"
+                                                        },
+                                                        "children": [
+                                                            {% if dhcp_label.dhcp_option_policy is defined %}
+                                                            {% set dhcp_option_policy_name = dhcp_label.dhcp_option_policy ~ defaults.apic.tenants.policies.dhcp_option_policies.name_suffix %}
+                                                            {
+                                                                "dhcpRsDhcpOptionPol": {
+                                                                    "attributes": {
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tnDhcpOptionPolName": "{{ dhcp_option_policy_name }}"
+                                                                    }
+                                                                }
+                                                            }
+                                                            {% endif %}
+                                                        ]
+                                                    }
+                                                }
+                                                {%- endfor %}
 
                                             ]
                                         }
@@ -1339,6 +1365,33 @@
                                                             }
                                                             {%- endif %}
 
+                                                        ]
+                                                    }
+                                                }
+                                                {%- endfor %}
+
+                                                {%- for dhcp_label in ip.dhcp_labels | default([]) %}{{ comma4() }}
+                                                {% set dhcp_relay_policy_name = dhcp_label.dhcp_relay_policy ~ defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix %}
+                                                {
+                                                    "dhcpLbl": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "name": "{{ dhcp_relay_policy_name }}",
+                                                            "owner": "{{ dhcp_label.scope | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.dhcp_labels.scope) }}",
+                                                            "childAction": "deleteNonPresent"
+                                                        },
+                                                        "children": [
+                                                            {% if dhcp_label.dhcp_option_policy is defined %}
+                                                            {% set dhcp_option_policy_name = dhcp_label.dhcp_option_policy ~ defaults.apic.tenants.policies.dhcp_option_policies.name_suffix %}
+                                                            {
+                                                                "dhcpRsDhcpOptionPol": {
+                                                                    "attributes": {
+                                                                        "annotation": "orchestrator:aac",
+                                                                        "tnDhcpOptionPolName": "{{ dhcp_option_policy_name }}"
+                                                                    }
+                                                                }
+                                                            }
+                                                            {% endif %}
                                                         ]
                                                     }
                                                 }

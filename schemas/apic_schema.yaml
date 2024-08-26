@@ -2305,6 +2305,8 @@ ten_l3outs:
   expected_state: include('ten_l3outs_expected_state', required=False) # @no_external_doc() @name(L3out Expected State) @sheet_hidden()
   import_route_control_enforcement: bool(required=False)
   export_route_control_enforcement: bool(required=False)
+  dhcp_labels: list(include('ten_dhcp_labels'), required=False)
+
 
 ten_l3outs_bgp:
   timer_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
@@ -2519,6 +2521,7 @@ ten_l3outs_node_profiles_interface_profiles:
   qos_class: enum('level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'unspecified', required=False)
   custom_qos_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   interfaces: list(include('ten_l3outs_node_profiles_interface_profiles_interfaces'), required=False) # @name(L3out Interface Prof Interfaces) @ref_name(Interface) @key(node_id;port;module;channel;vlan) @sheet_hidden()
+  dhcp_labels: list(include('ten_dhcp_labels'), required=False)
 
 ten_l3outs_node_profiles_interface_profiles_ospf:
   ospf_interface_profile_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)

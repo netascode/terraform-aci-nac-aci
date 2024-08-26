@@ -391,6 +391,22 @@ Verify L3out {{ l3out_name }} Node {{ node.node_id }} Interface {{ loop.index }}
 
 {% endfor %}
 
+{% for dhcp_label in l3out.dhcp_labels | default([]) %}
+{% set dhcp_relay_policy_name = dhcp_label.dhcp_relay_policy ~ defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix %}
+
+Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile {{ l3out_ip_name }} DHCP Label {{ dhcp_relay_policy_name }}
+
+    ${dhcp}=   Set Variable   $..l3extLIfP.children[?(@.dhcpLbl.attributes.name=='{{ dhcp_relay_policy_name }}')]
+    Should Be Equal Value Json String   ${r.json()}   ${dhcp}..dhcpLbl.attributes.name   {{ dhcp_relay_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${dhcp}..dhcpLbl.attributes.owner   {{ dhcp_label.scope | default(defaults.apic.tenants.l3outs.dhcp_labels.scope) }}
+
+{% if dhcp_label.dhcp_option_policy is defined %}
+{% set dhcp_option_policy_name = dhcp_label.dhcp_option_policy ~ defaults.apic.tenants.policies.dhcp_option_policies.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   ${dhcp}..dhcpRsDhcpOptionPol.attributes.tnDhcpOptionPolName   {{ dhcp_option_policy_name }}
+{% endif %}
+
+{% endfor %}
+
 {% if l3out.bgp is defined %}
 
 Verify L3out {{ l3out_name }} BGP Protocol Profile
@@ -751,6 +767,23 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
     Should Be Equal Value Json String   ${r.json()}   ${int}..bfdMicroBfdP.attributes.adminState   yes
     Should Be Equal Value Json String   ${r.json()}   ${int}..bfdMicroBfdP.attributes.dst   {{ int.micro_bfd.destination_ip }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..bfdMicroBfdP.attributes.stTm   {{ int.micro_bfd.start_timer | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.micro_bfd.start_timer )}}
+{% endif %}
+
+{% endfor %}
+
+
+{% for dhcp_label in ip.dhcp_labels | default([]) %}
+{% set dhcp_relay_policy_name = dhcp_label.dhcp_relay_policy ~ defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix %}
+
+Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile {{ l3out_ip_name }} DHCP Label {{ dhcp_relay_policy_name }}
+
+    ${dhcp}=   Set Variable   $..l3extLIfP.children[?(@.dhcpLbl.attributes.name=='{{ dhcp_relay_policy_name }}')]
+    Should Be Equal Value Json String   ${r.json()}   ${dhcp}..dhcpLbl.attributes.name   {{ dhcp_relay_policy_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${dhcp}..dhcpLbl.attributes.owner   {{ dhcp_label.scope | default(defaults.apic.tenants.l3outs.dhcp_labels.scope) }}
+
+{% if dhcp_label.dhcp_option_policy is defined %}
+{% set dhcp_option_policy_name = dhcp_label.dhcp_option_policy ~ defaults.apic.tenants.policies.dhcp_option_policies.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}   ${dhcp}..dhcpRsDhcpOptionPol.attributes.tnDhcpOptionPolName   {{ dhcp_option_policy_name }}
 {% endif %}
 
 {% endfor %}
