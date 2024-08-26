@@ -400,11 +400,13 @@ variable "static_leafs" {
 variable "static_ports" {
   description = "List of static ports. Allowed values `node_id`, `node2_id`: `1` - `4000`. Allowed values `fex_id`, `fex2_id`: `101` - `199`. Allowed values `vlan`: `1` - `4096`. Allowed values `pod_id`: `1` - `255`. Default value `pod_id`: `1`. Allowed values `port`: `1` - `127`. Allowed values `sub_port`: `1` - `16`. Allowed values `module`: `1` - `9`. Default value `module`: `1`. Choices `deployment_immediacy`: `immediate`, `lazy`. Default value `deployment_immediacy`: `lazy`. Choices `mode`: `regular`, `native`, `untagged`. Default value `mode`: `regular`."
   type = list(object({
+    description          = optional(string, "")
     node_id              = number
     node2_id             = optional(number)
     fex_id               = optional(number)
     fex2_id              = optional(number)
     vlan                 = number
+    primary_vlan         = optional(number)
     pod_id               = optional(number, 1)
     port                 = optional(number)
     sub_port             = optional(number)
@@ -472,6 +474,13 @@ variable "static_ports" {
       for sp in var.static_ports : (sp.vlan >= 1 && sp.vlan <= 4096)
     ])
     error_message = "`vlan`: Minimum value: `1`. Maximum value: `4096`."
+  }
+
+  validation {
+    condition = alltrue([
+      for sp in var.static_ports : sp.primary_vlan == null || try(sp.primary_vlan >= 1 && sp.primary_vlan <= 4096, false)
+    ])
+    error_message = "`primary_vlan`: Minimum value: `1`. Maximum value: `4096`."
   }
 
   validation {
