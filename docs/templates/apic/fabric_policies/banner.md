@@ -16,4 +16,5 @@ apic:
       apic_gui_banner_url: APIC GUI BANNER URL
       apic_cli_banner: APIC CLI BANNER
       switch_cli_banner: SWITCH CLI BANNER
+      escape_html: false
 ```
