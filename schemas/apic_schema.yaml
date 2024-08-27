@@ -93,6 +93,7 @@ fp_banners:
   apic_gui_banner_message: str(required=False)
   apic_cli_banner: str(required=False)
   switch_cli_banner: str(required=False)
+  escape_html: bool(required=False)
 
 fp_ep_loop_protection:
   admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
