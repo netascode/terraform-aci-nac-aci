@@ -12,7 +12,7 @@ resource "aci_rest_managed" "spanDest" {
   class_name = "spanDest"
   content = {
     name  = var.name
-    descr = ""
+    descr = var.description
   }
 }
 
