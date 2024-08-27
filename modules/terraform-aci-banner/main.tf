@@ -1,6 +1,6 @@
 resource "aci_rest_managed" "aaaPreLoginBanner" {
-  dn         = "uni/userext/preloginbanner"
-  class_name = "aaaPreLoginBanner"
+  dn          = "uni/userext/preloginbanner"
+  class_name  = "aaaPreLoginBanner"
   escape_html = var.escape_html
   content = {
     guiMessage       = var.apic_gui_banner_message != "" ? var.apic_gui_banner_message : var.apic_gui_banner_url
