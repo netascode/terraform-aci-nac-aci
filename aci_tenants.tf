@@ -2941,6 +2941,7 @@ locals {
         promiscuous_mode = try(device.promiscuous_mode, local.defaults.apic.tenants.services.l4l7_devices.promiscuous_mode)
         service_type     = try(device.service_type, local.defaults.apic.tenants.services.l4l7_devices.service_type)
         trunking         = try(device.trunking, local.defaults.apic.tenants.services.l4l7_devices.trunking)
+        active_active    = try(device.active_active, local.defaults.apic.tenants.services.l4l7_devices.active_active)
         physical_domain  = try(device.physical_domain, "")
         vmm_provider     = "VMware"
         vmm_domain       = try(device.vmware_vmm_domain, "")
@@ -2962,6 +2963,7 @@ locals {
             module   = try(int.module, null)
             port     = try(int.port, null)
             channel  = try("${int.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", null)
+            vlan     = try(int.vlan, null)
           }]
         }]
         logical_interfaces = [for lint in try(device.logical_interfaces, []) : {
@@ -2993,6 +2995,7 @@ module "aci_l4l7_device" {
   promiscuous_mode = each.value.promiscuous_mode
   service_type     = each.value.service_type
   trunking         = each.value.trunking
+  active_active    = each.value.active_active
   physical_domain  = each.value.physical_domain
   vmm_provider     = each.value.vmm_provider
   vmm_domain       = each.value.vmm_domain
@@ -3013,6 +3016,7 @@ module "aci_l4l7_device" {
       module    = int.module
       port      = int.port
       channel   = int.channel
+      vlan      = int.vlan
     }]
   }]
   logical_interfaces = each.value.logical_interfaces

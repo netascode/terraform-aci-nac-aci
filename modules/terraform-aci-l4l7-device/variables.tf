@@ -97,6 +97,12 @@ variable "trunking" {
   default     = false
 }
 
+variable "active_active" {
+  description = "Active-Active Mode."
+  type        = bool
+  default     = false
+}
+
 variable "physical_domain" {
   description = "Phyical domain name."
   type        = string
@@ -148,6 +154,7 @@ variable "concrete_devices" {
       module    = optional(number, 1)
       port      = optional(number)
       channel   = optional(string)
+      vlan      = optional(number)
     })), [])
   }))
   default = []
