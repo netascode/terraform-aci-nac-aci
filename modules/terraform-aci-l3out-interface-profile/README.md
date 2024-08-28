@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_l3out_interface_profile" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-l3out-interface-profile"
-  version = ">= 0.8.0"
+  version = ">= 0.9.1"
 
   tenant                      = "ABC"
   l3out                       = "L3OUT1"
@@ -28,6 +28,12 @@ module "aci_l3out_interface_profile" {
   igmp_interface_policy       = "IIP"
   qos_class                   = "level2"
   custom_qos_policy           = "CQP"
+  dhcp_labels = [
+    {
+      dhcp_relay_policy  = "DHCP-RELAY1"
+      dhcp_option_policy = "DHCP_OPTION1"
+    }
+  ]
   interfaces = [{
     description = "Interface 1"
     type        = "vpc"
@@ -115,6 +121,7 @@ module "aci_l3out_interface_profile" {
 | <a name="input_remote_leaf"></a> [remote\_leaf](#input\_remote\_leaf) | Remote leaf L3out flag. | `bool` | `false` | no |
 | <a name="input_sr_mpls"></a> [sr\_mpls](#input\_sr\_mpls) | SR MPLS L3out flag. | `bool` | `false` | no |
 | <a name="input_transport_data_plane"></a> [transport\_data\_plane](#input\_transport\_data\_plane) | Transport Data Plane. Allowed values: `sr_mpls`, `mpls`. Default value: `sr_mpls`. | `string` | `"sr_mpls"` | no |
+| <a name="input_dhcp_labels"></a> [dhcp\_labels](#input\_dhcp\_labels) | List of DHCP labels | <pre>list(object({<br>    dhcp_relay_policy  = string<br>    dhcp_option_policy = optional(string)<br>    scope              = optional(string, "infra")<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -142,6 +149,8 @@ module "aci_l3out_interface_profile" {
 | [aci_rest_managed.bgpRsPeerToProfile_export_floating](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.bgpRsPeerToProfile_import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.bgpRsPeerToProfile_import_floating](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.dhcpLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.dhcpRsDhcpOptionPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.eigrpAuthIfP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.eigrpIfP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.eigrpRsIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

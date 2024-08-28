@@ -1,6 +1,6 @@
 module "aci_l3out_interface_profile" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-l3out-interface-profile"
-  version = ">= 0.8.0"
+  version = ">= 0.9.1"
 
   tenant                      = "ABC"
   l3out                       = "L3OUT1"
@@ -17,6 +17,12 @@ module "aci_l3out_interface_profile" {
   igmp_interface_policy       = "IIP"
   qos_class                   = "level2"
   custom_qos_policy           = "CQP"
+  dhcp_labels = [
+    {
+      dhcp_relay_policy  = "DHCP-RELAY1"
+      dhcp_option_policy = "DHCP_OPTION1"
+    }
+  ]
   interfaces = [{
     description = "Interface 1"
     type        = "vpc"

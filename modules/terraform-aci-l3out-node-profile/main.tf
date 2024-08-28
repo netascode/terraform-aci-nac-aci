@@ -251,3 +251,27 @@ resource "aci_rest_managed" "bgpRsPeerPfxPol-bgpInfraPeerP" {
     tnBgpPeerPfxPolName = each.value.peer_prefix_policy
   }
 }
+
+resource "aci_rest_managed" "bgpProtP" {
+  count      = var.bgp_timer_policy != "" || var.bgp_as_path_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.l3extLNodeP.dn}/protp"
+  class_name = "bgpProtP"
+}
+
+resource "aci_rest_managed" "bgpRsBgpNodeCtxPol" {
+  count      = var.bgp_timer_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.bgpProtP[0].dn}/rsbgpNodeCtxPol"
+  class_name = "bgpRsBgpNodeCtxPol"
+  content = {
+    tnBgpCtxPolName = var.bgp_timer_policy
+  }
+}
+
+resource "aci_rest_managed" "bgpRsBestPathCtrlPol" {
+  count      = var.bgp_as_path_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.bgpProtP[0].dn}/rsBestPathCtrlPol"
+  class_name = "bgpRsBestPathCtrlPol"
+  content = {
+    tnBgpBestPathCtrlPolName = var.bgp_as_path_policy
+  }
+}

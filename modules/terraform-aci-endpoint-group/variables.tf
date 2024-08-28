@@ -406,6 +406,7 @@ variable "static_ports" {
     fex_id               = optional(number)
     fex2_id              = optional(number)
     vlan                 = number
+    primary_vlan         = optional(number)
     pod_id               = optional(number, 1)
     port                 = optional(number)
     sub_port             = optional(number)
@@ -473,6 +474,13 @@ variable "static_ports" {
       for sp in var.static_ports : (sp.vlan >= 1 && sp.vlan <= 4096)
     ])
     error_message = "`vlan`: Minimum value: `1`. Maximum value: `4096`."
+  }
+
+  validation {
+    condition = alltrue([
+      for sp in var.static_ports : sp.primary_vlan == null || try(sp.primary_vlan >= 1 && sp.primary_vlan <= 4096, false)
+    ])
+    error_message = "`primary_vlan`: Minimum value: `1`. Maximum value: `4096`."
   }
 
   validation {

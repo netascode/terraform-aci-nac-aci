@@ -542,3 +542,22 @@ resource "aci_rest_managed" "mplsRsIfPol" {
     tnMplsIfPolName = "default"
   }
 }
+
+resource "aci_rest_managed" "dhcpLbl" {
+  for_each   = { for dhcp_label in var.dhcp_labels : dhcp_label.dhcp_relay_policy => dhcp_label }
+  dn         = "${aci_rest_managed.l3extLIfP.dn}/dhcplbl-${each.value.dhcp_relay_policy}"
+  class_name = "dhcpLbl"
+  content = {
+    name  = each.value.dhcp_relay_policy
+    owner = each.value.scope
+  }
+}
+
+resource "aci_rest_managed" "dhcpRsDhcpOptionPol" {
+  for_each   = { for dhcp_label in var.dhcp_labels : dhcp_label.dhcp_relay_policy => dhcp_label if dhcp_label.dhcp_option_policy != null }
+  dn         = "${aci_rest_managed.dhcpLbl[each.value.dhcp_relay_policy].dn}/rsdhcpOptionPol"
+  class_name = "dhcpRsDhcpOptionPol"
+  content = {
+    tnDhcpOptionPolName = each.value.dhcp_option_policy
+  }
+}

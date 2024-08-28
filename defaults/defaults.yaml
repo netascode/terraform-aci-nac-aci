@@ -25,6 +25,7 @@ defaults:
         apic_gui_banner_url: ""
         apic_cli_banner: ""
         switch_cli_banner: ""
+        escape_html: true
       ep_loop_protection:
         admin_state: false
         detection_interval: 60
@@ -831,6 +832,8 @@ defaults:
           as_propagate: none
         redistribution_route_maps:
           source: static
+        dhcp_labels:
+          scope: infra
         nodes:
           pod: 1
           router_id_as_loopback: true
@@ -910,6 +913,8 @@ defaults:
             ospf:
               auth_key_id: 1
               auth_type: none
+            dhcp_labels:
+              scope: infra
             interfaces:
               pod: 1
               module: 1
