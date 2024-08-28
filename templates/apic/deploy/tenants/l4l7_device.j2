@@ -27,6 +27,9 @@
                         "promMode": "{{ dev.promiscuous_mode | default(defaults.apic.tenants.services.l4l7_devices.promiscuous_mode) | cisco.aac.aac_bool("yes") }}",
                         "svcType": "{{ dev.service_type | default(defaults.apic.tenants.services.l4l7_devices.service_type) }}",
                         "trunking": "{{ dev.trunking | default(defaults.apic.tenants.services.l4l7_devices.trunking) | cisco.aac.aac_bool("yes") }}",
+                        {% if dev.active_active | default(defaults.apic.tenants.services.l4l7_devices.active_active) %}
+                        "activeActive": "yes",
+                        {% endif %}
                         "childAction": "deleteNonPresent"
                     },
                     "children": [
@@ -81,6 +84,9 @@
                                                 "name": "{{ int_name }}",
                                                 "nameAlias": "{{ int.alias | default() }}",
                                                 "vnicName": "{{ int.vnic_name | default() }}",
+                                                {% if dev.active_active | default(defaults.apic.tenants.services.l4l7_devices.active_active) and int.vlan is defined %}
+                                                "encap": "vlan-{{ int.vlan }}",
+                                                {% endif %}
                                                 "childAction": "deleteNonPresent"
                                             },
                                             "children": [

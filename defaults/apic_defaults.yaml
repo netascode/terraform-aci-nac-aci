@@ -1410,6 +1410,7 @@ defaults:
           promiscuous_mode: false
           service_type: FW
           trunking: false
+          active_active: false
           concrete_devices:
             name_suffix: ""
             interfaces:

@@ -3397,6 +3397,7 @@ ten_ser_l4l7_devices:
   trunking: any(bool(), enum('yes', 'no'), required=False)
   physical_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   vmware_vmm_domain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  active_active: bool(required=False)
   concrete_devices: list(include('ten_ser_l4l7_devices_concrete_devices'), required=False) # @name(L4L7 Device Concrete Device) @ref_name(Concrete Device) @sheet_hidden()
   logical_interfaces: list(include('ten_ser_l4l7_devices_logical_interfaces'), required=False) # @name(L4L7 Device Logical Interfaces) @ref_name(Logical Interface) @sheet_hidden()
   expected_state: include('ten_ser_l4l7_devices_expected_state', required=False) # @no_external_doc() @name(L4L7 Device Expected State) @sheet_hidden()
@@ -3424,6 +3425,7 @@ ten_ser_l4l7_devices_concrete_devices_interfaces:
   module: int(min=1, max=9, required=False)
   port: int(min=1, max=127, required=False)
   channel: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  vlan: int(min=1, max=4096, required=False)
 
 ten_ser_l4l7_devices_logical_interfaces:
   name: regex('^[a-zA-Z0-9_.:-]{1,16}$')

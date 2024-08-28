@@ -31,6 +31,9 @@ Verify L4L7 Device {{ dev_name }}
 {% set domain_name = dev.vmware_vmm_domain ~ defaults.apic.fabric_policies.vmware_vmm_domains.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   $..vnsRsALDevToDomP.attributes.tDn   uni/vmmp-VMware/dom-{{ domain_name }}
 {% endif %}
+{% if dev.active_active | default(defaults.apic.tenants.services.l4l7_devices.active_active) %}
+    Should Be Equal Value Json String   ${r.json()}   $..vnsLDevVip.attributes.activeActive   yes
+{% endif %}
 
 {% for cd in dev.concrete_devices | default([]) %}
 {% set cd_name = cd.name ~ defaults.apic.tenants.services.l4l7_devices.concrete_devices.name_suffix %}
@@ -50,6 +53,9 @@ Verify L4L7 Device {{ dev_name }} Concrete Device {{ cd_name }} Interface {{ int
     Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.name   {{ int_name }}
     Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.nameAlias   {{ int.alias | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.vnicName   {{ int.vnic_name | default() }}
+{% if dev.active_active | default(defaults.apic.tenants.services.l4l7_devices.active_active) and int.vlan is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${con}.attributes.encap   vlan-{{ int.vlan }}
+{% endif %}
 {% if int.node_id is defined and int.channel is not defined %}
 {% set query = "nodes[?id==`" ~ int.node_id ~ "`].pod" %}
 {% set pod = int.pod_id | default((apic.node_policies | community.general.json_query(query))[0] | default('1')) %}
