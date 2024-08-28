@@ -27,3 +27,17 @@ apic:
           - name: DEV1
             tenant: ABC
             description: My imported device
+        service_graph_templates:
+          - name: TEMPLATE1
+            alias: TEMPLATE1-ALIAS
+            description: My Desc
+            template_type: FW_ROUTED
+            redirect: true
+            share_encapsulation: false
+            device:
+              tenant: ABC
+              name: DEV1
+            consumer:
+              direct_connect: false
+            provider:
+              direct_connect: true

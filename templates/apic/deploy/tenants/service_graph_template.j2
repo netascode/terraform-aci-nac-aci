@@ -114,7 +114,11 @@
                                         "vnsRsNodeToLDev": {
                                             "attributes": {
                                                 "annotation": "orchestrator:aac",
+                                                {% if tenant.name == sgt.device.tenant | default(tenant.name) %}
                                                 "tDn": "uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}"
+                                                {% else %}
+                                                "tDn": "uni/tn-{{ tenant.name }}/lDevIf-[uni/tn-{{sgt.device.tenant }}/lDevVip-{{ dev_name }}]"
+                                                {% endif %}
                                             }
                                         }
                                     },
