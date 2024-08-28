@@ -2494,6 +2494,51 @@ module "aci_qos_policy" {
 }
 
 locals {
+  mpls_custom_qos_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.mpls_custom_qos_policies, []) : {
+        key         = format("%s/%s", tenant.name, policy.name)
+        name        = "${policy.name}${local.defaults.apic.tenants.policies.mpls_custom_qos_policies.name_suffix}"
+        description = try(policy.description, "")
+        alias       = try(policy.alias, "")
+        ingress_rules = [
+          for ing in try(policy.ingress_rules, []) : {
+            exp_from    = ing.exp_from
+            exp_to      = ing.exp_to
+            priority    = try(ing.priority, local.defaults.apic.tenants.policies.mpls_custom_qos_policies.ingress_rules.priority)
+            dscp_target = try(ing.dscp_target, local.defaults.apic.tenants.policies.mpls_custom_qos_policies.ingress_rules.dscp_target)
+            cos_target  = try(ing.cos_target, local.defaults.apic.tenants.policies.mpls_custom_qos_policies.ingress_rules.cos_target)
+          }
+        ]
+        egress_rules = [
+          for eg in try(policy.egress_rules, []) : {
+            dscp_from  = eg.dscp_from
+            dscp_to    = eg.dscp_to
+            exp_target = try(eg.exp_target, local.defaults.apic.tenants.policies.mpls_custom_qos_policies.egress_rules.exp_target)
+            cos_target = try(eg.cos_target, local.defaults.apic.tenants.policies.mpls_custom_qos_policies.egress_rules.cos_target)
+          }
+        ]
+      }
+    ] if tenant.name == "infra"
+  ])
+}
+
+module "aci_mpls_custom_qos_policy" {
+  source = "./modules/terraform-aci-mpls-custom-qos-policy"
+
+  for_each      = { for pol in local.mpls_custom_qos_policies : pol.key => pol if local.modules.aci_mpls_custom_qos_policy && var.manage_tenants }
+  name          = each.value.name
+  description   = each.value.description
+  alias         = each.value.alias
+  ingress_rules = each.value.ingress_rules
+  egress_rules  = each.value.egress_rules
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
   bgp_peer_prefix_policies = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.policies.bgp_peer_prefix_policies, []) : {
