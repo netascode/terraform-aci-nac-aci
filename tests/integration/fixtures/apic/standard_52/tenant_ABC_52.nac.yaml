@@ -176,7 +176,6 @@ apic:
                     node_id: 101
                     fex_id: 101
                     port: 13
-                    channel: PC1
                     vlan: 124
             logical_interfaces:
               - name: INT1
