@@ -2460,7 +2460,7 @@ ten_l3outs_nodes_interfaces_micro_bfd:
 
 ten_l3outs_node_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
-  bgp: include('ten_l3outs_bgp', required=False) # @name(L3out Node Profile BGP)
+  bgp: include('ten_l3outs_node_profiles_bgp', required=False) # @name(L3out Node Profile BGP)
   bgp_peers: list(include('ten_l3outs_node_profiles_bgp_peers'), required=False) # @name(L3out Node Profile BGP Peers) @sheet_hidden()
   nodes: list(include('ten_l3outs_node_profiles_nodes'), required=False) # @name(L3out Node Profile Nodes) @ref_name(Node) @key(node_id) @sheet_hidden()
   interface_profiles: list(include('ten_l3outs_node_profiles_interface_profiles'), required=False) # @name(L3out Interface Profiles) @ref_name(Interface Profile) @sheet_hidden()
@@ -2492,6 +2492,10 @@ ten_l3outs_node_profiles_bgp_peers:
   peer_prefix_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   export_route_control: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   import_route_control: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+ten_l3outs_node_profiles_bgp:
+  timer_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  as_path_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_l3outs_node_profiles_nodes:
   node_id: int(min=1, max=4000)
