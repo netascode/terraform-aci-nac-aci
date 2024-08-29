@@ -45,9 +45,10 @@ variable "nodes" {
       bfd         = optional(bool, false)
       track_list  = optional(string)
       next_hops = optional(list(object({
-        ip         = string
-        preference = optional(number, 1)
-        type       = optional(string, "prefix")
+        ip          = string
+        description = optional(string, "")
+        preference  = optional(number, 1)
+        type        = optional(string, "prefix")
       })), [])
     })), [])
   }))

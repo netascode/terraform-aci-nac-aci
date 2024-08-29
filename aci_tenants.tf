@@ -952,9 +952,10 @@ locals {
               bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
               track_list  = try(sr.track_list, null)
               next_hops = [for nh in try(sr.next_hops, []) : {
-                ip         = nh.ip
-                preference = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
-                type       = try(nh.type, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type)
+                ip          = nh.ip
+                description = try(nh.description, "")
+                preference  = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
+                type        = try(nh.type, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type)
               }]
             }]
           }]
@@ -1037,9 +1038,10 @@ locals {
             bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
             track_list  = try(sr.track_list, null)
             next_hops = [for nh in try(sr.next_hops, []) : {
-              ip         = nh.ip
-              preference = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
-              type       = try(nh.type, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.type)
+              ip          = nh.ip
+              description = try(nh.description, "")
+              preference  = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
+              type        = try(nh.type, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.type)
             }]
           }]
         }]
@@ -1107,6 +1109,7 @@ locals {
             l3out                        = l3out.name
             node_profile                 = np.name
             name                         = "${ip.name}${local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix}"
+            description                  = try(ip.description, "")
             multipod                     = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
             remote_leaf                  = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
             bfd_policy                   = try("${ip.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
@@ -1203,6 +1206,7 @@ module "aci_l3out_interface_profile_manual" {
   l3out                        = each.value.l3out
   node_profile                 = each.value.node_profile
   name                         = each.value.name
+  description                  = each.value.description
   multipod                     = each.value.multipod
   remote_leaf                  = each.value.remote_leaf
   bfd_policy                   = each.value.bfd_policy

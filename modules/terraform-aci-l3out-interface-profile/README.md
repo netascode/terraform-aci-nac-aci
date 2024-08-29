@@ -17,6 +17,7 @@ module "aci_l3out_interface_profile" {
   l3out                       = "L3OUT1"
   node_profile                = "NP1"
   name                        = "IP1"
+  description                 = "Int Profile Description"
   multipod                    = false
   remote_leaf                 = false
   bfd_policy                  = "BFD1"
@@ -103,6 +104,7 @@ module "aci_l3out_interface_profile" {
 | <a name="input_l3out"></a> [l3out](#input\_l3out) | L3out name. | `string` | n/a | yes |
 | <a name="input_node_profile"></a> [node\_profile](#input\_node\_profile) | Node profile name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Interface profile name. | `string` | n/a | yes |
+| <a name="input_description"></a> [description](#input\_description) | Interface profile description. | `string` | `""` | no |
 | <a name="input_bfd_policy"></a> [bfd\_policy](#input\_bfd\_policy) | BFD policy name. | `string` | `""` | no |
 | <a name="input_ospf_interface_profile_name"></a> [ospf\_interface\_profile\_name](#input\_ospf\_interface\_profile\_name) | OSPF interface profile name. | `string` | `""` | no |
 | <a name="input_ospf_authentication_key"></a> [ospf\_authentication\_key](#input\_ospf\_authentication\_key) | OSPF authentication key. | `string` | `""` | no |

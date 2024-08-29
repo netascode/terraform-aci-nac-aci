@@ -20,6 +20,7 @@ module "aci_l3out_interface_profile" {
   l3out                       = "L3OUT1"
   node_profile                = "NP1"
   name                        = "IP1"
+  description                 = "Int Profile Description"
   multipod                    = false
   remote_leaf                 = false
   bfd_policy                  = "BFD1"

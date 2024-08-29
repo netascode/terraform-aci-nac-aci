@@ -21,9 +21,10 @@ module "aci_l3out_node_profile" {
       preference  = 10
       bfd         = true
       next_hops = [{
-        ip         = "3.3.3.3"
-        preference = 10
-        type       = "prefix"
+        ip          = "3.3.3.3"
+        description = "Next Hop Description"
+        preference  = 10
+        type        = "prefix"
       }]
     }]
   }]
