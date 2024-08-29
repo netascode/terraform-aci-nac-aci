@@ -5,11 +5,13 @@ apic:
       - id: 111
         role: leaf
         name: LEAF111
+        serial_number: TEP-1-111
         security_domains:
           - SEC1
           - SEC2
       - id: 1111
         role: spine
         name: SPINE1111
+        serial_number: TEP-1-211
         security_domains:
           - SEC2
