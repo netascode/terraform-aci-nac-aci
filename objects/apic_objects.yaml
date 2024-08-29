@@ -455,6 +455,17 @@ objects:
       - config
     paths:
       - apic.node_policies.vpc_groups
+  - name: RBAC Node Rule
+    template: rbac_node_rule
+    folder: node_policies
+    aci_classes:
+      - aaaRbacNodeRule
+    test_types:
+      - config
+    paths:
+      - apic.node_policies.nodes.security_domains
+    diff_paths:
+      - apic.node_policies.nodes.id
   - name: Date and Time Policy
     template: date_time_policy
     folder: fabric_policies

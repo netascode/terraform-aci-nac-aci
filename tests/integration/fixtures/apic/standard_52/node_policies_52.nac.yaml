@@ -1,0 +1,15 @@
+---
+apic:
+  node_policies:
+    nodes:
+      - id: 111
+        role: leaf
+        name: LEAF111
+        security_domains:
+          - SEC1
+          - SEC2
+      - id: 1111
+        role: spine
+        name: SPINE1111
+        security_domains:
+          - SEC2

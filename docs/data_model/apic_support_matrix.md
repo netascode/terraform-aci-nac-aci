@@ -117,12 +117,13 @@ This table provides an overview of which object is supported in combination with
 
 <span style="display: inline-block; width:250px">Description</span> | CLI | Ansible | Terraform | Reverse
 ---|---|---|---|---
-[Node Registration](./apic/node_policies/node_registration.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
-[OOB Node Address](./apic/node_policies/oob_node_address.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
-[Inband Node Address](./apic/node_policies/inb_node_address.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
-[Maintenance Group](./apic/node_policies/maintenance_group.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
-[Firmware Group](./apic/node_policies/firmware_group.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
-[vPC Group](./apic/node_policies/vpc_group.md) | :material-check: | :material-check: | :material-check: | :material-check: | :material-check:
+[Node Registration](./apic/node_policies/node_registration.md) | :material-check: | :material-check: | :material-check: | :material-check:
+[OOB Node Address](./apic/node_policies/oob_node_address.md) | :material-check: | :material-check: | :material-check: | :material-check:
+[Inband Node Address](./apic/node_policies/inb_node_address.md) | :material-check: | :material-check: | :material-check: | :material-check:
+[Maintenance Group](./apic/node_policies/maintenance_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
+[Firmware Group](./apic/node_policies/firmware_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
+[vPC Group](./apic/node_policies/vpc_group.md) | :material-check: | :material-check: | :material-check: | :material-check:
+[RBAC Node Rule](./apic/node_policies/rbac_node_rule.md) | :material-check: | :material-check: | :material-check: |
 
 ### Interface Policies
 

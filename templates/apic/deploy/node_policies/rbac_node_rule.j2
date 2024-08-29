@@ -1,0 +1,40 @@
+{
+    "aaaRbacEp": {
+        "attributes": {
+            "dn": "uni/rbacdb"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for node in apic.node_policies.nodes | default([]) %}
+            {%- if node.role == "leaf" and node.security_domains is defined %}{{ comma1() }}
+            {
+                "aaaRbacNodeRule": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "dn": "uni/rbacdb/rbacnoderule-{{ node.id }}",
+                        "nodeId": "{{ node.id }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- for sd in node.security_domains %}{{ comma1() }}
+                        {
+                            "aaaRbacPortRule": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "dn": "uni/rbacdb/rbacnoderule-{{ node.id }}/rbacportrule-{{ sd }}",
+                                    "name": "{{ sd }}",
+                                    "domain": "{{ sd }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endif %}
+            {%- endfor %}
+
+        ]
+    }
+}
