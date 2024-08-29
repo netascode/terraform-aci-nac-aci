@@ -535,6 +535,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-radius/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-rbac-node-rule"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-rbac-node-rule/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-redirect-backup-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-redirect-backup-policy/examples/complete"]
