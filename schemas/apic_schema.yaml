@@ -2521,6 +2521,7 @@ ten_l3outs_node_profiles_nodes_static_routes_next_hops:
 
 ten_l3outs_node_profiles_interface_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   bfd_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   ospf: include('ten_l3outs_node_profiles_interface_profiles_ospf', required=False) # @name(L3out Interface Profile OSPF) @sheet_hidden()
   eigrp: include('ten_l3outs_node_profiles_interface_profiles_eigrp', required=False) # @name(L3out Interface Profile EIGRP) @sheet_hidden()

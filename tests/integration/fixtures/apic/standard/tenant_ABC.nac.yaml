@@ -321,6 +321,7 @@ apic:
                         - ip: 8.8.8.9
               interface_profiles:
                 - name: IP1
+                  description: IP1 Description
                   pim_policy: PIM1
                   igmp_interface_policy: IGMP_IF1
                   qos_class: level3

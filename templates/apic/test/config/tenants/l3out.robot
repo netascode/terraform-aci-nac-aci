@@ -543,6 +543,7 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
     ${np}=   Set Variable   $..l3extOut.children[?(@.l3extLNodeP.attributes.name=='{{ l3out_np_name }}')]
     ${ip}=   Set Variable   ${np}..l3extLNodeP.children[?(@.l3extLIfP.attributes.name=='{{ l3out_ip_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${ip}..l3extLIfP.attributes.name   {{ l3out_ip_name }}
+    Should Be Equal Value Json String   ${r.json()}   ${ip}..l3extLIfP.attributes.descr   {{ ip.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${ip}..l3extLIfP.attributes.prio   {{ ip.qos_class | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class) }}
 {% if ip.ospf is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${ip}..ospfIfP.attributes.name   {{ ip.ospf.ospf_interface_profile_name | default(l3out.name) }}

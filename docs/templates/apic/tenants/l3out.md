@@ -180,6 +180,7 @@ apic:
                         - ip: 6.6.6.6
               interface_profiles:
                 - name: NODE_101
+                  description: NODE_101 Description
                   dhcp_labels:
                     - dhcp_relay_policy: DHCP-RELAY1
                       dhcp_option_policy: DHCP-OPTION1

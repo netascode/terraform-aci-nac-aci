@@ -939,6 +939,7 @@
                                         "l3extLIfP": {
                                             "attributes": {
                                                 "annotation": "orchestrator:aac",
+                                                "descr": "{{ ip.description | default() }}",
                                                 "name": "{{ l3out_ip_name }}",
                                                 "prio": "{{ ip.qos_class | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class) }}",
                                                 "childAction": "deleteNonPresent"
