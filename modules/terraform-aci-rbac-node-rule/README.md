@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_rbac_node_rule" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-rbac-node-rule"
-  version = ">= 0.9.0"
+  version = ">= 0.9.1"
 
   node_id = 101
   port_rules = [{
@@ -25,7 +25,7 @@ module "aci_rbac_node_rule" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
 | <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
 
 ## Providers

@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_rbac_node_rule" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-rbac-node-rule"
-  version = ">= 0.9.0"
+  version = ">= 0.9.1"
 
   node_id = 101
   port_rules = [{
