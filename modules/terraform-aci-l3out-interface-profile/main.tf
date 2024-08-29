@@ -138,9 +138,9 @@ resource "aci_rest_managed" "l3extLIfP" {
   dn         = "uni/tn-${var.tenant}/out-${var.l3out}/lnodep-${var.node_profile}/lifp-${var.name}"
   class_name = "l3extLIfP"
   content = {
-    name        = var.name
-    description = var.description
-    prio        = var.qos_class
+    name  = var.name
+    descr = var.description
+    prio  = var.qos_class
   }
 }
 
