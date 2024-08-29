@@ -84,6 +84,7 @@
                                                                 "ipNexthopP": {
                                                                     "attributes": {
                                                                         "annotation": "orchestrator:aac",
+                                                                        "descr": "{{ nh.description | default() }}",
                                                                         "nhAddr": "{{ nh.ip }}",
                                                                         "pref": "{{ nh.preference | default(defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference) }}",
                                                                         "type": "{{ nh.type | default(defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.type) }}"
@@ -797,6 +798,7 @@
                                                                 "ipNexthopP": {
                                                                     "attributes": {
                                                                         "annotation": "orchestrator:aac",
+                                                                        "descr": "{{ nh.description | default() }}",
                                                                         "nhAddr": "{{ nh.ip }}",
                                                                         "pref": "{{ nh.preference | default(defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference) }}",
                                                                         "type": "{{ nh.type | default(defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type) }}"

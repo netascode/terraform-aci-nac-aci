@@ -252,6 +252,7 @@ apic:
                   preference: 1
                   next_hops:
                     - ip: 6.6.6.6
+                      description: My Next Hop Desc
               interfaces:
                 - channel: VPC1
                   svi: true

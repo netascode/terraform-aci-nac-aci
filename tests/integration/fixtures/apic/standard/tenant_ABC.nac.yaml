@@ -213,6 +213,7 @@ apic:
                   next_hops:
                     - ip: 6.6.6.6
                       preference: 2
+                      description: My Next Hop Desc
                       type: prefix
                     - ip: 7.1.1.1
                   track_list: TRACK_LIST_1

@@ -132,6 +132,7 @@ Verify L3out {{ l3out_name }} Node {{ node.node_id }} Static Route {{ sr.prefix 
     ${route}=   Set Variable   ${node}..l3extRsNodeL3OutAtt.children[?(@.ipRouteP.attributes.ip=='{{ sr.prefix }}')]
     ${nh}=   Set Variable   ${route}..ipRouteP.children[?(@.ipNexthopP.attributes.nhAddr=='{{ nh.ip }}')]
     Should Be Equal Value Json String   ${r.json()}   ${nh}..ipNexthopP.attributes.nhAddr   {{ nh.ip }}
+    Should Be Equal Value Json String   ${r.json()}   ${nh}..ipNexthopP.attributes.nhAddr   {{ nh.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${nh}..ipNexthopP.attributes.pref   {{ get_preference_from_num(nh.preference | default(defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)) }}
     Should Be Equal Value Json String   ${r.json()}   ${nh}..ipNexthopP.attributes.type   {{ nh.type | default(defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type) }}
 
@@ -471,6 +472,7 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Node {{ node.node
     ${route}=   Set Variable   ${node}..l3extRsNodeL3OutAtt.children[?(@.ipRouteP.attributes.ip=='{{ sr.prefix }}')]
     ${nh}=   Set Variable   ${route}..ipRouteP.children[?(@.ipNexthopP.attributes.nhAddr=='{{ nh.ip }}')]
     Should Be Equal Value Json String   ${r.json()}   ${nh}..ipNexthopP.attributes.nhAddr   {{ nh.ip }}
+    Should Be Equal Value Json String   ${r.json()}   ${nh}..ipNexthopP.attributes.nhAddr   {{ nh.description | default() }}
     Should Be Equal Value Json String   ${r.json()}   ${nh}..ipNexthopP.attributes.pref   {{ get_preference_from_num(nh.preference | default(defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)) }}
     Should Be Equal Value Json String   ${r.json()}   ${nh}..ipNexthopP.attributes.type   {{ nh.type | default(defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type) }}
 
