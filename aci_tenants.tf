@@ -1478,6 +1478,7 @@ module "aci_external_endpoint_group" {
   tenant                      = each.value.tenant
   l3out                       = each.value.l3out
   name                        = each.value.name
+  annotation                  = each.value.annotation
   alias                       = each.value.alias
   description                 = each.value.description
   preferred_group             = each.value.preferred_group
