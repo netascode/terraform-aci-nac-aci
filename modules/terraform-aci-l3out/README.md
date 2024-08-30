@@ -87,7 +87,7 @@ module "aci_l3out" {
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | L3out name. | `string` | n/a | yes |
 | <a name="input_alias"></a> [alias](#input\_alias) | Alias. | `string` | `""` | no |
-| <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | n/a | yes |
+| <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | `null` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_routed_domain"></a> [routed\_domain](#input\_routed\_domain) | Routed domain name. | `string` | n/a | yes |
 | <a name="input_vrf"></a> [vrf](#input\_vrf) | VRF name. | `string` | n/a | yes |
