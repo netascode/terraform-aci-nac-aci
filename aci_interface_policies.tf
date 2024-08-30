@@ -272,7 +272,7 @@ locals {
           policy_group_type          = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == interface.policy_group][0], "access")
           policy_group               = try("${interface.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "system-ports-default")
           description                = try(interface.description, "")
-          shutdown                   = try(interface.shutdown, local.defaults.apic.interface_policies.nodes.fexes.interfaces.shutdown.shutdown)
+          shutdown                   = try(interface.shutdown, local.defaults.apic.interface_policies.nodes.fexes.interfaces.shutdown)
           role                       = node.role
           port_channel_member_policy = try("${interface.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
       }]
