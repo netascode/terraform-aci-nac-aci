@@ -13,7 +13,7 @@
             {
                 "fvAp": {
                     "attributes": {
-                        "annotation": "orchestrator:aac",
+                        "annotation": {% if ap.ndo_managed %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                         "name": "{{ ap_name }}",
                         "dn": "uni/tn-{{ tenant.name }}/ap-{{ ap_name }}",
                         "nameAlias": "{{ ap.alias | default() }}",

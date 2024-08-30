@@ -46,6 +46,7 @@ apic:
             maximum_major_faults: 1000
             maximum_minor_faults: 1000
         - name: VRF2
+          ndo_managed: true
           pim:
             mtu: 9000
             fast_convergence: true
@@ -139,6 +140,7 @@ apic:
             maximum_major_faults: 1000
             maximum_minor_faults: 1000
         - name: BD2
+          ndo_managed: true
           vrf: VRF2
           subnets:
             - ip: 2.2.2.2/24
@@ -276,6 +278,7 @@ apic:
             maximum_major_faults: 1000
             maximum_minor_faults: 1000
         - name: L3OUT2
+          ndo_managed: true
           vrf: VRF1
           domain: ROUTED1
           default_route_leak_policy:
@@ -359,6 +362,7 @@ apic:
                           physical_domain: PHY1
           external_endpoint_groups:
             - name: EXT-EPG1
+              ndo_managed: true
               alias: ABC-EXT-EPG1
               description: My Desc
               preferred_group: false
@@ -369,6 +373,7 @@ apic:
                   direction: import
               subnets:
                 - name: ALL
+                  ndo_managed: true
                   prefix: 0.0.0.0/0
                   import_route_control: true
                   export_route_control: true
@@ -610,6 +615,7 @@ apic:
                 maximum_major_faults: 1000
                 maximum_minor_faults: 1000
             - name: EPG2
+              ndo_managed: true
               bridge_domain: BD1
             - name: EPG3
               bridge_domain: BD1
@@ -728,6 +734,7 @@ apic:
             maximum_major_faults: 1000
             maximum_minor_faults: 1000
         - name: AP2
+          ndo_managed: true
       contracts:
         - name: CON1
           alias: CON1-ALIAS

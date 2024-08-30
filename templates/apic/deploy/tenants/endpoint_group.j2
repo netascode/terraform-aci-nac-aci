@@ -17,7 +17,7 @@
             {
                 "fvAp": {
                     "attributes": {
-                        "annotation": "orchestrator:aac",
+                        "annotation": {% if ap.ndo_managed %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                         "dn": "uni/tn-{{ tenant.name }}/ap-{{ ap_name }}",
                         "name": "{{ ap_name }}"
                     },
@@ -28,7 +28,7 @@
                         {
                             "fvAEPg": {
                                 "attributes": {
-                                    "annotation": "orchestrator:aac",
+                                    "annotation": {% if epg.ndo_managed %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                                     "descr": "{{ epg.description | default() }}",
                                     "dn": "uni/tn-{{ tenant.name }}/ap-{{ ap_name }}/epg-{{ epg_name }}",
                                     "name": "{{ epg_name }}",
@@ -529,7 +529,7 @@
                                     {
                                         "fvRsBd": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac",
+                                                "annotation": {% if epg.ndo_managed %}"orchestrator:msc"{% else %}"orchestrator:aac"{% endif %},
                                                 "tnFvBDName": "{{ bd_name }}"
                                             }
                                         }

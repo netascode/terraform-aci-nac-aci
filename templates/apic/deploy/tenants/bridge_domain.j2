@@ -17,7 +17,7 @@
             {
                 "fvBD": {
                     "attributes": {
-                        "annotation": "orchestrator:aac",
+                        "annotation": {% if bd.ndo_managed %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                         "arpFlood": "{{ bd.arp_flooding | default(defaults.apic.tenants.bridge_domains.arp_flooding) | cisco.aac.aac_bool("yes") }}",
                         "descr": "{{ bd.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/BD-{{ bd_name }}",

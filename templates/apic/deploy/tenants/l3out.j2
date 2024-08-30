@@ -20,7 +20,7 @@
             {
                 "l3extOut": {
                     "attributes": {
-                        "annotation": "orchestrator:aac",
+                        "annotation": {% if l3out.ndo_managed %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                         "descr": "{{ l3out.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}",
                         "name": "{{ l3out_name }}",
@@ -1498,7 +1498,7 @@
                         {
                             "l3extRsEctx": {
                                 "attributes": {
-                                    "annotation": "orchestrator:aac",
+                                    "annotation": {% if l3out.ndo_managed %}"orchestrator:msc"{% else %}"orchestrator:aac"{% endif %},
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/rsectx",
                                     "tnFvCtxName": "{{ vrf_name }}"
                                 }
@@ -1738,7 +1738,7 @@
                         {
                             "l3extInstP": {
                                 "attributes": {
-                                    "annotation": "orchestrator:aac",
+                                    "annotation": {% if epg.ndo_managed %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                                     "dn": "uni/tn-{{ tenant.name }}/out-{{ l3out_name }}/instP-{{ eepg_name }}",
                                     "descr": "{{ epg.description | default() }}",
                                     "name": "{{ eepg_name }}",
@@ -1776,7 +1776,7 @@
                                     {
                                         "l3extSubnet": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac",
+                                                "annotation": {% if subnet.ndo_managed %}"orchestrator:msc"{% else %}"orchestrator:aac"{% endif %},
                                                 "aggregate": "{{ agg | join(',') }}",
                                                 "ip": "{{ subnet.prefix }}",
                                                 "name": "{{ subnet.name | default() }}",

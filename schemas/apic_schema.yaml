@@ -1773,6 +1773,7 @@ ip_interface_sub_ports_expected_state:
 tenant:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   managed: bool(required=False)
+  ndo_managed: bool(required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   vrfs: list(include('ten_vrf'), required=False) # @ref_name(VRF)
@@ -1794,6 +1795,7 @@ tenant:
 
 ten_vrf:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  ndo_managed: bool(required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   data_plane_learning: any(bool(), enum('enabled', 'disabled'), required=False)
@@ -1898,6 +1900,7 @@ ten_vrf_expected_state:
 
 ten_bridge_domains:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  ndo_managed: bool(required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   arp_flooding: any(bool(), enum('yes', 'no'), required=False)
@@ -1947,6 +1950,7 @@ ten_bridge_domain_expected_state:
 ten_application_profiles:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   managed: bool(required=False)
+  ndo_managed: bool(required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   endpoint_groups: list(include('ten_ap_endpoint_groups'), required=False) # @ref_name(Endpoint Group)
@@ -1957,6 +1961,7 @@ ten_application_profiles:
 ten_ap_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  ndo_managed: bool(required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   flood_in_encap: any(bool(), enum('disabled', 'enabled'), required=False)
   intra_epg_isolation: any(bool(), enum('enforced', 'unenforced'), required=False)
@@ -2280,6 +2285,7 @@ ten_filters_entries:
 
 ten_l3outs:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  ndo_managed: bool(required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   target_dscp: any(enum('CS0', 'CS1', 'AF11', 'AF12', 'AF13', 'CS2', 'AF21', 'AF22', 'AF23', 'CS3', 'AF31', 'AF32', 'AF33', 'CS4', 'AF41', 'AF42', 'AF43', 'CS5', 'VA', 'EF', 'CS6', 'CS7', 'unspecified'), int(min=0, max=63), required=False)
@@ -2619,6 +2625,7 @@ ten_l3outs_node_profiles_interface_profiles_interfaces_expected_state_bfd_neighb
 
 ten_l3outs_external_endpoint_groups:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  ndo_managed: bool(required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   preferred_group: any(bool(), enum('exclude', 'include'), required=False)
@@ -2631,6 +2638,7 @@ ten_l3outs_external_endpoint_groups:
 
 ten_l3outs_external_endpoint_groups_subnets:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  ndo_managed: bool(required=False)
   prefix: ip()
   import_route_control: any(bool(), enum('yes', 'no'), required=False)
   export_route_control: any(bool(), enum('yes', 'no'), required=False)
