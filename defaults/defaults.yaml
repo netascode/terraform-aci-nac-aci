@@ -1003,8 +1003,8 @@ defaults:
         remote_leaf: false
       application_profiles:
         name_suffix: ""
-        managed: true
         ndo_managed: false
+        managed: true
         endpoint_groups:
           name_suffix: ""
           ndo_managed: false
