@@ -190,7 +190,7 @@ locals {
         breakout                   = try(interface.breakout, "none")
         fex_id                     = try(interface.fex_id, "unspecified")
         description                = try(interface.description, "")
-        shutdown                   = try(interface.shutdown, false)
+        shutdown                   = try(interface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
         role                       = node.role
         port_channel_member_policy = try("${interface.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
       } if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
@@ -229,7 +229,7 @@ locals {
           policy_group               = try("${subinterface.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "system-ports-default")
           fex_id                     = try(subinterface.fex_id, "unspecified")
           description                = try(subinterface.description, "")
-          shutdown                   = try(subinterface.shutdown, false)
+          shutdown                   = try(subinterface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.sub_ports.shutdown)
           role                       = node.role
           port_channel_member_policy = try("${subinterface.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
         }
@@ -272,7 +272,7 @@ locals {
           policy_group_type          = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == interface.policy_group][0], "access")
           policy_group               = try("${interface.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "system-ports-default")
           description                = try(interface.description, "")
-          shutdown                   = try(interface.shutdown, false)
+          shutdown                   = try(interface.shutdown, local.defaults.apic.interface_policies.nodes.fexes.interfaces.shutdown.shutdown)
           role                       = node.role
           port_channel_member_policy = try("${interface.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
       }]
