@@ -1,6 +1,7 @@
 ---
 defaults:
   apic:
+    version: "5.2.1g"
     auto_generate_switch_pod_profiles: false
     auto_generate_pod_profiles: false
     auto_generate_fabric_leaf_switch_interface_profiles: false
