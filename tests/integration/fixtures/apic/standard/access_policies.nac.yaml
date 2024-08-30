@@ -574,6 +574,9 @@ apic:
       - name: VPC2
         type: vpc
         aaep: AAEP1
+      - name: VPC3
+        type: vpc
+        aaep: AAEP1
       - name: BREAKOUT1
         description: My Breakout Port
         type: breakout

@@ -29,5 +29,5 @@ apic:
           - id: 102
             interfaces:
               - port: 1
-                policy_group: VPC2
+                policy_group: VPC3
                 port_channel_member_policy: FAST
