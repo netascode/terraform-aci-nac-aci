@@ -32,6 +32,7 @@ variable "alias" {
 variable "annotation" {
   description = "Annotation value."
   type        = string
+  default     = none
 
   validation {
     condition     = var.annotation == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.annotation))

@@ -11,6 +11,7 @@ variable "tenant" {
 variable "l3out" {
   description = "L3out name."
   type        = string
+  default     = none
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.l3out))
