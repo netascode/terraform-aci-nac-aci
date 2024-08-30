@@ -1554,6 +1554,7 @@ module "aci_sr_mpls_l3out" {
   for_each             = { for l3out in local.sr_mpls_l3outs : l3out.key => l3out if try(local.modules.aci_sr_mpls_l3out, true) && var.manage_tenants }
   tenant               = each.value.tenant
   name                 = each.value.name
+  annotation           = each.value.annotation
   alias                = each.value.alias
   description          = each.value.description
   routed_domain        = each.value.domain
