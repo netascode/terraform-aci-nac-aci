@@ -192,7 +192,7 @@ locals {
         description                = try(interface.description, "")
         shutdown                   = try(interface.shutdown, false)
         role                       = node.role
-        port_channel_member_policy = try(interface.port_channel_member_policy, "")
+        port_channel_member_policy = try("${interface.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
       } if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if node.role == "leaf" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
   ])
@@ -212,7 +212,7 @@ module "aci_leaf_interface_configuration" {
   description                = each.value.description
   shutdown                   = each.value.shutdown
   role                       = each.value.role
-  port_channel_member_policy = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
+  port_channel_member_policy = each.value.port_channel_member_policy
 }
 
 locals {
@@ -231,7 +231,7 @@ locals {
           description                = try(subinterface.description, "")
           shutdown                   = try(subinterface.shutdown, false)
           role                       = node.role
-          port_channel_member_policy = try(subinterface.port_channel_member_policy, "")
+          port_channel_member_policy = try("${subinterface.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
         }
       ] if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if node.role == "leaf" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
@@ -252,7 +252,7 @@ module "aci_leaf_interface_configuration_sub" {
   description                = each.value.description
   shutdown                   = each.value.shutdown
   role                       = each.value.role
-  port_channel_member_policy = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
+  port_channel_member_policy = each.value.port_channel_member_policy
 
   depends_on = [
     module.aci_leaf_interface_configuration
@@ -274,7 +274,7 @@ locals {
           description                = try(interface.description, "")
           shutdown                   = try(interface.shutdown, false)
           role                       = node.role
-          port_channel_member_policy = try(interface.port_channel_member_policy, "")
+          port_channel_member_policy = try("${interface.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
       }]
     ] if node.role == "leaf" && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
   ])
@@ -293,7 +293,7 @@ module "aci_interface_configuration_fex" {
   description                = each.value.description
   shutdown                   = each.value.shutdown
   role                       = each.value.role
-  port_channel_member_policy = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
+  port_channel_member_policy = each.value.port_channel_member_policy
 
   depends_on = [
     module.aci_leaf_interface_configuration,
