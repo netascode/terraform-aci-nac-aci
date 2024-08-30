@@ -37,6 +37,7 @@ module "aci_tenant" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Tenant name. | `string` | n/a | yes |
+| <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | n/a | yes |
 | <a name="input_alias"></a> [alias](#input\_alias) | Tenant alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | Tenant description. | `string` | `""` | no |
 | <a name="input_security_domains"></a> [security\_domains](#input\_security\_domains) | Security domains associated to tenant | `list(string)` | `[]` | no |

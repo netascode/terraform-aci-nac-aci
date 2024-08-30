@@ -18,6 +18,16 @@ variable "name" {
   }
 }
 
+variable "annotation" {
+  description = "Annotation value."
+  type        = string
+
+  validation {
+    condition     = var.annotation == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.annotation))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "alias" {
   description = "Application profile alias."
   type        = string

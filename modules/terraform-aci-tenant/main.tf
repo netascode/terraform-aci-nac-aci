@@ -1,6 +1,7 @@
 resource "aci_rest_managed" "fvTenant" {
   dn         = "uni/tn-${var.name}"
   class_name = "fvTenant"
+  annotation = var.annotation == "orchestrator:msc-shadow:no" ? "orchestrator:msc" : null
   content = {
     name      = var.name
     nameAlias = var.alias

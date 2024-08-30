@@ -13,6 +13,7 @@ locals {
 resource "aci_rest_managed" "fvBD" {
   dn         = "uni/tn-${var.tenant}/BD-${var.name}"
   class_name = "fvBD"
+  annotation = var.annotation
   content = {
     name                  = var.name
     nameAlias             = var.alias

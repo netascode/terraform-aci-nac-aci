@@ -751,8 +751,10 @@ defaults:
 
     tenants:
       managed: true
+      ndo_managed: false
       vrfs:
         name_suffix: ""
+        ndo_managed: false
         data_plane_learning: true
         enforcement_direction: ingress
         enforcement_preference: enforced
@@ -774,6 +776,7 @@ defaults:
         preferred_group: false
       bridge_domains:
         name_suffix: ""
+        ndo_managed: false
         mac: 00:22:BD:F8:19:FF
         ep_move_detection: false
         arp_flooding: true
@@ -799,6 +802,7 @@ defaults:
           no_default_gateway: false
       l3outs:
         name_suffix: ""
+        ndo_managed: false
         target_dscp: unspecified
         qos_class: unspecified
         import_route_control_enforcement: false
@@ -950,6 +954,7 @@ defaults:
                 start_timer: 0
         external_endpoint_groups:
           name_suffix: ""
+          ndo_managed: false
           preferred_group: false
           qos_class: unspecified
           target_dscp: unspecified
@@ -957,6 +962,7 @@ defaults:
             name_suffix: ""
             direction: import
           subnets:
+            ndo_managed: false
             import_route_control: false
             export_route_control: false
             shared_route_control: false
@@ -993,8 +999,10 @@ defaults:
       application_profiles:
         name_suffix: ""
         managed: true
+        ndo_managed: false
         endpoint_groups:
           name_suffix: ""
+          ndo_managed: false
           flood_in_encap: false
           intra_epg_isolation: false
           proxy_arp: false

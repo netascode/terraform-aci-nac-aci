@@ -1,6 +1,7 @@
 resource "aci_rest_managed" "l3extOut" {
   dn         = "uni/tn-${var.tenant}/out-${var.name}"
   class_name = "l3extOut"
+  annotation = var.annotation
   content = var.sr_mpls == true ? {
     name          = var.name
     descr         = var.description
@@ -60,6 +61,7 @@ resource "aci_rest_managed" "l3extRsL3DomAtt" {
 resource "aci_rest_managed" "l3extRsEctx" {
   dn         = "${aci_rest_managed.l3extOut.dn}/rsectx"
   class_name = "l3extRsEctx"
+  annotation = var.annotation == "orchestrator:msc-shadow:no" ? "orchestrator:msc" : null
   content = {
     tnFvCtxName = var.vrf
   }
