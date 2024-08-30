@@ -745,9 +745,13 @@ defaults:
           from_module: 1
           module: 1
           fabric: false
+          shutdown: false
+          sub_ports:
+            shutdown: false
         fexes:
           interfaces:
             from_module: 1
+            shutdown: false
 
     tenants:
       managed: true
