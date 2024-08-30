@@ -66,7 +66,7 @@ resource "aci_rest_managed" "l3extSubnet" {
   for_each   = { for subnet in var.subnets : subnet.prefix => subnet }
   dn         = "${aci_rest_managed.l3extInstP.dn}/extsubnet-[${each.value.prefix}]"
   class_name = "l3extSubnet"
-  annotation = var.annotation == "orchestrator:msc-shadow:no" ? "orchestrator:msc" : null
+  annotation = var.annotation
   content = {
     ip        = each.value.prefix
     name      = each.value.name
