@@ -201,10 +201,8 @@ ndo:
             - name: EXT-EPG2
               vrf:
                 name: VRF1
-              #sites:
-              #  - name: APIC1
-              #    l3out:
-              #      name: L3OUT3
+              l3out:
+                name: L3OUT3
 
           contracts:
             - name: CONTRACT1
