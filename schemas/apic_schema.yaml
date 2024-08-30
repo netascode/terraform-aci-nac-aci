@@ -1735,6 +1735,7 @@ ip_fex_interface:
   policy_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   shutdown: bool(required=False)
   expected_state: include('ip_fex_interface_expected_state', required=False) # @no_external_doc() @name(FEX Interface Expected State) @sheet_hidden()
+  port_channel_member_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ip_fex_interface_expected_state:
   lldp_neighbor: str(required=False)
@@ -1751,6 +1752,7 @@ ip_interface:
   fabric: bool(required=False)
   shutdown: bool(required=False)
   expected_state: include('ip_interface_expected_state', required=False) # @no_external_doc() @name(Interface Expected State) @sheet_hidden()
+  port_channel_member_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ip_interface_expected_state:
   lldp_neighbor: str(required=False)
@@ -1763,6 +1765,7 @@ ip_interface_sub_ports:
   fex_id: int(min=101, max=199, required=False)
   shutdown: bool(required=False)
   expected_state: include('ip_interface_sub_ports_expected_state', required=False) # @no_external_doc() @name(Sub Port Expected State) @sheet_hidden()
+  port_channel_member_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ip_interface_sub_ports_expected_state:
   lldp_neighbor: str(required=False)

@@ -22,6 +22,7 @@ apic:
           - port: 1
             description: interface descr 1
             policy_group: ACC1
+            port_channel_member_policy: LACP_Fast
 ```
 
 Breakout port example:
@@ -41,4 +42,5 @@ apic:
                 policy_group: ACC1
               - port: 2
                 policy_group: VPC2
+                port_channel_member_policy: LACP_Fast
 ```

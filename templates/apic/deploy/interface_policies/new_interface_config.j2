@@ -37,7 +37,8 @@
                         "node": "{{ _node.id }}",
                         "port": "{{ int.port }}",
                         "role": "{{ _node.role }}",
-                        "shutdown": "{{ int.shutdown | default(False) | cisco.aac.aac_bool("yes") }}"
+                        "shutdown": "{{ 'yes' if int.shutdown | default(defaults.apic.interface_policies.nodes.interfaces.shutdown) else 'no' }}",
+                        "pcMember": "{{int.port_channel_member_policy ~ defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix if int.port_channel_member_policy | default() }}"
                     }
                 }
             }
@@ -53,7 +54,7 @@
                         "node": "{{ _node.id }}",
                         "port": "{{ int.port }}",
                         "role": "{{ _node.role }}",
-                        "shutdown": "{{ int.shutdown | default(False) | cisco.aac.aac_bool("yes") }}"
+                        "shutdown": "{{ 'yes' if int.shutdown | default(defaults.apic.interface_policies.nodes.interfaces.shutdown) else 'no' }}"
                     }
                 }
             }
@@ -81,7 +82,8 @@
                         "port": "{{ int.port }}", 
                         "subPort": "{{ sub.port }}",
                         "role": "{{ _node.role }}",
-                        "shutdown": "{{ sub.shutdown | default(False) | cisco.aac.aac_bool("yes") }}"
+                        "shutdown": "{{ 'yes' if sub.shutdown | default(defaults.apic.interface_policies.nodes.interfaces.sub_ports.shutdown) else 'no' }}",
+                        "pcMember": "{{sub.port_channel_member_policy ~ defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix if sub.port_channel_member_policy | default() }}"
                     }
                 }
             }
@@ -113,7 +115,8 @@
                         "port": "1", 
                         "subPort": "{{ int.port }}",
                         "role": "{{ _node.role }}",
-                        "shutdown": "{{ int.shutdown | default(False) | cisco.aac.aac_bool("yes") }}"
+                        "shutdown": "{{ 'yes' if int.shutdown | default(defaults.apic.interface_policies.nodes.fexes.interfaces.shutdown) else 'no' }}",
+                        "pcMember": "{{int.port_channel_member_policy ~ defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix if int.port_channel_member_policy | default() }}"
                     }
                 }
             }
@@ -143,7 +146,7 @@
                         "node": "{{ node.id }}",
                         "port": "{{ int.port }}",
                         "role": "{{ node.role }}",
-                        "shutdown": "{{ int.shutdown | default(False) | cisco.aac.aac_bool("yes") }}"
+                        "shutdown": "{{ 'yes' if int.shutdown | default(defaults.apic.interface_policies.nodes.interfaces.shutdown) else 'no' }}"
                     }
                 }
             }
