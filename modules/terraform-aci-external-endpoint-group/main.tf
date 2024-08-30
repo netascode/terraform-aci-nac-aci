@@ -14,6 +14,7 @@ locals {
 resource "aci_rest_managed" "l3extInstP" {
   dn         = "uni/tn-${var.tenant}/out-${var.l3out}/instP-${var.name}"
   class_name = "l3extInstP"
+  annotation = var.annotation
   content = {
     name       = var.name
     nameAlias  = var.alias
@@ -65,6 +66,7 @@ resource "aci_rest_managed" "l3extSubnet" {
   for_each   = { for subnet in var.subnets : subnet.prefix => subnet }
   dn         = "${aci_rest_managed.l3extInstP.dn}/extsubnet-[${each.value.prefix}]"
   class_name = "l3extSubnet"
+  annotation = var.annotation
   content = {
     ip        = each.value.prefix
     name      = each.value.name

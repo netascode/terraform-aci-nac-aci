@@ -3,6 +3,7 @@ module "aci_tenant" {
 
   for_each         = { for tenant in local.tenants : tenant.name => tenant if try(tenant.managed, local.defaults.apic.tenants.managed, true) && local.modules.aci_tenant && var.manage_tenants }
   name             = each.value.name
+  annotation       = try(each.value.ndo_managed, local.defaults.apic.tenants.ndo_managed) ? "orchestrator:msc" : null
   alias            = try(each.value.alias, "")
   description      = try(each.value.description, "")
   security_domains = try(each.value.security_domains, [])
@@ -15,6 +16,7 @@ locals {
         key                                     = format("%s/%s", tenant.name, vrf.name)
         tenant                                  = tenant.name
         name                                    = "${vrf.name}${local.defaults.apic.tenants.vrfs.name_suffix}"
+        annotation                              = try(vrf.ndo_managed, local.defaults.apic.tenants.vrfs.ndo_managed) ? "orchestrator:msc-shadow:no" : null
         alias                                   = try(vrf.alias, "")
         description                             = try(vrf.description, "")
         enforcement_direction                   = try(vrf.enforcement_direction, local.defaults.apic.tenants.vrfs.enforcement_direction)
@@ -103,6 +105,7 @@ module "aci_vrf" {
   for_each                                 = { for vrf in local.vrfs : vrf.key => vrf if local.modules.aci_vrf && var.manage_tenants }
   tenant                                   = each.value.tenant
   name                                     = each.value.name
+  annotation                               = each.value.annotation
   alias                                    = each.value.alias
   description                              = each.value.description
   enforcement_direction                    = each.value.enforcement_direction
@@ -165,6 +168,7 @@ locals {
         key                        = format("%s/%s", tenant.name, bd.name)
         tenant                     = tenant.name
         name                       = "${bd.name}${local.defaults.apic.tenants.bridge_domains.name_suffix}"
+        annotation                 = try(bd.ndo_managed, local.defaults.apic.tenants.bridge_domains.ndo_managed) ? "orchestrator:msc-shadow:no" : null
         alias                      = try(bd.alias, "")
         description                = try(bd.description, "")
         arp_flooding               = try(bd.arp_flooding, local.defaults.apic.tenants.bridge_domains.arp_flooding)
@@ -217,6 +221,7 @@ module "aci_bridge_domain" {
   for_each                   = { for bd in local.bridge_domains : bd.key => bd if local.modules.aci_bridge_domain && var.manage_tenants }
   tenant                     = each.value.tenant
   name                       = each.value.name
+  annotation                 = each.value.annotation
   alias                      = each.value.alias
   description                = each.value.description
   arp_flooding               = each.value.arp_flooding
@@ -259,6 +264,7 @@ locals {
         key         = format("%s/%s", tenant.name, ap.name)
         tenant      = tenant.name
         name        = "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}"
+        annotation  = try(ap.ndo_managed, local.defaults.apic.tenants.application_profiles.ndo_managed) ? "orchestrator:msc-shadow:no" : null
         alias       = try(ap.alias, "")
         description = try(ap.description, "")
       } if try(ap.managed, local.defaults.apic.tenants.application_profiles.managed, true)
@@ -272,6 +278,7 @@ module "aci_application_profile" {
   for_each    = { for ap in local.application_profiles : ap.key => ap if local.modules.aci_application_profile && var.manage_tenants }
   tenant      = each.value.tenant
   name        = each.value.name
+  annotation  = each.value.annotation
   alias       = each.value.alias
   description = each.value.description
 
@@ -290,6 +297,7 @@ locals {
           tenant                      = tenant.name
           application_profile         = "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}"
           name                        = "${epg.name}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}"
+          annotation                  = try(epg.ndo_managed, local.defaults.apic.tenants.application_profiles.endpoint_groups.ndo_managed) ? "orchestrator:msc-shadow:no" : null
           alias                       = try(epg.alias, "")
           description                 = try(epg.description, "")
           flood_in_encap              = try(epg.flood_in_encap, local.defaults.apic.tenants.application_profiles.endpoint_groups.flood_in_encap)
@@ -419,6 +427,7 @@ module "aci_endpoint_group" {
   tenant                      = each.value.tenant
   application_profile         = each.value.application_profile
   name                        = each.value.name
+  annotation                  = each.value.annotation
   alias                       = each.value.alias
   description                 = each.value.description
   flood_in_encap              = each.value.flood_in_encap
@@ -797,6 +806,7 @@ locals {
         key         = format("%s/%s", tenant.name, l3out.name)
         tenant      = tenant.name
         name        = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
+        annotation  = try(l3out.ndo_managed, local.defaults.apic.tenants.l3outs.ndo_managed) ? "orchestrator:msc-shadow:no" : null
         alias       = try(l3out.alias, "")
         description = try(l3out.description, "")
         multipod    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
@@ -878,6 +888,7 @@ module "aci_l3out" {
   for_each                                = { for l3out in local.l3outs : l3out.key => l3out if local.modules.aci_l3out && var.manage_tenants }
   tenant                                  = each.value.tenant
   name                                    = each.value.name
+  annotation                              = each.value.annotation
   alias                                   = each.value.alias
   description                             = each.value.description
   multipod                                = each.value.multipod
@@ -1421,6 +1432,7 @@ locals {
           tenant                      = tenant.name
           l3out                       = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
           name                        = "${epg.name}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}"
+          annotation                  = try(epg.ndo_managed, local.defaults.apic.tenants.l3outs.external_endpoint_groups.ndo_managed) ? "orchestrator:msc-shadow:no" : null
           alias                       = try(epg.alias, "")
           description                 = try(epg.description, "")
           preferred_group             = try(epg.preferred_group, local.defaults.apic.tenants.l3outs.external_endpoint_groups.preferred_group)
@@ -1435,6 +1447,7 @@ locals {
           }]
           subnets = [for subnet in try(epg.subnets, []) : {
             name                           = try(subnet.name, "")
+            annotation                     = try(subnet.ndo_managed, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ndo_managed) ? "orchestrator:msc" : null
             prefix                         = subnet.prefix
             import_route_control           = try(subnet.import_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_route_control)
             export_route_control           = try(subnet.export_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.export_route_control)
@@ -1465,6 +1478,7 @@ module "aci_external_endpoint_group" {
   tenant                      = each.value.tenant
   l3out                       = each.value.l3out
   name                        = each.value.name
+  annotation                  = each.value.annotation
   alias                       = each.value.alias
   description                 = each.value.description
   preferred_group             = each.value.preferred_group
@@ -1540,6 +1554,7 @@ module "aci_sr_mpls_l3out" {
   for_each             = { for l3out in local.sr_mpls_l3outs : l3out.key => l3out if try(local.modules.aci_sr_mpls_l3out, true) && var.manage_tenants }
   tenant               = each.value.tenant
   name                 = each.value.name
+  annotation           = each.value.annotation
   alias                = each.value.alias
   description          = each.value.description
   routed_domain        = each.value.domain
@@ -1729,6 +1744,7 @@ module "aci_sr_mpls_external_endpoint_group" {
   tenant                      = each.value.tenant
   l3out                       = each.value.l3out
   name                        = each.value.name
+  annotation                  = each.value.annotation
   alias                       = each.value.alias
   description                 = each.value.description
   preferred_group             = each.value.preferred_group

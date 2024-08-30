@@ -28,6 +28,7 @@ locals {
 resource "aci_rest_managed" "fvAEPg" {
   dn         = "uni/tn-${var.tenant}/ap-${var.application_profile}/epg-${var.name}"
   class_name = "fvAEPg"
+  annotation = var.annotation
   content = {
     name         = var.name
     nameAlias    = var.alias
@@ -43,6 +44,7 @@ resource "aci_rest_managed" "fvAEPg" {
 resource "aci_rest_managed" "fvRsBd" {
   dn         = "${aci_rest_managed.fvAEPg.dn}/rsbd"
   class_name = "fvRsBd"
+  annotation = var.annotation
   content = {
     tnFvBDName = var.bridge_domain
   }
