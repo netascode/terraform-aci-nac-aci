@@ -381,6 +381,8 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Filter {{ filter_na
 
 {% endfor %}
 
+{% set l3out_list = [] %}
+{% for l3out in template.l3outs | default([]) %}{% set l3out_list = l3out_list.append(l3out.name) %}{% endfor %}
 {% for epg in template.external_endpoint_groups | default([]) %}
 {% set epg_name = epg.name ~ defaults.ndo.schemas.templates.external_endpoint_groups.name_suffix %}
 {% set vrf_name = epg.vrf.name ~ defaults.ndo.schemas.templates.vrfs.name_suffix %}
@@ -454,6 +456,14 @@ Verify Schema {{ schema.name }} Template {{ template.name }} External EPG {{ epg
     ${epg}=   Set Variable   $.sites[?(@.siteId=='${site_id}')&(@.templateName=='{{ template.name }}')].externalEpgs[?(@.externalEpgRef=='/schemas/${schema_id}/templates/{{ template.name }}/externalEpgs/{{ epg_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${epg}.externalEpgRef   /schemas/${schema_id}/templates/{{ template.name }}/externalEpgs/{{ epg_name }}
 {% if epg.type | default(defaults.ndo.schemas.templates.external_endpoint_groups.type) == "on-premise" and site.l3out.name is defined %}
+{% set l3out_name = site.l3out.name ~ defaults.ndo.schemas.templates.l3outs.name_suffix %}
+{% if site.l3out.schema is defined and site.l3out.schema != schema.name and site.l3out.template is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.l3outRef   /schemas/%%schemas%{{ site.l3out.schema }}%%/templates/{{ site.l3out.template }}/l3outs/{{ l3out_name }}
+{% elif site.l3out.template is defined %}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.l3outRef   /templates/{{ site.l3out.template }}/l3outs/{{ l3out_name }}
+{% elif site.l3out.name in l3out_list  %}
+    Should Be Equal Value Json String   ${r.json()}   ${epg}.l3outRef   /templates/{{ template.name }}/l3outs/{{ l3out_name }}
+{% endif %}
 {% set l3out_name = site.l3out.name ~ defaults.ndo.schemas.templates.l3outs.name_suffix %}
     Should Be Equal Value Json String   ${r.json()}   ${epg}.l3outDn   uni/tn-{{ site.l3out.tenant | default(site.tenant | default(template.tenant)) }}/out-{{ l3out_name }}
 {% else %}
