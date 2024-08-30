@@ -13,7 +13,7 @@
             {
                 "fvCtx": {
                     "attributes": {
-                        "annotation": {% if vrf.ndo_managed %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
+                        "annotation": {% if vrf.ndo_managed | default(defaults.apic.tenants.vrfs.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                         "name": "{{ vrf_name }}",
                         "dn": "uni/tn-{{ tenant.name }}/ctx-{{ vrf_name }}",
                         "nameAlias": "{{ vrf.alias | default() }}",

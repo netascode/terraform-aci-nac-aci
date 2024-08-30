@@ -18,7 +18,7 @@
             {
                 "fvTenant": {
                     "attributes": {
-                        "annotation": {% if tenant.ndo_managed %}"orchestrator:msc"{% else %}"orchestrator:aac"{% endif %},
+                        "annotation": {% if tenant.ndo_managed | default(defaults.apic.tenants.ndo_managed) %}"orchestrator:msc"{% else %}"orchestrator:aac"{% endif %},
                         "name": "{{ tenant.name }}",
                         "dn": "uni/tn-{{ tenant.name }}",
                         "nameAlias": "{{ tenant.alias | default() }}",
