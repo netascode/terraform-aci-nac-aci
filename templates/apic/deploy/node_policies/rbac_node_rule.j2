@@ -16,7 +16,8 @@
                         "childAction": "deleteNonPresent"
                     },
                     "children": [
-                        {%- for sd in node.security_domains %}{{ comma1() }}
+                        {%- set comma2 = joiner(",") %}
+                        {%- for sd in node.security_domains %}{{ comma2() }}
                         {
                             "aaaRbacPortRule": {
                                 "attributes": {
