@@ -7,10 +7,23 @@ import pytest
 
 import errorhandler
 from iac_test.robot_writer import RobotWriter
+import json
 from vmware import Vsphere
 from requests.adapters import HTTPAdapter
 
 error_handler = errorhandler.ErrorHandler()
+
+
+def validate_json(path):
+    """Validate JSON files"""
+    for dir, subdir, files in os.walk(path):
+        for filename in files:
+            with open(dir + os.path.sep + filename, "r") as file:
+                try:
+                    json.loads(file.read())
+                except json.JSONDecodeError as e:
+                    return "JSON file {} is invalid: {}".format(filename, e)
+    return None
 
 
 def render_templates(

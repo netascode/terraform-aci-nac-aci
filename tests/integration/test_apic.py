@@ -11,7 +11,7 @@ import errorhandler
 import iac_test.pabot
 import pytest
 from aci import Apic
-from util import render_templates, revert_snapshot, terraform_post_process
+from util import validate_json, render_templates, revert_snapshot, terraform_post_process
 
 pytestmark = pytest.mark.integration
 pytestmark = pytest.mark.apic
@@ -79,6 +79,11 @@ def full_apic_test(data_paths, vm_name, snapshot_name, apic_url, version, tmpdir
         APIC_DEPLOY_TEMPLATES_PATH,
         filters_path=FILTERS_PATH,
     )
+    if error:
+        pytest.fail(error)
+
+    # Validate rendered templates
+    error = validate_json(tmpdir.strpath)
     if error:
         pytest.fail(error)
 

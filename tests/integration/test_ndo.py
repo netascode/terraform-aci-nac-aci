@@ -12,7 +12,7 @@ import iac_test.pabot
 import pytest
 from aci import Apic
 from ndo import Ndo
-from util import render_templates, terraform_post_process
+from util import validate_json, render_templates, terraform_post_process
 
 pytestmark = pytest.mark.integration
 pytestmark = pytest.mark.ndo
@@ -146,6 +146,11 @@ def full_ndo_test(
         filters_path=FILTERS_PATH,
         tests_path=TESTS_PATH,
     )
+    if error:
+        pytest.fail(error)
+
+    # Validate rendered templates
+    error = validate_json(tmpdir.strpath)
     if error:
         pytest.fail(error)
 
