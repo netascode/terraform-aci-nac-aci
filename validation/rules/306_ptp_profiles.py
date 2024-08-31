@@ -40,7 +40,6 @@ class Rule:
                         )
 
                 elif ptp.get("template", "aes67") == "smpte":
-
                     if not -3 <= ptp.get("announce_interval", 1) <= 1:
                         results.append(
                             "apic.access_policies.ptp_profiles.announce_interval - "

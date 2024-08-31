@@ -34,8 +34,9 @@ pipeline {
         stage('Lint') {
             steps {
                 sh 'yamllint -s .'
-                sh 'flake8'
-                sh 'black --check .'
+                sh 'pip install ruff'
+                sh 'ruff format --check'
+                sh 'ruff check'
                 sh 'pytest -m validate'
             }
         }
