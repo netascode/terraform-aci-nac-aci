@@ -798,12 +798,12 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
 Verify L3out {{ l3out_name }} BGP Protocol Profile
 
 {% if np.bgp.timer_policy is defined %}
-{% set bgp_timer_policy_name = l3out.bgp.timer_policy ~ defaults.apic.tenants.policies.bgp_timer_policies.name_suffix %}                       
+{% set bgp_timer_policy_name = np.bgp.timer_policy ~ defaults.apic.tenants.policies.bgp_timer_policies.name_suffix %}                       
     Should Be Equal Value Json String   ${r.json()}   $..bgpRsBgpNodeCtxPol.attributes.tnBgpCtxPolName   {{ bgp_timer_policy_name }}
 {% endif %}
 
 {% if np.bgp.as_path_policy is defined %}
-{% set bgp_as_path_policy_name = l3out.bgp.as_path_policy ~ defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix %}                            
+{% set bgp_as_path_policy_name = np.bgp.as_path_policy ~ defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix %}                            
     Should Be Equal Value Json String   ${r.json()}   $..bgpRsBestPathCtrlPol.attributes.tnBgpBestPathCtrlPolName   {{ bgp_as_path_policy_name }}
 {% endif %}
 
