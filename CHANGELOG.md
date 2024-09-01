@@ -1,3 +1,31 @@
+## 0.9.1
+
+- Add support for vPC Delay Restore timer
+- Add support for Pod Peering Profile
+- Add support for Fabric Interface Link Level Policies
+- Add support for static vlan allocation under VMware VMM domain
+- Add support for ND interface policy under Bridge Domain
+- Add support for PBR L3 destination name
+- Add support for configuring node role during registration
+- Add support for allow_origins parameter in management access policy
+- Add support for Netflow policies
+- Add support for sub-interfaces in L3out
+- Enhance action support for EP loop protection
+- Add support for MicroBFD in L3out
+- Add support for BGP Route Summarization policies
+- Add description under interface selector, EPG static port,
+- Add LDAP support in AAA login domains
+- Add support for Private VLANs on static ports
+- Add support for BGP profile in L3out
+- Add support for DHCP Labels under L3out interface profiles
+- Add support for escaping HTML in banners
+- Add support for L4L7 active-active device configuration
+- Fix support for imported devices in service graph templates
+- Add RBAC rules for nodes
+- Add support for MPLS Custom QoS policy in Terraform module
+- Add support for port channel member policies in new interface configuration mode
+- Add support for annotations in NDO-managed objects for tenant, VRF, BD, EPG, L3out and extEPG
+
 ## 0.9.0
 
 - Add support for PBR L1L2 destinations
