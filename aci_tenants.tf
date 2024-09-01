@@ -1554,7 +1554,6 @@ module "aci_sr_mpls_l3out" {
   for_each             = { for l3out in local.sr_mpls_l3outs : l3out.key => l3out if try(local.modules.aci_sr_mpls_l3out, true) && var.manage_tenants }
   tenant               = each.value.tenant
   name                 = each.value.name
-  annotation           = each.value.annotation
   alias                = each.value.alias
   description          = each.value.description
   routed_domain        = each.value.domain
@@ -1744,7 +1743,6 @@ module "aci_sr_mpls_external_endpoint_group" {
   tenant                      = each.value.tenant
   l3out                       = each.value.l3out
   name                        = each.value.name
-  annotation                  = each.value.annotation
   alias                       = each.value.alias
   description                 = each.value.description
   preferred_group             = each.value.preferred_group

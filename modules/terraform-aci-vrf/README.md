@@ -128,7 +128,7 @@ module "aci_vrf" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | VRF name. | `string` | n/a | yes |
-| <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | n/a | yes |
+| <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | `null` | no |
 | <a name="input_alias"></a> [alias](#input\_alias) | VRF alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | VRF description. | `string` | `""` | no |
 | <a name="input_enforcement_direction"></a> [enforcement\_direction](#input\_enforcement\_direction) | VRF enforcement direction. Choices: `ingress`, `egress`. | `string` | `"ingress"` | no |

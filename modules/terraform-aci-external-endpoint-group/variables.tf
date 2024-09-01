@@ -11,7 +11,7 @@ variable "tenant" {
 variable "l3out" {
   description = "L3out name."
   type        = string
-  default     = none
+  default     = null
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.l3out))
@@ -32,6 +32,7 @@ variable "name" {
 variable "annotation" {
   description = "Annotation value."
   type        = string
+  default     = null
 
   validation {
     condition     = var.annotation == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.annotation))
@@ -116,6 +117,7 @@ variable "subnets" {
   description = "List of subnets. Default value `import_route_control`: false. Default value `export_route_control`: false. Default value `shared_route_control`: false. Default value `import_security`: true. Default value `shared_security`: false. Default value `aggregate_import_route_control`: false. Default value `aggregate_export_route_control`: false. Default value `aggregate_shared_route_control`: false. Default value `bgp_route_summarization`: false. Default value `ospf_route_summarization`: false."
   type = list(object({
     name                           = optional(string, "")
+    annotation                     = optional(string, null)
     prefix                         = string
     import_route_control           = optional(bool, false)
     export_route_control           = optional(bool, false)

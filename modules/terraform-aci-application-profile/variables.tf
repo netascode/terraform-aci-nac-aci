@@ -21,6 +21,7 @@ variable "name" {
 variable "annotation" {
   description = "Annotation value."
   type        = string
+  default     = null
 
   validation {
     condition     = var.annotation == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.annotation))
