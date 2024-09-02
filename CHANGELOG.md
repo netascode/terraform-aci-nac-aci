@@ -1,4 +1,4 @@
-## 0.9.1 (unreleased)
+## 0.9.1
 
 - Add support for vPC Delay Restore timer
 - Add support for Pod Peering Profile
