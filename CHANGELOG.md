@@ -13,7 +13,7 @@
 - Enhance action support for EP loop protection
 - Add support for MicroBFD in L3out
 - Add support for BGP Route Summarization policies
-- Add description under interface selector, EPG static port,
+- Add description under interface selector, EPG static port, l3out interface profile and static route next hop
 - Add LDAP support in AAA login domains
 - Add support for Private VLANs on static ports
 - Add support for BGP profile in L3out
