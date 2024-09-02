@@ -84,8 +84,8 @@ fabric_policies:
   span: include('fp_span', required=False) # @name(Fabric SPAN) @sheet_hidden()
   smart_licensing: include('fp_smart_licensing', required=False)
   l2_mtu_policies: list(include('fp_l2_mtu_policies'), required=False) # @name(L2 MTU Policy) @sheet_hidden()
-  system_performance: include('fp_system_performance', required=False) # @name (System Performance) @sheet_hidden()
-  interface_policies: include('fp_interface_policies', required=False)
+  system_performance: include('fp_system_performance', required=False) # @name(System Performance) @sheet_hidden()
+  interface_policies: include('fp_interface_policies', required=False) # @name(Fabric Interface Policies)
 
 fp_banners:
   apic_gui_alias: str(required=False)
@@ -1382,9 +1382,9 @@ ap_interface_policies:
   mcp_policies: list(include('ap_mcp_policy'), required=False)
   l2_policies: list(include('ap_l2_policy'), required=False)
   storm_control_policies: list(include('ap_storm_control_policy'), required=False)
-  netflow_exporters: list(include('ap_netflow_exporters'), required=False) # @name(Netflow Exporters) @ref_name(Netflow Exporters) @sheet_hidden()
-  netflow_monitors: list(include('ap_netflow_monitors'), required=False) # @name(Netflow Monitors) @ref_name(Netflow Monitors) @sheet_hidden()
-  netflow_records: list(include('ap_netflow_records'), required=False) # @name(Netflow Records) @ref_name(Netflow Records) @sheet_hidden()
+  netflow_exporters: list(include('ap_netflow_exporters'), required=False) # @name(Netflow Exporters) @ref_name(Netflow Exporter) @sheet_hidden()
+  netflow_monitors: list(include('ap_netflow_monitors'), required=False) # @name(Netflow Monitors) @ref_name(Netflow Monitor) @sheet_hidden()
+  netflow_records: list(include('ap_netflow_records'), required=False) # @name(Netflow Records) @ref_name(Netflow Record) @sheet_hidden()
 
 ap_cdp_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -2416,7 +2416,7 @@ ten_l3outs_nodes_interfaces:
   mode: enum('regular', 'native', 'untagged', required=False)
   state: enum('local', 'vrf', required=False)
   expected_state: include('ten_l3outs_nodes_interfaces_expected_state', required=False) # @no_external_doc() @name(L3out Node Int Expected State) @sheet_hidden()
-  micro_bfd: include('ten_l3outs_nodes_interfaces_micro_bfd', required=False)
+  micro_bfd: include('ten_l3outs_nodes_interfaces_micro_bfd', required=False) # @name(L3out Node Int Micro BFD) @sheet_hidden()
 
 ten_l3outs_nodes_interfaces_bgp_peers:
   ip: ip()
@@ -2897,7 +2897,7 @@ ten_policies:
   ospf_interface_policies: list(include('ten_ospf_interface_policies'), required=False) # @sheet_hidden()
   eigrp_interface_policies: list(include('ten_eigrp_interface_policies'), required=False) # @sheet_hidden()
   ospf_timer_policies: list(include('ten_ospf_timer_policies'), required=False) # @sheet_hidden()
-  bgp_route_summarization_policies: list(include('ten_bgp_route_summarization_policy'), required=False) # @name(BGP Route Summarization) @sheet_hidden()
+  bgp_route_summarization_policies: list(include('ten_bgp_route_summarization_policy'), required=False) # @name(BGP Route Sum Policies) @sheet_hidden()
   bgp_timer_policies: list(include('ten_bgp_timer_policy'), required=False) # @sheet_hidden()
   bgp_peer_prefix_policies: list(include('ten_bgp_peer_prefix_policies'), required=False) # @sheet_hidden()
   bgp_best_path_policies: list(include('ten_bgp_best_path_policy'), required=False) # @sheet_hidden()
