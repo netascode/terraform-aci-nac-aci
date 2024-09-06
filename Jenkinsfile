@@ -52,7 +52,7 @@ pipeline {
             parallel {
                 stage('Test APIC 4.2') {
                     steps {
-                        lock('nac-ci-apic1-4.2.4i') {
+                        lock(resource: 'nac-ci-apic1-4.2.4i') {
                             sh 'pytest -m "apic_42 and not terraform"'
                         }
                     }
@@ -65,7 +65,7 @@ pipeline {
                 }
                 stage('Test APIC 5.2') {
                     steps {
-                        lock('nac-ci-apic1-5.2.1g') {
+                        lock(resource: 'nac-ci-apic1-5.2.1g') {
                             sh 'pytest -m "apic_52 and not terraform"'
                         }
                     }
@@ -78,7 +78,7 @@ pipeline {
                 }
                 stage('Test APIC 6.0') {
                     steps {
-                        lock('nac-ci-apic1-6.0.4c') {
+                        lock(resource: 'nac-ci-apic1-6.0.4c') {
                             sh 'pytest -m "apic_60 and not terraform"'
                         }
                     }
@@ -91,7 +91,7 @@ pipeline {
                 }
                 stage('Test NDO 3.7') {
                     steps {
-                        lock('nac-ci-apic2-6.0.5h', 'nac-ci-nd1-2.2.2d') {
+                        lock(resource: 'nac-ci-apic2-6.0.5h', extra: [[resource: 'nac-ci-nd1-2.2.2d']]) {
                             sh 'pytest -m "ndo_37 and not terraform"'
                         }
                     }
@@ -104,7 +104,7 @@ pipeline {
                 }
                 stage('Test NDO 4.2') {
                     steps {
-                        lock('nac-ci-apic3-6.0.5h', 'nac-ci-nd1-3.0.1i') {
+                        lock(resource: 'nac-ci-apic3-6.0.5h', extra: [[resource: 'nac-ci-nd1-3.0.1i']]) {
                             sh 'pytest -m "ndo_42 and not terraform"'
                         }
                     }
