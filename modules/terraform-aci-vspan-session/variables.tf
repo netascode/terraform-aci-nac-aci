@@ -126,16 +126,16 @@ variable "sources" {
         for path in s.access_paths : path.node_id == null || try(path.node_id >= 1 && path.node_id <= 4000, false)
       ])
     ])
-    error_message = "Source Access Path `node_id`: Minimum value: `1`. Maximum value: `400`."
+    error_message = "Source Access Path `node_id`: Minimum value: `1`. Maximum value: `4000`."
   }
 
   validation {
     condition = alltrue([
       for s in var.sources : alltrue([
-        for path in s.access_paths : path.node2_id == null || try(path.node2_id >= 1 && path.node2_id <= 400, false)
+        for path in s.access_paths : path.node2_id == null || try(path.node2_id >= 1 && path.node2_id <= 4000, false)
       ])
     ])
-    error_message = "Source Access Path `node2_id`: Minimum value: `1`. Maximum value: `400`."
+    error_message = "Source Access Path `node2_id`: Minimum value: `1`. Maximum value: `4000`."
   }
 
   validation {

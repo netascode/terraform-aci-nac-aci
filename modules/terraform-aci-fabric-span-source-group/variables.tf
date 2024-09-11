@@ -92,7 +92,7 @@ variable "sources" {
         for path in s.fabric_paths : path.node_id == null || try(path.node_id >= 1 && path.node_id <= 4000, false)
       ])
     ])
-    error_message = "Source Fabric Path `node_id`: Minimum value: `1`. Maximum value: `400`."
+    error_message = "Source Fabric Path `node_id`: Minimum value: `1`. Maximum value: `4000`."
   }
 
   validation {
