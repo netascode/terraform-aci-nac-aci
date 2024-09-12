@@ -307,6 +307,7 @@ locals {
           qos_class                   = try(epg.qos_class, local.defaults.apic.tenants.application_profiles.endpoint_groups.qos_class)
           custom_qos_policy           = try("${epg.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
           bridge_domain               = try("${epg.bridge_domain}${local.defaults.apic.tenants.bridge_domains.name_suffix}", "")
+          data_plane_policing_policy  = try("${epg.data_plane_policing_policy}${local.defaults.apic.tenants.policies.data_plane_policing_policy.name_suffix}", "")
           tags                        = try(epg.tags, [])
           trust_control_policy        = try("${epg.trust_control_policy}${local.defaults.apic.tenants.policies.trust_control_policies.name_suffix}", "")
           contract_consumers          = try([for contract in epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
@@ -437,6 +438,7 @@ module "aci_endpoint_group" {
   qos_class                   = each.value.qos_class
   custom_qos_policy           = each.value.custom_qos_policy
   bridge_domain               = each.value.bridge_domain
+  data_plane_policing_policy  = each.value.data_plane_policing_policy
   tags                        = each.value.tags
   trust_control_policy        = each.value.trust_control_policy
   contract_consumers          = each.value.contract_consumers
@@ -495,6 +497,7 @@ module "aci_endpoint_group" {
     module.aci_tenant,
     module.aci_application_profile,
     module.aci_bridge_domain,
+    module.aci_data_plane_policing_policy,
     module.aci_contract,
     module.aci_imported_contract,
     module.aci_vmware_vmm_domain,
@@ -1115,27 +1118,29 @@ locals {
       for l3out in try(tenant.l3outs, []) : [
         for np in try(l3out.node_profiles, []) : [
           for ip in try(np.interface_profiles, []) : {
-            key                          = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
-            tenant                       = tenant.name
-            l3out                        = l3out.name
-            node_profile                 = np.name
-            name                         = "${ip.name}${local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix}"
-            description                  = try(ip.description, "")
-            multipod                     = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
-            remote_leaf                  = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
-            bfd_policy                   = try("${ip.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
-            ospf_interface_profile_name  = try(ip.ospf.ospf_interface_profile_name, l3out.name)
-            ospf_authentication_key      = try(ip.ospf.auth_key, "")
-            ospf_authentication_key_id   = try(ip.ospf.auth_key_id, "1")
-            ospf_authentication_type     = try(ip.ospf.auth_type, "none")
-            ospf_interface_policy        = try(ip.ospf.policy, "")
-            eigrp_interface_profile_name = try(ip.eigrp.interface_profile_name, l3out.name)
-            eigrp_interface_policy       = try(ip.eigrp.interface_policy, "")
-            eigrp_keychain_policy        = try(ip.eigrp.keychain_policy, "")
-            pim_policy                   = try("${ip.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
-            igmp_interface_policy        = try("${ip.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
-            qos_class                    = try(ip.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
-            custom_qos_policy            = try("${ip.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+            key                                = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
+            tenant                             = tenant.name
+            l3out                              = l3out.name
+            node_profile                       = np.name
+            name                               = "${ip.name}${local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix}"
+            description                        = try(ip.description, "")
+            multipod                           = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
+            remote_leaf                        = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
+            bfd_policy                         = try("${ip.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
+            ospf_interface_profile_name        = try(ip.ospf.ospf_interface_profile_name, l3out.name)
+            ospf_authentication_key            = try(ip.ospf.auth_key, "")
+            ospf_authentication_key_id         = try(ip.ospf.auth_key_id, "1")
+            ospf_authentication_type           = try(ip.ospf.auth_type, "none")
+            ospf_interface_policy              = try(ip.ospf.policy, "")
+            eigrp_interface_profile_name       = try(ip.eigrp.interface_profile_name, l3out.name)
+            eigrp_interface_policy             = try(ip.eigrp.interface_policy, "")
+            eigrp_keychain_policy              = try(ip.eigrp.keychain_policy, "")
+            pim_policy                         = try("${ip.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
+            igmp_interface_policy              = try("${ip.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
+            qos_class                          = try(ip.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
+            custom_qos_policy                  = try("${ip.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+            egress_data_plane_policing_policy  = try("${ip.egress_data_plane_policing_policy}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}", "")
+            ingress_data_plane_policing_policy = try("${ip.ingress_data_plane_policing_policy}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}", "")
             dhcp_labels = [for label in try(ip.dhcp_labels, []) : {
               dhcp_relay_policy  = try("${label.dhcp_relay_policy}${local.defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix}", "")
               dhcp_option_policy = try("${label.dhcp_option_policy}${local.defaults.apic.tenants.policies.dhcp_option_policies.name_suffix}", "")
@@ -1212,28 +1217,30 @@ locals {
 module "aci_l3out_interface_profile_manual" {
   source = "./modules/terraform-aci-l3out-interface-profile"
 
-  for_each                     = { for ip in local.interface_profiles_manual : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
-  tenant                       = each.value.tenant
-  l3out                        = each.value.l3out
-  node_profile                 = each.value.node_profile
-  name                         = each.value.name
-  description                  = each.value.description
-  multipod                     = each.value.multipod
-  remote_leaf                  = each.value.remote_leaf
-  bfd_policy                   = each.value.bfd_policy
-  ospf_interface_profile_name  = each.value.ospf_interface_profile_name
-  ospf_authentication_key      = each.value.ospf_authentication_key
-  ospf_authentication_key_id   = each.value.ospf_authentication_key_id
-  ospf_authentication_type     = each.value.ospf_authentication_type
-  ospf_interface_policy        = each.value.ospf_interface_policy
-  eigrp_interface_profile_name = each.value.eigrp_interface_profile_name
-  eigrp_interface_policy       = each.value.eigrp_interface_policy
-  eigrp_keychain_policy        = each.value.eigrp_keychain_policy
-  pim_policy                   = each.value.pim_policy
-  igmp_interface_policy        = each.value.igmp_interface_policy
-  qos_class                    = each.value.qos_class
-  custom_qos_policy            = each.value.custom_qos_policy
-  dhcp_labels                  = each.value.dhcp_labels
+  for_each                           = { for ip in local.interface_profiles_manual : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
+  tenant                             = each.value.tenant
+  l3out                              = each.value.l3out
+  node_profile                       = each.value.node_profile
+  name                               = each.value.name
+  description                        = each.value.description
+  multipod                           = each.value.multipod
+  remote_leaf                        = each.value.remote_leaf
+  bfd_policy                         = each.value.bfd_policy
+  ospf_interface_profile_name        = each.value.ospf_interface_profile_name
+  ospf_authentication_key            = each.value.ospf_authentication_key
+  ospf_authentication_key_id         = each.value.ospf_authentication_key_id
+  ospf_authentication_type           = each.value.ospf_authentication_type
+  ospf_interface_policy              = each.value.ospf_interface_policy
+  eigrp_interface_profile_name       = each.value.eigrp_interface_profile_name
+  eigrp_interface_policy             = each.value.eigrp_interface_policy
+  eigrp_keychain_policy              = each.value.eigrp_keychain_policy
+  pim_policy                         = each.value.pim_policy
+  igmp_interface_policy              = each.value.igmp_interface_policy
+  qos_class                          = each.value.qos_class
+  custom_qos_policy                  = each.value.custom_qos_policy
+  dhcp_labels                        = each.value.dhcp_labels
+  egress_data_plane_policing_policy  = try("${ip.egress_data_plane_policing_policy}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}", "")
+  ingress_data_plane_policing_policy = try("${ip.ingress_data_plane_policing_policy}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}", "")
   interfaces = [for int in try(each.value.interfaces, []) : {
     ip                       = int.ip
     svi                      = int.svi
@@ -1273,25 +1280,27 @@ locals {
   interface_profiles_auto = flatten([
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : {
-        key                          = format("%s/%s", tenant.name, l3out.name)
-        tenant                       = tenant.name
-        l3out                        = l3out.name
-        node_profile                 = l3out.name
-        name                         = l3out.name
-        multipod                     = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
-        remote_leaf                  = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
-        bfd_policy                   = try("${l3out.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
-        ospf_interface_profile_name  = try(l3out.ospf.ospf_interface_profile_name, l3out.name)
-        ospf_authentication_key      = try(l3out.ospf.auth_key, "")
-        ospf_authentication_key_id   = try(l3out.ospf.auth_key_id, "1")
-        ospf_authentication_type     = try(l3out.ospf.auth_type, "none")
-        ospf_interface_policy        = try(l3out.ospf.policy, "")
-        eigrp_interface_profile_name = try(l3out.eigrp.interface_profile_name, l3out.name)
-        eigrp_interface_policy       = try(l3out.eigrp.interface_policy, "")
-        pim_policy                   = try("${l3out.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
-        igmp_interface_policy        = try("${l3out.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
-        qos_class                    = try(l3out.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
-        custom_qos_policy            = try("${l3out.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+        key                                = format("%s/%s", tenant.name, l3out.name)
+        tenant                             = tenant.name
+        l3out                              = l3out.name
+        node_profile                       = l3out.name
+        name                               = l3out.name
+        multipod                           = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
+        remote_leaf                        = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
+        bfd_policy                         = try("${l3out.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
+        ospf_interface_profile_name        = try(l3out.ospf.ospf_interface_profile_name, l3out.name)
+        ospf_authentication_key            = try(l3out.ospf.auth_key, "")
+        ospf_authentication_key_id         = try(l3out.ospf.auth_key_id, "1")
+        ospf_authentication_type           = try(l3out.ospf.auth_type, "none")
+        ospf_interface_policy              = try(l3out.ospf.policy, "")
+        eigrp_interface_profile_name       = try(l3out.eigrp.interface_profile_name, l3out.name)
+        eigrp_interface_policy             = try(l3out.eigrp.interface_policy, "")
+        pim_policy                         = try("${l3out.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
+        igmp_interface_policy              = try("${l3out.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
+        qos_class                          = try(l3out.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
+        custom_qos_policy                  = try("${l3out.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+        egress_data_plane_policing_policy  = try("${l3out.egress_data_plane_policing_policy}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}", "")
+        ingress_data_plane_policing_policy = try("${l3out.ingress_data_plane_policing_policy}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}", "")
         dhcp_labels = [for label in try(l3out.dhcp_labels, []) : {
           dhcp_relay_policy  = try("${label.dhcp_relay_policy}${local.defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix}", "")
           dhcp_option_policy = try("${label.dhcp_option_policy}${local.defaults.apic.tenants.policies.dhcp_option_policies.name_suffix}", "")
@@ -1368,26 +1377,28 @@ locals {
 module "aci_l3out_interface_profile_auto" {
   source = "./modules/terraform-aci-l3out-interface-profile"
 
-  for_each                     = { for ip in local.interface_profiles_auto : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
-  tenant                       = each.value.tenant
-  l3out                        = each.value.l3out
-  node_profile                 = each.value.node_profile
-  name                         = each.value.name
-  multipod                     = each.value.multipod
-  remote_leaf                  = each.value.remote_leaf
-  bfd_policy                   = each.value.bfd_policy
-  ospf_interface_profile_name  = each.value.ospf_interface_profile_name
-  ospf_authentication_key      = each.value.ospf_authentication_key
-  ospf_authentication_key_id   = each.value.ospf_authentication_key_id
-  ospf_authentication_type     = each.value.ospf_authentication_type
-  ospf_interface_policy        = each.value.ospf_interface_policy
-  eigrp_interface_profile_name = each.value.eigrp_interface_profile_name
-  eigrp_interface_policy       = each.value.eigrp_interface_policy
-  pim_policy                   = each.value.pim_policy
-  igmp_interface_policy        = each.value.igmp_interface_policy
-  qos_class                    = each.value.qos_class
-  custom_qos_policy            = each.value.custom_qos_policy
-  dhcp_labels                  = each.value.dhcp_labels
+  for_each                           = { for ip in local.interface_profiles_auto : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
+  tenant                             = each.value.tenant
+  l3out                              = each.value.l3out
+  node_profile                       = each.value.node_profile
+  name                               = each.value.name
+  multipod                           = each.value.multipod
+  remote_leaf                        = each.value.remote_leaf
+  bfd_policy                         = each.value.bfd_policy
+  ospf_interface_profile_name        = each.value.ospf_interface_profile_name
+  ospf_authentication_key            = each.value.ospf_authentication_key
+  ospf_authentication_key_id         = each.value.ospf_authentication_key_id
+  ospf_authentication_type           = each.value.ospf_authentication_type
+  ospf_interface_policy              = each.value.ospf_interface_policy
+  eigrp_interface_profile_name       = each.value.eigrp_interface_profile_name
+  eigrp_interface_policy             = each.value.eigrp_interface_policy
+  pim_policy                         = each.value.pim_policy
+  igmp_interface_policy              = each.value.igmp_interface_policy
+  qos_class                          = each.value.qos_class
+  custom_qos_policy                  = each.value.custom_qos_policy
+  dhcp_labels                        = each.value.dhcp_labels
+  egress_data_plane_policing_policy  = each.value.egress_data_plane_policing_policy
+  ingress_data_plane_policing_policy = each.value.ingress_data_plane_policing_policy
   interfaces = [for int in try(each.value.interfaces, []) : {
     ip                       = int.ip
     svi                      = int.svi
@@ -2539,6 +2550,73 @@ locals {
       }
     ] if tenant.name == "infra"
   ])
+}
+
+locals {
+  data_plane_policing_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.data_plane_policing_policies, []) : {
+        key                  = format("%s/%s", tenant.name, policy.name)
+        tenant               = tenant.name
+        name                 = "${policy.name}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}"
+        admin_state          = try(policy.admin_state, local.defaults.apic.tenants.policies.data_plane_policing_policies.admin_state)
+        type                 = try(policy.type, local.defaults.apic.tenants.policies.data_plane_policing_policies.type)
+        mode                 = try(policy.mode, local.defaults.apic.tenants.policies.data_plane_policing_policies.mode)
+        sharing_mode         = try(policy.sharing_mode, local.defaults.apic.tenants.policies.data_plane_policing_policies.sharing_mode)
+        rate                 = try(policy.rate, local.defaults.apic.tenants.policies.data_plane_policing_policies.rate)
+        rate_unit            = try(policy.rate_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.rate_unit)
+        burst                = try(policy.burst, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst)
+        burst_unit           = try(policy.burst_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_unit)
+        conform_action       = try(policy.conform_action, local.defaults.apic.tenants.policies.data_plane_policing_policies.conform_action)
+        conform_mark_cos     = try(policy.conform_action == "mark", false) ? try(policy.conform_mark_cos, local.defaults.apic.tenants.policies.data_plane_policing_policies.conform_mark_cos) : null
+        conform_mark_dscp    = try(policy.conform_action == "mark", false) ? try(policy.conform_mark_dscp, local.defaults.apic.tenants.policies.data_plane_policing_policies.conform_mark_dscp) : null
+        exceed_action        = try(policy.exceed_action, local.defaults.apic.tenants.policies.data_plane_policing_policies.exceed_action)
+        exceed_mark_cos      = try(policy.exceed_action == "mark", false) ? try(policy.exceed_mark_cos, local.defaults.apic.tenants.policies.data_plane_policing_policies.exceed_mark_cos) : null
+        exceed_mark_dscp     = try(policy.exceed_action == "mark", false) ? try(policy.exceed_mark_dscp, local.defaults.apic.tenants.policies.data_plane_policing_policies.exceed_mark_dscp) : null
+        violate_action       = try(policy.violate_action, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_action)
+        violate_mark_cos     = try(policy.violate_action == "mark", false) ? try(policy.violate_mark_cos, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_mark_cos) : null
+        violate_mark_dscp    = try(policy.violate_action == "mark", false) ? try(policy.violate_mark_dscp, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_mark_dscp) : null
+        pir                  = try(policy.type == "2R3C", false) ? try(policy.pir, local.defaults.apic.tenants.policies.data_plane_policing_policies.pir) : null
+        pir_unit             = try(policy.type == "2R3C", false) ? try(policy.pir_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.pir_unit) : null
+        burst_excessive      = try(policy.type == "2R3C", false) ? try(policy.burst_excessive, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_excessive) : null
+        burst_excessive_unit = try(policy.type == "2R3C", false) ? try(policy.burst_excessive_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_excessive_unit) : null
+
+      }
+    ]
+  ])
+}
+
+module "aci_tenant_data_plane_policing_policy" {
+  source = "./modules/terraform-aci-data-plane-policing-policy"
+
+  for_each             = { for dpp in try(local.data_plane_policing_policies, []) : dpp.name => dpp if local.modules.aci_data_plane_policing_policy && var.manage_tenants }
+  name                 = "${each.value.name}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}"
+  tenant               = each.value.tenant
+  admin_state          = each.value.admin_state
+  type                 = each.value.type
+  mode                 = each.value.mode
+  sharing_mode         = each.value.sharing_mode
+  rate                 = each.value.rate
+  rate_unit            = each.value.rate_unit
+  burst                = each.value.burst
+  burst_unit           = each.value.burst_unit
+  conform_action       = each.value.conform_action
+  conform_mark_cos     = each.value.conform_mark_cos
+  conform_mark_dscp    = each.value.conform_mark_dscp
+  exceed_action        = each.value.exceed_action
+  exceed_mark_cos      = each.value.exceed_mark_cos
+  exceed_mark_dscp     = each.value.exceed_mark_dscp
+  violate_action       = each.value.violate_action
+  violate_mark_cos     = each.value.violate_mark_cos
+  violate_mark_dscp    = each.value.violate_mark_dscp
+  pir                  = each.value.pir
+  pir_unit             = each.value.pir_unit
+  burst_excessive      = each.value.burst_excessive
+  burst_excessive_unit = each.value.burst_excessive_unit
+
+  depends_on = [
+    module.aci_tenant,
+  ]
 }
 
 module "aci_mpls_custom_qos_policy" {
