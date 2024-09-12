@@ -1239,8 +1239,8 @@ module "aci_l3out_interface_profile_manual" {
   qos_class                          = each.value.qos_class
   custom_qos_policy                  = each.value.custom_qos_policy
   dhcp_labels                        = each.value.dhcp_labels
-  egress_data_plane_policing_policy  = try("${ip.egress_data_plane_policing_policy}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}", "")
-  ingress_data_plane_policing_policy = try("${ip.ingress_data_plane_policing_policy}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}", "")
+  egress_data_plane_policing_policy  = each.value.egress_data_plane_policing_policy
+  ingress_data_plane_policing_policy  = each.value.ingress_data_plane_policing_policy
   interfaces = [for int in try(each.value.interfaces, []) : {
     ip                       = int.ip
     svi                      = int.svi
