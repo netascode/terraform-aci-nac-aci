@@ -22,6 +22,7 @@ locals {
       for interface in try(node.interfaces, []) : {
         key                   = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.from_module), interface.port)
         name                  = replace(format("%s:%s", try(interface.module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module), interface.port), "/^(?P<mod>.+):(?P<port>.+)$/", replace(replace(try(local.access_policies.leaf_interface_selector_name, local.defaults.apic.access_policies.leaf_interface_selector_name), "\\g<mod>", "$${mod}"), "\\g<port>", "$${port}"))
+        description           = try(local.apic.interface_selector_description, local.defaults.apic.interface_selector_description) ? try(interface.description, "") : ""
         interface_profile     = replace("${node.id}:${node.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.leaf_interface_profile_name, local.defaults.apic.access_policies.leaf_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
         fex_id                = try(interface.fex_id, 0)
         fex_interface_profile = try(replace("${node.id}:${node.name}:${interface.fex_id}", "/^(?P<id>.+):(?P<name>.+):(?P<fex>.+)$/", replace(replace(replace(try(local.access_policies.fex_profile_name, local.defaults.apic.access_policies.fex_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"), "\\g<fex>", "$${fex}")), "")
@@ -45,6 +46,7 @@ module "aci_access_leaf_interface_selector_auto" {
 
   for_each              = { for selector in local.access_leaf_interface_selectors : selector.key => selector if local.modules.aci_access_leaf_interface_selector && var.manage_interface_policies }
   name                  = each.value.name
+  description           = each.value.description
   interface_profile     = each.value.interface_profile
   fex_id                = each.value.fex_id
   fex_interface_profile = each.value.fex_interface_profile
@@ -64,6 +66,7 @@ locals {
         for sub in try(interface.sub_ports, []) : {
           key                   = format("%s/%s/%s/%s", node.id, try(interface.module, local.defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.from_module), interface.port, sub.port)
           name                  = replace(format("%s:%s:%s", try(interface.module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module), interface.port, sub.port), "/^(?P<mod>.+):(?P<port>.+):(?P<sport>.+)$/", replace(replace(replace(try(local.access_policies.leaf_interface_selector_sub_port_name, local.defaults.apic.access_policies.leaf_interface_selector_sub_port_name), "\\g<mod>", "$${mod}"), "\\g<port>", "$${port}"), "\\g<sport>", "$${sport}"))
+          description           = try(local.apic.interface_selector_description, local.defaults.apic.interface_selector_description) ? try(sub.description, "") : ""
           interface_profile     = replace("${node.id}:${node.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.leaf_interface_profile_name, local.defaults.apic.access_policies.leaf_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
           fex_id                = try(sub.fex_id, 0)
           fex_interface_profile = try(replace("${node.id}:${node.name}:${sub.fex_id}", "/^(?P<id>.+):(?P<name>.+):(?P<fex>.+)$/", replace(replace(replace(try(local.access_policies.fex_profile_name, local.defaults.apic.access_policies.fex_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"), "\\g<fex>", "$${fex}")), "")
@@ -90,6 +93,7 @@ module "aci_access_leaf_interface_selector_sub_auto" {
 
   for_each              = { for selector in local.access_sub_interface_selectors : selector.key => selector if local.modules.aci_access_leaf_interface_selector && var.manage_interface_policies }
   name                  = each.value.name
+  description           = each.value.description
   interface_profile     = each.value.interface_profile
   fex_id                = each.value.fex_id
   fex_interface_profile = each.value.fex_interface_profile
@@ -109,6 +113,7 @@ locals {
         for interface in try(fex.interfaces, []) : {
           key               = format("%s/%s/%s/%s", node.id, fex.id, try(interface.module, local.defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.from_module), interface.port)
           name              = replace(format("%s:%s", try(interface.module, local.defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.from_module), interface.port), "/^(?P<mod>.+):(?P<port>.+)$/", replace(replace(try(local.access_policies.fex_interface_selector_name, local.defaults.apic.access_policies.fex_interface_selector_name), "\\g<mod>", "$${mod}"), "\\g<port>", "$${port}"))
+          description       = try(local.apic.interface_selector_description, local.defaults.apic.interface_selector_description) ? try(interface.description, "") : ""
           profile_name      = replace("${node.id}:${node.name}:${fex.id}", "/^(?P<id>.+):(?P<name>.+):(?P<fex>.+)$/", replace(replace(replace(try(local.access_policies.fex_profile_name, local.defaults.apic.access_policies.fex_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"), "\\g<fex>", "$${fex}"))
           policy_group      = try("${interface.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "")
           policy_group_type = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == interface.policy_group][0], "access")
@@ -131,6 +136,7 @@ module "aci_access_fex_interface_selector_auto" {
 
   for_each          = { for selector in local.access_fex_interface_selectors : selector.key => selector if local.modules.aci_access_fex_interface_selector && var.manage_interface_policies }
   name              = each.value.name
+  description       = each.value.description
   interface_profile = each.value.profile_name
   policy_group      = each.value.policy_group
   policy_group_type = each.value.policy_group_type

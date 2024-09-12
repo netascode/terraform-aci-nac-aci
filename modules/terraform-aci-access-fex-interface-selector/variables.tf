@@ -18,6 +18,17 @@ variable "name" {
   }
 }
 
+variable "description" {
+  description = "FEX interface selector description."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+}
+
 variable "policy_group_type" {
   description = "Interface policy group type. Choices: `access`, `pc`, `vpc`."
   type        = string
