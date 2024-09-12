@@ -22,6 +22,9 @@ Resource        ../../../apic_common.resource
 Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector {{ leaf_interface_selector_name }}
     ${r}=   GET On Session   apic   /api/mo/uni/infra/accportprof-{{ leaf_interface_profile_name }}/hports-{{ leaf_interface_selector_name }}-typ-range.json   params=rsp-subtree=full
     Should Be Equal Value Json String   ${r.json()}    $..infraHPortS.attributes.name   {{ leaf_interface_selector_name }}
+{% if apic.interface_selector_description | default(defaults.apic.interface_selector_description) is true %}
+    Should Be Equal Value Json String   ${r.json()}    $..infraHPortS.attributes.descr   {{ int.description | default() }}
+{% endif %}
 {% if int.fex_id is defined %}
 {% set fex_profile_name = (_node.id ~ ":" ~ _node.name~ ":" ~ int.fex_id) | regex_replace("^(?P<id>.+):(?P<name>.+):(?P<fex>.+)$", (apic.access_policies.fex_profile_name | default(defaults.apic.access_policies.fex_profile_name))) %}
     Should Be Equal Value Json String   ${r.json()}    $..infraRsAccBaseGrp.attributes.fexId   {{ int.fex_id }}
@@ -51,6 +54,9 @@ Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector 
 Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector {{ leaf_interface_selector_sub_port_name }}
     ${r}=   GET On Session   apic   /api/mo/uni/infra/accportprof-{{ leaf_interface_profile_name }}/hports-{{ leaf_interface_selector_sub_port_name }}-typ-range.json   params=rsp-subtree=full
     Should Be Equal Value Json String   ${r.json()}    $..infraHPortS.attributes.name   {{ leaf_interface_selector_sub_port_name }}
+{% if apic.interface_selector_description | default(defaults.apic.interface_selector_description) is true %}
+    Should Be Equal Value Json String   ${r.json()}    $..infraHPortS.attributes.descr   {{ sub.description | default() }}
+{% endif %}
 {% if sub.fex_id is defined %}
 {% set fex_profile_name = (_node.id ~ ":" ~ _node.name~ ":" ~ sub.fex_id) | regex_replace("^(?P<id>.+):(?P<name>.+):(?P<fex>.+)$", (apic.access_policies.fex_profile_name | default(defaults.apic.access_policies.fex_profile_name))) %}
     Should Be Equal Value Json String   ${r.json()}    $..infraRsAccBaseGrp.attributes.fexId   {{ sub.fex_id }}

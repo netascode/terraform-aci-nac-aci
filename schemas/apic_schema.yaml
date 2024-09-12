@@ -20,6 +20,7 @@ apic:
   auto_generate_access_spine_switch_interface_profiles: any(bool(), enum('enabled', 'disabled'), required=False)
   nae_assurance_group: str(required=False)
   new_interface_configuration: bool(required=False)
+  interface_selector_description: bool(required=False)
   expected_state: include('expected_state', required=False) # @no_external_doc() @name(APIC Expected State) @sheet_hidden()
 
 bootstrap:

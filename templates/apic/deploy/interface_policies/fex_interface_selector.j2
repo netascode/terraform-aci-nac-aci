@@ -33,6 +33,9 @@
                                     "annotation": "orchestrator:aac",
                                     "dn": "uni/infra/fexprof-{{ fex_profile_name }}/hports-{{ fex_interface_selector_name }}-typ-range",
                                     "name": "{{ fex_interface_selector_name }}",
+                                    {% if apic.interface_selector_description | default(defaults.apic.interface_selector_description) is true %}
+                                    "descr": "{{ int.description | default() }}",
+                                    {% endif %}
                                     "type": "range",
                                     "childAction": "deleteNonPresent"
                                 },

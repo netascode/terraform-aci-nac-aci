@@ -32,6 +32,9 @@
                                     "annotation": "orchestrator:aac",
                                     "dn": "uni/infra/accportprof-{{ leaf_interface_profile_name }}/hports-{{ leaf_interface_selector_name }}-typ-range",
                                     "name": "{{ leaf_interface_selector_name }}",
+                                    {% if apic.interface_selector_description | default(defaults.apic.interface_selector_description) is true %}
+                                    "descr": "{{ int.description | default() }}",
+                                    {% endif %}
                                     "type": "range",
                                     "childAction": "deleteNonPresent"
                                 },
@@ -91,6 +94,9 @@
                                     "annotation": "orchestrator:aac",
                                     "dn": "uni/infra/accportprof-{{ leaf_interface_profile_name }}/hports-{{ leaf_interface_selector_sub_port_name }}-typ-range",
                                     "name": "{{ leaf_interface_selector_sub_port_name }}",
+                                    {% if apic.interface_selector_description | default(defaults.apic.interface_selector_description) is true %}
+                                    "descr": "{{ sub.description | default() }}",
+                                    {% endif %}
                                     "type": "range",
                                     "childAction": "deleteNonPresent"
                                 },

@@ -6,6 +6,7 @@ apic:
   auto_generate_fabric_spine_switch_interface_profiles: false
   auto_generate_access_leaf_switch_interface_profiles: false
   auto_generate_access_spine_switch_interface_profiles: false
+  interface_selector_description: true
   expected_state:
     minimum_health: 0
     maximum_critical_faults: 1000

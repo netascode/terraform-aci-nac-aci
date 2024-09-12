@@ -23,6 +23,9 @@ Resource        ../../../apic_common.resource
 Verify Access FEX Interface Profile {{ fex_profile_name }} Selector {{ fex_interface_selector_name }}
     ${r}=   GET On Session   apic   /api/mo/uni/infra/fexprof-{{ fex_profile_name }}/hports-{{ fex_interface_selector_name }}-typ-range.json   params=rsp-subtree=full
     Should Be Equal Value Json String   ${r.json()}    $..infraHPortS.attributes.name   {{ fex_interface_selector_name }}
+{% if apic.interface_selector_description | default(defaults.apic.interface_selector_description) is true %}
+    Should Be Equal Value Json String   ${r.json()}    $..infraHPortS.attributes.descr   {{ int.description | default() }}
+{% endif %}
 {% if int.policy_group is defined %}
 {% set query = "leaf_interface_policy_groups[?name=='" ~ int.policy_group ~ "'].type[]" %}
 {% set type = (apic.access_policies | community.general.json_query(query)) %}
