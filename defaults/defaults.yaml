@@ -9,7 +9,7 @@ defaults:
     auto_generate_access_leaf_switch_interface_profiles: false
     auto_generate_access_spine_switch_interface_profiles: false
     new_interface_configuration: false
-    interface_selector_description: true
+    interface_selector_description: false
     fabric_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
       leaf_interface_profile_name: "LEAF\\g<id>"
