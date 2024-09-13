@@ -744,7 +744,7 @@ locals {
         port     = try(ap.port, null)
         sub_port = try(ap.sub_port, null)
         module   = try(ap.module, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.module)
-        channel  = try(ap.channel, null)
+        channel  = try("${ap.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", null)
         type     = try(ap.type, null)
       }]
     }]
