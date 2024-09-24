@@ -675,7 +675,7 @@ locals {
     module              = try(group.module, local.defaults.apic.access_policies.span.destination_groups.module)
     port                = try(group.port, 0)
     sub_port            = try(group.sub_port, 0)
-    channel             = try(group.channel, "")
+    channel             = try("${group.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "")
     ip                  = try(group.ip, "")
     source_prefix       = try(group.source_prefix, "")
     dscp                = try(group.dscp, local.defaults.apic.access_policies.span.destination_groups.dscp)
@@ -685,8 +685,8 @@ locals {
     span_version        = try(group.version, local.defaults.apic.access_policies.span.destination_groups.version)
     enforce_version     = try(group.enforce_version, local.defaults.apic.access_policies.span.destination_groups.enforce_version)
     tenant              = try(group.tenant, "")
-    application_profile = try(group.application_profile, "")
-    endpoint_group      = try(group.endpoint_group, "")
+    application_profile = try("${group.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}", "")
+    endpoint_group      = try("${group.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}", "")
   }]
 }
 
@@ -720,8 +720,8 @@ locals {
     name                    = "${group.name}${local.defaults.apic.access_policies.span.source_groups.name_suffix}"
     description             = try(group.description, "")
     admin_state             = try(group.admin_state, local.defaults.apic.access_policies.span.source_groups.admin_state)
-    filter_group            = try(group.filter_group, "")
-    destination_name        = try(group.destination.name, null)
+    filter_group            = try("${group.filter_group}${local.defaults.apic.access_policies.span.filter_groups.name_suffix}", "")
+    destination_name        = try(group.destination.name, "") != "" ? "${group.destination.name}${local.defaults.apic.access_policies.span.destination_groups.name_suffix}" : null
     destination_description = try(group.destination.description, "")
     sources = [for source in try(group.sources, []) : {
       description         = try(source.description, "")
@@ -729,9 +729,9 @@ locals {
       direction           = try(source.direction, local.defaults.apic.access_policies.span.source_groups.sources.direction)
       span_drop           = try(source.span_drop, local.defaults.apic.access_policies.span.source_groups.sources.span_drop)
       tenant              = try(source.tenant, null)
-      application_profile = try(source.application_profile, null)
-      endpoint_group      = try(source.endpoint_group, null)
-      l3out               = try(source.l3out, null)
+      application_profile = try(source.application_profile, "") != "" ? "${source.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}" : null
+      endpoint_group      = try(source.endpoint_group, "") != "" ? "${source.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}" : null
+      l3out               = try(source.l3out, "") != "" ? "${source.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}" : null
       vlan                = try(source.vlan, null)
       access_paths = [for ap in try(source.access_paths, []) : {
         node_id = try(ap.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == ap.channel][0][0], null)
@@ -744,7 +744,7 @@ locals {
         port     = try(ap.port, null)
         sub_port = try(ap.sub_port, null)
         module   = try(ap.module, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.module)
-        channel  = try("${ap.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", null)
+        channel  = try(ap.channel, "") != "" ? "${ap.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}" : null
         type     = try(ap.type, null)
       }]
     }]
@@ -796,8 +796,8 @@ module "aci_vspan_destination_group" {
     name                = "${dest.name}${local.defaults.apic.access_policies.vspan.destination_groups.destinations.name_suffix}"
     description         = try(dest.description, "")
     tenant              = try(dest.tenant, null)
-    application_profile = try(dest.application_profile, null)
-    endpoint_group      = try(dest.endpoint_group, null)
+    application_profile = try(dest.application_profile, "") != "" ? "${dest.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}" : null
+    endpoint_group      = try(dest.endpoint_group, "") != "" ? "${dest.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}" : null
     endpoint            = try(dest.endpoint, null)
     ip                  = try(dest.ip, null)
     mtu                 = try(dest.mtu, local.defaults.apic.access_policies.vspan.destination_groups.destinations.mtu)
@@ -812,15 +812,15 @@ locals {
     name                    = "${session.name}${local.defaults.apic.access_policies.vspan.sessions.name_suffix}"
     description             = try(session.description, "")
     admin_state             = try(session.admin_state, local.defaults.apic.access_policies.vspan.sessions.admin_state)
-    destination_name        = try(session.destination.name, null)
+    destination_name        = try(session.destination.name, "") != "" ? "${session.destination.name}${local.defaults.apic.access_policies.vspan.destination_groups.name_suffix}" : null
     destination_description = try(session.destination.description, "")
     sources = [for source in try(session.sources, []) : {
       description         = try(source.description, "")
       name                = source.name
       direction           = try(source.direction, local.defaults.apic.access_policies.vspan.sessions.sources.direction)
       tenant              = try(source.tenant, null)
-      application_profile = try(source.application_profile, null)
-      endpoint_group      = try(source.endpoint_group, null)
+      application_profile = try(source.application_profile, "") != "" ? "${source.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}" : null
+      endpoint_group      = try(source.endpoint_group, "") != "" ? "${source.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}" : null
       endpoint            = try(source.endpoint, null)
       access_paths = [for ap in try(source.access_paths, []) : {
         node_id = try(ap.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == ap.channel][0][0], null)
@@ -833,7 +833,7 @@ locals {
         port     = try(ap.port, null)
         sub_port = try(ap.sub_port, null)
         module   = try(ap.module, local.defaults.apic.access_policies.vspan.sessions.sources.access_paths.module)
-        channel  = try(ap.channel, null)
+        channel  = try(ap.channel, "") != "" ? "${ap.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}" : null
       }]
     }]
   }]
