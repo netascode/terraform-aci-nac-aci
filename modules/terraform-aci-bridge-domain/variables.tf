@@ -98,6 +98,12 @@ variable "clear_remote_mac_entries" {
   default     = false
 }
 
+variable "mcastARPDrop" {
+  description = "Drop ARP with Multicast SMAC."
+  type        = bool
+  default     = true
+}
+
 variable "virtual_mac" {
   description = "Virtual MAC address. Format: `12:34:56:78:9A:BC`."
   type        = string

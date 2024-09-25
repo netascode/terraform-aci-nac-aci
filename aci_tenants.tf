@@ -179,6 +179,7 @@ locals {
         virtual_mac                = try(bd.virtual_mac, "not-applicable")
         ep_move_detection          = try(bd.ep_move_detection, local.defaults.apic.tenants.bridge_domains.ep_move_detection)
         clear_remote_mac_entries   = try(bd.clear_remote_mac_entries, local.defaults.apic.tenants.bridge_domains.clear_remote_mac_entries)
+        mcastARPDrop               = try(bd.mcastARPDrop, local.defaults.apic.tenants.bridge_domains.mcastARPDrop)
         l3_multicast               = try(bd.l3_multicast, local.defaults.apic.tenants.bridge_domains.l3_multicast)
         pim_source_filter          = try(bd.pim_source_filter, "")
         pim_destination_filter     = try(bd.pim_destination_filter, "")
@@ -232,6 +233,7 @@ module "aci_bridge_domain" {
   virtual_mac                = each.value.virtual_mac
   ep_move_detection          = each.value.ep_move_detection
   clear_remote_mac_entries   = each.value.clear_remote_mac_entries
+  mcastARPDrop               = each.value.mcastARPDrop
   l3_multicast               = each.value.l3_multicast
   pim_source_filter          = each.value.pim_source_filter
   pim_destination_filter     = each.value.pim_destination_filter
