@@ -8,7 +8,7 @@ resource "aci_rest_managed" "infraSHPortS" {
 }
 
 resource "aci_rest_managed" "infraRsSpAccGrp" {
-  count      = var.policy_group != null ? 1 : 0
+  count      = var.policy_group != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraSHPortS.dn}/rsspAccGrp"
   class_name = "infraRsSpAccGrp"
   content = {
