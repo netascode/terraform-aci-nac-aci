@@ -562,3 +562,19 @@ resource "aci_rest_managed" "dhcpRsDhcpOptionPol" {
     tnDhcpOptionPolName = each.value.dhcp_option_policy
   }
 }
+
+resource "aci_rest_managed" "l3extRsEgressQosDppPol" {
+  dn         = "${aci_rest_managed.l3extLIfP.dn}/rsegressQosDppPol"
+  class_name = "l3extRsEgressQosDppPol"
+  content = {
+    tnQosDppPolName = var.egress_data_plane_policing_policy
+  }
+}
+
+resource "aci_rest_managed" "l3extRsIngressQosDppPol" {
+  dn         = "${aci_rest_managed.l3extLIfP.dn}/rsingressQosDppPol"
+  class_name = "l3extRsIngressQosDppPol"
+  content = {
+    tnQosDppPolName = var.ingress_data_plane_policing_policy
+  }
+}
