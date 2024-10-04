@@ -46,7 +46,7 @@ variable "description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -95,7 +95,7 @@ variable "ospf_area" {
   default     = "backbone"
 
   validation {
-    condition     = try(contains(["backbone"], var.ospf_area), false) || (try(tonumber(var.ospf_area), false) != false ? tonumber(var.ospf_area) >= 1 && tonumber(var.ospf_area) <= 4294967295 : false) || try(can(regex("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", var.ospf_area)), false)
+    condition     = try(contains(["backbone"], var.ospf_area), false) || (try(tonumber(var.ospf_area), false) != false ? tonumber(var.ospf_area) >= 1 && tonumber(var.ospf_area) <= 4294967295 : false) || try(can(regex("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", var.ospf_area)), false)
     error_message = "Allowed values are `backbone`, a number between 1 and 4294967295, or an ID in IP address format."
   }
 }
@@ -288,7 +288,7 @@ variable "import_route_map_description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.import_route_map_description))
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.import_route_map_description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -325,7 +325,7 @@ variable "import_route_map_contexts" {
 
   validation {
     condition = alltrue([
-      for c in var.import_route_map_contexts : c.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description)), false)
+      for c in var.import_route_map_contexts : c.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description)), false)
     ])
     error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -378,7 +378,7 @@ variable "export_route_map_description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.export_route_map_description))
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.export_route_map_description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -415,7 +415,7 @@ variable "export_route_map_contexts" {
 
   validation {
     condition = alltrue([
-      for c in var.export_route_map_contexts : c.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description)), false)
+      for c in var.export_route_map_contexts : c.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description)), false)
     ])
     error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
