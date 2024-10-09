@@ -59,6 +59,15 @@ resource "aci_rest_managed" "vmmRsVswitchOverrideMtuPol" {
   }
 }
 
+resource "aci_rest_managed" "vmmRsVswitchExporterPol" {
+  count      = var.vswitch_netflow_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.vmmRsVswitchExporterPol.dn}/rsvswitchExporterPol-[uni/infra/vmmexporterpol-${var.vswitch_mtu_policy}]"
+  class_name = "vmmRsVswitchExporterPol"
+  content = {
+    tDn = "uni/infra/vmmexporterpol-${var.vswitch_mtu_policy}"
+  }
+}
+
 resource "aci_rest_managed" "lacpEnhancedLagPol" {
   for_each   = { for elag in var.vswitch_enhanced_lags : elag.name => elag }
   dn         = "${aci_rest_managed.vmmVSwitchPolicyCont.dn}/enlacplagp-${each.value.name}"

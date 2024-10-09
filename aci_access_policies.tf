@@ -932,6 +932,17 @@ module "aci_netflow_exporter" {
   external_endpoint_group = try("${each.value.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}", "")
 }
 
+module "aci_netflow_vmm_exporter" {
+  source = "./modules/terraform-aci-netflow--vmm-exporter"
+
+  for_each         = { for exporter in try(local.access_policies.interface_policies.netflow_vmm_exporters, []) : exporter.name => exporter if local.modules.aci_netflow_vmm_exporter && var.manage_access_policies }
+  name             = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_vmm_exporters.name_suffix}"
+  description      = try(each.value.description, "")
+  destination_port = each.value.destination_port
+  destination_ip   = each.value.destination_ip
+  source_ip        = try(each.value.source_ip, local.defaults.apic.access_policies.interface_policies.netflow_vmm_exporters.source_ip)
+}
+
 module "aci_netflow_monitor" {
   source = "./modules/terraform-aci-netflow-monitor"
 
