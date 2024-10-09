@@ -933,7 +933,7 @@ module "aci_netflow_exporter" {
 }
 
 module "aci_netflow_vmm_exporter" {
-  source = "./modules/terraform-aci-netflow--vmm-exporter"
+  source = "./modules/terraform-aci-netflow-vmm-exporter"
 
   for_each         = { for exporter in try(local.access_policies.interface_policies.netflow_vmm_exporters, []) : exporter.name => exporter if local.modules.aci_netflow_vmm_exporter && var.manage_access_policies }
   name             = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_vmm_exporters.name_suffix}"
