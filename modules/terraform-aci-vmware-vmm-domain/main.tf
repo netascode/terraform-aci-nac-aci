@@ -61,10 +61,10 @@ resource "aci_rest_managed" "vmmRsVswitchOverrideMtuPol" {
 
 resource "aci_rest_managed" "vmmRsVswitchExporterPol" {
   count      = var.vswitch_netflow_policy != "" ? 1 : 0
-  dn         = "${aci_rest_managed.vmmRsVswitchExporterPol.dn}/rsvswitchExporterPol-[uni/infra/vmmexporterpol-${var.vswitch_mtu_policy}]"
+  dn         = "${aci_rest_managed.vmmVSwitchPolicyCont.dn}/rsvswitchExporterPol-[uni/infra/vmmexporterpol-${var.vswitch_netflow_policy}]"
   class_name = "vmmRsVswitchExporterPol"
   content = {
-    tDn = "uni/infra/vmmexporterpol-${var.vswitch_mtu_policy}"
+    tDn = "uni/infra/vmmexporterpol-${var.vswitch_netflow_policy}"
   }
 }
 
