@@ -544,6 +544,7 @@ module "aci_vmware_vmm_domain" {
   vswitch_lldp_policy         = try(each.value.vswitch.lldp_policy, "")
   vswitch_port_channel_policy = try(each.value.vswitch.port_channel_policy, "")
   vswitch_mtu_policy          = try(each.value.vswitch.mtu_policy, "")
+  vswitch_netflow_policy      = try(each.value.vswitch.netflow_exporter_policy, "")
   security_domains            = try(each.value.security_domains, [])
   credential_policies = [for cp in try(each.value.credential_policies, []) : {
     name     = "${cp.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.credential_policies.name_suffix}"

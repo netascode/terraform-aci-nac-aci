@@ -101,6 +101,17 @@ variable "vswitch_mtu_policy" {
   }
 }
 
+variable "vswitch_netflow_policy" {
+  description = "vSwitch NetFlow Exporter policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.vswitch_netflow_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "vswitch_enhanced_lags" {
   description = "vSwitch enhanced lags. Allowed values for `lb_mode`: `dst-ip`, `dst-ip-l4port`, `dst-ip-vlan`, `dst-ip-l4port-vlan`, `dst-mac`, `dst-l4port`, `src-ip`, `src-ip-l4port`, `src-ip-vlan`, `src-ip-l4port-vlan`, `src-mac`, `src-l4port`, `src-dst-ip`, `src-dst-ip-l4port`, `src-dst-ip-vlan`, `src-dst-ip-l4port-vlan`, `src-dst-mac`, `src-dst-l4port`, `src-port-id` or `vlan`. Default value: `src-dst-ip`. Allowed values for `mode`: `active` or `passive`. Defautl value: `active`. Allowed range for `num_links`: 2-8."
   type = list(object({
