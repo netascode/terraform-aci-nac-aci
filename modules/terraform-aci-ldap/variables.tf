@@ -6,7 +6,7 @@ variable "ldap_providers" {
     port                 = optional(number, 389)
     bind_dn              = optional(string, "")
     base_dn              = optional(string, "")
-    password             = optional(string, "")
+    password             = optional(string)
     timeout              = optional(number, 30)
     retries              = optional(number, 1)
     enable_ssl           = optional(bool, false)
@@ -17,7 +17,7 @@ variable "ldap_providers" {
     mgmt_epg_name        = optional(string, "")
     monitoring           = optional(bool, false)
     monitoring_username  = optional(string, "default")
-    monitoring_password  = optional(string, "")
+    monitoring_password  = optional(string)
   }))
   default = []
 
