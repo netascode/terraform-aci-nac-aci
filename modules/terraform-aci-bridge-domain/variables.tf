@@ -101,7 +101,7 @@ variable "clear_remote_mac_entries" {
 variable "multicast_arp_drop" {
   description = "Drop ARP with Multicast SMAC."
   type        = bool
-  default     = false
+  default     = null
 }
 
 variable "virtual_mac" {
