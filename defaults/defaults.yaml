@@ -1250,6 +1250,7 @@ defaults:
           tag: 4294967295
         route_control_route_maps:
           name_suffix: ""
+          type: global
           contexts:
             name_suffix: ""
             action: "permit"

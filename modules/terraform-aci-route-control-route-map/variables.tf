@@ -18,6 +18,16 @@ variable "name" {
   }
 }
 
+variable "type" {
+  description = "Route Control Route Map type."
+  type        = string
+  default     = "global"
+
+  validation {
+    condition     = contains(["global", "combinable"], var.type)
+    error_message = "Valid values are `global` or `combinable`."
+  }
+}
 variable "description" {
   description = "Route Control Route Map description."
   type        = string

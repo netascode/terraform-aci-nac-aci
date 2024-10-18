@@ -15,7 +15,7 @@ resource "aci_rest_managed" "rtctrlProfile" {
   content = {
     name  = var.name
     descr = var.description
-    type  = "combinable"
+    type  = var.type
   }
 }
 

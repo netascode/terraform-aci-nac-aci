@@ -1460,6 +1460,7 @@ locals {
             bgp_route_summarization        = try(subnet.bgp_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.bgp_route_summarization)
             bgp_route_summarization_policy = try(subnet.bgp_route_summarization_policy, "")
             ospf_route_summarization       = try(subnet.ospf_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ospf_route_summarization)
+            eigrp_route_summarization      = try(subnet.eigrp_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.eigrp_route_summarization)
             route_control_profiles = [for rcp in try(subnet.route_control_profiles, []) : {
               name      = rcp.name
               direction = try(rcp.direction, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.route_control_profiles.direction)
@@ -2231,6 +2232,7 @@ locals {
         tenant      = tenant.name
         name        = "${policy.name}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}"
         description = try(policy.description, "")
+        type        = try(policy.type, local.defaults.apic.tenants.policies.route_control_route_maps.type)
         contexts = [for ctx in try(policy.contexts, []) : {
           name        = "${ctx.name}${local.defaults.apic.tenants.policies.route_control_route_maps.contexts.name_suffix}"
           description = try(ctx.description, "")
@@ -2251,6 +2253,7 @@ module "aci_route_control_route_map" {
   tenant      = each.value.tenant
   name        = each.value.name
   description = each.value.description
+  type        = each.value.type
   contexts    = each.value.contexts
 
   depends_on = [
