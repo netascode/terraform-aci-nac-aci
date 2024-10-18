@@ -28,7 +28,7 @@ API_ENDPOINT_MAPPINGS = {
         "container": "tenants",
         "key": "name",
     },
-    "schemas": {
+    "schemas/list-identity": {
         "container": "schemas",
         "key": "displayName",
     },

@@ -24,7 +24,7 @@ Verify DHCP Relay Policy {{ pol_name }}
 Verify DHCP Relay Policy {{ pol_name }} Provider {{ prov.ip }}
     ${prov}=   Set Variable   $..DhcpRelayPolicies[?(@.name=='{{ pol_name }}')].provider[?(@.addr=='{{ prov.ip }}')]
     Should Be Equal Value Json String   ${r.json()}   ${prov}.addr   {{ prov.ip }}
-    ${schema_id}=   NDO Lookup   schemas   {{ prov.schema }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ prov.schema }}
 {% if prov.endpoint_group is defined %}
 {% set ap_name = prov.application_profile ~ defaults.ndo.schemas.templates.application_profiles.name_suffix %}
 {% set epg_name = prov.endpoint_group ~ defaults.ndo.schemas.templates.application_profiles.endpoint_groups.name_suffix %}

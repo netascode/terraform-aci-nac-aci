@@ -8,7 +8,7 @@ Resource        ../../ndo_common.resource
 {% for schema in ndo.schemas | default([]) %}
 
 Verify Schema {{ schema.name }}
-    ${schema_id}=   NDO Lookup   schemas   {{ schema.name }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ schema.name }}
     ${r}=   GET On Session   ndo   /api/v1/schemas/${schema_id}
     Set Suite Variable   ${r}
     Should Be Equal Value Json String   ${r.json()}   $.displayName   {{ schema.name }}
@@ -43,24 +43,24 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
     Should Be Equal Value Json Boolean   ${r.json()}   ${epg}.preferredGroup   {{ epg.preferred_group | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.preferred_group) | cisco.aac.aac_bool(True) }}
 {% if epg.bridge_domain.name is defined %}
 {% set bd_name = epg.bridge_domain.name ~ defaults.ndo.schemas.templates.bridge_domains.name_suffix %}
-    ${schema_id}=   NDO Lookup   schemas   {{ epg.bridge_domain.schema | default(schema.name) }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ epg.bridge_domain.schema | default(schema.name) }}
     Should Be Equal Value Json String   ${r.json()}   ${epg}.bdRef   /schemas/${schema_id}/templates/{{ epg.bridge_domain.template | default(template.name) }}/bds/{{ bd_name }}
 {% endif %}
 {% if epg.vrf.name is defined %}
 {% set vrf_name = epg.vrf.name ~ defaults.ndo.schemas.templates.vrfs.name_suffix %}
-    ${schema_id}=   NDO Lookup   schemas   {{ epg.vrf.schema | default(schema.name) }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ epg.vrf.schema | default(schema.name) }}
     Should Be Equal Value Json String   ${r.json()}   ${epg}.vrfRef   /schemas/${schema_id}/templates/{{ epg.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}
 {% endif %}
 {% for contract in epg.contracts.consumers | default([]) %}
 {% set contract_name = contract.name ~ defaults.ndo.schemas.templates.contracts.name_suffix %}
-    ${schema_id}=   NDO Lookup   schemas   {{ contract.schema | default(schema.name) }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ contract.schema | default(schema.name) }}
     ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].anps[?(@.name=='{{ ap_name }}')].epgs[?(@.name=='{{ epg_name }}')].contractRelationships[?(@.relationshipType=='consumer')&(@.contractRef=='/schemas/${schema_id}/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${con}.contractRef   /schemas/${schema_id}/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}
     Should Be Equal Value Json String   ${r.json()}   ${con}.relationshipType   consumer
 {% endfor %}
 {% for contract in epg.contracts.providers | default([]) %}
 {% set contract_name = contract.name ~ defaults.ndo.schemas.templates.contracts.name_suffix %}
-    ${schema_id}=   NDO Lookup   schemas   {{ contract.schema | default(schema.name) }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ contract.schema | default(schema.name) }}
     ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].anps[?(@.name=='{{ ap_name }}')].epgs[?(@.name=='{{ epg_name }}')].contractRelationships[?(@.relationshipType=='provider')&(@.contractRef=='/schemas/${schema_id}/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${con}.contractRef   /schemas/${schema_id}/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}
     Should Be Equal Value Json String   ${r.json()}   ${con}.relationshipType   provider
@@ -82,7 +82,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
 {% for site in epg.sites | default([]) %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile {{ ap_name }} Endpoint Group {{ epg_name }} Site {{ site.name }}
-    ${schema_id}=   NDO Lookup   schemas   {{ schema.name }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ schema.name }}
     ${site_id}=   NDO Lookup   sites   {{ site.name }}
     ${epg}=   Set Variable   $.sites[?(@.siteId=='${site_id}')&(@.templateName=='{{ template.name }}')].anps[?(@.anpRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}')].epgs[?(@.epgRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}/epgs/{{ epg_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${epg}.epgRef   /schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}/epgs/{{ epg_name }}
@@ -91,7 +91,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
 {% set domain_name = pd.name ~ defaults.ndo.schemas.templates.application_profiles.endpoint_groups.physical_domain_name_suffix %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile {{ ap_name }} Endpoint Group {{ epg_name }} Site {{ site.name }} Physical Domain {{ domain_name }}
-    ${schema_id}=   NDO Lookup   schemas   {{ schema.name }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ schema.name }}
     ${site_id}=   NDO Lookup   sites   {{ site.name }}
     ${pd}=   Set Variable   $.sites[?(@.siteId=='${site_id}')&(@.templateName=='{{ template.name }}')].anps[?(@.anpRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}')].epgs[?(@.epgRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}/epgs/{{ epg_name }}')].domainAssociations[?(@.dn=='uni/phys-{{ domain_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${pd}.dn   uni/phys-{{ domain_name }}
@@ -104,7 +104,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
 {% set domain_name = vmm.name ~ defaults.ndo.schemas.templates.application_profiles.endpoint_groups.vmm_domain_name_suffix %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile {{ ap_name }} Endpoint Group {{ epg_name }} Site {{ site.name }} VMM Domain {{ domain_name }}
-    ${schema_id}=   NDO Lookup   schemas   {{ schema.name }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ schema.name }}
     ${site_id}=   NDO Lookup   sites   {{ site.name }}
     ${vmm}=   Set Variable   $.sites[?(@.siteId=='${site_id}')&(@.templateName=='{{ template.name }}')].anps[?(@.anpRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}')].epgs[?(@.epgRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}/epgs/{{ epg_name }}')].domainAssociations[?(@.dn=='uni/vmmp-VMware/dom-{{ domain_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${vmm}.dn   uni/vmmp-VMware/dom-{{ domain_name }}
@@ -153,7 +153,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
 {% endif %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile {{ ap_name }} Endpoint Group {{ epg_name }} Site {{ site.name }} Static Port '{{ path | replace("topology/", "") }}'
-    ${schema_id}=   NDO Lookup   schemas   {{ schema.name }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ schema.name }}
     ${site_id}=   NDO Lookup   sites   {{ site.name }}
     ${sp}=   Set Variable   $.sites[?(@.siteId=='${site_id}')&(@.templateName=='{{ template.name }}')].anps[?(@.anpRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}')].epgs[?(@.epgRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}/epgs/{{ epg_name }}')].staticPorts[?(@.path=='{{ path }}')]
     Should Be Equal Value Json String   ${r.json()}   ${sp}.type   {{ type }}
@@ -170,7 +170,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
 {% set path = 'topology/pod-' + sl.pod | default(1) | string + '/node-' + sl.node | string %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile {{ ap_name }} Endpoint Group {{ epg_name }} Site {{ site.name }} Static Leaf '{{ path | replace("topology/", "") }}'
-    ${schema_id}=   NDO Lookup   schemas   {{ schema.name }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ schema.name }}
     ${site_id}=   NDO Lookup   sites   {{ site.name }}
     ${sl}=   Set Variable   $.sites[?(@.siteId=='${site_id}')&(@.templateName=='{{ template.name }}')].anps[?(@.anpRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}')].epgs[?(@.epgRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}/epgs/{{ epg_name }}')].staticLeafs[?(@.path=='{{ path }}')]
     Should Be Equal Value Json String   ${r.json()}   ${sl}.path   {{ path }}
@@ -180,7 +180,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
 {% for subnet in site.subnets | default([]) %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile {{ ap_name }} Endpoint Group {{ epg_name }} Site {{ site.name }} Subnet {{ subnet.ip }}
-    ${schema_id}=   NDO Lookup   schemas   {{ schema.name }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ schema.name }}
     ${site_id}=   NDO Lookup   sites   {{ site.name }}
     ${subnet}=   Set Variable   $.sites[?(@.siteId=='${site_id}')&(@.templateName=='{{ template.name }}')].anps[?(@.anpRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}')].epgs[?(@.epgRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}/epgs/{{ epg_name }}')].subnets[?(@.ip=='{{ subnet.ip }}')]
     Should Be Equal Value Json String   ${r.json()}   ${subnet}.ip   {{ subnet.ip }}
@@ -194,7 +194,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
 {% for selector in site.selectors | default([]) %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile {{ ap_name }} Endpoint Group {{ epg_name }} Site {{ site.name }} Selector {{ selector.name }}
-    ${schema_id}=   NDO Lookup   schemas   {{ schema.name }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ schema.name }}
     ${site_id}=   NDO Lookup   sites   {{ site.name }}
     ${selector}=   Set Variable   $.sites[?(@.siteId=='${site_id}')&(@.templateName=='{{ template.name }}')].anps[?(@.anpRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}')].epgs[?(@.epgRef=='/schemas/${schema_id}/templates/{{ template.name }}/anps/{{ ap_name }}/epgs/{{ epg_name }}')].selectors[?(@.name=='{{ selector.name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${selector}.name   {{ selector.name }}
@@ -228,13 +228,13 @@ Verify Schema {{ schema.name }} Template {{ template.name }} VRF {{ vrf_name }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${vrf}.vzAnyEnabled   {{ vrf.vzany | default(defaults.ndo.schemas.templates.vrfs.vzany) | cisco.aac.aac_bool(True) }}
 {% for contract in vrf.contracts.consumers | default([]) %}
 {% set contract_name = contract.name ~ defaults.ndo.schemas.templates.contracts.name_suffix %}
-    ${schema_id}=   NDO Lookup   schemas   {{ contract.schema | default(schema.name) }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ contract.schema | default(schema.name) }}
     ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].vrfs[?(@.name=='{{ vrf_name }}')].vzAnyConsumerContracts[?(@.contractRef=='/schemas/${schema_id}/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${con}.contractRef   /schemas/${schema_id}/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract_name }}
 {% endfor %}
 {% for contract in vrf.contracts.providers | default([]) %}
 {% set contract_name = contract.name ~ defaults.ndo.schemas.templates.contracts.name_suffix %}
-    ${schema_id}=   NDO Lookup   schemas   {{ contract.schema | default(schema.name) }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ contract.schema | default(schema.name) }}
     ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].vrfs[?(@.name=='{{ vrf_name }}')].vzAnyProviderContracts[?(@.contractRef=='/schemas/${schema_id}/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${con}.contractRef   /schemas/${schema_id}/templates/{{ contract.template | default( template.name ) }}/contracts/{{ contract_name }}
 {% endfor %}
@@ -242,7 +242,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} VRF {{ vrf_name }}
 {% for site in vrf.sites | default([]) %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} VRF {{ vrf_name }} Site {{ site.name }}
-    ${schema_id}=   NDO Lookup   schemas   {{ schema.name }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ schema.name }}
     ${site_id}=   NDO Lookup   sites   {{ site.name }}
     ${vrf}=   Set Variable   $.sites[?(@.siteId=='${site_id}')&(@.templateName=='{{ template.name }}')].vrfs[?(@.vrfRef=='/schemas/${schema_id}/templates/{{ template.name }}/vrfs/{{ vrf_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${vrf}.vrfRef   /schemas/${schema_id}/templates/{{ template.name }}/vrfs/{{ vrf_name }}
@@ -314,7 +314,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
 {% set l3outs = site.l3outs | default([]) | map('regex_replace', '$', defaults.ndo.schemas.templates.l3outs.name_suffix) | list %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd_name }} Site {{ site.name }}
-    ${schema_id}=   NDO Lookup   schemas   {{ schema.name }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ schema.name }}
     ${site_id}=   NDO Lookup   sites   {{ site.name }}
     ${bd}=   Set Variable   $.sites[?(@.siteId=='${site_id}')&(@.templateName=='{{ template.name }}')].bds[?(@.bdRef=='/schemas/${schema_id}/templates/{{ template.name }}/bds/{{ bd_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${bd}.bdRef   /schemas/${schema_id}/templates/{{ template.name }}/bds/{{ bd_name }}
@@ -326,7 +326,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
 {% for subnet in site.subnets | default([]) %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd_name }} Site {{ site.name }} Subnet {{ subnet.ip }}
-    ${schema_id}=   NDO Lookup   schemas   {{ schema.name }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ schema.name }}
     ${site_id}=   NDO Lookup   sites   {{ site.name }}
     ${subnet}=   Set Variable   $.sites[?(@.siteId=='${site_id}')&(@.templateName=='{{ template.name }}')].bds[?(@.bdRef=='/schemas/${schema_id}/templates/{{ template.name }}/bds/{{ bd_name }}')].subnets[?(@.ip=='{{ subnet.ip }}')]
     Should Be Equal Value Json String   ${r.json()}   ${subnet}.ip   {{ subnet.ip }}
@@ -395,7 +395,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Filter {{ filter_na
 {% set vrf_name = epg.vrf.name ~ defaults.ndo.schemas.templates.vrfs.name_suffix %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} External EPG {{ epg_name }}
-    ${schema_id}=   NDO Lookup   schemas   {{ epg.vrf.schema | default(schema.name) }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ epg.vrf.schema | default(schema.name) }}
     ${epg}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].externalEpgs[?(@.name=='{{ epg_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${epg}.name   {{ epg_name }}
     Should Be Equal Value Json String   ${r.json()}   ${epg}.displayName   {{ epg_name }}
@@ -403,12 +403,12 @@ Verify Schema {{ schema.name }} Template {{ template.name }} External EPG {{ epg
     Should Be Equal Value Json String   ${r.json()}   ${epg}.vrfRef    /schemas/${schema_id}/templates/{{ epg.vrf.template | default(template.name) }}/vrfs/{{ vrf_name }}
 {% if epg.l3out.name is defined %}
 {% set l3out_name = epg.l3out.name ~ defaults.ndo.schemas.templates.l3outs.name_suffix %}
-    ${schema_id}=   NDO Lookup   schemas   {{ epg.l3out.schema | default(schema.name) }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ epg.l3out.schema | default(schema.name) }}
     Should Be Equal Value Json String   ${r.json()}   ${epg}.l3outRef   /schemas/${schema_id}/templates/{{ epg.l3out.template | default(template.name) }}/l3outs/{{ l3out_name }}
 {% endif %}
 {% if epg.application_profile.name is defined %}
 {% set ap_name = epg.application_profile.name ~ defaults.ndo.schemas.templates.application_profiles.name_suffix %}
-    ${schema_id}=   NDO Lookup   schemas   {{ epg.application_profile.schema | default(schema.name) }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ epg.application_profile.schema | default(schema.name) }}
     Should Be Equal Value Json String   ${r.json()}   ${epg}.anpRef   /schemas/${schema_id}/templates/{{ epg.application_profile.template | default(template.name) }}/anps/{{ ap_name }}
 {% for selector in epg.selectors | default([]) %}
 {% for ip in selector.ips | default([]) %}
@@ -421,14 +421,14 @@ Verify Schema {{ schema.name }} Template {{ template.name }} External EPG {{ epg
 {% endif %}
 {% for contract in epg.contracts.consumers | default([]) %}
 {% set contract_name = contract.name ~ defaults.ndo.schemas.templates.contracts.name_suffix %}
-    ${schema_id}=   NDO Lookup   schemas   {{ contract.schema | default(schema.name) }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ contract.schema | default(schema.name) }}
     ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].externalEpgs[?(@.name=='{{ epg_name }}')].contractRelationships[?(@.relationshipType=='consumer')&(@.contractRef=='/schemas/${schema_id}/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${con}.contractRef   /schemas/${schema_id}/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}
     Should Be Equal Value Json String   ${r.json()}   ${con}.relationshipType   consumer
 {% endfor %}
 {% for contract in epg.contracts.providers | default([]) %}
 {% set contract_name = contract.name ~ defaults.ndo.schemas.templates.contracts.name_suffix %}
-    ${schema_id}=   NDO Lookup   schemas   {{ contract.schema | default(schema.name) }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ contract.schema | default(schema.name) }}
     ${con}=   Set Variable   $.templates[?(@.name=='{{ template.name }}')].externalEpgs[?(@.name=='{{ epg_name }}')].contractRelationships[?(@.relationshipType=='provider')&(@.contractRef=='/schemas/${schema_id}/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${con}.contractRef   /schemas/${schema_id}/templates/{{ contract.template | default(template.name) }}/contracts/{{ contract_name }}
     Should Be Equal Value Json String   ${r.json()}   ${con}.relationshipType   provider
@@ -458,7 +458,7 @@ Verify Schema {{ schema.name }} Template {{ template.name }} External EPG {{ epg
 {% for site in epg.sites | default([]) %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} External EPG {{ epg_name }} Site {{ site.name }}
-    ${schema_id}=   NDO Lookup   schemas   {{ schema.name }}
+    ${schema_id}=   NDO Lookup   schemas/list-identity   {{ schema.name }}
     ${site_id}=   NDO Lookup   sites   {{ site.name }}
     ${epg}=   Set Variable   $.sites[?(@.siteId=='${site_id}')&(@.templateName=='{{ template.name }}')].externalEpgs[?(@.externalEpgRef=='/schemas/${schema_id}/templates/{{ template.name }}/externalEpgs/{{ epg_name }}')]
     Should Be Equal Value Json String   ${r.json()}   ${epg}.externalEpgRef   /schemas/${schema_id}/templates/{{ template.name }}/externalEpgs/{{ epg_name }}
