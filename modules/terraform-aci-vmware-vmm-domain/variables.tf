@@ -233,7 +233,7 @@ variable "credential_policies" {
 
   validation {
     condition = alltrue([
-      for c in var.credential_policies : can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$", c.username))
+      for c in var.credential_policies : can(regex("^[a-zA-Z0-9\\\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$", c.username))
     ])
     error_message = "Allowed characters `username`: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, `_`, `{`, `|`, `}`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
