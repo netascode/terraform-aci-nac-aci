@@ -179,7 +179,7 @@ locals {
         virtual_mac                = try(bd.virtual_mac, "not-applicable")
         ep_move_detection          = try(bd.ep_move_detection, local.defaults.apic.tenants.bridge_domains.ep_move_detection)
         clear_remote_mac_entries   = try(bd.clear_remote_mac_entries, local.defaults.apic.tenants.bridge_domains.clear_remote_mac_entries)
-        multicast_arp_drop         = try(bd.multicast_arp_drop, local.defaults.apic.tenants.bridge_domains.multicast_arp_drop)
+        multicast_arp_drop         = try(bd.multicast_arp_drop, null)
         l3_multicast               = try(bd.l3_multicast, local.defaults.apic.tenants.bridge_domains.l3_multicast)
         pim_source_filter          = try(bd.pim_source_filter, "")
         pim_destination_filter     = try(bd.pim_destination_filter, "")
