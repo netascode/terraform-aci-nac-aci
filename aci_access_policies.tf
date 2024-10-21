@@ -912,6 +912,23 @@ module "aci_infra_dhcp_relay_policy" {
   providers_  = each.value.providers_
 }
 
+locals {
+  infra_monitoring_policies = flatten([
+    for policy in try(local.access_policies.monitoring_policies, []) : {
+      name        = "${policy.name}${local.defaults.apic.access_policies.monitoring_policies.name_suffix}"
+      description = try(policy.description, "")
+    }
+  ])
+}
+
+module "aci_infra_monitoring_policy" {
+  source = "./modules/terraform-aci-infra-monitoring-policy"
+
+  for_each    = { for policy in local.infra_monitoring_policies : policy.name => policy if local.modules.aci_infra_monitoring_policy && var.manage_access_policies }
+  name        = each.value.name
+  description = each.value.description
+}
+
 module "aci_netflow_exporter" {
   source = "./modules/terraform-aci-netflow-exporter"
 
