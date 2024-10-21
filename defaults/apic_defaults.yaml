@@ -542,6 +542,9 @@ defaults:
           source_type: custom-src-ip
           source_ip: 0.0.0.0
           dscp: CS2
+        netflow_vmm_exporters:
+          name_suffix: ""
+          source_ip: 0.0.0.0
         netflow_monitors:
           name_suffix: ""
         netflow_records:

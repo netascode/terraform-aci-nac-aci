@@ -43,6 +43,7 @@ apic:
           cdp_policy: CDP-ENABLED
           lldp_policy: LLDP-ENABLED
           port_channel_policy: LACP-ACTIVE
+          netflow_exporter_policy: VMM-EXPORTER1
           enhanced_lags:
             - name: ELAGCUSTOM
               mode: active

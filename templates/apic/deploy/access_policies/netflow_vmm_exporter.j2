@@ -1,0 +1,29 @@
+ {
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for exporter in apic.access_policies.interface_policies.netflow_vmm_exporters | default([]) %}{{ comma1() }}
+            {% set exporter_name = exporter.name ~ defaults.apic.access_policies.interface_policies.netflow_vmm_exporters.name_suffix %}
+            {
+                "netflowVmmExporterPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ exporter_name }}",
+                        "descr": "{{ exporter.description | default() }}",
+                        "dn": "uni/infra/vmmexporterpol-{{ exporter_name }}",
+                        "dstAddr": "{{ exporter.destination_ip }}",
+                        "dstPort": "{{ exporter.destination_port }}",
+                        "srcAddr": "{{ exporter.source_ip | default(defaults.apic.access_policies.interface_policies.netflow_vmm_exporters.source_ip) }}",
+                        "ver": "v9",
+                        "childAction": "deleteNonPresent"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

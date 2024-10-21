@@ -43,6 +43,7 @@ apic:
           lldp_policy: LLDP-ENABLED
           port_channel_policy: LACP-ACTIVE
           mtu_policy: L2_8950
+          netflow_exporter_policy: VMM-EXPORTER1
     system_performance:
       admin_state: true
       response_threshold: 400

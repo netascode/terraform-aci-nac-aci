@@ -947,6 +947,15 @@ objects:
       - config
     paths:
       - apic.access_policies.interface_policies.netflow_exporter
+  - name: Netflow VMM Exporter
+    template: netflow_vmm_exporter
+    folder: access_policies
+    aci_classes:
+      - netflowVmmExporterPol
+    test_types:
+      - config
+    paths:
+      - apic.access_policies.interface_policies.netflow_vmm_exporter
   - name: Netflow Record
     template: netflow_record
     folder: access_policies

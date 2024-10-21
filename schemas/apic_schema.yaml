@@ -475,6 +475,7 @@ fp_vmware_vmm_domains_vswitch:
   port_channel_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(vSwitch Port Channel Policy)
   enhanced_lags: list(include('fp_vmware_vmm_domains_vswitch_elag'), required=False) # @name(vSwitch eLAGs)
   mtu_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(vSwitch MTU Policy)
+  netflow_exporter_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(vSwitch NetFlow Exporter Policy)
 
 fp_vmware_vmm_domains_vswitch_elag:
   name: regex('^[a-zA-Z0-9_.:-]{1,16}$')
@@ -1384,6 +1385,7 @@ ap_interface_policies:
   l2_policies: list(include('ap_l2_policy'), required=False)
   storm_control_policies: list(include('ap_storm_control_policy'), required=False)
   netflow_exporters: list(include('ap_netflow_exporters'), required=False) # @name(Netflow Exporters) @ref_name(Netflow Exporter) @sheet_hidden()
+  netflow_vmm_exporters: list(include('ap_netflow_vmm_exporters'), required=False) # @name(Netflow VMM Exporters) @ref_name(Netflow VMM Exporter) @sheet_hidden()
   netflow_monitors: list(include('ap_netflow_monitors'), required=False) # @name(Netflow Monitors) @ref_name(Netflow Monitor) @sheet_hidden()
   netflow_records: list(include('ap_netflow_records'), required=False) # @name(Netflow Records) @ref_name(Netflow Record) @sheet_hidden()
 
@@ -1472,6 +1474,13 @@ ap_netflow_exporters:
   vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   l3out: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   external_endpoint_group: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+ap_netflow_vmm_exporters:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  destination_ip: ip()
+  destination_port: int(min=0, max=65535)
+  source_ip: ip(required=False)
 
 ap_netflow_monitors:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

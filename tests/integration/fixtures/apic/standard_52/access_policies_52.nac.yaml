@@ -21,3 +21,12 @@ apic:
           speed: 10G
           auto: true
           fec_mode: inherit
+      netflow_vmm_exporters:
+        - name: VMM-EXPORTER1
+          description: VMM exporter 1
+          source_ip: 1.1.1.1
+          destination_port: 1234
+          destination_ip: 2.2.2.2
+        - name: VMM-EXPORTER2
+          destination_port: 2055
+          destination_ip: 5.5.5.5

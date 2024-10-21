@@ -92,6 +92,17 @@
                                         }
                                     }
                                     {%- endif %}
+                                    {%- if vmm.vswitch.netflow_exporter_policy is defined %}{{ comma2() }}
+                                    {% set exporter_name = vmm.vswitch.netflow_exporter_policy ~ defaults.apic.access_policies.interface_policies.netflow_vmm_exporters.name_suffix %}
+                                    {
+                                        "vmmRsVswitchExporterPol": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tDn": "uni/infra/vmmexporterpol-{{ exporter_name }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endif %}
                                     {%- for elag in vmm.vswitch.enhanced_lags | default([]) %}{{ comma2() }}
                                         {% set elag_name = elag.name ~ defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.name_suffix %}
                                         {
