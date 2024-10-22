@@ -14,6 +14,7 @@ apic:
       policies:
         route_control_route_maps:
           - name: ROUTE_MAP1
+            type: combinable
             contexts:
               - name: PERMIT
                 action: 'permit'

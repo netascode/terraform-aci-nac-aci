@@ -893,6 +893,7 @@ apic:
         route_control_route_maps:
           - name: ROUTE_MAP1
             description: My first route map
+            type: combinable
             contexts:
               - name: permit1
                 description: Permit context

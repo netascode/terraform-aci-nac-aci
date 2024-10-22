@@ -17,7 +17,7 @@
                         "name": "{{ route_map_name }}",
                         "dn": "uni/tn-{{ tenant.name }}/prof-{{ route_map_name }}",
                         "descr": "{{ route_map.description | default() }}",
-                        "type": "combinable",
+                        "type": "{{ route_map.type | default(defaults.apic.tenants.policies.route_control_route_maps.type) }}",
                         "childAction": "deleteNonPresent"
                     },
                     "children": [

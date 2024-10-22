@@ -15,8 +15,7 @@ Verify Route Map {{ route_map_name }} for Route Control
     Set Suite Variable   ${r}
     Should Be Equal Value Json String   ${r.json()}   $..rtctrlProfile.attributes.name   {{ route_map_name }}
     Should Be Equal Value Json String   ${r.json()}   $..rtctrlProfile.attributes.descr   {{ route_map.description | default() }}
-    Should Be Equal Value Json String   ${r.json()}   $..rtctrlProfile.attributes.type   combinable
-
+    Should Be Equal Value Json String   ${r.json()}   $..rtctrlProfile.attributes.type   {{ route_map.type | default(defaults.apic.tenants.policies.route_control_route_maps.type) }}
 {% for context in route_map.contexts | default([]) %}
 {% set context_name = context.name ~ defaults.apic.tenants.policies.route_control_route_maps.contexts.name_suffix %}
 
