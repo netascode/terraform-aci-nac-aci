@@ -119,6 +119,7 @@ variable "subnets" {
     name                           = optional(string, "")
     annotation                     = optional(string, null)
     prefix                         = string
+    description                    = optional(string, "")
     import_route_control           = optional(bool, false)
     export_route_control           = optional(bool, false)
     shared_route_control           = optional(bool, false)
@@ -143,6 +144,13 @@ variable "subnets" {
       for s in var.subnets : s.name == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.name)), false)
     ])
     error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for s in var.subnets : s.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", s.description)), false)
+    ])
+    error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 
   validation {
