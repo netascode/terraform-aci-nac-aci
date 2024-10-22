@@ -40,17 +40,6 @@ variable "port" {
   }
 }
 
-variable "sub_port" {
-  description = "Subinterface ID. Allowed values: 1-64."
-  type        = number
-  default     = 0
-
-  validation {
-    condition     = try(var.sub_port >= 0 && var.sub_port <= 64, false)
-    error_message = "Allowed values: 1-64."
-  }
-}
-
 variable "shutdown" {
   description = "Shutdown interface."
   type        = bool
