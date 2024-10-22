@@ -114,7 +114,7 @@ variable "route_control_profiles" {
 }
 
 variable "subnets" {
-  description = "List of subnets. Default value `import_route_control`: false. Default value `export_route_control`: false. Default value `shared_route_control`: false. Default value `import_security`: true. Default value `shared_security`: false. Default value `aggregate_import_route_control`: false. Default value `aggregate_export_route_control`: false. Default value `aggregate_shared_route_control`: false. Default value `bgp_route_summarization`: false. Default value `ospf_route_summarization`: false."
+  description = "List of subnets. Default value `import_route_control`: false. Default value `export_route_control`: false. Default value `shared_route_control`: false. Default value `import_security`: true. Default value `shared_security`: false. Default value `aggregate_import_route_control`: false. Default value `aggregate_export_route_control`: false. Default value `aggregate_shared_route_control`: false. Default value `bgp_route_summarization`: false. Default value `ospf_route_summarization`: false. Default value `eigrp_route_summarization`: false."
   type = list(object({
     name                           = optional(string, "")
     annotation                     = optional(string, null)
@@ -130,6 +130,7 @@ variable "subnets" {
     bgp_route_summarization        = optional(bool, false)
     bgp_route_summarization_policy = optional(string, "")
     ospf_route_summarization       = optional(bool, false)
+    eigrp_route_summarization      = optional(bool, false)
     route_control_profiles = optional(list(object({
       name      = string
       direction = optional(string, "import")
