@@ -20,7 +20,7 @@ variable "name" {
 variable "type" {
   description = "Route Control Route Map type."
   type        = string
-  default     = "global"
+  default     = "combinable"
 
   validation {
     condition     = contains(["global", "combinable"], var.type)
