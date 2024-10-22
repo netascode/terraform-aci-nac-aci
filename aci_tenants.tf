@@ -929,11 +929,11 @@ module "aci_l3out" {
   depends_on = [
     module.aci_tenant,
     module.aci_vrf,
-    module.aci_ospf_interface_policy,
-    module.aci_eigrp_interface_policy,
-    module.aci_bfd_interface_policy,
-    module.aci_set_rule,
-    module.aci_match_rule,
+    # module.aci_ospf_interface_policy,
+    # module.aci_eigrp_interface_policy,
+    # module.aci_bfd_interface_policy,
+    # module.aci_set_rule,
+    # module.aci_match_rule,
   ]
 }
 
