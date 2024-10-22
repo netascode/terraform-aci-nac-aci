@@ -2233,6 +2233,7 @@ locals {
         tenant      = tenant.name
         name        = "${policy.name}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}"
         description = try(policy.description, "")
+        type        = try(policy.type, local.defaults.apic.tenants.policies.route_control_route_maps.type)
         contexts = [for ctx in try(policy.contexts, []) : {
           name        = "${ctx.name}${local.defaults.apic.tenants.policies.route_control_route_maps.contexts.name_suffix}"
           description = try(ctx.description, "")
@@ -2253,6 +2254,7 @@ module "aci_route_control_route_map" {
   tenant      = each.value.tenant
   name        = each.value.name
   description = each.value.description
+  type        = each.value.type
   contexts    = each.value.contexts
 
   depends_on = [
