@@ -30,7 +30,7 @@ locals {
         policy_group_type     = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == interface.policy_group][0], "access")
         port_blocks = [{
           description = try(interface.description, "")
-          name        = format("%s-%s", try(interface.module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module), interface.port)
+          name        = try(interface.block_name, format("%s-%s", try(interface.module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module), interface.port))
           from_module = try(interface.module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
           from_port   = interface.port
           to_module   = try(interface.module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
@@ -74,7 +74,7 @@ locals {
           policy_group_type     = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == sub.policy_group][0], "access")
           sub_port_blocks = [{
             description   = try(sub.description, "")
-            name          = format("%s-%s-%s", try(interface.module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module), interface.port, sub.port)
+            name          = try(sub.block_name, format("%s-%s-%s", try(interface.module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module), interface.port, sub.port))
             from_module   = try(interface.module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
             from_port     = interface.port
             to_module     = try(interface.module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
@@ -119,7 +119,7 @@ locals {
           policy_group_type = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == interface.policy_group][0], "access")
           port_blocks = [{
             description = try(interface.description, "")
-            name        = format("%s-%s", try(interface.module, local.defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.from_module), interface.port)
+            name        = try(interface.block_name, format("%s-%s", try(interface.module, local.defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.from_module), interface.port))
             from_module = try(interface.module, local.defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.from_module)
             from_port   = interface.port
             to_module   = try(interface.module, local.defaults.apic.access_policies.fex_interface_profiles.selectors.port_blocks.from_module)
@@ -156,7 +156,7 @@ locals {
         interface_profile = replace("${node.id}:${node.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.spine_interface_profile_name, local.defaults.apic.access_policies.spine_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
         policy_group      = try("${interface.policy_group}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}", "")
         port_blocks = [{
-          name        = format("%s-%s", try(interface.module, local.defaults.apic.access_policies.spine_interface_profiles.selectors.port_blocks.from_module), interface.port)
+          name        = try(interface.block_name, format("%s-%s", try(interface.module, local.defaults.apic.access_policies.spine_interface_profiles.selectors.port_blocks.from_module), interface.port))
           description = try(interface.description, "")
           from_module = try(interface.module, local.defaults.apic.access_policies.spine_interface_profiles.selectors.port_blocks.from_module)
           from_port   = interface.port

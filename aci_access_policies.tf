@@ -167,7 +167,7 @@ module "aci_access_leaf_switch_profile_auto" {
     name         = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.leaf_switch_selector_name, local.defaults.apic.access_policies.leaf_switch_selector_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
     policy_group = try("${each.value.access_policy_group}${local.defaults.apic.access_policies.leaf_switch_policy_groups.name_suffix}", null)
     node_blocks = [{
-      name = each.value.id
+      name = try(each.value.block_name, each.value.id)
       from = each.value.id
       to   = each.value.id
     }]
@@ -226,7 +226,7 @@ module "aci_access_spine_switch_profile_auto" {
     name         = replace("${each.value.id}:${each.value.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.access_policies.spine_switch_selector_name, local.defaults.apic.access_policies.spine_switch_selector_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
     policy_group = try("${each.value.access_policy_group}${local.defaults.apic.access_policies.spine_switch_policy_groups.name_suffix}", null)
     node_blocks = [{
-      name = each.value.id
+      name = try(each.value.block_name, each.value.id)
       from = each.value.id
       to   = each.value.id
     }]
