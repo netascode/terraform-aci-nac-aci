@@ -982,6 +982,7 @@ defaults:
             aggregate_shared_route_control: false
             bgp_route_summarization: false
             ospf_route_summarization: false
+            eigrp_route_summarization: false
             route_control_profiles:
               name_suffix: ""
               direction: import
