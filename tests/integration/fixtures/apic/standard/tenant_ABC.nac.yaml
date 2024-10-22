@@ -267,6 +267,9 @@ apic:
                 - prefix: 12.0.0.0/8
                   export_route_control: true
                   ospf_route_summarization: true
+                - prefix: 13.0.0.0/8
+                  export_route_control: true
+                  eigrp_route_summarization: true
               expected_state:
                 minimum_health: 0
                 maximum_critical_faults: 1000
@@ -434,6 +437,7 @@ apic:
           domain: ROUTED1
           eigrp:
             asn: 65001
+            interface_policy: EIP1
         - name: L3OUT5
           vrf: VRF2
           domain: ROUTED1

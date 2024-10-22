@@ -1802,6 +1802,15 @@
                                                         }
                                                     }
                                                 }
+                                                {% elif subnet.eigrp_route_summarization | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.eigrp_route_summarization) %}
+                                                {
+                                                    "l3extRsSubnetToRtSumm": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "tDn": "uni/tn-common/eigrprtsumm-eigrp_pol"
+                                                        }
+                                                    }
+                                                }
                                                 {% endif %}
                                                 {%- set comma4 = joiner(",") %}
                                                 {%- for route_control_profile in subnet.route_control_profiles | default([]) %}{{ comma4() }}
