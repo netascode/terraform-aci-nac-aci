@@ -75,8 +75,7 @@ apic:
                 - key: KEY2
                   value: VALUE2
               epg_selectors:
-                - tenant: ABC
-                  application_profile: AP1
+                - application_profile: AP1
                   endpoint_group: EPG1
                   description: EPG Selector 1
                 - endpoint_group: EPG2

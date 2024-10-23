@@ -62,8 +62,7 @@ apic:
                   value: VALUE1
                   description: TAG Selector 1
               epg_selectors:
-                - tenant: DEF
-                  application_profile: AP1
+                - application_profile: AP1
                   endpoint_group: EPG1
                   description: EPG Selector 1
               ip_subnet_selectors:
