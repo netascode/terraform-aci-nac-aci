@@ -14,7 +14,7 @@ variable "description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -56,7 +56,7 @@ variable "buildings" {
 
   validation {
     condition = alltrue([
-      for b in var.buildings : b.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", b.description))
+      for b in var.buildings : b.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", b.description))
     ])
     error_message = "`buildings.description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -70,7 +70,7 @@ variable "buildings" {
 
   validation {
     condition = alltrue(flatten([
-      for b in var.buildings : [for f in coalesce(b.floors, []) : f.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", f.description))]
+      for b in var.buildings : [for f in coalesce(b.floors, []) : f.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", f.description))]
     ]))
     error_message = "`floors.description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -84,7 +84,7 @@ variable "buildings" {
 
   validation {
     condition = alltrue(flatten([
-      for b in var.buildings : [for f in coalesce(b.floors, []) : [for r in coalesce(f.rooms, []) : r.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", r.description))]]
+      for b in var.buildings : [for f in coalesce(b.floors, []) : [for r in coalesce(f.rooms, []) : r.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", r.description))]]
     ]))
     error_message = "`rooms.description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -98,7 +98,7 @@ variable "buildings" {
 
   validation {
     condition = alltrue(flatten([
-      for b in var.buildings : [for f in coalesce(b.floors, []) : [for r in coalesce(f.rooms, []) : [for row in coalesce(r.rows, []) : row.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", row.description))]]]
+      for b in var.buildings : [for f in coalesce(b.floors, []) : [for r in coalesce(f.rooms, []) : [for row in coalesce(r.rows, []) : row.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", row.description))]]]
     ]))
     error_message = "`rows.description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -112,7 +112,7 @@ variable "buildings" {
 
   validation {
     condition = alltrue(flatten([
-      for b in var.buildings : [for f in coalesce(b.floors, []) : [for r in coalesce(f.rooms, []) : [for row in coalesce(r.rows, []) : [for rack in coalesce(row.racks, []) : rack.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", rack.description))]]]]
+      for b in var.buildings : [for f in coalesce(b.floors, []) : [for r in coalesce(f.rooms, []) : [for row in coalesce(r.rows, []) : [for rack in coalesce(row.racks, []) : rack.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", rack.description))]]]]
     ]))
     error_message = "`racks.description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }

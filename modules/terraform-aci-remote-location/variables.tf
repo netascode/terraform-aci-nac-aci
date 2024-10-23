@@ -14,7 +14,7 @@ variable "description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -79,7 +79,7 @@ variable "username" {
   default     = ""
 
   validation {
-    condition     = var.username == "" || can(regex("^[a-zA-Z0-9][a-zA-Z0-9_.@\\\\-]{0,31}$", var.username))
+    condition     = var.username == "" || can(regex("^[a-zA-Z0-9][a-zA-Z0-9_.@\\-]{0,31}$", var.username))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `@`, `\\` or `-`. Maximum characters: 31."
   }
 }
