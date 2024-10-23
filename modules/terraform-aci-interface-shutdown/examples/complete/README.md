@@ -14,12 +14,12 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_interface_shutdown" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-interface-shutdown"
-  version = ">= 0.8.0"
+  version = ">= 0.9.2"
 
-  pod_id   = 1
-  node_id  = 101
-  module   = 1
-  port     = 1
- }
+  pod_id  = 1
+  node_id = 101
+  module  = 1
+  port    = 1
+}
 ```
 <!-- END_TF_DOCS -->
