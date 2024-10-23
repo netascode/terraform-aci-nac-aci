@@ -50,8 +50,8 @@ module "aci_radius" {
 | <a name="input_protocol"></a> [protocol](#input\_protocol) | Protocol. Choices: `pap`, `chap`, `mschap`. | `string` | `"pap"` | no |
 | <a name="input_monitoring"></a> [monitoring](#input\_monitoring) | Monitoring. | `bool` | `false` | no |
 | <a name="input_monitoring_username"></a> [monitoring\_username](#input\_monitoring\_username) | Monitoring username. | `string` | `""` | no |
-| <a name="input_monitoring_password"></a> [monitoring\_password](#input\_monitoring\_password) | Monitoring password. | `string` | `""` | no |
-| <a name="input_key"></a> [key](#input\_key) | Key. | `string` | `""` | no |
+| <a name="input_monitoring_password"></a> [monitoring\_password](#input\_monitoring\_password) | Monitoring password. | `string` | `null` | no |
+| <a name="input_key"></a> [key](#input\_key) | Key. | `string` | `null` | no |
 | <a name="input_port"></a> [port](#input\_port) | Port. Minimum value: 0, Maximum value: 65535. | `number` | `1812` | no |
 | <a name="input_retries"></a> [retries](#input\_retries) | Retries. Minimum value: 0, Maximum value: 5. | `number` | `1` | no |
 | <a name="input_timeout"></a> [timeout](#input\_timeout) | Timeout. Minimum value: 0, Maximum value: 60. | `number` | `5` | no |

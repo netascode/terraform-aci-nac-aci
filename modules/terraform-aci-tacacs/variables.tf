@@ -50,14 +50,14 @@ variable "monitoring_username" {
 variable "monitoring_password" {
   description = "Monitoring password."
   type        = string
-  default     = ""
+  default     = null
   sensitive   = true
 }
 
 variable "key" {
   description = "Key."
   type        = string
-  default     = ""
+  default     = null
   sensitive   = true
 }
 

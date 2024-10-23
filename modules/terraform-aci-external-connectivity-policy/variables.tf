@@ -50,7 +50,7 @@ variable "peering_type" {
 variable "bgp_password" {
   description = "BGP password."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "routing_profiles" {

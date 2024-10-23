@@ -21,7 +21,7 @@ variable "name" {
 variable "auth_key" {
   description = "PIM policy authorization key."
   type        = string
-  default     = ""
+  default     = null
   sensitive   = true
 }
 
