@@ -1,6 +1,6 @@
 resource "aci_rest_managed" "netflowVmmExporterPol" {
   dn         = "uni/infra/vmmexporterpol-${var.name}"
-  class_name = "netflowExporterPol"
+  class_name = "netflowVmmExporterPol"
   content = {
     name    = var.name
     descr   = var.description
