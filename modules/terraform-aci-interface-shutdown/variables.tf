@@ -41,13 +41,13 @@ variable "port" {
 }
 
 variable "sub_port" {
-  description = "Interface Sub-Port. Allowed values: 1-64."
+  description = "Interface Sub-Port. Allowed values: 1-64. `0` meaning no Sub-Port."
   type        = number
   default     = 0
 
   validation {
     condition     = var.sub_port >= 0 && var.sub_port <= 64
-    error_message = "Allowed values: 1-64."
+    error_message = "Allowed values: 0, 1-64."
   }
 }
 
