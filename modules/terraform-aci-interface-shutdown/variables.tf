@@ -10,7 +10,7 @@ variable "pod_id" {
 }
 
 variable "node_id" {
-  description = "Interface Node ID. Minimum value: `1`. Maximum value: `4000`."
+  description = "Interface Node ID. Minimum value: `101`. Maximum value: `4000`."
   type        = number
 
   validation {
@@ -25,7 +25,7 @@ variable "module" {
   default     = 1
 
   validation {
-    condition     = try(var.module >= 1 && var.module <= 255, false)
+    condition     = var.module >= 1 && var.module <= 255
     error_message = "Allowed values: 1-255."
   }
 }
@@ -40,5 +40,24 @@ variable "port" {
   }
 }
 
+variable "sub_port" {
+  description = "Interface Sub-Port. Allowed values: 1-64."
+  type        = number
+  default     = 0
 
+  validation {
+    condition     = var.sub_port >= 0 && var.sub_port <= 64
+    error_message = "Allowed values: 1-64."
+  }
+}
 
+variable "fex_id" {
+  description = "Interface FEX ID. Allowed values: 101-199. `0` meaning no FEX."
+  type        = number
+  default     = 0
+
+  validation {
+    condition     = var.fex_id == 0 || (var.fex_id >= 101 && var.fex_id <= 199)
+    error_message = "Allowed values: 0, 101-199."
+  }
+}

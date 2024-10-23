@@ -312,6 +312,7 @@ Additional example repositories:
 | <a name="module_aci_sr_mpls_l3out_interface_profile_manual"></a> [aci\_sr\_mpls\_l3out\_interface\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_interface\_profile\_manual) | ./modules/terraform-aci-l3out-interface-profile | n/a |
 | <a name="module_aci_sr_mpls_l3out_node_profile_manual"></a> [aci\_sr\_mpls\_l3out\_node\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_node\_profile\_manual) | ./modules/terraform-aci-l3out-node-profile | n/a |
 | <a name="module_aci_storm_control_policy"></a> [aci\_storm\_control\_policy](#module\_aci\_storm\_control\_policy) | ./modules/terraform-aci-storm-control-policy | n/a |
+| <a name="module_aci_subinterface_shutdown"></a> [aci\_subinterface\_shutdown](#module\_aci\_subinterface\_shutdown) | ./modules/terraform-aci-interface-shutdown | n/a |
 | <a name="module_aci_syslog_policy"></a> [aci\_syslog\_policy](#module\_aci\_syslog\_policy) | ./modules/terraform-aci-syslog-policy | n/a |
 | <a name="module_aci_system_global_gipo"></a> [aci\_system\_global\_gipo](#module\_aci\_system\_global\_gipo) | ./modules/terraform-aci-system-global-gipo | n/a |
 | <a name="module_aci_system_performance"></a> [aci\_system\_performance](#module\_aci\_system\_performance) | ./modules/terraform-aci-system-performance | n/a |
