@@ -14,8 +14,8 @@ variable "node_id" {
   type        = number
 
   validation {
-    condition     = var.node_id >= 1 && var.node_id <= 4000
-    error_message = "Minimum value: `1`. Maximum value: `4000`."
+    condition     = var.node_id >= 101 && var.node_id <= 4000
+    error_message = "Minimum value: `101`. Maximum value: `4000`."
   }
 }
 
@@ -38,12 +38,6 @@ variable "port" {
     condition     = var.port >= 1 && var.port <= 127
     error_message = "Minimum value: `1`. Maximum value: `127`."
   }
-}
-
-variable "shutdown" {
-  description = "Shutdown interface."
-  type        = bool
-  default     = false
 }
 
 

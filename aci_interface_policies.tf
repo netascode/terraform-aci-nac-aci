@@ -436,7 +436,7 @@ module "aci_spine_fabric_interface_configuration" {
 }
 
 locals {
-  interface_state = flatten([
+  interface_shutdown = flatten([
     for node in local.nodes : [
       for interface in try(node.interfaces, []) : {
         key      = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
@@ -446,22 +446,21 @@ locals {
         shutdown = try(interface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
       }
     ]
-    if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles) || try(local.apic.auto_generate_access_spine_switch_interface_profiles, local.defaults.apic.auto_generate_access_spine_switch_interface_profiles)) && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
+    if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles) || try(local.apic.auto_generate_access_spine_switch_interface_profiles, local.defaults.apic.auto_generate_access_spine_switch_interface_profiles)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
   ])
 }
 
-module "aci_interface_state" {
-  source = "./modules/terraform-aci-interface-state"
+module "aci_interface_shutdown" {
+  source = "./modules/terraform-aci-interface-shutdown"
 
-  for_each = { for int in local.interface_state : int.key => int if local.modules.aci_interface_state && var.manage_interface_policies }
+  for_each = { for int in local.interface_shutdown : int.key => int if local.modules.aci_interface_shutdown && var.manage_interface_policies && int.shutdown == true }
   node_id  = each.value.node_id
   module   = each.value.module
   port     = each.value.port
-  shutdown = each.value.shutdown
 }
 
 locals {
-  fex_interface_state = flatten([
+  fex_interface_shutdown = flatten([
     for node in local.nodes : [
       for fex in try(node.fexes, []) : [
         for interface in try(fex.interfaces, []) : {
@@ -472,20 +471,19 @@ locals {
           shutdown = try(interface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
         }
       ]
-    ] if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles) || try(local.apic.auto_generate_access_spine_switch_interface_profiles, local.defaults.apic.auto_generate_access_spine_switch_interface_profiles)) && (length(var.managed_interface_policies_nodes) == 0 || contains(var.managed_interface_policies_nodes, node.id)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
+    ] if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles) || try(local.apic.auto_generate_access_spine_switch_interface_profiles, local.defaults.apic.auto_generate_access_spine_switch_interface_profiles)) && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
   ])
 }
 
-module "aci_fex_interface_state" {
-  source = "./modules/terraform-aci-interface-state"
+module "aci_fex_interface_shutdown" {
+  source = "./modules/terraform-aci-interface-shutdown"
 
-  for_each = { for int in local.fex_interface_state : int.key => int if local.modules.aci_interface_state && var.manage_interface_policies }
+  for_each = { for int in local.fex_interface_shutdown : int.key => int if local.modules.aci_interface_shutdown && var.manage_interface_policies && int.shutdown == true }
   node_id  = each.value.node_id
   module   = each.value.module
   port     = each.value.port
-  shutdown = each.value.shutdown
 
   depends_on = [
-    module.aci_interface_state,
+    module.aci_interface_shutdown
   ]
 }

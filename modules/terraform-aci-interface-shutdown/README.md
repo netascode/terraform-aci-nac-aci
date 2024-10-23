@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI Interface Type Module
+# Terraform ACI Interface Shutdown Module
 
-Manages Interface Type
+Manages Interface Shutdown
 
 Location in GUI:
 `Fabric` » `Inventory` » `Pod XXX` » `Node XXX` » `Interface`
@@ -9,15 +9,14 @@ Location in GUI:
 ## Examples
 
 ```hcl
-module "aci_interface_type" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-interface-type"
+module "aci_interface_shutdown" {
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-interface-shutdown"
   version = ">= 0.8.0"
 
   pod_id  = 2
   node_id = 101
   module  = 2
   port    = 1
-  type    = "downlink"
 }
 ```
 
@@ -42,13 +41,12 @@ module "aci_interface_type" {
 | <a name="input_node_id"></a> [node\_id](#input\_node\_id) | Interface Node ID. Minimum value: `1`. Maximum value: `4000`. | `number` | n/a | yes |
 | <a name="input_module"></a> [module](#input\_module) | Interface Module. Minimum value: `1`. Maximum value: `9`. | `number` | `1` | no |
 | <a name="input_port"></a> [port](#input\_port) | Interface Port. Minimum value: `1`. Maximum value: `127`. | `number` | n/a | yes |
-| <a name="input_type"></a> [type](#input\_type) | Interface Type. Valid values are `uplink` or `downlink` | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `infraRsPortDirection` object. |
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `fabricRsOosPath` object. |
 
 ## Resources
 

@@ -3,9 +3,9 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Terraform ACI Interface Type Module
+  # Terraform ACI Interface Shutdown Module
 
-  Manages Interface Type
+  Manages Interface Shutdown
 
   Location in GUI:
   `Fabric` » `Inventory` » `Pod XXX` » `Node XXX` » `Interface`
