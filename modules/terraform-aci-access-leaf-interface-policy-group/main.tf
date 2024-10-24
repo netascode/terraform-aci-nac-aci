@@ -36,6 +36,15 @@ resource "aci_rest_managed" "infraRsLldpIfPol" {
   }
 }
 
+resource "aci_rest_managed" "infraRsMacsecIfPol" {
+  count      = var.macsec_interface_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraAccGrp.dn}/rsmacsecIfPol"
+  class_name = "infraRsMacsecIfPol"
+  content = {
+    tnMacsecIfPolName = var.macsec_interface_policy
+  }
+}
+
 resource "aci_rest_managed" "infraRsStpIfPol" {
   count      = var.type != "breakout" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rsstpIfPol"
