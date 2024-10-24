@@ -784,6 +784,10 @@ defaults:
           asm_traffic_registry_max_rate: 65535
           asm_traffic_registry_source_ip: "0.0.0.0"
         preferred_group: false
+        route_summarization_policies:
+          name_suffix: ""
+          nodes:
+            pod: 1
       bridge_domains:
         name_suffix: ""
         ndo_managed: false
