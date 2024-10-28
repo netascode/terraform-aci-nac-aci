@@ -16,7 +16,7 @@ Resource        ../../../apic_common.resource
 {% if apic.interface_policies is defined %}
 
 {% for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
-{% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
+{% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.module) %}
 {% set leaf_interface_selector_name = (module ~ ":" ~ int.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.leaf_interface_selector_name | default(defaults.apic.access_policies.leaf_interface_selector_name))) %}
 
 Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector {{ leaf_interface_selector_name }}
@@ -49,7 +49,7 @@ Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector 
     Should Be Equal Value Json String   ${r.json()}    $..infraPortBlk.attributes.toPort   {{ int.port }}
 
 {% for sub in int.sub_ports | default([]) %}
-{% set module = sub.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
+{% set module = sub.module | default(defaults.apic.interface_policies.nodes.interfaces.module) %}
 {% set leaf_interface_selector_sub_port_name = (module ~ ":" ~ int.port ~ ":" ~ sub.port ) | regex_replace("^(?P<mod>.+):(?P<port>.+):(?P<sport>.+)$", (apic.access_policies.leaf_interface_selector_sub_port_name | default(defaults.apic.access_policies.leaf_interface_selector_sub_port_name))) %}
 Verify Access Leaf Interface Profile {{ leaf_interface_profile_name }} Selector {{ leaf_interface_selector_sub_port_name }}
     ${r}=   GET On Session   apic   /api/mo/uni/infra/accportprof-{{ leaf_interface_profile_name }}/hports-{{ leaf_interface_selector_sub_port_name }}-typ-range.json   params=rsp-subtree=full

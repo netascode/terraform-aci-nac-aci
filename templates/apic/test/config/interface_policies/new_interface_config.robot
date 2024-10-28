@@ -15,7 +15,7 @@ Resource        ../../../apic_common.resource
 {% if apic.interface_policies is defined %}
 
 {% for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
-{% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
+{% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.module) %}
 {% if int.fabric | default(defaults.apic.interface_policies.nodes.interfaces.fabric) is false %}
 
 Verify Access Leaf Interface Node {{ _node.id }} Port {{ module }}/{{ int.port }}
@@ -81,10 +81,10 @@ Verify Access Leaf Interface Node {{ _node.id }} Port {{ module }}/{{ int.port }
 {% set query = "nodes[?id==`" ~ _node.id ~ "`].fexes[]" %}
 {% for fex in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
 {% for int in fex.interfaces | default([]) %}
-{% set module = int.module | default(defaults.apic.interface_policies.nodes.fexes.interfaces.from_module) %}
+{% set module = int.module | default(defaults.apic.interface_policies.nodes.fexes.interfaces.module) %}
 
 Verify Fex {{ fex.id }} Access Interface Port {{ module }}/{{ int.port }}
-    ${r}=   GET On Session   apic   /api/mo/uni/infra/portconfnode-{{ _node.id }}-card-{{ fex.id }}-port-1-sub-{{ int.port}}.json
+    ${r}=   GET On Session   apic   /api/mo/uni/infra/portconfnode-{{ _node.id }}-card-{{ fex.id }}-port-{{ module }}-sub-{{ int.port }}.json
 {% if int.policy_group is defined %}
 {% set query = "leaf_interface_policy_groups[?name=='" ~ int.policy_group ~ "'].type[]" %}
 {% set type = (apic.access_policies | community.general.json_query(query)) %}
@@ -102,7 +102,7 @@ Verify Fex {{ fex.id }} Access Interface Port {{ module }}/{{ int.port }}
     Should Be Equal Value Json String   ${r.json()}    $..attributes.card   {{ fex.id }}
     Should Be Equal Value Json String   ${r.json()}    $..attributes.description   {{ int.description | default() }}
     Should Be Equal Value Json String   ${r.json()}    $..attributes.node   {{ _node.id }}
-    Should Be Equal Value Json String   ${r.json()}    $..attributes.port   1
+    Should Be Equal Value Json String   ${r.json()}    $..attributes.port   {{ module }}
     Should Be Equal Value Json String   ${r.json()}    $..attributes.subPort   {{ int.port }}
     Should Be Equal Value Json String   ${r.json()}    $..attributes.role   {{ _node.role }}
     Should Be Equal Value Json String   ${r.json()}    $..attributes.shutdown   {{ 'yes' if int.shutdown | default(defaults.apic.interface_policies.nodes.fexes.interfaces.shutdown) else 'no' }}
@@ -122,7 +122,7 @@ Verify Fex {{ fex.id }} Access Interface Port {{ module }}/{{ int.port }}
 {% if apic.interface_policies is defined %}
 
 {% for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
-{% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
+{% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.module) %}
 {% if int.fabric | default(defaults.apic.interface_policies.nodes.interfaces.fabric) is false %}
 
 Verify Access Spine Interface Node {{ _node.id }} Port {{ module }}/{{ int.port }}

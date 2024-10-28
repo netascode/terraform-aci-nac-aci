@@ -13,7 +13,7 @@
             {%- if apic.interface_policies is defined %}
             {%- for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
             {%- if int.fabric | default(defaults.apic.interface_policies.nodes.interfaces.fabric) %}
-            {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}{{ comma1() }}
+            {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.module) %}{{ comma1() }}
             {
                 "fabricPortConfig": {
                     "attributes": {
@@ -64,7 +64,7 @@
             {%- set query = "nodes[?id==`" ~ node.id ~ "`].interfaces[]" %}
             {%- for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
             {%- if int.fabric | default(defaults.apic.interface_policies.nodes.interfaces.fabric) %}
-            {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}{{ comma1() }}
+            {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.module) %}{{ comma1() }}
             {
                 "fabricPortConfig": {
                     "attributes": {

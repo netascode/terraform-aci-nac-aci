@@ -17,7 +17,7 @@ Resource        ../../../apic_common.resource
 {% set fex_profile_name = (_node.id ~ ":" ~ _node.name~ ":" ~ fex.id) | regex_replace("^(?P<id>.+):(?P<name>.+):(?P<fex>.+)$", (apic.access_policies.fex_profile_name | default(defaults.apic.access_policies.fex_profile_name))) %}
 
 {% for int in fex.interfaces | default([]) %}
-{% set module = int.module | default(defaults.apic.interface_policies.nodes.fexes.interfaces.from_module) %}
+{% set module = int.module | default(defaults.apic.interface_policies.nodes.fexes.interfaces.module) %}
 {% set fex_interface_selector_name = (module ~ ":" ~ int.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.fex_interface_selector_name | default(defaults.apic.access_policies.fex_interface_selector_name))) %}
 
 Verify Access FEX Interface Profile {{ fex_profile_name }} Selector {{ fex_interface_selector_name }}

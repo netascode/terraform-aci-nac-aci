@@ -623,7 +623,7 @@ This section describes the Fabric Access Policies.
 {% if node2.id == node.id and node2.role == "leaf" %}
 {% for port in node.interfaces | default([]) %}
 {% set leaf_interface_profile_name = (node.id ~ ":" ~ node2.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.leaf_interface_profile_name | default(defaults.apic.access_policies.leaf_interface_profile_name))) %}
-{% set leaf_interface_selector_name = (node.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) ~ ":" ~ port.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.leaf_interface_selector_name | default(defaults.apic.access_policies.leaf_interface_selector_name))) %}
+{% set leaf_interface_selector_name = (node.module | default(defaults.apic.interface_policies.nodes.interfaces.module) ~ ":" ~ port.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.leaf_interface_selector_name | default(defaults.apic.access_policies.leaf_interface_selector_name))) %}
 | {{leaf_interface_profile_name}} | {{leaf_interface_selector_name}} | {{port.description | default("")}} | {{port.policy_group | default("")}} |
 {% endfor %}
 {% endif %}
@@ -715,7 +715,7 @@ This section describes the Fabric Access Policies.
 {% if node2.id == node.id and node2.role == "spine" %}
 {% for port in node.interfaces | default([]) %}
 {% set spine_interface_profile_name = (node.id ~ ":" ~ node2.name) | regex_replace("^(?P<id>.+):(?P<name>.+)$", (apic.access_policies.spine_interface_profile_name | default(defaults.apic.access_policies.spine_interface_profile_name))) %}
-{% set spine_interface_selector_name = (node.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) ~ ":" ~ port.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.spine_interface_selector_name | default(defaults.apic.access_policies.spine_interface_selector_name))) %}
+{% set spine_interface_selector_name = (node.module | default(defaults.apic.interface_policies.nodes.interfaces.module) ~ ":" ~ port.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.spine_interface_selector_name | default(defaults.apic.access_policies.spine_interface_selector_name))) %}
 | {{spine_interface_profile_name}} | {{spine_interface_selector_name}} | {{port.description | default("")}} | {{port.policy_group | default("")}} |
 {% endfor %}
 {% endif %}

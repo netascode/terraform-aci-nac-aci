@@ -15,7 +15,7 @@ Resource        ../../../apic_common.resource
 {% if apic.interface_policies is defined %}
 
 {% for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
-{% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
+{% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.module) %}
 {% if int.fabric | default(defaults.apic.interface_policies.nodes.interfaces.fabric) %}
 
 Verify Fabric Leaf Interface Node {{ _node.id }} Port {{ module }}/{{ int.port }}
@@ -63,7 +63,7 @@ Verify Fabric Leaf Interface Node {{ _node.id }} Port {{ module }}/{{ int.port }
 {% if apic.interface_policies is defined %}
 
 {% for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
-{% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
+{% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.module) %}
 {% if int.fabric | default(defaults.apic.interface_policies.nodes.interfaces.fabric) is false %}
 
 Verify Access Spine Interface Node {{ _node.id }} Port {{ module }}/{{ int.port }}

@@ -15,7 +15,7 @@ Resource        ../../../apic_common.resource
 {% set query = "nodes[?id==`" ~ node.id ~ "`].interfaces[]" %}
 {% if apic.interface_policies is defined %}
 {% for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
-{% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
+{% set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.module) %}
 {% set spine_interface_selector_name = (module ~ ":" ~ int.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.spine_interface_selector_name | default(defaults.apic.access_policies.spine_interface_selector_name))) %}
 
 Verify Access Spine Interface Profile {{ spine_interface_profile_name }} Selector {{ spine_interface_selector_name }}

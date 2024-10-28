@@ -25,7 +25,7 @@
                     "children": [
                         {%- set comma2 = joiner(",") %}
                         {%- for int in fex.interfaces | default([]) %}
-                        {%- set module = int.module | default(defaults.apic.interface_policies.nodes.fexes.interfaces.from_module) %}
+                        {%- set module = int.module | default(defaults.apic.interface_policies.nodes.fexes.interfaces.module) %}
                         {%- set fex_interface_selector_name = (module ~ ":" ~ int.port) | regex_replace("^(?P<mod>.+):(?P<port>.+)$", (apic.access_policies.fex_interface_selector_name | default(defaults.apic.access_policies.fex_interface_selector_name))) %}{{ comma2() }}
                         {
                             "infraHPortS": {

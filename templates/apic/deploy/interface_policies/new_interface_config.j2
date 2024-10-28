@@ -13,7 +13,7 @@
             {%- if apic.interface_policies is defined %}
             {%- for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
             {%- if int.fabric | default(defaults.apic.interface_policies.nodes.interfaces.fabric) is false %}
-            {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}
+            {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.module) %}
             {%- if int.breakout is not defined %}{{ comma1() }}
             {
                 "infraPortConfig": {
@@ -94,11 +94,12 @@
             {%- set query = "nodes[?id==`" ~ _node.id ~ "`].fexes[]" %}
             {%- for fex in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
             {%- for int in fex.interfaces | default([]) %}{{ comma1() }}
+            {%- set module = int.module | default(defaults.apic.interface_policies.nodes.fexes.interfaces.module) %}
             {
                 "infraPortConfig": {
                     "attributes": {
                         "annotation": "orchestrator:aac",
-                        "dn": "uni/infra/portconfnode-{{ _node.id }}-card-{{ fex.id }}-port-{{ 1 }}-sub-{{ int.port }}",
+                        "dn": "uni/infra/portconfnode-{{ _node.id }}-card-{{ fex.id }}-port-{{ module }}-sub-{{ int.port }}",
                         {% if int.policy_group is defined %}
                         {% set query = "leaf_interface_policy_groups[?name=='" ~ int.policy_group ~ "'].type[]" %}
                         {% set type = (apic.access_policies | community.general.json_query(query)) %}
@@ -112,7 +113,7 @@
                         "card": "{{ fex.id }}",
                         "description": "{{ int.description | default() }}",
                         "node": "{{ _node.id }}",
-                        "port": "1", 
+                        "port": "{{ module }}", 
                         "subPort": "{{ int.port }}",
                         "role": "{{ _node.role }}",
                         "shutdown": "{{ 'yes' if int.shutdown | default(defaults.apic.interface_policies.nodes.fexes.interfaces.shutdown) else 'no' }}",
@@ -131,7 +132,7 @@
             {%- set query = "nodes[?id==`" ~ node.id ~ "`].interfaces[]" %}
             {%- for int in (apic.interface_policies | default() | community.general.json_query(query) | default([])) %}
             {%- if int.fabric | default(defaults.apic.interface_policies.nodes.interfaces.fabric) is false %}
-            {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.from_module) %}{{ comma1() }}
+            {%- set module = int.module | default(defaults.apic.interface_policies.nodes.interfaces.module) %}{{ comma1() }}
             {
                 "infraPortConfig": {
                     "attributes": {
