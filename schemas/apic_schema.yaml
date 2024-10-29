@@ -3135,7 +3135,7 @@ ten_set_rule_set_as_path:
   asns: list(include('ten_set_rule_set_as_path_asn'), required=False) # @name(Abstraction of AS Path ASN) rtctrlSetASPathASN
 
 ten_set_rule_set_as_path_asn:
-  number: int(min=0, max=65535)
+  number: int()
   order: int(min=0, max=31, required=False)
 
 ten_set_rule_external_endpoint_group:
