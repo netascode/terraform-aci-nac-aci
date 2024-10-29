@@ -17,6 +17,16 @@ variable "name" {
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
+variable "type" {
+  description = "Route Control Route Map type."
+  type        = string
+  default     = "combinable"
+
+  validation {
+    condition     = contains(["global", "combinable"], var.type)
+    error_message = "Valid values are `global` or `combinable`."
+  }
+}
 
 variable "description" {
   description = "Route Control Route Map description."

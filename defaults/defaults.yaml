@@ -747,7 +747,6 @@ defaults:
     interface_policies:
       nodes:
         interfaces:
-          from_module: 1
           module: 1
           fabric: false
           shutdown: false
@@ -755,7 +754,6 @@ defaults:
             shutdown: false
         fexes:
           interfaces:
-            from_module: 1
             module: 1
             shutdown: false
 
@@ -983,6 +981,7 @@ defaults:
             aggregate_shared_route_control: false
             bgp_route_summarization: false
             ospf_route_summarization: false
+            eigrp_route_summarization: false
             route_control_profiles:
               name_suffix: ""
               direction: import
@@ -1254,6 +1253,7 @@ defaults:
           tag: 4294967295
         route_control_route_maps:
           name_suffix: ""
+          type: combinable
           contexts:
             name_suffix: ""
             action: "permit"
