@@ -23,7 +23,6 @@ module "aci_external_endpoint_group" {
   target_dscp     = "CS2"
   subnets = [{
     name                           = "SUBNET1"
-    description                    = "My Subnet Description"
     prefix                         = "10.0.0.0/8"
     description                    = "My Subnet Description"
     import_route_control           = true
