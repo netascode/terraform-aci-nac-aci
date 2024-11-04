@@ -1449,6 +1449,7 @@ locals {
             name                           = try(subnet.name, "")
             annotation                     = try(subnet.ndo_managed, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ndo_managed) ? "orchestrator:msc" : null
             prefix                         = subnet.prefix
+            description                    = try(subnet.description, "")
             import_route_control           = try(subnet.import_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_route_control)
             export_route_control           = try(subnet.export_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.export_route_control)
             shared_route_control           = try(subnet.shared_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.shared_route_control)
