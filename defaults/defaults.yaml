@@ -1462,6 +1462,7 @@ defaults:
           name_suffix: ""
         service_graph_templates:
           name_suffix: ""
+          ndo_managed: false
           template_type: FW_ROUTED
           redirect: false
           share_encapsulation: false
