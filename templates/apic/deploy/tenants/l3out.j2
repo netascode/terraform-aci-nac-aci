@@ -1779,6 +1779,7 @@
                                                 "annotation": {% if subnet.ndo_managed | default(defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ndo_managed) %}"orchestrator:msc"{% else %}"orchestrator:aac"{% endif %},
                                                 "aggregate": "{{ agg | join(',') }}",
                                                 "ip": "{{ subnet.prefix }}",
+                                                "descr": "{{ subnet.description | default() }}",
                                                 "name": "{{ subnet.name | default() }}",
                                                 "scope": "{{ scope | join(',') }}",
                                                 "childAction": "deleteNonPresent"

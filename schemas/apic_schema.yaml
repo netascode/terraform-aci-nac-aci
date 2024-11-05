@@ -2649,6 +2649,7 @@ ten_l3outs_external_endpoint_groups:
 ten_l3outs_external_endpoint_groups_subnets:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   ndo_managed: bool(required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   prefix: ip()
   import_route_control: any(bool(), enum('yes', 'no'), required=False)
   export_route_control: any(bool(), enum('yes', 'no'), required=False)
