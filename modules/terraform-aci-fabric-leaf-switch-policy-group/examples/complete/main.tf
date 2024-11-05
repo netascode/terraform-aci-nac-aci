@@ -5,4 +5,5 @@ module "aci_fabric_leaf_switch_policy_group" {
   name                = "LEAFS"
   psu_policy          = "PSU1"
   node_control_policy = "NC1"
+  monitoring_policy   = "MON1"
 }

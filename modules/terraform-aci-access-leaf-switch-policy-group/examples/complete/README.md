@@ -20,6 +20,7 @@ module "aci_access_leaf_switch_policy_group" {
   forwarding_scale_policy = "HIGH-DUAL-STACK"
   bfd_ipv4_policy         = "BFD-IPV4-POLICY"
   bfd_ipv6_policy         = "BFD-IPV6-POLICY"
+  monitoring_policy       = "MON1"
 }
 ```
 <!-- END_TF_DOCS -->

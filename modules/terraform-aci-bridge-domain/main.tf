@@ -192,3 +192,12 @@ resource "aci_rest_managed" "fvRsBDToNdP" {
     tnNdIfPolName = var.nd_interface_policy
   }
 }
+
+resource "aci_rest_managed" "fvRsABDPolMonPol" {
+  count      = var.monitoring_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvBD.dn}/rsABDPolMonPol"
+  class_name = "fvRsABDPolMonPol"
+  content = {
+    tnMonEPGPolName = var.monitoring_policy
+  }
+}

@@ -21,6 +21,7 @@ module "aci_vrf" {
   enforcement_preference                 = "unenforced"
   data_plane_learning                    = false
   preferred_group                        = true
+  monitoring_policy                      = "MON1"
   transit_route_tag_policy               = "TRP1"
   bgp_timer_policy                       = "BGP1"
   bgp_ipv4_address_family_context_policy = "BGP_AF_IPV4"
@@ -175,6 +176,7 @@ module "aci_vrf" {
 | <a name="input_pim_igmp_ssm_translate_policies"></a> [pim\_igmp\_ssm\_translate\_policies](#input\_pim\_igmp\_ssm\_translate\_policies) | VRF IGMP SSM tranlate policies. | <pre>list(object({<br>    group_prefix   = string<br>    source_address = string<br>  }))</pre> | `[]` | no |
 | <a name="input_leaked_internal_prefixes"></a> [leaked\_internal\_prefixes](#input\_leaked\_internal\_prefixes) | List of leaked internal prefixes. Default value `public`: false. | <pre>list(object({<br>    prefix = string<br>    public = optional(bool, false)<br>    destinations = optional(list(object({<br>      description = optional(string, "")<br>      tenant      = string<br>      vrf         = string<br>      public      = optional(bool)<br>    })), [])<br>  }))</pre> | `[]` | no |
 | <a name="input_leaked_external_prefixes"></a> [leaked\_external\_prefixes](#input\_leaked\_external\_prefixes) | List of leaked external prefixes. | <pre>list(object({<br>    prefix             = string<br>    from_prefix_length = optional(number)<br>    to_prefix_length   = optional(number)<br>    destinations = optional(list(object({<br>      description = optional(string, "")<br>      tenant      = string<br>      vrf         = string<br>    })), [])<br>  }))</pre> | `[]` | no |
+| <a name="input_monitoring_policy"></a> [monitoring\_policy](#input\_monitoring\_policy) | VRF monitoring policy name. | `string` | `""` | no |
 
 ## Outputs
 
@@ -196,6 +198,7 @@ module "aci_vrf" {
 | [aci_rest_managed.dnsLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvCtx](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBgpCtxPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsCtxMonPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToBgpCtxAfPol_ipv4](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToBgpCtxAfPol_ipv6](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToExtRouteTagPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

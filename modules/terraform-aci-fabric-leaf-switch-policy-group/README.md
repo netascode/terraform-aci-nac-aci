@@ -16,6 +16,7 @@ module "aci_fabric_leaf_switch_policy_group" {
   name                = "LEAFS"
   psu_policy          = "PSU1"
   node_control_policy = "NC1"
+  monitoring_policy   = "MON1"
 }
 ```
 
@@ -39,6 +40,7 @@ module "aci_fabric_leaf_switch_policy_group" {
 | <a name="input_name"></a> [name](#input\_name) | Leaf switch policy group name. | `string` | n/a | yes |
 | <a name="input_psu_policy"></a> [psu\_policy](#input\_psu\_policy) | PSU policy name. | `string` | `""` | no |
 | <a name="input_node_control_policy"></a> [node\_control\_policy](#input\_node\_control\_policy) | Node control policy name. | `string` | `""` | no |
+| <a name="input_monitoring_policy"></a> [monitoring\_policy](#input\_monitoring\_policy) | Leaf switch monitoring policy name. | `string` | n/a | yes |
 
 ## Outputs
 
@@ -52,6 +54,7 @@ module "aci_fabric_leaf_switch_policy_group" {
 | Name | Type |
 |------|------|
 | [aci_rest_managed.fabricLeNodePGrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fabricRsMonInstFabricPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fabricRsNodeCtrl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fabricRsPsuInstPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

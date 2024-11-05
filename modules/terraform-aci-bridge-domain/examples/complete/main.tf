@@ -21,6 +21,7 @@ module "aci_bridge_domain" {
   unknown_ipv6_multicast     = "opt-flood"
   vrf                        = "VRF1"
   nd_interface_policy        = "ND_INTF_POL1"
+  monitoring_policy          = "MON1"
   subnets = [{
     description        = "Subnet Description"
     ip                 = "1.1.1.1/24"

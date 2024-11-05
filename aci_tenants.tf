@@ -1,12 +1,13 @@
 module "aci_tenant" {
   source = "./modules/terraform-aci-tenant"
 
-  for_each         = { for tenant in local.tenants : tenant.name => tenant if try(tenant.managed, local.defaults.apic.tenants.managed, true) && local.modules.aci_tenant && var.manage_tenants }
-  name             = each.value.name
-  annotation       = try(each.value.ndo_managed, local.defaults.apic.tenants.ndo_managed) ? "orchestrator:msc" : null
-  alias            = try(each.value.alias, "")
-  description      = try(each.value.description, "")
-  security_domains = try(each.value.security_domains, [])
+  for_each          = { for tenant in local.tenants : tenant.name => tenant if try(tenant.managed, local.defaults.apic.tenants.managed, true) && local.modules.aci_tenant && var.manage_tenants }
+  name              = each.value.name
+  annotation        = try(each.value.ndo_managed, local.defaults.apic.tenants.ndo_managed) ? "orchestrator:msc" : null
+  alias             = try(each.value.alias, "")
+  description       = try(each.value.description, "")
+  security_domains  = try(each.value.security_domains, [])
+  monitoring_policy = try("${each.value.monitoring_policy}${local.defaults.apic.tenants.monitoring_policies.name_suffix}", "")
 }
 
 locals {
@@ -27,6 +28,7 @@ locals {
         contract_imported_consumers             = try([for contract in vrf.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
         preferred_group                         = try(vrf.preferred_group, local.defaults.apic.tenants.vrfs.preferred_group)
         transit_route_tag_policy                = try(vrf.transit_route_tag_policy, null) != null ? "${vrf.transit_route_tag_policy}${local.defaults.apic.tenants.policies.route_tag_policies.name_suffix}" : ""
+        monitoring_policy                       = try("${vrf.monitoring_policy}${local.defaults.apic.tenants.vrfs.monitoring_policies.name_suffix}", "")
         ospf_timer_policy                       = try("${vrf.ospf.timer_policy}${local.defaults.apic.tenants.policies.ospf_timer_policies.name_suffix}", "")
         ospf_ipv4_address_family_context_policy = try("${vrf.ospf.ipv4_address_family_context_policy}${local.defaults.apic.tenants.policies.ospf_timer_policies.name_suffix}", "")
         ospf_ipv6_address_family_context_policy = try("${vrf.ospf.ipv6_address_family_context_policy}${local.defaults.apic.tenants.policies.ospf_timer_policies.name_suffix}", "")
@@ -116,6 +118,7 @@ module "aci_vrf" {
   contract_imported_consumers              = each.value.contract_imported_consumers
   preferred_group                          = each.value.preferred_group
   transit_route_tag_policy                 = each.value.transit_route_tag_policy
+  monitoring_policy                        = each.value.monitoring_policy
   ospf_timer_policy                        = each.value.ospf_timer_policy
   ospf_ipv4_address_family_context_policy  = each.value.ospf_ipv4_address_family_context_policy
   ospf_ipv6_address_family_context_policy  = each.value.ospf_ipv6_address_family_context_policy
@@ -191,6 +194,7 @@ locals {
         igmp_interface_policy      = try("${bd.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
         igmp_snooping_policy       = try("${bd.igmp_snooping_policy}${local.defaults.apic.tenants.policies.igmp_snooping_policies.name_suffix}", "")
         nd_interface_policy        = try("${bd.nd_interface_policy}${local.defaults.apic.tenants.policies.nd_interface_policies.name_suffix}", "")
+        monitoring_policy          = try("${bd.monitoring_policy}${local.defaults.apic.tenants.bridge_domains.monitoring_policies.name_suffix}", "")
         subnets = [for subnet in try(bd.subnets, []) : {
           ip                    = subnet.ip
           description           = try(subnet.description, "")
@@ -247,6 +251,7 @@ module "aci_bridge_domain" {
   subnets                    = each.value.subnets
   l3outs                     = each.value.l3outs
   dhcp_labels                = each.value.dhcp_labels
+  monitoring_policy          = each.value.monitoring_policy
 
   depends_on = [
     module.aci_tenant,
@@ -261,12 +266,13 @@ locals {
   application_profiles = flatten([
     for tenant in local.tenants : [
       for ap in try(tenant.application_profiles, []) : {
-        key         = format("%s/%s", tenant.name, ap.name)
-        tenant      = tenant.name
-        name        = "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}"
-        annotation  = try(ap.ndo_managed, local.defaults.apic.tenants.application_profiles.ndo_managed) ? "orchestrator:msc-shadow:no" : null
-        alias       = try(ap.alias, "")
-        description = try(ap.description, "")
+        key               = format("%s/%s", tenant.name, ap.name)
+        tenant            = tenant.name
+        name              = "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}"
+        annotation        = try(ap.ndo_managed, local.defaults.apic.tenants.application_profiles.ndo_managed) ? "orchestrator:msc-shadow:no" : null
+        alias             = try(ap.alias, "")
+        description       = try(ap.description, "")
+        monitoring_policy = try("${ap.monitoring_policy}${local.defaults.apic.tenants.application_profiles.monitoring_policies.name_suffix}", "")
       } if try(ap.managed, local.defaults.apic.tenants.application_profiles.managed, true)
     ]
   ])
@@ -275,12 +281,13 @@ locals {
 module "aci_application_profile" {
   source = "./modules/terraform-aci-application-profile"
 
-  for_each    = { for ap in local.application_profiles : ap.key => ap if local.modules.aci_application_profile && var.manage_tenants }
-  tenant      = each.value.tenant
-  name        = each.value.name
-  annotation  = each.value.annotation
-  alias       = each.value.alias
-  description = each.value.description
+  for_each          = { for ap in local.application_profiles : ap.key => ap if local.modules.aci_application_profile && var.manage_tenants }
+  tenant            = each.value.tenant
+  name              = each.value.name
+  annotation        = each.value.annotation
+  alias             = each.value.alias
+  description       = each.value.description
+  monitoring_policy = each.value.monitoring_policy
 
   depends_on = [
     module.aci_tenant
@@ -314,6 +321,7 @@ locals {
           contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
           contract_intra_epgs         = try([for contract in epg.contracts.intra_epgs : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           physical_domains            = try([for domain in epg.physical_domains : "${domain}${local.defaults.apic.access_policies.physical_domains.name_suffix}"], [])
+          monitoring_policy           = try("${epg.monitoring_policy}${local.defaults.apic.tenants.application_profiles.endpoint_groups.monitoring_policies.name_suffix}", "")
           contract_masters = [for master in try(epg.contracts.masters, []) : {
             endpoint_group      = master.endpoint_group
             application_profile = try(master.application_profile, "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}")
@@ -447,6 +455,7 @@ module "aci_endpoint_group" {
   physical_domains            = each.value.physical_domains
   subnets                     = each.value.subnets
   vmware_vmm_domains          = each.value.vmware_vmm_domains
+  monitoring_policy           = each.value.monitoring_policy
   static_ports = [for sp in try(each.value.static_ports, []) : {
     description          = sp.description
     node_id              = sp.node_id
@@ -527,6 +536,7 @@ locals {
           contract_intra_epgs         = try([for contract in useg_epg.contracts.intra_epgs : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           physical_domains            = try([for domain in useg_epg.physical_domains : "${domain}${local.defaults.apic.access_policies.physical_domains.name_suffix}"], [])
           useg_attributes_match_type  = try(useg_epg.useg_attributes.match_type, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.useg_attributes.match_type)
+          monitoring_policy           = try("${useg_epg.monitoring_policy}${local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.monitoring_policies.name_suffix}", "")
           contract_masters = [for master in try(useg_epg.contracts.masters, []) : {
             endpoint_group      = master.endpoint_group
             application_profile = try(master.application_profile, "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}")
@@ -616,6 +626,7 @@ module "aci_useg_endpoint_group" {
   mac_statements              = each.value.useg_attributes_mac_statements
   subnets                     = each.value.subnets
   vmware_vmm_domains          = each.value.vmware_vmm_domains
+  monitoring_policy           = each.value.monitoring_policy
   static_leafs = [for sl in try(each.value.static_leafs, []) : {
     pod_id  = sl.pod_id == null ? try([for node in try(local.node_policies.nodes, []) : node.pod if node.id == sl.node_id][0], local.defaults.apic.node_policies.nodes.pod) : sl.pod_id
     node_id = sl.node_id

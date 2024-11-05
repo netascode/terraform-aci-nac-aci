@@ -40,3 +40,14 @@ variable "bfd_ipv6_policy" {
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
+
+variable "monitoring_policy" {
+  description = "Leaf Switch monitoring policy name."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.monitoring_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`, `:`. Maximum characters: 64."
+  }
+}

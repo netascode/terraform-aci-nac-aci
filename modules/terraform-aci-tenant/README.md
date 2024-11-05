@@ -13,9 +13,10 @@ module "aci_tenant" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-tenant"
   version = ">= 0.8.0"
 
-  name        = "ABC"
-  alias       = "ABC-ALIAS"
-  description = "My Description"
+  name              = "ABC"
+  alias             = "ABC-ALIAS"
+  description       = "My Description"
+  monitoring_policy = "MON1"
 }
 ```
 
@@ -41,6 +42,7 @@ module "aci_tenant" {
 | <a name="input_alias"></a> [alias](#input\_alias) | Tenant alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | Tenant description. | `string` | `""` | no |
 | <a name="input_security_domains"></a> [security\_domains](#input\_security\_domains) | Security domains associated to tenant | `list(string)` | `[]` | no |
+| <a name="input_monitoring_policy"></a> [monitoring\_policy](#input\_monitoring\_policy) | Tenant monitoring policy name. | `string` | n/a | yes |
 
 ## Outputs
 
@@ -54,5 +56,6 @@ module "aci_tenant" {
 | Name | Type |
 |------|------|
 | [aci_rest_managed.aaaDomainRef](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsTenantMonPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvTenant](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

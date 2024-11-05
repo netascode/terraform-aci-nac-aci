@@ -167,6 +167,8 @@ defaults:
           dom: true
         psu_policies:
           name_suffix: ""
+        monitoring_policies:
+          name_suffix: ""
       leaf_switch_policy_groups:
         name_suffix: ""
       spine_switch_policy_groups:
@@ -230,6 +232,8 @@ defaults:
           mgmt_epg: inb
           dvs_version: unmanaged
           statistics: false
+        monitoring_policies:
+          name_suffix: ""
       aaa:
         remote_user_login_policy: no-login
         default_fallback_check: false
@@ -468,6 +472,8 @@ defaults:
           slow_timer_interval: 2000
           echo_receive_interval: 50
           echo_frame_source_address: 0.0.0.0
+        monitoring_policies:
+          name_suffix: ""
       spine_switch_policy_groups:
         name_suffix: ""
       leaf_switch_policy_groups:
@@ -548,6 +554,8 @@ defaults:
         netflow_monitors:
           name_suffix: ""
         netflow_records:
+          name_suffix: ""
+        monitoring_policies:
           name_suffix: ""
       leaf_interface_policy_groups:
         name_suffix: ""
@@ -760,6 +768,8 @@ defaults:
     tenants:
       managed: true
       ndo_managed: false
+      monitoring_policies:
+        name_suffix: ""
       vrfs:
         name_suffix: ""
         ndo_managed: false
@@ -782,6 +792,8 @@ defaults:
           asm_traffic_registry_max_rate: 65535
           asm_traffic_registry_source_ip: "0.0.0.0"
         preferred_group: false
+        monitoring_policies:
+          name_suffix: ""
       bridge_domains:
         name_suffix: ""
         ndo_managed: false
@@ -808,6 +820,8 @@ defaults:
           igmp_querier: false
           nd_ra_prefix: true
           no_default_gateway: false
+        monitoring_policies:
+          name_suffix: ""
       l3outs:
         name_suffix: ""
         ndo_managed: false
@@ -1009,6 +1023,8 @@ defaults:
         name_suffix: ""
         ndo_managed: false
         managed: true
+        monitoring_policies:
+          name_suffix: ""
         endpoint_groups:
           name_suffix: ""
           ndo_managed: false
@@ -1055,6 +1071,8 @@ defaults:
               name_suffix: ""
               start_ip: 0.0.0.0
               end_ip: 0.0.0.0
+          monitoring_policies:
+            name_suffix: ""
         useg_endpoint_groups:
           name_suffix: ""
           flood_in_encap: false
@@ -1083,6 +1101,8 @@ defaults:
               name_suffix: ""
               start_ip: 0.0.0.0
               end_ip: 0.0.0.0
+          monitoring_policies:
+            name_suffix: ""
         endpoint_security_groups:
           name_suffix: ""
           shutdown: false
