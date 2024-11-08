@@ -2733,7 +2733,7 @@ locals {
         key                          = format("%s/%s", tenant.name, policy.name)
         tenant                       = tenant.name
         name                         = "${policy.name}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}"
-        auth_key                     = try(policy.auth_key, "")
+        auth_key                     = try(policy.auth_key, null)
         auth_type                    = try(policy.auth_type, local.defaults.apic.tenants.policies.pim_policies.auth_type)
         mcast_dom_boundary           = try(policy.mcast_dom_boundary, local.defaults.apic.tenants.policies.pim_policies.mcast_dom_boundary)
         passive                      = try(policy.passive, local.defaults.apic.tenants.policies.pim_policies.passive)

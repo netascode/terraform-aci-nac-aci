@@ -39,6 +39,6 @@ variable "certificate" {
 variable "private_key" {
   description = "Private key."
   type        = string
-  default     = ""
+  default     = null
   sensitive   = true
 }

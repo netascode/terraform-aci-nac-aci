@@ -49,7 +49,7 @@ module "aci_pim_policy" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | PIM policy name. | `string` | n/a | yes |
-| <a name="input_auth_key"></a> [auth\_key](#input\_auth\_key) | PIM policy authorization key. | `string` | `""` | no |
+| <a name="input_auth_key"></a> [auth\_key](#input\_auth\_key) | PIM policy authorization key. | `string` | `null` | no |
 | <a name="input_auth_type"></a> [auth\_type](#input\_auth\_type) | PIM policy authorization type. Allowed values are: `none` or `ah-md5`. | `string` | `"none"` | no |
 | <a name="input_mcast_dom_boundary"></a> [mcast\_dom\_boundary](#input\_mcast\_dom\_boundary) | PIM policy multicast domain boundary flag. | `bool` | `false` | no |
 | <a name="input_passive"></a> [passive](#input\_passive) | PIM policy multicast passive flag. | `bool` | `false` | no |
