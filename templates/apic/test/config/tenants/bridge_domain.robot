@@ -26,6 +26,9 @@ Verify Bridge Domain {{ bd_name }}
     Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.mac   {{ bd.mac | default(defaults.apic.tenants.bridge_domains.mac) }}
     Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.vmac   {{ bd.virtual_mac | default() }}
     Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.mcastAllow   {{ bd.l3_multicast | default(defaults.apic.tenants.bridge_domains.l3_multicast) | cisco.aac.aac_bool("yes") }}
+    {% if bd.multicast_arp_drop is defined %}
+        Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.mcastARPDrop   {{ bd.multicast_arp_drop | cisco.aac.aac_bool("yes")}}
+    {% endif %}
     Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.multiDstPktAct   {{ bd.multi_destination_flooding | default(defaults.apic.tenants.bridge_domains.multi_destination_flooding) }}
     Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.nameAlias   {{ bd.alias | default() }}
     Should Be Equal Value Json String   ${r.json()}   $..fvBD.attributes.unicastRoute   {{ bd.unicast_routing | default(defaults.apic.tenants.bridge_domains.unicast_routing) | cisco.aac.aac_bool("yes") }}

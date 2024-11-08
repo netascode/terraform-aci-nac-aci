@@ -28,6 +28,9 @@
                         "epMoveDetectMode": "{{ bd_move_detection }}",
                         "vmac": "{{ bd.virtual_mac | default() }}",
                         "mcastAllow": "{{ bd.l3_multicast | default(defaults.apic.tenants.bridge_domains.l3_multicast) | cisco.aac.aac_bool("yes") }}",
+                        {%- if bd.multicast_arp_drop is defined %}
+                            "mcastARPDrop": "{{ bd.multicast_arp_drop | cisco.aac.aac_bool("yes")}}",
+                        {% endif %}
                         "multiDstPktAct": "{{ bd.multi_destination_flooding | default(defaults.apic.tenants.bridge_domains.multi_destination_flooding) }}",
                         "name": "{{ bd_name }}",
                         "nameAlias": "{{ bd.alias | default() }}",

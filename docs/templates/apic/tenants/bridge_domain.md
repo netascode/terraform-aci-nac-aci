@@ -44,6 +44,7 @@ apic:
           clear_remote_mac_entries: true
           advertise_host_routes: true
           l3_multicast: false
+          multicast_arp_drop: false
           vrf: VRF1
           nd_interface_policy: "ND_INTF_POL1"
           subnets:

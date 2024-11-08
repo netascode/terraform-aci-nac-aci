@@ -4,6 +4,11 @@ apic:
     - name: ABC
       vrfs:
         - name: VRF1
+      bridge_domains:
+        - name: BD4
+          vrf: VRF1
+          l3_multicast: true
+          multicast_arp_drop: false
       l3outs:
         - name: L3OUT_MICROBFD
           vrf: VRF1
