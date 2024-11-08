@@ -3262,6 +3262,7 @@ locals {
         key                     = format("%s/%s", tenant.name, sgt.name)
         tenant                  = tenant.name
         name                    = "${sgt.name}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
+        annotation              = try(sgt.ndo_managed, local.defaults.apic.tenants.services.service_graph_templates.ndo_managed) ? "orchestrator:msc-shadow:no" : null
         description             = try(sgt.description, "")
         alias                   = try(sgt.alias, "")
         template_type           = try(sgt.template_type, local.defaults.apic.tenants.services.service_graph_templates.template_type)
@@ -3272,6 +3273,7 @@ locals {
         device_function         = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.function, []) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : "None"
         device_copy             = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.copy_device, []) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : false
         device_managed          = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.managed, []) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : false
+        device_node_name        = try(sgt.device.node_name, "N1")
         consumer_direct_connect = try(sgt.consumer.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.consumer.direct_connect)
         provider_direct_connect = try(sgt.provider.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.provider.direct_connect)
       }
@@ -3285,6 +3287,7 @@ module "aci_service_graph_template" {
   for_each                = { for sg_template in local.service_graph_templates : sg_template.key => sg_template if local.modules.aci_service_graph_template && var.manage_tenants }
   tenant                  = each.value.tenant
   name                    = each.value.name
+  annotation              = each.value.annotation
   description             = each.value.description
   alias                   = each.value.alias
   template_type           = each.value.template_type
@@ -3295,6 +3298,7 @@ module "aci_service_graph_template" {
   device_function         = each.value.device_function
   device_copy             = each.value.device_copy
   device_managed          = each.value.device_managed
+  device_node_name        = each.value.device_node_name
   consumer_direct_connect = each.value.consumer_direct_connect
   provider_direct_connect = each.value.provider_direct_connect
 
@@ -3313,7 +3317,8 @@ locals {
         contract                                                = "${dsp.contract}${local.defaults.apic.tenants.contracts.name_suffix}"
         service_graph_template                                  = "${dsp.service_graph_template}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
         sgt_device_tenant                                       = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : try(sg_template.device.tenant, tenant.name) if sg_template.name == dsp.service_graph_template][0] : tenant.name
-        sgt_device_name                                         = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : "${sg_template.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}" if sg_template.name == dsp.service_graph_template][0] : ""
+        sgt_device_name                                         = try("${dsp.device_name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}", length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : "${sg_template.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}" if sg_template.name == dsp.service_graph_template][0] : "")
+        node_name                                               = try(dsp.node_name, "N1")
         consumer_l3_destination                                 = try(dsp.consumer.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination)
         consumer_permit_logging                                 = try(dsp.consumer.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.consumer.permit_logging)
         consumer_logical_interface                              = try("${dsp.consumer.logical_interface}${local.defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix}", "")
@@ -3368,6 +3373,7 @@ module "aci_device_selection_policy" {
   service_graph_template                                  = each.value.service_graph_template
   sgt_device_tenant                                       = each.value.sgt_device_tenant
   sgt_device_name                                         = each.value.sgt_device_name
+  node_name                                               = each.value.node_name
   consumer_l3_destination                                 = each.value.consumer_l3_destination
   consumer_permit_logging                                 = each.value.consumer_permit_logging
   consumer_logical_interface                              = each.value.consumer_logical_interface

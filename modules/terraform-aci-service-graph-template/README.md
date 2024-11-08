@@ -49,6 +49,7 @@ module "aci_service_graph_template" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Service graph template name. | `string` | n/a | yes |
+| <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | `null` | no |
 | <a name="input_alias"></a> [alias](#input\_alias) | Alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_template_type"></a> [template\_type](#input\_template\_type) | Template type. Choices: `FW_TRANS`, `FW_ROUTED`, `ADC_ONE_ARM`, `ADC_TWO_ARM`, `OTHER`, `CLOUD_NATIVE_LB`, `CLOUD_VENDOR_LB`, `CLOUD_NATIVE_FW`, `CLOUD_VENDOR_FW`. | `string` | `"OTHER"` | no |
@@ -59,6 +60,7 @@ module "aci_service_graph_template" {
 | <a name="input_device_function"></a> [device\_function](#input\_device\_function) | L4L7 device function. Choices: `None`, `GoTo`, `GoThrough`, `L2`, `L1`. | `string` | `"GoTo"` | no |
 | <a name="input_device_copy"></a> [device\_copy](#input\_device\_copy) | L4L7 device copy function. | `bool` | `false` | no |
 | <a name="input_device_managed"></a> [device\_managed](#input\_device\_managed) | L4L7 managed device. | `bool` | `false` | no |
+| <a name="input_device_node_name"></a> [device\_node\_name](#input\_device\_node\_name) | L4L7 device function node name. | `string` | `"N1"` | no |
 | <a name="input_consumer_direct_connect"></a> [consumer\_direct\_connect](#input\_consumer\_direct\_connect) | Direct connect on consumer connection. | `bool` | `false` | no |
 | <a name="input_provider_direct_connect"></a> [provider\_direct\_connect](#input\_provider\_direct\_connect) | Direct connect on provider connection. | `bool` | `false` | no |
 
