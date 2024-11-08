@@ -13,7 +13,7 @@
             {
                 "vnsAbsGraph": {
                     "attributes": {
-                        "annotation": "orchestrator:aac",
+                        "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                         "descr": "{{ sgt.description | default() }}",
                         "dn": "uni/tn-{{ tenant.name }}/AbsGraph-{{ sgt_name }}",
                         "name": "{{ sgt_name }}",
@@ -26,7 +26,7 @@
                         {
                             "vnsAbsTermNodeCon": {
                                 "attributes": {
-                                    "annotation": "orchestrator:aac",
+                                    "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                                     "name": "T1",
                                     "childAction": "deleteNonPresent"
                                 },
@@ -34,21 +34,21 @@
                                     {
                                         "vnsOutTerm": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac"
+                                                "annotation": "{{ "" if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) else "orchestrator:aac" }}"
                                             }
                                         }
                                     },
                                     {
                                         "vnsInTerm": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac"
+                                                "annotation": "{{ "" if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) else "orchestrator:aac" }}"
                                             }
                                         }
                                     },
                                     {
                                         "vnsAbsTermConn": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac",
+                                                "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                                                 "name": "1"
                                             }
                                         }
@@ -59,7 +59,7 @@
                         {
                             "vnsAbsTermNodeProv": {
                                 "attributes": {
-                                    "annotation": "orchestrator:aac",
+                                    "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                                     "name": "T2",
                                     "childAction": "deleteNonPresent"
                                 },
@@ -67,21 +67,21 @@
                                     {
                                         "vnsOutTerm": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac"
+                                                "annotation": "{{ "" if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) else "orchestrator:aac" }}"
                                             }
                                         }
                                     },
                                     {
                                         "vnsInTerm": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac"
+                                                "annotation": "{{ "" if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) else "orchestrator:aac" }}"
                                             }
                                         }
                                     },
                                     {
                                         "vnsAbsTermConn": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac",
+                                                "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                                                 "name": "1"
                                             }
                                         }
@@ -97,12 +97,12 @@
                         {
                             "vnsAbsNode": {
                                 "attributes": {
-                                    "annotation": "orchestrator:aac",
+                                    "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                                     "funcTemplateType": "{{ sgt.template_type | default(defaults.apic.tenants.services.service_graph_templates.template_type) }}",
                                     "funcType": "{{ dev.function | default(defaults.apic.tenants.services.l4l7_devices.function) }}",
                                     "isCopy": "{{ dev.copy_device | default(defaults.apic.tenants.services.l4l7_devices.copy_device) | cisco.aac.aac_bool("yes") }}",
                                     "managed": "{{ dev.managed | default(defaults.apic.tenants.services.l4l7_devices.managed) | cisco.aac.aac_bool("yes") }}",
-                                    "name": "N1",
+                                    "name": "{{ sgt.device.node_name | default("N1") }}",
                                     "routingMode": "{{ 'Redirect' if sgt.redirect | default(defaults.apic.tenants.services.service_graph_templates.redirect) | cisco.aac.aac_bool("enabled") == 'enabled' else 'unspecified' }}",
                                     "sequenceNumber": "0",
                                     "shareEncap": "{{ 'yes' if sgt.share_encapsulation | default(defaults.apic.tenants.services.service_graph_templates.share_encapsulation) | cisco.aac.aac_bool("enabled") == 'enabled' else 'no' }}",
@@ -113,7 +113,7 @@
                                     {
                                         "vnsRsNodeToLDev": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac",
+                                                "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}""{% else %}"orchestrator:aac"{% endif %},
                                                 {% if tenant.name == sgt.device.tenant | default(tenant.name) %}
                                                 "tDn": "uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}"
                                                 {% else %}
@@ -125,7 +125,7 @@
                                     {
                                         "vnsAbsFuncConn": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac",
+                                                "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                                                 "attNotify": "no",
                                                 "name": "provider"
                                             }
@@ -134,7 +134,7 @@
                                     {
                                         "vnsAbsFuncConn": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac",
+                                                "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                                                 "attNotify": "no",
                                                 "name": "consumer"
                                             }
@@ -146,7 +146,7 @@
                         {
                             "vnsAbsConnection": {
                                 "attributes": {
-                                    "annotation": "orchestrator:aac",
+                                    "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                                     "adjType": "L3",
                                     "connDir": "provider",
                                     "connType": "external",
@@ -159,7 +159,7 @@
                                     {
                                         "vnsRsAbsConnectionConns": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac",
+                                                "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                                                 "tDn": "uni/tn-{{ tenant.name }}/AbsGraph-{{ sgt_name }}/AbsTermNodeCon-T1/AbsTConn"
                                             }
                                         }
@@ -167,8 +167,8 @@
                                     {
                                         "vnsRsAbsConnectionConns": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac",
-                                                "tDn": "uni/tn-{{ tenant.name }}/AbsGraph-{{ sgt_name }}/AbsNode-N1/AbsFConn-consumer"
+                                                "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
+                                                "tDn": "uni/tn-{{ tenant.name }}/AbsGraph-{{ sgt_name }}/AbsNode-{{ sgt.device.node_name | default("N1") }}/AbsFConn-consumer"
                                             }
                                         }
                                     }
@@ -178,7 +178,7 @@
                         {
                             "vnsAbsConnection": {
                                 "attributes": {
-                                    "annotation": "orchestrator:aac",
+                                    "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                                     "adjType": "L3",
                                     "connDir": "provider",
                                     "connType": "external",
@@ -191,7 +191,7 @@
                                     {
                                         "vnsRsAbsConnectionConns": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac",
+                                                "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
                                                 "tDn": "uni/tn-{{ tenant.name }}/AbsGraph-{{ sgt_name }}/AbsTermNodeProv-T2/AbsTConn"
                                             }
                                         }
@@ -199,8 +199,8 @@
                                     {
                                         "vnsRsAbsConnectionConns": {
                                             "attributes": {
-                                                "annotation": "orchestrator:aac",
-                                                "tDn": "uni/tn-{{ tenant.name }}/AbsGraph-{{ sgt_name }}/AbsNode-N1/AbsFConn-provider"
+                                                "annotation": {% if sgt.ndo_managed | default(defaults.apic.tenants.services.service_graph_templates.ndo_managed) %}"orchestrator:msc-shadow:no"{% else %}"orchestrator:aac"{% endif %},
+                                                "tDn": "uni/tn-{{ tenant.name }}/AbsGraph-{{ sgt_name }}/AbsNode-{{ sgt.device.node_name | default("N1") }}/AbsFConn-provider"
                                             }
                                         }
                                     }

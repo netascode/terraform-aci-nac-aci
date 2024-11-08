@@ -766,6 +766,11 @@ apic:
             maximum_major_faults: 1000
             maximum_minor_faults: 1000
         - name: CON2
+          subjects:
+            - name: SUB1
+              service_graph: TEMPLATE2
+              filters:
+                - filter: FILTER2
         - name: CON3
         - name: CON4
       imported_contracts:
@@ -1405,8 +1410,10 @@ apic:
               maximum_major_faults: 1000
               maximum_minor_faults: 1000
           - name: TEMPLATE2
+            ndo_managed: true
             device:
-              name: DEV1
+              name: DEV2
+              node_name: node1
           - name: TEMPLATE-COPY
             template_type: OTHER
             device:
@@ -1438,6 +1445,18 @@ apic:
               maximum_critical_faults: 1000
               maximum_major_faults: 1000
               maximum_minor_faults: 1000
+          - contract: CON2
+            service_graph_template: TEMPLATE2
+            device_name: DEV1
+            node_name: node1
+            consumer:
+              logical_interface: INT1
+              bridge_domain:
+                name: BD1
+            provider:
+              logical_interface: INT1
+              bridge_domain:
+                name: BD1
           - contract: COPY-CONTRACT
             service_graph_template: TEMPLATE-COPY
             copy_service:

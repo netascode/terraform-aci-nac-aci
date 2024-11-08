@@ -12,13 +12,14 @@ Resource        ../../../apic_common.resource
 {% set sgt = (tenant.services | community.general.json_query(query))[0] %}
 {% set contract_name = dsp.contract ~ defaults.apic.tenants.contracts.name_suffix %}
 {% set sgt_name = dsp.service_graph_template ~ defaults.apic.tenants.services.service_graph_templates.name_suffix %}
-{% set dev_name = sgt.device.name ~ defaults.apic.tenants.services.l4l7_devices.name_suffix %}
+{% set dev_name = dsp.device_name ~ defaults.apic.tenants.services.l4l7_devices.name_suffix | default(sgt.device.name ~ defaults.apic.tenants.services.l4l7_devices.name_suffix) %}
 
 Verify Device Selection Policy Contract {{ contract_name }} Service Graph Template {{ sgt_name }}
-    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ldevCtx-c-{{ contract_name }}-g-{{ sgt_name }}-n-N1.json   params=rsp-subtree=full
+    ${r}=   GET On Session   apic   /api/mo/uni/tn-{{ tenant.name }}/ldevCtx-c-{{ contract_name }}-g-{{ sgt_name }}-n-{{ dsp.node_name | default("N1") }}.json   params=rsp-subtree=full
     Set Suite Variable   ${r}
     Should Be Equal Value Json String   ${r.json()}   $..vnsLDevCtx.attributes.ctrctNameOrLbl   {{ contract_name }}
     Should Be Equal Value Json String   ${r.json()}   $..vnsLDevCtx.attributes.graphNameOrLbl   {{ sgt_name }}
+    Should Be Equal Value Json String   ${r.json()}   $..vnsLDevCtx.attributes.nodeNameOrLbl   {{ dsp.node_name | default("N1") }}
     Should Be Equal Value Json String   ${r.json()}   $..vnsRsLDevCtxToLDev.attributes.tDn   uni/tn-{{ sgt.device.tenant | default(tenant.name) }}/lDevVip-{{ dev_name }}
 
 {% if dsp.consumer is defined and dsp.provider is defined %}

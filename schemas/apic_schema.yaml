@@ -3561,6 +3561,7 @@ ten_ser_redirect_health_groups_expected_state:
 
 ten_ser_service_graph_templates:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  ndo_managed: bool(required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   template_type: enum('FW_TRANS', 'FW_ROUTED', 'ADC_ONE_ARM', 'ADC_TWO_ARM', 'OTHER', 'CLOUD_NATIVE_LB', 'CLOUD_VENDOR_LB', 'CLOUD_NATIVE_FW', 'CLOUD_VENDOR_FW', required=False)
@@ -3574,6 +3575,7 @@ ten_ser_service_graph_templates:
 ten_ser_service_graph_templates_device:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$') # @name(Device Name)
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(Device Tenant)
+  node_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(Function Node Name)
 
 ten_ser_service_graph_templates_consumer_provider:
   direct_connect: bool(required=False)
@@ -3587,6 +3589,8 @@ ten_ser_service_graph_templates_expected_state:
 ten_ser_device_selection_policies:
   contract: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   service_graph_template: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  device_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(Device Name)
+  node_name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False) # @name(Function Node Name)
   consumer: include('ten_ser_device_selection_policies_consumer_provider', required=False) # @name(Device Selection Pol Consumer) @sheet_hidden()
   provider: include('ten_ser_device_selection_policies_consumer_provider', required=False) # @name(Device Selection Pol Provider) @sheet_hidden()
   copy_service: include('ten_ser_device_selection_policies_copy_service', required=False) # @name(Device Selection Pol Copy) @sheet_hidden()
