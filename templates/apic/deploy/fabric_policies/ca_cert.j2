@@ -13,7 +13,7 @@
                         "annotation": "orchestrator:aac",
                         "dn":"uni/userext/pkiext/tp-{{ ca_name }}",
                         "name": "{{ ca_name }}",
-                        "descr":" {{ ca.description | default() }}",
+                        "descr": "{{ ca.description | default() }}",
                         "certChain": "{{ ca.certificate_chain | replace('\n', '\\n')}}"
                     }
                 }
