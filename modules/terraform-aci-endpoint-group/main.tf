@@ -498,3 +498,12 @@ resource "aci_rest_managed" "fvnsUcastAddrBlk" {
   }
 }
 
+resource "aci_rest_managed" "fvRsAEPgMonPol" {
+  count      = var.monitoring_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvAEPg.dn}/rsAEPgMonPol"
+  class_name = "fvRsAEPgMonPol"
+
+  content = {
+    tnMonEPGPolName = var.monitoring_policy
+  }
+}

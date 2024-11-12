@@ -25,6 +25,7 @@ module "aci_endpoint_group" {
   custom_qos_policy           = "CQP1"
   bridge_domain               = "BD1"
   trust_control_policy        = "TRUST_POL"
+  monitoring_policy           = "MON1"
   contract_consumers          = ["CON1"]
   contract_providers          = ["CON1"]
   contract_imported_consumers = ["I_CON1"]
@@ -151,6 +152,7 @@ module "aci_endpoint_group" {
 | <a name="input_static_endpoints"></a> [static\_endpoints](#input\_static\_endpoints) | List of static endpoints. Format `mac`: `12:34:56:78:9A:BC`. Choices `type`: `silent-host`, `tep`, `vep`. Allowed values `node_id`, `node2_id`: `1` - `4000`. Allowed values `vlan`: `1` - `4096`. Allowed values `pod_id`: `1` - `255`. Default value `pod_id`: `1`. Allowed values `port`: `1` - `127`. Allowed values `module`: `1` - `9`. Default value `module`: `1`. | <pre>list(object({<br>    name           = optional(string, "")<br>    alias          = optional(string, "")<br>    mac            = string<br>    ip             = optional(string, "0.0.0.0")<br>    type           = string<br>    node_id        = optional(number)<br>    node2_id       = optional(number)<br>    vlan           = optional(number)<br>    pod_id         = optional(number, 1)<br>    port           = optional(number)<br>    module         = optional(number, 1)<br>    channel        = optional(string)<br>    additional_ips = optional(list(string), [])<br>  }))</pre> | `[]` | no |
 | <a name="input_l4l7_virtual_ips"></a> [l4l7\_virtual\_ips](#input\_l4l7\_virtual\_ips) | List of EPG L4/L7 Virtual IPs. | <pre>list(object({<br>    ip          = string<br>    description = optional(string, "")<br>  }))</pre> | `[]` | no |
 | <a name="input_l4l7_address_pools"></a> [l4l7\_address\_pools](#input\_l4l7\_address\_pools) | List of EPG L4/L7 Address Pools. | <pre>list(object({<br>    name            = string<br>    gateway_address = string<br>    from            = optional(string, "")<br>    to              = optional(string, "")<br>  }))</pre> | `[]` | no |
+| <a name="input_monitoring_policy"></a> [monitoring\_policy](#input\_monitoring\_policy) | Endpoint group monitoring policy name. | `string` | n/a | yes |
 
 ## Outputs
 
@@ -169,6 +171,7 @@ module "aci_endpoint_group" {
 | [aci_rest_managed.fvEpAnycast](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvEpNlb](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvEpReachability](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsAEPgMonPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBd](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCons](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsConsIf](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

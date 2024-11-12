@@ -511,3 +511,13 @@ resource "aci_rest_managed" "leakTo_external" {
     descr      = each.value.description
   }
 }
+
+resource "aci_rest_managed" "fvRsCtxMonPol" {
+  count      = var.monitoring_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvCtx.dn}/rsCtxMonPol"
+  class_name = "fvRsCtxMonPol"
+
+  content = {
+    tnMonEPGPolName = var.monitoring_policy
+  }
+}

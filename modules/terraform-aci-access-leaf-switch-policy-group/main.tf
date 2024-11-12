@@ -29,3 +29,12 @@ resource "aci_rest_managed" "infraRsBfdIpv6InstPol" {
     tnBfdIpv6InstPolName = var.bfd_ipv6_policy
   }
 }
+
+resource "aci_rest_managed" "infraRsMonNodeInfraPol" {
+  count      = var.monitoring_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraAccNodePGrp.dn}/rsmonNodeInfraPol"
+  class_name = "infraRsMonNodeInfraPol"
+  content = {
+    tnMonInfraPolName = var.monitoring_policy
+  }
+}

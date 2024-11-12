@@ -162,6 +162,7 @@ variable "vcenters" {
     statistics        = optional(bool, false)
     mgmt_epg_type     = optional(string, "inb")
     mgmt_epg_name     = optional(string)
+    monitoring_policy = optional(string, "")
   }))
   default = []
 

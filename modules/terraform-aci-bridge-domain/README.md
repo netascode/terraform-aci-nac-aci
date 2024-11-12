@@ -33,6 +33,7 @@ module "aci_bridge_domain" {
   unknown_ipv6_multicast     = "opt-flood"
   vrf                        = "VRF1"
   nd_interface_policy        = "ND_INTF_POL1"
+  monitoring_policy          = "MON1"
   subnets = [{
     description        = "Subnet Description"
     ip                 = "1.1.1.1/24"
@@ -103,6 +104,7 @@ module "aci_bridge_domain" {
 | <a name="input_subnets"></a> [subnets](#input\_subnets) | List of subnets. Default value `primary_ip`: `false`. Default value `public`: `false`. Default value `shared`: `false`. Default value `igmp_querier`: `false`. Default value `nd_ra_prefix`: `true`. Default value `no_default_gateway`: `false`. Default value `virtual`: `false`. | <pre>list(object({<br>    description           = optional(string, "")<br>    ip                    = string<br>    primary_ip            = optional(bool, false)<br>    public                = optional(bool, false)<br>    shared                = optional(bool, false)<br>    igmp_querier          = optional(bool, false)<br>    nd_ra_prefix          = optional(bool, true)<br>    no_default_gateway    = optional(bool, false)<br>    virtual               = optional(bool, false)<br>    nd_ra_prefix_policy   = optional(string, "")<br>    ip_dataplane_learning = optional(bool, null)<br>    tags = optional(list(object({<br>      key   = string<br>      value = string<br>    })), [])<br>  }))</pre> | `[]` | no |
 | <a name="input_l3outs"></a> [l3outs](#input\_l3outs) | List of l3outs | `list(string)` | `[]` | no |
 | <a name="input_dhcp_labels"></a> [dhcp\_labels](#input\_dhcp\_labels) | List of DHCP labels | <pre>list(object({<br>    dhcp_relay_policy  = string<br>    dhcp_option_policy = optional(string)<br>    scope              = optional(string, "tenant")<br>  }))</pre> | `[]` | no |
+| <a name="input_monitoring_policy"></a> [monitoring\_policy](#input\_monitoring\_policy) | Bridge domain monitoring policy name. | `string` | `""` | no |
 
 ## Outputs
 
@@ -118,6 +120,7 @@ module "aci_bridge_domain" {
 | [aci_rest_managed.dhcpLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.dhcpRsDhcpOptionPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvBD](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsABDPolMonPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBDToNdP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBDToOut](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtx](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

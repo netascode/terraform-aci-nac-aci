@@ -17,6 +17,7 @@ module "aci_access_leaf_switch_policy_group" {
   forwarding_scale_policy = "HIGH-DUAL-STACK"
   bfd_ipv4_policy         = "BFD-IPV4-POLICY"
   bfd_ipv6_policy         = "BFD-IPV6-POLICY"
+  monitoring_policy       = "MON1"
 }
 ```
 
@@ -41,6 +42,7 @@ module "aci_access_leaf_switch_policy_group" {
 | <a name="input_forwarding_scale_policy"></a> [forwarding\_scale\_policy](#input\_forwarding\_scale\_policy) | Forwarding scale policy name. | `string` | `""` | no |
 | <a name="input_bfd_ipv4_policy"></a> [bfd\_ipv4\_policy](#input\_bfd\_ipv4\_policy) | BFD IPv4 policy name. | `string` | `""` | no |
 | <a name="input_bfd_ipv6_policy"></a> [bfd\_ipv6\_policy](#input\_bfd\_ipv6\_policy) | BFD IPv6 policy name. | `string` | `""` | no |
+| <a name="input_monitoring_policy"></a> [monitoring\_policy](#input\_monitoring\_policy) | Leaf Switch monitoring policy name. | `string` | `null` | no |
 
 ## Outputs
 
@@ -56,5 +58,6 @@ module "aci_access_leaf_switch_policy_group" {
 | [aci_rest_managed.infraAccNodePGrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsBfdIpv4InstPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsBfdIpv6InstPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraRsMonNodeInfraPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsTopoctrlFwdScaleProfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

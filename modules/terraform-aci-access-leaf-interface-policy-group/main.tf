@@ -117,3 +117,12 @@ resource "aci_rest_managed" "infraRsNetflowMonitorPol" {
     tnNetflowMonitorPolName = each.value.name
   }
 }
+
+resource "aci_rest_managed" "infraRsMonIfInfraPol" {
+  count      = (var.type == "access" || var.type == "vpc" || var.type == "pc") && var.monitoring_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraAccGrp.dn}/rsmonIfInfraPol"
+  class_name = "infraRsMonIfInfraPol"
+  content = {
+    tnMonInfraPolName = var.monitoring_policy
+  }
+}

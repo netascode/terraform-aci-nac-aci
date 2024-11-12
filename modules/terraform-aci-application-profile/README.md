@@ -13,10 +13,11 @@ module "aci_application_profile" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-application-profile"
   version = ">= 0.8.0"
 
-  tenant      = "ABC"
-  name        = "AP1"
-  alias       = "AP1-ALIAS"
-  description = "My Description"
+  tenant            = "ABC"
+  name              = "AP1"
+  alias             = "AP1-ALIAS"
+  description       = "My Description"
+  monitoring_policy = "MON1"
 }
 ```
 
@@ -42,6 +43,7 @@ module "aci_application_profile" {
 | <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | `null` | no |
 | <a name="input_alias"></a> [alias](#input\_alias) | Application profile alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | Application profile description. | `string` | `""` | no |
+| <a name="input_monitoring_policy"></a> [monitoring\_policy](#input\_monitoring\_policy) | Application profile monitoring policy name. | `string` | `""` | no |
 
 ## Outputs
 
@@ -55,4 +57,5 @@ module "aci_application_profile" {
 | Name | Type |
 |------|------|
 | [aci_rest_managed.fvAp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsApMonPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

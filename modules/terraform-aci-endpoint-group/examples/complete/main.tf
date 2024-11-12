@@ -14,6 +14,7 @@ module "aci_endpoint_group" {
   custom_qos_policy           = "CQP1"
   bridge_domain               = "BD1"
   trust_control_policy        = "TRUST_POL"
+  monitoring_policy           = "MON1"
   contract_consumers          = ["CON1"]
   contract_providers          = ["CON1"]
   contract_imported_consumers = ["I_CON1"]

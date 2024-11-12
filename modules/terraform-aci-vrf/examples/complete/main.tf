@@ -10,6 +10,7 @@ module "aci_vrf" {
   enforcement_preference                 = "unenforced"
   data_plane_learning                    = false
   preferred_group                        = true
+  monitoring_policy                      = "MON1"
   transit_route_tag_policy               = "TRP1"
   bgp_timer_policy                       = "BGP1"
   bgp_ipv4_address_family_context_policy = "BGP_AF_IPV4"

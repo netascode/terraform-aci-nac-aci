@@ -15,4 +15,5 @@ module "aci_access_leaf_interface_policy_group" {
   port_channel_policy        = "LACP"
   port_channel_member_policy = "FAST"
   aaep                       = "AAEP1"
+  monitoring_policy          = "MON1"
 }

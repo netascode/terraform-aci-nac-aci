@@ -321,6 +321,7 @@ module "aci_fabric_leaf_switch_policy_group" {
   name                = "${each.value.name}${local.defaults.apic.fabric_policies.leaf_switch_policy_groups.name_suffix}"
   psu_policy          = try("${each.value.psu_policy}${local.defaults.apic.fabric_policies.switch_policies.psu_policies.name_suffix}", "")
   node_control_policy = try("${each.value.node_control_policy}${local.defaults.apic.fabric_policies.switch_policies.node_control_policies.name_suffix}", "")
+  monitoring_policy   = try("${each.value.monitoring_policy}${local.defaults.apic.fabric_policies.switch_policies.monitoring_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_psu_policy,
@@ -335,6 +336,7 @@ module "aci_fabric_spine_switch_policy_group" {
   name                = "${each.value.name}${local.defaults.apic.fabric_policies.spine_switch_policy_groups.name_suffix}"
   psu_policy          = try("${each.value.psu_policy}${local.defaults.apic.fabric_policies.switch_policies.psu_policies.name_suffix}", "")
   node_control_policy = try("${each.value.node_control_policy}${local.defaults.apic.fabric_policies.switch_policies.node_control_policies.name_suffix}", "")
+  monitoring_policy   = try("${each.value.monitoring_policy}${local.defaults.apic.fabric_policies.switch_policies.monitoring_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_psu_policy,
@@ -560,6 +562,7 @@ module "aci_vmware_vmm_domain" {
     statistics        = try(vc.statistics, local.defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.statistics)
     mgmt_epg_type     = try(vc.mgmt_epg, local.defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.mgmt_epg)
     mgmt_epg_name     = try(vc.mgmt_epg, local.defaults.apic.fabric_policies.vmware_vmm_domains.vcenters.mgmt_epg) == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
+    monitoring_policy = try("${vc.monitoring_policy}${local.defaults.apic.fabric_policies.vmware_vmm_domains.monitoring_policies.name_suffix}", "")
   }]
   vswitch_enhanced_lags = [for vel in try(each.value.vswitch.enhanced_lags, []) : {
     name      = "${vel.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.name_suffix}"

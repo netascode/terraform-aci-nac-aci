@@ -158,3 +158,12 @@ resource "aci_rest_managed" "aaaDomainRef" {
     name = each.value
   }
 }
+
+resource "aci_rest_managed" "vmmRsCtrlrPMonPol" {
+  for_each   = { for vc in var.vcenters : vc.name => vc if vc.monitoring_policy != "" }
+  dn         = "${aci_rest_managed.vmmCtrlrP[each.value.name].dn}/rsctrlrPMonPol"
+  class_name = "vmmRsCtrlrPMonPol"
+  content = {
+    tDn = "uni/infra/moninfra-${each.value.monitoring_policy}"
+  }
+}

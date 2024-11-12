@@ -17,3 +17,13 @@ resource "aci_rest_managed" "aaaDomainRef" {
     name = each.value
   }
 }
+
+resource "aci_rest_managed" "fvRsTenantMonPol" {
+  count      = var.monitoring_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvTenant.dn}/rsTenantMonPol"
+  class_name = "fvRsTenantMonPol"
+
+  content = {
+    tnMonEPGPolName = var.monitoring_policy
+  }
+}

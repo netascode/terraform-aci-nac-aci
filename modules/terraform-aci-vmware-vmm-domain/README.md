@@ -42,6 +42,7 @@ module "aci_vmware_vmm_domain" {
     dvs_version       = "6.5"
     statistics        = true
     mgmt_epg_type     = "oob"
+    monitoring_policy = "MON1"
   }]
   credential_policies = [{
     name     = "CP1"
@@ -90,7 +91,7 @@ module "aci_vmware_vmm_domain" {
 | <a name="input_vswitch_mtu_policy"></a> [vswitch\_mtu\_policy](#input\_vswitch\_mtu\_policy) | vSwitch MTU policy name. | `string` | `""` | no |
 | <a name="input_vswitch_netflow_policy"></a> [vswitch\_netflow\_policy](#input\_vswitch\_netflow\_policy) | vSwitch NetFlow Exporter policy name. | `string` | `""` | no |
 | <a name="input_vswitch_enhanced_lags"></a> [vswitch\_enhanced\_lags](#input\_vswitch\_enhanced\_lags) | vSwitch enhanced lags. Allowed values for `lb_mode`: `dst-ip`, `dst-ip-l4port`, `dst-ip-vlan`, `dst-ip-l4port-vlan`, `dst-mac`, `dst-l4port`, `src-ip`, `src-ip-l4port`, `src-ip-vlan`, `src-ip-l4port-vlan`, `src-mac`, `src-l4port`, `src-dst-ip`, `src-dst-ip-l4port`, `src-dst-ip-vlan`, `src-dst-ip-l4port-vlan`, `src-dst-mac`, `src-dst-l4port`, `src-port-id` or `vlan`. Default value: `src-dst-ip`. Allowed values for `mode`: `active` or `passive`. Defautl value: `active`. Allowed range for `num_links`: 2-8. | <pre>list(object({<br>    name      = string<br>    lb_mode   = optional(string, "src-dst-ip")<br>    mode      = optional(string, "active")<br>    num_links = optional(number, 2)<br>  }))</pre> | `[]` | no |
-| <a name="input_vcenters"></a> [vcenters](#input\_vcenters) | List of vCenter hosts. Choices `dvs_version`: `unmanaged`, `5.1`, `5.5`, `6.0`, `6.5`, `6.6`, `7.0`. Default value `dvs_version`: `unmanaged`. Default value `statistics`: false. Allowed values `mgmt_epg_type`: `inb`, `oob`. Default value `mgmt_epg_type`: `inb`. | <pre>list(object({<br>    name              = string<br>    hostname_ip       = string<br>    datacenter        = string<br>    credential_policy = optional(string)<br>    dvs_version       = optional(string, "unmanaged")<br>    statistics        = optional(bool, false)<br>    mgmt_epg_type     = optional(string, "inb")<br>    mgmt_epg_name     = optional(string)<br>  }))</pre> | `[]` | no |
+| <a name="input_vcenters"></a> [vcenters](#input\_vcenters) | List of vCenter hosts. Choices `dvs_version`: `unmanaged`, `5.1`, `5.5`, `6.0`, `6.5`, `6.6`, `7.0`. Default value `dvs_version`: `unmanaged`. Default value `statistics`: false. Allowed values `mgmt_epg_type`: `inb`, `oob`. Default value `mgmt_epg_type`: `inb`. | <pre>list(object({<br>    name              = string<br>    hostname_ip       = string<br>    datacenter        = string<br>    credential_policy = optional(string)<br>    dvs_version       = optional(string, "unmanaged")<br>    statistics        = optional(bool, false)<br>    mgmt_epg_type     = optional(string, "inb")<br>    mgmt_epg_name     = optional(string)<br>    monitoring_policy = optional(string, "")<br>  }))</pre> | `[]` | no |
 | <a name="input_credential_policies"></a> [credential\_policies](#input\_credential\_policies) | List of vCenter credentials. | <pre>list(object({<br>    name     = string<br>    username = string<br>    password = string<br>  }))</pre> | `[]` | no |
 | <a name="input_uplinks"></a> [uplinks](#input\_uplinks) | List of vSwitch uplinks. Allowed range for `id`: 1-32. | <pre>list(object({<br>    id   = number<br>    name = string<br>  }))</pre> | `[]` | no |
 | <a name="input_security_domains"></a> [security\_domains](#input\_security\_domains) | Security domains associated to VMware VMM domain | `list(string)` | `[]` | no |
@@ -112,6 +113,7 @@ module "aci_vmware_vmm_domain" {
 | [aci_rest_managed.vmmCtrlrP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmDomP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmRsAcc](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vmmRsCtrlrPMonPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmRsMgmtEPg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmRsVswitchExporterPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmRsVswitchOverrideCdpIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

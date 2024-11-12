@@ -133,6 +133,7 @@ module "aci_access_leaf_switch_policy_group" {
   forwarding_scale_policy = try("${each.value.forwarding_scale_policy}${local.defaults.apic.access_policies.switch_policies.forwarding_scale_policies.name_suffix}", "")
   bfd_ipv4_policy         = try("${each.value.bfd_ipv4_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix}", "")
   bfd_ipv6_policy         = try("${each.value.bfd_ipv6_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix}", "")
+  monitoring_policy       = try("${each.value.monitoring_policy}${local.defaults.apic.access_policies.switch_policies.monitoring_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_forwarding_scale_policy,
@@ -401,7 +402,8 @@ module "aci_access_leaf_interface_policy_group" {
     name           = "${monitor.name}${local.defaults.apic.access_policies.interface_policies.netflow_monitors.name_suffix}"
     ip_filter_type = try(monitor.ip_filter_type, local.defaults.apic.access_policies.leaf_interface_policy_groups.netflow_monitor_policies.ip_filter_type)
   }]
-  aaep = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
+  aaep              = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
+  monitoring_policy = try("${each.value.monitoring_policy}${local.defaults.apic.access_policies.interface_policies.monitoring_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_link_level_policy,
