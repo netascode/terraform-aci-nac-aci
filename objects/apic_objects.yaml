@@ -382,6 +382,7 @@ objects:
       - config
     paths:
       - apic.node_policies.nodes.role
+      - apic.node_policies.nodes.set_role
       - apic.node_policies.nodes.serial_number
       - apic.node_policies.nodes.name
       - apic.node_policies.nodes.id

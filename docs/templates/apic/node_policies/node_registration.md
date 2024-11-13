@@ -23,4 +23,10 @@ apic:
         type: remote-leaf-wan
         serial-number: ABC1234568
         name: RLEAF3101
+      - id: 1001
+        pod: 1
+        role: spine
+        set_role: true  # For dual-role switches
+        serial_number: ABC1234569
+        name: SPINE1001
 ```
