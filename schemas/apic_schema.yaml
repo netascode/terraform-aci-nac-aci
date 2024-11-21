@@ -21,6 +21,7 @@ apic:
   nae_assurance_group: str(required=False)
   new_interface_configuration: bool(required=False)
   interface_selector_description: bool(required=False)
+  bulk_static_ports: bool(required=False)
   expected_state: include('expected_state', required=False) # @no_external_doc() @name(APIC Expected State) @sheet_hidden()
 
 bootstrap:
