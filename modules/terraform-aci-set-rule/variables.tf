@@ -206,14 +206,6 @@ variable "set_as_paths" {
     ]]))
     error_message = "`order` minimum value: `0`. Maximum value: `31`."
   }
-
-  validation {
-    condition = alltrue(flatten([
-      for c in var.set_as_paths : [
-        for a in c.asns : try(a.asn_number >= 0 && a.asn_number <= 65535, false)
-    ]]))
-    error_message = "`asn` minimum value: `0`. Maximum value: `65535`."
-  }
 }
 
 variable "next_hop_propagation" {

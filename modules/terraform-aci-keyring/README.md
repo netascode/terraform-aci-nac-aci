@@ -88,7 +88,7 @@ module "aci_keyring" {
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_ca_certificate"></a> [ca\_certificate](#input\_ca\_certificate) | CA certificate name. | `string` | `""` | no |
 | <a name="input_certificate"></a> [certificate](#input\_certificate) | Certificate. | `string` | `""` | no |
-| <a name="input_private_key"></a> [private\_key](#input\_private\_key) | Private key. | `string` | `""` | no |
+| <a name="input_private_key"></a> [private\_key](#input\_private\_key) | Private key. | `string` | `null` | no |
 
 ## Outputs
 

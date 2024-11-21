@@ -748,7 +748,6 @@ defaults:
     interface_policies:
       nodes:
         interfaces:
-          from_module: 1
           module: 1
           fabric: false
           shutdown: false
@@ -756,7 +755,6 @@ defaults:
             shutdown: false
         fexes:
           interfaces:
-            from_module: 1
             module: 1
             shutdown: false
 
@@ -1465,6 +1463,7 @@ defaults:
           name_suffix: ""
         service_graph_templates:
           name_suffix: ""
+          ndo_managed: false
           template_type: FW_ROUTED
           redirect: false
           share_encapsulation: false

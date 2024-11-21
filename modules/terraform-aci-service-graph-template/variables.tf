@@ -18,6 +18,17 @@ variable "name" {
   }
 }
 
+variable "annotation" {
+  description = "Annotation value."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.annotation == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.annotation))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "alias" {
   description = "Alias."
   type        = string
@@ -105,6 +116,17 @@ variable "device_managed" {
   description = "L4L7 managed device."
   type        = bool
   default     = false
+}
+
+variable "device_node_name" {
+  description = "L4L7 device function node name."
+  type        = string
+  default     = "N1"
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.device_node_name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
 }
 
 variable "consumer_direct_connect" {
