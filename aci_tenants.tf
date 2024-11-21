@@ -426,6 +426,7 @@ module "aci_endpoint_group" {
   source = "./modules/terraform-aci-endpoint-group"
 
   for_each                    = { for epg in local.endpoint_groups : epg.key => epg if local.modules.aci_endpoint_group && var.manage_tenants }
+  bulk_static_ports           = try(local.apic.bulk_static_ports, local.defaults.apic.bulk_static_ports)
   tenant                      = each.value.tenant
   application_profile         = each.value.application_profile
   name                        = each.value.name

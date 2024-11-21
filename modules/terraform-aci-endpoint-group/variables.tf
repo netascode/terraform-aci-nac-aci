@@ -675,3 +675,9 @@ variable "l4l7_address_pools" {
     error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
+
+variable "bulk_static_ports" {
+  description = "Use bulk resource to configure static ports."
+  type        = bool
+  default     = false
+}
