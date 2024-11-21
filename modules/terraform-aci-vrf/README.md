@@ -25,10 +25,10 @@ module "aci_vrf" {
   bgp_timer_policy                       = "BGP1"
   bgp_ipv4_address_family_context_policy = "BGP_AF_IPV4"
   bgp_ipv6_address_family_context_policy = "BGP_AF_IPV6"
-  bgp_ipv4_import_route_target           = "route-target:as2-nn2:10:10"
-  bgp_ipv4_export_route_target           = "route-target:as2-nn2:10:10"
-  bgp_ipv6_import_route_target           = "route-target:as2-nn2:10:10"
-  bgp_ipv6_export_route_target           = "route-target:as2-nn2:10:10"
+  bgp_ipv4_import_route_target           = ["route-target:as2-nn2:10:10", "route-target:as2-nn2:10:11"]
+  bgp_ipv4_export_route_target           = ["route-target:as2-nn2:10:12", "route-target:as2-nn2:10:13"]
+  bgp_ipv6_import_route_target           = ["route-target:as2-nn2:10:14", "route-target:as2-nn2:10:15"]
+  bgp_ipv6_export_route_target           = ["route-target:as2-nn2:10:16", "route-target:as2-nn2:10:17"]
   dns_labels                             = ["DNS1"]
   contract_consumers                     = ["CON1"]
   contract_providers                     = ["CON1"]
@@ -142,10 +142,10 @@ module "aci_vrf" {
 | <a name="input_bgp_timer_policy"></a> [bgp\_timer\_policy](#input\_bgp\_timer\_policy) | VRF BGP timer policy name. | `string` | `""` | no |
 | <a name="input_bgp_ipv4_address_family_context_policy"></a> [bgp\_ipv4\_address\_family\_context\_policy](#input\_bgp\_ipv4\_address\_family\_context\_policy) | VRF BGP IPv4 Address Family Context policy name. | `string` | `""` | no |
 | <a name="input_bgp_ipv6_address_family_context_policy"></a> [bgp\_ipv6\_address\_family\_context\_policy](#input\_bgp\_ipv6\_address\_family\_context\_policy) | VRF BGP IPv6 Address Family Context policy name. | `string` | `""` | no |
-| <a name="input_bgp_ipv4_import_route_target"></a> [bgp\_ipv4\_import\_route\_target](#input\_bgp\_ipv4\_import\_route\_target) | VRF BGP IPv4 import route target. | `string` | `""` | no |
-| <a name="input_bgp_ipv4_export_route_target"></a> [bgp\_ipv4\_export\_route\_target](#input\_bgp\_ipv4\_export\_route\_target) | VRF BGP IPv4 export route target. | `string` | `""` | no |
-| <a name="input_bgp_ipv6_import_route_target"></a> [bgp\_ipv6\_import\_route\_target](#input\_bgp\_ipv6\_import\_route\_target) | VRF BGP IPv6 import route target. | `string` | `""` | no |
-| <a name="input_bgp_ipv6_export_route_target"></a> [bgp\_ipv6\_export\_route\_target](#input\_bgp\_ipv6\_export\_route\_target) | VRF BGP IPv6 export route target. | `string` | `""` | no |
+| <a name="input_bgp_ipv4_import_route_target"></a> [bgp\_ipv4\_import\_route\_target](#input\_bgp\_ipv4\_import\_route\_target) | VRF BGP IPv4 import route target. | `list(string)` | `[]` | no |
+| <a name="input_bgp_ipv4_export_route_target"></a> [bgp\_ipv4\_export\_route\_target](#input\_bgp\_ipv4\_export\_route\_target) | VRF BGP IPv4 export route target. | `list(string)` | `[]` | no |
+| <a name="input_bgp_ipv6_import_route_target"></a> [bgp\_ipv6\_import\_route\_target](#input\_bgp\_ipv6\_import\_route\_target) | VRF BGP IPv6 import route target. | `list(string)` | `[]` | no |
+| <a name="input_bgp_ipv6_export_route_target"></a> [bgp\_ipv6\_export\_route\_target](#input\_bgp\_ipv6\_export\_route\_target) | VRF BGP IPv6 export route target. | `list(string)` | `[]` | no |
 | <a name="input_dns_labels"></a> [dns\_labels](#input\_dns\_labels) | List of VRF DNS labels. | `list(string)` | `[]` | no |
 | <a name="input_contract_consumers"></a> [contract\_consumers](#input\_contract\_consumers) | List of contract consumers. | `list(string)` | `[]` | no |
 | <a name="input_contract_providers"></a> [contract\_providers](#input\_contract\_providers) | List of contract providers. | `list(string)` | `[]` | no |
@@ -157,8 +157,8 @@ module "aci_vrf" {
 | <a name="input_pim_max_multicast_entries"></a> [pim\_max\_multicast\_entries](#input\_pim\_max\_multicast\_entries) | VRF PIM maximum number of multicast entries. Allowed valued between `1`-`4294967295` or `unlimited`. Default value `unlimited.` | `string` | `"unlimited"` | no |
 | <a name="input_pim_reserved_multicast_entries"></a> [pim\_reserved\_multicast\_entries](#input\_pim\_reserved\_multicast\_entries) | VRF PIM maximum number of multicast entries. Allowed valued between `0`-`4294967295`. Default value `undefined` | `string` | `"undefined"` | no |
 | <a name="input_pim_resource_policy_multicast_route_map"></a> [pim\_resource\_policy\_multicast\_route\_map](#input\_pim\_resource\_policy\_multicast\_route\_map) | VRF PIM resource policy multicast route map. | `string` | `""` | no |
-| <a name="input_pim_static_rps"></a> [pim\_static\_rps](#input\_pim\_static\_rps) | VRF PIM static RPs. | <pre>list(object({<br>    ip                  = string<br>    multicast_route_map = optional(string, "")<br>  }))</pre> | `[]` | no |
-| <a name="input_pim_fabric_rps"></a> [pim\_fabric\_rps](#input\_pim\_fabric\_rps) | VRF PIM fabric RPs. | <pre>list(object({<br>    ip                  = string<br>    multicast_route_map = optional(string, "")<br>  }))</pre> | `[]` | no |
+| <a name="input_pim_static_rps"></a> [pim\_static\_rps](#input\_pim\_static\_rps) | VRF PIM static RPs. | <pre>list(object({<br/>    ip                  = string<br/>    multicast_route_map = optional(string, "")<br/>  }))</pre> | `[]` | no |
+| <a name="input_pim_fabric_rps"></a> [pim\_fabric\_rps](#input\_pim\_fabric\_rps) | VRF PIM fabric RPs. | <pre>list(object({<br/>    ip                  = string<br/>    multicast_route_map = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_pim_bsr_forward_updates"></a> [pim\_bsr\_forward\_updates](#input\_pim\_bsr\_forward\_updates) | VRF PIM BSR forward updates flag. Default value: `false`. | `bool` | `false` | no |
 | <a name="input_pim_bsr_listen_updates"></a> [pim\_bsr\_listen\_updates](#input\_pim\_bsr\_listen\_updates) | VRF PIM BSR listen updates flag. Default value: `false`. | `bool` | `false` | no |
 | <a name="input_pim_bsr_filter_multicast_route_map"></a> [pim\_bsr\_filter\_multicast\_route\_map](#input\_pim\_bsr\_filter\_multicast\_route\_map) | VRF PIM BSR multicast route map. | `string` | `""` | no |
@@ -171,10 +171,10 @@ module "aci_vrf" {
 | <a name="input_pim_asm_traffic_registry_max_rate"></a> [pim\_asm\_traffic\_registry\_max\_rate](#input\_pim\_asm\_traffic\_registry\_max\_rate) | VRF PIM ASM traffic registry max rate. Allowed values bewtween `1`-`65535`. Default value `65535` | `number` | `65535` | no |
 | <a name="input_pim_asm_traffic_registry_source_ip"></a> [pim\_asm\_traffic\_registry\_source\_ip](#input\_pim\_asm\_traffic\_registry\_source\_ip) | VRF PIM ASM traffic registry source IP. | `string` | `""` | no |
 | <a name="input_pim_ssm_group_range_multicast_route_map"></a> [pim\_ssm\_group\_range\_multicast\_route\_map](#input\_pim\_ssm\_group\_range\_multicast\_route\_map) | VRF PIM SSM group range multicast route map. | `string` | `""` | no |
-| <a name="input_pim_inter_vrf_policies"></a> [pim\_inter\_vrf\_policies](#input\_pim\_inter\_vrf\_policies) | VRF PIM inter-VRF policies. | <pre>list(object({<br>    tenant              = string<br>    vrf                 = string<br>    multicast_route_map = optional(string, "")<br>  }))</pre> | `[]` | no |
-| <a name="input_pim_igmp_ssm_translate_policies"></a> [pim\_igmp\_ssm\_translate\_policies](#input\_pim\_igmp\_ssm\_translate\_policies) | VRF IGMP SSM tranlate policies. | <pre>list(object({<br>    group_prefix   = string<br>    source_address = string<br>  }))</pre> | `[]` | no |
-| <a name="input_leaked_internal_prefixes"></a> [leaked\_internal\_prefixes](#input\_leaked\_internal\_prefixes) | List of leaked internal prefixes. Default value `public`: false. | <pre>list(object({<br>    prefix = string<br>    public = optional(bool, false)<br>    destinations = optional(list(object({<br>      description = optional(string, "")<br>      tenant      = string<br>      vrf         = string<br>      public      = optional(bool)<br>    })), [])<br>  }))</pre> | `[]` | no |
-| <a name="input_leaked_external_prefixes"></a> [leaked\_external\_prefixes](#input\_leaked\_external\_prefixes) | List of leaked external prefixes. | <pre>list(object({<br>    prefix             = string<br>    from_prefix_length = optional(number)<br>    to_prefix_length   = optional(number)<br>    destinations = optional(list(object({<br>      description = optional(string, "")<br>      tenant      = string<br>      vrf         = string<br>    })), [])<br>  }))</pre> | `[]` | no |
+| <a name="input_pim_inter_vrf_policies"></a> [pim\_inter\_vrf\_policies](#input\_pim\_inter\_vrf\_policies) | VRF PIM inter-VRF policies. | <pre>list(object({<br/>    tenant              = string<br/>    vrf                 = string<br/>    multicast_route_map = optional(string, "")<br/>  }))</pre> | `[]` | no |
+| <a name="input_pim_igmp_ssm_translate_policies"></a> [pim\_igmp\_ssm\_translate\_policies](#input\_pim\_igmp\_ssm\_translate\_policies) | VRF IGMP SSM tranlate policies. | <pre>list(object({<br/>    group_prefix   = string<br/>    source_address = string<br/>  }))</pre> | `[]` | no |
+| <a name="input_leaked_internal_prefixes"></a> [leaked\_internal\_prefixes](#input\_leaked\_internal\_prefixes) | List of leaked internal prefixes. Default value `public`: false. | <pre>list(object({<br/>    prefix = string<br/>    public = optional(bool, false)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>      public      = optional(bool)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
+| <a name="input_leaked_external_prefixes"></a> [leaked\_external\_prefixes](#input\_leaked\_external\_prefixes) | List of leaked external prefixes. | <pre>list(object({<br/>    prefix             = string<br/>    from_prefix_length = optional(number)<br/>    to_prefix_length   = optional(number)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 

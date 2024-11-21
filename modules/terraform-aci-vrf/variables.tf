@@ -164,44 +164,52 @@ variable "bgp_ipv6_address_family_context_policy" {
 
 variable "bgp_ipv4_import_route_target" {
   description = "VRF BGP IPv4 import route target."
-  type        = string
-  default     = ""
+  type        = list(string)
+  default     = []
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_ipv4_import_route_target))
+    condition = alltrue([
+      for rt in var.bgp_ipv4_import_route_target : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rt))
+    ])
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
 variable "bgp_ipv4_export_route_target" {
   description = "VRF BGP IPv4 export route target."
-  type        = string
-  default     = ""
+  type        = list(string)
+  default     = []
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_ipv4_export_route_target))
+    condition = alltrue([
+      for rt in var.bgp_ipv4_export_route_target : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rt))
+    ])
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
 variable "bgp_ipv6_import_route_target" {
   description = "VRF BGP IPv6 import route target."
-  type        = string
-  default     = ""
+  type        = list(string)
+  default     = []
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_ipv6_import_route_target))
+    condition = alltrue([
+      for rt in var.bgp_ipv6_import_route_target : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rt))
+    ])
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
 variable "bgp_ipv6_export_route_target" {
   description = "VRF BGP IPv6 export route target."
-  type        = string
-  default     = ""
+  type        = list(string)
+  default     = []
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_ipv6_export_route_target))
+    condition = alltrue([
+      for rt in var.bgp_ipv6_export_route_target : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rt))
+    ])
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

@@ -26,6 +26,38 @@ locals {
       }
     ]
   ])
+  bgp_ipv4_import_route_target_list = flatten([
+    for ipv4_i_rt in coalesce(var.bgp_ipv4_import_route_target, []) : {
+      key = "${ipv4_i_rt}"
+      value = {
+        rt = ipv4_i_rt
+      }
+    }
+  ])
+  bgp_ipv4_export_route_target_list = flatten([
+    for ipv4_e_rt in coalesce(var.bgp_ipv4_export_route_target, []) : {
+      key = "${ipv4_e_rt}"
+      value = {
+        rt = ipv4_e_rt
+      }
+    }
+  ])
+  bgp_ipv6_import_route_target_list = flatten([
+    for ipv6_i_rt in coalesce(var.bgp_ipv6_import_route_target, []) : {
+      key = "${ipv6_i_rt}"
+      value = {
+        rt = ipv6_i_rt
+      }
+    }
+  ])
+  bgp_ipv6_export_route_target_list = flatten([
+    for ipv6_e_rt in coalesce(var.bgp_ipv6_export_route_target, []) : {
+      key = "${ipv6_e_rt}"
+      value = {
+        rt = ipv6_e_rt
+      }
+    }
+  ])
 }
 
 resource "aci_rest_managed" "fvCtx" {
@@ -143,7 +175,7 @@ resource "aci_rest_managed" "fvRsCtxToBgpCtxAfPol_ipv6" {
 }
 
 resource "aci_rest_managed" "bgpRtTargetP_ipv4" {
-  count      = var.bgp_ipv4_import_route_target != "" || var.bgp_ipv4_export_route_target != "" ? 1 : 0
+  count      = length(var.bgp_ipv4_import_route_target) > 0 || length(var.bgp_ipv4_export_route_target) > 0 ? 1 : 0
   dn         = "${aci_rest_managed.fvCtx.dn}/rtp-ipv4-ucast"
   class_name = "bgpRtTargetP"
   content = {
@@ -152,27 +184,27 @@ resource "aci_rest_managed" "bgpRtTargetP_ipv4" {
 }
 
 resource "aci_rest_managed" "bgpRtTarget_ipv4_import" {
-  count      = var.bgp_ipv4_import_route_target != "" ? 1 : 0
-  dn         = "${aci_rest_managed.bgpRtTargetP_ipv4[0].dn}/rt-[${var.bgp_ipv4_import_route_target}]-import"
+  for_each   = { for item in local.bgp_ipv4_import_route_target_list : item.key => item.value if var.bgp_ipv4_import_route_target != "" }
+  dn         = "${aci_rest_managed.bgpRtTargetP_ipv4[0].dn}/rt-[${each.value.rt}]-import"
   class_name = "bgpRtTarget"
   content = {
-    rt   = var.bgp_ipv4_import_route_target
+    rt   = each.value.rt
     type = "import"
   }
 }
 
 resource "aci_rest_managed" "bgpRtTarget_ipv4_export" {
-  count      = var.bgp_ipv4_export_route_target != "" ? 1 : 0
-  dn         = "${aci_rest_managed.bgpRtTargetP_ipv4[0].dn}/rt-[${var.bgp_ipv4_export_route_target}]-export"
+  for_each   = { for item in local.bgp_ipv4_export_route_target_list : item.key => item.value if var.bgp_ipv4_export_route_target != "" }
+  dn         = "${aci_rest_managed.bgpRtTargetP_ipv4[0].dn}/rt-[${each.value.rt}]-export"
   class_name = "bgpRtTarget"
   content = {
-    rt   = var.bgp_ipv4_export_route_target
+    rt   = each.value.rt
     type = "export"
   }
 }
 
 resource "aci_rest_managed" "bgpRtTargetP_ipv6" {
-  count      = var.bgp_ipv6_import_route_target != "" || var.bgp_ipv6_export_route_target != "" ? 1 : 0
+  count      = length(var.bgp_ipv6_import_route_target) > 0 || length(var.bgp_ipv6_export_route_target) > 0 ? 1 : 0
   dn         = "${aci_rest_managed.fvCtx.dn}/rtp-ipv6-ucast"
   class_name = "bgpRtTargetP"
   content = {
@@ -181,21 +213,21 @@ resource "aci_rest_managed" "bgpRtTargetP_ipv6" {
 }
 
 resource "aci_rest_managed" "bgpRtTarget_ipv6_import" {
-  count      = var.bgp_ipv6_import_route_target != "" ? 1 : 0
-  dn         = "${aci_rest_managed.bgpRtTargetP_ipv6[0].dn}/rt-[${var.bgp_ipv6_import_route_target}]-import"
+  for_each   = { for item in local.bgp_ipv6_import_route_target_list : item.key => item.value if var.bgp_ipv6_import_route_target != "" }
+  dn         = "${aci_rest_managed.bgpRtTargetP_ipv6[0].dn}/rt-[${each.value.rt}]-import"
   class_name = "bgpRtTarget"
   content = {
-    rt   = var.bgp_ipv6_import_route_target
+    rt   = each.value.rt
     type = "import"
   }
 }
 
 resource "aci_rest_managed" "bgpRtTarget_ipv6_export" {
-  count      = var.bgp_ipv6_export_route_target != "" ? 1 : 0
-  dn         = "${aci_rest_managed.bgpRtTargetP_ipv6[0].dn}/rt-[${var.bgp_ipv6_export_route_target}]-export"
+  for_each   = { for item in local.bgp_ipv6_export_route_target_list : item.key => item.value if var.bgp_ipv6_export_route_target != "" }
+  dn         = "${aci_rest_managed.bgpRtTargetP_ipv6[0].dn}/rt-[${each.value.rt}]-export"
   class_name = "bgpRtTarget"
   content = {
-    rt   = var.bgp_ipv6_export_route_target
+    rt   = each.value.rt
     type = "export"
   }
 }
