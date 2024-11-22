@@ -234,7 +234,7 @@ resource "aci_bulk_epg_to_static_path" "bulk_epg_to_static_path" {
   dynamic "static_path" {
     for_each = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.module}-${sp.port}-${sp.sub_port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.port}-${sp.sub_port}-vl-${sp.vlan}") => sp if sp.channel == null && sp.fex_id == null && sp.sub_port != null }
     content {
-      interface_dn         = format("topology/pod-%s/paths-%s/pathep-[eth%s/%s/%s]", each.value.pod_id, each.value.node_id, each.value.module, each.value.port, each.value.sub_port)
+      interface_dn         = format("topology/pod-%s/paths-%s/pathep-[eth%s/%s/%s]", static_path.value.pod_id, static_path.value.node_id, static_path.value.module, static_path.value.port, static_path.value.sub_port)
       encap                = "vlan-${static_path.value.vlan}"
       deployment_immediacy = static_path.value.deployment_immediacy
       mode                 = static_path.value.mode
@@ -245,7 +245,7 @@ resource "aci_bulk_epg_to_static_path" "bulk_epg_to_static_path" {
   dynamic "static_path" {
     for_each = { for sp in var.static_ports : "${sp.node_id}-${sp.channel}-vl-${sp.vlan}" => sp if sp.channel != null && sp.fex_id == null }
     content {
-      interface_dn         = format(each.value.node2_id != null ? "topology/pod-%s/protpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/pathep-[%[4]s]", each.value.pod_id, each.value.node_id, each.value.node2_id, each.value.channel)
+      interface_dn         = format(static_path.value.node2_id != null ? "topology/pod-%s/protpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/pathep-[%[4]s]", static_path.value.pod_id, static_path.value.node_id, static_path.value.node2_id, static_path.value.channel)
       encap                = "vlan-${static_path.value.vlan}"
       deployment_immediacy = static_path.value.deployment_immediacy
       mode                 = static_path.value.mode
@@ -256,7 +256,7 @@ resource "aci_bulk_epg_to_static_path" "bulk_epg_to_static_path" {
   dynamic "static_path" {
     for_each = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.fex_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.fex_id}-${sp.port}-vl-${sp.vlan}") => sp if sp.channel == null && sp.fex_id != null }
     content {
-      interface_dn         = format("topology/pod-%s/paths-%s/extpaths-%s/pathep-[eth%s/%s]", each.value.pod_id, each.value.node_id, each.value.fex_id, each.value.module, each.value.port)
+      interface_dn         = format("topology/pod-%s/paths-%s/extpaths-%s/pathep-[eth%s/%s]", static_path.value.pod_id, static_path.value.node_id, static_path.value.fex_id, static_path.value.module, static_path.value.port)
       encap                = "vlan-${static_path.value.vlan}"
       deployment_immediacy = static_path.value.deployment_immediacy
       mode                 = static_path.value.mode
@@ -267,7 +267,7 @@ resource "aci_bulk_epg_to_static_path" "bulk_epg_to_static_path" {
   dynamic "static_path" {
     for_each = { for sp in var.static_ports : "${sp.node_id}-${sp.fex_id}-${sp.channel}-vl-${sp.vlan}" => sp if sp.channel != null && sp.fex_id != null }
     content {
-      interface_dn         = format(each.value.node2_id != null && each.value.fex2_id != null ? "topology/pod-%s/protpaths-%s-%s/extprotpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/extpaths-%[4]s/pathep-[%[6]s]", each.value.pod_id, each.value.node_id, each.value.node2_id, each.value.fex_id, each.value.fex2_id, each.value.channel)
+      interface_dn         = format(static_path.value.node2_id != null && static_path.value.fex2_id != null ? "topology/pod-%s/protpaths-%s-%s/extprotpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/extpaths-%[4]s/pathep-[%[6]s]", static_path.value.pod_id, static_path.value.node_id, static_path.value.node2_id, static_path.value.fex_id, static_path.value.fex2_id, static_path.value.channel)
       encap                = "vlan-${static_path.value.vlan}"
       deployment_immediacy = static_path.value.deployment_immediacy
       mode                 = static_path.value.mode
