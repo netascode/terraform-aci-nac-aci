@@ -13,6 +13,7 @@ module "aci_external_endpoint_group" {
   subnets = [{
     name                           = "SUBNET1"
     prefix                         = "10.0.0.0/8"
+    description                    = "My Subnet Description"
     import_route_control           = true
     export_route_control           = true
     shared_route_control           = true

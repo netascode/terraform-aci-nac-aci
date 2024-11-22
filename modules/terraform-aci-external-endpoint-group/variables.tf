@@ -57,7 +57,7 @@ variable "description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -114,11 +114,12 @@ variable "route_control_profiles" {
 }
 
 variable "subnets" {
-  description = "List of subnets. Default value `import_route_control`: false. Default value `export_route_control`: false. Default value `shared_route_control`: false. Default value `import_security`: true. Default value `shared_security`: false. Default value `aggregate_import_route_control`: false. Default value `aggregate_export_route_control`: false. Default value `aggregate_shared_route_control`: false. Default value `bgp_route_summarization`: false. Default value `ospf_route_summarization`: false."
+  description = "List of subnets. Default value `import_route_control`: false. Default value `export_route_control`: false. Default value `shared_route_control`: false. Default value `import_security`: true. Default value `shared_security`: false. Default value `aggregate_import_route_control`: false. Default value `aggregate_export_route_control`: false. Default value `aggregate_shared_route_control`: false. Default value `bgp_route_summarization`: false. Default value `ospf_route_summarization`: false. Default value `eigrp_route_summarization`: false."
   type = list(object({
     name                           = optional(string, "")
     annotation                     = optional(string, null)
     prefix                         = string
+    description                    = optional(string, "")
     import_route_control           = optional(bool, false)
     export_route_control           = optional(bool, false)
     shared_route_control           = optional(bool, false)
@@ -130,6 +131,7 @@ variable "subnets" {
     bgp_route_summarization        = optional(bool, false)
     bgp_route_summarization_policy = optional(string, "")
     ospf_route_summarization       = optional(bool, false)
+    eigrp_route_summarization      = optional(bool, false)
     route_control_profiles = optional(list(object({
       name      = string
       direction = optional(string, "import")
@@ -142,6 +144,13 @@ variable "subnets" {
       for s in var.subnets : s.name == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.name)), false)
     ])
     error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for s in var.subnets : s.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", s.description)), false)
+    ])
+    error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 
   validation {

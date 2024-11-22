@@ -14,6 +14,7 @@ module "aci_bridge_domain" {
   ep_move_detection          = true
   virtual_mac                = "22:22:22:22:22:22"
   l3_multicast               = true
+  multicast_arp_drop         = true
   multi_destination_flooding = "drop"
   unicast_routing            = false
   unknown_unicast            = "flood"

@@ -1,4 +1,4 @@
-module "aci_netflow_monitor" {
+module "aci_netflow_exporter" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-netflow-exporter"
   version = ">= 0.9.0"
 

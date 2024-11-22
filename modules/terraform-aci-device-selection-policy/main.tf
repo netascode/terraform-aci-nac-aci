@@ -1,10 +1,10 @@
 resource "aci_rest_managed" "vnsLDevCtx" {
-  dn         = "uni/tn-${var.tenant}/ldevCtx-c-${var.contract}-g-${var.service_graph_template}-n-N1"
+  dn         = "uni/tn-${var.tenant}/ldevCtx-c-${var.contract}-g-${var.service_graph_template}-n-${var.node_name}"
   class_name = "vnsLDevCtx"
   content = {
     ctrctNameOrLbl : var.contract
     graphNameOrLbl : var.service_graph_template
-    nodeNameOrLbl : "N1"
+    nodeNameOrLbl : var.node_name
   }
 }
 

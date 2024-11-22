@@ -70,6 +70,7 @@ resource "aci_rest_managed" "l3extSubnet" {
   content = {
     ip        = each.value.prefix
     name      = each.value.name
+    descr     = each.value.description
     scope     = join(",", concat(each.value.export_route_control == true ? ["export-rtctrl"] : [], each.value.import_route_control == true ? ["import-rtctrl"] : [], each.value.import_security == true ? ["import-security"] : [], each.value.shared_route_control == true ? ["shared-rtctrl"] : [], each.value.shared_security == true ? ["shared-security"] : []))
     aggregate = join(",", concat(each.value.aggregate_export_route_control == true ? ["export-rtctrl"] : [], each.value.aggregate_import_route_control == true ? ["import-rtctrl"] : [], each.value.aggregate_shared_route_control == true ? ["shared-rtctrl"] : []))
   }
@@ -86,10 +87,10 @@ resource "aci_rest_managed" "l3extRsSubnetToProfile" {
 }
 
 resource "aci_rest_managed" "l3extRsSubnetToRtSumm" {
-  for_each   = { for subnet in var.subnets : subnet.prefix => subnet if subnet.bgp_route_summarization || subnet.ospf_route_summarization }
+  for_each   = { for subnet in var.subnets : subnet.prefix => subnet if subnet.bgp_route_summarization || subnet.ospf_route_summarization || subnet.eigrp_route_summarization }
   dn         = "${aci_rest_managed.l3extSubnet[each.value.prefix].dn}/rsSubnetToRtSumm"
   class_name = "l3extRsSubnetToRtSumm"
   content = {
-    tDn = each.value.bgp_route_summarization ? (each.value.bgp_route_summarization_policy != "" ? "uni/tn-${var.tenant}/bgprtsum-${each.value.bgp_route_summarization_policy}" : "uni/tn-common/bgprtsum-default") : (each.value.ospf_route_summarization ? "uni/tn-common/ospfrtsumm-default" : null)
+    tDn = each.value.bgp_route_summarization ? (each.value.bgp_route_summarization_policy != "" ? "uni/tn-${var.tenant}/bgprtsum-${each.value.bgp_route_summarization_policy}" : "uni/tn-common/bgprtsum-default") : (each.value.ospf_route_summarization ? "uni/tn-common/ospfrtsumm-default" : (each.value.eigrp_route_summarization ? "uni/tn-common/eigrprtsumm-eigrp_pol" : null))
   }
 }

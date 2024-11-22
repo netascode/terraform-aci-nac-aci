@@ -1,3 +1,7 @@
+## 0.9.2 (unreleased)
+
+- Add support for bulk EPG static ports optimization
+
 ## 0.9.1
 
 - Add support for vPC Delay Restore timer

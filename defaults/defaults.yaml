@@ -10,6 +10,7 @@ defaults:
     auto_generate_access_spine_switch_interface_profiles: false
     new_interface_configuration: false
     interface_selector_description: false
+    bulk_static_ports: false
     fabric_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
       leaf_interface_profile_name: "LEAF\\g<id>"
@@ -542,6 +543,9 @@ defaults:
           source_type: custom-src-ip
           source_ip: 0.0.0.0
           dscp: CS2
+        netflow_vmm_exporters:
+          name_suffix: ""
+          source_ip: 0.0.0.0
         netflow_monitors:
           name_suffix: ""
         netflow_records:
@@ -744,7 +748,6 @@ defaults:
     interface_policies:
       nodes:
         interfaces:
-          from_module: 1
           module: 1
           fabric: false
           shutdown: false
@@ -752,7 +755,7 @@ defaults:
             shutdown: false
         fexes:
           interfaces:
-            from_module: 1
+            module: 1
             shutdown: false
 
     tenants:
@@ -979,6 +982,7 @@ defaults:
             aggregate_shared_route_control: false
             bgp_route_summarization: false
             ospf_route_summarization: false
+            eigrp_route_summarization: false
             route_control_profiles:
               name_suffix: ""
               direction: import
@@ -1250,6 +1254,7 @@ defaults:
           tag: 4294967295
         route_control_route_maps:
           name_suffix: ""
+          type: combinable
           contexts:
             name_suffix: ""
             action: "permit"
@@ -1458,6 +1463,7 @@ defaults:
           name_suffix: ""
         service_graph_templates:
           name_suffix: ""
+          ndo_managed: false
           template_type: FW_ROUTED
           redirect: false
           share_encapsulation: false
