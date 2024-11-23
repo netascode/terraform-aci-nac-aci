@@ -1166,6 +1166,7 @@ locals {
               ip_a            = try(int.ip_a, null)
               ip_b            = try(int.ip_b, null)
               ip_shared       = try(int.ip_shared, null)
+              lladdr          = try(int.lladdr, null)
               scope           = try(int.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.scope)
               multipod_direct = tenant.name == "infra" ? try(int.multipod_direct, false) : false
               bgp_peers = [for peer in try(int.bgp_peers, []) : {
@@ -1258,6 +1259,7 @@ module "aci_l3out_interface_profile_manual" {
     ip_a                     = int.ip_a
     ip_b                     = int.ip_b
     ip_shared                = int.ip_shared
+    lladdr                   = int.lladdr
     bgp_peers                = int.bgp_peers
     paths                    = int.paths
     scope                    = int.scope
@@ -1323,6 +1325,7 @@ locals {
             ip_a            = try(int.ip_a, null)
             ip_b            = try(int.ip_b, null)
             ip_shared       = try(int.ip_shared, null)
+            lladdr          = try(int.lladdr, null)
             scope           = try(int.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.scope)
             multipod_direct = tenant.name == "infra" ? try(int.multipod_direct, false) : false
             bgp_peers = [for peer in try(int.bgp_peers, []) : {
@@ -1412,6 +1415,7 @@ module "aci_l3out_interface_profile_auto" {
     ip_a                     = int.ip_a
     ip_b                     = int.ip_b
     ip_shared                = int.ip_shared
+    lladdr                   = int.lladdr
     bgp_peers                = int.bgp_peers
     paths                    = int.paths
     scope                    = int.scope
