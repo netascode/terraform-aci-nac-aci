@@ -39,6 +39,86 @@ resource "aci_rest_managed" "fvAEPg" {
     prefGrMemb   = var.preferred_group == true ? "include" : "exclude"
     prio         = var.qos_class
   }
+
+  dynamic "child" {
+    for_each = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.port}-vl-${sp.vlan}") => sp if sp.channel == null && sp.fex_id == null && sp.sub_port == null && var.bulk_static_ports }
+    content {
+      rn         = "rspathAtt-[${format("topology/pod-%s/paths-%s/pathep-[eth%s/%s]", child.value.pod_id, child.value.node_id, child.value.module, child.value.port)}]"
+      class_name = "fvRsPathAtt"
+      content = {
+        tDn          = format("topology/pod-%s/paths-%s/pathep-[eth%s/%s]", child.value.pod_id, child.value.node_id, child.value.module, child.value.port)
+        descr        = child.value.description
+        encap        = "vlan-${child.value.vlan}"
+        primaryEncap = child.value.primary_vlan != null ? "vlan-${child.value.primary_vlan}" : "unknown"
+        mode         = child.value.mode
+        instrImedcy  = child.value.deployment_immediacy
+      }
+    }
+  }
+
+  dynamic "child" {
+    for_each = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.module}-${sp.port}-${sp.sub_port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.port}-${sp.sub_port}-vl-${sp.vlan}") => sp if sp.channel == null && sp.fex_id == null && sp.sub_port != null && var.bulk_static_ports }
+    content {
+      rn         = "rspathAtt-[${format("topology/pod-%s/paths-%s/pathep-[eth%s/%s/%s]", child.value.pod_id, child.value.node_id, child.value.module, child.value.port, child.value.sub_port)}]"
+      class_name = "fvRsPathAtt"
+      content = {
+        tDn          = format("topology/pod-%s/paths-%s/pathep-[eth%s/%s/%s]", child.value.pod_id, child.value.node_id, child.value.module, child.value.port, child.value.sub_port)
+        descr        = child.value.description
+        encap        = "vlan-${child.value.vlan}"
+        primaryEncap = child.value.primary_vlan != null ? "vlan-${child.value.primary_vlan}" : "unknown"
+        mode         = child.value.mode
+        instrImedcy  = child.value.deployment_immediacy
+      }
+    }
+  }
+
+  dynamic "child" {
+    for_each = { for sp in var.static_ports : "${sp.node_id}-${sp.channel}-vl-${sp.vlan}" => sp if sp.channel != null && sp.fex_id == null && var.bulk_static_ports }
+    content {
+      rn         = "rspathAtt-[${format(child.value.node2_id != null ? "topology/pod-%s/protpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/pathep-[%[4]s]", child.value.pod_id, child.value.node_id, child.value.node2_id, child.value.channel)}]"
+      class_name = "fvRsPathAtt"
+      content = {
+        tDn          = format(child.value.node2_id != null ? "topology/pod-%s/protpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/pathep-[%[4]s]", child.value.pod_id, child.value.node_id, child.value.node2_id, child.value.channel)
+        descr        = child.value.description
+        encap        = "vlan-${child.value.vlan}"
+        primaryEncap = child.value.primary_vlan != null ? "vlan-${child.value.primary_vlan}" : "unknown"
+        mode         = child.value.mode
+        instrImedcy  = child.value.deployment_immediacy
+      }
+    }
+  }
+
+  dynamic "child" {
+    for_each = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.fex_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.fex_id}-${sp.port}-vl-${sp.vlan}") => sp if sp.channel == null && sp.fex_id != null && var.bulk_static_ports }
+    content {
+      rn         = "rspathAtt-[${format("topology/pod-%s/paths-%s/extpaths-%s/pathep-[eth%s/%s]", child.value.pod_id, child.value.node_id, child.value.fex_id, child.value.module, child.value.port)}]"
+      class_name = "fvRsPathAtt"
+      content = {
+        tDn          = format("topology/pod-%s/paths-%s/extpaths-%s/pathep-[eth%s/%s]", child.value.pod_id, child.value.node_id, child.value.fex_id, child.value.module, child.value.port)
+        descr        = child.value.description
+        encap        = "vlan-${child.value.vlan}"
+        primaryEncap = child.value.primary_vlan != null ? "vlan-${child.value.primary_vlan}" : "unknown"
+        mode         = child.value.mode
+        instrImedcy  = child.value.deployment_immediacy
+      }
+    }
+  }
+
+  dynamic "child" {
+    for_each = { for sp in var.static_ports : "${sp.node_id}-${sp.fex_id}-${sp.channel}-vl-${sp.vlan}" => sp if sp.channel != null && sp.fex_id != null && var.bulk_static_ports }
+    content {
+      rn         = "rspathAtt-[${format(child.value.node2_id != null && child.value.fex2_id != null ? "topology/pod-%s/protpaths-%s-%s/extprotpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/extpaths-%[4]s/pathep-[%[6]s]", child.value.pod_id, child.value.node_id, child.value.node2_id, child.value.fex_id, child.value.fex2_id, child.value.channel)}]"
+      class_name = "fvRsPathAtt"
+      content = {
+        tDn          = format(child.value.node2_id != null && child.value.fex2_id != null ? "topology/pod-%s/protpaths-%s-%s/extprotpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/extpaths-%[4]s/pathep-[%[6]s]", child.value.pod_id, child.value.node_id, child.value.node2_id, child.value.fex_id, child.value.fex2_id, child.value.channel)
+        descr        = child.value.description
+        encap        = "vlan-${child.value.vlan}"
+        primaryEncap = child.value.primary_vlan != null ? "vlan-${child.value.primary_vlan}" : "unknown"
+        mode         = child.value.mode
+        instrImedcy  = child.value.deployment_immediacy
+      }
+    }
+  }
 }
 
 resource "aci_rest_managed" "fvRsBd" {
@@ -215,67 +295,6 @@ resource "aci_rest_managed" "fvRsNodeAtt" {
   }
 }
 
-resource "aci_bulk_epg_to_static_path" "bulk_epg_to_static_path" {
-  count = var.bulk_static_ports && length(var.static_ports) > 0 ? 1 : 0
-
-  application_epg_dn = aci_rest_managed.fvAEPg.dn
-
-  dynamic "static_path" {
-    for_each = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.port}-vl-${sp.vlan}") => sp if sp.channel == null && sp.fex_id == null && sp.sub_port == null }
-    content {
-      interface_dn         = format("topology/pod-%s/paths-%s/pathep-[eth%s/%s]", static_path.value.pod_id, static_path.value.node_id, static_path.value.module, static_path.value.port)
-      encap                = "vlan-${static_path.value.vlan}"
-      deployment_immediacy = static_path.value.deployment_immediacy
-      mode                 = static_path.value.mode
-      primary_encap        = static_path.value.primary_vlan != null ? "vlan-${static_path.value.primary_vlan}" : "unknown"
-    }
-  }
-
-  dynamic "static_path" {
-    for_each = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.module}-${sp.port}-${sp.sub_port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.port}-${sp.sub_port}-vl-${sp.vlan}") => sp if sp.channel == null && sp.fex_id == null && sp.sub_port != null }
-    content {
-      interface_dn         = format("topology/pod-%s/paths-%s/pathep-[eth%s/%s/%s]", static_path.value.pod_id, static_path.value.node_id, static_path.value.module, static_path.value.port, static_path.value.sub_port)
-      encap                = "vlan-${static_path.value.vlan}"
-      deployment_immediacy = static_path.value.deployment_immediacy
-      mode                 = static_path.value.mode
-      primary_encap        = static_path.value.primary_vlan != null ? "vlan-${static_path.value.primary_vlan}" : "unknown"
-    }
-  }
-
-  dynamic "static_path" {
-    for_each = { for sp in var.static_ports : "${sp.node_id}-${sp.channel}-vl-${sp.vlan}" => sp if sp.channel != null && sp.fex_id == null }
-    content {
-      interface_dn         = format(static_path.value.node2_id != null ? "topology/pod-%s/protpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/pathep-[%[4]s]", static_path.value.pod_id, static_path.value.node_id, static_path.value.node2_id, static_path.value.channel)
-      encap                = "vlan-${static_path.value.vlan}"
-      deployment_immediacy = static_path.value.deployment_immediacy
-      mode                 = static_path.value.mode
-      primary_encap        = static_path.value.primary_vlan != null ? "vlan-${static_path.value.primary_vlan}" : "unknown"
-    }
-  }
-
-  dynamic "static_path" {
-    for_each = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.fex_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.fex_id}-${sp.port}-vl-${sp.vlan}") => sp if sp.channel == null && sp.fex_id != null }
-    content {
-      interface_dn         = format("topology/pod-%s/paths-%s/extpaths-%s/pathep-[eth%s/%s]", static_path.value.pod_id, static_path.value.node_id, static_path.value.fex_id, static_path.value.module, static_path.value.port)
-      encap                = "vlan-${static_path.value.vlan}"
-      deployment_immediacy = static_path.value.deployment_immediacy
-      mode                 = static_path.value.mode
-      primary_encap        = static_path.value.primary_vlan != null ? "vlan-${static_path.value.primary_vlan}" : "unknown"
-    }
-  }
-
-  dynamic "static_path" {
-    for_each = { for sp in var.static_ports : "${sp.node_id}-${sp.fex_id}-${sp.channel}-vl-${sp.vlan}" => sp if sp.channel != null && sp.fex_id != null }
-    content {
-      interface_dn         = format(static_path.value.node2_id != null && static_path.value.fex2_id != null ? "topology/pod-%s/protpaths-%s-%s/extprotpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/extpaths-%[4]s/pathep-[%[6]s]", static_path.value.pod_id, static_path.value.node_id, static_path.value.node2_id, static_path.value.fex_id, static_path.value.fex2_id, static_path.value.channel)
-      encap                = "vlan-${static_path.value.vlan}"
-      deployment_immediacy = static_path.value.deployment_immediacy
-      mode                 = static_path.value.mode
-      primary_encap        = static_path.value.primary_vlan != null ? "vlan-${static_path.value.primary_vlan}" : "unknown"
-    }
-  }
-}
-
 resource "aci_rest_managed" "fvRsPathAtt_port" {
   for_each   = { for sp in var.static_ports : (sp.module != 1 ? "${sp.node_id}-${sp.module}-${sp.port}-vl-${sp.vlan}" : "${sp.node_id}-${sp.port}-vl-${sp.vlan}") => sp if sp.channel == null && sp.fex_id == null && sp.sub_port == null && !var.bulk_static_ports }
   dn         = "${aci_rest_managed.fvAEPg.dn}/rspathAtt-[${format("topology/pod-%s/paths-%s/pathep-[eth%s/%s]", each.value.pod_id, each.value.node_id, each.value.module, each.value.port)}]"
@@ -306,7 +325,7 @@ resource "aci_rest_managed" "ptpEpgCfg_port" {
     }
   }
 
-  depends_on = [aci_rest_managed.fvRsPathAtt_port, aci_bulk_epg_to_static_path.bulk_epg_to_static_path]
+  depends_on = [aci_rest_managed.fvRsPathAtt_port]
 }
 
 resource "aci_rest_managed" "fvRsPathAtt_subport" {
@@ -339,7 +358,7 @@ resource "aci_rest_managed" "ptpEpgCfg_subport" {
     }
   }
 
-  depends_on = [aci_rest_managed.fvRsPathAtt_subport, aci_bulk_epg_to_static_path.bulk_epg_to_static_path]
+  depends_on = [aci_rest_managed.fvRsPathAtt_subport]
 }
 
 resource "aci_rest_managed" "fvRsPathAtt_channel" {
@@ -372,7 +391,7 @@ resource "aci_rest_managed" "ptpEpgCfg_channel" {
     }
   }
 
-  depends_on = [aci_rest_managed.fvRsPathAtt_channel, aci_bulk_epg_to_static_path.bulk_epg_to_static_path]
+  depends_on = [aci_rest_managed.fvRsPathAtt_channel]
 }
 
 resource "aci_rest_managed" "fvRsPathAtt_fex_port" {
@@ -405,7 +424,7 @@ resource "aci_rest_managed" "ptpEpgCfg_fex_port" {
     }
   }
 
-  depends_on = [aci_rest_managed.fvRsPathAtt_fex_port, aci_bulk_epg_to_static_path.bulk_epg_to_static_path]
+  depends_on = [aci_rest_managed.fvRsPathAtt_fex_port]
 }
 
 resource "aci_rest_managed" "fvRsPathAtt_fex_channel" {
@@ -438,7 +457,7 @@ resource "aci_rest_managed" "ptpEpgCfg_fex_channel" {
     }
   }
 
-  depends_on = [aci_rest_managed.fvRsPathAtt_fex_channel, aci_bulk_epg_to_static_path.bulk_epg_to_static_path]
+  depends_on = [aci_rest_managed.fvRsPathAtt_fex_channel]
 }
 
 resource "aci_rest_managed" "fvStCEp" {

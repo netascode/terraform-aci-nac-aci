@@ -164,7 +164,6 @@ module "aci_endpoint_group" {
 
 | Name | Type |
 |------|------|
-| [aci_bulk_epg_to_static_path.bulk_epg_to_static_path](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/bulk_epg_to_static_path) | resource |
 | [aci_rest_managed.fvAEPg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvAEPgLagPolAtt](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvCepNetCfgPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
