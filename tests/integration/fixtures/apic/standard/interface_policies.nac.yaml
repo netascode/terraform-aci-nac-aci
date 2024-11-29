@@ -40,6 +40,8 @@ apic:
                 description: interface descr 3
                 policy_group: ACC1
               - port: 2
+              - port: 3
+                policy_group: VPC4
 
       - id: 102
         interfaces:
@@ -47,6 +49,13 @@ apic:
             policy_group: VPC1
           - port: 6
             policy_group: VPC2
+          - port: 7
+            fex_id: 101
           - port: 54
             policy_group: ACC1
             type: uplink
+        fexes:
+          - id: 101
+            interfaces:
+              - port: 1
+                policy_group: VPC4

@@ -75,6 +75,13 @@ ndo:
                           deployment_immediacy: immediate
                           node: 101
                           vlan: 234
+                        - type: vpc
+                          channel: VPC2
+                          node_1: 101
+                          node_2: 102
+                          fex: 111
+                          fex_2: 111
+                          vlan: 234
                       static_leafs:
                         - pod: 1
                           node: 102

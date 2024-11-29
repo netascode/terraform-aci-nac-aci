@@ -149,7 +149,11 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile
 {% elif sp.type | default(defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.type) == 'vpc' %}
 {% set type = 'vpc' %}
 {% set policy_group_name = sp.channel ~ defaults.ndo.schemas.templates.application_profiles.endpoint_groups.sites.static_ports.leaf_interface_policy_group_suffix %}
+{% if sp.fex is defined and sp.fex_2 is defined %}
+{% set path = 'topology/pod-' + sp.pod | default(1) | string + '/protpaths-' + sp.node_1 | string + '-' + sp.node_2 | string + '/extprotpaths-' + sp.fex | string + '-' + sp.fex_2 | string + '/pathep-[' + policy_group_name + ']' %}
+{% else %}                                   
 {% set path = 'topology/pod-' + sp.pod | default(1) | string + '/protpaths-' + sp.node_1 | string + '-' + sp.node_2 | string + '/pathep-[' + policy_group_name + ']' %}
+{% endif %}
 {% endif %}
 
 Verify Schema {{ schema.name }} Template {{ template.name }} Application Profile {{ ap_name }} Endpoint Group {{ epg_name }} Site {{ site.name }} Static Port '{{ path | replace("topology/", "") }}'

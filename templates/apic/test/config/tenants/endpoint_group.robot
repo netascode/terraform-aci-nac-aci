@@ -127,7 +127,11 @@ Verify Endpoint Group {{ epg_name }} VMM Domain {{ vmm_name }}
                     {% set node2 = (apic.interface_policies | default() | community.general.json_query(query))[1] %}
                     {% if node2 < node %}{% set node_tmp = node %}{% set node = node2 %}{% set node2 = node_tmp %}{% endif %}
                 {% endif %}
+                {% if sp.fex_id is defined and sp.fex2_id is defined %}
+                {% set sp_tdn = "topology/pod-" ~ pod ~ "/protpaths-" ~ node ~ "-" ~ node2 ~ "/extprotpaths-" ~ sp.fex_id ~ "-" ~ sp.fex2_id ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+                {% else %}
                 {% set sp_tdn = "topology/pod-" ~ pod ~ "/protpaths-" ~ node ~ "-" ~ node2 ~ "/pathep-[" ~ policy_group_name ~ "]" %}
+                {% endif %}
             {% else %}
                 {% set sp_tdn = "topology/pod-" ~ pod ~ "/paths-" ~ node ~ "/pathep-[" ~ policy_group_name ~ "]" %}
             {% endif %}

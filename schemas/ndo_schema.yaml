@@ -256,6 +256,7 @@ t_ap_epg_sites_static_ports:
   pod: int(min=1, max=255, required=False)
   node: int(min=1, max=4000, required=False)
   fex: int(min=101, max=199, required=False)
+  fex_2: int(min=101, max=199, required=False)
   node_1: int(min=1, max=4000, required=False)
   node_2: int(min=1, max=4000, required=False)
   port: int(min=1, max=127, required=False)

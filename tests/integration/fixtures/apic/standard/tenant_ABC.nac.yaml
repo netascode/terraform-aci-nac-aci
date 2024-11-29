@@ -505,6 +505,12 @@ apic:
                   port: 20
                   sub_port: 1
                   vlan: 135
+                - node_id: 101
+                  node2_id: 102
+                  fex_id: 101
+                  fex2_id: 101
+                  channel: VPC3
+                  vlan: 135
               static_leafs:
                 - node_id: 102
                   vlan: 136

@@ -581,6 +581,9 @@ apic:
         description: My Breakout Port
         type: breakout
         map: 10g-4x
+      - name: VPC4
+        type: vpc
+        aaep: AAEP1
 
     leaf_interface_profiles:
       - name: LEAF-INT-PROF1
