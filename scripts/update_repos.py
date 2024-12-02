@@ -47,6 +47,10 @@ REPOS = [
                 "dst": "./roles/test_ndo_deploy/templates/config",
             },
             {
+                "src": "../templates/ndo/test/lib",
+                "dst": "./roles/ndo_common/templates/lib",
+            },
+            {
                 "src": "../tests/integration/fixtures/apic/standard",
                 "dst": "./roles/apic_deploy/molecule/01_standard/data/host_vars/apic1",
             },
