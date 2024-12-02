@@ -88,6 +88,7 @@ fabric_policies:
   l2_mtu_policies: list(include('fp_l2_mtu_policies'), required=False) # @name(L2 MTU Policy) @sheet_hidden()
   system_performance: include('fp_system_performance', required=False) # @name(System Performance) @sheet_hidden()
   interface_policies: include('fp_interface_policies', required=False) # @name(Fabric Interface Policies)
+  sr_mpls_global_configuration: include('fp_sr_mpls_global_configuration', required=False)
 
 fp_banners:
   apic_gui_alias: str(required=False)
@@ -986,6 +987,10 @@ fp_link_level_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   link_debounce_interval: int(min=0, max=5000, required=False)
+
+fp_sr_mpls_global_configuration:
+  sr_global_block_minimum: int(min=16000, max=471804, required=False)
+  sr_global_block_maximum: int(min=16000, max=471804, required=False)
 
 access_policies:
   leaf_switch_profile_name: str(min=1, max=64, required=False)

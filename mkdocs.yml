@@ -122,6 +122,7 @@ nav:
               - LDAP: data_model/apic/fabric_policies/ldap.md
               - System Performance: data_model/apic/fabric_policies/system_performance.md
               - Link Level Interface Policy: data_model/apic/fabric_policies/link_level_policy.md
+              - SR MPLS Global Configuration: data_model/apic/fabric_policies/sr_mpls_global_configuration.md
           - Access Policies:
               - MCP Global Instance: data_model/apic/access_policies/mcp.md
               - QoS Class: data_model/apic/access_policies/qos.md

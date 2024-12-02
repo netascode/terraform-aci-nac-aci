@@ -1177,6 +1177,15 @@ objects:
       - config
     paths:
       - apic.fabric_policies.interface_policies.link_level_policies
+  - name: SR MPLS Global Configuration
+    template: sr_mpls_global_configuration
+    folder: fabric_policies
+    aci_classes:
+      - mplsSrgbLabelPol
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.sr_mpls_global_configuration
 
 
 spine_objects:

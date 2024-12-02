@@ -1,0 +1,21 @@
+{% if apic.fabric_policies.sr_mpls_global_configuration is not defined %}
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        }
+    }
+}
+{% else %}
+{
+    "mplsSrgbLabelPol": {
+        "attributes": {
+            "annotation": "orchestrator:aac",
+            "dn": "uni/tn-infra/mplslabelpol-default/mplssrgblabelpol-1",
+            {% set smgc = apic.fabric_policies.sr_mpls_global_configuration %}
+            "minSrgbLabel": "{{ smgc.sr_global_block_minimum | default(defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum) }}",
+            "maxSrgbLabel": "{{ smgc.sr_global_block_maximum | default(defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum) }}"
+        }
+    }
+}
+{% endif %}
