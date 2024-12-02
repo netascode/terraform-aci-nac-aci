@@ -71,6 +71,11 @@ API_ENDPOINT_MAPPINGS = {
         "key": "displayName",
         "has_id": True,
     },
+    "schemas/list-identity": {
+        "container": "schemas",
+        "key": "displayName",
+        "has_id": True,
+    },
     "auth/security/certificates": {
         "container": "caCertificates",
         "key": "name",
