@@ -149,7 +149,7 @@ ndo:
                   mac: 00:22:BD:F8:19:EE
                   advertise_host_routes: true
                   l3outs:
-                    - L3OUT
+                    - L3OUT1
             - name: BD2
               vrf:
                 name: VRF2
@@ -210,6 +210,20 @@ ndo:
                 name: VRF1
               l3out:
                 name: L3OUT1
+            - name: EXT-EPG3
+              vrf:
+                name: VRF1
+              sites:
+                - name: APIC1
+                  l3out:
+                    name: L3OUT1
+            - name: EXT-EPG4
+              vrf:
+                name: VRF1
+              sites:
+                - name: APIC1
+                  l3out:
+                    name: L3OUT2
 
           contracts:
             - name: CONTRACT1
@@ -273,3 +287,15 @@ ndo:
             - APIC1
         - name: TEMPLATE2
           tenant: NDO1
+          sites:
+            - APIC1
+          external_endpoint_groups:
+            - name: EXT-EPG5
+              vrf:
+                name: VRF1
+                template: TEMPLATE1
+              sites:
+                - name: APIC1
+                  l3out:
+                    name: L3OUT1
+                    template: TEMPLATE1
