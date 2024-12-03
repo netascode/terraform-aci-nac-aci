@@ -14,10 +14,10 @@ module "aci_vrf" {
   bgp_timer_policy                       = "BGP1"
   bgp_ipv4_address_family_context_policy = "BGP_AF_IPV4"
   bgp_ipv6_address_family_context_policy = "BGP_AF_IPV6"
-  bgp_ipv4_import_route_target           = "route-target:as2-nn2:10:10"
-  bgp_ipv4_export_route_target           = "route-target:as2-nn2:10:10"
-  bgp_ipv6_import_route_target           = "route-target:as2-nn2:10:10"
-  bgp_ipv6_export_route_target           = "route-target:as2-nn2:10:10"
+  bgp_ipv4_import_route_target           = ["route-target:as2-nn2:10:10", "route-target:as2-nn2:10:11"]
+  bgp_ipv4_export_route_target           = ["route-target:as2-nn2:10:12", "route-target:as2-nn2:10:13"]
+  bgp_ipv6_import_route_target           = ["route-target:as2-nn2:10:14", "route-target:as2-nn2:10:15"]
+  bgp_ipv6_export_route_target           = ["route-target:as2-nn2:10:16", "route-target:as2-nn2:10:17"]
   dns_labels                             = ["DNS1"]
   contract_consumers                     = ["CON1"]
   contract_providers                     = ["CON1"]
