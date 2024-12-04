@@ -257,7 +257,6 @@ resource "aci_rest_managed" "l3extRsNdIfPol" {
   dn         = "${aci_rest_managed.l3extLIfP.dn}/rsNdIfPol"
   class_name = "l3extRsNdIfPol"
   content = {
-    tDn           = "uni/tn-${var.tenant}/tnNdIfPolName-${var.nd_interface_policy}"
     tnNdIfPolName = var.nd_interface_policy
   }
 }
