@@ -166,6 +166,12 @@ variable "igmp_interface_policy" {
   }
 }
 
+variable "nd_interface_policy" {
+  description = "ND interface policy."
+  type        = string
+  default     = ""
+}
+
 variable "qos_class" {
   description = "QoS class. Choices: `level1`, `level2`, `level3`, `level4`, `level5`, `level6`, `unspecified`."
   type        = string
