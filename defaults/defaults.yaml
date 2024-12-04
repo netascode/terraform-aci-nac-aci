@@ -401,6 +401,9 @@ defaults:
         link_level_policies:
           name_suffix: ""
           link_debounce_interval: 0
+      sr_mpls_global_configuration:
+        sr_global_block_minimum: 16000
+        sr_global_block_maximum: 23999
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
@@ -799,6 +802,7 @@ defaults:
         unicast_routing: true
         advertise_host_routes: false
         l3_multicast: false
+        multicast_arp_drop: false
         dhcp_labels:
           scope: tenant
         subnets:
