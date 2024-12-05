@@ -309,4 +309,38 @@ Verify VRF {{ vrf.name }} IGMP Context SSM Tranlation policies {{ pol.group_pref
 
 {% endif %}
 
+{% if vrf.route_summarization_policies is defined %}
+{% for pol in vrf.route_summarization_policies | default([]) %}
+{% set rsp_name = pol.name ~ defaults.apic.tenants.vrfs.route_summarization_policies.name_suffix %}
+Verify VRF {{ vrf.name }} Route Summarization Policy {{ rsp_name }}
+    ${pol}=   Set Variable   $..fvCtx.children[?(@.fvCtxRtSummPol.attributes.name=='{{ rsp_name }}')].fvCtxRtSummPol
+    Should Be Equal Value Json String   ${r.json()}   ${pol}.attributes.name   {{ rsp_name }}
+
+{% for node in pol.nodes | default([]) %}
+{% set query = "nodes[?id==`" ~ node.id ~ "`].pod" %}
+{% set pod = node.pod | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default(defaults.apic.tenants.vrfs.route_summarization_policies.nodes.pod)) %}
+Verify VRF {{ vrf.name }} Route Summarization Policy {{ rsp_name }} Node {{ node.id }}
+    ${pol}=   Set Variable   $..fvCtx.children[?(@.fvCtxRtSummPol.attributes.name=='{{ rsp_name }}')].fvCtxRtSummPol
+    ${node}=   Set Variable   ${pol}.children[?(@.fvRsNodeRtSummAtt.attributes.tDn=='topology/pod-{{ pod }}/node-{{ node.id }}')].fvRsNodeRtSummAtt
+    Should Be Equal Value Json String   ${r.json()}   ${node}.attributes.tDn   topology/pod-{{ pod }}/node-{{ node.id }}
+
+{% endfor %}
+
+{% for subnet in pol.subnets | default([]) %}
+{% if subnet.bgp_route_summarization_policy is defined %}
+{% set brs_tdn = "uni/tn-" + tenant.name + "/bgprtsum-" + subnet.bgp_route_summarization_policy ~ defaults.apic.tenants.policies.bgp_route_summarization_policies.name_suffix %}
+{% else %}
+{% set brs_tdn = "uni/tn-common/bgprtsum-default" %}
+{% endif %}
+Verify VRF {{ vrf.name }} Route Summarization Policy {{ rsp_name }} Subnet {{ subnet.prefix }}
+    ${pol}=   Set Variable   $..fvCtx.children[?(@.fvCtxRtSummPol.attributes.name=='{{ rsp_name }}')].fvCtxRtSummPol
+    ${subnet}=   Set Variable   ${pol}.children[?(@.fvRtSummSubnet.attributes.prefix=='{{ subnet.prefix }}')].fvRtSummSubnet
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}.attributes.prefix   {{ subnet.prefix }}
+    Should Be Equal Value Json String   ${r.json()}   ${subnet}.children..fvRsSubnetToRtSummPol.attributes.tDn   {{ brs_tdn }}
+
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+
 {% endfor %}

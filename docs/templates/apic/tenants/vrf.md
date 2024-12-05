@@ -95,4 +95,13 @@ apic:
                 multicast_route_map: TEST_MRM4
               - tenant: DEF
                 vrf: DEV
+          route_summarization_policies:
+            - name: RTSUM1
+              nodes:
+                - id: 101
+                - id: 102
+              subnets:
+                - prefix: 1.1.0.0/16
+                  bgp_route_summarization_policy: BGP_ROUTE_SUMMARIZATION1
+                - prefix: 192.168.0.0/16
 ```

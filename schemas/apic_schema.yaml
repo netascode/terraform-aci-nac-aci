@@ -1828,6 +1828,7 @@ ten_vrf:
   ospf: include('ten_vrf_ospf', required=False) # @name(VRF OSPF) @sheet_hidden()
   dns_labels: list(regex('^[a-zA-Z0-9_.:-]{1,64}$'), required=False) # @name(VRF DNS Labels) @ref_name(DNS Label) @sheet_hidden()
   pim: include('ten_vrf_pim', required=False) # @name(VRF PIM) @sheet_hidden()
+  route_summarization_policies: list(include('ten_vrf_route_summarization_policies'), required=False) # @name(VRF Route Summarization Policies) @ref_name(Route Summarization Policy) @sheet_hidden()
   expected_state: include('ten_vrf_expected_state', required=False) # @no_external_doc() @name(VRF Expected State) @sheet_hidden()
 
 ten_vrf_leaked_internal_prefixes:
@@ -1907,6 +1908,19 @@ ten_vrf_inter_vrf_policies:
   tenant: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   vrf: regex('^[a-zA-Z0-9_.:-]{1,64}$')
   multicast_route_map: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+
+ten_vrf_route_summarization_policies:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  nodes: list(include('ten_vrf_route_summarization_nodes'), required=False) # @name(VRF Route Summarization Nodes) @ref_name(Node) @key(node_id) @sheet_hidden()
+  subnets: list(include('ten_vrf_route_summarization_subnets'), required=False) # @name(VRF Route Summarization Subnets) @ref_name(Subnet) @key(prefix) @sheet_hidden()
+
+ten_vrf_route_summarization_nodes:
+  id: int(min=101, max=4000)
+  pod: int(min=1, max=255, required=False)
+
+ten_vrf_route_summarization_subnets:
+  prefix: ip()
+  bgp_route_summarization_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ten_vrf_expected_state:
   minimum_health: int(min=0, max=100, required=False)

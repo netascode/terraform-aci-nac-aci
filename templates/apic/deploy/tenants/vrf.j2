@@ -671,7 +671,63 @@
                             }
                         }
                         {%- endif %}
-                        
+                        {%- if vrf.route_summarization_policies is defined %}
+                        {%- for pol in vrf.route_summarization_policies %}{{ comma1() }}
+                        {% set rsp_name = pol.name ~ defaults.apic.tenants.vrfs.route_summarization_policies.name_suffix %}
+                        {
+                            "fvCtxRtSummPol": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "childAction": "deleteNonPresent",
+                                    "name": "{{ rsp_name }}"
+                                },
+                                "children": [
+                                    {%- set comma2 = joiner(",") %}
+                                    {%- for node in pol.nodes | default([]) %}{{ comma2() }}
+                                    {% set query = "nodes[?id==`" ~ node.id ~ "`].pod" %}
+                                    {% set pod = node.pod | default(((apic.node_policies | default()) | community.general.json_query(query))[0] | default(defaults.apic.tenants.vrfs.route_summarization_policies.nodes.pod)) %}
+                                    {
+                                        "fvRsNodeRtSummAtt": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "tDn": "topology/pod-{{ pod }}/node-{{ node.id }}"
+                                            }
+                                        }
+                                    }
+                                    {%- endfor%}
+
+                                    {%- for subnet in pol.subnets | default([]) %}{{ comma2() }}
+                                    {%- if subnet.bgp_route_summarization_policy is defined %}
+                                        {%- set brs_tdn = "uni/tn-" + tenant.name + "/bgprtsum-" + subnet.bgp_route_summarization_policy ~ defaults.apic.tenants.policies.bgp_route_summarization_policies.name_suffix %}
+                                    {%- else %}
+                                        {%- set brs_tdn = "uni/tn-common/bgprtsum-default" %}
+                                    {%- endif %}
+                                    {
+                                        "fvRtSummSubnet": {
+                                            "attributes": {
+                                                "annotation": "orchestrator:aac",
+                                                "prefix": "{{ subnet.prefix }}"
+                                            },
+                                            "children": [
+                                                {
+                                                    "fvRsSubnetToRtSummPol": {
+                                                        "attributes": {
+                                                            "annotation": "orchestrator:aac",
+                                                            "tDn": "{{ brs_tdn }}"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                    {%- endfor%}
+
+                                ]
+                            }
+                        }
+                        {%- endfor %}
+                        {%- endif %}
+
                     ]
                 }
             }
