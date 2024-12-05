@@ -592,3 +592,47 @@ variable "leaked_external_prefixes" {
     error_message = "`vrf`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
+
+variable "route_summarization_policies" {
+  description = "List of route summarization policies."
+  type = list(object({
+    name = string
+    nodes = optional(list(object({
+      id  = number
+      pod = optional(number, 1)
+    })), [])
+    subnets = optional(list(object({
+      prefix                         = string
+      bgp_route_summarization_policy = optional(string, null)
+    })), [])
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for p in var.route_summarization_policies : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", p.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for p in var.route_summarization_policies : [for n in coalesce(p.nodes, []) : n.id >= 101 && n.id <= 4000]
+    ]))
+    error_message = "`nodes.id`: Allowed values: `101`-`4000`."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for p in var.route_summarization_policies : [for n in coalesce(p.nodes, []) : n.pod >= 1 && n.pod <= 255]
+    ]))
+    error_message = "`nodes.pod`: Allowed values: `1`-`255`."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for p in var.route_summarization_policies : [for s in coalesce(p.subnets, []) : s.bgp_route_summarization_policy == null || can(regex("^[a-zA-Z0-9_.:-]{1,64}$", s.bgp_route_summarization_policy))]
+    ]))
+    error_message = "`subnets.bgp_route_summarization_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
