@@ -155,10 +155,7 @@
                     "intersiteBumTrafficAllow": {% if bd.intersite_bum_traffic | default(defaults.ndo.schemas.templates.bridge_domains.intersite_bum_traffic) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     "optimizeWanBandwidth": {% if bd.optimize_wan_bandwidth | default(defaults.ndo.schemas.templates.bridge_domains.optimize_wan_bandwidth) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     "l2Stretch": {% if bd.l2_stretch | default(defaults.ndo.schemas.templates.bridge_domains.l2_stretch) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
-                    {% if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %}
                     "unicastRouting": {% if bd.unicast_routing | default(defaults.ndo.schemas.templates.bridge_domains.unicast_routing) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
-                    {% endif %}
-                    {% if ndo.version | default(defaults.ndo.version) is version('3.1.1g', '>=') %}
                     "arpFlood": {% if bd.arp_flooding | default(defaults.ndo.schemas.templates.bridge_domains.arp_flooding) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     {%- if bd.virtual_mac is defined %}
                     "vmac": "{{ bd.virtual_mac }}",
@@ -166,7 +163,6 @@
                     "multiDstPktAct": "{{ bd.multi_destination_flooding | default(defaults.ndo.schemas.templates.bridge_domains.multi_destination_flooding) }}",
                     "unkMcastAct": "{{ bd.unknown_ipv4_multicast | default(defaults.ndo.schemas.templates.bridge_domains.unknown_ipv4_multicast) }}",
                     "v6unkMcastAct": "{{ bd.unknown_ipv6_multicast | default(defaults.ndo.schemas.templates.bridge_domains.unknown_ipv6_multicast) }}",
-                    {% endif %}
                     "l3MCast": {% if bd.l3_multicast | default(defaults.ndo.schemas.templates.bridge_domains.l3_multicast) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     "subnets": [
                         {%- set comma3 = joiner(",") %}
@@ -198,7 +194,7 @@
 
                     }
                     {%- endif %},
-                    {% if bd.dhcp_policies is defined and ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %}
+                    {% if bd.dhcp_policies is defined %}
                     "dhcpLabels": [
                         {%- set comma3 = joiner(",") %}
                         {%- for pol in  bd.dhcp_policies | default([]) %}{{ comma3() }}
@@ -780,10 +776,8 @@
                         {%- endfor %}
 
                     ],
-                    "hostBasedRouting": {% if site.advertise_host_routes | default(defaults.ndo.schemas.templates.bridge_domains.sites.advertise_host_routes) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %}
-                    {%- if ndo.version | default(defaults.ndo.version) is version('3.1.1h', '>=') %},
+                    "hostBasedRouting": {% if site.advertise_host_routes | default(defaults.ndo.schemas.templates.bridge_domains.sites.advertise_host_routes) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
                     "mac": "{{ site.mac | default(defaults.ndo.schemas.templates.bridge_domains.sites.mac) }}"
-                    {%- endif %}
 
                 }
                 {%- endif %}
