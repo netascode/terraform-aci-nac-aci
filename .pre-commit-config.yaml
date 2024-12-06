@@ -599,6 +599,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-spanning-tree-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-sr-mpls-global-configuration"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-sr-mpls-global-configuration/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-storm-control-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-storm-control-policy/examples/complete"]
