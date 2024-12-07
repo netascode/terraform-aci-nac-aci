@@ -501,8 +501,9 @@ defaults:
           confidentiality_offset: "offset-0"
         macsec_keychain_policies:
           name_suffix: ""
-          start_time: "now"
-          end_time: "infinite"
+          key_policies:
+            start_time: "now"
+            end_time: "infinite"
         macsec_interfaces_policies:
           name_suffix: ""
           admin_state: true
