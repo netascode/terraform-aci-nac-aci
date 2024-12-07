@@ -19,13 +19,13 @@ variable "description" {
 }
 
 variable "cipher_suite" {
-  description = "Ciper Suite. Choices: `gcm-aes-128`, `gcm-aes-128`, `gcm-aes-xpn-128`, `gcm-aes-xpn-256`.  Deafult is `gcm-aes-xpn-256`."
+  description = "Ciper Suite. Choices: `gcm-aes-128`, `gcm-aes-256`, `gcm-aes-xpn-128`, `gcm-aes-xpn-256`.  Deafult is `gcm-aes-xpn-256`."
   type        = string
   default     = "gcm-aes-xpn-256"
 
   validation {
-    condition     = contains(["gcm-aes-128", "gcm-aes-128", "gcm-aes-xpn-128", "gcm-aes-xpn-256"], var.cipher_suite)
-    error_message = "Allowed values: `gcm-aes-128`, `gcm-aes-128`, `gcm-aes-xpn-128`, `gcm-aes-xpn-256`."
+    condition     = contains(["gcm-aes-128", "gcm-aes-256", "gcm-aes-xpn-128", "gcm-aes-xpn-256"], var.cipher_suite)
+    error_message = "Allowed values: `gcm-aes-128`, `gcm-aes-256`, `gcm-aes-xpn-128`, `gcm-aes-xpn-256`."
   }
 }
 

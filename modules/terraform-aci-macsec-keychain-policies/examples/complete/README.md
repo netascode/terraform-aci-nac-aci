@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
 # Terraform ACI MACsec Keychain Policies Module
 
-  To run this example you need to execute:
+To run this example you need to execute:
 
 ```bash
 $ terraform init
@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_macsec_keychain_policies" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-macsec-keychain-policies"
-  version = ">= 0.8.0"
+  version = ">= 0.9.2"
 
   name        = "macsec-keychain-pol"
   description = "Keychain Description"

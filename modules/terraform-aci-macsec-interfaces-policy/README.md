@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_macsec_interfaces_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-macsec-interfaces-policy"
-  version = ">= 0.8.0"
+  version = ">= 0.9.2"
 
   name                     = "macsec-int-pol"
   admin_state              = true
@@ -38,6 +38,7 @@ module "aci_macsec_interfaces_policy" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | MACsec Interface Policy Name | `string` | n/a | yes |
+| <a name="input_description"></a> [description](#input\_description) | MACsec Interface Policy description | `string` | `""` | no |
 | <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | The administrative state of the MACsec Interface Policy | `bool` | `true` | no |
 | <a name="input_macsec_parameters_policy"></a> [macsec\_parameters\_policy](#input\_macsec\_parameters\_policy) | MACsec Parameters Policy Name | `string` | n/a | yes |
 | <a name="input_macsec_keychain_policy"></a> [macsec\_keychain\_policy](#input\_macsec\_keychain\_policy) | MACsec KeyChain Policy Name | `string` | n/a | yes |

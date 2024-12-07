@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_macsec_parameters_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-macsec-parameters-policy"
-  version = ">= 0.8.0"
+  version = ">= 0.9.2"
 
   name                   = "macsecparam1"
   description            = "macsecparam1 description"
@@ -43,7 +43,7 @@ module "aci_macsec_parameters_policy" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | MACsec Parameter Policy Name | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | MACsec Parameter Policy description | `string` | n/a | yes |
-| <a name="input_cipher_suite"></a> [cipher\_suite](#input\_cipher\_suite) | Ciper Suite. Choices: `gcm-aes-128`, `gcm-aes-128`, `gcm-aes-xpn-128`, `gcm-aes-xpn-256`.  Deafult is `gcm-aes-xpn-256`. | `string` | `"gcm-aes-xpn-256"` | no |
+| <a name="input_cipher_suite"></a> [cipher\_suite](#input\_cipher\_suite) | Ciper Suite. Choices: `gcm-aes-128`, `gcm-aes-256`, `gcm-aes-xpn-128`, `gcm-aes-xpn-256`.  Deafult is `gcm-aes-xpn-256`. | `string` | `"gcm-aes-xpn-256"` | no |
 | <a name="input_confidentiality_offset"></a> [confidentiality\_offset](#input\_confidentiality\_offset) | Confidentiality Offset. Choices: `offset-0`, `offset-30`, `offset-50`. Default is `offset-0`. | `string` | `"offset-0"` | no |
 | <a name="input_key_server_priority"></a> [key\_server\_priority](#input\_key\_server\_priority) | Key Server Priority. Minimum value: `0`. Maximum value: `255`. Default: `16` | `number` | `16` | no |
 | <a name="input_window_size"></a> [window\_size](#input\_window\_size) | Replay Protection Window Size. Minimum value: `0`. Maximum value `4294967295`. Default: `64` | `number` | `64` | no |

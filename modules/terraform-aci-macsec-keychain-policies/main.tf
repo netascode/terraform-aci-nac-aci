@@ -1,5 +1,4 @@
 resource "aci_rest_managed" "macsecKeyChainPol" {
-  # for_each = { for kp in var.key_policies: kp.name => kp }
   dn         = "uni/infra/macsecpcont/keychainp-${var.name}"
   class_name = "macsecKeyChainPol"
   content = {
@@ -24,8 +23,4 @@ resource "aci_rest_managed" "macsecKeyPol" {
   lifecycle {
     ignore_changes = [content["startTime"], content["preSharedKey"]]
   }
-
-  depends_on = [
-    aci_rest_managed.macsecKeyChainPol
-  ]
 }

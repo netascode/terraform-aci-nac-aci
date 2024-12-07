@@ -5,6 +5,7 @@ resource "aci_rest_managed" "macsecIfPol" {
   content = {
     name    = var.name
     adminSt = var.admin_state ? "enabled" : "disabled"
+    descr   = var.description
   }
 }
 
