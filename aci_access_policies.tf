@@ -348,8 +348,8 @@ module "aci_macsec_interfaces_policy" {
   for_each                 = { for mip in try(local.access_policies.interface_policies.macsec_interfaces_policies, []) : mip.name => mip if local.modules.aci_macsec_interfaces_policy && var.manage_access_policies }
   name                     = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.name_suffix}"
   admin_state              = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.admin_state)
-  macsec_keychain_policy   = each.value.macsec_keychain_policy
-  macsec_parameters_policy = each.value.macsec_parameters_policy
+  macsec_keychain_policy   = "${each.value.macsec_keychain_policy}${local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.name_suffix}"
+  macsec_parameters_policy = "${each.value.macsec_parameters_policy}${local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.name_suffix}"
 
   depends_on = [
     module.aci_macsec_keychain_policies,
