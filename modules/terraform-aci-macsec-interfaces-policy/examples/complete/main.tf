@@ -1,6 +1,6 @@
 module "aci_macsec_interfaces_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-macsec-interfaces-policy"
-  version = ">= 0.8.0"
+  version = ">= 0.9.2"
 
   name                     = "macsec-int-pol"
   admin_state              = true
