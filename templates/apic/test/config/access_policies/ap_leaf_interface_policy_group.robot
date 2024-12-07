@@ -83,5 +83,9 @@ Verify Leaf Interface Policy Group {{ policy_group_name }}
     Should Be Equal Value Json String   ${r.json()}    ${mon}.attributes.tnNetflowMonitorPolName   {{ monitor_name }}
     Should Be Equal Value Json String   ${r.json()}    ${mon}.attributes.fltType   {{ monitor.ip_filter_type | default(defaults.apic.access_policies.leaf_interface_policy_groups.netflow_monitor_policies.ip_filter_type) }}
 {% endfor %}
+{% if pg.macsec_interface_policy is defined %}
+{% set macsec_policy_name = pg.macsec_interface_policy ~ defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.name_suffix %}
+    Should Be Equal Value Json String   ${r.json()}    $..infraRsMacsecIfPol.attributes.tDn   uni/infra/macsecifp-{{ macsec_policy_name }}
+{% endif %}
 
 {% endfor %}

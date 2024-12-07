@@ -1,0 +1,30 @@
+{
+    "macsecPolCont": {
+        "attributes": {
+            "dn": "uni/infra/macsecpcont"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.access_policies.interface_policies.macsec_parameters_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = policy.name ~ defaults.apic.access_policies.interface_policies.macsec_parameters_policies.name_suffix %}
+            {
+                "macsecParamPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ policy_name }}",
+                        "descr": "{{ policy.description | default() }}", 
+                        "dn": "uni/infra/macsecpcont/paramp-{{ policy_name }}",
+                        "cipherSuite": "{{ policy.cipher_suite | default(defaults.apic.access_policies.interface_policies.macsec_parameters_policies.cipher_suite) }}",
+                        "confOffset": "{{ policy.confidentiality_offset | default(defaults.apic.access_policies.interface_policies.macsec_parameters_policies.confidentiality_offset) }}",
+                        "keySvrPrio": "{{ policy.key_server_priority | default(defaults.apic.access_policies.interface_policies.macsec_parameters_policies.key_server_priority) }}",
+                        "replayWindow": "{{ policy.window_size | default(defaults.apic.access_policies.interface_policies.macsec_parameters_policies.window_size) }}",
+                        "sakExpiryTime": "{{ policy.key_expiry_time | default(defaults.apic.access_policies.interface_policies.macsec_parameters_policies.key_expiry_time) }}",
+                        "secPolicy": "{{ policy.security_policy | default(defaults.apic.access_policies.interface_policies.macsec_parameters_policies.security_policy) }}"
+                    }
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

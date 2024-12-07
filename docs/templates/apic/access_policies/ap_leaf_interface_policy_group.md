@@ -44,4 +44,5 @@ apic:
         netflow_monitor_policies:
           - name: MONITOR1
             ip_filter_type: ipv6
+        macsec_interface_policy: MACSEC_INT1
 ```

@@ -415,6 +415,34 @@ apic:
             - ethertype
             - dst-mac
         - name: RECORD3
+      macsec_parameters_policies:
+        - name: MACSEC_PARAM1
+          description: MACSEC parameters policy 1
+          confidentiality_offset: offset-30
+          key_server_priority: 128
+          cipher_suite: gcm-aes-256
+          window_size: 120
+          security_policy: must-secure
+        - name: MACSEC_PARAM2
+      macsec_keychain_policies:
+        - name: MACSEC_KEYCHAIN1
+          description: MACSEC Keychain policy 1
+          key_policies:
+            - name: keypolicy1
+              description: Key Policy description
+              key_name: abcd1234
+              pre_shared_key: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
+              start_time: '2025-07-31T16:32:21.000+00:00'
+              end_time: '2026-07-31T16:32:21.000+00:00'
+            - key_name: abcdef123456
+              pre_shared_key: abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234
+        - name: MACSEC_KEYCHAIN2
+      macsec_interfaces_policies:
+        - name: MACSEC_INT1
+          description: MACSEC Interfaces Policy 1
+          admin_state: false
+          macsec_parameters_policy: MACSEC_PARAM1
+          macsec_keychain_policy: MACSEC_KEYCHAIN1
 
     spine_interface_policy_groups:
       - name: IPN1
@@ -544,6 +572,7 @@ apic:
           - name: MONITOR1
             ip_filter_type: ipv6
           - name: MONITOR2
+        macsec_interface_policy: MACSEC_INT1
       - name: PC1
         type: pc
         link_level_policy: 10G
@@ -555,6 +584,7 @@ apic:
         port_channel_policy: LACP-ACTIVE
         port_channel_member_policy: FAST
         aaep: AAEP1
+        macsec_interface_policy: MACSEC_INT1
       - name: VPC1
         type: vpc
         link_level_policy: 10G
@@ -571,6 +601,7 @@ apic:
             ip_filter_type: ce
           - name: MONITOR2
             ip_filter_type: ipv4
+        macsec_interface_policy: MACSEC_INT1
       - name: VPC2
         type: vpc
         aaep: AAEP1

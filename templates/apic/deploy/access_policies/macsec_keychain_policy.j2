@@ -1,0 +1,44 @@
+{
+    "macsecPolCont": {
+        "attributes": {
+            "dn": "uni/infra/macsecpcont"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.access_policies.interface_policies.macsec_keychain_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = policy.name ~ defaults.apic.access_policies.interface_policies.macsec_keychain_policies.name_suffix %}
+            {
+                "macsecKeyChainPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ policy_name }}",
+                        "descr": "{{ policy.description | default() }}",
+                        "dn": "uni/infra/macsecpcont/keychainp-{{ policy_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {%- set comma2 = joiner(",") %}
+                        {%- for key_policy in policy.key_policies | default([]) %}{{ comma2() }}
+                        {
+                            "macsecKeyPol": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "name": "{{ key_policy.name | default() }}",
+                                    "descr": "{{ key_policy.description | default() }}",
+                                    "keyName": "{{ key_policy.key_name }}",
+                                    "preSharedKey": "{{ key_policy.pre_shared_key }}",
+                                    "startTime": "{{ key_policy.start_time | default(defaults.apic.access_policies.interface_policies.macsec_keychain_policies.key_policies.start_time) }}",
+                                    "endTime": "{{ key_policy.end_time | default(defaults.apic.access_policies.interface_policies.macsec_keychain_policies.key_policies.end_time) }}"
+                                }
+                            }
+                        }
+                        {%- endfor %}
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

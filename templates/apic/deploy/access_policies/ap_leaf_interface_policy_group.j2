@@ -179,6 +179,17 @@
                             }
                         }
                         {%- endfor %}
+                        {%- if pg.macsec_interface_policy is defined %}{{ comma2() }}
+                        {% set macsec_policy_name = pg.macsec_interface_policy ~ defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.name_suffix %}
+                        {
+                            "infraRsMacsecIfPol": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    "tnMacsecIfPolName": "{{ macsec_policy_name }}"
+                                }
+                            }
+                        }
+                        {%- endif %}
 
                     ]
                 }

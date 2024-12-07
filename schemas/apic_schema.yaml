@@ -1394,6 +1394,9 @@ ap_interface_policies:
   netflow_vmm_exporters: list(include('ap_netflow_vmm_exporters'), required=False) # @name(Netflow VMM Exporters) @ref_name(Netflow VMM Exporter) @sheet_hidden()
   netflow_monitors: list(include('ap_netflow_monitors'), required=False) # @name(Netflow Monitors) @ref_name(Netflow Monitor) @sheet_hidden()
   netflow_records: list(include('ap_netflow_records'), required=False) # @name(Netflow Records) @ref_name(Netflow Record) @sheet_hidden()
+  macsec_parameters_policies: list(include('ap_macsec_parameters_policy'), required=False) # @name(Macsec Parameters) @ref_name(Macsec Parameters) @sheet_hidden()
+  macsec_keychain_policies: list(include('ap_macsec_keychain_policy'), required=False) # @name(Macsec Keychains) @ref_name(Macsec Keychains) @sheet_hidden()
+  macsec_interfaces_policies: list(include('ap_macsec_interfaces_policy'), required=False) # @name(Macsec Interfaces Policies) @ref_name(Macsec Interfaces Policies) @sheet_hidden()
 
 ap_cdp_policy:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1499,6 +1502,35 @@ ap_netflow_records:
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   match_parameters: list(enum('dst-ip', 'dst-ipv4', 'dst-ipv6', 'dst-mac', 'dst-port', 'ethertype', 'proto', 'src-ip', 'src-ipv4', 'src-ipv6', 'src-mac', 'src-port', 'tos', 'vlan', 'unspecified'), required=False)
 
+ap_macsec_parameters_policy:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  cipher_suite: enum('gcm-aes-128', 'gcm-aes-256', 'gcm-aes-xpn-128', 'gcm-aes-xpn-256', required=False)
+  confidentiality_offset: enum('offset-0', 'offset-30', 'offset-50', required=False)
+  key_server_priority: int(min=0, max=255, required=False)
+  window_size: int(min=0, max=4294967295, required=False)
+  key_expiry_time: any(enum('unspecified'), int(0), int(min=60, max=2592000), required=False)
+  security_policy: enum('should-secure', 'must-secure', required=False)
+
+ap_macsec_keychain_policy:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  key_policies: list(include('ap_macsec_keychain_policy_key_policy'), required=False)
+
+ap_macsec_keychain_policy_key_policy:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  key_name: regex('^[a-fA-F0-9]{0,64}$')
+  pre_shared_key: regex('^[a-fA-F0-9]{0,64}$')
+  start_time: any(enum('now'), regex('^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}[+-]\d{2}:\d{2}$'), required=False)
+  end_time: any(enum('infinite'), regex('^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}[+-]\d{2}:\d{2}$'), required=False)
+
+ap_macsec_interfaces_policy:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  admin_state: bool(required=False)
+  macsec_parameters_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$')
+  macsec_keychain_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$')
 
 ap_leaf_interface_policy_group:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
@@ -1516,6 +1548,7 @@ ap_leaf_interface_policy_group:
   storm_control_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   aaep: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   netflow_monitor_policies: list(include('ap_interface_netflow_monitor_policies'), required=False)
+  macsec_interface_policy: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
 
 ap_interface_netflow_monitor_policies:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')

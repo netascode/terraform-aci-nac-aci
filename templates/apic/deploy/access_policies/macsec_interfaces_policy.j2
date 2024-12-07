@@ -1,0 +1,47 @@
+{
+    "infraInfra": {
+        "attributes": {
+            "dn": "uni/infra"
+        },
+        "children": [
+            {%- set comma1 = joiner(",") %}
+            {%- for policy in apic.access_policies.interface_policies.macsec_interfaces_policies | default([]) %}{{ comma1() }}
+            {% set policy_name = policy.name ~ defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.name_suffix %}
+            {
+                "macsecIfPol": {
+                    "attributes": {
+                        "annotation": "orchestrator:aac",
+                        "name": "{{ policy_name }}",
+                        "descr": "{{ policy.description | default() }}",
+                        "adminSt": "{{ policy.admin_state | default(defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.admin_state) | cisco.aac.aac_bool("enabled") }}",
+                        "dn": "uni/infra/macsecifp-{{ policy_name }}",
+                        "childAction": "deleteNonPresent"
+                    },
+                    "children": [
+                        {
+                            "macsecRsToParamPol": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    {% set param_policy_name = policy.macsec_parameters_policy ~ defaults.apic.access_policies.interface_policies.macsec_parameters_policies.name_suffix %}
+                                    "tDn":"uni/infra/macsecpcont/paramp-{{ param_policy_name }}"
+                                }
+                            }
+                        },
+                        {
+                            "macsecRsToKeyChainPol": {
+                                "attributes": {
+                                    "annotation": "orchestrator:aac",
+                                    {% set keychain_policy_name = policy.macsec_keychain_policy ~ defaults.apic.access_policies.interface_policies.macsec_keychain_policies.name_suffix %}
+                                    "tDn":"uni/infra/macsecpcont/keychainp-{{ keychain_policy_name }}"
+                                }
+                            }
+                        }
+
+                    ]
+                }
+            }
+            {%- endfor %}
+
+        ]
+    }
+}

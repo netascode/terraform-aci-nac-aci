@@ -161,6 +161,9 @@ nav:
               - Netflow Exporter: data_model/apic/access_policies/netflow_exporter.md
               - Netflow Monitor: data_model/apic/access_policies/netflow_monitor.md
               - Netflow Record: data_model/apic/access_policies/netflow_record.md
+              - MACsec Parameters Policy: data_model/apic/access_policies/macsec_parameters_policy.md
+              - MACsec Keychain Policy: data_model/apic/access_policies/macsec_keychain_policy.md
+              - MACsec Interfaces Policy: data_model/apic/access_policies/macsec_interfaces_policy.md
           - Pod Policies:
               - Pod Setup: data_model/apic/pod_policies/pod_setup.md
           - Node Policies:
