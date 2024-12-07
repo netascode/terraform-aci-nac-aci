@@ -553,6 +553,22 @@ defaults:
           name_suffix: ""
         netflow_records:
           name_suffix: ""
+        macsec_parameters_policies:
+          name_suffix: ""
+          cipher_suite: gcm-aes-xpn-256
+          confidentiality_offset: offset-0
+          key_server_priority: 16
+          window_size: 64
+          key_expiry_time: disabled
+          security_policy: should-secure
+        macsec_keychain_policies:
+          name_suffix: ""
+          key_policies:
+            start_time: now
+            end_time: infinite
+        macsec_interfaces_policies:
+          name_suffix: ""
+          admin_state: true
       leaf_interface_policy_groups:
         name_suffix: ""
         map: none
