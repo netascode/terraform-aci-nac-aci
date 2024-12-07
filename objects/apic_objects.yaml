@@ -992,7 +992,7 @@ objects:
     test_types:
       - config
     paths:
-      - apic.access_policies.interface_policies.macsec_keychain_policy
+      - apic.access_policies.interface_policies.macsec_keychain_policies
   - name: MACsec Interfaces Policy
     template: macsec_interfaces_policy
     folder: access_policies
@@ -1001,7 +1001,7 @@ objects:
     test_types:
       - config
     paths:
-      - apic.access_policies.interface_policies.macsec_interfaces_policy
+      - apic.access_policies.interface_policies.macsec_interfaces_policies
   - name: MST Switch Policy
     template: mst_policy
     folder: access_policies
