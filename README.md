@@ -252,6 +252,9 @@ Additional example repositories:
 | <a name="module_aci_link_level_policy"></a> [aci\_link\_level\_policy](#module\_aci\_link\_level\_policy) | ./modules/terraform-aci-link-level-policy | n/a |
 | <a name="module_aci_lldp_policy"></a> [aci\_lldp\_policy](#module\_aci\_lldp\_policy) | ./modules/terraform-aci-lldp-policy | n/a |
 | <a name="module_aci_login_domain"></a> [aci\_login\_domain](#module\_aci\_login\_domain) | ./modules/terraform-aci-login-domain | n/a |
+| <a name="module_aci_macsec_interfaces_policy"></a> [aci\_macsec\_interfaces\_policy](#module\_aci\_macsec\_interfaces\_policy) | ./modules/terraform-aci-macsec-interfaces-policy | n/a |
+| <a name="module_aci_macsec_keychain_policies"></a> [aci\_macsec\_keychain\_policies](#module\_aci\_macsec\_keychain\_policies) | ./modules/terraform-aci-macsec-keychain-policies | n/a |
+| <a name="module_aci_macsec_parameters_policy"></a> [aci\_macsec\_parameters\_policy](#module\_aci\_macsec\_parameters\_policy) | ./modules/terraform-aci-macsec-parameters-policy | n/a |
 | <a name="module_aci_maintenance_group"></a> [aci\_maintenance\_group](#module\_aci\_maintenance\_group) | ./modules/terraform-aci-maintenance-group | n/a |
 | <a name="module_aci_management_access_policy"></a> [aci\_management\_access\_policy](#module\_aci\_management\_access\_policy) | ./modules/terraform-aci-management-access-policy | n/a |
 | <a name="module_aci_match_rule"></a> [aci\_match\_rule](#module\_aci\_match\_rule) | ./modules/terraform-aci-match-rule | n/a |
