@@ -325,8 +325,8 @@ locals {
         key_name       = kp.key_name
         pre_shared_key = kp.pre_shared_key
         description    = try(kp.description, "")
-        start_time     = try(kp.start_time, local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.start_time)
-        end_time       = try(kp.end_time, local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.end_time)
+        start_time     = try(kp.start_time, local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.key_policies.start_time)
+        end_time       = try(kp.end_time, local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.key_policies.end_time)
         }
       ]
     }
