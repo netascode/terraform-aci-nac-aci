@@ -5,7 +5,7 @@ formatter: markdown table
 content: |-
   # Terraform ACI MACsec Keychain Policies Module
 
-    To run this example you need to execute:
+  To run this example you need to execute:
 
   ```bash
   $ terraform init
