@@ -14,13 +14,15 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_l3out_node_profile" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-l3out-node-profile"
-  version = ">= 0.8.0"
+  version = ">= 0.9.1"
 
-  tenant      = "ABC"
-  l3out       = "L3OUT1"
-  name        = "NP1"
-  multipod    = true
-  remote_leaf = false
+  tenant             = "ABC"
+  l3out              = "L3OUT1"
+  name               = "NP1"
+  bgp_timer_policy   = "BGP_TIMER-1"
+  bgp_as_path_policy = "BGP_AS_PATH-1"
+  multipod           = true
+  remote_leaf        = false
   nodes = [{
     node_id               = 201
     pod_id                = 2
@@ -33,9 +35,10 @@ module "aci_l3out_node_profile" {
       preference  = 10
       bfd         = true
       next_hops = [{
-        ip         = "3.3.3.3"
-        preference = 10
-        type       = "prefix"
+        ip          = "3.3.3.3"
+        description = "Next Hop Description"
+        preference  = 10
+        type        = "prefix"
       }]
     }]
   }]

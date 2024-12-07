@@ -4,6 +4,7 @@ module "aci_route_control_route_map" {
 
   name        = "ABC"
   description = "My Description"
+  type        = "combinable"
   tenant      = "TEN1"
   contexts = [
     {

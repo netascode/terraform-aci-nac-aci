@@ -16,12 +16,12 @@ variable "default_fallback_check" {
 }
 
 variable "default_realm" {
-  description = "Default realm. Choices: `local`, `tacacs`, `radius`."
+  description = "Default realm. Choices: `local`, `tacacs`, `radius`, `ldap`."
   type        = string
   default     = "local"
 
   validation {
-    condition     = contains(["local", "tacacs", "radius"], var.default_realm)
+    condition     = contains(["local", "tacacs", "radius", "ldap"], var.default_realm)
     error_message = "Valid values are `local`, `tacacs` or `radius`."
   }
 }
@@ -38,12 +38,12 @@ variable "default_login_domain" {
 }
 
 variable "console_realm" {
-  description = "Console realm. Choices: `local`, `tacacs`, `radius`."
+  description = "Console realm. Choices: `local`, `tacacs`, `radius`, `ldap`."
   type        = string
   default     = "local"
 
   validation {
-    condition     = contains(["local", "tacacs", "radius"], var.console_realm)
+    condition     = contains(["local", "tacacs", "radius", "ldap"], var.console_realm)
     error_message = "Valid values are `local`, `tacacs` or `radius`."
   }
 }
@@ -70,7 +70,7 @@ variable "security_domains" {
 
   validation {
     condition = alltrue([
-      for sd in var.security_domains : sd.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", sd.description))
+      for sd in var.security_domains : sd.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", sd.description))
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }

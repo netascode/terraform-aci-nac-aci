@@ -14,6 +14,7 @@ locals {
         module    = interface.module
         port      = interface.port
         channel   = interface.channel
+        vlan      = interface.vlan
       }
     ]
   ])
@@ -46,6 +47,7 @@ resource "aci_rest_managed" "vnsLDevVip" {
     promMode     = var.promiscuous_mode == true ? "yes" : "no"
     svcType      = var.service_type
     trunking     = var.trunking == true ? "yes" : "no"
+    activeActive = var.active_active == true ? "yes" : null
   }
 }
 
@@ -92,6 +94,7 @@ resource "aci_rest_managed" "vnsCIf" {
     name      = each.value.interface
     nameAlias = each.value.alias
     vnicName  = each.value.vnic_name
+    encap     = each.value.vlan != null && var.active_active == true ? "vlan-${each.value.vlan}" : null
   }
 }
 

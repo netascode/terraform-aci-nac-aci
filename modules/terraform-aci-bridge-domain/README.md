@@ -25,6 +25,7 @@ module "aci_bridge_domain" {
   ep_move_detection          = true
   virtual_mac                = "22:22:22:22:22:22"
   l3_multicast               = true
+  multicast_arp_drop         = true
   multi_destination_flooding = "drop"
   unicast_routing            = false
   unknown_unicast            = "flood"
@@ -75,6 +76,7 @@ module "aci_bridge_domain" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Bridge domain name. | `string` | n/a | yes |
+| <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | `null` | no |
 | <a name="input_alias"></a> [alias](#input\_alias) | Alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_arp_flooding"></a> [arp\_flooding](#input\_arp\_flooding) | ARP flooding. | `bool` | `false` | no |
@@ -84,6 +86,7 @@ module "aci_bridge_domain" {
 | <a name="input_mac"></a> [mac](#input\_mac) | MAC address. Format: `12:34:56:78:9A:BC`. | `string` | `"00:22:BD:F8:19:FF"` | no |
 | <a name="input_ep_move_detection"></a> [ep\_move\_detection](#input\_ep\_move\_detection) | Endpoint move detection flag. | `bool` | `false` | no |
 | <a name="input_clear_remote_mac_entries"></a> [clear\_remote\_mac\_entries](#input\_clear\_remote\_mac\_entries) | Clear remote MAC entries flag. | `bool` | `false` | no |
+| <a name="input_multicast_arp_drop"></a> [multicast\_arp\_drop](#input\_multicast\_arp\_drop) | Drop ARP with Multicast SMAC. | `bool` | `null` | no |
 | <a name="input_virtual_mac"></a> [virtual\_mac](#input\_virtual\_mac) | Virtual MAC address. Format: `12:34:56:78:9A:BC`. | `string` | `"not-applicable"` | no |
 | <a name="input_l3_multicast"></a> [l3\_multicast](#input\_l3\_multicast) | L3 multicast. | `bool` | `false` | no |
 | <a name="input_pim_source_filter"></a> [pim\_source\_filter](#input\_pim\_source\_filter) | PIM source filter. | `string` | `""` | no |

@@ -455,7 +455,11 @@ module "aci_access_leaf_interface_policy_group" {
   storm_control_policy       = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")
   port_channel_policy        = try("${each.value.port_channel_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix}", "")
   port_channel_member_policy = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
-  aaep                       = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
+  netflow_monitor_policies = [for monitor in try(each.value.netflow_monitor_policies, []) : {
+    name           = "${monitor.name}${local.defaults.apic.access_policies.interface_policies.netflow_monitors.name_suffix}"
+    ip_filter_type = try(monitor.ip_filter_type, local.defaults.apic.access_policies.leaf_interface_policy_groups.netflow_monitor_policies.ip_filter_type)
+  }]
+  aaep = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
 
   depends_on = [
     module.aci_link_level_policy,
@@ -468,6 +472,7 @@ module "aci_access_leaf_interface_policy_group" {
     module.aci_storm_control_policy,
     module.aci_port_channel_policy,
     module.aci_port_channel_member_policy,
+    module.aci_netflow_monitor,
     module.aci_aaep,
   ]
 }
@@ -509,6 +514,7 @@ locals {
         key = "${profile.name}/${selector.name}"
         value = {
           name              = "${selector.name}${local.defaults.apic.access_policies.leaf_interface_profiles.selectors.name_suffix}"
+          description       = try(selector.description, "")
           profile_name      = "${profile.name}${local.defaults.apic.access_policies.leaf_interface_profiles.name_suffix}"
           fex_id            = try(selector.fex_id, 0)
           fex_profile       = try("${selector.fex_profile}${local.defaults.apic.access_policies.fex_interface_profiles.name_suffix}", "")
@@ -544,6 +550,7 @@ module "aci_access_leaf_interface_selector_manual" {
   for_each              = { for selector in local.leaf_interface_selectors_manual : selector.key => selector.value if local.modules.aci_access_leaf_interface_selector && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies }
   interface_profile     = each.value.profile_name
   name                  = each.value.name
+  description           = each.value.description
   fex_id                = each.value.fex_id
   fex_interface_profile = each.value.fex_profile
   policy_group          = each.value.policy_group
@@ -727,7 +734,7 @@ locals {
     module              = try(group.module, local.defaults.apic.access_policies.span.destination_groups.module)
     port                = try(group.port, 0)
     sub_port            = try(group.sub_port, 0)
-    channel             = try(group.channel, "")
+    channel             = try("${group.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "")
     ip                  = try(group.ip, "")
     source_prefix       = try(group.source_prefix, "")
     dscp                = try(group.dscp, local.defaults.apic.access_policies.span.destination_groups.dscp)
@@ -737,8 +744,8 @@ locals {
     span_version        = try(group.version, local.defaults.apic.access_policies.span.destination_groups.version)
     enforce_version     = try(group.enforce_version, local.defaults.apic.access_policies.span.destination_groups.enforce_version)
     tenant              = try(group.tenant, "")
-    application_profile = try(group.application_profile, "")
-    endpoint_group      = try(group.endpoint_group, "")
+    application_profile = try("${group.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}", "")
+    endpoint_group      = try("${group.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}", "")
   }]
 }
 
@@ -772,8 +779,8 @@ locals {
     name                    = "${group.name}${local.defaults.apic.access_policies.span.source_groups.name_suffix}"
     description             = try(group.description, "")
     admin_state             = try(group.admin_state, local.defaults.apic.access_policies.span.source_groups.admin_state)
-    filter_group            = try(group.filter_group, "")
-    destination_name        = try(group.destination.name, null)
+    filter_group            = try("${group.filter_group}${local.defaults.apic.access_policies.span.filter_groups.name_suffix}", "")
+    destination_name        = try(group.destination.name, "") != "" ? "${group.destination.name}${local.defaults.apic.access_policies.span.destination_groups.name_suffix}" : null
     destination_description = try(group.destination.description, "")
     sources = [for source in try(group.sources, []) : {
       description         = try(source.description, "")
@@ -781,9 +788,9 @@ locals {
       direction           = try(source.direction, local.defaults.apic.access_policies.span.source_groups.sources.direction)
       span_drop           = try(source.span_drop, local.defaults.apic.access_policies.span.source_groups.sources.span_drop)
       tenant              = try(source.tenant, null)
-      application_profile = try(source.application_profile, null)
-      endpoint_group      = try(source.endpoint_group, null)
-      l3out               = try(source.l3out, null)
+      application_profile = try(source.application_profile, "") != "" ? "${source.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}" : null
+      endpoint_group      = try(source.endpoint_group, "") != "" ? "${source.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}" : null
+      l3out               = try(source.l3out, "") != "" ? "${source.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}" : null
       vlan                = try(source.vlan, null)
       access_paths = [for ap in try(source.access_paths, []) : {
         node_id = try(ap.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == ap.channel][0][0], null)
@@ -796,7 +803,7 @@ locals {
         port     = try(ap.port, null)
         sub_port = try(ap.sub_port, null)
         module   = try(ap.module, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.module)
-        channel  = try(ap.channel, null)
+        channel  = try(ap.channel, "") != "" ? "${ap.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}" : null
         type     = try(ap.type, null)
       }]
     }]
@@ -848,8 +855,8 @@ module "aci_vspan_destination_group" {
     name                = "${dest.name}${local.defaults.apic.access_policies.vspan.destination_groups.destinations.name_suffix}"
     description         = try(dest.description, "")
     tenant              = try(dest.tenant, null)
-    application_profile = try(dest.application_profile, null)
-    endpoint_group      = try(dest.endpoint_group, null)
+    application_profile = try(dest.application_profile, "") != "" ? "${dest.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}" : null
+    endpoint_group      = try(dest.endpoint_group, "") != "" ? "${dest.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}" : null
     endpoint            = try(dest.endpoint, null)
     ip                  = try(dest.ip, null)
     mtu                 = try(dest.mtu, local.defaults.apic.access_policies.vspan.destination_groups.destinations.mtu)
@@ -864,15 +871,15 @@ locals {
     name                    = "${session.name}${local.defaults.apic.access_policies.vspan.sessions.name_suffix}"
     description             = try(session.description, "")
     admin_state             = try(session.admin_state, local.defaults.apic.access_policies.vspan.sessions.admin_state)
-    destination_name        = try(session.destination.name, null)
+    destination_name        = try(session.destination.name, "") != "" ? "${session.destination.name}${local.defaults.apic.access_policies.vspan.destination_groups.name_suffix}" : null
     destination_description = try(session.destination.description, "")
     sources = [for source in try(session.sources, []) : {
       description         = try(source.description, "")
       name                = source.name
       direction           = try(source.direction, local.defaults.apic.access_policies.vspan.sessions.sources.direction)
       tenant              = try(source.tenant, null)
-      application_profile = try(source.application_profile, null)
-      endpoint_group      = try(source.endpoint_group, null)
+      application_profile = try(source.application_profile, "") != "" ? "${source.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}" : null
+      endpoint_group      = try(source.endpoint_group, "") != "" ? "${source.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}" : null
       endpoint            = try(source.endpoint, null)
       access_paths = [for ap in try(source.access_paths, []) : {
         node_id = try(ap.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == ap.channel][0][0], null)
@@ -885,7 +892,7 @@ locals {
         port     = try(ap.port, null)
         sub_port = try(ap.sub_port, null)
         module   = try(ap.module, local.defaults.apic.access_policies.vspan.sessions.sources.access_paths.module)
-        channel  = try(ap.channel, null)
+        channel  = try(ap.channel, "") != "" ? "${ap.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}" : null
       }]
     }]
   }]
@@ -962,4 +969,54 @@ module "aci_infra_dhcp_relay_policy" {
   name        = each.value.name
   description = each.value.description
   providers_  = each.value.providers_
+}
+
+module "aci_netflow_exporter" {
+  source = "./modules/terraform-aci-netflow-exporter"
+
+  for_each                = { for exporter in try(local.access_policies.interface_policies.netflow_exporters, []) : exporter.name => exporter if local.modules.aci_netflow_exporter && var.manage_access_policies }
+  name                    = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_exporters.name_suffix}"
+  description             = try(each.value.description, "")
+  destination_port        = each.value.destination_port
+  destination_ip          = each.value.destination_ip
+  dscp                    = try(each.value.dscp, local.defaults.apic.access_policies.interface_policies.netflow_exporters.dscp)
+  source_type             = try(each.value.source_type, local.defaults.apic.access_policies.interface_policies.netflow_exporters.source_type)
+  source_ip               = try(each.value.source_ip, local.defaults.apic.access_policies.interface_policies.netflow_exporters.source_ip)
+  epg_type                = try(each.value.epg_type, "")
+  tenant                  = try(each.value.tenant, "")
+  application_profile     = try("${each.value.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}", "")
+  endpoint_group          = try("${each.value.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}", "")
+  vrf                     = try("${each.value.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
+  l3out                   = try("${each.value.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}", "")
+  external_endpoint_group = try("${each.value.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}", "")
+}
+
+module "aci_netflow_vmm_exporter" {
+  source = "./modules/terraform-aci-netflow-vmm-exporter"
+
+  for_each         = { for exporter in try(local.access_policies.interface_policies.netflow_vmm_exporters, []) : exporter.name => exporter if local.modules.aci_netflow_vmm_exporter && var.manage_access_policies }
+  name             = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_vmm_exporters.name_suffix}"
+  description      = try(each.value.description, "")
+  destination_port = each.value.destination_port
+  destination_ip   = each.value.destination_ip
+  source_ip        = try(each.value.source_ip, local.defaults.apic.access_policies.interface_policies.netflow_vmm_exporters.source_ip)
+}
+
+module "aci_netflow_monitor" {
+  source = "./modules/terraform-aci-netflow-monitor"
+
+  for_each       = { for monitor in try(local.access_policies.interface_policies.netflow_monitors, []) : monitor.name => monitor if local.modules.aci_netflow_monitor && var.manage_access_policies }
+  name           = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_monitors.name_suffix}"
+  description    = try(each.value.description, "")
+  flow_record    = try("${each.value.flow_record}${local.defaults.apic.access_policies.interface_policies.netflow_records.name_suffix}", "")
+  flow_exporters = [for exporter in try(each.value.flow_exporters, []) : "${exporter}${local.defaults.apic.access_policies.interface_policies.netflow_exporters.name_suffix}"]
+}
+
+module "aci_netflow_record" {
+  source = "./modules/terraform-aci-netflow-record"
+
+  for_each         = { for record in try(local.access_policies.interface_policies.netflow_records, []) : record.name => record if local.modules.aci_netflow_record && var.manage_access_policies }
+  name             = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_records.name_suffix}"
+  description      = try(each.value.description, "")
+  match_parameters = try(each.value.match_parameters, [])
 }

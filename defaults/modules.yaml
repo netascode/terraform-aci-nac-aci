@@ -27,6 +27,7 @@ modules:
   aci_bgp_best_path_policy: true
   aci_bgp_peer_prefix_policy: true
   aci_bgp_policy: true
+  aci_bgp_route_summarization_policy: true
   aci_bgp_timer_policy: true
   aci_bridge_domain: true
   aci_ca_certificate: true
@@ -102,10 +103,15 @@ modules:
   aci_mcp: true
   aci_mcp_policy: true
   aci_monitoring_policy: true
+  aci_mpls_custom_qos_policy: true
   aci_mst_policy: true
   aci_multicast_route_map: true
   aci_nd_interface_policy: true
   aci_nd_ra_prefix_policy: true
+  aci_netflow_exporter: true
+  aci_netflow_vmm_exporter: true
+  aci_netflow_record: true
+  aci_netflow_monitor: true
   aci_node_control_policy: true
   aci_node_registration: true
   aci_oob_contract: true
@@ -126,6 +132,7 @@ modules:
   aci_qos: true
   aci_qos_policy: true
   aci_radius: true
+  aci_rbac_node_rule: true
   aci_redirect_backup_policy: true
   aci_redirect_health_group: true
   aci_redirect_policy: true
@@ -141,6 +148,7 @@ modules:
   aci_snmp_policy: true
   aci_snmp_trap_policy: true
   aci_spanning_tree_policy: true
+  aci_sr_mpls_global_configuration: true
   aci_storm_control_policy: true
   aci_switch_configuration: true
   aci_syslog_policy: true

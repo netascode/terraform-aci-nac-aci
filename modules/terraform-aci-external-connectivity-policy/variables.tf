@@ -50,7 +50,7 @@ variable "peering_type" {
 variable "bgp_password" {
   description = "BGP password."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "routing_profiles" {
@@ -71,7 +71,7 @@ variable "routing_profiles" {
 
   validation {
     condition = alltrue([
-      for rp in var.routing_profiles : can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", rp.description))
+      for rp in var.routing_profiles : can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", rp.description))
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }

@@ -1,38 +1,40 @@
 locals {
   interfaces = flatten([
     for int in var.interfaces : {
-      key = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]")
+      key = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : (int.sub_port != null ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}/${int.sub_port}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]"))
       value = {
-        ip              = int.type != "vpc" ? int.ip : "0.0.0.0"
-        svi             = int.svi == true ? "yes" : "no"
-        description     = int.description
-        type            = int.type
-        vlan            = int.vlan
-        autostate       = int.autostate ? "enabled" : "disabled"
-        mac             = int.mac
-        mode            = int.mode
-        mtu             = int.mtu
-        node_id         = int.node_id
-        node2_id        = int.node2_id
-        module          = int.module
-        pod_id          = int.pod_id
-        port            = int.port
-        channel         = int.channel
-        ip_a            = int.ip_a
-        ip_b            = int.ip_b
-        ip_shared       = int.ip_shared
-        tDn             = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]")
-        multipod_direct = int.multipod_direct
-        scope           = int.scope
+        ip                       = int.type != "vpc" ? int.ip : "0.0.0.0"
+        svi                      = int.svi == true ? "yes" : "no"
+        description              = int.description
+        type                     = int.type
+        vlan                     = int.vlan
+        autostate                = int.autostate ? "enabled" : "disabled"
+        mac                      = int.mac
+        mode                     = int.mode
+        mtu                      = int.mtu
+        node_id                  = int.node_id
+        node2_id                 = int.node2_id
+        module                   = int.module
+        pod_id                   = int.pod_id
+        port                     = int.port
+        channel                  = int.channel
+        ip_a                     = int.ip_a
+        ip_b                     = int.ip_b
+        ip_shared                = int.ip_shared
+        tDn                      = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : (int.sub_port != null ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}/${int.sub_port}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]"))
+        multipod_direct          = int.multipod_direct
+        scope                    = int.scope
+        micro_bfd_destination_ip = int.micro_bfd_destination_ip
+        micro_bfd_start_timer    = int.micro_bfd_start_timer
       }
     } if int.floating_svi == false
   ])
   bgp_peers = flatten([
     for int in var.interfaces : [
       for peer in coalesce(int.bgp_peers, []) : {
-        key = "${int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]")}/${peer.ip}"
+        key = "${int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : (int.sub_port != null ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}/${int.sub_port}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]"))}/${peer.ip}"
         value = {
-          interface                        = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]")
+          interface                        = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : (int.sub_port != null ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}/${int.sub_port}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]"))
           ip                               = peer.ip
           remote_as                        = peer.remote_as
           description                      = peer.description
@@ -136,8 +138,9 @@ resource "aci_rest_managed" "l3extLIfP" {
   dn         = "uni/tn-${var.tenant}/out-${var.l3out}/lnodep-${var.node_profile}/lifp-${var.name}"
   class_name = "l3extLIfP"
   content = {
-    name = var.name
-    prio = var.qos_class
+    name  = var.name
+    descr = var.description
+    prio  = var.qos_class
   }
 }
 
@@ -323,6 +326,17 @@ resource "aci_rest_managed" "l3extIp_B" {
   class_name = "l3extIp"
   content = {
     addr = each.value.ip_shared
+  }
+}
+
+resource "aci_rest_managed" "bfdMicroBfdP" {
+  for_each   = { for item in local.interfaces : item.key => item.value if item.value.micro_bfd_destination_ip != "" && item.value.micro_bfd_destination_ip != null }
+  dn         = "${aci_rest_managed.l3extRsPathL3OutAtt[each.key].dn}/microBfdP"
+  class_name = "bfdMicroBfdP"
+  content = {
+    adminState = "yes"
+    dst        = each.value.micro_bfd_destination_ip
+    stTm       = each.value.micro_bfd_start_timer
   }
 }
 
@@ -527,5 +541,24 @@ resource "aci_rest_managed" "mplsRsIfPol" {
   class_name = "mplsRsIfPol"
   content = {
     tnMplsIfPolName = "default"
+  }
+}
+
+resource "aci_rest_managed" "dhcpLbl" {
+  for_each   = { for dhcp_label in var.dhcp_labels : dhcp_label.dhcp_relay_policy => dhcp_label }
+  dn         = "${aci_rest_managed.l3extLIfP.dn}/dhcplbl-${each.value.dhcp_relay_policy}"
+  class_name = "dhcpLbl"
+  content = {
+    name  = each.value.dhcp_relay_policy
+    owner = each.value.scope
+  }
+}
+
+resource "aci_rest_managed" "dhcpRsDhcpOptionPol" {
+  for_each   = { for dhcp_label in var.dhcp_labels : dhcp_label.dhcp_relay_policy => dhcp_label if dhcp_label.dhcp_option_policy != null }
+  dn         = "${aci_rest_managed.dhcpLbl[each.value.dhcp_relay_policy].dn}/rsdhcpOptionPol"
+  class_name = "dhcpRsDhcpOptionPol"
+  content = {
+    tnDhcpOptionPolName = each.value.dhcp_option_policy
   }
 }

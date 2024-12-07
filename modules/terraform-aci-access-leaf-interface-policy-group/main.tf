@@ -116,3 +116,13 @@ resource "aci_rest_managed" "infraRsAttEntP" {
     tDn = "uni/infra/attentp-${var.aaep}"
   }
 }
+
+resource "aci_rest_managed" "infraRsNetflowMonitorPol" {
+  for_each   = { for monitor in var.netflow_monitor_policies : monitor.name => monitor if var.type != "breakout" }
+  dn         = "${aci_rest_managed.infraAccGrp.dn}/rsnetflowMonitorPol-[${each.value.name}]-${each.value.ip_filter_type}"
+  class_name = "infraRsNetflowMonitorPol"
+  content = {
+    fltType                 = each.value.ip_filter_type
+    tnNetflowMonitorPolName = each.value.name
+  }
+}

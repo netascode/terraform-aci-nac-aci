@@ -126,6 +126,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-route-summarization-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-bgp-route-summarization-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-timer-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-timer-policy/examples/complete"]
@@ -430,6 +434,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-monitoring-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-mpls-custom-qos-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-mpls-custom-qos-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-mst-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-mst-policy/examples/complete"]
@@ -437,6 +445,18 @@ repos:
         args: ["./modules/terraform-aci-multicast-route-map"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-multicast-route-map/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-netflow-exporter"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-netflow-exporter/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-netflow-monitor"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-netflow-monitor/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-netflow-record"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-netflow-record/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-nd-interface-policy"]
       - id: terraform-docs-system
@@ -527,6 +547,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-radius/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-rbac-node-rule"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-rbac-node-rule/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-redirect-backup-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-redirect-backup-policy/examples/complete"]
@@ -586,6 +610,10 @@ repos:
         args: ["./modules/terraform-aci-spanning-tree-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-spanning-tree-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-sr-mpls-global-configuration"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-sr-mpls-global-configuration/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-storm-control-policy"]
       - id: terraform-docs-system

@@ -13,6 +13,7 @@ module "aci_external_endpoint_group" {
   subnets = [{
     name                           = "SUBNET1"
     prefix                         = "10.0.0.0/8"
+    description                    = "My Subnet Description"
     import_route_control           = true
     export_route_control           = true
     shared_route_control           = true
@@ -22,6 +23,7 @@ module "aci_external_endpoint_group" {
     aggregate_export_route_control = true
     aggregate_shared_route_control = true
     bgp_route_summarization        = true
+    bgp_route_summarization_policy = "BGP_RS_Policy1"
   }]
   contract_consumers          = ["CON1"]
   contract_providers          = ["CON1"]

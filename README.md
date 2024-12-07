@@ -173,6 +173,7 @@ Additional example repositories:
 | <a name="module_aci_bgp_best_path_policy"></a> [aci\_bgp\_best\_path\_policy](#module\_aci\_bgp\_best\_path\_policy) | ./modules/terraform-aci-bgp-best-path-policy | n/a |
 | <a name="module_aci_bgp_peer_prefix_policy"></a> [aci\_bgp\_peer\_prefix\_policy](#module\_aci\_bgp\_peer\_prefix\_policy) | ./modules/terraform-aci-bgp-peer-prefix-policy | n/a |
 | <a name="module_aci_bgp_policy"></a> [aci\_bgp\_policy](#module\_aci\_bgp\_policy) | ./modules/terraform-aci-bgp-policy | n/a |
+| <a name="module_aci_bgp_route_summarization_policy"></a> [aci\_bgp\_route\_summarization\_policy](#module\_aci\_bgp\_route\_summarization\_policy) | ./modules/terraform-aci-bgp-route-summarization-policy | n/a |
 | <a name="module_aci_bgp_timer_policy"></a> [aci\_bgp\_timer\_policy](#module\_aci\_bgp\_timer\_policy) | ./modules/terraform-aci-bgp-timer-policy | n/a |
 | <a name="module_aci_bridge_domain"></a> [aci\_bridge\_domain](#module\_aci\_bridge\_domain) | ./modules/terraform-aci-bridge-domain | n/a |
 | <a name="module_aci_ca_certificate"></a> [aci\_ca\_certificate](#module\_aci\_ca\_certificate) | ./modules/terraform-aci-ca-certificate | n/a |
@@ -260,10 +261,15 @@ Additional example repositories:
 | <a name="module_aci_mcp"></a> [aci\_mcp](#module\_aci\_mcp) | ./modules/terraform-aci-mcp | n/a |
 | <a name="module_aci_mcp_policy"></a> [aci\_mcp\_policy](#module\_aci\_mcp\_policy) | ./modules/terraform-aci-mcp-policy | n/a |
 | <a name="module_aci_monitoring_policy"></a> [aci\_monitoring\_policy](#module\_aci\_monitoring\_policy) | ./modules/terraform-aci-monitoring-policy | n/a |
+| <a name="module_aci_mpls_custom_qos_policy"></a> [aci\_mpls\_custom\_qos\_policy](#module\_aci\_mpls\_custom\_qos\_policy) | ./modules/terraform-aci-mpls-custom-qos-policy | n/a |
 | <a name="module_aci_mst_policy"></a> [aci\_mst\_policy](#module\_aci\_mst\_policy) | ./modules/terraform-aci-mst-policy | n/a |
 | <a name="module_aci_multicast_route_map"></a> [aci\_multicast\_route\_map](#module\_aci\_multicast\_route\_map) | ./modules/terraform-aci-multicast-route-map | n/a |
 | <a name="module_aci_nd_interface_policy"></a> [aci\_nd\_interface\_policy](#module\_aci\_nd\_interface\_policy) | ./modules/terraform-aci-nd-interface-policy | n/a |
 | <a name="module_aci_nd_ra_prefix_policy"></a> [aci\_nd\_ra\_prefix\_policy](#module\_aci\_nd\_ra\_prefix\_policy) | ./modules/terraform-aci-nd-ra-prefix-policy | n/a |
+| <a name="module_aci_netflow_exporter"></a> [aci\_netflow\_exporter](#module\_aci\_netflow\_exporter) | ./modules/terraform-aci-netflow-exporter | n/a |
+| <a name="module_aci_netflow_monitor"></a> [aci\_netflow\_monitor](#module\_aci\_netflow\_monitor) | ./modules/terraform-aci-netflow-monitor | n/a |
+| <a name="module_aci_netflow_record"></a> [aci\_netflow\_record](#module\_aci\_netflow\_record) | ./modules/terraform-aci-netflow-record | n/a |
+| <a name="module_aci_netflow_vmm_exporter"></a> [aci\_netflow\_vmm\_exporter](#module\_aci\_netflow\_vmm\_exporter) | ./modules/terraform-aci-netflow-vmm-exporter | n/a |
 | <a name="module_aci_node_control_policy"></a> [aci\_node\_control\_policy](#module\_aci\_node\_control\_policy) | ./modules/terraform-aci-node-control-policy | n/a |
 | <a name="module_aci_node_registration"></a> [aci\_node\_registration](#module\_aci\_node\_registration) | ./modules/terraform-aci-node-registration | n/a |
 | <a name="module_aci_oob_contract"></a> [aci\_oob\_contract](#module\_aci\_oob\_contract) | ./modules/terraform-aci-oob-contract | n/a |
@@ -284,6 +290,7 @@ Additional example repositories:
 | <a name="module_aci_qos"></a> [aci\_qos](#module\_aci\_qos) | ./modules/terraform-aci-qos | n/a |
 | <a name="module_aci_qos_policy"></a> [aci\_qos\_policy](#module\_aci\_qos\_policy) | ./modules/terraform-aci-qos-policy | n/a |
 | <a name="module_aci_radius"></a> [aci\_radius](#module\_aci\_radius) | ./modules/terraform-aci-radius | n/a |
+| <a name="module_aci_rbac_node_rule"></a> [aci\_rbac\_node\_rule](#module\_aci\_rbac\_node\_rule) | ./modules/terraform-aci-rbac-node-rule | n/a |
 | <a name="module_aci_redirect_backup_policy"></a> [aci\_redirect\_backup\_policy](#module\_aci\_redirect\_backup\_policy) | ./modules/terraform-aci-redirect-backup-policy | n/a |
 | <a name="module_aci_redirect_health_group"></a> [aci\_redirect\_health\_group](#module\_aci\_redirect\_health\_group) | ./modules/terraform-aci-redirect-health-group | n/a |
 | <a name="module_aci_redirect_policy"></a> [aci\_redirect\_policy](#module\_aci\_redirect\_policy) | ./modules/terraform-aci-redirect-policy | n/a |
@@ -302,6 +309,7 @@ Additional example repositories:
 | <a name="module_aci_spine_fabric_interface_configuration"></a> [aci\_spine\_fabric\_interface\_configuration](#module\_aci\_spine\_fabric\_interface\_configuration) | ./modules/terraform-aci-fabric-interface-configuration | n/a |
 | <a name="module_aci_spine_interface_configuration"></a> [aci\_spine\_interface\_configuration](#module\_aci\_spine\_interface\_configuration) | ./modules/terraform-aci-interface-configuration | n/a |
 | <a name="module_aci_sr_mpls_external_endpoint_group"></a> [aci\_sr\_mpls\_external\_endpoint\_group](#module\_aci\_sr\_mpls\_external\_endpoint\_group) | ./modules/terraform-aci-external-endpoint-group | n/a |
+| <a name="module_aci_sr_mpls_global_configuration"></a> [aci\_sr\_mpls\_global\_configuration](#module\_aci\_sr\_mpls\_global\_configuration) | ./modules/terraform-aci-sr-mpls-global-configuration | n/a |
 | <a name="module_aci_sr_mpls_l3out"></a> [aci\_sr\_mpls\_l3out](#module\_aci\_sr\_mpls\_l3out) | ./modules/terraform-aci-l3out | n/a |
 | <a name="module_aci_sr_mpls_l3out_interface_profile_manual"></a> [aci\_sr\_mpls\_l3out\_interface\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_interface\_profile\_manual) | ./modules/terraform-aci-l3out-interface-profile | n/a |
 | <a name="module_aci_sr_mpls_l3out_node_profile_manual"></a> [aci\_sr\_mpls\_l3out\_node\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_node\_profile\_manual) | ./modules/terraform-aci-l3out-node-profile | n/a |

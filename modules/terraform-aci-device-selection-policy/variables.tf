@@ -49,6 +49,17 @@ variable "sgt_device_name" {
   }
 }
 
+variable "node_name" {
+  description = "Function node name."
+  type        = string
+  default     = "N1"
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.node_name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "consumer_l3_destination" {
   description = "Consumer L3 destination."
   type        = bool

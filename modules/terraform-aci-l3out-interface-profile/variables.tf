@@ -38,6 +38,17 @@ variable "name" {
   }
 }
 
+variable "description" {
+  description = "Interface profile description."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+}
+
 variable "bfd_policy" {
   description = "BFD policy name."
   type        = string
@@ -187,6 +198,7 @@ variable "interfaces" {
     pod_id          = optional(number, 1)
     module          = optional(number, 1)
     port            = optional(number)
+    sub_port        = optional(number)
     channel         = optional(string)
     ip              = optional(string)
     svi             = optional(bool, false)
@@ -235,12 +247,14 @@ variable "interfaces" {
       elag              = optional(string)
       floating_ip       = string
     })), [])
+    micro_bfd_destination_ip = optional(string, "")
+    micro_bfd_start_timer    = optional(number, 0)
   }))
   default = []
 
   validation {
     condition = alltrue([
-      for i in var.interfaces : i.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", i.description)), false)
+      for i in var.interfaces : i.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", i.description)), false)
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -317,6 +331,13 @@ variable "interfaces" {
 
   validation {
     condition = alltrue([
+      for i in var.interfaces : i.sub_port == null || try(i.sub_port >= 1 && i.sub_port <= 16, false)
+    ])
+    error_message = "`sub_port`: Minimum value: `1`. Maximum value: `16`."
+  }
+
+  validation {
+    condition = alltrue([
       for i in var.interfaces : i.channel == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", i.channel)), false)
     ])
     error_message = "`channel`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`, `:`. Maximum characters: 64."
@@ -338,7 +359,7 @@ variable "interfaces" {
 
   validation {
     condition = alltrue(flatten([
-      for i in var.interfaces : [for b in coalesce(i.bgp_peers, []) : b.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", b.description)), false)]
+      for i in var.interfaces : [for b in coalesce(i.bgp_peers, []) : b.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", b.description)), false)]
     ]))
     error_message = "`bgp_peers.description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -398,6 +419,13 @@ variable "interfaces" {
     ]))
     error_message = "`paths.elag`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
+
+  validation {
+    condition = alltrue([
+      for i in var.interfaces : i.micro_bfd_start_timer == null || try(i.micro_bfd_start_timer == 0 || try(i.micro_bfd_start_timer >= 60 && i.micro_bfd_start_timer <= 3600, false), false)
+    ])
+    error_message = "`interfaces.micro_bfd_start_timer`: Minimum value: `60`. Maximum value: `3600`."
+  }
 }
 
 variable "multipod" {
@@ -426,5 +454,29 @@ variable "transport_data_plane" {
   validation {
     condition     = contains(["sr_mpls", "mpls"], var.transport_data_plane)
     error_message = "`transport_data_plane`: Allowed value are: `sr_mpls`, `mpls`."
+  }
+}
+
+variable "dhcp_labels" {
+  description = "List of DHCP labels"
+  type = list(object({
+    dhcp_relay_policy  = string
+    dhcp_option_policy = optional(string)
+    scope              = optional(string, "infra")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for l in var.dhcp_labels : l.dhcp_relay_policy == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", l.dhcp_relay_policy))
+    ])
+    error_message = "`dhcp_relay_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for l in var.dhcp_labels : contains(["tenant", "infra"], l.scope)
+    ])
+    error_message = "`scope`: Allowed values: `tenant`, `infra`."
   }
 }

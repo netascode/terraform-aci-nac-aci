@@ -39,6 +39,7 @@ module "aci_application_profile" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Application profile name. | `string` | n/a | yes |
+| <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | `null` | no |
 | <a name="input_alias"></a> [alias](#input\_alias) | Application profile alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | Application profile description. | `string` | `""` | no |
 

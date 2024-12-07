@@ -34,7 +34,7 @@ variable "description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -162,7 +162,7 @@ variable "tag_selectors" {
 
   validation {
     condition = alltrue([
-      for ts in var.tag_selectors : can(regex("^[a-zA-Z0-9_.\\-:]{0,64}$", ts.key))
+      for ts in var.tag_selectors : can(regex("^[a-zA-Z0-9_.\\\\:-]{0,64}$", ts.key))
     ])
     error_message = "`key`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `\\`, `-`, `:`. Maximum characters: 64."
   }
@@ -176,14 +176,14 @@ variable "tag_selectors" {
 
   validation {
     condition = alltrue([
-      for ts in var.tag_selectors : can(regex("^[a-zA-Z0-9_.,:^$\\[\\]\\(\\)\\{\\}\\|+*-]{0,128}$", ts.value))
+      for ts in var.tag_selectors : can(regex("^[a-zA-Z0-9_.,:^$\\[\\]\\(\\)\\{\\}\\\\|+*-]{0,128}$", ts.value))
     ])
     error_message = "`value`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `,`, `:`, `^`, `$`, `-`, `[`, `]`, `\\`, `(`, `)`, `{`, `}`, `|`, `+`, `*`, `-`. Maximum characters: 128."
   }
 
   validation {
     condition = alltrue([
-      for ts in var.tag_selectors : ts.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", ts.description))
+      for ts in var.tag_selectors : ts.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", ts.description))
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -222,7 +222,7 @@ variable "epg_selectors" {
 
   validation {
     condition = alltrue([
-      for epgs in var.epg_selectors : epgs.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", epgs.description))
+      for epgs in var.epg_selectors : epgs.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", epgs.description))
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -245,7 +245,7 @@ variable "ip_subnet_selectors" {
 
   validation {
     condition = alltrue([
-      for iss in var.ip_subnet_selectors : iss.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", iss.description))
+      for iss in var.ip_subnet_selectors : iss.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", iss.description))
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }

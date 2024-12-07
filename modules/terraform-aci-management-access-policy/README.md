@@ -47,8 +47,10 @@ module "aci_management_access_policy" {
   https_tlsv1_2                = false
   https_tlsv1_3                = false
   https_keyring                = "KR1"
+  https_allow_origins          = "http://127.0.0.1:8000"
   http_admin_state             = true
   http_port                    = 2080
+  http_allow_origins           = "http://127.0.0.1:8000"
 }
 ```
 
@@ -103,8 +105,10 @@ module "aci_management_access_policy" {
 | <a name="input_https_tlsv1_2"></a> [https\_tlsv1\_2](#input\_https\_tlsv1\_2) | HTTPS TLS v1.2. | `bool` | `true` | no |
 | <a name="input_https_tlsv1_3"></a> [https\_tlsv1\_3](#input\_https\_tlsv1\_3) | HTTPS TLS v1.3. | `bool` | `false` | no |
 | <a name="input_https_keyring"></a> [https\_keyring](#input\_https\_keyring) | HTTPS keyring name. | `string` | `""` | no |
+| <a name="input_https_allow_origins"></a> [https\_allow\_origins](#input\_https\_allow\_origins) | HTTPS allow origins. | `string` | `""` | no |
 | <a name="input_http_admin_state"></a> [http\_admin\_state](#input\_http\_admin\_state) | HTTP admin state. | `bool` | `false` | no |
 | <a name="input_http_port"></a> [http\_port](#input\_http\_port) | HTTP port. | `number` | `80` | no |
+| <a name="input_http_allow_origins"></a> [http\_allow\_origins](#input\_http\_allow\_origins) | HTTP allow origins. | `string` | `""` | no |
 
 ## Outputs
 

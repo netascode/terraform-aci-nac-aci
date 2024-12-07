@@ -1,6 +1,7 @@
 resource "aci_rest_managed" "l3extOut" {
   dn         = "uni/tn-${var.tenant}/out-${var.name}"
   class_name = "l3extOut"
+  annotation = var.annotation
   content = var.sr_mpls == true ? {
     name          = var.name
     descr         = var.description
@@ -60,6 +61,7 @@ resource "aci_rest_managed" "l3extRsL3DomAtt" {
 resource "aci_rest_managed" "l3extRsEctx" {
   dn         = "${aci_rest_managed.l3extOut.dn}/rsectx"
   class_name = "l3extRsEctx"
+  annotation = var.annotation
   content = {
     tnFvCtxName = var.vrf
   }
@@ -282,7 +284,7 @@ resource "aci_rest_managed" "l3extConsLbl" {
 }
 
 resource "aci_rest_managed" "l3extRsLblToProfile_import" {
-  for_each   = { for infra_l3out in var.sr_mpls_infra_l3outs : infra_l3out.name => infra_l3out }
+  for_each   = { for infra_l3out in var.sr_mpls_infra_l3outs : infra_l3out.name => infra_l3out if infra_l3out.inbound_route_map != "" }
   dn         = "${aci_rest_managed.l3extConsLbl[each.value.name].dn}/rslblToProfile-[uni/tn-${var.tenant}/prof-${each.value.inbound_route_map}]-import"
   class_name = "l3extRsLblToProfile"
   content = {
@@ -292,7 +294,7 @@ resource "aci_rest_managed" "l3extRsLblToProfile_import" {
 }
 
 resource "aci_rest_managed" "l3extRsLblToProfile_export" {
-  for_each   = { for infra_l3out in var.sr_mpls_infra_l3outs : infra_l3out.name => infra_l3out }
+  for_each   = { for infra_l3out in var.sr_mpls_infra_l3outs : infra_l3out.name => infra_l3out if infra_l3out.outbound_route_map != "" }
   dn         = "${aci_rest_managed.l3extConsLbl[each.value.name].dn}/rslblToProfile-[uni/tn-${var.tenant}/prof-${each.value.outbound_route_map}]-export"
   class_name = "l3extRsLblToProfile"
   content = {

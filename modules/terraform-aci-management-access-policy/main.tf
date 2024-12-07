@@ -39,13 +39,14 @@ resource "aci_rest_managed" "commHttps" {
   dn         = "${aci_rest_managed.commPol.dn}/https"
   class_name = "commHttps"
   content = {
-    name                = "https"
-    adminSt             = var.https_admin_state == false ? "disabled" : "enabled"
-    clientCertAuthState = var.https_client_cert_auth_state == true ? "enabled" : "disabled"
-    dhParam             = var.https_dh
-    port                = var.https_port
-    sslProtocols        = join(",", concat(var.https_tlsv1 == true ? ["TLSv1"] : [], var.https_tlsv1_1 == true ? ["TLSv1.1"] : [], var.https_tlsv1_2 == true ? ["TLSv1.2"] : [], var.https_tlsv1_3 == true ? ["TLSv1.3"] : []))
-    visoreAccess        = "enabled"
+    name                      = "https"
+    accessControlAllowOrigins = var.https_allow_origins
+    adminSt                   = var.https_admin_state == false ? "disabled" : "enabled"
+    clientCertAuthState       = var.https_client_cert_auth_state == true ? "enabled" : "disabled"
+    dhParam                   = var.https_dh
+    port                      = var.https_port
+    sslProtocols              = join(",", concat(var.https_tlsv1 == true ? ["TLSv1"] : [], var.https_tlsv1_1 == true ? ["TLSv1.1"] : [], var.https_tlsv1_2 == true ? ["TLSv1.2"] : [], var.https_tlsv1_3 == true ? ["TLSv1.3"] : []))
+    visoreAccess              = "enabled"
   }
 }
 
@@ -61,9 +62,10 @@ resource "aci_rest_managed" "commHttp" {
   dn         = "${aci_rest_managed.commPol.dn}/http"
   class_name = "commHttp"
   content = {
-    name         = "http"
-    adminSt      = var.http_admin_state == true ? "enabled" : "disabled"
-    port         = var.http_port
-    visoreAccess = "enabled"
+    name                      = "http"
+    accessControlAllowOrigins = var.http_allow_origins
+    adminSt                   = var.http_admin_state == true ? "enabled" : "disabled"
+    port                      = var.http_port
+    visoreAccess              = "enabled"
   }
 }
