@@ -179,7 +179,7 @@ variable "contract_consumers" {
 
   validation {
     condition = alltrue([
-      for c in var.contract_consumers : can(regex("^[a-zA-Z0-9_.l-]{0,64}$", c))
+      for c in var.contract_consumers : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c))
     ])
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
