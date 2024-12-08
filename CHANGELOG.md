@@ -1,7 +1,7 @@
-## 0.9.2 (unreleased)
+## 0.9.2
 
 - Add support for interface selector description in auto-generated profiles
-- Add support for Netflow Exporter for VM Networking
+- Add support for Netflow Exporter for VMM Networking
 - Add support for EIGRP route summarization
 - Add support to specify different type of a route control map
 - Add description under External EPG Subnet
