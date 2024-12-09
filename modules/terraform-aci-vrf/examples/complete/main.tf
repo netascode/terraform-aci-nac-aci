@@ -1,6 +1,6 @@
 module "aci_vrf" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-vrf"
-  version = ">= 0.8.0"
+  version = ">= 0.9.2"
 
   tenant                                 = "ABC"
   name                                   = "VRF1"
@@ -93,6 +93,17 @@ module "aci_vrf" {
       description = "Leak to VRF2"
       tenant      = "ABC"
       vrf         = "VRF2"
+    }]
+  }]
+  route_summarization_policies = [{
+    name = "RSP1"
+    nodes = [{
+      id  = 105
+      pod = 2
+    }]
+    subnets = [{
+      prefix                         = "1.1.0.0/16"
+      bgp_route_summarization_policy = "ABC"
     }]
   }]
 }

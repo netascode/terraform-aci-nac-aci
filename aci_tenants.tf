@@ -94,6 +94,17 @@ locals {
             vrf         = dest.vrf
           }]
         }]
+        route_summarization_policies = [for pol in try(vrf.route_summarization_policies, []) : {
+          name = "${pol.name}${local.defaults.apic.tenants.vrfs.route_summarization_policies.name_suffix}"
+          nodes = [for node in try(pol.nodes, []) : {
+            id  = node.id
+            pod = try(node.pod, local.defaults.apic.tenants.vrfs.route_summarization_policies.nodes.pod)
+          }]
+          subnets = [for subnet in try(pol.subnets, []) : {
+            prefix                         = subnet.prefix
+            bgp_route_summarization_policy = try(subnet.bgp_route_summarization_policy, null) != null ? "${subnet.bgp_route_summarization_policy}${local.defaults.apic.tenants.policies.bgp_route_summarization_policies.name_suffix}" : null
+          }]
+        }]
       }
     ]
   ])
@@ -152,12 +163,14 @@ module "aci_vrf" {
   pim_igmp_ssm_translate_policies          = each.value.pim_igmp_ssm_translate_policies
   leaked_internal_prefixes                 = each.value.leaked_internal_prefixes
   leaked_external_prefixes                 = each.value.leaked_external_prefixes
+  route_summarization_policies             = each.value.route_summarization_policies
 
   depends_on = [
     module.aci_tenant,
     module.aci_contract,
     module.aci_imported_contract,
     module.aci_bgp_timer_policy,
+    module.aci_bgp_route_summarization_policy
   ]
 }
 
@@ -426,6 +439,7 @@ module "aci_endpoint_group" {
   source = "./modules/terraform-aci-endpoint-group"
 
   for_each                    = { for epg in local.endpoint_groups : epg.key => epg if local.modules.aci_endpoint_group && var.manage_tenants }
+  bulk_static_ports           = try(local.apic.bulk_static_ports, local.defaults.apic.bulk_static_ports)
   tenant                      = each.value.tenant
   application_profile         = each.value.application_profile
   name                        = each.value.name
