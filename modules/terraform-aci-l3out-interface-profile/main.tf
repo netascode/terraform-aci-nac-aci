@@ -252,6 +252,15 @@ resource "aci_rest_managed" "igmpRsIfPol" {
   }
 }
 
+resource "aci_rest_managed" "l3extRsNdIfPol" {
+  count      = var.nd_interface_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.l3extLIfP.dn}/rsNdIfPol"
+  class_name = "l3extRsNdIfPol"
+  content = {
+    tnNdIfPolName = var.nd_interface_policy
+  }
+}
+
 resource "aci_rest_managed" "l3extRsLIfPCustQosPol" {
   count      = var.custom_qos_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.l3extLIfP.dn}/rslIfPCustQosPol"
