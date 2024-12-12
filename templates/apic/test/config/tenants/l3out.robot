@@ -253,6 +253,7 @@ Verify L3out {{ l3out_name }} Node {{ node.node_id }} Interface {{ loop.index }}
     {% else %}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.ifInstT   l3-port
     {% endif %}
+    Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.llAddr   {{ int.link_local_address | default('::') }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.mac   {{ int.mac | default(defaults.apic.tenants.l3outs.nodes.interfaces.mac) }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.mtu   {{ int.mtu | default(defaults.apic.tenants.l3outs.nodes.interfaces.mtu) }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.tDn   {{ tDn }}
@@ -278,6 +279,7 @@ Verify L3out {{ l3out_name }} Node {{ node.node_id }} Interface {{ loop.index }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.ifInstT   ext-svi
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.encap   vlan-{{ int.vlan }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.encapScope   {{ 'ctx' if int.scope | default(defaults.apic.tenants.l3outs.nodes.interfaces.scope) == 'vrf' else 'local' }}
+    Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.llAddr   {{ int.link_local_address | default('::') }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.mac   {{ int.mac | default(defaults.apic.tenants.l3outs.nodes.interfaces.mac) }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.mode   {{ int.mode | default(defaults.apic.tenants.l3outs.nodes.interfaces.mode) }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.mtu   {{ int.mtu | default(defaults.apic.tenants.l3outs.nodes.interfaces.mtu) }}
@@ -635,6 +637,7 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
     {% else %}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.ifInstT   l3-port
     {% endif %}
+    Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.llAddr   {{ int.link_local_address | default('::') }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.mac   {{ int.mac | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mac) }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.mtu   {{ int.mtu | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mtu) }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extRsPathL3OutAtt.attributes.tDn   {{ tDn }}
@@ -660,6 +663,7 @@ Verify L3out {{ l3out_name }} Node Profile {{ l3out_np_name }} Interface Profile
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.ifInstT   ext-svi
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.encapScope   {{ 'ctx' if int.scope | default(defaults.apic.tenants.l3outs.nodes.interfaces.scope) == 'vrf' else 'local' }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.encap   vlan-{{ int.vlan }}
+    Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.llAddr   {{ int.link_local_address | default('::') }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.mac   {{ int.mac | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mac) }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.mode   {{ int.mode | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mode) }}
     Should Be Equal Value Json String   ${r.json()}   ${int}..l3extVirtualLIfP.attributes.mtu   {{ int.mtu | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mtu) }}

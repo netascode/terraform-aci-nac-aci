@@ -232,6 +232,7 @@ apic:
                   ip_a: 14.14.14.1/24
                   ip_b: 14.14.14.2/24
                   ip_shared: 14.14.14.3/24
+                  link_local_address: fe80::ffff:ffff:ffff:ffff
                   mode: native
                   bgp_peers:
                     - ip: 14.14.14.14
@@ -338,6 +339,7 @@ apic:
                       port: 11
                       sub_port: 2
                       ip: 8.8.8.8/24
+                      link_local_address: fe80::ffff:ffff:ffff:ffff
                       bgp_peers:
                         - ip: 8.8.8.9
                           remote_as: 65010

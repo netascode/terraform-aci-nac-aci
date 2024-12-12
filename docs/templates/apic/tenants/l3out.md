@@ -262,6 +262,7 @@ apic:
                   ip_a: 14.14.14.1/24
                   ip_b: 14.14.14.2/24
                   ip_shared: 14.14.14.3/24
+                  link_local_address: fe80::ffff:ffff:ffff:ffff
                   mode: native
                   bgp_peers:
                     - ip: 14.14.14.14

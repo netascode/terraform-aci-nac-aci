@@ -416,7 +416,7 @@
                                                             {% if int.multipod_direct is defined and int.multipod_direct | default(defaults.apic.tenants.l3outs.nodes.interfaces.multipod_direct) %}
                                                             "isMultiPodDirect": "yes",
                                                             {% endif %}
-                                                            "llAddr": "::",
+                                                            "llAddr": "{{ int.link_local_address | default('::') }}",
                                                             "mac": "{{ int.mac | default(defaults.apic.tenants.l3outs.nodes.interfaces.mac) }}",
                                                             "mode": "{{ int.mode | default(defaults.apic.tenants.l3outs.nodes.interfaces.mode) }}",
                                                             "mtu": "{{ int.mtu | default(defaults.apic.tenants.l3outs.nodes.interfaces.mtu) }}",
@@ -441,7 +441,7 @@
                                                             "ifInstT": "ext-svi",
                                                             "encap": "vlan-{{ int.vlan }}",
                                                             "ipv6Dad": "enabled",
-                                                            "llAddr": "::",
+                                                            "llAddr": "{{ int.link_local_address | default('::') }}",
                                                             "mac": "{{ int.mac | default(defaults.apic.tenants.l3outs.nodes.interfaces.mac) }}",
                                                             "mode": "{{ int.mode | default(defaults.apic.tenants.l3outs.nodes.interfaces.mode) }}",
                                                             "mtu": "{{ int.mtu | default(defaults.apic.tenants.l3outs.nodes.interfaces.mtu) }}",
@@ -1118,7 +1118,7 @@
                                                             "isMultiPodDirect": "yes",
                                                             {% endif %}
                                                             "ipv6Dad": "enabled",
-                                                            "llAddr": "::",
+                                                            "llAddr": "{{ int.link_local_address | default('::') }}",
                                                             "mac": "{{ int.mac | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mac) }}",
                                                             "mode": "{{ int.mode | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mode) }}",
                                                             "mtu": "{{ int.mtu | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mtu) }}",
@@ -1143,7 +1143,7 @@
                                                             "ifInstT": "ext-svi",
                                                             "encap": "vlan-{{ int.vlan }}",
                                                             "ipv6Dad": "enabled",
-                                                            "llAddr": "::",
+                                                            "llAddr": "{{ int.link_local_address | default('::') }}",
                                                             "mac": "{{ int.mac | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mac) }}",
                                                             "mode": "{{ int.mode | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mode) }}",
                                                             "mtu": "{{ int.mtu | default(defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.mtu) }}",
