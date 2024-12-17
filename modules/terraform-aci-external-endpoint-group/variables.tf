@@ -119,6 +119,7 @@ variable "subnets" {
     name                           = optional(string, "")
     annotation                     = optional(string, null)
     prefix                         = string
+    description                    = optional(string, "")
     import_route_control           = optional(bool, false)
     export_route_control           = optional(bool, false)
     shared_route_control           = optional(bool, false)
@@ -147,6 +148,13 @@ variable "subnets" {
 
   validation {
     condition = alltrue([
+      for s in var.subnets : s.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", s.description)), false)
+    ])
+    error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  validation {
+    condition = alltrue([
       for s in var.subnets : alltrue([
         for r in s.route_control_profiles : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", r.name))
       ])
@@ -171,7 +179,7 @@ variable "contract_consumers" {
 
   validation {
     condition = alltrue([
-      for c in var.contract_consumers : can(regex("^[a-zA-Z0-9_.l-]{0,64}$", c))
+      for c in var.contract_consumers : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c))
     ])
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }

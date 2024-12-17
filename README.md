@@ -254,6 +254,9 @@ Additional example repositories:
 | <a name="module_aci_link_level_policy"></a> [aci\_link\_level\_policy](#module\_aci\_link\_level\_policy) | ./modules/terraform-aci-link-level-policy | n/a |
 | <a name="module_aci_lldp_policy"></a> [aci\_lldp\_policy](#module\_aci\_lldp\_policy) | ./modules/terraform-aci-lldp-policy | n/a |
 | <a name="module_aci_login_domain"></a> [aci\_login\_domain](#module\_aci\_login\_domain) | ./modules/terraform-aci-login-domain | n/a |
+| <a name="module_aci_macsec_interfaces_policy"></a> [aci\_macsec\_interfaces\_policy](#module\_aci\_macsec\_interfaces\_policy) | ./modules/terraform-aci-macsec-interfaces-policy | n/a |
+| <a name="module_aci_macsec_keychain_policies"></a> [aci\_macsec\_keychain\_policies](#module\_aci\_macsec\_keychain\_policies) | ./modules/terraform-aci-macsec-keychain-policies | n/a |
+| <a name="module_aci_macsec_parameters_policy"></a> [aci\_macsec\_parameters\_policy](#module\_aci\_macsec\_parameters\_policy) | ./modules/terraform-aci-macsec-parameters-policy | n/a |
 | <a name="module_aci_maintenance_group"></a> [aci\_maintenance\_group](#module\_aci\_maintenance\_group) | ./modules/terraform-aci-maintenance-group | n/a |
 | <a name="module_aci_management_access_policy"></a> [aci\_management\_access\_policy](#module\_aci\_management\_access\_policy) | ./modules/terraform-aci-management-access-policy | n/a |
 | <a name="module_aci_match_rule"></a> [aci\_match\_rule](#module\_aci\_match\_rule) | ./modules/terraform-aci-match-rule | n/a |
@@ -308,6 +311,7 @@ Additional example repositories:
 | <a name="module_aci_spine_fabric_interface_configuration"></a> [aci\_spine\_fabric\_interface\_configuration](#module\_aci\_spine\_fabric\_interface\_configuration) | ./modules/terraform-aci-fabric-interface-configuration | n/a |
 | <a name="module_aci_spine_interface_configuration"></a> [aci\_spine\_interface\_configuration](#module\_aci\_spine\_interface\_configuration) | ./modules/terraform-aci-interface-configuration | n/a |
 | <a name="module_aci_sr_mpls_external_endpoint_group"></a> [aci\_sr\_mpls\_external\_endpoint\_group](#module\_aci\_sr\_mpls\_external\_endpoint\_group) | ./modules/terraform-aci-external-endpoint-group | n/a |
+| <a name="module_aci_sr_mpls_global_configuration"></a> [aci\_sr\_mpls\_global\_configuration](#module\_aci\_sr\_mpls\_global\_configuration) | ./modules/terraform-aci-sr-mpls-global-configuration | n/a |
 | <a name="module_aci_sr_mpls_l3out"></a> [aci\_sr\_mpls\_l3out](#module\_aci\_sr\_mpls\_l3out) | ./modules/terraform-aci-l3out | n/a |
 | <a name="module_aci_sr_mpls_l3out_interface_profile_manual"></a> [aci\_sr\_mpls\_l3out\_interface\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_interface\_profile\_manual) | ./modules/terraform-aci-l3out-interface-profile | n/a |
 | <a name="module_aci_sr_mpls_l3out_node_profile_manual"></a> [aci\_sr\_mpls\_l3out\_node\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_node\_profile\_manual) | ./modules/terraform-aci-l3out-node-profile | n/a |

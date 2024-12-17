@@ -402,6 +402,18 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-login-domain/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-macsec-interfaces-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-macsec-interfaces-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-macsec-keychain-policies/"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-macsec-keychain-policies/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-macsec-parameters-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-macsec-parameters-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-maintenance-group"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-maintenance-group/examples/complete"]
@@ -602,6 +614,10 @@ repos:
         args: ["./modules/terraform-aci-spanning-tree-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-spanning-tree-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-sr-mpls-global-configuration"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-sr-mpls-global-configuration/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-storm-control-policy"]
       - id: terraform-docs-system

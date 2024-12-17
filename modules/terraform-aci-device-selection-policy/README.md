@@ -60,6 +60,7 @@ module "aci_device_selection_policy" {
 | <a name="input_service_graph_template"></a> [service\_graph\_template](#input\_service\_graph\_template) | Service graph template name. | `string` | n/a | yes |
 | <a name="input_sgt_device_tenant"></a> [sgt\_device\_tenant](#input\_sgt\_device\_tenant) | Device tenant name. | `string` | `""` | no |
 | <a name="input_sgt_device_name"></a> [sgt\_device\_name](#input\_sgt\_device\_name) | Device name. | `string` | n/a | yes |
+| <a name="input_node_name"></a> [node\_name](#input\_node\_name) | Function node name. | `string` | `"N1"` | no |
 | <a name="input_consumer_l3_destination"></a> [consumer\_l3\_destination](#input\_consumer\_l3\_destination) | Consumer L3 destination. | `bool` | `false` | no |
 | <a name="input_consumer_permit_logging"></a> [consumer\_permit\_logging](#input\_consumer\_permit\_logging) | Consumer permit logging. | `bool` | `false` | no |
 | <a name="input_consumer_logical_interface"></a> [consumer\_logical\_interface](#input\_consumer\_logical\_interface) | Consumer logical interface. | `string` | `""` | no |

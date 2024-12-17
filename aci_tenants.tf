@@ -94,6 +94,17 @@ locals {
             vrf         = dest.vrf
           }]
         }]
+        route_summarization_policies = [for pol in try(vrf.route_summarization_policies, []) : {
+          name = "${pol.name}${local.defaults.apic.tenants.vrfs.route_summarization_policies.name_suffix}"
+          nodes = [for node in try(pol.nodes, []) : {
+            id  = node.id
+            pod = try(node.pod, local.defaults.apic.tenants.vrfs.route_summarization_policies.nodes.pod)
+          }]
+          subnets = [for subnet in try(pol.subnets, []) : {
+            prefix                         = subnet.prefix
+            bgp_route_summarization_policy = try(subnet.bgp_route_summarization_policy, null) != null ? "${subnet.bgp_route_summarization_policy}${local.defaults.apic.tenants.policies.bgp_route_summarization_policies.name_suffix}" : null
+          }]
+        }]
       }
     ]
   ])
@@ -152,12 +163,14 @@ module "aci_vrf" {
   pim_igmp_ssm_translate_policies          = each.value.pim_igmp_ssm_translate_policies
   leaked_internal_prefixes                 = each.value.leaked_internal_prefixes
   leaked_external_prefixes                 = each.value.leaked_external_prefixes
+  route_summarization_policies             = each.value.route_summarization_policies
 
   depends_on = [
     module.aci_tenant,
     module.aci_contract,
     module.aci_imported_contract,
     module.aci_bgp_timer_policy,
+    module.aci_bgp_route_summarization_policy
   ]
 }
 
@@ -179,6 +192,7 @@ locals {
         virtual_mac                = try(bd.virtual_mac, "not-applicable")
         ep_move_detection          = try(bd.ep_move_detection, local.defaults.apic.tenants.bridge_domains.ep_move_detection)
         clear_remote_mac_entries   = try(bd.clear_remote_mac_entries, local.defaults.apic.tenants.bridge_domains.clear_remote_mac_entries)
+        multicast_arp_drop         = try(bd.multicast_arp_drop, null)
         l3_multicast               = try(bd.l3_multicast, local.defaults.apic.tenants.bridge_domains.l3_multicast)
         pim_source_filter          = try(bd.pim_source_filter, "")
         pim_destination_filter     = try(bd.pim_destination_filter, "")
@@ -232,6 +246,7 @@ module "aci_bridge_domain" {
   virtual_mac                = each.value.virtual_mac
   ep_move_detection          = each.value.ep_move_detection
   clear_remote_mac_entries   = each.value.clear_remote_mac_entries
+  multicast_arp_drop         = each.value.multicast_arp_drop
   l3_multicast               = each.value.l3_multicast
   pim_source_filter          = each.value.pim_source_filter
   pim_destination_filter     = each.value.pim_destination_filter
@@ -424,6 +439,7 @@ module "aci_endpoint_group" {
   source = "./modules/terraform-aci-endpoint-group"
 
   for_each                    = { for epg in local.endpoint_groups : epg.key => epg if local.modules.aci_endpoint_group && var.manage_tenants }
+  bulk_static_ports           = try(local.apic.bulk_static_ports, local.defaults.apic.bulk_static_ports)
   tenant                      = each.value.tenant
   application_profile         = each.value.application_profile
   name                        = each.value.name
@@ -1163,6 +1179,7 @@ locals {
               ip_a            = try(int.ip_a, null)
               ip_b            = try(int.ip_b, null)
               ip_shared       = try(int.ip_shared, null)
+              lladdr          = try(int.link_local_address, null)
               scope           = try(int.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.scope)
               multipod_direct = tenant.name == "infra" ? try(int.multipod_direct, false) : false
               bgp_peers = [for peer in try(int.bgp_peers, []) : {
@@ -1255,6 +1272,7 @@ module "aci_l3out_interface_profile_manual" {
     ip_a                     = int.ip_a
     ip_b                     = int.ip_b
     ip_shared                = int.ip_shared
+    lladdr                   = int.lladdr
     bgp_peers                = int.bgp_peers
     paths                    = int.paths
     scope                    = int.scope
@@ -1320,6 +1338,7 @@ locals {
             ip_a            = try(int.ip_a, null)
             ip_b            = try(int.ip_b, null)
             ip_shared       = try(int.ip_shared, null)
+            lladdr          = try(int.link_local_address, null)
             scope           = try(int.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.scope)
             multipod_direct = tenant.name == "infra" ? try(int.multipod_direct, false) : false
             bgp_peers = [for peer in try(int.bgp_peers, []) : {
@@ -1409,6 +1428,7 @@ module "aci_l3out_interface_profile_auto" {
     ip_a                     = int.ip_a
     ip_b                     = int.ip_b
     ip_shared                = int.ip_shared
+    lladdr                   = int.lladdr
     bgp_peers                = int.bgp_peers
     paths                    = int.paths
     scope                    = int.scope
@@ -1449,6 +1469,7 @@ locals {
             name                           = try(subnet.name, "")
             annotation                     = try(subnet.ndo_managed, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ndo_managed) ? "orchestrator:msc" : null
             prefix                         = subnet.prefix
+            description                    = try(subnet.description, "")
             import_route_control           = try(subnet.import_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_route_control)
             export_route_control           = try(subnet.export_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.export_route_control)
             shared_route_control           = try(subnet.shared_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.shared_route_control)
@@ -2732,7 +2753,7 @@ locals {
         key                          = format("%s/%s", tenant.name, policy.name)
         tenant                       = tenant.name
         name                         = "${policy.name}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}"
-        auth_key                     = try(policy.auth_key, "")
+        auth_key                     = try(policy.auth_key, null)
         auth_type                    = try(policy.auth_type, local.defaults.apic.tenants.policies.pim_policies.auth_type)
         mcast_dom_boundary           = try(policy.mcast_dom_boundary, local.defaults.apic.tenants.policies.pim_policies.mcast_dom_boundary)
         passive                      = try(policy.passive, local.defaults.apic.tenants.policies.pim_policies.passive)
@@ -3261,6 +3282,7 @@ locals {
         key                     = format("%s/%s", tenant.name, sgt.name)
         tenant                  = tenant.name
         name                    = "${sgt.name}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
+        annotation              = try(sgt.ndo_managed, local.defaults.apic.tenants.services.service_graph_templates.ndo_managed) ? "orchestrator:msc-shadow:no" : null
         description             = try(sgt.description, "")
         alias                   = try(sgt.alias, "")
         template_type           = try(sgt.template_type, local.defaults.apic.tenants.services.service_graph_templates.template_type)
@@ -3271,6 +3293,7 @@ locals {
         device_function         = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.function, []) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : "None"
         device_copy             = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.copy_device, []) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : false
         device_managed          = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.managed, []) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : false
+        device_node_name        = try(sgt.device.node_name, "N1")
         consumer_direct_connect = try(sgt.consumer.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.consumer.direct_connect)
         provider_direct_connect = try(sgt.provider.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.provider.direct_connect)
       }
@@ -3284,6 +3307,7 @@ module "aci_service_graph_template" {
   for_each                = { for sg_template in local.service_graph_templates : sg_template.key => sg_template if local.modules.aci_service_graph_template && var.manage_tenants }
   tenant                  = each.value.tenant
   name                    = each.value.name
+  annotation              = each.value.annotation
   description             = each.value.description
   alias                   = each.value.alias
   template_type           = each.value.template_type
@@ -3294,6 +3318,7 @@ module "aci_service_graph_template" {
   device_function         = each.value.device_function
   device_copy             = each.value.device_copy
   device_managed          = each.value.device_managed
+  device_node_name        = each.value.device_node_name
   consumer_direct_connect = each.value.consumer_direct_connect
   provider_direct_connect = each.value.provider_direct_connect
 
@@ -3312,7 +3337,8 @@ locals {
         contract                                                = "${dsp.contract}${local.defaults.apic.tenants.contracts.name_suffix}"
         service_graph_template                                  = "${dsp.service_graph_template}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
         sgt_device_tenant                                       = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : try(sg_template.device.tenant, tenant.name) if sg_template.name == dsp.service_graph_template][0] : tenant.name
-        sgt_device_name                                         = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : "${sg_template.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}" if sg_template.name == dsp.service_graph_template][0] : ""
+        sgt_device_name                                         = try("${dsp.device_name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}", length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : "${sg_template.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}" if sg_template.name == dsp.service_graph_template][0] : "")
+        node_name                                               = try(dsp.node_name, "N1")
         consumer_l3_destination                                 = try(dsp.consumer.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination)
         consumer_permit_logging                                 = try(dsp.consumer.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.consumer.permit_logging)
         consumer_logical_interface                              = try("${dsp.consumer.logical_interface}${local.defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix}", "")
@@ -3367,6 +3393,7 @@ module "aci_device_selection_policy" {
   service_graph_template                                  = each.value.service_graph_template
   sgt_device_tenant                                       = each.value.sgt_device_tenant
   sgt_device_name                                         = each.value.sgt_device_name
+  node_name                                               = each.value.node_name
   consumer_l3_destination                                 = each.value.consumer_l3_destination
   consumer_permit_logging                                 = each.value.consumer_permit_logging
   consumer_logical_interface                              = each.value.consumer_logical_interface

@@ -95,6 +95,9 @@ modules:
   aci_link_level_policy: true
   aci_lldp_policy: true
   aci_login_domain: true
+  aci_macsec_interfaces_policy: true
+  aci_macsec_parameters_policy: true
+  aci_macsec_keychain_policies: true
   aci_maintenance_group: true
   aci_management_access_policy: true
   aci_match_rule: true
@@ -146,6 +149,7 @@ modules:
   aci_snmp_policy: true
   aci_snmp_trap_policy: true
   aci_spanning_tree_policy: true
+  aci_sr_mpls_global_configuration: true
   aci_storm_control_policy: true
   aci_switch_configuration: true
   aci_syslog_policy: true
