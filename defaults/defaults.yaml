@@ -806,6 +806,22 @@ defaults:
           name_suffix: ""
           nodes:
             pod: 1
+        provider_subject_labels:
+          name_suffix: ""
+          tag: black
+          is_complement: false
+        consumer_subject_labels:
+          name_suffix: ""
+          tag: black
+          is_complement: false
+        provider_epg_labels:
+          name_suffix: ""
+          tag: black
+          is_complement: false
+        consumer_epg_labels:
+          name_suffix: ""
+          tag: black
+          is_complement: false
       bridge_domains:
         name_suffix: ""
         ndo_managed: false
@@ -1010,6 +1026,19 @@ defaults:
             route_control_profiles:
               name_suffix: ""
               direction: import
+          consumer_subject_labels:
+            name_suffix: ""
+            tag: black
+          provider_subject_labels:
+            name_suffix: ""
+            tag: black
+          consumer_epg_labels:
+            name_suffix: ""
+            tag: black
+          provider_epg_labels:
+            name_suffix: ""
+            tag: black
+            is_complement: false  
         import_route_map:
           type: global
           contexts:
@@ -1080,6 +1109,15 @@ defaults:
               name_suffix: ""
               start_ip: 0.0.0.0
               end_ip: 0.0.0.0
+          consumer_subject_labels:
+            name_suffix: ""
+          provider_subject_labels:
+            name_suffix: ""
+          consumer_epg_labels:
+            name_suffix: ""
+          provider_epg_labels:
+            name_suffix: ""
+            is_complement: false
         useg_endpoint_groups:
           name_suffix: ""
           flood_in_encap: false
@@ -1108,6 +1146,19 @@ defaults:
               name_suffix: ""
               start_ip: 0.0.0.0
               end_ip: 0.0.0.0
+          consumer_subject_labels:
+            name_suffix: ""
+            tag: black
+          provider_subject_labels:
+            name_suffix: ""
+            tag: black
+          provider_useg_epg_labels:
+            name_suffix: ""
+            tag: black
+            is_complement: false
+          consumer_useg_epg_labels:
+            name_suffix: ""
+            tag: black
         endpoint_security_groups:
           name_suffix: ""
           shutdown: false
@@ -1115,6 +1166,19 @@ defaults:
           preferred_group: false
           tag_selectors:
             operator: equals
+          consumer_subject_labels:
+            name_suffix: ""
+            tag: black
+          provider_subject_labels:
+            name_suffix: ""
+            tag: black
+          provider_esg_labels:
+            name_suffix: ""
+            tag: black
+            is_complement: false
+          consumer_esg_labels:
+            name_suffix: ""
+            tag: black
       inb_endpoint_groups:
         name_suffix: ""
       oob_endpoint_groups:
@@ -1172,6 +1236,14 @@ defaults:
             priority: default
             log: false
             no_stats: false
+          consumer_label_match: AtleastOne
+          provider_label_match: AtleastOne
+          provider_labels:
+            name_suffix: ""
+            is_complement: false
+          consumer_labels:
+            name_suffix: ""
+            is_complement: false
       imported_contracts:
         name_suffix: ""
       oob_contracts:

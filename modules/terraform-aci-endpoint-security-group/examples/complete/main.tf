@@ -64,4 +64,20 @@ module "aci_endpoint_security_group" {
       description = "foo"
     }
   ]
+  consumer_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  consumer_esg_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_esg_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
 }

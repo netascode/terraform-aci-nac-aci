@@ -92,4 +92,20 @@ module "aci_endpoint_group" {
     from            = "1.1.1.10"
     to              = "1.1.1.100"
   }]
+  consumer_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  consumer_epg_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_epg_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
 }

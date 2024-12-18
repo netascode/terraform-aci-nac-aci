@@ -23,5 +23,17 @@ module "aci_contract" {
       log      = true
       no_stats = true
     }]
+    consumer_label_match = "AtleastOne"
+    provider_label_match = "AtleastOne"
+    consumer_labels = [{
+      name          = "Label01"
+      tag           = "blue"
+      is_complement = false
+    }]
+    provider_labels = [{
+      name          = "Label02"
+      tag           = "green"
+      is_complement = false
+    }]
   }]
 }

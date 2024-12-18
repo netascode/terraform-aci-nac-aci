@@ -75,6 +75,22 @@ module "aci_endpoint_security_group" {
       description = "foo"
     }
   ]
+  consumer_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  consumer_esg_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_esg_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
 }
 ```
 
@@ -111,6 +127,10 @@ module "aci_endpoint_security_group" {
 | <a name="input_tag_selectors"></a> [tag\_selectors](#input\_tag\_selectors) | List of tag selectors.  Choices `operator`: `contains`, `equals`, `regex`. Default value `operator`: `equals`. | <pre>list(object({<br>    key         = string<br>    operator    = optional(string, "equals")<br>    value       = string<br>    description = optional(string, "")<br>  }))</pre> | `[]` | no |
 | <a name="input_epg_selectors"></a> [epg\_selectors](#input\_epg\_selectors) | List of EPG selectors. | <pre>list(object({<br>    tenant              = string<br>    application_profile = string<br>    endpoint_group      = string<br>    description         = optional(string, "")<br>  }))</pre> | `[]` | no |
 | <a name="input_ip_subnet_selectors"></a> [ip\_subnet\_selectors](#input\_ip\_subnet\_selectors) | List of IP subnet selectors. | <pre>list(object({<br>    value       = string<br>    description = optional(string, "")<br>  }))</pre> | `[]` | no |
+| <a name="input_provider_subject_labels"></a> [provider\_subject\_labels](#input\_provider\_subject\_labels) | List of Provided subject labels. | <pre>list(object({<br>    name = string<br>    tag  = string<br>  }))</pre> | `[]` | no |
+| <a name="input_consumer_subject_labels"></a> [consumer\_subject\_labels](#input\_consumer\_subject\_labels) | List of Consumed subject labels. | <pre>list(object({<br>    name = string<br>    tag  = string<br>  }))</pre> | `[]` | no |
+| <a name="input_provider_esg_labels"></a> [provider\_esg\_labels](#input\_provider\_esg\_labels) | List of Provided EPG labels. | <pre>list(object({<br>    name          = string<br>    tag           = string<br>    is_complement = optional(bool, false)<br>  }))</pre> | `[]` | no |
+| <a name="input_consumer_esg_labels"></a> [consumer\_esg\_labels](#input\_consumer\_esg\_labels) | List of Consumed EPG labels. | <pre>list(object({<br>    name = string<br>    tag  = string<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -136,4 +156,8 @@ module "aci_endpoint_security_group" {
 | [aci_rest_managed.fvRsScope](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsSecInherited](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvTagSelector](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vzConsLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vzConsSubjLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vzProvLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vzProvSubjLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

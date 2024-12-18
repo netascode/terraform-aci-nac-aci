@@ -94,3 +94,44 @@ resource "aci_rest_managed" "l3extRsSubnetToRtSumm" {
     tDn = each.value.bgp_route_summarization ? (each.value.bgp_route_summarization_policy != "" ? "uni/tn-${var.tenant}/bgprtsum-${each.value.bgp_route_summarization_policy}" : "uni/tn-common/bgprtsum-default") : (each.value.ospf_route_summarization ? "uni/tn-common/ospfrtsumm-default" : (each.value.eigrp_route_summarization ? "uni/tn-common/eigrprtsumm-eigrp_pol" : null))
   }
 }
+
+resource "aci_rest_managed" "vzProvLbl" {
+  for_each   = { for label in var.provider_epg_labels : label.name => label }
+  dn         = "${aci_rest_managed.l3extInstP.dn}/provlbl-${each.value.name}"
+  class_name = "vzProvLbl"
+  content = {
+    name         = each.value.name
+    tag          = each.value.tag
+    isComplement = each.value.is_complement == true ? "yes" : "no"
+  }
+}
+
+resource "aci_rest_managed" "vzConsLbl" {
+  for_each   = { for label in var.consumer_epg_labels : label.name => label }
+  dn         = "${aci_rest_managed.l3extInstP.dn}/conslbl-${each.value.name}"
+  class_name = "vzConsLbl"
+  content = {
+    name = each.value.name
+    tag  = each.value.tag
+  }
+}
+
+resource "aci_rest_managed" "vzProvSubjLbl" {
+  for_each   = { for label in var.provider_subject_labels : label.name => label }
+  dn         = "${aci_rest_managed.l3extInstP.dn}/provsubjlbl-${each.value.name}"
+  class_name = "vzProvSubjLbl"
+  content = {
+    name = each.value.name
+    tag  = each.value.tag
+  }
+}
+
+resource "aci_rest_managed" "vzConsSubjLbl" {
+  for_each   = { for label in var.consumer_subject_labels : label.name => label }
+  dn         = "${aci_rest_managed.l3extInstP.dn}/conssubjlbl-${each.value.name}"
+  class_name = "vzConsSubjLbl"
+  content = {
+    name = each.value.name
+    tag  = each.value.tag
+  }
+}
