@@ -2,8 +2,9 @@ locals {
   additional_ip_list = flatten([
     for st_ep in var.static_endpoints : [
       for ip in lookup(st_ep, "additional_ips", []) : {
-        id   = "${st_ep.name}-${ip}"
+        id   = st_ep.name != "" ? "${st_ep.name}-${ip}" : "${st_ep.mac}-${ip}"
         name = st_ep.name
+        mac  = st_ep.mac
         ip   = ip
       }
     ]
@@ -461,7 +462,7 @@ resource "aci_rest_managed" "ptpEpgCfg_fex_channel" {
 }
 
 resource "aci_rest_managed" "fvStCEp" {
-  for_each   = { for sp_ep in var.static_endpoints : sp_ep.name => sp_ep }
+  for_each   = { for sp_ep in var.static_endpoints : (sp_ep.name != "" ? sp_ep.name : sp_ep.mac) => sp_ep }
   dn         = "${aci_rest_managed.fvAEPg.dn}/stcep-${each.value.mac}-type-${each.value.type}"
   class_name = "fvStCEp"
   content = {
@@ -477,7 +478,7 @@ resource "aci_rest_managed" "fvStCEp" {
 
 resource "aci_rest_managed" "fvStIp" {
   for_each   = { for ip in local.additional_ip_list : ip.id => ip }
-  dn         = "${aci_rest_managed.fvStCEp[each.value.name].dn}/ip-[${each.value.ip}]"
+  dn         = "${aci_rest_managed.fvStCEp[(each.value.name != "" ? each.value.name : each.value.mac)].dn}/ip-[${each.value.ip}]"
   class_name = "fvStIp"
   content = {
     addr = each.value.ip
@@ -485,8 +486,8 @@ resource "aci_rest_managed" "fvStIp" {
 }
 
 resource "aci_rest_managed" "fvRsStCEpToPathEp_port" {
-  for_each   = { for sp_ep in var.static_endpoints : sp_ep.name => sp_ep if sp_ep.port != null }
-  dn         = "${aci_rest_managed.fvStCEp[each.value.name].dn}/rsstCEpToPathEp-[${format("topology/pod-%s/paths-%s/pathep-[eth%s/%s]", each.value.pod_id, each.value.node_id, each.value.module, each.value.port)}]"
+  for_each   = { for sp_ep in var.static_endpoints : (sp_ep.name != "" ? sp_ep.name : sp_ep.mac) => sp_ep if sp_ep.port != null }
+  dn         = "${aci_rest_managed.fvStCEp[(each.value.name != "" ? each.value.name : each.value.mac)].dn}/rsstCEpToPathEp-[${format("topology/pod-%s/paths-%s/pathep-[eth%s/%s]", each.value.pod_id, each.value.node_id, each.value.module, each.value.port)}]"
   class_name = "fvRsStCEpToPathEp"
   content = {
     tDn = format("topology/pod-%s/paths-%s/pathep-[eth%s/%s]", each.value.pod_id, each.value.node_id, each.value.module, each.value.port)
@@ -495,7 +496,7 @@ resource "aci_rest_managed" "fvRsStCEpToPathEp_port" {
 
 resource "aci_rest_managed" "fvRsStCEpToPathEp_channel" {
   for_each   = { for sp_ep in var.static_endpoints : sp_ep.name => sp_ep if sp_ep.channel != null }
-  dn         = "${aci_rest_managed.fvStCEp[each.value.name].dn}/rsstCEpToPathEp-[${format(each.value.node2_id != null ? "topology/pod-%s/protpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/pathep-[%[4]s]", each.value.pod_id, each.value.node_id, each.value.node2_id, each.value.channel)}]"
+  dn         = "${aci_rest_managed.fvStCEp[(each.value.name != "" ? each.value.name : each.value.mac)].dn}/rsstCEpToPathEp-[${format(each.value.node2_id != null ? "topology/pod-%s/protpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/pathep-[%[4]s]", each.value.pod_id, each.value.node_id, each.value.node2_id, each.value.channel)}]"
   class_name = "fvRsStCEpToPathEp"
   content = {
     tDn = format(each.value.node2_id != null ? "topology/pod-%s/protpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/pathep-[%[4]s]", each.value.pod_id, each.value.node_id, each.value.node2_id, each.value.channel)
