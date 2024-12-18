@@ -81,6 +81,7 @@ locals {
         node_id      = int.node_id
         pod_id       = int.pod_id
         scope        = int.scope
+        ip_shared    = int.ip_shared
       }
     } if int.floating_svi == true
   ])
@@ -368,6 +369,15 @@ resource "aci_rest_managed" "l3extRsDynPathAtt" {
   content = {
     floatingAddr = each.value.floating_ip
     tDn          = "uni/${each.value.domain}"
+  }
+}
+
+resource "aci_rest_managed" "l3extIp_float" {
+  for_each   = { for item in local.floating_interfaces : item.key => item.value if item.value.ip_shared != null }
+  dn         = "${aci_rest_managed.l3extVirtualLIfP[each.value.floating_key].dn}/addr-[${each.value.ip_shared}]"
+  class_name = "l3extIp"
+  content = {
+    addr = each.value.ip_shared
   }
 }
 
