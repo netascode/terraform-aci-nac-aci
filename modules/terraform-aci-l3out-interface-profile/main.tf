@@ -82,6 +82,7 @@ locals {
         pod_id       = int.pod_id
         scope        = int.scope
         ip_shared    = int.ip_shared
+        lladdr       = int.lladdr
       }
     } if int.floating_svi == true
   ])
