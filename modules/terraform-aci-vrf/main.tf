@@ -29,7 +29,7 @@ locals {
 
   bgp_ipv4_import_route_target_list = flatten([
     for ipv4_i_rt in coalesce(var.bgp_ipv4_import_route_target, []) : {
-      key = "${ipv4_i_rt}"
+      key = ipv4_i_rt
       value = {
         rt = ipv4_i_rt
       }
@@ -37,7 +37,7 @@ locals {
   ])
   bgp_ipv4_export_route_target_list = flatten([
     for ipv4_e_rt in coalesce(var.bgp_ipv4_export_route_target, []) : {
-      key = "${ipv4_e_rt}"
+      key = ipv4_e_rt
       value = {
         rt = ipv4_e_rt
       }
@@ -45,7 +45,7 @@ locals {
   ])
   bgp_ipv6_import_route_target_list = flatten([
     for ipv6_i_rt in coalesce(var.bgp_ipv6_import_route_target, []) : {
-      key = "${ipv6_i_rt}"
+      key = ipv6_i_rt
       value = {
         rt = ipv6_i_rt
       }
@@ -53,7 +53,7 @@ locals {
   ])
   bgp_ipv6_export_route_target_list = flatten([
     for ipv6_e_rt in coalesce(var.bgp_ipv6_export_route_target, []) : {
-      key = "${ipv6_e_rt}"
+      key = ipv6_e_rt
       value = {
         rt = ipv6_e_rt
       }
