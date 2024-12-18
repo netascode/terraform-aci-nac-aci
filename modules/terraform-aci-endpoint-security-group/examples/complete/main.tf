@@ -77,7 +77,8 @@ module "aci_endpoint_security_group" {
     tag  = "black"
   }]
   provider_esg_labels = [{
-    name = "Label01"
-    tag  = "black"
+    name          = "Label01"
+    tag           = "black"
+    is_complement = false
   }]
 }
