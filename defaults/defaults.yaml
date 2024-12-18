@@ -10,6 +10,7 @@ defaults:
     auto_generate_access_spine_switch_interface_profiles: false
     new_interface_configuration: false
     interface_selector_description: false
+    bulk_static_ports: false
     fabric_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
       leaf_interface_profile_name: "LEAF\\g<id>"
@@ -400,6 +401,9 @@ defaults:
         link_level_policies:
           name_suffix: ""
           link_debounce_interval: 0
+      sr_mpls_global_configuration:
+        sr_global_block_minimum: 16000
+        sr_global_block_maximum: 23999
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
@@ -549,6 +553,22 @@ defaults:
           name_suffix: ""
         netflow_records:
           name_suffix: ""
+        macsec_parameters_policies:
+          name_suffix: ""
+          cipher_suite: gcm-aes-xpn-256
+          confidentiality_offset: offset-0
+          key_server_priority: 16
+          window_size: 64
+          key_expiry_time: disabled
+          security_policy: should-secure
+        macsec_keychain_policies:
+          name_suffix: ""
+          key_policies:
+            start_time: now
+            end_time: infinite
+        macsec_interfaces_policies:
+          name_suffix: ""
+          admin_state: true
       leaf_interface_policy_groups:
         name_suffix: ""
         map: none
@@ -782,6 +802,10 @@ defaults:
           asm_traffic_registry_max_rate: 65535
           asm_traffic_registry_source_ip: "0.0.0.0"
         preferred_group: false
+        route_summarization_policies:
+          name_suffix: ""
+          nodes:
+            pod: 1
       bridge_domains:
         name_suffix: ""
         ndo_managed: false
@@ -798,6 +822,7 @@ defaults:
         unicast_routing: true
         advertise_host_routes: false
         l3_multicast: false
+        multicast_arp_drop: false
         dhcp_labels:
           scope: tenant
         subnets:
