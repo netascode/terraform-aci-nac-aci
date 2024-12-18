@@ -58,7 +58,7 @@ locals {
         rt = ipv6_e_rt
       }
     }
-
+  ])
   route_summarization_subnets = flatten([
     for pol in var.route_summarization_policies : [
       for subnet in pol.subnets : {
