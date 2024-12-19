@@ -233,7 +233,7 @@ variable "physical_domains" {
 
   validation {
     condition = alltrue([
-      for phydom in var.var.physical_domains : phydom.resolution_immediacy == null || try(contains(["immediate", "lazy", "pre-provision"], phydom.resolution_immediacy), false)
+      for phydom in var.physical_domains : phydom.resolution_immediacy == null || try(contains(["immediate", "lazy", "pre-provision"], phydom.resolution_immediacy), false)
     ])
     error_message = "`resolution_immediacy`: Allowed values are `immediate`, `lazy` or `pre-provision`."
   }
