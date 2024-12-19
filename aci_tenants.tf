@@ -328,7 +328,10 @@ locals {
           contract_providers          = try([for contract in epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
           contract_intra_epgs         = try([for contract in epg.contracts.intra_epgs : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
-          physical_domains            = try([for domain in epg.physical_domains : "${domain}${local.defaults.apic.access_policies.physical_domains.name_suffix}"], [])
+          physical_domains = [for phydom in try(epg.physical_domains, []) : {
+            name                 = "${phydom.name}${local.defaults.apic.access_policies.physical_domains.name_suffix}"
+            resolution_immediacy = try(phydom.resolution_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.physical_domains.resolution_immediacy)
+          }]  
           contract_masters = [for master in try(epg.contracts.masters, []) : {
             endpoint_group      = master.endpoint_group
             application_profile = try(master.application_profile, "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}")

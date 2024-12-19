@@ -283,6 +283,17 @@ resource "aci_rest_managed" "fvRsDomAtt" {
   }
 }
 
+resource "aci_rest_managed" "fvRsDomAtt" {
+  for_each   = { for phydom in var.physical_domains : phydom.name => phydom }
+  dn         = "${aci_rest_managed.fvAEPg.dn}/rsdomAtt-[uni/phys-${each.value}]"
+  class_name = "fvRsDomAtt"
+  content = {
+    tDn = "uni/phys-${each.value.name}"
+    resImedcy     = each.value.resolution_immediacy
+   
+  }
+}
+
 resource "aci_rest_managed" "fvRsNodeAtt" {
   for_each   = { for sp in var.static_leafs : "${sp.node_id}-vl-${sp.vlan}" => sp }
   dn         = "${aci_rest_managed.fvAEPg.dn}/rsnodeAtt-[${format("topology/pod-%s/node-%s", each.value.pod_id, each.value.node_id)}]"
