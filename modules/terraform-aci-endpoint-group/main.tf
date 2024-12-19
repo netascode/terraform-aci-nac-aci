@@ -276,11 +276,13 @@ resource "aci_rest_managed" "fvRsSecInherited" {
 }
 
 resource "aci_rest_managed" "fvRsDomAtt" {
-  for_each   = toset(var.physical_domains)
-  dn         = "${aci_rest_managed.fvAEPg.dn}/rsdomAtt-[uni/phys-${each.value}]"
+  for_each   = { for phydom in var.physical_domains : phydom.name => phydom }
+  dn         = "${aci_rest_managed.fvAEPg.dn}/rsdomAtt-[uni/phys-${each.value.name}]"
   class_name = "fvRsDomAtt"
   content = {
-    tDn = "uni/phys-${each.value}"
+    tDn       = "uni/phys-${each.value.name}"
+    resImedcy = each.value.resolution_immediacy
+
   }
 }
 
