@@ -221,7 +221,7 @@ variable "physical_domains" {
   type = list(object({
     name                 = string
     resolution_immediacy = optional(string, "immediate")
-   }))
+  }))
   default = []
 
   validation {

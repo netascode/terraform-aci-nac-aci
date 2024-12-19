@@ -279,9 +279,9 @@ resource "aci_rest_managed" "fvRsDomAtt" {
   dn         = "${aci_rest_managed.fvAEPg.dn}/rsdomAtt-[uni/phys-${each.value.name}]"
   class_name = "fvRsDomAtt"
   content = {
-    tDn = "uni/phys-${each.value.name}"
-    resImedcy     = each.value.resolution_immediacy
-   
+    tDn       = "uni/phys-${each.value.name}"
+    resImedcy = each.value.resolution_immediacy
+
   }
 }
 

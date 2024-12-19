@@ -331,7 +331,7 @@ locals {
           physical_domains = [for phydom in try(epg.physical_domains, []) : {
             name                 = "${phydom.name}${local.defaults.apic.access_policies.physical_domains.name_suffix}"
             resolution_immediacy = try(phydom.resolution_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.physical_domains.resolution_immediacy)
-          }]  
+          }]
           contract_masters = [for master in try(epg.contracts.masters, []) : {
             endpoint_group      = master.endpoint_group
             application_profile = try(master.application_profile, "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}")
