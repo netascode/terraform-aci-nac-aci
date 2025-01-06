@@ -2,7 +2,8 @@ resource "aci_rest_managed" "fabricPodPGrp" {
   dn         = "uni/fabric/funcprof/podpgrp-${var.name}"
   class_name = "fabricPodPGrp"
   content = {
-    name = var.name
+    name  = var.name
+    descr = var.description
   }
 }
 
@@ -27,5 +28,13 @@ resource "aci_rest_managed" "fabricRsCommPol" {
   class_name = "fabricRsCommPol"
   content = {
     tnCommPolName = var.management_access_policy
+  }
+}
+
+resource "aci_rest_managed" "fabricRsMacsecPol" {
+  dn         = "${aci_rest_managed.fabricPodPGrp.dn}/rsmacsecPol"
+  class_name = "fabricRsMacsecPol"
+  content = {
+    tnMacsecFabIfPolName = var.macsec_policy
   }
 }

@@ -44,3 +44,15 @@ variable "macsec_keychain_policy" {
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
+
+
+variable "type" {
+  description = "Type of MacSec Interface Policy. Allowed values: `access` or `fabric`."
+  type        = string
+  default     = "access"
+
+  validation {
+    condition     = contains(["access", "fabric"], var.type)
+    error_message = "Allowed values are `access` or `fabric`."
+  }
+}

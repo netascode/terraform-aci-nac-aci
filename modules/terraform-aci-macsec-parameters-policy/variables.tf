@@ -83,3 +83,14 @@ variable "security_policy" {
     error_message = "Allowed values: `must-secure` or `should-secure`."
   }
 }
+
+variable "type" {
+  description = "Type of Parameter Policy. Allowed values: `access` or `fabric`."
+  type        = string
+  default     = "access"
+
+  validation {
+    condition     = contains(["access", "fabric"], var.type)
+    error_message = "Allowed values are `access` or `fabric`."
+  }
+}

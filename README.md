@@ -205,6 +205,9 @@ Additional example repositories:
 | <a name="module_aci_fabric_leaf_switch_profile_auto"></a> [aci\_fabric\_leaf\_switch\_profile\_auto](#module\_aci\_fabric\_leaf\_switch\_profile\_auto) | ./modules/terraform-aci-fabric-leaf-switch-profile | n/a |
 | <a name="module_aci_fabric_leaf_switch_profile_manual"></a> [aci\_fabric\_leaf\_switch\_profile\_manual](#module\_aci\_fabric\_leaf\_switch\_profile\_manual) | ./modules/terraform-aci-fabric-leaf-switch-profile | n/a |
 | <a name="module_aci_fabric_link_level_policy"></a> [aci\_fabric\_link\_level\_policy](#module\_aci\_fabric\_link\_level\_policy) | ./modules/terraform-aci-fabric-link-level-policy | n/a |
+| <a name="module_aci_fabric_macsec_interfaces_policy"></a> [aci\_fabric\_macsec\_interfaces\_policy](#module\_aci\_fabric\_macsec\_interfaces\_policy) | ./modules/terraform-aci-macsec-interfaces-policy | n/a |
+| <a name="module_aci_fabric_macsec_keychain_policies"></a> [aci\_fabric\_macsec\_keychain\_policies](#module\_aci\_fabric\_macsec\_keychain\_policies) | ./modules/terraform-aci-macsec-keychain-policies | n/a |
+| <a name="module_aci_fabric_macsec_parameters_policy"></a> [aci\_fabric\_macsec\_parameters\_policy](#module\_aci\_fabric\_macsec\_parameters\_policy) | ./modules/terraform-aci-macsec-parameters-policy | n/a |
 | <a name="module_aci_fabric_pod_policy_group"></a> [aci\_fabric\_pod\_policy\_group](#module\_aci\_fabric\_pod\_policy\_group) | ./modules/terraform-aci-fabric-pod-policy-group | n/a |
 | <a name="module_aci_fabric_pod_profile_auto"></a> [aci\_fabric\_pod\_profile\_auto](#module\_aci\_fabric\_pod\_profile\_auto) | ./modules/terraform-aci-fabric-pod-profile | n/a |
 | <a name="module_aci_fabric_pod_profile_manual"></a> [aci\_fabric\_pod\_profile\_manual](#module\_aci\_fabric\_pod\_profile\_manual) | ./modules/terraform-aci-fabric-pod-profile | n/a |

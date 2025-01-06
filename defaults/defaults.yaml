@@ -161,6 +161,8 @@ defaults:
           http:
             admin_state: false
             port: 80
+        macsec_policies:
+          name_suffix: ""
       switch_policies:
         node_control_policies:
           name_suffix: ""
@@ -404,7 +406,26 @@ defaults:
       sr_mpls_global_configuration:
         sr_global_block_minimum: 16000
         sr_global_block_maximum: 23999
-
+      macsec_policies:
+        macsec_parameters_policies:
+          name_suffix: ""
+          cipher_suite: gcm-aes-xpn-256
+          confidentiality_offset: offset-0
+          key_server_priority: 16
+          window_size: 64
+          key_expiry_time: disabled
+          security_policy: should-secure
+          type: fabric
+        macsec_keychain_policies:
+          name_suffix: ""
+          key_policies:
+            start_time: now
+            end_time: infinite
+          type: fabric
+        macsec_interfaces_policies:
+          name_suffix: ""
+          admin_state: true
+          type: fabric
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
       leaf_interface_profile_name: "LEAF\\g<id>"
