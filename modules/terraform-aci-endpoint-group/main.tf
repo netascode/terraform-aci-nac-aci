@@ -495,7 +495,7 @@ resource "aci_rest_managed" "fvRsStCEpToPathEp_port" {
 }
 
 resource "aci_rest_managed" "fvRsStCEpToPathEp_channel" {
-  for_each   = { for sp_ep in var.static_endpoints : sp_ep.name => sp_ep if sp_ep.channel != null }
+  for_each   = { for sp_ep in var.static_endpoints : (sp_ep.name != "" ? sp_ep.name : sp_ep.mac) => sp_ep if sp_ep.channel != null }
   dn         = "${aci_rest_managed.fvStCEp[(each.value.name != "" ? each.value.name : each.value.mac)].dn}/rsstCEpToPathEp-[${format(each.value.node2_id != null ? "topology/pod-%s/protpaths-%s-%s/pathep-[%s]" : "topology/pod-%s/paths-%s/pathep-[%[4]s]", each.value.pod_id, each.value.node_id, each.value.node2_id, each.value.channel)}]"
   class_name = "fvRsStCEpToPathEp"
   content = {
