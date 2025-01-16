@@ -120,6 +120,25 @@ module "aci_vrf" {
       bgp_route_summarization_policy = "ABC"
     }]
   }]
+  consumer_subject_labels = [{
+    name          = "Label01"
+    tag           = "black"
+    is_complement = false
+  }]
+  provider_subject_labels = [{
+    name          = "Label01"
+    tag           = "black"
+    is_complement = false
+  }]
+  consumer_epg_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_epg_labels = [{
+    name          = "Label01"
+    tag           = "black"
+    is_complement = false
+  }]
 }
 ```
 <!-- END_TF_DOCS -->
