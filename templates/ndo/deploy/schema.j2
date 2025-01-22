@@ -164,6 +164,9 @@
                     "unkMcastAct": "{{ bd.unknown_ipv4_multicast | default(defaults.ndo.schemas.templates.bridge_domains.unknown_ipv4_multicast) }}",
                     "v6unkMcastAct": "{{ bd.unknown_ipv6_multicast | default(defaults.ndo.schemas.templates.bridge_domains.unknown_ipv6_multicast) }}",
                     "l3MCast": {% if bd.l3_multicast | default(defaults.ndo.schemas.templates.bridge_domains.l3_multicast) | cisco.aac.aac_bool(True) %}true{% else %}false{% endif %},
+                    {%- if bd.ep_move_detection_mode is defined %}
+                    "epMoveDetectMode": "{{ bd.ep_move_detection_mode }}",
+                    {%- endif %}
                     "subnets": [
                         {%- set comma3 = joiner(",") %}
                         {%- for subnet in bd.subnets | default([]) %}{{ comma3() }}

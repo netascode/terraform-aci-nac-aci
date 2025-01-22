@@ -123,6 +123,7 @@ defaults:
           multi_destination_flooding: bd-flood
           unknown_ipv4_multicast: flood
           unknown_ipv6_multicast: flood
+          ep_move_detection_mode: none
           subnets:
             scope: private
             shared: false

@@ -265,6 +265,9 @@ Verify Schema {{ schema.name }} Template {{ template.name }} Bridge Domain {{ bd
     Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.l2Stretch   {{ bd.l2_stretch | default(defaults.ndo.schemas.templates.bridge_domains.l2_stretch) | cisco.aac.aac_bool(True) }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.l3MCast   {{ bd.l3_multicast | default(defaults.ndo.schemas.templates.bridge_domains.l3_multicast) | cisco.aac.aac_bool(True) }}
     Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.unicastRouting  {{ bd.unicast_routing | default(defaults.ndo.schemas.templates.bridge_domains.unicast_routing) | cisco.aac.aac_bool(True) }}
+{% if bd.ep_move_detection_mode is defined %}
+    Should Be Equal Value Json Boolean   ${r.json()}   ${bd}.epMoveDetectMode  {{ bd.ep_move_detection_mode }}
+{% endif %}
 
 {% if bd.virtual_mac is defined %}
     Should Be Equal Value Json String   ${r.json()}   ${bd}.vmac   {{ bd.virtual_mac }}

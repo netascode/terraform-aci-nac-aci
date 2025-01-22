@@ -1,0 +1,25 @@
+---
+ndo:
+  schemas:
+    - name: ABC
+      templates:
+        - name: TEMPLATE3
+          tenant: NDO1
+          bridge_domains:
+            - name: BD4
+              l2_unknown_unicast: proxy
+              intersite_bum_traffic: false
+              optimize_wan_bandwidth: false
+              l2_stretch: false
+              l3_multicast: false
+              virtual_mac: 00:22:BD:F8:19:AA
+              multi_destination_flooding: bd-flood
+              unknown_ipv4_multicast: flood
+              unknown_ipv6_multicast: flood
+              arp_flooding: true
+              ep_move_detection_mode: garp
+              vrf:
+                name: VRF1
+                template: TEMPLATE1
+          sites:
+            - APIC1

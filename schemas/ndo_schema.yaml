@@ -349,6 +349,7 @@ t_bridge_domains:
   multi_destination_flooding: enum('bd-flood', 'encap-flood', 'drop', required=False)
   unknown_ipv4_multicast: enum('flood', 'opt-flood', required=False)
   unknown_ipv6_multicast: enum('flood', 'opt-flood', required=False)
+  ep_move_detection_mode: enum('garp', 'none', required=False)
   vrf: include('t_bd_vrf') # @flatten()
   subnets: list(include('t_bd_subnets'), required=False) # @name(Bridge Domain Subnets)
   sites: list(include('t_bd_sites'), required=False) # @name(Bridge Domain Sites) @ref_name(Site)
