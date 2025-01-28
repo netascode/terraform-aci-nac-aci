@@ -89,18 +89,6 @@ fabric_policies:
   system_performance: include('fp_system_performance', required=False) # @name(System Performance) @sheet_hidden()
   interface_policies: include('fp_interface_policies', required=False) # @name(Fabric Interface Policies)
   sr_mpls_global_configuration: include('fp_sr_mpls_global_configuration', required=False)
-  operations: include('fp_operations', required=False)
-
-fp_operations:
-  atomic_counter: include('fp_atomic_counters', required=False)
-
-fp_atomic_counters:
-  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  user_dom: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
-  mode: enum('path', 'trail', required=False)
-  alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
 
 fp_banners:
   apic_gui_alias: str(required=False)
@@ -1039,6 +1027,18 @@ access_policies:
   span: include('ap_span', required=False) # @sheet_hidden()
   vspan: include('ap_vspan', required=False) # @sheet_hidden()
   dhcp_relay_policies: list(include('ap_dhcp_relay_policy'), required=False) # @name(Infra DHCP Relay Policies) @sheet_hidden()
+  operations: include('fp_operations', required=False)
+
+ap_operations:
+  atomic_counter: include('fp_atomic_counters', required=False)
+
+ap_atomic_counters:
+  name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  user_dom: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
+  mode: enum('path', 'trail', required=False)
+  alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  admin_state: any(bool(), enum('enabled', 'disabled'), required=False)
 
 ap_vlan_pool:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$')
