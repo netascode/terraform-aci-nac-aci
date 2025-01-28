@@ -15,6 +15,13 @@ apic:
 
     infra_vlan: 4
 
+    operations:
+      atomic_counters:
+        name: TEST ATOMIC COUNTER
+        user_dom: all
+        mode: trail
+        admin_state: true
+
     span:
       destination_groups:
         - name: DST_GRP1
