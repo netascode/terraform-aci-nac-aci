@@ -93,7 +93,7 @@ fabric_policies:
 
 fp_operations:
   atomic_counter: include('fp_atomic_counters', required=False)
- 
+
 fp_atomic_counters:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   user_dom: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
