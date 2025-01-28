@@ -17,7 +17,7 @@ apic:
 
     operations:
       atomic_counters:
-        name: TEST ATOMIC COUNTER
+        name: Atomic_Counters_1
         user_dom: all
         mode: trail
         admin_state: true
