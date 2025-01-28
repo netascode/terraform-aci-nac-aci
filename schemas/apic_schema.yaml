@@ -1027,7 +1027,7 @@ access_policies:
   span: include('ap_span', required=False) # @sheet_hidden()
   vspan: include('ap_vspan', required=False) # @sheet_hidden()
   dhcp_relay_policies: list(include('ap_dhcp_relay_policy'), required=False) # @name(Infra DHCP Relay Policies) @sheet_hidden()
-  operations: include('fp_operations', required=False)
+  operations: include('ap_operations', required=False)
 
 ap_operations:
   atomic_counter: include('fp_atomic_counters', required=False)
