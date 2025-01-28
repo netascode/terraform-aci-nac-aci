@@ -1030,7 +1030,7 @@ access_policies:
   operations: include('ap_operations', required=False)
 
 ap_operations:
-  atomic_counter: include('fp_atomic_counters', required=False)
+  atomic_counter: include('ap_atomic_counters', required=False)
 
 ap_atomic_counters:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
