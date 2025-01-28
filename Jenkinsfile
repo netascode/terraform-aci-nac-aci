@@ -50,6 +50,19 @@ pipeline {
         }
         stage('Test') {
             parallel {
+                stage('Test APIC 4.2') {
+                    steps {
+                        lock(resource: 'nac-ci-apic1-4.2.4i') {
+                            sh 'pytest -m "apic_42 and not terraform"'
+                        }
+                    }
+                    post {
+                        always {
+                            junit 'apic_4.2_xunit.xml'
+                            archiveArtifacts 'apic_4.2_*.html, apic_4.2_*.xml'
+                        }
+                    }
+                }
                 stage('Test APIC 5.2') {
                     steps {
                         lock(resource: 'nac-ci-apic1-5.2.1g') {
