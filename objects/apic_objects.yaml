@@ -46,7 +46,7 @@ objects:
     test_types:
       - config
     paths:
-      - apic.fabric_policies.operations.virtualisation.atomic_counter
+      - apic.access_policies.operations.atomic_counters
   - name: EP Loop Protection
     template: ep_loop_protection
     folder: fabric_policies
