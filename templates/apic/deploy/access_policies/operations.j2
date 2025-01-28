@@ -1,0 +1,17 @@
+{
+"dbgOngoingAcMode": {
+                "attributes": {
+                    "adminSt": "{{ apic.fabric_policies.operations.atomic_counter.admin_state | default(defaults.apic.fabric_policies.operations.atomic_counter.admin_state) }}",
+                    "annotation": "orchestrator:aac",
+                    "descr": "",
+                    "dn": "uni/fabric/ogmode",
+                    "mode": "{{ apic.fabric_policies.operations.atomic_counter.mode | default(defaults.apic.fabric_policies.operations.visalisation.atomic_counter.mode }}",
+                    "name": "{{ apic.fabric_policies.operations.atomic_counter.name }}",
+                    "nameAlias": "{{ apic.fabric_policies.operations.atomic_counter.alias }}",
+                    "ownerKey": "",
+                    "ownerTag": "",
+                    "userdom": "{{ apic.fabric_policies.operations.atomic_counter.user_dom | default(defaults.apic.fabric_policies.operations.atomic_counter.user_dom }}"
+                }
+
+        }
+}

@@ -23,6 +23,12 @@ defaults:
       pod_profile_name: "POD\\g<id>"
       pod_profile_pod_selector_name: "POD\\g<id>"
       apic_conn_pref: inband
+      operationos:
+        visalisation:
+          atomic_counter:
+            admin_state: true
+            mode: trail
+            user_dom: all
       banners:
         apic_gui_alias: ""
         apic_gui_banner_url: ""

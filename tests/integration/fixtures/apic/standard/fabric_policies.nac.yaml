@@ -19,6 +19,13 @@ apic:
       apic_gui_banner_url: APIC GUI BANNER URL
       apic_cli_banner: APIC CLI BANNER
       switch_cli_banner: SWITCH CLI BANNER
+    
+    operations :
+      atomic_counters:
+        name: TEST ATOMIC COUNTER 
+        user_dom: all
+        mode: trail
+        admin_state: true
 
     rogue_ep_control:
       admin_state: false

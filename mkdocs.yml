@@ -70,6 +70,7 @@ nav:
               - Date and Time Format: data_model/apic/fabric_policies/date_time_format.md
               - APIC Connectivity Preference: data_model/apic/fabric_policies/apic_connectivity_pref.md
               - GUI and CLI Banner: data_model/apic/fabric_policies/banner.md
+              - Atomic Counter: data_model/apic/fabric_policies/operations.md
               - EP Loop Protection: data_model/apic/fabric_policies/ep_loop_protection.md
               - Rogue EP Control: data_model/apic/fabric_policies/rogue_ep_control.md
               - IP Aging: data_model/apic/fabric_policies/ip_aging.md

@@ -37,6 +37,16 @@ objects:
       - config
     paths:
       - apic.fabric_policies.banners
+  - name: Atomic Counter
+    template: operations
+    folder: fabric_policies
+    delete: false
+    aci_classes:
+      - dbgOngoingAcMode
+    test_types:
+      - config
+    paths:
+      - apic.fabric_policies.operations.virtualisation.atomic_counter
   - name: EP Loop Protection
     template: ep_loop_protection
     folder: fabric_policies
