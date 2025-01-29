@@ -420,7 +420,6 @@ defaults:
       vpc_group_name: "VPC\\g<switch1_id>-\\g<switch2_id>"
       operations:
           atomic_counters:
-            name: default
             admin_state: true
             mode: trail
             user_dom: all
