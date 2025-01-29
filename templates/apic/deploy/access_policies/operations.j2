@@ -9,7 +9,7 @@
                     "name": "{{ apic.access_policies.operations.atomic_counters.name | default(defaults.apic.access_policies.operations.atomic_counters.name)  }}",
                     "nameAlias": "{{ apic.access_policies.operations.atomic_counters.alias }}",
                     "ownerKey": "",
-                    "ownerTag": "",
+                    "ownerTag": ""
                     {% if apic.access_policies.operations.atomic_counters.user_dom is defined %}
                     "userdom": "{{ apic.access_policies.operations.atomic_counters.user_dom | default(defaults.apic.access_policies.operations.atomic_counters.user_dom) }}"
                     {% endif %}
