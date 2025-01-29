@@ -422,7 +422,7 @@ defaults:
           atomic_counters:
             admin_state: true
             mode: trail
-            user_dom: all
+            user_domain: all
       vlan_pools:
         name_suffix: ""
         allocation: static

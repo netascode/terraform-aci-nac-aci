@@ -1034,7 +1034,7 @@ ap_operations:
 
 ap_atomic_counters:
   name: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
-  user_dom: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
+  user_domainain: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
   description: regex('^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$', required=False)
   mode: enum('path', 'trail', required=False)
   alias: regex('^[a-zA-Z0-9_.:-]{1,64}$', required=False)
