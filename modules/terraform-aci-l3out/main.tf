@@ -131,16 +131,25 @@ resource "aci_rest_managed" "rtctrlRsCtxPToSubjP_import" {
 }
 
 resource "aci_rest_managed" "rtctrlProfile_export" {
-  count      = length(var.export_route_map_contexts) > 0 ? 1 : 0
-  dn         = "${aci_rest_managed.l3extOut.dn}/prof-${var.export_route_map_name}"
+  for_each   = { for export_route_map_name in var.export_route_map_names : export_route_map_name.name => export_route_map_name }
+  dn         = "${aci_rest_managed.l3extOut[0].dn}/prof-${each.value.name}"
   class_name = "rtctrlProfile"
   content = {
-    name  = var.export_route_map_name
-    descr = var.export_route_map_description
-    type  = var.export_route_map_type
+    name  = each.value.name
+    descr = each.value.description
+    type  = each.value.type
   }
 }
-
+resource "aci_rest_managed" "rtctrlProfile_import" {
+  for_each   = { for import_route_map_name in var.import_route_map_names : import_route_map_name.name => import_route_map_name }
+  dn         = "${aci_rest_managed.l3extOut[0].dn}/prof-${each.value.name}"
+  class_name = "rtctrlProfile"
+  content = {
+    name  = each.value.name
+    descr = each.value.description
+    type  = each.value.type
+  }
+}
 resource "aci_rest_managed" "rtctrlCtxP_export" {
   for_each   = { for context in var.export_route_map_contexts : context.name => context }
   dn         = "${aci_rest_managed.rtctrlProfile_export[0].dn}/ctx-${each.value.name}"
