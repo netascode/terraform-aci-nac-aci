@@ -20,7 +20,7 @@ apic:
         name: Atomic_Counters_1
         user_dom: all
         mode: path
-        admin_state: true
+        admin_state: false
 
     span:
       destination_groups:
