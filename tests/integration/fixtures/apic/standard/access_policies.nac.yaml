@@ -18,8 +18,8 @@ apic:
     operations:
       atomic_counters:
         name: Atomic_Counters_1
-        mode: trail
-        admin_state: true
+        mode: path
+        admin_state: false
 
     span:
       destination_groups:
