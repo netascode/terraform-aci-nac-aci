@@ -19,7 +19,7 @@ apic:
       atomic_counters:
         name: Atomic_Counters_1
         user_dom: all
-        mode: trail
+        mode: path
         admin_state: true
 
     span:
