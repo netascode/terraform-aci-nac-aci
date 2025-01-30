@@ -57,7 +57,7 @@ module "aci_vspan_destination_group" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | VSPAN destination group name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | VSPAN destination group description. | `string` | `""` | no |
-| <a name="input_destinations"></a> [destinations](#input\_destinations) | List of VSPAN destinations. | <pre>list(object({<br>    description         = optional(string, "")<br>    name                = string<br>    tenant              = optional(string)<br>    application_profile = optional(string)<br>    endpoint_group      = optional(string)<br>    endpoint            = optional(string)<br>    ip                  = optional(string)<br>    mtu                 = optional(number, 1518)<br>    ttl                 = optional(number, 64)<br>    flow_id             = optional(number, 1)<br>    dscp                = optional(string, "unspecified")<br>  }))</pre> | `[]` | no |
+| <a name="input_destinations"></a> [destinations](#input\_destinations) | List of VSPAN destinations. | <pre>list(object({<br/>    description         = optional(string, "")<br/>    name                = string<br/>    tenant              = optional(string)<br/>    application_profile = optional(string)<br/>    endpoint_group      = optional(string)<br/>    endpoint            = optional(string)<br/>    ip                  = optional(string)<br/>    mtu                 = optional(number, 1518)<br/>    ttl                 = optional(number, 64)<br/>    flow_id             = optional(number, 1)<br/>    dscp                = optional(string, "unspecified")<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 

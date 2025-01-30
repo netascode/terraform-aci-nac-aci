@@ -52,7 +52,7 @@ module "aci_tenant_span_source_group" {
 | <a name="input_description"></a> [description](#input\_description) | SPAN source group description. | `string` | `""` | no |
 | <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | SPAN source group administrative state. | `bool` | `true` | no |
 | <a name="input_destination"></a> [destination](#input\_destination) | SPAN source destination group name. | `string` | n/a | yes |
-| <a name="input_sources"></a> [sources](#input\_sources) | List of SPAN sources. Choices `direction`: `in`, `both`, `out`. Default value `direction`: `both`. | <pre>list(object({<br>    name                = string<br>    description         = optional(string, "")<br>    direction           = optional(string, "both")<br>    application_profile = optional(string)<br>    endpoint_group      = optional(string)<br>  }))</pre> | `[]` | no |
+| <a name="input_sources"></a> [sources](#input\_sources) | List of SPAN sources. Choices `direction`: `in`, `both`, `out`. Default value `direction`: `both`. | <pre>list(object({<br/>    name                = string<br/>    description         = optional(string, "")<br/>    direction           = optional(string, "both")<br/>    application_profile = optional(string)<br/>    endpoint_group      = optional(string)<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
