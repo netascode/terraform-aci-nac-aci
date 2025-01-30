@@ -276,7 +276,7 @@ variable "import_route_map_names" {
   type = list(object({
     name        = string
     description = optional(string, "")
-    type        = string        
+    type        = string
   }))
   default = "default-import"
   validation {
@@ -378,7 +378,7 @@ variable "export_route_map_names" {
   type = list(object({
     name        = string
     description = optional(string, "")
-    type        = string        
+    type        = string
   }))
   default = "default-export"
   validation {
