@@ -26,39 +26,6 @@ locals {
       }
     ]
   ])
-
-  bgp_ipv4_import_route_target_list = flatten([
-    for ipv4_i_rt in coalesce(var.bgp_ipv4_import_route_target, []) : {
-      key = ipv4_i_rt
-      value = {
-        rt = ipv4_i_rt
-      }
-    }
-  ])
-  bgp_ipv4_export_route_target_list = flatten([
-    for ipv4_e_rt in coalesce(var.bgp_ipv4_export_route_target, []) : {
-      key = ipv4_e_rt
-      value = {
-        rt = ipv4_e_rt
-      }
-    }
-  ])
-  bgp_ipv6_import_route_target_list = flatten([
-    for ipv6_i_rt in coalesce(var.bgp_ipv6_import_route_target, []) : {
-      key = ipv6_i_rt
-      value = {
-        rt = ipv6_i_rt
-      }
-    }
-  ])
-  bgp_ipv6_export_route_target_list = flatten([
-    for ipv6_e_rt in coalesce(var.bgp_ipv6_export_route_target, []) : {
-      key = ipv6_e_rt
-      value = {
-        rt = ipv6_e_rt
-      }
-    }
-  ])
   route_summarization_subnets = flatten([
     for pol in var.route_summarization_policies : [
       for subnet in pol.subnets : {
@@ -198,21 +165,21 @@ resource "aci_rest_managed" "bgpRtTargetP_ipv4" {
 }
 
 resource "aci_rest_managed" "bgpRtTarget_ipv4_import" {
-  for_each   = { for item in local.bgp_ipv4_import_route_target_list : item.key => item.value if var.bgp_ipv4_import_route_target != "" }
-  dn         = "${aci_rest_managed.bgpRtTargetP_ipv4[0].dn}/rt-[${each.value.rt}]-import"
+  for_each   = toset(var.bgp_ipv4_import_route_target)
+  dn         = "${aci_rest_managed.bgpRtTargetP_ipv4[0].dn}/rt-[${each.value}]-import"
   class_name = "bgpRtTarget"
   content = {
-    rt   = each.value.rt
+    rt   = each.value
     type = "import"
   }
 }
 
 resource "aci_rest_managed" "bgpRtTarget_ipv4_export" {
-  for_each   = { for item in local.bgp_ipv4_export_route_target_list : item.key => item.value if var.bgp_ipv4_export_route_target != "" }
-  dn         = "${aci_rest_managed.bgpRtTargetP_ipv4[0].dn}/rt-[${each.value.rt}]-export"
+  for_each   = toset(var.bgp_ipv4_export_route_target)
+  dn         = "${aci_rest_managed.bgpRtTargetP_ipv4[0].dn}/rt-[${each.value}]-export"
   class_name = "bgpRtTarget"
   content = {
-    rt   = each.value.rt
+    rt   = each.value
     type = "export"
   }
 }
@@ -227,21 +194,21 @@ resource "aci_rest_managed" "bgpRtTargetP_ipv6" {
 }
 
 resource "aci_rest_managed" "bgpRtTarget_ipv6_import" {
-  for_each   = { for item in local.bgp_ipv6_import_route_target_list : item.key => item.value if var.bgp_ipv6_import_route_target != "" }
-  dn         = "${aci_rest_managed.bgpRtTargetP_ipv6[0].dn}/rt-[${each.value.rt}]-import"
+  for_each   = toset(var.bgp_ipv6_import_route_target)
+  dn         = "${aci_rest_managed.bgpRtTargetP_ipv6[0].dn}/rt-[${each.value}]-import"
   class_name = "bgpRtTarget"
   content = {
-    rt   = each.value.rt
+    rt   = each.value
     type = "import"
   }
 }
 
 resource "aci_rest_managed" "bgpRtTarget_ipv6_export" {
-  for_each   = { for item in local.bgp_ipv6_export_route_target_list : item.key => item.value if var.bgp_ipv6_export_route_target != "" }
-  dn         = "${aci_rest_managed.bgpRtTargetP_ipv6[0].dn}/rt-[${each.value.rt}]-export"
+  for_each   = toset(var.bgp_ipv6_export_route_target)
+  dn         = "${aci_rest_managed.bgpRtTargetP_ipv6[0].dn}/rt-[${each.value}]-export"
   class_name = "bgpRtTarget"
   content = {
-    rt   = each.value.rt
+    rt   = each.value
     type = "export"
   }
 }
