@@ -19,4 +19,4 @@ resource "aci_rest_managed" "bgpRtSummPol" {
     local.addrTCtrl != null ? { addrTCtrl = local.addrTCtrl } : {}
   )
 
-} 
+}

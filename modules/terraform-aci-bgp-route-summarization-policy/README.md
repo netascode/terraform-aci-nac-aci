@@ -40,6 +40,7 @@ module "aci_bgp_route_summarization_policy" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_content_map"></a> [content\_map](#input\_content\_map) | n/a | `map(string)` | `{}` | no |
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | BGP Route Summarization Policy name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | BGP Route Summarization Policy description. | `string` | `""` | no |
