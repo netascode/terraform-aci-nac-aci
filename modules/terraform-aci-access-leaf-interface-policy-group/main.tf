@@ -92,10 +92,10 @@ resource "aci_rest_managed" "infraRsLacpPol" {
 
 resource "aci_rest_managed" "infraAccBndlSubgrp" {
   count      = (var.type == "vpc" || var.type == "pc") && var.port_channel_member_policy != "" ? 1 : 0
-  dn         = "${aci_rest_managed.infraAccGrp.dn}/accsubbndl-${var.name}"
+  dn         = "${aci_rest_managed.infraAccGrp.dn}/accsubbndl-${var.port_channel_member_policy}"
   class_name = "infraAccBndlSubgrp"
   content = {
-    name = var.name
+    name = var.port_channel_member_policy
   }
 }
 
