@@ -46,7 +46,7 @@ module "aci_dhcp_relay_policy" {
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | DHCP relay policy name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
-| <a name="input_providers_"></a> [providers\_](#input\_providers\_) | List of DHCP providers. Choices `type`: `epg`, `external_epg`. | <pre>list(object({<br/>    ip                      = string<br/>    type                    = string<br/>    tenant                  = optional(string)<br/>    application_profile     = optional(string)<br/>    endpoint_group          = optional(string)<br/>    l3out                   = optional(string)<br/>    external_endpoint_group = optional(string)<br/>  }))</pre> | `[]` | no |
+| <a name="input_providers_"></a> [providers\_](#input\_providers\_) | List of DHCP providers. Choices `type`: `epg`, `external_epg`. | <pre>list(object({<br>    ip                      = string<br>    type                    = string<br>    tenant                  = optional(string)<br>    application_profile     = optional(string)<br>    endpoint_group          = optional(string)<br>    l3out                   = optional(string)<br>    external_endpoint_group = optional(string)<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

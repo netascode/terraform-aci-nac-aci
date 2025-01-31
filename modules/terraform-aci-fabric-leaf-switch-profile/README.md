@@ -46,7 +46,7 @@ module "aci_fabric_leaf_switch_profile" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Leaf switch profile name. | `string` | n/a | yes |
 | <a name="input_interface_profiles"></a> [interface\_profiles](#input\_interface\_profiles) | List of interface profile names. | `list(string)` | `[]` | no |
-| <a name="input_selectors"></a> [selectors](#input\_selectors) | List of selectors. Allowed values `from`: 1-4000. Allowed values `to`: 1-4000. | <pre>list(object({<br/>    name         = string<br/>    policy_group = optional(string)<br/>    node_blocks = list(object({<br/>      name = string<br/>      from = number<br/>      to   = optional(number)<br/>    }))<br/>  }))</pre> | `[]` | no |
+| <a name="input_selectors"></a> [selectors](#input\_selectors) | List of selectors. Allowed values `from`: 1-4000. Allowed values `to`: 1-4000. | <pre>list(object({<br>    name         = string<br>    policy_group = optional(string)<br>    node_blocks = list(object({<br>      name = string<br>      from = number<br>      to   = optional(number)<br>    }))<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

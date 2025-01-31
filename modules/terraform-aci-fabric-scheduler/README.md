@@ -43,7 +43,7 @@ module "aci_fabric_scheduler" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Fabric scheduler name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
-| <a name="input_recurring_windows"></a> [recurring\_windows](#input\_recurring\_windows) | List of recurring windows. Choices `day`: `every-day`, `odd-day`, `even-day`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`. Allowed values `hour`: 0-23. Allowed values `minute`: 0-59. | <pre>list(object({<br/>    name   = string<br/>    day    = optional(string, "every-day")<br/>    hour   = optional(number, 0)<br/>    minute = optional(number, 0)<br/>  }))</pre> | `[]` | no |
+| <a name="input_recurring_windows"></a> [recurring\_windows](#input\_recurring\_windows) | List of recurring windows. Choices `day`: `every-day`, `odd-day`, `even-day`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`. Allowed values `hour`: 0-23. Allowed values `minute`: 0-59. | <pre>list(object({<br>    name   = string<br>    day    = optional(string, "every-day")<br>    hour   = optional(number, 0)<br>    minute = optional(number, 0)<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

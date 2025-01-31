@@ -58,9 +58,9 @@ module "aci_external_connectivity_policy" {
 | <a name="input_site_id"></a> [site\_id](#input\_site\_id) | Site ID. Minimum value: 0. Maximum value: 1000. | `number` | `0` | no |
 | <a name="input_peering_type"></a> [peering\_type](#input\_peering\_type) | Peering type. Choices: `full_mesh`, `route_reflector`. | `string` | `"full_mesh"` | no |
 | <a name="input_bgp_password"></a> [bgp\_password](#input\_bgp\_password) | BGP password. | `string` | `null` | no |
-| <a name="input_routing_profiles"></a> [routing\_profiles](#input\_routing\_profiles) | External routing profiles. | <pre>list(object({<br/>    name        = string<br/>    description = optional(string, "")<br/>    subnets     = optional(list(string), [])<br/>  }))</pre> | `[]` | no |
-| <a name="input_data_plane_teps"></a> [data\_plane\_teps](#input\_data\_plane\_teps) | Data plane TEPs. Allowed values `pod_id`: 1-255. | <pre>list(object({<br/>    pod_id = number<br/>    ip     = string<br/>  }))</pre> | `[]` | no |
-| <a name="input_unicast_teps"></a> [unicast\_teps](#input\_unicast\_teps) | Unicast TEPs. Allowed values `pod_id`: 1-255. | <pre>list(object({<br/>    pod_id = number<br/>    ip     = string<br/>  }))</pre> | `[]` | no |
+| <a name="input_routing_profiles"></a> [routing\_profiles](#input\_routing\_profiles) | External routing profiles. | <pre>list(object({<br>    name        = string<br>    description = optional(string, "")<br>    subnets     = optional(list(string), [])<br>  }))</pre> | `[]` | no |
+| <a name="input_data_plane_teps"></a> [data\_plane\_teps](#input\_data\_plane\_teps) | Data plane TEPs. Allowed values `pod_id`: 1-255. | <pre>list(object({<br>    pod_id = number<br>    ip     = string<br>  }))</pre> | `[]` | no |
+| <a name="input_unicast_teps"></a> [unicast\_teps](#input\_unicast\_teps) | Unicast TEPs. Allowed values `pod_id`: 1-255. | <pre>list(object({<br>    pod_id = number<br>    ip     = string<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

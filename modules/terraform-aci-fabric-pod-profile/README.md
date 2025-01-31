@@ -44,7 +44,7 @@ module "aci_fabric_pod_profile" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Fabric pod profile name. | `string` | n/a | yes |
-| <a name="input_selectors"></a> [selectors](#input\_selectors) | List of selectors. ALlowed values `type`: `all`, `range`. Default value `type`: `range`. Allowed values `from`: 1-255. Allowed values `to`: 1-255. | <pre>list(object({<br/>    name         = string<br/>    policy_group = optional(string)<br/>    type         = optional(string, "range")<br/>    pod_blocks = optional(list(object({<br/>      name = string<br/>      from = number<br/>      to   = optional(number)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
+| <a name="input_selectors"></a> [selectors](#input\_selectors) | List of selectors. ALlowed values `type`: `all`, `range`. Default value `type`: `range`. Allowed values `from`: 1-255. Allowed values `to`: 1-255. | <pre>list(object({<br>    name         = string<br>    policy_group = optional(string)<br>    type         = optional(string, "range")<br>    pod_blocks = optional(list(object({<br>      name = string<br>      from = number<br>      to   = optional(number)<br>    })), [])<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

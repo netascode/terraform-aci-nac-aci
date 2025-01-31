@@ -51,7 +51,7 @@ module "aci_multicast_route_map" {
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Multicast route map's tenant name. | `string` | `""` | no |
 | <a name="input_name"></a> [name](#input\_name) | Multicast route map name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
-| <a name="input_entries"></a> [entries](#input\_entries) | Multicast route map entries. `order` allowed range: `0-9999`. `action` allowed values: `permit` or `deny`. Default value `action`: `permit`. | <pre>list(object({<br/>    action    = optional(string, "permit")<br/>    group_ip  = optional(string, "0.0.0.0")<br/>    order     = number<br/>    rp_ip     = optional(string, "0.0.0.0")<br/>    source_ip = optional(string, "0.0.0.0")<br/>  }))</pre> | `[]` | no |
+| <a name="input_entries"></a> [entries](#input\_entries) | Multicast route map entries. `order` allowed range: `0-9999`. `action` allowed values: `permit` or `deny`. Default value `action`: `permit`. | <pre>list(object({<br>    action    = optional(string, "permit")<br>    group_ip  = optional(string, "0.0.0.0")<br>    order     = number<br>    rp_ip     = optional(string, "0.0.0.0")<br>    source_ip = optional(string, "0.0.0.0")<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

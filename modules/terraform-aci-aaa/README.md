@@ -63,12 +63,12 @@ module "aci_aaa" {
 | <a name="input_default_login_domain"></a> [default\_login\_domain](#input\_default\_login\_domain) | Default login domain. | `string` | `""` | no |
 | <a name="input_console_realm"></a> [console\_realm](#input\_console\_realm) | Console realm. Choices: `local`, `tacacs`, `radius`, `ldap`. | `string` | `"local"` | no |
 | <a name="input_console_login_domain"></a> [console\_login\_domain](#input\_console\_login\_domain) | Console login domain. | `string` | `""` | no |
-| <a name="input_security_domains"></a> [security\_domains](#input\_security\_domains) | List of security domains. | <pre>list(object({<br/>    name                   = string<br/>    description            = optional(string, "")<br/>    restricted_rbac_domain = optional(bool, false)<br/>  }))</pre> | `[]` | no |
+| <a name="input_security_domains"></a> [security\_domains](#input\_security\_domains) | List of security domains. | <pre>list(object({<br>    name                   = string<br>    description            = optional(string, "")<br>    restricted_rbac_domain = optional(bool, false)<br>  }))</pre> | `[]` | no |
 | <a name="input_password_strength_check"></a> [password\_strength\_check](#input\_password\_strength\_check) | Password strength check. | `bool` | `false` | no |
 | <a name="input_min_password_length"></a> [min\_password\_length](#input\_min\_password\_length) | Minimum password length. | `number` | `8` | no |
 | <a name="input_max_password_length"></a> [max\_password\_length](#input\_max\_password\_length) | Maximum password length. | `number` | `64` | no |
 | <a name="input_password_strength_test_type"></a> [password\_strength\_test\_type](#input\_password\_strength\_test\_type) | Password strength test type for Password Strength Policy | `string` | `"default"` | no |
-| <a name="input_password_class_flags"></a> [password\_class\_flags](#input\_password\_class\_flags) | Password class flags for Password Strength Policy | `list(string)` | <pre>[<br/>  "digits",<br/>  "lowercase",<br/>  "uppercase"<br/>]</pre> | no |
+| <a name="input_password_class_flags"></a> [password\_class\_flags](#input\_password\_class\_flags) | Password class flags for Password Strength Policy | `list(string)` | <pre>[<br>  "digits",<br>  "lowercase",<br>  "uppercase"<br>]</pre> | no |
 | <a name="input_password_change_during_interval"></a> [password\_change\_during\_interval](#input\_password\_change\_during\_interval) | Enables or disables password change during interval. | `bool` | `true` | no |
 | <a name="input_password_change_count"></a> [password\_change\_count](#input\_password\_change\_count) | The number of password changes allowed within the change interval. | `number` | `2` | no |
 | <a name="input_password_change_interval"></a> [password\_change\_interval](#input\_password\_change\_interval) | A time interval (hours) for limiting the number of password changes. | `number` | `48` | no |

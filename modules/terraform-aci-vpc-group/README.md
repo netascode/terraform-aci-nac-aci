@@ -42,7 +42,7 @@ module "aci_vpc_group" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_mode"></a> [mode](#input\_mode) | Mode. Choices: `explicit`, `consecutive`, `reciprocal`. | `string` | `"explicit"` | no |
-| <a name="input_groups"></a> [groups](#input\_groups) | List of groups. Allowed values `id`: 1-1000. Allowed values `switch_1`: 1-16000. Allowed values `switch_2`: 1-16000. | <pre>list(object({<br/>    name     = string<br/>    id       = number<br/>    policy   = optional(string)<br/>    switch_1 = number<br/>    switch_2 = number<br/>  }))</pre> | `[]` | no |
+| <a name="input_groups"></a> [groups](#input\_groups) | List of groups. Allowed values `id`: 1-1000. Allowed values `switch_1`: 1-16000. Allowed values `switch_2`: 1-16000. | <pre>list(object({<br>    name     = string<br>    id       = number<br>    policy   = optional(string)<br>    switch_1 = number<br>    switch_2 = number<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
