@@ -271,37 +271,33 @@ variable "redistribution_route_maps" {
   }
 }
 
-variable "import_route_map_name" {
-  description = "Import Route Map Name. Default value: `default-import`"
-  type        = string
-  default     = "default-import"
-
+variable "import_route_map_names" {
+  description = "List of import route map names. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Allowed values `order`: 0-9. Default value `order`: 0."
+  type = list(object({
+    name        = string
+    description = optional(string, "")
+    type        = string
+  }))
+  default = []
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.import_route_map_name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    condition = alltrue([
+      for c in var.import_route_map_names : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
-}
-
-variable "import_route_map_description" {
-  description = "Import route map description."
-  type        = string
-  default     = ""
-
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.import_route_map_description))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+    condition = alltrue([
+      for c in var.import_route_map_names : c.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description)), false)
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
-}
-
-variable "import_route_map_type" {
-  description = "Import route map type. Choices: `combinable`, `global`."
-  type        = string
-  default     = "combinable"
-
   validation {
-    condition     = contains(["combinable", "global"], var.import_route_map_type)
+    condition = alltrue([
+      for c in var.import_route_map_names : c.type == null || contains(["combinable", "global"], c.type)
+    ])
     error_message = "Allowed values are `combinable` or `global`."
   }
+
 }
 
 variable "import_route_map_contexts" {
@@ -361,39 +357,33 @@ variable "import_route_map_contexts" {
   }
 }
 
-variable "export_route_map_name" {
-  description = "Export Route Map Name. Default value: `default-export`"
-  type        = string
-  default     = "default-export"
-
+variable "export_route_map_names" {
+  description = "List of export route map names. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Allowed values `order`: 0-9. Default value `order`: 0."
+  type = list(object({
+    name        = string
+    description = optional(string, "")
+    type        = string
+  }))
+  default = []
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.export_route_map_name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    condition = alltrue([
+      for c in var.export_route_map_names : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
-}
-
-variable "export_route_map_description" {
-  description = "Import route map description."
-  type        = string
-  default     = ""
-
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.export_route_map_description))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+    condition = alltrue([
+      for c in var.export_route_map_names : c.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description)), false)
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
-}
-
-variable "export_route_map_type" {
-  description = "Import route map type. Choices: `combinable`, `global`."
-  type        = string
-  default     = "combinable"
-
   validation {
-    condition     = contains(["combinable", "global"], var.export_route_map_type)
+    condition = alltrue([
+      for c in var.export_route_map_names : c.type == null || contains(["combinable", "global"], c.type)
+    ])
     error_message = "Allowed values are `combinable` or `global`."
   }
 }
-
 variable "export_route_map_contexts" {
   description = "List of export route map contexts. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Allowed values `order`: 0-9. Default value `order`: 0."
   type = list(object({
