@@ -272,7 +272,7 @@ variable "redistribution_route_maps" {
 }
 
 variable "import_route_map_names" {
-  description = "List of import route map names."
+  description = "List of Import Route Map names."
   type = list(object({
     name        = string
     description = optional(string, "")
@@ -358,7 +358,7 @@ variable "import_route_map_contexts" {
 }
 
 variable "export_route_map_names" {
-  description = "List of export route map names."
+  description = "List of Export Route Map names."
   type = list(object({
     name        = string
     description = optional(string, "")
