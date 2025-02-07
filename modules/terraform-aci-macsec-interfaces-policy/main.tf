@@ -1,6 +1,6 @@
 resource "aci_rest_managed" "macsecIfPol" {
-  dn         = "uni/infra/macsecifp-${var.name}"
-  class_name = "macsecIfPol"
+  dn         = var.type == "access" ? "uni/infra/macsecifp-${var.name}" : "uni/fabric/macsecfabifp-${var.name}"
+  class_name = var.type == "access" ? "macsecIfPol" : "macsecFabIfPol"
 
   content = {
     name    = var.name
@@ -14,7 +14,7 @@ resource "aci_rest_managed" "macsecRsToKeyChainPol" {
   class_name = "macsecRsToKeyChainPol"
 
   content = {
-    tDn = "uni/infra/macsecpcont/keychainp-${var.macsec_keychain_policy}"
+    tDn = var.type == "access" ? "uni/infra/macsecpcont/keychainp-${var.macsec_keychain_policy}" : "uni/fabric/macsecpcontfab/keychainp-${var.macsec_keychain_policy}"
   }
 }
 
@@ -23,6 +23,6 @@ resource "aci_rest_managed" "macsecRsToParamPol" {
   class_name = "macsecRsToParamPol"
 
   content = {
-    tDn = "uni/infra/macsecpcont/paramp-${var.macsec_parameters_policy}"
+    tDn = var.type == "access" ? "uni/infra/macsecpcont/paramp-${var.macsec_parameters_policy}" : "uni/fabric/macsecpcontfab/fabparamp-${var.macsec_parameters_policy}"
   }
 }

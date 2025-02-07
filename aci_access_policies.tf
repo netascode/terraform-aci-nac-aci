@@ -320,6 +320,7 @@ locals {
     for mkc in try(local.access_policies.interface_policies.macsec_keychain_policies, []) : {
       name        = "${mkc.name}${local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.name_suffix}"
       description = try(mkc.description, "")
+      type        = "access"
       key_policies = [for kp in try(mkc.key_policies, []) : {
         name           = try(kp.name, "")
         key_name       = kp.key_name
@@ -338,6 +339,7 @@ module "aci_macsec_keychain_policies" {
 
   for_each     = { for mkc in try(local.macsec_keychain_policies, []) : mkc.name => mkc if local.modules.aci_macsec_keychain_policies && var.manage_access_policies }
   name         = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.name_suffix}"
+  type         = each.value.type
   description  = each.value.description
   key_policies = each.value.key_policies
 }
