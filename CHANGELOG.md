@@ -1,4 +1,4 @@
-## 0.9.3 (unreleased)
+## 0.9.3
 
 - Fix validation for consumed contracts under external EPG
 - Add support for link local address in L3out interface profiles
