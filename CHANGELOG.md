@@ -1,3 +1,10 @@
+## 0.9.3 (unreleased)
+
+- Fix validation for consumed contracts under external EPG
+- Add support for link local address in L3out interface profiles
+- Enhance static endpoints to not require name
+- Fix for EIGRP route summarization policy to refer to a user tenant
+
 ## 0.9.2
 
 - Add support for interface selector description in auto-generated profiles
