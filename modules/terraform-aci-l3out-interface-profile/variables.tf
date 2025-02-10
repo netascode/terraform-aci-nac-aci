@@ -217,6 +217,7 @@ variable "interfaces" {
     ip_a            = optional(string)
     ip_b            = optional(string)
     ip_shared       = optional(string)
+    lladdr          = optional(string, "::")
     scope           = optional(string, "local")
     multipod_direct = optional(bool, false)
     bgp_peers = optional(list(object({

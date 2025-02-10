@@ -1,3 +1,25 @@
+## 0.9.3
+
+- Fix validation for consumed contracts under external EPG
+- Add support for link local address in L3out interface profiles
+- Enhance static endpoints to not require name
+- Fix for EIGRP route summarization policy to refer to a user tenant
+
+## 0.9.2
+
+- Add support for interface selector description in auto-generated profiles
+- Add support for Netflow Exporter for VMM Networking
+- Add support for EIGRP route summarization
+- Add support to specify different type of a route control map
+- Add description under External EPG Subnet
+- Add support for NDO managed service graph templates and device selection policies
+- Add support for bulk EPG static ports optimization
+- Add support for FEX VPC static port configuration under EPG
+- Add support for global SR MPLS configuration
+- Add support for multicast ARP drop for BD
+- Add support for BGP route summarization at the VRF level
+- Add support for access MACsec Policies
+
 ## 0.9.1
 
 - Add support for vPC Delay Restore timer
