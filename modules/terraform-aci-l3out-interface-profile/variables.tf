@@ -247,6 +247,7 @@ variable "interfaces" {
       vmware_vmm_domain = optional(string)
       elag              = optional(string)
       floating_ip       = string
+      encap             = optional(string)
     })), [])
     micro_bfd_destination_ip = optional(string, "")
     micro_bfd_start_timer    = optional(number, 0)

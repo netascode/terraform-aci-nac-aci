@@ -131,6 +131,7 @@ locals {
           floating_ip = path.floating_ip
           domain      = path.physical_domain != null ? "phys-${path.physical_domain}" : (path.vmware_vmm_domain != null ? "vmmp-VMware/dom-${path.vmware_vmm_domain}" : "")
           elag        = path.elag
+          encap       = path.encap
         }
       }
     ] if int.floating_svi == true
@@ -370,6 +371,7 @@ resource "aci_rest_managed" "l3extRsDynPathAtt" {
   content = {
     floatingAddr = each.value.floating_ip
     tDn          = "uni/${each.value.domain}"
+    encap        = each.value.encap
   }
 }
 
