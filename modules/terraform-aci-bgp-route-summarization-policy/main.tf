@@ -7,4 +7,11 @@ resource "aci_rest_managed" "bgpRtSummPol" {
     ctrl      = join(",", concat(var.as_set == true ? ["as-set"] : [], var.summary_only == true ? ["summary-only"] : []))
     addrTCtrl = join(",", concat(var.af_mcast == true ? ["af-mcast"] : [], var.af_ucast == true ? ["af-ucast"] : []))
   }
+
+  dynamic "addrTCtrl" {
+    for_each = var.af_mcast || var.af_ucast ? [1] : []
+    content {
+      addrTCtrl = join(",", concat(var.af_mcast == true ? ["af-mcast"] : [], var.af_ucast == true ? ["af-ucast"] : []))
+    }
+  }
 }
