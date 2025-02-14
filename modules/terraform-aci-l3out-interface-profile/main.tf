@@ -371,7 +371,7 @@ resource "aci_rest_managed" "l3extRsDynPathAtt" {
   content = {
     floatingAddr = each.value.floating_ip
     tDn          = "uni/${each.value.domain}"
-    encap        = "vlan-${each.value.encap}"
+    encap        = each.value.encap != null && each.value.encap != "" ? "vlan-${each.value.encap}" : null
   }
 }
 
