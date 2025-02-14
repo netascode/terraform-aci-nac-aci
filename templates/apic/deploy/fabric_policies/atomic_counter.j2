@@ -1,0 +1,12 @@
+{
+"dbgOngoingAcMode": {
+                "attributes": {
+                    "adminSt": "{{ apic.fabric_policies.atomic_counter.admin_state | default(defaults.apic.fabric_policies.atomic_counter.admin_state) | cisco.aac.aac_bool("enabled") }}",
+                    "annotation": "orchestrator:aac",
+                    "dn": "uni/fabric/ogmode",
+                    "mode": "{{ apic.fabric_policies.atomic_counter.mode | default(defaults.apic.fabric_policies.atomic_counter.mode) }}",
+                    "name": "default",
+                }
+
+        }
+}

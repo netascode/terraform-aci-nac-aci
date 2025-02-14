@@ -23,6 +23,9 @@ defaults:
       pod_profile_name: "POD\\g<id>"
       pod_profile_pod_selector_name: "POD\\g<id>"
       apic_conn_pref: inband
+      atomic_counters:
+        admin_state: true
+        mode: trail
       banners:
         apic_gui_alias: ""
         apic_gui_banner_url: ""
@@ -418,11 +421,6 @@ defaults:
       spine_switch_selector_name: "SPINE\\g<id>"
       spine_interface_selector_name: "ETH\\g<mod>-\\g<port>"
       vpc_group_name: "VPC\\g<switch1_id>-\\g<switch2_id>"
-      operations:
-          atomic_counters:
-            admin_state: true
-            mode: trail
-            user_domain: all
       vlan_pools:
         name_suffix: ""
         allocation: static

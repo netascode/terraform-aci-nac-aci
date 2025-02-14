@@ -11,10 +11,8 @@ Location in GUI:
 ```yaml
 apic:
   fabric_policies:
-    operations :
       atomic_counters:
         name: TEST ATOMIC COUNTER 
-        user_domain: all
         mode: trail
         admin_state: true
 ```

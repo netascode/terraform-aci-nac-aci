@@ -15,12 +15,6 @@ apic:
 
     infra_vlan: 4
 
-    operations:
-      atomic_counters:
-        name: Atomic_Counters_1
-        mode: path
-        admin_state: false
-
     span:
       destination_groups:
         - name: DST_GRP1
