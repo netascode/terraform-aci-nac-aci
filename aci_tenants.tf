@@ -958,14 +958,15 @@ locals {
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : [
         for np in try(l3out.node_profiles, []) : {
-          key                = format("%s/%s/%s", tenant.name, l3out.name, np.name)
-          tenant             = tenant.name
-          l3out              = l3out.name
-          name               = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
-          multipod           = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
-          remote_leaf        = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
-          bgp_timer_policy   = try("${np.bgp.timer_policy}${local.defaults.apic.tenants.policies.bgp_timer_policies.name_suffix}", "")
-          bgp_as_path_policy = try("${np.bgp.as_path_policy}${local.defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix}", "")
+          key                       = format("%s/%s/%s", tenant.name, l3out.name, np.name)
+          tenant                    = tenant.name
+          l3out                     = l3out.name
+          name                      = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
+          multipod                  = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
+          remote_leaf               = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
+          bgp_protocol_profile_name = try(np.bgp.name, "")
+          bgp_timer_policy          = try("${np.bgp.timer_policy}${local.defaults.apic.tenants.policies.bgp_timer_policies.name_suffix}", "")
+          bgp_as_path_policy        = try("${np.bgp.as_path_policy}${local.defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix}", "")
           nodes = [for node in try(np.nodes, []) : {
             node_id               = node.node_id
             pod_id                = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
