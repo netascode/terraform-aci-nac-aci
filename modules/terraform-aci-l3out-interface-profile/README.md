@@ -91,7 +91,7 @@ module "aci_l3out_interface_profile" {
       paths = [{
         physical_domain = PD-DOM1
         floating_ip     = "1.1.2.1/24"
-        vlan            = "vlan-1102"
+        vlan            = "vlan-5"
       }]
   }]
 }
