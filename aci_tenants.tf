@@ -1215,7 +1215,7 @@ locals {
                 vmware_vmm_domain = try(path.vmware_vmm_domain, null)
                 elag              = try(path.elag, null)
                 floating_ip       = path.floating_ip
-                encap             = try(path.encap, null)
+                vlan              = try(path.vlan, null)
               }]
               micro_bfd_destination_ip = try(int.micro_bfd.destination_ip, null)
               micro_bfd_start_timer    = try(int.micro_bfd.start_timer, null)
