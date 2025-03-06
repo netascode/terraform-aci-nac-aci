@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_vrf" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-vrf"
-  version = ">= 0.8.0"
+  version = ">= 0.9.2"
 
   tenant                                 = "ABC"
   name                                   = "VRF1"
@@ -106,6 +106,17 @@ module "aci_vrf" {
       vrf         = "VRF2"
     }]
   }]
+  route_summarization_policies = [{
+    name = "RSP1"
+    nodes = [{
+      id  = 105
+      pod = 2
+    }]
+    subnets = [{
+      prefix                         = "1.1.0.0/16"
+      bgp_route_summarization_policy = "ABC"
+    }]
+  }]
 }
 ```
 
@@ -128,6 +139,7 @@ module "aci_vrf" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | VRF name. | `string` | n/a | yes |
+| <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | `null` | no |
 | <a name="input_alias"></a> [alias](#input\_alias) | VRF alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | VRF description. | `string` | `""` | no |
 | <a name="input_enforcement_direction"></a> [enforcement\_direction](#input\_enforcement\_direction) | VRF enforcement direction. Choices: `ingress`, `egress`. | `string` | `"ingress"` | no |
@@ -174,6 +186,7 @@ module "aci_vrf" {
 | <a name="input_pim_igmp_ssm_translate_policies"></a> [pim\_igmp\_ssm\_translate\_policies](#input\_pim\_igmp\_ssm\_translate\_policies) | VRF IGMP SSM tranlate policies. | <pre>list(object({<br>    group_prefix   = string<br>    source_address = string<br>  }))</pre> | `[]` | no |
 | <a name="input_leaked_internal_prefixes"></a> [leaked\_internal\_prefixes](#input\_leaked\_internal\_prefixes) | List of leaked internal prefixes. Default value `public`: false. | <pre>list(object({<br>    prefix = string<br>    public = optional(bool, false)<br>    destinations = optional(list(object({<br>      description = optional(string, "")<br>      tenant      = string<br>      vrf         = string<br>      public      = optional(bool)<br>    })), [])<br>  }))</pre> | `[]` | no |
 | <a name="input_leaked_external_prefixes"></a> [leaked\_external\_prefixes](#input\_leaked\_external\_prefixes) | List of leaked external prefixes. | <pre>list(object({<br>    prefix             = string<br>    from_prefix_length = optional(number)<br>    to_prefix_length   = optional(number)<br>    destinations = optional(list(object({<br>      description = optional(string, "")<br>      tenant      = string<br>      vrf         = string<br>    })), [])<br>  }))</pre> | `[]` | no |
+| <a name="input_route_summarization_policies"></a> [route\_summarization\_policies](#input\_route\_summarization\_policies) | List of route summarization policies. | <pre>list(object({<br>    name = string<br>    nodes = optional(list(object({<br>      id  = number<br>      pod = optional(number, 1)<br>    })), [])<br>    subnets = optional(list(object({<br>      prefix                         = string<br>      bgp_route_summarization_policy = optional(string, null)<br>    })), [])<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -194,6 +207,7 @@ module "aci_vrf" {
 | [aci_rest_managed.bgpRtTarget_ipv6_import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.dnsLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvCtx](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvCtxRtSummPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBgpCtxPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToBgpCtxAfPol_ipv4](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToBgpCtxAfPol_ipv6](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
@@ -201,6 +215,7 @@ module "aci_vrf" {
 | [aci_rest_managed.fvRsCtxToOspfCtxPol_ipv4](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToOspfCtxPol_ipv6](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsOspfCtxPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRtSummSubnet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.igmpCtxP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.igmpSSMXlateP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.leakExternalPrefix](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

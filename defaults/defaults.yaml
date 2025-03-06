@@ -1,6 +1,7 @@
 ---
 defaults:
   apic:
+    version: "5.2.1g"
     auto_generate_switch_pod_profiles: false
     auto_generate_pod_profiles: false
     auto_generate_fabric_leaf_switch_interface_profiles: false
@@ -8,6 +9,8 @@ defaults:
     auto_generate_access_leaf_switch_interface_profiles: false
     auto_generate_access_spine_switch_interface_profiles: false
     new_interface_configuration: false
+    interface_selector_description: false
+    bulk_static_ports: false
     fabric_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
       leaf_interface_profile_name: "LEAF\\g<id>"
@@ -25,6 +28,7 @@ defaults:
         apic_gui_banner_url: ""
         apic_cli_banner: ""
         switch_cli_banner: ""
+        escape_html: true
       ep_loop_protection:
         admin_state: false
         detection_interval: 60
@@ -397,6 +401,9 @@ defaults:
         link_level_policies:
           name_suffix: ""
           link_debounce_interval: 0
+      sr_mpls_global_configuration:
+        sr_global_block_minimum: 16000
+        sr_global_block_maximum: 23999
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
@@ -539,10 +546,29 @@ defaults:
           source_type: custom-src-ip
           source_ip: 0.0.0.0
           dscp: CS2
+        netflow_vmm_exporters:
+          name_suffix: ""
+          source_ip: 0.0.0.0
         netflow_monitors:
           name_suffix: ""
         netflow_records:
           name_suffix: ""
+        macsec_parameters_policies:
+          name_suffix: ""
+          cipher_suite: gcm-aes-xpn-256
+          confidentiality_offset: offset-0
+          key_server_priority: 16
+          window_size: 64
+          key_expiry_time: disabled
+          security_policy: should-secure
+        macsec_keychain_policies:
+          name_suffix: ""
+          key_policies:
+            start_time: now
+            end_time: infinite
+        macsec_interfaces_policies:
+          name_suffix: ""
+          admin_state: true
       leaf_interface_policy_groups:
         name_suffix: ""
         map: none
@@ -741,17 +767,22 @@ defaults:
     interface_policies:
       nodes:
         interfaces:
-          from_module: 1
           module: 1
           fabric: false
+          shutdown: false
+          sub_ports:
+            shutdown: false
         fexes:
           interfaces:
-            from_module: 1
+            module: 1
+            shutdown: false
 
     tenants:
       managed: true
+      ndo_managed: false
       vrfs:
         name_suffix: ""
+        ndo_managed: false
         data_plane_learning: true
         enforcement_direction: ingress
         enforcement_preference: enforced
@@ -771,8 +802,13 @@ defaults:
           asm_traffic_registry_max_rate: 65535
           asm_traffic_registry_source_ip: "0.0.0.0"
         preferred_group: false
+        route_summarization_policies:
+          name_suffix: ""
+          nodes:
+            pod: 1
       bridge_domains:
         name_suffix: ""
+        ndo_managed: false
         mac: 00:22:BD:F8:19:FF
         ep_move_detection: false
         arp_flooding: true
@@ -786,6 +822,7 @@ defaults:
         unicast_routing: true
         advertise_host_routes: false
         l3_multicast: false
+        multicast_arp_drop: false
         dhcp_labels:
           scope: tenant
         subnets:
@@ -798,6 +835,7 @@ defaults:
           no_default_gateway: false
       l3outs:
         name_suffix: ""
+        ndo_managed: false
         target_dscp: unspecified
         qos_class: unspecified
         import_route_control_enforcement: false
@@ -831,6 +869,8 @@ defaults:
           as_propagate: none
         redistribution_route_maps:
           source: static
+        dhcp_labels:
+          scope: infra
         nodes:
           pod: 1
           router_id_as_loopback: true
@@ -910,6 +950,8 @@ defaults:
             ospf:
               auth_key_id: 1
               auth_type: none
+            dhcp_labels:
+              scope: infra
             interfaces:
               pod: 1
               module: 1
@@ -945,6 +987,7 @@ defaults:
                 start_timer: 0
         external_endpoint_groups:
           name_suffix: ""
+          ndo_managed: false
           preferred_group: false
           qos_class: unspecified
           target_dscp: unspecified
@@ -952,6 +995,7 @@ defaults:
             name_suffix: ""
             direction: import
           subnets:
+            ndo_managed: false
             import_route_control: false
             export_route_control: false
             shared_route_control: false
@@ -962,6 +1006,7 @@ defaults:
             aggregate_shared_route_control: false
             bgp_route_summarization: false
             ospf_route_summarization: false
+            eigrp_route_summarization: false
             route_control_profiles:
               name_suffix: ""
               direction: import
@@ -987,9 +1032,11 @@ defaults:
         remote_leaf: false
       application_profiles:
         name_suffix: ""
+        ndo_managed: false
         managed: true
         endpoint_groups:
           name_suffix: ""
+          ndo_managed: false
           flood_in_encap: false
           intra_epg_isolation: false
           proxy_arp: false
@@ -1231,6 +1278,7 @@ defaults:
           tag: 4294967295
         route_control_route_maps:
           name_suffix: ""
+          type: combinable
           contexts:
             name_suffix: ""
             action: "permit"
@@ -1405,6 +1453,7 @@ defaults:
           promiscuous_mode: false
           service_type: FW
           trunking: false
+          active_active: false
           concrete_devices:
             name_suffix: ""
             interfaces:
@@ -1438,6 +1487,7 @@ defaults:
           name_suffix: ""
         service_graph_templates:
           name_suffix: ""
+          ndo_managed: false
           template_type: FW_ROUTED
           redirect: false
           share_encapsulation: false

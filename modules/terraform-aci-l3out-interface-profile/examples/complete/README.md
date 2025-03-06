@@ -14,12 +14,13 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_l3out_interface_profile" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-l3out-interface-profile"
-  version = ">= 0.8.0"
+  version = ">= 0.9.1"
 
   tenant                      = "ABC"
   l3out                       = "L3OUT1"
   node_profile                = "NP1"
   name                        = "IP1"
+  description                 = "Int Profile Description"
   multipod                    = false
   remote_leaf                 = false
   bfd_policy                  = "BFD1"
@@ -29,8 +30,15 @@ module "aci_l3out_interface_profile" {
   ospf_authentication_type    = "md5"
   ospf_interface_policy       = "OSPF1"
   igmp_interface_policy       = "IIP"
+  nd_interface_policy         = "NDIP-SUPPRESS_RA"
   qos_class                   = "level2"
   custom_qos_policy           = "CQP"
+  dhcp_labels = [
+    {
+      dhcp_relay_policy  = "DHCP-RELAY1"
+      dhcp_option_policy = "DHCP_OPTION1"
+    }
+  ]
   interfaces = [{
     description = "Interface 1"
     type        = "vpc"
@@ -47,6 +55,7 @@ module "aci_l3out_interface_profile" {
     ip_a        = "1.1.1.2/24"
     ip_b        = "1.1.1.3/24"
     ip_shared   = "1.1.1.1/24"
+    lladdr      = "fe80::ffff:ffff:ffff:ffff"
     bgp_peers = [{
       ip                               = "4.4.4.4"
       remote_as                        = 12345

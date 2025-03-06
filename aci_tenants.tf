@@ -3,6 +3,7 @@ module "aci_tenant" {
 
   for_each         = { for tenant in local.tenants : tenant.name => tenant if try(tenant.managed, local.defaults.apic.tenants.managed, true) && local.modules.aci_tenant && var.manage_tenants }
   name             = each.value.name
+  annotation       = try(each.value.ndo_managed, local.defaults.apic.tenants.ndo_managed) ? "orchestrator:msc" : null
   alias            = try(each.value.alias, "")
   description      = try(each.value.description, "")
   security_domains = try(each.value.security_domains, [])
@@ -15,6 +16,7 @@ locals {
         key                                     = format("%s/%s", tenant.name, vrf.name)
         tenant                                  = tenant.name
         name                                    = "${vrf.name}${local.defaults.apic.tenants.vrfs.name_suffix}"
+        annotation                              = try(vrf.ndo_managed, local.defaults.apic.tenants.vrfs.ndo_managed) ? "orchestrator:msc-shadow:no" : null
         alias                                   = try(vrf.alias, "")
         description                             = try(vrf.description, "")
         enforcement_direction                   = try(vrf.enforcement_direction, local.defaults.apic.tenants.vrfs.enforcement_direction)
@@ -92,6 +94,17 @@ locals {
             vrf         = dest.vrf
           }]
         }]
+        route_summarization_policies = [for pol in try(vrf.route_summarization_policies, []) : {
+          name = "${pol.name}${local.defaults.apic.tenants.vrfs.route_summarization_policies.name_suffix}"
+          nodes = [for node in try(pol.nodes, []) : {
+            id  = node.id
+            pod = try(node.pod, local.defaults.apic.tenants.vrfs.route_summarization_policies.nodes.pod)
+          }]
+          subnets = [for subnet in try(pol.subnets, []) : {
+            prefix                         = subnet.prefix
+            bgp_route_summarization_policy = try(subnet.bgp_route_summarization_policy, null) != null ? "${subnet.bgp_route_summarization_policy}${local.defaults.apic.tenants.policies.bgp_route_summarization_policies.name_suffix}" : null
+          }]
+        }]
       }
     ]
   ])
@@ -103,6 +116,7 @@ module "aci_vrf" {
   for_each                                 = { for vrf in local.vrfs : vrf.key => vrf if local.modules.aci_vrf && var.manage_tenants }
   tenant                                   = each.value.tenant
   name                                     = each.value.name
+  annotation                               = each.value.annotation
   alias                                    = each.value.alias
   description                              = each.value.description
   enforcement_direction                    = each.value.enforcement_direction
@@ -149,12 +163,14 @@ module "aci_vrf" {
   pim_igmp_ssm_translate_policies          = each.value.pim_igmp_ssm_translate_policies
   leaked_internal_prefixes                 = each.value.leaked_internal_prefixes
   leaked_external_prefixes                 = each.value.leaked_external_prefixes
+  route_summarization_policies             = each.value.route_summarization_policies
 
   depends_on = [
     module.aci_tenant,
     module.aci_contract,
     module.aci_imported_contract,
     module.aci_bgp_timer_policy,
+    module.aci_bgp_route_summarization_policy
   ]
 }
 
@@ -165,6 +181,7 @@ locals {
         key                        = format("%s/%s", tenant.name, bd.name)
         tenant                     = tenant.name
         name                       = "${bd.name}${local.defaults.apic.tenants.bridge_domains.name_suffix}"
+        annotation                 = try(bd.ndo_managed, local.defaults.apic.tenants.bridge_domains.ndo_managed) ? "orchestrator:msc-shadow:no" : null
         alias                      = try(bd.alias, "")
         description                = try(bd.description, "")
         arp_flooding               = try(bd.arp_flooding, local.defaults.apic.tenants.bridge_domains.arp_flooding)
@@ -175,6 +192,7 @@ locals {
         virtual_mac                = try(bd.virtual_mac, "not-applicable")
         ep_move_detection          = try(bd.ep_move_detection, local.defaults.apic.tenants.bridge_domains.ep_move_detection)
         clear_remote_mac_entries   = try(bd.clear_remote_mac_entries, local.defaults.apic.tenants.bridge_domains.clear_remote_mac_entries)
+        multicast_arp_drop         = try(bd.multicast_arp_drop, null)
         l3_multicast               = try(bd.l3_multicast, local.defaults.apic.tenants.bridge_domains.l3_multicast)
         pim_source_filter          = try(bd.pim_source_filter, "")
         pim_destination_filter     = try(bd.pim_destination_filter, "")
@@ -217,6 +235,7 @@ module "aci_bridge_domain" {
   for_each                   = { for bd in local.bridge_domains : bd.key => bd if local.modules.aci_bridge_domain && var.manage_tenants }
   tenant                     = each.value.tenant
   name                       = each.value.name
+  annotation                 = each.value.annotation
   alias                      = each.value.alias
   description                = each.value.description
   arp_flooding               = each.value.arp_flooding
@@ -227,6 +246,7 @@ module "aci_bridge_domain" {
   virtual_mac                = each.value.virtual_mac
   ep_move_detection          = each.value.ep_move_detection
   clear_remote_mac_entries   = each.value.clear_remote_mac_entries
+  multicast_arp_drop         = each.value.multicast_arp_drop
   l3_multicast               = each.value.l3_multicast
   pim_source_filter          = each.value.pim_source_filter
   pim_destination_filter     = each.value.pim_destination_filter
@@ -259,6 +279,7 @@ locals {
         key         = format("%s/%s", tenant.name, ap.name)
         tenant      = tenant.name
         name        = "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}"
+        annotation  = try(ap.ndo_managed, local.defaults.apic.tenants.application_profiles.ndo_managed) ? "orchestrator:msc-shadow:no" : null
         alias       = try(ap.alias, "")
         description = try(ap.description, "")
       } if try(ap.managed, local.defaults.apic.tenants.application_profiles.managed, true)
@@ -272,6 +293,7 @@ module "aci_application_profile" {
   for_each    = { for ap in local.application_profiles : ap.key => ap if local.modules.aci_application_profile && var.manage_tenants }
   tenant      = each.value.tenant
   name        = each.value.name
+  annotation  = each.value.annotation
   alias       = each.value.alias
   description = each.value.description
 
@@ -290,6 +312,7 @@ locals {
           tenant                      = tenant.name
           application_profile         = "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}"
           name                        = "${epg.name}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}"
+          annotation                  = try(epg.ndo_managed, local.defaults.apic.tenants.application_profiles.endpoint_groups.ndo_managed) ? "orchestrator:msc-shadow:no" : null
           alias                       = try(epg.alias, "")
           description                 = try(epg.description, "")
           flood_in_encap              = try(epg.flood_in_encap, local.defaults.apic.tenants.application_profiles.endpoint_groups.flood_in_encap)
@@ -356,6 +379,7 @@ locals {
           static_ports = [for sp in try(epg.static_ports, []) : {
             node_id = try(sp.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == sp.channel][0][0], null)
             # set node2_id to "vpc" if channel IPG is vPC, otherwise "null"
+            description          = try(sp.description, "")
             node2_id             = try(sp.node2_id, [for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == sp.channel && pg.type == "vpc"][0], null)
             fex_id               = try(sp.fex_id, null)
             fex2_id              = try(sp.fex2_id, null)
@@ -365,6 +389,7 @@ locals {
             sub_port             = try(sp.sub_port, null)
             module               = try(sp.module, null)
             vlan                 = try(sp.vlan, null)
+            primary_vlan         = try(sp.primary_vlan, null)
             deployment_immediacy = try(sp.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.deployment_immediacy)
             mode                 = try(sp.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.mode)
             ptp_source_ip        = try(sp.ptp.source_ip, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.ptp.source_ip)
@@ -414,9 +439,11 @@ module "aci_endpoint_group" {
   source = "./modules/terraform-aci-endpoint-group"
 
   for_each                    = { for epg in local.endpoint_groups : epg.key => epg if local.modules.aci_endpoint_group && var.manage_tenants }
+  bulk_static_ports           = try(local.apic.bulk_static_ports, local.defaults.apic.bulk_static_ports)
   tenant                      = each.value.tenant
   application_profile         = each.value.application_profile
   name                        = each.value.name
+  annotation                  = each.value.annotation
   alias                       = each.value.alias
   description                 = each.value.description
   flood_in_encap              = each.value.flood_in_encap
@@ -437,6 +464,7 @@ module "aci_endpoint_group" {
   subnets                     = each.value.subnets
   vmware_vmm_domains          = each.value.vmware_vmm_domains
   static_ports = [for sp in try(each.value.static_ports, []) : {
+    description          = sp.description
     node_id              = sp.node_id
     node2_id             = sp.node2_id == "vpc" ? [for pg in local.leaf_interface_policy_group_mapping : try(pg.node_ids, []) if pg.name == sp.channel][0][1] : sp.node2_id
     fex_id               = sp.fex_id
@@ -447,6 +475,7 @@ module "aci_endpoint_group" {
     sub_port             = sp.sub_port
     module               = sp.module
     vlan                 = sp.vlan
+    primary_vlan         = sp.primary_vlan
     deployment_immediacy = sp.deployment_immediacy
     mode                 = sp.mode
     ptp_source_ip        = sp.ptp_source_ip
@@ -793,6 +822,7 @@ locals {
         key         = format("%s/%s", tenant.name, l3out.name)
         tenant      = tenant.name
         name        = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
+        annotation  = try(l3out.ndo_managed, local.defaults.apic.tenants.l3outs.ndo_managed) ? "orchestrator:msc-shadow:no" : null
         alias       = try(l3out.alias, "")
         description = try(l3out.description, "")
         multipod    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
@@ -874,6 +904,7 @@ module "aci_l3out" {
   for_each                                = { for l3out in local.l3outs : l3out.key => l3out if local.modules.aci_l3out && var.manage_tenants }
   tenant                                  = each.value.tenant
   name                                    = each.value.name
+  annotation                              = each.value.annotation
   alias                                   = each.value.alias
   description                             = each.value.description
   multipod                                = each.value.multipod
@@ -927,12 +958,14 @@ locals {
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : [
         for np in try(l3out.node_profiles, []) : {
-          key         = format("%s/%s/%s", tenant.name, l3out.name, np.name)
-          tenant      = tenant.name
-          l3out       = l3out.name
-          name        = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
-          multipod    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
-          remote_leaf = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
+          key                = format("%s/%s/%s", tenant.name, l3out.name, np.name)
+          tenant             = tenant.name
+          l3out              = l3out.name
+          name               = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
+          multipod           = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
+          remote_leaf        = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
+          bgp_timer_policy   = try("${np.bgp.timer_policy}${local.defaults.apic.tenants.policies.bgp_timer_policies.name_suffix}", "")
+          bgp_as_path_policy = try("${np.bgp.as_path_policy}${local.defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix}", "")
           nodes = [for node in try(np.nodes, []) : {
             node_id               = node.node_id
             pod_id                = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
@@ -946,9 +979,10 @@ locals {
               bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
               track_list  = try(sr.track_list, null)
               next_hops = [for nh in try(sr.next_hops, []) : {
-                ip         = nh.ip
-                preference = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
-                type       = try(nh.type, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type)
+                ip          = nh.ip
+                description = try(nh.description, "")
+                preference  = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
+                type        = try(nh.type, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type)
               }]
             }]
           }]
@@ -989,14 +1023,16 @@ locals {
 module "aci_l3out_node_profile_manual" {
   source = "./modules/terraform-aci-l3out-node-profile"
 
-  for_each    = { for np in local.node_profiles_manual : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
-  tenant      = each.value.tenant
-  l3out       = each.value.l3out
-  name        = each.value.name
-  multipod    = each.value.multipod
-  remote_leaf = each.value.remote_leaf
-  nodes       = each.value.nodes
-  bgp_peers   = each.value.bgp_peers
+  for_each           = { for np in local.node_profiles_manual : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
+  tenant             = each.value.tenant
+  l3out              = each.value.l3out
+  name               = each.value.name
+  multipod           = each.value.multipod
+  remote_leaf        = each.value.remote_leaf
+  bgp_timer_policy   = each.value.bgp_timer_policy
+  bgp_as_path_policy = each.value.bgp_as_path_policy
+  nodes              = each.value.nodes
+  bgp_peers          = each.value.bgp_peers
 
   depends_on = [
     module.aci_tenant,
@@ -1008,12 +1044,14 @@ locals {
   node_profiles_auto = flatten([
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : {
-        key         = format("%s/%s", tenant.name, l3out.name)
-        tenant      = tenant.name
-        l3out       = l3out.name
-        name        = l3out.name
-        multipod    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
-        remote_leaf = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
+        key                = format("%s/%s", tenant.name, l3out.name)
+        tenant             = tenant.name
+        l3out              = l3out.name
+        name               = l3out.name
+        multipod           = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
+        remote_leaf        = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
+        bgp_timer_policy   = try("${l3out.bgp.timer_policy}${local.defaults.apic.tenants.policies.bgp_timer_policies.name_suffix}", "")
+        bgp_as_path_policy = try("${l3out.bgp.as_path_policy}${local.defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix}", "")
         nodes = [for node in try(l3out.nodes, []) : {
           node_id               = node.node_id
           pod_id                = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.nodes.pod)
@@ -1027,9 +1065,10 @@ locals {
             bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
             track_list  = try(sr.track_list, null)
             next_hops = [for nh in try(sr.next_hops, []) : {
-              ip         = nh.ip
-              preference = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
-              type       = try(nh.type, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.type)
+              ip          = nh.ip
+              description = try(nh.description, "")
+              preference  = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
+              type        = try(nh.type, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.type)
             }]
           }]
         }]
@@ -1069,14 +1108,16 @@ locals {
 module "aci_l3out_node_profile_auto" {
   source = "./modules/terraform-aci-l3out-node-profile"
 
-  for_each    = { for np in local.node_profiles_auto : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
-  tenant      = each.value.tenant
-  l3out       = each.value.l3out
-  name        = each.value.name
-  multipod    = each.value.multipod
-  remote_leaf = each.value.remote_leaf
-  nodes       = each.value.nodes
-  bgp_peers   = each.value.bgp_peers
+  for_each           = { for np in local.node_profiles_auto : np.key => np if local.modules.aci_l3out_node_profile && var.manage_tenants }
+  tenant             = each.value.tenant
+  l3out              = each.value.l3out
+  name               = each.value.name
+  multipod           = each.value.multipod
+  remote_leaf        = each.value.remote_leaf
+  bgp_timer_policy   = each.value.bgp_timer_policy
+  bgp_as_path_policy = each.value.bgp_as_path_policy
+  nodes              = each.value.nodes
+  bgp_peers          = each.value.bgp_peers
 
   depends_on = [
     module.aci_tenant,
@@ -1095,6 +1136,7 @@ locals {
             l3out                        = l3out.name
             node_profile                 = np.name
             name                         = "${ip.name}${local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix}"
+            description                  = try(ip.description, "")
             multipod                     = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
             remote_leaf                  = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
             bfd_policy                   = try("${ip.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
@@ -1108,8 +1150,15 @@ locals {
             eigrp_keychain_policy        = try(ip.eigrp.keychain_policy, "")
             pim_policy                   = try("${ip.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
             igmp_interface_policy        = try("${ip.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
+            nd_interface_policy          = try("${ip.nd_interface_policy}${local.defaults.apic.tenants.policies.nd_interface_policies.name_suffix}", "")
             qos_class                    = try(ip.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
             custom_qos_policy            = try("${ip.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+            dhcp_labels = [for label in try(ip.dhcp_labels, []) : {
+              dhcp_relay_policy  = try("${label.dhcp_relay_policy}${local.defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix}", "")
+              dhcp_option_policy = try("${label.dhcp_option_policy}${local.defaults.apic.tenants.policies.dhcp_option_policies.name_suffix}", "")
+              scope              = try(label.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.dhcp_labels.scope)
+              }
+            ]
             interfaces = [for int in try(ip.interfaces, []) : {
               ip              = try(int.ip, "")
               svi             = try(int.svi, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.svi)
@@ -1131,6 +1180,7 @@ locals {
               ip_a            = try(int.ip_a, null)
               ip_b            = try(int.ip_b, null)
               ip_shared       = try(int.ip_shared, null)
+              lladdr          = try(int.link_local_address, null)
               scope           = try(int.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.scope)
               multipod_direct = tenant.name == "infra" ? try(int.multipod_direct, false) : false
               bgp_peers = [for peer in try(int.bgp_peers, []) : {
@@ -1185,6 +1235,7 @@ module "aci_l3out_interface_profile_manual" {
   l3out                        = each.value.l3out
   node_profile                 = each.value.node_profile
   name                         = each.value.name
+  description                  = each.value.description
   multipod                     = each.value.multipod
   remote_leaf                  = each.value.remote_leaf
   bfd_policy                   = each.value.bfd_policy
@@ -1198,8 +1249,10 @@ module "aci_l3out_interface_profile_manual" {
   eigrp_keychain_policy        = each.value.eigrp_keychain_policy
   pim_policy                   = each.value.pim_policy
   igmp_interface_policy        = each.value.igmp_interface_policy
+  nd_interface_policy          = each.value.nd_interface_policy
   qos_class                    = each.value.qos_class
   custom_qos_policy            = each.value.custom_qos_policy
+  dhcp_labels                  = each.value.dhcp_labels
   interfaces = [for int in try(each.value.interfaces, []) : {
     ip                       = int.ip
     svi                      = int.svi
@@ -1221,6 +1274,7 @@ module "aci_l3out_interface_profile_manual" {
     ip_a                     = int.ip_a
     ip_b                     = int.ip_b
     ip_shared                = int.ip_shared
+    lladdr                   = int.lladdr
     bgp_peers                = int.bgp_peers
     paths                    = int.paths
     scope                    = int.scope
@@ -1256,8 +1310,15 @@ locals {
         eigrp_interface_policy       = try(l3out.eigrp.interface_policy, "")
         pim_policy                   = try("${l3out.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
         igmp_interface_policy        = try("${l3out.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
+        nd_interface_policy          = try("${l3out.nd_interface_policy}${local.defaults.apic.tenants.policies.nd_interface_policies.name_suffix}", "")
         qos_class                    = try(l3out.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
         custom_qos_policy            = try("${l3out.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+        dhcp_labels = [for label in try(l3out.dhcp_labels, []) : {
+          dhcp_relay_policy  = try("${label.dhcp_relay_policy}${local.defaults.apic.tenants.policies.dhcp_relay_policies.name_suffix}", "")
+          dhcp_option_policy = try("${label.dhcp_option_policy}${local.defaults.apic.tenants.policies.dhcp_option_policies.name_suffix}", "")
+          scope              = try(label.scope, local.defaults.apic.tenants.l3outs.dhcp_labels.scope)
+          }
+        ]
         interfaces = flatten([for node in try(l3out.nodes, []) : [
           for int in try(node.interfaces, []) : {
             ip              = try(int.ip, "")
@@ -1280,6 +1341,7 @@ locals {
             ip_a            = try(int.ip_a, null)
             ip_b            = try(int.ip_b, null)
             ip_shared       = try(int.ip_shared, null)
+            lladdr          = try(int.link_local_address, null)
             scope           = try(int.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.scope)
             multipod_direct = tenant.name == "infra" ? try(int.multipod_direct, false) : false
             bgp_peers = [for peer in try(int.bgp_peers, []) : {
@@ -1345,8 +1407,10 @@ module "aci_l3out_interface_profile_auto" {
   eigrp_interface_policy       = each.value.eigrp_interface_policy
   pim_policy                   = each.value.pim_policy
   igmp_interface_policy        = each.value.igmp_interface_policy
+  nd_interface_policy          = each.value.nd_interface_policy
   qos_class                    = each.value.qos_class
   custom_qos_policy            = each.value.custom_qos_policy
+  dhcp_labels                  = each.value.dhcp_labels
   interfaces = [for int in try(each.value.interfaces, []) : {
     ip                       = int.ip
     svi                      = int.svi
@@ -1368,6 +1432,7 @@ module "aci_l3out_interface_profile_auto" {
     ip_a                     = int.ip_a
     ip_b                     = int.ip_b
     ip_shared                = int.ip_shared
+    lladdr                   = int.lladdr
     bgp_peers                = int.bgp_peers
     paths                    = int.paths
     scope                    = int.scope
@@ -1391,6 +1456,7 @@ locals {
           tenant                      = tenant.name
           l3out                       = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
           name                        = "${epg.name}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}"
+          annotation                  = try(epg.ndo_managed, local.defaults.apic.tenants.l3outs.external_endpoint_groups.ndo_managed) ? "orchestrator:msc-shadow:no" : null
           alias                       = try(epg.alias, "")
           description                 = try(epg.description, "")
           preferred_group             = try(epg.preferred_group, local.defaults.apic.tenants.l3outs.external_endpoint_groups.preferred_group)
@@ -1405,7 +1471,9 @@ locals {
           }]
           subnets = [for subnet in try(epg.subnets, []) : {
             name                           = try(subnet.name, "")
+            annotation                     = try(subnet.ndo_managed, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ndo_managed) ? "orchestrator:msc" : null
             prefix                         = subnet.prefix
+            description                    = try(subnet.description, "")
             import_route_control           = try(subnet.import_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_route_control)
             export_route_control           = try(subnet.export_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.export_route_control)
             shared_route_control           = try(subnet.shared_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.shared_route_control)
@@ -1417,6 +1485,7 @@ locals {
             bgp_route_summarization        = try(subnet.bgp_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.bgp_route_summarization)
             bgp_route_summarization_policy = try(subnet.bgp_route_summarization_policy, "")
             ospf_route_summarization       = try(subnet.ospf_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ospf_route_summarization)
+            eigrp_route_summarization      = try(subnet.eigrp_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.eigrp_route_summarization)
             route_control_profiles = [for rcp in try(subnet.route_control_profiles, []) : {
               name      = rcp.name
               direction = try(rcp.direction, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.route_control_profiles.direction)
@@ -1435,6 +1504,7 @@ module "aci_external_endpoint_group" {
   tenant                      = each.value.tenant
   l3out                       = each.value.l3out
   name                        = each.value.name
+  annotation                  = each.value.annotation
   alias                       = each.value.alias
   description                 = each.value.description
   preferred_group             = each.value.preferred_group
@@ -1532,8 +1602,8 @@ locals {
           l3out                    = l3out.name
           name                     = "${np.name}${local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.name_suffix}"
           sr_mpls                  = true
-          mpls_custom_qos_policy   = try(np.mpls_custom_qos_policy, null)
-          bfd_multihop_node_policy = try(np.bfd_multihop_node_policy, null)
+          mpls_custom_qos_policy   = try(np.mpls_custom_qos_policy, "")
+          bfd_multihop_node_policy = try(np.bfd_multihop_node_policy, "")
           nodes = [for node in try(np.nodes, []) : {
             node_id                 = node.node_id
             pod_id                  = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
@@ -2187,6 +2257,7 @@ locals {
         tenant      = tenant.name
         name        = "${policy.name}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}"
         description = try(policy.description, "")
+        type        = try(policy.type, local.defaults.apic.tenants.policies.route_control_route_maps.type)
         contexts = [for ctx in try(policy.contexts, []) : {
           name        = "${ctx.name}${local.defaults.apic.tenants.policies.route_control_route_maps.contexts.name_suffix}"
           description = try(ctx.description, "")
@@ -2207,6 +2278,7 @@ module "aci_route_control_route_map" {
   tenant      = each.value.tenant
   name        = each.value.name
   description = each.value.description
+  type        = each.value.type
   contexts    = each.value.contexts
 
   depends_on = [
@@ -2468,6 +2540,51 @@ module "aci_qos_policy" {
 }
 
 locals {
+  mpls_custom_qos_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.mpls_custom_qos_policies, []) : {
+        key         = format("%s/%s", tenant.name, policy.name)
+        name        = "${policy.name}${local.defaults.apic.tenants.policies.mpls_custom_qos_policies.name_suffix}"
+        description = try(policy.description, "")
+        alias       = try(policy.alias, "")
+        ingress_rules = [
+          for ing in try(policy.ingress_rules, []) : {
+            exp_from    = ing.exp_from
+            exp_to      = ing.exp_to
+            priority    = try(ing.priority, local.defaults.apic.tenants.policies.mpls_custom_qos_policies.ingress_rules.priority)
+            dscp_target = try(ing.dscp_target, local.defaults.apic.tenants.policies.mpls_custom_qos_policies.ingress_rules.dscp_target)
+            cos_target  = try(ing.cos_target, local.defaults.apic.tenants.policies.mpls_custom_qos_policies.ingress_rules.cos_target)
+          }
+        ]
+        egress_rules = [
+          for eg in try(policy.egress_rules, []) : {
+            dscp_from  = eg.dscp_from
+            dscp_to    = eg.dscp_to
+            exp_target = try(eg.exp_target, local.defaults.apic.tenants.policies.mpls_custom_qos_policies.egress_rules.exp_target)
+            cos_target = try(eg.cos_target, local.defaults.apic.tenants.policies.mpls_custom_qos_policies.egress_rules.cos_target)
+          }
+        ]
+      }
+    ] if tenant.name == "infra"
+  ])
+}
+
+module "aci_mpls_custom_qos_policy" {
+  source = "./modules/terraform-aci-mpls-custom-qos-policy"
+
+  for_each      = { for pol in local.mpls_custom_qos_policies : pol.key => pol if local.modules.aci_mpls_custom_qos_policy && var.manage_tenants }
+  name          = each.value.name
+  description   = each.value.description
+  alias         = each.value.alias
+  ingress_rules = each.value.ingress_rules
+  egress_rules  = each.value.egress_rules
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
   bgp_peer_prefix_policies = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.policies.bgp_peer_prefix_policies, []) : {
@@ -2640,7 +2757,7 @@ locals {
         key                          = format("%s/%s", tenant.name, policy.name)
         tenant                       = tenant.name
         name                         = "${policy.name}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}"
-        auth_key                     = try(policy.auth_key, "")
+        auth_key                     = try(policy.auth_key, null)
         auth_type                    = try(policy.auth_type, local.defaults.apic.tenants.policies.pim_policies.auth_type)
         mcast_dom_boundary           = try(policy.mcast_dom_boundary, local.defaults.apic.tenants.policies.pim_policies.mcast_dom_boundary)
         passive                      = try(policy.passive, local.defaults.apic.tenants.policies.pim_policies.passive)
@@ -2915,6 +3032,7 @@ locals {
         promiscuous_mode = try(device.promiscuous_mode, local.defaults.apic.tenants.services.l4l7_devices.promiscuous_mode)
         service_type     = try(device.service_type, local.defaults.apic.tenants.services.l4l7_devices.service_type)
         trunking         = try(device.trunking, local.defaults.apic.tenants.services.l4l7_devices.trunking)
+        active_active    = try(device.active_active, local.defaults.apic.tenants.services.l4l7_devices.active_active)
         physical_domain  = try(device.physical_domain, "")
         vmm_provider     = "VMware"
         vmm_domain       = try(device.vmware_vmm_domain, "")
@@ -2936,6 +3054,7 @@ locals {
             module   = try(int.module, null)
             port     = try(int.port, null)
             channel  = try("${int.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", null)
+            vlan     = try(int.vlan, null)
           }]
         }]
         logical_interfaces = [for lint in try(device.logical_interfaces, []) : {
@@ -2967,6 +3086,7 @@ module "aci_l4l7_device" {
   promiscuous_mode = each.value.promiscuous_mode
   service_type     = each.value.service_type
   trunking         = each.value.trunking
+  active_active    = each.value.active_active
   physical_domain  = each.value.physical_domain
   vmm_provider     = each.value.vmm_provider
   vmm_domain       = each.value.vmm_domain
@@ -2987,6 +3107,7 @@ module "aci_l4l7_device" {
       module    = int.module
       port      = int.port
       channel   = int.channel
+      vlan      = int.vlan
     }]
   }]
   logical_interfaces = each.value.logical_interfaces
@@ -3165,6 +3286,7 @@ locals {
         key                     = format("%s/%s", tenant.name, sgt.name)
         tenant                  = tenant.name
         name                    = "${sgt.name}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
+        annotation              = try(sgt.ndo_managed, local.defaults.apic.tenants.services.service_graph_templates.ndo_managed) ? "orchestrator:msc-shadow:no" : null
         description             = try(sgt.description, "")
         alias                   = try(sgt.alias, "")
         template_type           = try(sgt.template_type, local.defaults.apic.tenants.services.service_graph_templates.template_type)
@@ -3172,9 +3294,10 @@ locals {
         share_encapsulation     = try(sgt.share_encapsulation, local.defaults.apic.tenants.services.service_graph_templates.share_encapsulation)
         device_name             = "${sgt.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
         device_tenant           = try(sgt.device.tenant, tenant.name)
-        device_function         = length([for d in local.l4l7_devices : d if d.tenant == tenant.name]) > 0 ? [for device in local.l4l7_devices : try(device.function, []) if device.name == sgt.device.name && device.tenant == tenant.name][0] : "None"
-        device_copy             = length([for d in local.l4l7_devices : d if d.tenant == tenant.name]) > 0 ? [for device in local.l4l7_devices : try(device.copy_device, []) if device.name == sgt.device.name && device.tenant == tenant.name][0] : false
-        device_managed          = length([for d in local.l4l7_devices : d if d.tenant == tenant.name]) > 0 ? [for device in local.l4l7_devices : try(device.managed, []) if device.name == sgt.device.name && device.tenant == tenant.name][0] : false
+        device_function         = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.function, []) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : "None"
+        device_copy             = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.copy_device, []) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : false
+        device_managed          = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.managed, []) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : false
+        device_node_name        = try(sgt.device.node_name, "N1")
         consumer_direct_connect = try(sgt.consumer.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.consumer.direct_connect)
         provider_direct_connect = try(sgt.provider.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.provider.direct_connect)
       }
@@ -3188,6 +3311,7 @@ module "aci_service_graph_template" {
   for_each                = { for sg_template in local.service_graph_templates : sg_template.key => sg_template if local.modules.aci_service_graph_template && var.manage_tenants }
   tenant                  = each.value.tenant
   name                    = each.value.name
+  annotation              = each.value.annotation
   description             = each.value.description
   alias                   = each.value.alias
   template_type           = each.value.template_type
@@ -3198,6 +3322,7 @@ module "aci_service_graph_template" {
   device_function         = each.value.device_function
   device_copy             = each.value.device_copy
   device_managed          = each.value.device_managed
+  device_node_name        = each.value.device_node_name
   consumer_direct_connect = each.value.consumer_direct_connect
   provider_direct_connect = each.value.provider_direct_connect
 
@@ -3216,7 +3341,8 @@ locals {
         contract                                                = "${dsp.contract}${local.defaults.apic.tenants.contracts.name_suffix}"
         service_graph_template                                  = "${dsp.service_graph_template}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
         sgt_device_tenant                                       = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : try(sg_template.device.tenant, tenant.name) if sg_template.name == dsp.service_graph_template][0] : tenant.name
-        sgt_device_name                                         = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : "${sg_template.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}" if sg_template.name == dsp.service_graph_template][0] : ""
+        sgt_device_name                                         = try("${dsp.device_name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}", length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : "${sg_template.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}" if sg_template.name == dsp.service_graph_template][0] : "")
+        node_name                                               = try(dsp.node_name, "N1")
         consumer_l3_destination                                 = try(dsp.consumer.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination)
         consumer_permit_logging                                 = try(dsp.consumer.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.consumer.permit_logging)
         consumer_logical_interface                              = try("${dsp.consumer.logical_interface}${local.defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix}", "")
@@ -3271,6 +3397,7 @@ module "aci_device_selection_policy" {
   service_graph_template                                  = each.value.service_graph_template
   sgt_device_tenant                                       = each.value.sgt_device_tenant
   sgt_device_name                                         = each.value.sgt_device_name
+  node_name                                               = each.value.node_name
   consumer_l3_destination                                 = each.value.consumer_l3_destination
   consumer_permit_logging                                 = each.value.consumer_permit_logging
   consumer_logical_interface                              = each.value.consumer_logical_interface
@@ -3501,6 +3628,8 @@ module "aci_track_member" {
   ip_sla_policy  = each.value.ip_sla_policy
 }
 
+<<<<<<< HEAD
+
 locals {
   ep_mac_tags = flatten([
     for tenant in local.tenants : [
@@ -3561,3 +3690,5 @@ module "aci_endpoint_ip_tag_policy" {
     module.aci_vrf,
   ]
 }
+=======
+>>>>>>> upstream/main

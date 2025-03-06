@@ -13,6 +13,7 @@ locals {
 resource "aci_rest_managed" "fvBD" {
   dn         = "uni/tn-${var.tenant}/BD-${var.name}"
   class_name = "fvBD"
+  annotation = var.annotation
   content = {
     name                  = var.name
     nameAlias             = var.alias
@@ -32,6 +33,7 @@ resource "aci_rest_managed" "fvBD" {
     unkMcastAct           = var.unknown_ipv4_multicast
     v6unkMcastAct         = var.unknown_ipv6_multicast
     epClear               = var.clear_remote_mac_entries == true ? "yes" : "no"
+    mcastARPDrop          = var.multicast_arp_drop != null ? (var.multicast_arp_drop == true ? "yes" : "no") : null
   }
 }
 

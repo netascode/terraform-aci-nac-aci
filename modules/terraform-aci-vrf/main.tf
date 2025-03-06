@@ -26,11 +26,24 @@ locals {
       }
     ]
   ])
+  route_summarization_subnets = flatten([
+    for pol in var.route_summarization_policies : [
+      for subnet in pol.subnets : {
+        key = "${pol.name}/${subnet.prefix}"
+        value = {
+          policy = pol.name
+          prefix = subnet.prefix
+          tDn    = subnet.bgp_route_summarization_policy != null ? "uni/tn-${var.tenant}/bgprtsum-${subnet.bgp_route_summarization_policy}" : "uni/tn-common/bgprtsum-default"
+        }
+      }
+    ]
+  ])
 }
 
 resource "aci_rest_managed" "fvCtx" {
   dn         = "uni/tn-${var.tenant}/ctx-${var.name}"
   class_name = "fvCtx"
+  annotation = var.annotation
   content = {
     "name"                = var.name
     "nameAlias"           = var.alias
@@ -508,5 +521,42 @@ resource "aci_rest_managed" "leakTo_external" {
     tenantName = each.value.tenant
     ctxName    = each.value.vrf
     descr      = each.value.description
+  }
+}
+
+resource "aci_rest_managed" "fvCtxRtSummPol" {
+  for_each   = { for pol in var.route_summarization_policies : pol.name => pol }
+  dn         = "${aci_rest_managed.fvCtx.dn}/ctxrtsummpol-${each.value.name}"
+  class_name = "fvCtxRtSummPol"
+  content = {
+    name = each.value.name
+  }
+
+  dynamic "child" {
+    for_each = { for node in each.value.nodes : node.id => node }
+    content {
+      rn         = "rsnodeRtSummAtt-[topology/pod-${child.value.pod}/node-${child.value.id}]"
+      class_name = "fvRsNodeRtSummAtt"
+      content = {
+        tDn = "topology/pod-${child.value.pod}/node-${child.value.id}"
+      }
+    }
+  }
+}
+
+resource "aci_rest_managed" "fvRtSummSubnet" {
+  for_each   = { for subnet in local.route_summarization_subnets : subnet.key => subnet.value }
+  dn         = "${aci_rest_managed.fvCtxRtSummPol[each.value.policy].dn}/rtsummsubnet-[${each.value.prefix}]"
+  class_name = "fvRtSummSubnet"
+  content = {
+    prefix = each.value.prefix
+  }
+
+  child {
+    rn         = "rsSubnetToRtSummPol"
+    class_name = "fvRsSubnetToRtSummPol"
+    content = {
+      tDn = each.value.tDn
+    }
   }
 }

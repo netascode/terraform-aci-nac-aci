@@ -1,3 +1,53 @@
+## 0.9.3
+
+- Fix validation for consumed contracts under external EPG
+- Add support for link local address in L3out interface profiles
+- Enhance static endpoints to not require name
+- Fix for EIGRP route summarization policy to refer to a user tenant
+
+## 0.9.2
+
+- Add support for interface selector description in auto-generated profiles
+- Add support for Netflow Exporter for VMM Networking
+- Add support for EIGRP route summarization
+- Add support to specify different type of a route control map
+- Add description under External EPG Subnet
+- Add support for NDO managed service graph templates and device selection policies
+- Add support for bulk EPG static ports optimization
+- Add support for FEX VPC static port configuration under EPG
+- Add support for global SR MPLS configuration
+- Add support for multicast ARP drop for BD
+- Add support for BGP route summarization at the VRF level
+- Add support for access MACsec Policies
+
+## 0.9.1
+
+- Add support for vPC Delay Restore timer
+- Add support for Pod Peering Profile
+- Add support for Fabric Interface Link Level Policies
+- Add support for static vlan allocation under VMware VMM domain
+- Add support for ND interface policy under Bridge Domain
+- Add support for PBR L3 destination name
+- Add support for configuring node role during registration
+- Add support for allow_origins parameter in management access policy
+- Add support for Netflow policies
+- Add support for sub-interfaces in L3out
+- Enhance action support for EP loop protection
+- Add support for MicroBFD in L3out
+- Add support for BGP Route Summarization policies
+- Add description under interface selector, EPG static port, l3out interface profile and static route next hop
+- Add LDAP support in AAA login domains
+- Add support for Private VLANs on static ports
+- Add support for BGP profile in L3out
+- Add support for DHCP Labels under L3out interface profiles
+- Add support for escaping HTML in banners
+- Add support for L4L7 active-active device configuration
+- Fix support for imported devices in service graph templates
+- Add RBAC rules for nodes
+- Add support for MPLS Custom QoS policy in Terraform module
+- Add support for port channel member policies in new interface configuration mode
+- Add support for annotations in NDO-managed objects for tenant, VRF, BD, EPG, L3out and extEPG
+
 ## 0.9.0
 
 - Add support for PBR L1L2 destinations

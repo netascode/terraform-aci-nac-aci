@@ -24,7 +24,7 @@ variable "description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -167,7 +167,7 @@ variable "additional_communities" {
 
   validation {
     condition = alltrue([
-      for c in var.additional_communities : c.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description))
+      for c in var.additional_communities : c.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description))
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -205,14 +205,6 @@ variable "set_as_paths" {
         for a in c.asns : a.order == null || try(a.order >= 0 && a.order <= 31, false)
     ]]))
     error_message = "`order` minimum value: `0`. Maximum value: `31`."
-  }
-
-  validation {
-    condition = alltrue(flatten([
-      for c in var.set_as_paths : [
-        for a in c.asns : try(a.asn_number >= 0 && a.asn_number <= 65535, false)
-    ]]))
-    error_message = "`asn` minimum value: `0`. Maximum value: `65535`."
   }
 }
 

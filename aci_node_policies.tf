@@ -23,7 +23,7 @@ module "aci_vpc_group" {
   groups = [for group in try(local.node_policies.vpc_groups.groups, []) : {
     name     = try(group.name, replace("${group.id}:${group.switch_1}:${group.switch_2}", "/^(?P<id>.+):(?P<switch1_id>.+):(?P<switch2_id>.+)$/", replace(replace(replace(try(local.access_policies.vpc_group_name, local.defaults.apic.access_policies.vpc_group_name), "\\g<id>", "$${id}"), "\\g<switch1_id>", "$${switch1_id}"), "\\g<switch2_id>", "$${switch2_id}")))
     id       = group.id
-    policy   = try(group.policy, "")
+    policy   = try("${group.policy}${local.defaults.apic.access_policies.switch_policies.vpc_policies.name_suffix}", "")
     switch_1 = group.switch_1
     switch_2 = group.switch_2
   }]
@@ -77,4 +77,15 @@ module "aci_oob_node_address" {
   v6_ip          = try(each.value.oob_v6_address, "::")
   v6_gateway     = try(each.value.oob_v6_gateway, "::")
   endpoint_group = try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group)
+}
+
+module "aci_rbac_node_rule" {
+  source = "./modules/terraform-aci-rbac-node-rule"
+
+  for_each = { for node in try(local.node_policies.nodes, []) : node.id => node if node.role == "leaf" && length(try(node.security_domains, [])) != 0 && local.modules.aci_rbac_node_rule && var.manage_node_policies }
+  node_id  = each.key
+  port_rules = [for sd in each.value.security_domains : {
+    name   = sd
+    domain = sd
+  }]
 }

@@ -1,0 +1,34 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  # Terraform ACI SR MPLS Global Configuration
+
+  Description
+
+  Location in GUI:
+  `Tenants` » `infra` » `Policies` » `Protocol` » `MPLS Global Configuration`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

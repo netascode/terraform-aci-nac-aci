@@ -96,17 +96,22 @@ modules:
   aci_link_level_policy: true
   aci_lldp_policy: true
   aci_login_domain: true
+  aci_macsec_interfaces_policy: true
+  aci_macsec_parameters_policy: true
+  aci_macsec_keychain_policies: true
   aci_maintenance_group: true
   aci_management_access_policy: true
   aci_match_rule: true
   aci_mcp: true
   aci_mcp_policy: true
   aci_monitoring_policy: true
+  aci_mpls_custom_qos_policy: true
   aci_mst_policy: true
   aci_multicast_route_map: true
   aci_nd_interface_policy: true
   aci_nd_ra_prefix_policy: true
   aci_netflow_exporter: true
+  aci_netflow_vmm_exporter: true
   aci_netflow_record: true
   aci_netflow_monitor: true
   aci_node_control_policy: true
@@ -129,6 +134,7 @@ modules:
   aci_qos: true
   aci_qos_policy: true
   aci_radius: true
+  aci_rbac_node_rule: true
   aci_redirect_backup_policy: true
   aci_redirect_health_group: true
   aci_redirect_policy: true
@@ -144,6 +150,7 @@ modules:
   aci_snmp_policy: true
   aci_snmp_trap_policy: true
   aci_spanning_tree_policy: true
+  aci_sr_mpls_global_configuration: true
   aci_storm_control_policy: true
   aci_switch_configuration: true
   aci_syslog_policy: true

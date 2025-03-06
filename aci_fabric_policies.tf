@@ -21,6 +21,7 @@ module "aci_banner" {
   apic_gui_alias          = try(local.fabric_policies.banners.apic_gui_alias, "")
   apic_cli_banner         = try(local.fabric_policies.banners.apic_cli_banner, "")
   switch_cli_banner       = try(local.fabric_policies.banners.switch_cli_banner, "")
+  escape_html             = try(local.fabric_policies.banners.escape_html, local.defaults.apic.fabric_policies.banners.escape_html)
 }
 
 module "aci_endpoint_loop_protection" {
@@ -543,6 +544,7 @@ module "aci_vmware_vmm_domain" {
   vswitch_lldp_policy         = try(each.value.vswitch.lldp_policy, "")
   vswitch_port_channel_policy = try(each.value.vswitch.port_channel_policy, "")
   vswitch_mtu_policy          = try(each.value.vswitch.mtu_policy, "")
+  vswitch_netflow_policy      = try(each.value.vswitch.netflow_exporter_policy, "")
   security_domains            = try(each.value.security_domains, [])
   credential_policies = [for cp in try(each.value.credential_policies, []) : {
     name     = "${cp.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.credential_policies.name_suffix}"
@@ -612,8 +614,8 @@ module "aci_tacacs" {
   protocol            = try(each.value.protocol, local.defaults.apic.fabric_policies.aaa.tacacs_providers.protocol)
   monitoring          = try(each.value.monitoring, local.defaults.apic.fabric_policies.aaa.tacacs_providers.monitoring)
   monitoring_username = try(each.value.monitoring_username, "")
-  monitoring_password = try(each.value.monitoring_password, "")
-  key                 = try(each.value.key, "")
+  monitoring_password = try(each.value.monitoring_password, null)
+  key                 = try(each.value.key, null)
   port                = try(each.value.port, local.defaults.apic.fabric_policies.aaa.tacacs_providers.port)
   retries             = try(each.value.retries, local.defaults.apic.fabric_policies.aaa.tacacs_providers.retries)
   timeout             = try(each.value.timeout, local.defaults.apic.fabric_policies.aaa.tacacs_providers.timeout)
@@ -630,8 +632,8 @@ module "aci_radius" {
   protocol            = try(each.value.protocol, local.defaults.apic.fabric_policies.aaa.radius_providers.protocol)
   monitoring          = try(each.value.monitoring, local.defaults.apic.fabric_policies.aaa.radius_providers.monitoring)
   monitoring_username = try(each.value.monitoring_username, "")
-  monitoring_password = try(each.value.monitoring_password, "")
-  key                 = try(each.value.key, "")
+  monitoring_password = try(each.value.monitoring_password, null)
+  key                 = try(each.value.key, null)
   port                = try(each.value.port, local.defaults.apic.fabric_policies.aaa.radius_providers.port)
   retries             = try(each.value.retries, local.defaults.apic.fabric_policies.aaa.radius_providers.retries)
   timeout             = try(each.value.timeout, local.defaults.apic.fabric_policies.aaa.radius_providers.timeout)
@@ -711,7 +713,7 @@ module "aci_keyring" {
   description    = try(each.value.description, "")
   ca_certificate = try(each.value.ca_certificate, "")
   certificate    = try(each.value.certificate, "")
-  private_key    = try(each.value.private_key, "")
+  private_key    = try(each.value.private_key, null)
 
   depends_on = [
     module.aci_ca_certificate
@@ -993,7 +995,7 @@ module "aci_ldap" {
     port                 = try(prov.port, local.defaults.apic.fabric_policies.aaa.ldap.providers.port)
     bind_dn              = try(prov.bind_dn, "")
     base_dn              = try(prov.base_dn, "")
-    password             = try(prov.password, "")
+    password             = try(prov.password, null)
     timeout              = try(prov.timeout, local.defaults.apic.fabric_policies.aaa.ldap.providers.timeout)
     retries              = try(prov.retries, local.defaults.apic.fabric_policies.aaa.ldap.providers.retries)
     enable_ssl           = try(prov.enable_ssl, local.defaults.apic.fabric_policies.aaa.ldap.providers.enable_ssl)
@@ -1004,7 +1006,7 @@ module "aci_ldap" {
     mgmt_epg_name        = try(prov.mgmt_epg, local.defaults.apic.fabric_policies.aaa.ldap.providers.mgmt_epg) == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
     monitoring           = try(prov.server_monitoring, local.defaults.apic.fabric_policies.aaa.ldap.providers.server_monitoring)
     monitoring_username  = try(prov.monitoring_username, local.defaults.apic.fabric_policies.aaa.ldap.providers.monitoring_username)
-    monitoring_password  = try(prov.monitoring_password, "")
+    monitoring_password  = try(prov.monitoring_password, null)
   }]
   group_map_rules = [for rule in try(local.fabric_policies.aaa.ldap.group_map_rules, []) : {
     name        = rule.name
@@ -1041,4 +1043,12 @@ module "aci_fabric_link_level_policy" {
   name                   = each.value.name
   description            = try(each.value.description, "")
   link_debounce_interval = try(each.value.link_debounce_interval, local.defaults.apic.fabric_policies.interface_policies.link_level_policies.link_debounce_interval)
+}
+
+module "aci_sr_mpls_global_configuration" {
+  source = "./modules/terraform-aci-sr-mpls-global-configuration"
+
+  count                   = local.modules.aci_sr_mpls_global_configuration == true && try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum, local.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum, "") != "" && var.manage_fabric_policies ? 1 : 0
+  sr_global_block_minimum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum)
+  sr_global_block_maximum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum)
 }

@@ -406,6 +406,18 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-login-domain/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-macsec-interfaces-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-macsec-interfaces-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-macsec-keychain-policies/"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-macsec-keychain-policies/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-macsec-parameters-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-macsec-parameters-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-maintenance-group"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-maintenance-group/examples/complete"]
@@ -429,6 +441,10 @@ repos:
         args: ["./modules/terraform-aci-monitoring-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-monitoring-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-mpls-custom-qos-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-mpls-custom-qos-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-mst-policy"]
       - id: terraform-docs-system
@@ -539,6 +555,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-radius/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-rbac-node-rule"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-rbac-node-rule/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-redirect-backup-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-redirect-backup-policy/examples/complete"]
@@ -598,6 +618,10 @@ repos:
         args: ["./modules/terraform-aci-spanning-tree-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-spanning-tree-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-sr-mpls-global-configuration"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-sr-mpls-global-configuration/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-storm-control-policy"]
       - id: terraform-docs-system

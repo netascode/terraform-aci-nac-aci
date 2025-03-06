@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_endpoint_group" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-endpoint-group"
-  version = ">= 0.8.0"
+  version = ">= 0.9.1"
 
   tenant                      = "ABC"
   application_profile         = "AP1"
@@ -66,6 +66,7 @@ module "aci_endpoint_group" {
   static_ports = [{
     node_id              = 101
     vlan                 = 123
+    primary_vlan         = 124
     pod_id               = 1
     port                 = 10
     sub_port             = 1

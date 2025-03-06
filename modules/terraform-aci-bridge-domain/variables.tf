@@ -18,6 +18,17 @@ variable "name" {
   }
 }
 
+variable "annotation" {
+  description = "Annotation value."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.annotation == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.annotation))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "alias" {
   description = "Alias."
   type        = string
@@ -35,7 +46,7 @@ variable "description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -85,6 +96,12 @@ variable "clear_remote_mac_entries" {
   description = "Clear remote MAC entries flag."
   type        = bool
   default     = false
+}
+
+variable "multicast_arp_drop" {
+  description = "Drop ARP with Multicast SMAC."
+  type        = bool
+  default     = null
 }
 
 variable "virtual_mac" {
@@ -212,7 +229,7 @@ variable "subnets" {
 
   validation {
     condition = alltrue([
-      for s in var.subnets : s.description == null || can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", s.description))
+      for s in var.subnets : s.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", s.description))
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }

@@ -38,6 +38,17 @@ variable "name" {
   }
 }
 
+variable "description" {
+  description = "Interface profile description."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+}
+
 variable "bfd_policy" {
   description = "BFD policy name."
   type        = string
@@ -155,6 +166,12 @@ variable "igmp_interface_policy" {
   }
 }
 
+variable "nd_interface_policy" {
+  description = "ND interface policy."
+  type        = string
+  default     = ""
+}
+
 variable "qos_class" {
   description = "QoS class. Choices: `level1`, `level2`, `level3`, `level4`, `level5`, `level6`, `unspecified`."
   type        = string
@@ -200,6 +217,7 @@ variable "interfaces" {
     ip_a            = optional(string)
     ip_b            = optional(string)
     ip_shared       = optional(string)
+    lladdr          = optional(string, "::")
     scope           = optional(string, "local")
     multipod_direct = optional(bool, false)
     bgp_peers = optional(list(object({
@@ -243,7 +261,7 @@ variable "interfaces" {
 
   validation {
     condition = alltrue([
-      for i in var.interfaces : i.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", i.description)), false)
+      for i in var.interfaces : i.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", i.description)), false)
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -348,7 +366,7 @@ variable "interfaces" {
 
   validation {
     condition = alltrue(flatten([
-      for i in var.interfaces : [for b in coalesce(i.bgp_peers, []) : b.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", b.description)), false)]
+      for i in var.interfaces : [for b in coalesce(i.bgp_peers, []) : b.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", b.description)), false)]
     ]))
     error_message = "`bgp_peers.description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -443,5 +461,29 @@ variable "transport_data_plane" {
   validation {
     condition     = contains(["sr_mpls", "mpls"], var.transport_data_plane)
     error_message = "`transport_data_plane`: Allowed value are: `sr_mpls`, `mpls`."
+  }
+}
+
+variable "dhcp_labels" {
+  description = "List of DHCP labels"
+  type = list(object({
+    dhcp_relay_policy  = string
+    dhcp_option_policy = optional(string)
+    scope              = optional(string, "infra")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for l in var.dhcp_labels : l.dhcp_relay_policy == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", l.dhcp_relay_policy))
+    ])
+    error_message = "`dhcp_relay_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for l in var.dhcp_labels : contains(["tenant", "infra"], l.scope)
+    ])
+    error_message = "`scope`: Allowed values: `tenant`, `infra`."
   }
 }

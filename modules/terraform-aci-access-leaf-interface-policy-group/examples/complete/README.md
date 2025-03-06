@@ -22,6 +22,7 @@ module "aci_access_leaf_interface_policy_group" {
   link_level_policy          = "10G"
   cdp_policy                 = "CDP-ON"
   lldp_policy                = "LLDP-OFF"
+  macsec_interface_policy    = "MACSEC-ON"
   spanning_tree_policy       = "BPDU-GUARD"
   mcp_policy                 = "MCP-ON"
   l2_policy                  = "PORT-LOCAL"

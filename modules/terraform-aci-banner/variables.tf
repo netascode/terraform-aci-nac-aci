@@ -25,3 +25,8 @@ variable "switch_cli_banner" {
   type        = string
   default     = ""
 }
+variable "escape_html" {
+  description = "Enable escape HTML characters for banner."
+  type        = bool
+  default     = true
+}
