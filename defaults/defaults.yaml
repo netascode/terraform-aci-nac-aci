@@ -1244,8 +1244,8 @@ defaults:
           name_suffix: ""
           as_set: false
           summary_only: false
-#          af_mcast: false
-#          af_ucast: true
+          af_mcast: false
+          af_ucast: true
         bgp_timer_policies:
           name_suffix: ""
           keepalive_interval: 60

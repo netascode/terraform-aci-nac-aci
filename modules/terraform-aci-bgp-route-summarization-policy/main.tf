@@ -5,6 +5,6 @@ resource "aci_rest_managed" "bgpRtSummPol" {
     name      = var.name
     descr     = var.description
     ctrl      = join(",", concat(var.as_set == true ? ["as-set"] : [], var.summary_only == true ? ["summary-only"] : []))
-    addrTCtrl = join(",", concat(var.af_mcast == true ? ["af-mcast"] : [], var.af_ucast == true ? ["af-ucast"] : []))
+    addrTCtrl = join(",", concat(var.af_mcast == true ? ["af-mcast"] : [], var.af_ucast == true ? ["af-ucast"] : [])) == "af-ucast" ? null : join(",", concat(var.af_mcast == true ? ["af-mcast"] : [], var.af_ucast == true ? ["af-ucast"] : []))
   }
 }
