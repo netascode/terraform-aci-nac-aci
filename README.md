@@ -220,6 +220,7 @@ Additional example repositories:
 | <a name="module_aci_fabric_spine_switch_profile_auto"></a> [aci\_fabric\_spine\_switch\_profile\_auto](#module\_aci\_fabric\_spine\_switch\_profile\_auto) | ./modules/terraform-aci-fabric-spine-switch-profile | n/a |
 | <a name="module_aci_fabric_spine_switch_profile_manual"></a> [aci\_fabric\_spine\_switch\_profile\_manual](#module\_aci\_fabric\_spine\_switch\_profile\_manual) | ./modules/terraform-aci-fabric-spine-switch-profile | n/a |
 | <a name="module_aci_fabric_wide_settings"></a> [aci\_fabric\_wide\_settings](#module\_aci\_fabric\_wide\_settings) | ./modules/terraform-aci-fabric-wide-settings | n/a |
+| <a name="module_aci_fex_interface_shutdown"></a> [aci\_fex\_interface\_shutdown](#module\_aci\_fex\_interface\_shutdown) | ./modules/terraform-aci-interface-shutdown | n/a |
 | <a name="module_aci_filter"></a> [aci\_filter](#module\_aci\_filter) | ./modules/terraform-aci-filter | n/a |
 | <a name="module_aci_firmware_group"></a> [aci\_firmware\_group](#module\_aci\_firmware\_group) | ./modules/terraform-aci-firmware-group | n/a |
 | <a name="module_aci_forwarding_scale_policy"></a> [aci\_forwarding\_scale\_policy](#module\_aci\_forwarding\_scale\_policy) | ./modules/terraform-aci-forwarding-scale-policy | n/a |
@@ -234,6 +235,7 @@ Additional example repositories:
 | <a name="module_aci_infra_dhcp_relay_policy"></a> [aci\_infra\_dhcp\_relay\_policy](#module\_aci\_infra\_dhcp\_relay\_policy) | ./modules/terraform-aci-infra-dhcp-relay-policy | n/a |
 | <a name="module_aci_infra_dscp_translation_policy"></a> [aci\_infra\_dscp\_translation\_policy](#module\_aci\_infra\_dscp\_translation\_policy) | ./modules/terraform-aci-infra-dscp-translation-policy | n/a |
 | <a name="module_aci_interface_configuration_fex"></a> [aci\_interface\_configuration\_fex](#module\_aci\_interface\_configuration\_fex) | ./modules/terraform-aci-interface-configuration | n/a |
+| <a name="module_aci_interface_shutdown"></a> [aci\_interface\_shutdown](#module\_aci\_interface\_shutdown) | ./modules/terraform-aci-interface-shutdown | n/a |
 | <a name="module_aci_interface_type"></a> [aci\_interface\_type](#module\_aci\_interface\_type) | ./modules/terraform-aci-interface-type | n/a |
 | <a name="module_aci_ip_aging"></a> [aci\_ip\_aging](#module\_aci\_ip\_aging) | ./modules/terraform-aci-ip-aging | n/a |
 | <a name="module_aci_ip_sla_policy"></a> [aci\_ip\_sla\_policy](#module\_aci\_ip\_sla\_policy) | ./modules/terraform-aci-ip-sla-policy | n/a |
@@ -316,6 +318,7 @@ Additional example repositories:
 | <a name="module_aci_sr_mpls_l3out_interface_profile_manual"></a> [aci\_sr\_mpls\_l3out\_interface\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_interface\_profile\_manual) | ./modules/terraform-aci-l3out-interface-profile | n/a |
 | <a name="module_aci_sr_mpls_l3out_node_profile_manual"></a> [aci\_sr\_mpls\_l3out\_node\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_node\_profile\_manual) | ./modules/terraform-aci-l3out-node-profile | n/a |
 | <a name="module_aci_storm_control_policy"></a> [aci\_storm\_control\_policy](#module\_aci\_storm\_control\_policy) | ./modules/terraform-aci-storm-control-policy | n/a |
+| <a name="module_aci_subinterface_shutdown"></a> [aci\_subinterface\_shutdown](#module\_aci\_subinterface\_shutdown) | ./modules/terraform-aci-interface-shutdown | n/a |
 | <a name="module_aci_syslog_policy"></a> [aci\_syslog\_policy](#module\_aci\_syslog\_policy) | ./modules/terraform-aci-syslog-policy | n/a |
 | <a name="module_aci_system_global_gipo"></a> [aci\_system\_global\_gipo](#module\_aci\_system\_global\_gipo) | ./modules/terraform-aci-system-global-gipo | n/a |
 | <a name="module_aci_system_performance"></a> [aci\_system\_performance](#module\_aci\_system\_performance) | ./modules/terraform-aci-system-performance | n/a |

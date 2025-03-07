@@ -350,6 +350,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-interface-configuration/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-interface-shutdown"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-interface-shutdown/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-interface-type"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-interface-type/examples/complete"]
