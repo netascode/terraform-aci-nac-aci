@@ -3627,3 +3627,64 @@ module "aci_track_member" {
   scope          = each.value.scope
   ip_sla_policy  = each.value.ip_sla_policy
 }
+
+locals {
+  ep_mac_tags = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.endpoint_mac_tags, []) : {
+        key           = format("%s/%s/%s", tenant.name, policy.mac, try(policy.bridge_domain, local.defaults.apic.tenants.policies.endpoint_mac_tags.bridge_domain))
+        tenant        = tenant.name
+        mac           = upper(policy.mac)
+        bridge_domain = try("${policy.bridge_domain}${local.defaults.apic.tenants.bridge_domains.name_suffix}", local.defaults.apic.tenants.policies.endpoint_mac_tags.bridge_domain)
+        vrf           = try(policy.bridge_domain, local.defaults.apic.tenants.policies.endpoint_mac_tags.bridge_domain) == "all" ? "${policy.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}" : null
+        tags          = try(policy.tags, [])
+      }
+    ]
+  ])
+}
+
+module "aci_endpoint_mac_tag_policy" {
+  source = "./modules/terraform-aci-endpoint-mac-tag-policy"
+
+  for_each      = { for pol in local.ep_mac_tags : pol.key => pol if local.modules.aci_endpoint_mac_tag_policy && var.manage_tenants }
+  tenant        = each.value.tenant
+  mac           = each.value.mac
+  bridge_domain = each.value.bridge_domain
+  vrf           = try(each.value.vrf, null)
+  tags          = each.value.tags
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_vrf,
+    module.aci_bridge_domain,
+  ]
+}
+
+locals {
+  ep_ip_tags = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.endpoint_ip_tags, []) : {
+        key    = format("%s/%s/%s", tenant.name, policy.vrf, policy.ip)
+        ip     = policy.ip
+        tenant = tenant.name
+        vrf    = "${policy.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}"
+        tags   = try(policy.tags, [])
+      }
+    ]
+  ])
+}
+
+module "aci_endpoint_ip_tag_policy" {
+  source = "./modules/terraform-aci-endpoint-ip-tag-policy"
+
+  for_each = { for pol in local.ep_ip_tags : pol.key => pol if local.modules.aci_endpoint_ip_tag_policy && var.manage_tenants }
+  ip       = each.value.ip
+  tenant   = each.value.tenant
+  vrf      = each.value.vrf
+  tags     = each.value.tags
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_vrf,
+  ]
+}
