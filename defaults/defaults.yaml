@@ -1442,6 +1442,8 @@ defaults:
           percentage_down: 1
           weight_up: 0
           weight_down: 1
+        endpoint_mac_tags:
+          bridge_domain: all
       services:
         l4l7_devices:
           name_suffix: ""

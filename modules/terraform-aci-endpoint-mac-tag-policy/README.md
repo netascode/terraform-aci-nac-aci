@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_endpoint_mac_tag_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-endpoint-mac-tag-policy"
-  version = ">= 0.8.0"
+  version = "> 0.9.3"
 
   tenant        = "TEN1"
   mac           = "AB:CD:EF:DC:BA"
@@ -41,8 +41,8 @@ module "aci_endpoint_mac_tag_policy" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_mac"></a> [mac](#input\_mac) | MAC address. Format: `12:34:56:78:9A:BC`. | `string` | `"00:22:BD:F8:19:FF"` | no |
-| <a name="input_bridge_domain"></a> [bridge\_domain](#input\_bridge\_domain) | Bridge domain name. | `string` | n/a | yes |
+| <a name="input_mac"></a> [mac](#input\_mac) | MAC address. Format: `12:34:56:78:9A:BC`. | `string` | `""` | no |
+| <a name="input_bridge_domain"></a> [bridge\_domain](#input\_bridge\_domain) | Bridge domain name. | `string` | `"all"` | no |
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant Name. | `string` | n/a | yes |
 | <a name="input_vrf"></a> [vrf](#input\_vrf) | VRF Name. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Policy Tags | <pre>list(object({<br>    key   = string<br>    value = string<br>  }))</pre> | `[]` | no |

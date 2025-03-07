@@ -3628,17 +3628,15 @@ module "aci_track_member" {
   ip_sla_policy  = each.value.ip_sla_policy
 }
 
-<<<<<<< HEAD
-
 locals {
   ep_mac_tags = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.policies.endpoint_mac_tags, []) : {
-        key           = format("%s/%s/%s", tenant.name, policy.mac, policy.bridge_domain)
+        key           = format("%s/%s/%s", tenant.name, policy.mac, try(policy.bridge_domain, local.defaults.apic.tenants.policies.endpoint_mac_tags.bridge_domain))
         tenant        = tenant.name
         mac           = upper(policy.mac)
-        bridge_domain = policy.bridge_domain == "all" ? "*" : policy.bridge_domain
-        vrf           = policy.bridge_domain == "all" ? policy.vrf : null
+        bridge_domain = try("${policy.bridge_domain}${local.defaults.apic.tenants.bridge_domains.name_suffix}", local.defaults.apic.tenants.policies.endpoint_mac_tags.bridge_domain)
+        vrf           = try(policy.bridge_domain, local.defaults.apic.tenants.policies.endpoint_mac_tags.bridge_domain) == "all" ? "${policy.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}" : null
         tags          = try(policy.tags, [])
       }
     ]
@@ -3669,7 +3667,7 @@ locals {
         key    = format("%s/%s/%s", tenant.name, policy.vrf, policy.ip)
         ip     = policy.ip
         tenant = tenant.name
-        vrf    = policy.vrf
+        vrf    = "${policy.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}"
         tags   = try(policy.tags, [])
       }
     ]
@@ -3690,5 +3688,3 @@ module "aci_endpoint_ip_tag_policy" {
     module.aci_vrf,
   ]
 }
-=======
->>>>>>> upstream/main

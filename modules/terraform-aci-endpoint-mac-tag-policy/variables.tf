@@ -1,7 +1,7 @@
 variable "mac" {
   description = "MAC address. Format: `12:34:56:78:9A:BC`."
   type        = string
-  default     = "00:22:BD:F8:19:FF"
+  default     = ""
 
   validation {
     condition     = can(regex("^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$", var.mac))
@@ -12,9 +12,10 @@ variable "mac" {
 variable "bridge_domain" {
   description = "Bridge domain name."
   type        = string
+  default     = "all"
 
   validation {
-    condition     = var.bridge_domain == "*" || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bridge_domain))
+    condition     = var.bridge_domain == "all" || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bridge_domain))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

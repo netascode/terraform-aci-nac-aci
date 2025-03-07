@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_endpoint_mac_tag_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-endpoint-mac-tag-policy"
-  version = ">= 0.8.0"
+  version = "> 0.9.3"
 
   tenant        = "TEN1"
   mac           = "AB:CD:EF:DC:BA"
