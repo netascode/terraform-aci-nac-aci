@@ -29,3 +29,11 @@ resource "aci_rest_managed" "infraRsBfdIpv6InstPol" {
     tnBfdIpv6InstPolName = var.bfd_ipv6_policy
   }
 }
+
+resource "aci_rest_managed" "infraRsSpineCoppProfile" {
+  dn         = "${aci_rest_managed.infraSpineAccNodePGrp.dn}/rsspineCoppProfile"
+  class_name = "infraRsSpineCoppProfile"
+  content = {
+    tnCoppSpineProfileName = var.copp_spine_policy
+  }
+}
