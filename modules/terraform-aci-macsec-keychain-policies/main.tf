@@ -1,5 +1,5 @@
 resource "aci_rest_managed" "macsecKeyChainPol" {
-  dn         = "uni/infra/macsecpcont/keychainp-${var.name}"
+  dn         = var.type == "access" ? "uni/infra/macsecpcont/keychainp-${var.name}" : "uni/fabric/macsecpcontfab/keychainp-${var.name}"
   class_name = "macsecKeyChainPol"
   content = {
     name  = var.name

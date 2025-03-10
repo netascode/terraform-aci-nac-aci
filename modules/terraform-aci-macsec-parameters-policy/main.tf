@@ -1,11 +1,11 @@
 resource "aci_rest_managed" "macsecParamPol" {
-  dn         = "uni/infra/macsecpcont/paramp-${var.name}"
-  class_name = "macsecParamPol"
+  dn         = var.type == "access" ? "uni/infra/macsecpcont/paramp-${var.name}" : "uni/fabric/macsecpcontfab/fabparamp-${var.name}"
+  class_name = var.type == "access" ? "macsecParamPol" : "macsecFabParamPol"
   content = {
     name          = var.name
     descr         = var.description
-    confOffset    = var.confidentiality_offset
-    keySvrPrio    = var.key_server_priority
+    confOffset    = var.type == "access" ? var.confidentiality_offset : null
+    keySvrPrio    = var.type == "access" ? var.key_server_priority : null
     cipherSuite   = var.cipher_suite
     replayWindow  = var.window_size
     sakExpiryTime = var.key_expiry_time == 0 ? "disabled" : var.key_expiry_time

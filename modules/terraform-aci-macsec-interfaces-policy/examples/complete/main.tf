@@ -6,4 +6,5 @@ module "aci_macsec_interfaces_policy" {
   admin_state              = true
   macsec_parameters_policy = "macsec-parameter-policy"
   macsec_keychain_policy   = "macsec-keychain-policy"
+  type                     = "access"
 }
