@@ -35,9 +35,8 @@ locals {
       for lp in coalesce(node.loopbacks, []) : {
         key = "${node.node_id}/${lp}"
         value = {
-          ip                    = lp
-          node                  = node.node_id
-          router_id_as_loopback = node.router_id_as_loopback
+          ip   = lp
+          node = node.node_id
         }
       }
     ]
@@ -63,7 +62,7 @@ resource "aci_rest_managed" "l3extRsNodeL3OutAtt" {
 }
 
 resource "aci_rest_managed" "l3extLoopBackIfP" {
-  for_each   = { for item in local.loopback_list : item.key => item.value if item.value.router_id_as_loopback == false && item.value.ip != null }
+  for_each   = { for item in local.loopback_list : item.key => item.value if item.value.ip != null }
   dn         = "${aci_rest_managed.l3extRsNodeL3OutAtt[each.value.node].dn}/lbp-[${each.value.ip}]"
   class_name = "l3extLoopBackIfP"
   content = {
