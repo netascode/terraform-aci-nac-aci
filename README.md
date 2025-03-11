@@ -164,6 +164,7 @@ Additional example repositories:
 | <a name="module_aci_access_spine_switch_profile_manual"></a> [aci\_access\_spine\_switch\_profile\_manual](#module\_aci\_access\_spine\_switch\_profile\_manual) | ./modules/terraform-aci-access-spine-switch-profile | n/a |
 | <a name="module_aci_apic_connectivity_preference"></a> [aci\_apic\_connectivity\_preference](#module\_aci\_apic\_connectivity\_preference) | ./modules/terraform-aci-apic-connectivity-preference | n/a |
 | <a name="module_aci_application_profile"></a> [aci\_application\_profile](#module\_aci\_application\_profile) | ./modules/terraform-aci-application-profile | n/a |
+| <a name="module_aci_atomic_counter"></a> [aci\_atomic\_counter](#module\_aci\_atomic\_counter) | ./modules/terraform-aci-atomic-counter | n/a |
 | <a name="module_aci_banner"></a> [aci\_banner](#module\_aci\_banner) | ./modules/terraform-aci-banner | n/a |
 | <a name="module_aci_bfd_interface_policy"></a> [aci\_bfd\_interface\_policy](#module\_aci\_bfd\_interface\_policy) | ./modules/terraform-aci-bfd-interface-policy | n/a |
 | <a name="module_aci_bfd_ipv4_policy"></a> [aci\_bfd\_ipv4\_policy](#module\_aci\_bfd\_ipv4\_policy) | ./modules/terraform-aci-bfd-policy | n/a |

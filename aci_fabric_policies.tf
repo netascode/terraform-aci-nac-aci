@@ -1126,3 +1126,11 @@ module "aci_sr_mpls_global_configuration" {
   sr_global_block_minimum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum)
   sr_global_block_maximum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum)
 }
+
+module "aci_atomic_counter" {
+  source = "./modules/terraform-aci-atomic-counter"
+
+  count       = try(local.fabric_policies.atomic_counter.admin_state, null) != null && local.modules.aci_atomic_counter && var.manage_fabric_policies ? 1 : 0
+  admin_state = local.fabric_policies.atomic_counter.admin_state
+  mode        = try(local.fabric_policies.atomic_counter.mode, local.defaults.apic.fabric_policies.atomic_counter.mode)
+}
