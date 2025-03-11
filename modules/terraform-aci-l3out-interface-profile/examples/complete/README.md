@@ -84,6 +84,19 @@ module "aci_l3out_interface_profile" {
       export_route_control             = "ERC"
       import_route_control             = "IRC"
     }]
+    },
+    {
+      description  = "Interface 2"
+      floating_svi = true
+      node_id      = 201
+      ip           = "1.1.2.1/24"
+      svi          = true
+      vlan         = 6
+      paths = [{
+        physical_domain = PD-DOM1
+        floating_ip     = "1.1.2.1/24"
+        vlan            = "vlan-5"
+      }]
   }]
 }
 ```
