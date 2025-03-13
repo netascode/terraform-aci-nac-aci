@@ -19,6 +19,7 @@ modules:
   aci_access_spine_switch_profile: true
   aci_apic_connectivity_preference: true
   aci_application_profile: true
+  aci_atomic_counter: true
   aci_banner: true
   aci_bfd_interface_policy: true
   aci_bfd_multihop_node_policy: true

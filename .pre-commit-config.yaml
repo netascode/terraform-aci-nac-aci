@@ -94,6 +94,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-application-profile/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-atomic-counter"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-atomic-counter/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-banner"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-banner/examples/complete"]
