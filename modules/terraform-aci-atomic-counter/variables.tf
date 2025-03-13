@@ -6,6 +6,7 @@ variable "admin_state" {
 variable "mode" {
   description = "Atomic Counter Mode. Valid values are `trail` or `path`"
   type        = string
+  default     = "trail"
 
   validation {
     condition     = contains(["trail", "path"], var.mode)

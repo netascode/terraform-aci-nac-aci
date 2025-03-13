@@ -22,7 +22,7 @@ module "aci_atomic_counter" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
 | <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
 
 ## Providers
@@ -36,7 +36,7 @@ module "aci_atomic_counter" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | Atomic Counter Administrative state. | `bool` | n/a | yes |
-| <a name="input_mode"></a> [mode](#input\_mode) | Atomic Counter Mode. Valid values are `trail` or `path` | `string` | n/a | yes |
+| <a name="input_mode"></a> [mode](#input\_mode) | Atomic Counter Mode. Valid values are `trail` or `path` | `string` | `"trail"` | no |
 
 ## Outputs
 
