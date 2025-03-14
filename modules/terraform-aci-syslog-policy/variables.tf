@@ -20,13 +20,13 @@ variable "description" {
 }
 
 variable "format" {
-  description = "Format. Choices: `aci`, `nxos`, `rfc5424-ts`."
+  description = "Format. Choices: `aci`, `nxos`, `enhanced-log`."
   type        = string
   default     = "aci"
 
   validation {
-    condition     = contains(["aci", "nxos", "rfc5424-ts"], var.format)
-    error_message = "Allowed values are `aci`, `nxos` or `rfc5424-ts`."
+    condition     = contains(["aci", "nxos", "enhanced-log"], var.format)
+    error_message = "Allowed values are `aci`, `nxos` or `enhanced-log`."
   }
 }
 
@@ -128,9 +128,9 @@ variable "destinations" {
 
   validation {
     condition = alltrue([
-      for d in var.destinations : d.format == null || try(contains(["aci", "nxos", "rfc5424-ts"], d.format), false)
+      for d in var.destinations : d.format == null || try(contains(["aci", "nxos", "enhanced-log"], d.format), false)
     ])
-    error_message = "`format`: Allowed values are `aci`, `nxos`, or `rfc5424-ts`."
+    error_message = "`format`: Allowed values are `aci`, `nxos`, or `enhanced-log`."
   }
 
   validation {
