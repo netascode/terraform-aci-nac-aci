@@ -245,14 +245,20 @@ module "aci_fabric_pod_policy_group" {
 
   for_each                 = { for pg in try(local.fabric_policies.pod_policy_groups, []) : pg.name => pg if local.modules.aci_fabric_pod_policy_group && var.manage_fabric_policies }
   name                     = "${each.value.name}${local.defaults.apic.fabric_policies.pod_policy_groups.name_suffix}"
+  description              = try(each.value.description, "")
   snmp_policy              = try("${each.value.snmp_policy}${local.defaults.apic.fabric_policies.pod_policies.snmp_policies.name_suffix}", "")
   date_time_policy         = try("${each.value.date_time_policy}${local.defaults.apic.fabric_policies.pod_policies.date_time_policies.name_suffix}", "")
   management_access_policy = try("${each.value.management_access_policy}${local.defaults.apic.fabric_policies.pod_policies.management_access_policies.name_suffix}", "")
+  route_reflector_policy   = try("${each.value.route_reflector_policy}${local.defaults.apic.fabric_policies.pod_policies.route_reflector_policies.name_suffix}", "")
+  coop_group_policy        = try("${each.value.coop_group_policy}${local.defaults.apic.fabric_policies.pod_policies.coop_group_policies.name_suffix}", "")
+  isis_policy              = try("${each.value.isis_policy}${local.defaults.apic.fabric_policies.pod_policies.isis_policies.name_suffix}", "")
+  macsec_policy            = try("${each.value.macsec_policy}${local.defaults.apic.fabric_policies.pod_policies.macsec_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_snmp_policy,
     module.aci_date_time_policy,
     module.aci_management_access_policy,
+    module.aci_fabric_isis_policy,
   ]
 }
 
