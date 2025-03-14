@@ -20,7 +20,7 @@ resource "aci_rest_managed" "syslogRemoteDest" {
     protocol           = each.value.protocol
     port               = each.value.port
     adminState         = each.value.admin_state == true ? "enabled" : "disabled"
-    format             = each.value.format == "enhanced-log" ? "rfc5424-ts": each.value.format 
+    format             = each.value.format == "enhanced-log" ? "rfc5424-ts" : each.value.format
     forwardingFacility = each.value.facility
     severity           = each.value.severity
   }
