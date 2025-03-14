@@ -1611,7 +1611,7 @@ locals {
             pod_id                  = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
             router_id               = try(node.router_id, null)
             router_id_as_loopback   = false
-            loopback                = node.bgp_evpn_loopback
+            loopbacks               = [node.bgp_evpn_loopback]
             mpls_transport_loopback = node.mpls_transport_loopback
             segment_id              = node.segment_id
           }]

@@ -185,7 +185,7 @@ resource "aci_rest_managed" "bgpRsPeerToProfile_import" {
 
 resource "aci_rest_managed" "mplsNodeSidP" {
   for_each   = { for node in var.nodes : node.node_id => node if node.loopbacks != null && var.tenant == "infra" && var.sr_mpls == true }
-  dn         = "${aci_rest_managed.l3extLoopBackIfP[each.key].dn}/nodesidp-${each.value.segment_id}"
+  dn         = "${aci_rest_managed.l3extLoopBackIfP["${each.value.node_id}/${each.value.loopbacks[0]}"].dn}/nodesidp-${each.value.segment_id}"
   class_name = "mplsNodeSidP"
   content = {
     loopbackAddr = each.value.mpls_transport_loopback
