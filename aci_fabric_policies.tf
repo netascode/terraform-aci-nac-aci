@@ -1003,7 +1003,7 @@ module "aci_smart_licensing" {
   count              = local.modules.aci_smart_licensing == true && try(local.fabric_policies.smart_licensing.registration_token, "") != "" && var.manage_fabric_policies ? 1 : 0
   mode               = try(local.fabric_policies.smart_licensing.mode, local.defaults.apic.fabric_policies.smart_licensing.mode)
   registration_token = try(local.fabric_policies.smart_licensing.registration_token, "")
-  url                = try(local.fabric_policies.smart_licensing.url, local.defaults.apic.fabric_policies.smart_licensing.url)
+  url                = try(local.fabric_policies.smart_licensing.url, null)
   proxy_hostname_ip  = try(local.fabric_policies.smart_licensing.proxy.hostname_ip, "")
   proxy_port         = try(local.fabric_policies.smart_licensing.proxy.port, local.defaults.apic.fabric_policies.smart_licensing.proxy.port)
 }
