@@ -28,4 +28,21 @@ module "aci_external_endpoint_group" {
   contract_consumers          = ["CON1"]
   contract_providers          = ["CON1"]
   contract_imported_consumers = ["ICON1"]
+  consumer_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  consumer_epg_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_epg_labels = [{
+    name          = "Label01"
+    tag           = "black"
+    is_complement = false
+  }]
 }
