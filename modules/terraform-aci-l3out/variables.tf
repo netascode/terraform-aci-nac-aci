@@ -451,6 +451,118 @@ variable "export_route_map_contexts" {
   }
 }
 
+
+variable "route_maps_name" {
+  description = "Import/Export Route Map Names. Default value: `default-import`"
+  type = list(object({
+    name        = string
+    description = optional(string, "")
+    type        = string
+  }))
+  default = []
+  validation {
+    condition = alltrue([
+      for c in var.route_maps_name : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "route_maps_description" {
+  description = "route maps description."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.route_maps_description))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+    condition = alltrue([
+      for c in var.route_maps_names : c.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description)), false)
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+}
+
+variable "route_maps_type" {
+  description = "route maps type. Choices: `combinable`, `global`."
+  type        = string
+  default     = "combinable"
+
+  validation {
+    condition     = contains(["combinable", "global"], var.route_maps_type)
+    condition = alltrue([
+      for c in var.route_maps_names : c.type == null || contains(["combinable", "global"], c.type)
+    ])
+    error_message = "Allowed values are `combinable` or `global`."
+  }
+}
+
+variable "route_maps_contexts" {
+  description = "List of import route map contexts. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Allowed values `order`: 0-9. Default value `order`: 0."
+  type = list(object({
+    name        = string
+    description = optional(string, "")
+    type        = string
+    action      = optional(string, "permit")
+    order       = optional(number, 0)
+    set_rule    = optional(string)
+    match_rules = optional(list(string), [])
+  }))
+  default = []
+
+
+  validation {
+    condition = alltrue([
+      for c in var.route_maps_contexts : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for c in var.route_maps_contexts : c.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description)), false)
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  validation {
+    condition = alltrue([
+      for c in var.route_maps_contexts : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c.type))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for c in var.route_maps_contexts : c.action == null || try(contains(["permit", "deny"], c.action), false)
+    ])
+    error_message = "`action`: Allowed values are `permit` or `deny`."
+  }
+
+  validation {
+    condition = alltrue([
+      for c in var.route_maps_contexts : c.order == null || try(c.order >= 0 && c.order <= 9, false)
+    ])
+    error_message = "`order`: Minimum value: 0. Maximum value: 9."
+  }
+
+  validation {
+    condition = alltrue([
+      for c in var.route_maps_contexts : c.set_rule == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c.set_rule)), false)
+    ])
+    error_message = "`set_rule`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for c in var.route_maps_contexts : [
+        for r in c.match_rules : r == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", r)), false)
+      ]
+    ]))
+    error_message = "`match_rules`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "multipod" {
   description = "Multipod L3out flag."
   type        = bool
