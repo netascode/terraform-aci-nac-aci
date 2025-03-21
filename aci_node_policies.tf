@@ -31,6 +31,7 @@ module "aci_vpc_group" {
   depends_on = [
     module.aci_access_leaf_switch_profile_auto,
     module.aci_access_leaf_switch_profile_manual,
+    module.aci_access_leaf_switch_configuration
   ]
 }
 
