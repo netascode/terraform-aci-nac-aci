@@ -158,7 +158,7 @@ resource "aci_rest_managed" "vnsRsAbsConnectionConns_NodeN1Consumer" {
   class_name = "vnsRsAbsConnectionConns"
   annotation = var.annotation
   content = {
-    tDn = "${aci_rest_managed.vnsAbsFuncConn_Consumer[0].dn}"
+    tDn = aci_rest_managed.vnsAbsFuncConn_Consumer[0].dn
   }
 }
 
@@ -192,16 +192,16 @@ resource "aci_rest_managed" "vnsRsAbsConnectionConns_NodeN1Provider" {
   dn         = "${aci_rest_managed.vnsAbsConnection_Provider[0].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsFuncConn_Provider[0].dn}]" # index added
   class_name = "vnsRsAbsConnectionConns"
   content = {
-    tDn = "${aci_rest_managed.vnsAbsFuncConn_Provider[0].dn}"
+    tDn = aci_rest_managed.vnsAbsFuncConn_Provider[0].dn
   }
 }
 
 resource "aci_rest_managed" "vnsRsAbsConnectionConns_ConCP1" {
   count      = var.device_copy ? 1 : 0
-  dn         = "${aci_rest_managed.vnsAbsConnection_Consumer.dn}/rsabsCopyConnection-[${aci_rest_managed.vnsAbsTermConn_CP1[0].dn}]"
+  dn         = "${aci_rest_managed.vnsAbsConnection_Consumer.dn}/rsabsCopyConnection-[${aci_rest_managed.vnsAbsFuncConn_Copy[0].dn}]"
   class_name = "vnsRsAbsCopyConnection"
   content = {
-    tDn = "${aci_rest_managed.vnsAbsTermConn_CP1[0].dn}"
+    tDn = aci_rest_managed.vnsAbsFuncConn_Copy[0].dn
   }
 }
 
