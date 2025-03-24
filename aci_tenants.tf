@@ -3598,6 +3598,12 @@ module "aci_track_list" {
   weight_up       = each.value.weight_up
   weight_down     = each.value.weight_down
   track_members   = each.value.track_members
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_track_member,
+  ]
+
 }
 
 locals {
@@ -3628,6 +3634,11 @@ module "aci_track_member" {
   scope_type     = each.value.scope_type
   scope          = each.value.scope
   ip_sla_policy  = each.value.ip_sla_policy
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_ip_sla_policy,
+  ]
 }
 
 locals {
