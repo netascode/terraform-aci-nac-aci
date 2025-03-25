@@ -22,6 +22,15 @@ resource "aci_rest_managed" "infraRsCdpIfPol" {
   }
 }
 
+resource "aci_rest_managed" "infraRsMacsecIfPol" {
+  count      = var.macsec_interface_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraSpAccPortGrp.dn}/rsmacsecIfPol"
+  class_name = "infraRsMacsecIfPol"
+  content = {
+    tnMacsecIfPolName = var.macsec_interface_policy
+  }
+}
+
 resource "aci_rest_managed" "infraRsAttEntP" {
   count      = var.aaep != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraSpAccPortGrp.dn}/rsattEntP"
