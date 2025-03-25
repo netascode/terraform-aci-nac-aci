@@ -828,6 +828,7 @@ locals {
         multipod    = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
         domain      = "${l3out.domain}${local.defaults.apic.access_policies.routed_domains.name_suffix}"
         vrf         = "${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}"
+        bgp_protocol_profile_name = try(l3out.bgp.name, "")
         bgp = anytrue([
           anytrue([
             for np in try(l3out.node_profiles, []) : try(np.bgp_peers, null) != null
