@@ -45,7 +45,7 @@ module "aci_macsec_keychain_policies" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | MACsec Key Policy Name | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | MACsec Policy description | `string` | `""` | no |
-| <a name="input_key_policies"></a> [key\_policies](#input\_key\_policies) | Key Polices for Key Chain | <pre>list(object({<br/>    name           = string<br/>    key_name       = string<br/>    pre_shared_key = string<br/>    description    = optional(string, "")<br/>    start_time     = optional(string, "now")<br/>    end_time       = optional(string, "infinite")<br/>  }))</pre> | `[]` | no |
+| <a name="input_key_policies"></a> [key\_policies](#input\_key\_policies) | Key Polices for Key Chain | <pre>list(object({<br>    name           = string<br>    key_name       = string<br>    pre_shared_key = string<br>    description    = optional(string, "")<br>    start_time     = optional(string, "now")<br>    end_time       = optional(string, "infinite")<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

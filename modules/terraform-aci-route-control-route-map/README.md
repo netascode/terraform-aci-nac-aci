@@ -55,7 +55,7 @@ module "aci_route_control_route_map" {
 | <a name="input_name"></a> [name](#input\_name) | Route Control Route Map name. | `string` | n/a | yes |
 | <a name="input_type"></a> [type](#input\_type) | Route Control Route Map type. | `string` | `"combinable"` | no |
 | <a name="input_description"></a> [description](#input\_description) | Route Control Route Map description. | `string` | `""` | no |
-| <a name="input_contexts"></a> [contexts](#input\_contexts) | Route Control Route Map contexts. Allowed values `action`:  `deny` or `permit`. Allowed values `order`: 0-9. | <pre>list(object({<br/>    name        = string<br/>    description = optional(string, "")<br/>    action      = optional(string, "permit")<br/>    order       = optional(number, 0)<br/>    set_rule    = optional(string, "")<br/>    match_rules = optional(list(string), [])<br/>  }))</pre> | `[]` | no |
+| <a name="input_contexts"></a> [contexts](#input\_contexts) | Route Control Route Map contexts. Allowed values `action`:  `deny` or `permit`. Allowed values `order`: 0-9. | <pre>list(object({<br>    name        = string<br>    description = optional(string, "")<br>    action      = optional(string, "permit")<br>    order       = optional(number, 0)<br>    set_rule    = optional(string, "")<br>    match_rules = optional(list(string), [])<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

@@ -47,7 +47,7 @@ module "aci_mst_policy" {
 | <a name="input_name"></a> [name](#input\_name) | MST policy name. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | MST region. | `string` | n/a | yes |
 | <a name="input_revision"></a> [revision](#input\_revision) | MST revision. | `number` | n/a | yes |
-| <a name="input_instances"></a> [instances](#input\_instances) | List of instances. Allowed values `id`: 1-4096. Allowed values `from`: 1-4096. Allowed values `to`: 1-4096. Default value `to`: value of `from`. | <pre>list(object({<br/>    name = string<br/>    id   = number<br/>    vlan_ranges = optional(list(object({<br/>      from = number<br/>      to   = optional(number)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
+| <a name="input_instances"></a> [instances](#input\_instances) | List of instances. Allowed values `id`: 1-4096. Allowed values `from`: 1-4096. Allowed values `to`: 1-4096. Default value `to`: value of `from`. | <pre>list(object({<br>    name = string<br>    id   = number<br>    vlan_ranges = optional(list(object({<br>      from = number<br>      to   = optional(number)<br>    })), [])<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

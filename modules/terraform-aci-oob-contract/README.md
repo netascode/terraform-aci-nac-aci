@@ -49,7 +49,7 @@ module "aci_oob_contract" {
 | <a name="input_alias"></a> [alias](#input\_alias) | Alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_scope"></a> [scope](#input\_scope) | Scope. Choices: `application-profile`, `tenant`, `context`, `global`. | `string` | `"context"` | no |
-| <a name="input_subjects"></a> [subjects](#input\_subjects) | List of subjects. | <pre>list(object({<br/>    name        = string<br/>    alias       = optional(string, "")<br/>    description = optional(string, "")<br/>    filters = list(object({<br/>      filter = string<br/>    }))<br/>  }))</pre> | `[]` | no |
+| <a name="input_subjects"></a> [subjects](#input\_subjects) | List of subjects. | <pre>list(object({<br>    name        = string<br>    alias       = optional(string, "")<br>    description = optional(string, "")<br>    filters = list(object({<br>      filter = string<br>    }))<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

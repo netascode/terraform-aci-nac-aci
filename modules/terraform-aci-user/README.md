@@ -62,9 +62,9 @@ module "aci_user" {
 | <a name="input_first_name"></a> [first\_name](#input\_first\_name) | First name. | `string` | `""` | no |
 | <a name="input_last_name"></a> [last\_name](#input\_last\_name) | Last name. | `string` | `""` | no |
 | <a name="input_phone"></a> [phone](#input\_phone) | Phone. | `string` | `""` | no |
-| <a name="input_domains"></a> [domains](#input\_domains) | List of domains. Choices `privilege_type`: `write`, `read`. Default value `privilege_type`: `read`. | <pre>list(object({<br/>    name = string<br/>    roles = optional(list(object({<br/>      name           = string<br/>      privilege_type = optional(string, "read")<br/>    })), [])<br/>  }))</pre> | `[]` | no |
-| <a name="input_certificates"></a> [certificates](#input\_certificates) | List of certificates. | <pre>list(object({<br/>    name = string<br/>    data = string<br/>  }))</pre> | `[]` | no |
-| <a name="input_ssh_keys"></a> [ssh\_keys](#input\_ssh\_keys) | List of SSH keys. | <pre>list(object({<br/>    name = string<br/>    data = string<br/>  }))</pre> | `[]` | no |
+| <a name="input_domains"></a> [domains](#input\_domains) | List of domains. Choices `privilege_type`: `write`, `read`. Default value `privilege_type`: `read`. | <pre>list(object({<br>    name = string<br>    roles = optional(list(object({<br>      name           = string<br>      privilege_type = optional(string, "read")<br>    })), [])<br>  }))</pre> | `[]` | no |
+| <a name="input_certificates"></a> [certificates](#input\_certificates) | List of certificates. | <pre>list(object({<br>    name = string<br>    data = string<br>  }))</pre> | `[]` | no |
+| <a name="input_ssh_keys"></a> [ssh\_keys](#input\_ssh\_keys) | List of SSH keys. | <pre>list(object({<br>    name = string<br>    data = string<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

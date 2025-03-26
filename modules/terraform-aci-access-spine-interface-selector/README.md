@@ -45,7 +45,7 @@ module "aci_access_spine_interface_selector" {
 | <a name="input_interface_profile"></a> [interface\_profile](#input\_interface\_profile) | Spine interface profile name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Spine interface selector name. | `string` | n/a | yes |
 | <a name="input_policy_group"></a> [policy\_group](#input\_policy\_group) | Interface policy group name. | `string` | `""` | no |
-| <a name="input_port_blocks"></a> [port\_blocks](#input\_port\_blocks) | List of port blocks. Allowed values `from_module`, `to_module`: 1-9. Default value `from_module`, `to_module`: 1. Allowed values `from_port`, `to_port`: 1-127. Default value `to_port`: `from_port`. | <pre>list(object({<br/>    name        = string<br/>    description = optional(string, "")<br/>    from_module = optional(number, 1)<br/>    to_module   = optional(number)<br/>    from_port   = number<br/>    to_port     = optional(number)<br/>  }))</pre> | `[]` | no |
+| <a name="input_port_blocks"></a> [port\_blocks](#input\_port\_blocks) | List of port blocks. Allowed values `from_module`, `to_module`: 1-9. Default value `from_module`, `to_module`: 1. Allowed values `from_port`, `to_port`: 1-127. Default value `to_port`: `from_port`. | <pre>list(object({<br>    name        = string<br>    description = optional(string, "")<br>    from_module = optional(number, 1)<br>    to_module   = optional(number)<br>    from_port   = number<br>    to_port     = optional(number)<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

@@ -45,9 +45,9 @@ module "aci_login_domain" {
 | <a name="input_realm"></a> [realm](#input\_realm) | Realm. Choices: `local`, `tacacs`, `radius`, `ldap`. | `string` | n/a | yes |
 | <a name="input_auth_choice"></a> [auth\_choice](#input\_auth\_choice) | Authentication choice. Choices: `CiscoAVPair`, `LdapGroupMap`. | `string` | `"CiscoAVPair"` | no |
 | <a name="input_ldap_group_map"></a> [ldap\_group\_map](#input\_ldap\_group\_map) | LDAP group map. | `string` | `""` | no |
-| <a name="input_tacacs_providers"></a> [tacacs\_providers](#input\_tacacs\_providers) | List of TACACS providers. Allowed values `priority`: 0-16. Default value `priority`: 0 | <pre>list(object({<br/>    hostname_ip = string<br/>    priority    = optional(number, 0)<br/>  }))</pre> | `[]` | no |
-| <a name="input_radius_providers"></a> [radius\_providers](#input\_radius\_providers) | List of Radius providers. Allowed values `priority`: 0-16. Default value `priority`: 0 | <pre>list(object({<br/>    hostname_ip = string<br/>    priority    = optional(number, 0)<br/>  }))</pre> | `[]` | no |
-| <a name="input_ldap_providers"></a> [ldap\_providers](#input\_ldap\_providers) | List of LDAP providers. Allowed values `priority`: 0-16. Default value `priority`: 0 | <pre>list(object({<br/>    hostname_ip = string<br/>    priority    = optional(number, 0)<br/>  }))</pre> | `[]` | no |
+| <a name="input_tacacs_providers"></a> [tacacs\_providers](#input\_tacacs\_providers) | List of TACACS providers. Allowed values `priority`: 0-16. Default value `priority`: 0 | <pre>list(object({<br>    hostname_ip = string<br>    priority    = optional(number, 0)<br>  }))</pre> | `[]` | no |
+| <a name="input_radius_providers"></a> [radius\_providers](#input\_radius\_providers) | List of Radius providers. Allowed values `priority`: 0-16. Default value `priority`: 0 | <pre>list(object({<br>    hostname_ip = string<br>    priority    = optional(number, 0)<br>  }))</pre> | `[]` | no |
+| <a name="input_ldap_providers"></a> [ldap\_providers](#input\_ldap\_providers) | List of LDAP providers. Allowed values `priority`: 0-16. Default value `priority`: 0 | <pre>list(object({<br>    hostname_ip = string<br>    priority    = optional(number, 0)<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

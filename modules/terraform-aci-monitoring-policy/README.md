@@ -43,7 +43,7 @@ module "aci_monitoring_policy" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_snmp_trap_policies"></a> [snmp\_trap\_policies](#input\_snmp\_trap\_policies) | List of SNMP trap policy names. | `list(string)` | `[]` | no |
-| <a name="input_syslog_policies"></a> [syslog\_policies](#input\_syslog\_policies) | List of syslog policies. Default value `audit`: true. Default value `events`: true. Default value `faults`: true. Default value `session`: false. Default value `minimum_severity`: `warnings`. | <pre>list(object({<br/>    name             = string<br/>    audit            = optional(bool, true)<br/>    events           = optional(bool, true)<br/>    faults           = optional(bool, true)<br/>    session          = optional(bool, false)<br/>    minimum_severity = optional(string, "warnings")<br/>  }))</pre> | `[]` | no |
+| <a name="input_syslog_policies"></a> [syslog\_policies](#input\_syslog\_policies) | List of syslog policies. Default value `audit`: true. Default value `events`: true. Default value `faults`: true. Default value `session`: false. Default value `minimum_severity`: `warnings`. | <pre>list(object({<br>    name             = string<br>    audit            = optional(bool, true)<br>    events           = optional(bool, true)<br>    faults           = optional(bool, true)<br>    session          = optional(bool, false)<br>    minimum_severity = optional(string, "warnings")<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
