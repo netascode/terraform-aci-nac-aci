@@ -276,6 +276,7 @@ variable "bfd_multihop_node_policy" {
 variable "bgp_protocol_profile_name" {
   description = "BGP Protocol Name."
   type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_protocol_profile_name))
