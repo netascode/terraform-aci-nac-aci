@@ -266,9 +266,12 @@ resource "aci_rest_managed" "bgpRsPeerPfxPol-bgpInfraPeerP" {
 }
 
 resource "aci_rest_managed" "bgpProtP" {
-  count      = var.bgp_timer_policy != "" || var.bgp_as_path_policy != "" ? 1 : 0
+  count      = var.bgp_protocol_profile_name != "" || var.bgp_timer_policy != "" || var.bgp_as_path_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.l3extLNodeP.dn}/protp"
   class_name = "bgpProtP"
+  content = {
+    name = var.name
+  }
 }
 
 resource "aci_rest_managed" "bgpRsBgpNodeCtxPol" {
