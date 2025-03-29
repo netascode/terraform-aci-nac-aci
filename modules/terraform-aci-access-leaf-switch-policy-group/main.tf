@@ -29,3 +29,11 @@ resource "aci_rest_managed" "infraRsBfdIpv6InstPol" {
     tnBfdIpv6InstPolName = var.bfd_ipv6_policy
   }
 }
+
+resource "aci_rest_managed" "infraRsLeafCoppProfile" {
+  dn         = "${aci_rest_managed.infraAccNodePGrp.dn}/rsleafCoppProfile"
+  class_name = "infraRsLeafCoppProfile"
+  content = {
+    tnCoppLeafProfileName = var.copp_leaf_policy
+  }
+}
