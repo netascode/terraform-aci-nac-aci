@@ -103,6 +103,23 @@ module "aci_endpoint_group" {
     from            = "1.1.1.10"
     to              = "1.1.1.100"
   }]
+  consumer_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  consumer_epg_labels = [{
+    name          = "Label01"
+    tag           = "black"
+    is_complement = false
+  }]
+  provider_epg_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
 }
 ```
 
@@ -152,6 +169,10 @@ module "aci_endpoint_group" {
 | <a name="input_l4l7_virtual_ips"></a> [l4l7\_virtual\_ips](#input\_l4l7\_virtual\_ips) | List of EPG L4/L7 Virtual IPs. | <pre>list(object({<br>    ip          = string<br>    description = optional(string, "")<br>  }))</pre> | `[]` | no |
 | <a name="input_l4l7_address_pools"></a> [l4l7\_address\_pools](#input\_l4l7\_address\_pools) | List of EPG L4/L7 Address Pools. | <pre>list(object({<br>    name            = string<br>    gateway_address = string<br>    from            = optional(string, "")<br>    to              = optional(string, "")<br>  }))</pre> | `[]` | no |
 | <a name="input_bulk_static_ports"></a> [bulk\_static\_ports](#input\_bulk\_static\_ports) | Use bulk resource to configure static ports. | `bool` | `false` | no |
+| <a name="input_provider_subject_labels"></a> [provider\_subject\_labels](#input\_provider\_subject\_labels) | List of Provided subject labels. | <pre>list(object({<br>    name = string<br>    tag  = string<br>  }))</pre> | `[]` | no |
+| <a name="input_consumer_subject_labels"></a> [consumer\_subject\_labels](#input\_consumer\_subject\_labels) | List of Consumed subject labels. | <pre>list(object({<br>    name = string<br>    tag  = string<br>  }))</pre> | `[]` | no |
+| <a name="input_provider_epg_labels"></a> [provider\_epg\_labels](#input\_provider\_epg\_labels) | List of Provided EPG labels. | <pre>list(object({<br>    name          = string<br>    tag           = string<br>    is_complement = optional(bool, false)<br>  }))</pre> | `[]` | no |
+| <a name="input_consumer_epg_labels"></a> [consumer\_epg\_labels](#input\_consumer\_epg\_labels) | List of Consumed EPG labels. | <pre>list(object({<br>    name = string<br>    tag  = string<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -205,4 +226,8 @@ module "aci_endpoint_group" {
 | [aci_rest_managed.tagInst](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmSecP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsAddrInst](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vzConsLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vzConsSubjLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vzProvLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vzProvSubjLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

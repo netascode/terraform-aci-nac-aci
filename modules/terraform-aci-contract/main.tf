@@ -38,6 +38,8 @@ resource "aci_rest_managed" "vzSubj" {
     revFltPorts = "yes"
     prio        = each.value.qos_class
     targetDscp  = each.value.target_dscp
+    consMatchT  = each.value.consumer_label_match
+    provMatchT  = each.value.provider_label_match
   }
 }
 
@@ -59,5 +61,55 @@ resource "aci_rest_managed" "vzRsSubjGraphAtt" {
   class_name = "vzRsSubjGraphAtt"
   content = {
     tnVnsAbsGraphName = each.value.service_graph
+  }
+}
+
+locals {
+  provider_labels_list = flatten([
+    for subj in var.subjects : [
+      for label in coalesce(subj.provider_labels, []) : {
+        subj          = subj.name
+        name          = label.name
+        tag           = label.tag
+        is_complement = label.is_complement
+      }
+    ]
+  ])
+}
+
+resource "aci_rest_managed" "vzProvSubjLbl" {
+  for_each   = { for label in local.provider_labels_list : label.name => label }
+  dn         = "${aci_rest_managed.vzSubj[each.value.subj].dn}/provsubjlbl-${each.value.name}"
+  class_name = "vzProvSubjLbl"
+
+  content = {
+    name         = each.value.name
+    tag          = each.value.tag
+    isComplement = each.value.is_complement == true ? "yes" : "no"
+  }
+}
+
+locals {
+  consumer_labels_list = flatten([
+    for subj in var.subjects : [
+      for label in coalesce(subj.consumer_labels, []) : {
+        subj          = subj.name
+        name          = label.name
+        tag           = label.tag
+        is_complement = label.is_complement
+      }
+    ]
+  ])
+}
+
+resource "aci_rest_managed" "vzConsSubjLbl" {
+  for_each   = { for label in local.consumer_labels_list : label.name => label }
+  dn         = "${aci_rest_managed.vzSubj[each.value.subj].dn}/conssubjlbl-${each.value.name}"
+  class_name = "vzConsSubjLbl"
+
+  content = {
+    name         = each.value.name
+    tag          = each.value.tag
+    isComplement = each.value.is_complement == true ? "yes" : "no"
   }
 }
