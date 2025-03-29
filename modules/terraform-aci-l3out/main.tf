@@ -130,6 +130,23 @@ resource "aci_rest_managed" "rtctrlRsCtxPToSubjP_import" {
   }
 }
 
+resource "aci_rest_managed" "rtctrlCtxP_route_maps" {
+  for_each   = { for context in var.route_maps_contexts : context.name => context }
+  dn         = "${aci_rest_managed.rtctrlCtxP_route_maps[0].dn}/prof-${var.route_maps_name}"
+  class_name = "rtctrlCtxP"
+  content = {
+    name  = each.value.name
+    descr = each.value.description
+    type  = each.value.type
+  }
+}
+
+resource "aci_rest_managed" "rtctrlScope_route_maps" {
+  for_each   = { for context in var.route_maps_contexts : context.name => context if context.set_rule != null && context.set_rule != "" }
+  dn         = "${aci_rest_managed.rtctrlCtxP_route_maps[each.value.name].dn}/scp"
+  class_name = "rtctrlScope"
+}
+
 resource "aci_rest_managed" "rtctrlProfile_export" {
   count      = length(var.export_route_map_contexts) > 0 ? 1 : 0
   dn         = "${aci_rest_managed.l3extOut.dn}/prof-${var.export_route_map_name}"
