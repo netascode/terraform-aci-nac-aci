@@ -7,6 +7,7 @@ resource "aci_rest_managed" "infraSpAccPortGrp" {
 }
 
 resource "aci_rest_managed" "infraRsHIfPol" {
+  count      = var.link_level_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraSpAccPortGrp.dn}/rshIfPol"
   class_name = "infraRsHIfPol"
   content = {
@@ -15,6 +16,7 @@ resource "aci_rest_managed" "infraRsHIfPol" {
 }
 
 resource "aci_rest_managed" "infraRsCdpIfPol" {
+  count      = var.cdp_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraSpAccPortGrp.dn}/rscdpIfPol"
   class_name = "infraRsCdpIfPol"
   content = {
