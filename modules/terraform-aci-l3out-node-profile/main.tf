@@ -270,7 +270,7 @@ resource "aci_rest_managed" "bgpProtP" {
   dn         = "${aci_rest_managed.l3extLNodeP.dn}/protp"
   class_name = "bgpProtP"
   content = {
-    name = var.name
+    name = var.bgp_protocol_profile_name
   }
 }
 
