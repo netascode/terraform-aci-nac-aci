@@ -76,6 +76,11 @@ variable "ospf_authentication_key" {
   type        = string
   default     = ""
   sensitive   = true
+
+  validation {
+    condition     = can(regex((var.ospf_authentication_type == "simple" ? "^.{0,8}$" : "^.{0,16}$"), var.ospf_authentication_key))
+    error_message = "Maximum characters for specific auth_type is: [simple: 8, md5: 16]"
+  }
 }
 
 variable "ospf_authentication_key_id" {
