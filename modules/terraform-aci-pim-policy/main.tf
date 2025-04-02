@@ -1,6 +1,7 @@
 resource "aci_rest_managed" "pimIfPol" {
-  dn         = "uni/tn-${var.tenant}/pimifpol-${var.name}"
-  class_name = "pimIfPol"
+  dn          = "uni/tn-${var.tenant}/pimifpol-${var.name}"
+  class_name  = "pimIfPol"
+  escape_html = false
   content = {
     name          = var.name
     secureAuthKey = var.auth_key

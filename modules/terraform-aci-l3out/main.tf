@@ -1,7 +1,8 @@
 resource "aci_rest_managed" "l3extOut" {
-  dn         = "uni/tn-${var.tenant}/out-${var.name}"
-  class_name = "l3extOut"
-  annotation = var.annotation
+  dn          = "uni/tn-${var.tenant}/out-${var.name}"
+  class_name  = "l3extOut"
+  annotation  = var.annotation
+  escape_html = false
   content = var.sr_mpls == true ? {
     name          = var.name
     descr         = var.description

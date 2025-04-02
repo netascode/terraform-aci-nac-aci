@@ -40,9 +40,10 @@ resource "aci_rest_managed" "datetimeRsNtpProvToNtpAuthKey" {
 }
 
 resource "aci_rest_managed" "datetimeNtpAuthKey" {
-  for_each   = { for key in var.ntp_keys : key.id => key }
-  dn         = "${aci_rest_managed.datetimePol.dn}/ntpauth-${each.value.id}"
-  class_name = "datetimeNtpAuthKey"
+  for_each    = { for key in var.ntp_keys : key.id => key }
+  dn          = "${aci_rest_managed.datetimePol.dn}/ntpauth-${each.value.id}"
+  class_name  = "datetimeNtpAuthKey"
+  escape_html = false
   content = {
     id      = each.value.id
     key     = sensitive(each.value.key)
