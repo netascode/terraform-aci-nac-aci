@@ -113,9 +113,10 @@ resource "aci_rest_managed" "l3extInfraNodeP" {
 }
 
 resource "aci_rest_managed" "bgpPeerP" {
-  for_each   = { for peer in var.bgp_peers : peer.ip => peer }
-  dn         = "${aci_rest_managed.l3extLNodeP.dn}/peerP-[${each.value.ip}]"
-  class_name = "bgpPeerP"
+  for_each    = { for peer in var.bgp_peers : peer.ip => peer }
+  dn          = "${aci_rest_managed.l3extLNodeP.dn}/peerP-[${each.value.ip}]"
+  class_name  = "bgpPeerP"
+  escape_html = aci_fabric_leaf_switch_profile
   content = {
     addr             = each.value.ip
     descr            = each.value.description

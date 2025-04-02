@@ -14,8 +14,9 @@ locals {
 }
 
 resource "aci_rest_managed" "snmpPol" {
-  dn         = "uni/fabric/snmppol-${var.name}"
-  class_name = "snmpPol"
+  dn          = "uni/fabric/snmppol-${var.name}"
+  class_name  = "snmpPol"
+  escape_html = false
   content = {
     name    = var.name
     adminSt = var.admin_state == true ? "enabled" : "disabled"
@@ -25,9 +26,10 @@ resource "aci_rest_managed" "snmpPol" {
 }
 
 resource "aci_rest_managed" "snmpUserP" {
-  for_each   = { for user in var.users : user.name => user }
-  dn         = "${aci_rest_managed.snmpPol.dn}/user-${each.value.name}"
-  class_name = "snmpUserP"
+  for_each    = { for user in var.users : user.name => user }
+  dn          = "${aci_rest_managed.snmpPol.dn}/user-${each.value.name}"
+  class_name  = "snmpUserP"
+  escape_html = false
   content = {
     name     = each.value.name
     descr    = each.value.description
@@ -43,9 +45,10 @@ resource "aci_rest_managed" "snmpUserP" {
 }
 
 resource "aci_rest_managed" "snmpCommunityP" {
-  for_each   = toset(var.communities)
-  dn         = "${aci_rest_managed.snmpPol.dn}/community-${each.value}"
-  class_name = "snmpCommunityP"
+  for_each    = toset(var.communities)
+  dn          = "${aci_rest_managed.snmpPol.dn}/community-${each.value}"
+  class_name  = "snmpCommunityP"
+  escape_html = false
   content = {
     name = each.value
   }

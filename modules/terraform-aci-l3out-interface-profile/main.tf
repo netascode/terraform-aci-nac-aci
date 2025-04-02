@@ -149,9 +149,10 @@ resource "aci_rest_managed" "l3extLIfP" {
 }
 
 resource "aci_rest_managed" "ospfIfP" {
-  count      = var.ospf_authentication_key != "" || var.ospf_interface_policy != "" ? 1 : 0
-  dn         = "${aci_rest_managed.l3extLIfP.dn}/ospfIfP"
-  class_name = "ospfIfP"
+  count       = var.ospf_authentication_key != "" || var.ospf_interface_policy != "" ? 1 : 0
+  dn          = "${aci_rest_managed.l3extLIfP.dn}/ospfIfP"
+  class_name  = "ospfIfP"
+  escape_html = false
   content = {
     name      = var.ospf_interface_profile_name
     authKeyId = var.ospf_authentication_key_id
@@ -410,9 +411,10 @@ resource "aci_rest_managed" "l3extRsVSwitchEnhancedLagPol" {
 }
 
 resource "aci_rest_managed" "bgpPeerP" {
-  for_each   = { for item in local.bgp_peers : item.key => item.value }
-  dn         = "${aci_rest_managed.l3extRsPathL3OutAtt[each.value.interface].dn}/peerP-[${each.value.ip}]"
-  class_name = "bgpPeerP"
+  for_each    = { for item in local.bgp_peers : item.key => item.value }
+  dn          = "${aci_rest_managed.l3extRsPathL3OutAtt[each.value.interface].dn}/peerP-[${each.value.ip}]"
+  class_name  = "bgpPeerP"
+  escape_html = false
   content = {
     addr             = each.value.ip
     descr            = each.value.description
@@ -482,9 +484,10 @@ resource "aci_rest_managed" "bgpRsPeerToProfile_import" {
 }
 
 resource "aci_rest_managed" "bgpPeerP_floating" {
-  for_each   = { for item in local.floating_bgp_peers : item.key => item.value }
-  dn         = "${aci_rest_managed.l3extVirtualLIfP[each.value.node].dn}/peerP-[${each.value.ip}]"
-  class_name = "bgpPeerP"
+  for_each    = { for item in local.floating_bgp_peers : item.key => item.value }
+  dn          = "${aci_rest_managed.l3extVirtualLIfP[each.value.node].dn}/peerP-[${each.value.ip}]"
+  class_name  = "bgpPeerP"
+  escape_html = false
   content = {
     addr             = each.value.ip
     descr            = each.value.description
