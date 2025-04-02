@@ -14,8 +14,9 @@ locals {
 }
 
 resource "aci_rest_managed" "aaaUser" {
-  dn         = "uni/userext/user-${var.username}"
-  class_name = "aaaUser"
+  dn          = "uni/userext/user-${var.username}"
+  class_name  = "aaaUser"
+  escape_html = false
   content = {
     name          = var.username
     pwd           = var.password

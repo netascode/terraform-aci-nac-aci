@@ -98,9 +98,10 @@ resource "aci_rest_managed" "vmmCtrlrP" {
 }
 
 resource "aci_rest_managed" "vmmUsrAccP" {
-  for_each   = { for cred in var.credential_policies : cred.name => cred }
-  dn         = "${aci_rest_managed.vmmDomP.dn}/usracc-${each.value.name}"
-  class_name = "vmmUsrAccP"
+  for_each    = { for cred in var.credential_policies : cred.name => cred }
+  dn          = "${aci_rest_managed.vmmDomP.dn}/usracc-${each.value.name}"
+  class_name  = "vmmUsrAccP"
+  escape_html = false
   content = {
     name = each.value.name
     usr  = each.value.username
