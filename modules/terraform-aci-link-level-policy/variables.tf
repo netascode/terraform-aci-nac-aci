@@ -8,6 +8,28 @@ variable "name" {
   }
 }
 
+variable "link_delay_ms" {
+  description = "Link delay. Default value is set to 10ms"
+  type        = number
+  default     = 10
+
+  validation {
+    condition     = var.link_delay_ms > 10
+    error_message = "The link delay should be at least 10ms"
+  }
+}
+
+variable "link_debounce_ms" {
+  description = "Link debounce. Default value is set to 110ms"
+  type        = number
+  default     = 110
+
+  validation {
+    condition     = var.link_debounce_ms > 110
+    error_message = "The link debounce should be at least 110ms"
+  }
+}
+
 variable "speed" {
   description = "Interface speed. Choices: `inherit`, `auto`, `100M`, `1G`, `10G`, `25G`, `40G`, `100G`, `400G`."
   type        = string

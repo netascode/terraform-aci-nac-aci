@@ -4,6 +4,8 @@ module "aci_link_level_policy" {
 
   name     = "100G"
   speed    = "100G"
+  link_delay_ms = 10
+  link_debounce_ms = 110
   auto     = true
   fec_mode = "disable-fec"
 }
