@@ -7,6 +7,7 @@ module "aci_access_leaf_interface_policy_group" {
   type                       = "vpc"
   link_level_policy          = "10G"
   cdp_policy                 = "CDP-ON"
+  copp_policy                = "COPP-POLICY"
   lldp_policy                = "LLDP-OFF"
   macsec_interface_policy    = "MACSEC-ON"
   spanning_tree_policy       = "BPDU-GUARD"
