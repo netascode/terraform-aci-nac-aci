@@ -13,10 +13,12 @@ module "aci_link_level_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-link-level-policy"
   version = ">= 0.8.0"
 
-  name     = "100G"
-  speed    = "100G"
-  auto     = true
-  fec_mode = "disable-fec"
+  name             = "100G"
+  speed            = "100G"
+  link_delay_ms    = 10
+  link_debounce_ms = 110
+  auto             = true
+  fec_mode         = "disable-fec"
 }
 ```
 
@@ -38,6 +40,8 @@ module "aci_link_level_policy" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Link level interface policy name. | `string` | n/a | yes |
+| <a name="input_link_delay_ms"></a> [link\_delay\_ms](#input\_link\_delay\_ms) | Link delay. Default value is set to 10ms | `number` | `10` | no |
+| <a name="input_link_debounce_ms"></a> [link\_debounce\_ms](#input\_link\_debounce\_ms) | Link debounce. Default value is set to 110ms | `number` | `110` | no |
 | <a name="input_speed"></a> [speed](#input\_speed) | Interface speed. Choices: `inherit`, `auto`, `100M`, `1G`, `10G`, `25G`, `40G`, `100G`, `400G`. | `string` | `"inherit"` | no |
 | <a name="input_auto"></a> [auto](#input\_auto) | Auto negotiation. | `bool` | `true` | no |
 | <a name="input_fec_mode"></a> [fec\_mode](#input\_fec\_mode) | Forward error correction (FEC) mode. Choices: `inherit`, `cl91-rs-fec`, `cl74-fc-fec`, `ieee-rs-fec`, `cons16-rs-fec`, `disable-fec`, `auto-fec`. | `string` | `"inherit"` | no |
