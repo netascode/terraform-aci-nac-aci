@@ -11,12 +11,13 @@ Location in GUI:
 ```hcl
 module "aci_access_spine_interface_policy_group" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-access-spine-interface-policy-group"
-  version = ">= 0.8.0"
+  version = ">= 0.9.4"
 
-  name              = "IPN"
-  link_level_policy = "100G"
-  cdp_policy        = "CDP-ON"
-  aaep              = "AAEP1"
+  name                    = "IPN"
+  link_level_policy       = "100G"
+  cdp_policy              = "CDP-ON"
+  macsec_interface_policy = "MACSEC-ON"
+  aaep                    = "AAEP1"
 }
 ```
 
@@ -40,6 +41,7 @@ module "aci_access_spine_interface_policy_group" {
 | <a name="input_name"></a> [name](#input\_name) | Spine interface policy group name. | `string` | n/a | yes |
 | <a name="input_link_level_policy"></a> [link\_level\_policy](#input\_link\_level\_policy) | Link level policy name. | `string` | `""` | no |
 | <a name="input_cdp_policy"></a> [cdp\_policy](#input\_cdp\_policy) | CDP policy name. | `string` | `""` | no |
+| <a name="input_macsec_interface_policy"></a> [macsec\_interface\_policy](#input\_macsec\_interface\_policy) | MACsec policy name. | `string` | `""` | no |
 | <a name="input_aaep"></a> [aaep](#input\_aaep) | Attachable access entity profile name. | `string` | `""` | no |
 
 ## Outputs
@@ -56,5 +58,6 @@ module "aci_access_spine_interface_policy_group" {
 | [aci_rest_managed.infraRsAttEntP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsCdpIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsHIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraRsMacsecIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraSpAccPortGrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

@@ -166,6 +166,12 @@ variable "igmp_interface_policy" {
   }
 }
 
+variable "nd_interface_policy" {
+  description = "ND interface policy."
+  type        = string
+  default     = ""
+}
+
 variable "qos_class" {
   description = "QoS class. Choices: `level1`, `level2`, `level3`, `level4`, `level5`, `level6`, `unspecified`."
   type        = string
@@ -247,6 +253,7 @@ variable "interfaces" {
       vmware_vmm_domain = optional(string)
       elag              = optional(string)
       floating_ip       = string
+      vlan              = optional(string)
     })), [])
     micro_bfd_destination_ip = optional(string, "")
     micro_bfd_start_timer    = optional(number, 0)

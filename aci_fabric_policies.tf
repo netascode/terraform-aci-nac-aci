@@ -923,13 +923,87 @@ module "aci_interface_type" {
   type     = each.value.type
 }
 
+locals {
+  interface_shutdown = flatten([
+    for node in try(local.interface_policies.nodes, []) : [
+      for interface in try(node.interfaces, []) : {
+        key     = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
+        node_id = node.id
+        module  = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+        port    = interface.port
+      } if try(interface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
+    ] if try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
+  ])
+}
+
+module "aci_interface_shutdown" {
+  source = "./modules/terraform-aci-interface-shutdown"
+
+  for_each = { for int in local.interface_shutdown : int.key => int if local.modules.aci_interface_shutdown && var.manage_fabric_policies }
+  node_id  = each.value.node_id
+  module   = each.value.module
+  port     = each.value.port
+}
+
+locals {
+  subinterface_shutdown = flatten([
+    for node in try(local.interface_policies.nodes, []) : [
+      for interface in try(node.interfaces, []) : [
+        for subinterface in try(interface.sub_ports, []) : {
+          key      = format("%s/%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port, subinterface.port)
+          node_id  = node.id
+          module   = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+          port     = interface.port
+          sub_port = subinterface.port
+        } if try(subinterface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.sub_ports.shutdown)
+      ]
+    ] if try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
+  ])
+}
+
+module "aci_subinterface_shutdown" {
+  source = "./modules/terraform-aci-interface-shutdown"
+
+  for_each = { for int in local.subinterface_shutdown : int.key => int if local.modules.aci_interface_shutdown && var.manage_fabric_policies }
+  node_id  = each.value.node_id
+  module   = each.value.module
+  port     = each.value.port
+  sub_port = each.value.sub_port
+}
+
+locals {
+  fex_interface_shutdown = flatten([
+    for node in try(local.interface_policies.nodes, []) : [
+      for fex in try(node.fexes, []) : [
+        for interface in try(fex.interfaces, []) : {
+          key     = format("%s/%s/%s/%s", node.id, fex.id, try(interface.module, local.defaults.apic.interface_policies.nodes.fexes.interfaces.module), interface.port)
+          node_id = node.id
+          fex_id  = fex.id
+          module  = try(interface.module, local.defaults.apic.interface_policies.nodes.fexes.interfaces.module)
+          port    = interface.port
+        } if try(interface.shutdown, local.defaults.apic.interface_policies.nodes.fexes.interfaces.shutdown)
+      ]
+    ] if try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
+  ])
+}
+
+module "aci_fex_interface_shutdown" {
+  source = "./modules/terraform-aci-interface-shutdown"
+
+  for_each = { for int in local.fex_interface_shutdown : int.key => int if local.modules.aci_interface_shutdown && var.manage_fabric_policies }
+  node_id  = each.value.node_id
+  fex_id   = each.value.fex_id
+  module   = each.value.module
+  port     = each.value.port
+}
+
 module "aci_smart_licensing" {
   source = "./modules/terraform-aci-smart-licensing"
 
   count              = local.modules.aci_smart_licensing == true && try(local.fabric_policies.smart_licensing.registration_token, "") != "" && var.manage_fabric_policies ? 1 : 0
   mode               = try(local.fabric_policies.smart_licensing.mode, local.defaults.apic.fabric_policies.smart_licensing.mode)
   registration_token = try(local.fabric_policies.smart_licensing.registration_token, "")
-  url                = try(local.fabric_policies.smart_licensing.url, local.defaults.apic.fabric_policies.smart_licensing.url)
+  url                = try(local.fabric_policies.smart_licensing.url, null)
   proxy_hostname_ip  = try(local.fabric_policies.smart_licensing.proxy.hostname_ip, "")
   proxy_port         = try(local.fabric_policies.smart_licensing.proxy.port, local.defaults.apic.fabric_policies.smart_licensing.proxy.port)
 }
@@ -1051,4 +1125,12 @@ module "aci_sr_mpls_global_configuration" {
   count                   = local.modules.aci_sr_mpls_global_configuration == true && try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum, local.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum, "") != "" && var.manage_fabric_policies ? 1 : 0
   sr_global_block_minimum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum)
   sr_global_block_maximum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum)
+}
+
+module "aci_atomic_counter" {
+  source = "./modules/terraform-aci-atomic-counter"
+
+  count       = try(local.fabric_policies.atomic_counter.admin_state, null) != null && local.modules.aci_atomic_counter && var.manage_fabric_policies ? 1 : 0
+  admin_state = local.fabric_policies.atomic_counter.admin_state
+  mode        = try(local.fabric_policies.atomic_counter.mode, local.defaults.apic.fabric_policies.atomic_counter.mode)
 }

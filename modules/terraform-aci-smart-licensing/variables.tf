@@ -39,5 +39,5 @@ variable "registration_token" {
 variable "url" {
   description = "URL"
   type        = string
-  default     = "https://tools.cisco.com/its/service/oddce/services/DDCEService"
+  default     = null
 }

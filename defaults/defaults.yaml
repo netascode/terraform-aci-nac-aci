@@ -23,6 +23,8 @@ defaults:
       pod_profile_name: "POD\\g<id>"
       pod_profile_pod_selector_name: "POD\\g<id>"
       apic_conn_pref: inband
+      atomic_counter:
+        mode: trail
       banners:
         apic_gui_alias: ""
         apic_gui_banner_url: ""
@@ -386,7 +388,6 @@ defaults:
               module: 1
       smart_licensing:
         mode: "smart-licensing"
-        url: "https://tools.cisco.com/its/service/oddce/services/DDCEService"
         proxy:
           port: "443"
       l2_mtu_policies:
@@ -1442,6 +1443,8 @@ defaults:
           percentage_down: 1
           weight_up: 0
           weight_down: 1
+        endpoint_mac_tags:
+          bridge_domain: all
       services:
         l4l7_devices:
           name_suffix: ""

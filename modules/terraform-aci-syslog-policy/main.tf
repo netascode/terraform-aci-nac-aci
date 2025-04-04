@@ -4,7 +4,7 @@ resource "aci_rest_managed" "syslogGroup" {
   content = {
     name                = var.name
     descr               = var.description
-    format              = var.format
+    format              = var.format == "enhanced-log" ? "rfc5424-ts" : var.format
     includeMilliSeconds = var.show_millisecond == true ? "yes" : "no"
     includeTimeZone     = var.show_timezone ? "yes" : "no"
   }
@@ -20,7 +20,7 @@ resource "aci_rest_managed" "syslogRemoteDest" {
     protocol           = each.value.protocol
     port               = each.value.port
     adminState         = each.value.admin_state == true ? "enabled" : "disabled"
-    format             = each.value.format
+    format             = each.value.format == "enhanced-log" ? "rfc5424-ts" : each.value.format
     forwardingFacility = each.value.facility
     severity           = each.value.severity
   }
@@ -49,7 +49,7 @@ resource "aci_rest_managed" "syslogFile" {
   class_name = "syslogFile"
   content = {
     adminState = var.local_admin_state == true ? "enabled" : "disabled"
-    format     = var.format
+    format     = var.format == "enhanced-log" ? "rfc5424-ts" : var.format
     severity   = var.local_severity
   }
 }
@@ -59,7 +59,7 @@ resource "aci_rest_managed" "syslogConsole" {
   class_name = "syslogConsole"
   content = {
     adminState = var.console_admin_state == true ? "enabled" : "disabled"
-    format     = var.format
+    format     = var.format == "enhanced-log" ? "rfc5424-ts" : var.format
     severity   = var.console_severity
   }
 }

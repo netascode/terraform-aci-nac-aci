@@ -19,6 +19,7 @@ modules:
   aci_access_spine_switch_profile: true
   aci_apic_connectivity_preference: true
   aci_application_profile: true
+  aci_atomic_counter: true
   aci_banner: true
   aci_bfd_interface_policy: true
   aci_bfd_multihop_node_policy: true
@@ -46,6 +47,8 @@ modules:
   aci_useg_endpoint_group: true
   aci_endpoint_loop_protection: true
   aci_endpoint_security_group: true
+  aci_endpoint_mac_tag_policy: true
+  aci_endpoint_ip_tag_policy: true
   aci_eigrp_interface_policy: true
   aci_error_disabled_recovery: true
   aci_external_connectivity_policy: true
@@ -81,6 +84,7 @@ modules:
   aci_infra_dhcp_relay_policy: true
   aci_infra_dscp_translation_policy: true
   aci_interface_configuration: true
+  aci_interface_shutdown: true
   aci_interface_type: true
   aci_ip_aging: true
   aci_ip_sla_policy: true

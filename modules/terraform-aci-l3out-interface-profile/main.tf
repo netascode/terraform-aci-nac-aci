@@ -131,6 +131,7 @@ locals {
           floating_ip = path.floating_ip
           domain      = path.physical_domain != null ? "phys-${path.physical_domain}" : (path.vmware_vmm_domain != null ? "vmmp-VMware/dom-${path.vmware_vmm_domain}" : "")
           elag        = path.elag
+          vlan        = path.vlan
         }
       }
     ] if int.floating_svi == true
@@ -148,9 +149,10 @@ resource "aci_rest_managed" "l3extLIfP" {
 }
 
 resource "aci_rest_managed" "ospfIfP" {
-  count      = var.ospf_authentication_key != "" || var.ospf_interface_policy != "" ? 1 : 0
-  dn         = "${aci_rest_managed.l3extLIfP.dn}/ospfIfP"
-  class_name = "ospfIfP"
+  count       = var.ospf_authentication_key != "" || var.ospf_interface_policy != "" ? 1 : 0
+  dn          = "${aci_rest_managed.l3extLIfP.dn}/ospfIfP"
+  class_name  = "ospfIfP"
+  escape_html = false
   content = {
     name      = var.ospf_interface_profile_name
     authKeyId = var.ospf_authentication_key_id
@@ -252,6 +254,15 @@ resource "aci_rest_managed" "igmpRsIfPol" {
   class_name = "igmpRsIfPol"
   content = {
     tDn = "uni/tn-${var.tenant}/igmpIfPol-${var.igmp_interface_policy}"
+  }
+}
+
+resource "aci_rest_managed" "l3extRsNdIfPol" {
+  count      = var.nd_interface_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.l3extLIfP.dn}/rsNdIfPol"
+  class_name = "l3extRsNdIfPol"
+  content = {
+    tnNdIfPolName = var.nd_interface_policy
   }
 }
 
@@ -370,6 +381,7 @@ resource "aci_rest_managed" "l3extRsDynPathAtt" {
   content = {
     floatingAddr = each.value.floating_ip
     tDn          = "uni/${each.value.domain}"
+    encap        = each.value.vlan != null && each.value.vlan != "" ? "vlan-${each.value.vlan}" : null
   }
 }
 
@@ -399,9 +411,10 @@ resource "aci_rest_managed" "l3extRsVSwitchEnhancedLagPol" {
 }
 
 resource "aci_rest_managed" "bgpPeerP" {
-  for_each   = { for item in local.bgp_peers : item.key => item.value }
-  dn         = "${aci_rest_managed.l3extRsPathL3OutAtt[each.value.interface].dn}/peerP-[${each.value.ip}]"
-  class_name = "bgpPeerP"
+  for_each    = { for item in local.bgp_peers : item.key => item.value }
+  dn          = "${aci_rest_managed.l3extRsPathL3OutAtt[each.value.interface].dn}/peerP-[${each.value.ip}]"
+  class_name  = "bgpPeerP"
+  escape_html = false
   content = {
     addr             = each.value.ip
     descr            = each.value.description
@@ -471,9 +484,10 @@ resource "aci_rest_managed" "bgpRsPeerToProfile_import" {
 }
 
 resource "aci_rest_managed" "bgpPeerP_floating" {
-  for_each   = { for item in local.floating_bgp_peers : item.key => item.value }
-  dn         = "${aci_rest_managed.l3extVirtualLIfP[each.value.node].dn}/peerP-[${each.value.ip}]"
-  class_name = "bgpPeerP"
+  for_each    = { for item in local.floating_bgp_peers : item.key => item.value }
+  dn          = "${aci_rest_managed.l3extVirtualLIfP[each.value.node].dn}/peerP-[${each.value.ip}]"
+  class_name  = "bgpPeerP"
+  escape_html = false
   content = {
     addr             = each.value.ip
     descr            = each.value.description

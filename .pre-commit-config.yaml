@@ -94,6 +94,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-application-profile/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-atomic-counter"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-atomic-counter/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-banner"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-banner/examples/complete"]
@@ -209,6 +213,14 @@ repos:
         args: ["./modules/terraform-aci-endpoint-security-group"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-endpoint-security-group/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-endpoint-ip-tag-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-endpoint-ip-tag-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-endpoint-mac-tag-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-endpoint-mac-tag-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-error-disabled-recovery"]
       - id: terraform-docs-system
@@ -341,6 +353,10 @@ repos:
         args: ["./modules/terraform-aci-interface-configuration"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-interface-configuration/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-interface-shutdown"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-interface-shutdown/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-interface-type"]
       - id: terraform-docs-system

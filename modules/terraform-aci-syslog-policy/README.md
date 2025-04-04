@@ -57,7 +57,7 @@ module "aci_syslog_policy" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Syslog policy name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
-| <a name="input_format"></a> [format](#input\_format) | Format. Choices: `aci`, `nxos`. | `string` | `"aci"` | no |
+| <a name="input_format"></a> [format](#input\_format) | Format. Choices: `aci`, `nxos`, `enhanced-log`. | `string` | `"aci"` | no |
 | <a name="input_show_millisecond"></a> [show\_millisecond](#input\_show\_millisecond) | Show milliseconds. | `bool` | `false` | no |
 | <a name="input_show_timezone"></a> [show\_timezone](#input\_show\_timezone) | Show timezone. | `bool` | `false` | no |
 | <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | Admin state. | `bool` | `true` | no |
