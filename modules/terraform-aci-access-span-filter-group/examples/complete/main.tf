@@ -16,8 +16,8 @@ module "aci_access_span_filter_group" {
       destination_from_port = "http"
     },
     {
-      source_ip             = "3.3.3.3"
-      destination_ip        = "4.4.4.4"
+      source_ip      = "3.3.3.3"
+      destination_ip = "4.4.4.4"
     }
   ]
 }
