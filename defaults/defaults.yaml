@@ -401,7 +401,7 @@ defaults:
       interface_policies:
         link_level_policies:
           name_suffix: ""
-          link_debounce_interval: 100
+          link_debounce_interval: 0
       sr_mpls_global_configuration:
         sr_global_block_minimum: 16000
         sr_global_block_maximum: 23999
@@ -497,8 +497,8 @@ defaults:
         link_level_policies:
           name_suffix: ""
           speed: inherit
-          link_delay_ms: 0
-          link_debounce_ms: 100
+          link_delay_interval: 0
+          link_debounce_interval: 100
           auto: true
           fec_mode: inherit
         port_channel_policies:
