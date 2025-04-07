@@ -11,10 +11,10 @@ variable "name" {
 variable "link_delay_interval" {
   description = "Link delay. Default value is set to 10ms"
   type        = number
-  default     = 0
+  default     = null
 
   validation {
-    condition     = var.link_delay_interval > 0 && var.link_delay_interval < 10000
+    condition     = var.link_delay_interval >= 0 && var.link_delay_interval <= 10000
     error_message = "The link delay should be at least 0ms and max 10000ms"
   }
 }
@@ -25,7 +25,7 @@ variable "link_debounce_interval" {
   default     = 100
 
   validation {
-    condition     = var.link_debounce_interval > 0 && var.link_debounce_interval < 5000
+    condition     = var.link_debounce_interval >= 0 && var.link_debounce_interval <= 5000
     error_message = "The link debounce should be at least 0ms and max 5000ms"
   }
 }

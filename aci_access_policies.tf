@@ -296,7 +296,7 @@ module "aci_link_level_policy" {
   for_each               = { for llp in try(local.access_policies.interface_policies.link_level_policies, []) : llp.name => llp if local.modules.aci_link_level_policy && var.manage_access_policies }
   name                   = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}"
   speed                  = try(each.value.speed, local.defaults.apic.access_policies.interface_policies.link_level_policies.speed)
-  link_delay_interval    = try(each.value.link_delay_interval, local.defaults.apic.access_policies.interface_policies.link_level_policies.link_delay_interval)
+  link_delay_interval    = try(each.value.link_delay_interval, null)
   link_debounce_interval = try(each.value.link_debounce_interval, local.defaults.apic.access_policies.interface_policies.link_level_policies.link_debounce_interval)
   auto                   = try(each.value.auto, local.defaults.apic.access_policies.interface_policies.link_level_policies.auto)
   fec_mode               = try(each.value.fec_mode, local.defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode)
