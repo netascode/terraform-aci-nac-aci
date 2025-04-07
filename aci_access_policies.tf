@@ -303,8 +303,8 @@ module "aci_data_plane_policing_policy" {
   violate_action       = try(each.value.violate_action, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_action)
   violate_mark_cos     = try(each.value.violate_action == "mark", false) ? try(each.value.violate_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_mark_cos) : null
   violate_mark_dscp    = try(each.value.violate_action == "mark", false) ? try(each.value.violate_mark_dscp, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_mark_dscp) : null
-  pir                  = try(each.value.type == "2R3C", false) ? try(each.value.pir, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.pir) : null
-  pir_unit             = try(each.value.type == "2R3C", false) ? try(each.value.pir_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.pir_unit) : null
+  peak_rate            = try(each.value.type == "2R3C", false) ? try(each.value.peak_rate, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.peak_rate) : null
+  peak_rate_unit       = try(each.value.type == "2R3C", false) ? try(each.value.peak_rate_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.peak_rate_unit) : null
   burst_excessive      = try(each.value.type == "2R3C", false) ? try(each.value.burst_excessive, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst_excessive) : null
   burst_excessive_unit = try(each.value.type == "2R3C", false) ? try(each.value.burst_excessive_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst_excessive_unit) : null
 }

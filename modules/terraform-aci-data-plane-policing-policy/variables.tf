@@ -58,23 +58,23 @@ variable "sharing_mode" {
   }
 }
 
-variable "pir" {
+variable "peak_rate" {
   type        = number
   description = "Peak Information Rate (2R3C policer only). Allowed Values: A number between 0 and 4,398,046,510,080."
 
   validation {
-    condition     = var.pir == null || try(var.pir >= 0 && var.pir <= 4398046510080, false)
+    condition     = var.peak_rate == null || try(var.peak_rate >= 0 && var.peak_rate <= 4398046510080, false)
     error_message = "Allowed Values: A number between `0` and `4,398,046,510,080`."
   }
 }
 
-variable "pir_unit" {
+variable "peak_rate_unit" {
   type        = string
   description = "Peak Rate Unit. Allowed Values: `unspecified`, `kilo`, `mega`, `giga`."
   default     = "unspecified"
 
   validation {
-    condition     = var.pir_unit == null || try(contains(["unspecified", "kilo", "mega", "giga"], var.pir_unit), false)
+    condition     = var.peak_rate_unit == null || try(contains(["unspecified", "kilo", "mega", "giga"], var.peak_rate_unit), false)
     error_message = "Allowed Values: `unspecified`, `kilo`, `mega`, `giga`."
   }
 }

@@ -3,9 +3,9 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Terraform ACI Access Data Plane Plane Policing Module
+  # Terraform ACI Data Plane Plane Policing Module
 
-  Manages Access Data Plane Policing Policies
+  Manages Data Plane Policing Policies
 
   Location in GUI:
   `Fabric` » `Access Policies` » `Policies` » `Interface` » `Data Plane Policing`

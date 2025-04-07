@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI Access Data Plane Plane Policing Module
+# Terraform ACI Data Plane Plane Policing Module
 
-Manages Access Data Plane Policing Policies
+Manages Data Plane Policing Policies
 
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Interface` » `Data Plane Policing`
@@ -18,8 +18,8 @@ module "aci_data_plane_policing_policy" {
   type            = "1R2C"
   mode            = "bits"
   sharingMode     = "dedicated"
-  pir             = "10"
-  pirUnit         = "giga"
+  peak_rate       = "10"
+  peak_rateUnit   = "giga"
   rate            = "9"
   rateUnit        = "giga"
   be              = "9100"
@@ -61,8 +61,8 @@ module "aci_data_plane_policing_policy" {
 | <a name="input_type"></a> [type](#input\_type) | Policer Type. Allowed Values: `1R2C` or `2R3C`. | `string` | `"1R2C"` | no |
 | <a name="input_mode"></a> [mode](#input\_mode) | Policer Mode.  Allowed Values: `bit` or `packet`. | `string` | `"bit"` | no |
 | <a name="input_sharing_mode"></a> [sharing\_mode](#input\_sharing\_mode) | Policer sharing mode. Allowed Values: `shared` or `dedicated`. | `string` | `"dedicated"` | no |
-| <a name="input_pir"></a> [pir](#input\_pir) | Peak Information Rate (2R3C policer only). Allowed Values: A number between 0 and 4,398,046,510,080. | `number` | n/a | yes |
-| <a name="input_pir_unit"></a> [pir\_unit](#input\_pir\_unit) | Peak Rate Unit. Allowed Values: `unspecified`, `kilo`, `mega`, `giga`. | `string` | `"unspecified"` | no |
+| <a name="input_peak_rate"></a> [peak\_rate](#input\_peak\_rate) | Peak Information Rate (2R3C policer only). Allowed Values: A number between 0 and 4,398,046,510,080. | `number` | n/a | yes |
+| <a name="input_peak_rate_unit"></a> [peak\_rate\_unit](#input\_peak\_rate\_unit) | Peak Rate Unit. Allowed Values: `unspecified`, `kilo`, `mega`, `giga`. | `string` | `"unspecified"` | no |
 | <a name="input_rate"></a> [rate](#input\_rate) | Committed Information Rate. Allowed Values: A number between 0 and 4,398,046,510,080. | `number` | n/a | yes |
 | <a name="input_rate_unit"></a> [rate\_unit](#input\_rate\_unit) | Committed Rate Unit. Allowed Values: `unspecified`, `kilo`, `mega`, `giga`. | `string` | `"unspecified"` | no |
 | <a name="input_burst_excessive"></a> [burst\_excessive](#input\_burst\_excessive) | Excessive burst size (2R3C policer only). Allowed Values: `unspecified`, or a number between 0 and 549,755,813,760. | `string` | `"unspecified"` | no |

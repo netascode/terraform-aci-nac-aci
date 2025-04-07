@@ -2576,8 +2576,8 @@ locals {
         violate_action       = try(policy.violate_action, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_action)
         violate_mark_cos     = try(policy.violate_action == "mark", false) ? try(policy.violate_mark_cos, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_mark_cos) : null
         violate_mark_dscp    = try(policy.violate_action == "mark", false) ? try(policy.violate_mark_dscp, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_mark_dscp) : null
-        pir                  = try(policy.type == "2R3C", false) ? try(policy.pir, local.defaults.apic.tenants.policies.data_plane_policing_policies.pir) : null
-        pir_unit             = try(policy.type == "2R3C", false) ? try(policy.pir_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.pir_unit) : null
+        peak_rate            = try(policy.type == "2R3C", false) ? try(policy.peak_rate, local.defaults.apic.tenants.policies.data_plane_policing_policies.peak_rate) : null
+        peak_rate_unit       = try(policy.type == "2R3C", false) ? try(policy.peak_rate_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.peak_rate_unit) : null
         burst_excessive      = try(policy.type == "2R3C", false) ? try(policy.burst_excessive, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_excessive) : null
         burst_excessive_unit = try(policy.type == "2R3C", false) ? try(policy.burst_excessive_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_excessive_unit) : null
 
@@ -2609,8 +2609,8 @@ module "aci_tenant_data_plane_policing_policy" {
   violate_action       = each.value.violate_action
   violate_mark_cos     = each.value.violate_mark_cos
   violate_mark_dscp    = each.value.violate_mark_dscp
-  pir                  = each.value.pir
-  pir_unit             = each.value.pir_unit
+  peak_rate            = each.value.peak_rate
+  peak_rate_unit       = each.value.peak_rate_unit
   burst_excessive      = each.value.burst_excessive
   burst_excessive_unit = each.value.burst_excessive_unit
 

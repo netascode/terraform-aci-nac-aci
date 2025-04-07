@@ -51,6 +51,7 @@ resource "aci_rest_managed" "fvRsBd" {
 }
 
 resource "aci_rest_managed" "fvRsDppPol" {
+  count      = var.data_plane_policing_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.fvAEPg.dn}/rsdppPol"
   class_name = "fvRsDppPol"
   content = {
