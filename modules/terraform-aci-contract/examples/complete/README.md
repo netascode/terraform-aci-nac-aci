@@ -37,6 +37,26 @@ module "aci_contract" {
       log      = true
       no_stats = true
     }]
+    consumer_to_provider = {
+      service_graph = "SG1"
+      filters = [{
+        filter   = "FILTER1"
+        action   = "deny"
+        priority = "level1"
+        log      = true
+        no_stats = true
+      }]
+    }
+    provider_to_consumer = {
+      service_graph = "SG1"
+      filters = [{
+        filter   = "FILTER1"
+        action   = "deny"
+        priority = "level1"
+        log      = true
+        no_stats = true
+      }]
+    }
   }]
 }
 ```
