@@ -73,17 +73,6 @@ variable "target_dscp" {
   }
 }
 
-variable "direction" {
-  description = "Direction of contract subject."
-  type        = string
-  default     = "bi-directional"
-
-  validation {
-    condition     = contains(["bi-directional", "uni-directional"], var.direction)
-    error_message = "Valid values are `uni-directional`, `bi-directional`."
-  }
-}
-
 variable "subjects" {
   description = "List of contract subjects. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Choices `priority`: `default`, `level1`, `level2`, `level3`. Default value `priority`: `default`. Default value `log`: `false`. Default value `no_stats`: `false`. Choices `qos_class`: `unspecified`, `level1`, `level2`, `level3`, `level4`, `level5` or `level6`. Default value `qos_class`: `unspecified`. Choices `dscp_target` : `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6` `CS7` or a number between 0 and 63. Default value `dscp_target`: `unspecified`"
   type = list(object({
