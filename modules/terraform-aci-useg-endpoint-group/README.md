@@ -78,6 +78,23 @@ module "aci_useg_endpoint_group" {
     from            = "1.2.2.10"
     to              = "1.2.2.100"
   }]
+  consumer_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  consumer_useg_epg_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_useg_epg_labels = [{
+    name          = "Label01"
+    tag           = "black"
+    is_complement = false
+  }]
 }
 ```
 
@@ -124,6 +141,10 @@ module "aci_useg_endpoint_group" {
 | <a name="input_ip_statements"></a> [ip\_statements](#input\_ip\_statements) | IP Statements for IP type uSeg Attributes | <pre>list(object({<br>    name           = string<br>    use_epg_subnet = bool<br>    ip             = optional(string, "")<br>  }))</pre> | `[]` | no |
 | <a name="input_mac_statements"></a> [mac\_statements](#input\_mac\_statements) | MAC Statements for MAC type uSeg Attributes | <pre>list(object({<br>    name = string<br>    mac  = string<br>  }))</pre> | `[]` | no |
 | <a name="input_l4l7_address_pools"></a> [l4l7\_address\_pools](#input\_l4l7\_address\_pools) | List of EPG L4/L7 Address Pools. | <pre>list(object({<br>    name            = string<br>    gateway_address = string<br>    from            = optional(string, "")<br>    to              = optional(string, "")<br>  }))</pre> | `[]` | no |
+| <a name="input_provider_subject_labels"></a> [provider\_subject\_labels](#input\_provider\_subject\_labels) | List of Provided subject labels. | <pre>list(object({<br>    name = string<br>    tag  = string<br>  }))</pre> | `[]` | no |
+| <a name="input_consumer_subject_labels"></a> [consumer\_subject\_labels](#input\_consumer\_subject\_labels) | List of Consumed subject labels. | <pre>list(object({<br>    name = string<br>    tag  = string<br>  }))</pre> | `[]` | no |
+| <a name="input_provider_useg_epg_labels"></a> [provider\_useg\_epg\_labels](#input\_provider\_useg\_epg\_labels) | List of Provided EPG labels. | <pre>list(object({<br>    name          = string<br>    tag           = string<br>    is_complement = optional(bool, false)<br>  }))</pre> | `[]` | no |
+| <a name="input_consumer_useg_epg_labels"></a> [consumer\_useg\_epg\_labels](#input\_consumer\_useg\_epg\_labels) | List of Consumed EPG labels. | <pre>list(object({<br>    name = string<br>    tag  = string<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -164,4 +185,8 @@ module "aci_useg_endpoint_group" {
 | [aci_rest_managed.ipNexthopEpP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.tagInst](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsAddrInst](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vzConsLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vzConsSubjLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vzProvLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vzProvSubjLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

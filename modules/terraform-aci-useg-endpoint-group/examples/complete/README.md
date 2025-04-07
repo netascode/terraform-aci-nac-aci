@@ -81,6 +81,23 @@ module "aci_useg_endpoint_group" {
     from            = "1.2.2.10"
     to              = "1.2.2.100"
   }]
+  consumer_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_subject_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  consumer_useg_epg_labels = [{
+    name = "Label01"
+    tag  = "black"
+  }]
+  provider_useg_epg_labels = [{
+    name          = "Label01"
+    tag           = "black"
+    is_complement = false
+  }]
 }
 ```
 <!-- END_TF_DOCS -->
