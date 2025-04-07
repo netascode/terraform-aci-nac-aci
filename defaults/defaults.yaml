@@ -494,8 +494,8 @@ defaults:
           mode: bit
           sharing_mode: dedicated
           rate: 0
-          pir: 0
-          pir_unit: unspecified
+          peak_rate: 0
+          peak_rate_unit: unspecified
           rate_unit: unspecified
           burst_excessive: unspecified
           burst_excessive_unit: unspecified
@@ -1206,8 +1206,8 @@ defaults:
           mode: bit
           sharing_mode: dedicated
           rate: 0
-          pir: 0
-          pir_unit: unspecified
+          peak_rate: 0
+          peak_rate_unit: unspecified
           rate_unit: unspecified
           burst_excessive: unspecified
           burst_excessive_unit: unspecified
