@@ -898,12 +898,12 @@ locals {
           description = try(route_map.description, "")
           type        = try(route_map.type, local.defaults.apic.tenants.l3outs.route_maps.type)
           contexts = [for context in try(route_map.contexts, []) : {
-              name        = "${context.name}${local.defaults.apic.tenants.l3outs.route_maps.contexts.name_suffix}"
-              description = try(context.description, "")
-              action      = try(context.action, local.defaults.apic.tenants.l3outs.route_maps.contexts.action)
-              order       = try(context.order, local.defaults.apic.tenants.l3outs.route_maps.contexts.order)
-              set_rule    = try("${context.set_rule}${local.defaults.apic.tenants.policies.set_rules.name_suffix}", "")
-              match_rules = [for rule in try(context.match_rules, []) : "${rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}"]
+            name        = "${context.name}${local.defaults.apic.tenants.l3outs.route_maps.contexts.name_suffix}"
+            description = try(context.description, "")
+            action      = try(context.action, local.defaults.apic.tenants.l3outs.route_maps.contexts.action)
+            order       = try(context.order, local.defaults.apic.tenants.l3outs.route_maps.contexts.order)
+            set_rule    = try("${context.set_rule}${local.defaults.apic.tenants.policies.set_rules.name_suffix}", "")
+            match_rules = [for rule in try(context.match_rules, []) : "${rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}"]
             }
           ]
           }
@@ -956,10 +956,7 @@ module "aci_l3out" {
   export_route_map_description            = each.value.export_route_map_description
   export_route_map_type                   = each.value.export_route_map_type
   export_route_map_contexts               = each.value.export_route_map_contexts
-  route_maps_name                         = each.value.route_maps_name
-  route_maps_description                  = each.value.route_maps_description
-  route_maps_type                         = each.value.route_maps_type
-  route_maps_contexts                     = each.value.route_maps_contexts
+  route_maps                              = each.value.route_maps
 
   depends_on = [
     module.aci_tenant,
