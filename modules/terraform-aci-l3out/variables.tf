@@ -451,9 +451,8 @@ variable "export_route_map_contexts" {
   }
 }
 
-
 variable "route_maps_name" {
-  description = "Import/Export Route Map Names. Default value: `default-import`"
+  description = "Route map names."
   type = list(object({
     name        = string
     description = optional(string, "")
@@ -469,7 +468,7 @@ variable "route_maps_name" {
 }
 
 variable "route_maps_description" {
-  description = "route maps description."
+  description = "Route maps description."
   type        = string
   default     = ""
 
@@ -484,7 +483,7 @@ variable "route_maps_description" {
 }
 
 variable "route_maps_type" {
-  description = "route maps type. Choices: `combinable`, `global`."
+  description = "Route maps type. Choices: `combinable`, `global`."
   type        = string
   default     = "combinable"
 
@@ -498,7 +497,7 @@ variable "route_maps_type" {
 }
 
 variable "route_maps_contexts" {
-  description = "List of import route map contexts. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Allowed values `order`: 0-9. Default value `order`: 0."
+  description = "List of route map contexts. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Allowed values `order`: 0-9. Default value `order`: 0."
   type = list(object({
     name        = string
     description = optional(string, "")

@@ -122,10 +122,9 @@ resource "aci_rest_managed" "rtctrlRsCtxPToSubjP_import" {
     tnRtctrlSubjPName = each.value.match_rule
   }
 }
-
 resource "aci_rest_managed" "rtctrlCtxP_route_maps" {
   for_each   = { for context in var.route_maps_contexts : context.name => context }
-  dn         = "${aci_rest_managed.rtctrlCtxP_route_maps[0].dn}/prof-${var.route_maps_name}"
+  dn         = "${aci_rest_managed.rtctrlProfile_route_maps[0].dn}/ctx-${each.value.name}" 
   class_name = "rtctrlCtxP"
   content = {
     name  = each.value.name
@@ -133,13 +132,48 @@ resource "aci_rest_managed" "rtctrlCtxP_route_maps" {
     type  = each.value.type
   }
 }
-
+resource "aci_rest_managed" "rtctrlProfile_route_maps" {
+  count      = length(var.route_maps_contexts) > 0 ? 1 : 0
+  dn         = "${aci_rest_managed.l3extOut.dn}/prof-${var.route_maps_name}"
+  class_name = "rtctrlProfile"
+  content = {
+    name  = var.route_maps_name
+    descr = var.route_maps_description
+    type  = var.route_maps_type
+  }
+}
 resource "aci_rest_managed" "rtctrlScope_route_maps" {
   for_each   = { for context in var.route_maps_contexts : context.name => context if context.set_rule != null && context.set_rule != "" }
   dn         = "${aci_rest_managed.rtctrlCtxP_route_maps[each.value.name].dn}/scp"
   class_name = "rtctrlScope"
 }
-
+resource "aci_rest_managed" "rtctrlRsScopeToAttrP_route_maps" {
+  for_each   = { for context in var.route_maps_contexts : context.name => context if context.set_rule != null && context.set_rule != "" }
+  dn         = "${aci_rest_managed.rtctrlScope_route_maps[each.value.name].dn}/rsScopeToAttrP"
+  class_name = "rtctrlRsScopeToAttrP"
+  content = {
+    tnRtctrlAttrPName = each.value.set_rule
+  }
+}
+locals {
+  route_maps_match_rules = flatten([
+    for context in try(var.route_maps_contexts, []) : [
+      for rule in try(context.match_rules, []) : {
+        id         = "${context.name}-${rule}"
+        context    = context.name
+        match_rule = rule
+      }
+    ]
+  ])
+}
+resource "aci_rest_managed" "rtctrlRsCtxPToSubjP_route_maps" {
+  for_each   = { for match_rules in local.route_maps_match_rules : match_rules.id => match_rules }
+  dn         = "${aci_rest_managed.rtctrlCtxP_route_maps[each.value.context].dn}/rsctxPToSubjP-${each.value.match_rule}"
+  class_name = "rtctrlRsCtxPToSubjP"
+  content = {
+    tnRtctrlSubjPName = each.value.match_rule
+  }
+}
 resource "aci_rest_managed" "rtctrlProfile_export" {
   count      = length(var.export_route_map_contexts) > 0 ? 1 : 0
   dn         = "${aci_rest_managed.l3extOut.dn}/prof-${var.export_route_map_name}"
