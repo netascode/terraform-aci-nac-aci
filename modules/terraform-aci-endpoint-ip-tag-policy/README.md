@@ -43,7 +43,7 @@ module "aci_endpoint_ip_tag_policy" {
 | <a name="input_ip"></a> [ip](#input\_ip) | IP address. | `string` | n/a | yes |
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant Name. | `string` | n/a | yes |
 | <a name="input_vrf"></a> [vrf](#input\_vrf) | VRF Name. | `string` | `null` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | Policy Tags | <pre>list(object({<br>    key   = string<br>    value = string<br>  }))</pre> | `[]` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Policy Tags | <pre>list(object({<br/>    key   = string<br/>    value = string<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
