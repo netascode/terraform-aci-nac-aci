@@ -894,18 +894,18 @@ locals {
           match_rules = [for rule in try(context.match_rules, []) : "${rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}"]
         }]
         route_maps = [for route_map in try(l3out.route_maps, []) : {
-            name        = route_map.name
-            description = try(route_map.description, "")
-            type        = try(route_map.type, local.defaults.apic.tenants.l3outs.route_maps.type)
-            contexts = [for context in try(route_map.contexts, []) : {
-                name        = "${context.name}${local.defaults.apic.tenants.l3outs.route_maps.contexts.name_suffix}"
-                description = try(context.description, "")
-                action      = try(context.action, local.defaults.apic.tenants.l3outs.route_maps.contexts.action)
-                order       = try(context.order, local.defaults.apic.tenants.l3outs.route_maps.contexts.order)
-                set_rule    = try("${context.set_rule}${local.defaults.apic.tenants.policies.set_rules.name_suffix}", "")
-                match_rules = [for rule in try(context.match_rules, []) : "${rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}"]
-              }
-            ]
+          name        = route_map.name
+          description = try(route_map.description, "")
+          type        = try(route_map.type, local.defaults.apic.tenants.l3outs.route_maps.type)
+          contexts = [for context in try(route_map.contexts, []) : {
+              name        = "${context.name}${local.defaults.apic.tenants.l3outs.route_maps.contexts.name_suffix}"
+              description = try(context.description, "")
+              action      = try(context.action, local.defaults.apic.tenants.l3outs.route_maps.contexts.action)
+              order       = try(context.order, local.defaults.apic.tenants.l3outs.route_maps.contexts.order)
+              set_rule    = try("${context.set_rule}${local.defaults.apic.tenants.policies.set_rules.name_suffix}", "")
+              match_rules = [for rule in try(context.match_rules, []) : "${rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}"]
+            }
+          ]
           }
         ]
       }
