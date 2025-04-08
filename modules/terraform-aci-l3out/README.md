@@ -122,6 +122,7 @@ module "aci_l3out" {
 | <a name="input_export_route_map_description"></a> [export\_route\_map\_description](#input\_export\_route\_map\_description) | Import route map description. | `string` | `""` | no |
 | <a name="input_export_route_map_type"></a> [export\_route\_map\_type](#input\_export\_route\_map\_type) | Import route map type. Choices: `combinable`, `global`. | `string` | `"combinable"` | no |
 | <a name="input_export_route_map_contexts"></a> [export\_route\_map\_contexts](#input\_export\_route\_map\_contexts) | List of export route map contexts. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Allowed values `order`: 0-9. Default value `order`: 0. | <pre>list(object({<br/>    name        = string<br/>    description = optional(string, "")<br/>    action      = optional(string, "permit")<br/>    order       = optional(number, 0)<br/>    set_rule    = optional(string)<br/>    match_rules = optional(list(string), [])<br/>  }))</pre> | `[]` | no |
+| <a name="input_route_maps"></a> [route\_maps](#input\_route\_maps) | List of route maps | <pre>list(object({<br>    name        = string<br>    description = optional(string, "")<br>    type        = optional(string, "combinable")<br>    contexts = list(object({<br>      name        = string<br>      description = optional(string, "")<br>      action      = optional(string, "permit")<br>      order       = optional(number, 0)<br>      set_rule    = optional(string)<br>      match_rules = optional(list(string), [])<br>    }))<br>  }))</pre> | `[]` | no |
 | <a name="input_multipod"></a> [multipod](#input\_multipod) | Multipod L3out flag. | `bool` | `true` | no |
 | <a name="input_sr_mpls"></a> [sr\_mpls](#input\_sr\_mpls) | SR MPLS L3out flag. | `bool` | `false` | no |
 | <a name="input_sr_mpls_infra_l3outs"></a> [sr\_mpls\_infra\_l3outs](#input\_sr\_mpls\_infra\_l3outs) | SR MPLS Infra L3Outs. | <pre>list(object({<br/>    name                     = string<br/>    outbound_route_map       = optional(string, "")<br/>    inbound_route_map        = optional(string, "")<br/>    external_endpoint_groups = optional(list(string), [])<br/>  }))</pre> | `[]` | no |
@@ -159,12 +160,17 @@ module "aci_l3out" {
 | [aci_rest_managed.pimExtP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlCtxP_export](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlCtxP_import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.rtctrlCtxP_route_maps](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlProfile_export](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlProfile_import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.rtctrlProfile_route_maps](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlRsCtxPToSubjP_export](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlRsCtxPToSubjP_import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.rtctrlRsCtxPToSubjP_route_maps](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlRsScopeToAttrP_export](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlRsScopeToAttrP_import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.rtctrlRsScopeToAttrP_route_maps](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlScope_export](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlScope_import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.rtctrlScope_route_maps](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

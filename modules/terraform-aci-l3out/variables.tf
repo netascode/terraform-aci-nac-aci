@@ -451,6 +451,31 @@ variable "export_route_map_contexts" {
   }
 }
 
+variable "route_maps" {
+  description = "List of route maps"
+  type = list(object({
+    name        = string
+    description = optional(string, "")
+    type        = optional(string, "combinable")
+    contexts = list(object({
+      name        = string
+      description = optional(string, "")
+      action      = optional(string, "permit")
+      order       = optional(number, 0)
+      set_rule    = optional(string)
+      match_rules = optional(list(string), [])
+    }))
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for route_map in var.route_maps : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", route_map.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "multipod" {
   description = "Multipod L3out flag."
   type        = bool
