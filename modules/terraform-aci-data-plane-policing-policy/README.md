@@ -5,6 +5,7 @@ Manages Data Plane Policing Policies
 
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Interface` » `Data Plane Policing`
+`Tenants` » `Tenant Name` » `Policies` » `Protocol` » `Data Plane Policing`
 
 ## Examples
 

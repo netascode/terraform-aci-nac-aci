@@ -8,8 +8,8 @@ resource "aci_rest_managed" "qosDppPol" {
     type            = var.type
     mode            = var.mode
     sharingMode     = var.sharing_mode
-    peak_rate       = var.type == "2R3C" ? var.peak_rate : null
-    peak_rateUnit   = var.type == "2R3C" ? var.peak_rate_unit : null
+    pir             = var.type == "2R3C" ? var.peak_rate : null
+    pirUnit         = var.type == "2R3C" ? var.peak_rate_unit : null
     rate            = var.rate
     rateUnit        = var.rate_unit
     be              = var.type == "2R3C" ? var.burst_excessive : null
