@@ -452,18 +452,13 @@ variable "export_route_map_contexts" {
 }
 
 variable "route_maps_name" {
-  description = "Route map names."
-  type = list(object({
-    name        = string
-    description = optional(string, "")
-    type        = string
-  }))
-  default = []
+  description = "Route Map Name."
+  type        = string
+  default     = ""
+
   validation {
-    condition = alltrue([
-      for c in var.route_maps_name : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", c.name))
-    ])
-    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.route_maps_name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
