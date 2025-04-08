@@ -473,8 +473,6 @@ variable "route_maps_description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.route_maps_description))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
     condition = alltrue([
       for c in var.route_maps_names : c.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description)), false)
     ])
@@ -488,7 +486,6 @@ variable "route_maps_type" {
   default     = "combinable"
 
   validation {
-    condition     = contains(["combinable", "global"], var.route_maps_type)
     condition = alltrue([
       for c in var.route_maps_names : c.type == null || contains(["combinable", "global"], c.type)
     ])

@@ -124,7 +124,7 @@ resource "aci_rest_managed" "rtctrlRsCtxPToSubjP_import" {
 }
 resource "aci_rest_managed" "rtctrlCtxP_route_maps" {
   for_each   = { for context in var.route_maps_contexts : context.name => context }
-  dn         = "${aci_rest_managed.rtctrlProfile_route_maps[0].dn}/ctx-${each.value.name}" 
+  dn         = "${aci_rest_managed.rtctrlProfile_route_maps[0].dn}/ctx-${each.value.name}"
   class_name = "rtctrlCtxP"
   content = {
     name  = each.value.name
