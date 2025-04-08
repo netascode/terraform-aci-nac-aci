@@ -40,7 +40,7 @@ module "aci_link_level_policy" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Link level interface policy name. | `string` | n/a | yes |
-| <a name="input_link_delay_interval"></a> [link\_delay\_interval](#input\_link\_delay\_interval) | Link delay. Default value is set to 10ms | `number` | `null` | no |
+| <a name="input_link_delay_interval"></a> [link\_delay\_interval](#input\_link\_delay\_interval) | Link delay. | `number` | `null` | no |
 | <a name="input_link_debounce_interval"></a> [link\_debounce\_interval](#input\_link\_debounce\_interval) | Link debounce. Default value is set to 100ms | `number` | `100` | no |
 | <a name="input_speed"></a> [speed](#input\_speed) | Interface speed. Choices: `inherit`, `auto`, `100M`, `1G`, `10G`, `25G`, `40G`, `100G`, `400G`. | `string` | `"inherit"` | no |
 | <a name="input_auto"></a> [auto](#input\_auto) | Auto negotiation. | `bool` | `true` | no |

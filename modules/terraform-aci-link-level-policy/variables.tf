@@ -9,12 +9,12 @@ variable "name" {
 }
 
 variable "link_delay_interval" {
-  description = "Link delay. Default value is set to 10ms"
+  description = "Link delay."
   type        = number
   default     = null
 
   validation {
-    condition     = var.link_delay_interval >= 0 && var.link_delay_interval <= 10000
+    condition     = var.link_delay_interval == null ? true : var.link_delay_interval >= 0 && var.link_delay_interval <= 10000
     error_message = "The link delay should be at least 0ms and max 10000ms"
   }
 }
