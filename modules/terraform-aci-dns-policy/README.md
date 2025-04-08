@@ -47,8 +47,8 @@ module "aci_dns_policy" {
 | <a name="input_name"></a> [name](#input\_name) | DNS policy name. | `string` | n/a | yes |
 | <a name="input_mgmt_epg_type"></a> [mgmt\_epg\_type](#input\_mgmt\_epg\_type) | Management endpoint group type. | `string` | `"inb"` | no |
 | <a name="input_mgmt_epg_name"></a> [mgmt\_epg\_name](#input\_mgmt\_epg\_name) | Management endpoint group name. | `string` | `""` | no |
-| <a name="input_providers_"></a> [providers\_](#input\_providers\_) | List of DNS providers. Default value `preferred`: false. | <pre>list(object({<br>    ip        = string<br>    preferred = optional(bool, false)<br>  }))</pre> | `[]` | no |
-| <a name="input_domains"></a> [domains](#input\_domains) | List of domains. Default value `default`: false. | <pre>list(object({<br>    name    = string<br>    default = optional(bool, false)<br>  }))</pre> | `[]` | no |
+| <a name="input_providers_"></a> [providers\_](#input\_providers\_) | List of DNS providers. Default value `preferred`: false. | <pre>list(object({<br/>    ip        = string<br/>    preferred = optional(bool, false)<br/>  }))</pre> | `[]` | no |
+| <a name="input_domains"></a> [domains](#input\_domains) | List of domains. Default value `default`: false. | <pre>list(object({<br/>    name    = string<br/>    default = optional(bool, false)<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 

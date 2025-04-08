@@ -1,8 +1,9 @@
 resource "aci_rest_managed" "aaaLdapProvider" {
   for_each = { for prov in var.ldap_providers : prov.hostname_ip => prov }
 
-  dn         = "uni/userext/ldapext/ldapprovider-${each.key}"
-  class_name = "aaaLdapProvider"
+  dn          = "uni/userext/ldapext/ldapprovider-${each.key}"
+  class_name  = "aaaLdapProvider"
+  escape_html = false
   content = {
     name               = each.value.hostname_ip
     descr              = each.value.description

@@ -46,7 +46,7 @@ module "aci_snmp_trap_policy" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | SNMP trap policy name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
-| <a name="input_destinations"></a> [destinations](#input\_destinations) | List of destinations. Allowed values `port`: 0-65535. Default value `port`: 162. Choices `security`: `noauth`, `auth`, `priv`. Default value `security`: `noauth`. Choices `version`: `v1`, `v2c`, `v3`. Default value `version`: `v2c`. Choices `mgmt_epg_type`: `inb`, `oob`. Default value `mgmt_epg_type`: `inb`. | <pre>list(object({<br>    hostname_ip   = string<br>    port          = optional(number, 162)<br>    community     = string<br>    security      = optional(string, "noauth")<br>    version       = optional(string, "v2c")<br>    mgmt_epg_type = optional(string, "inb")<br>    mgmt_epg_name = optional(string)<br>  }))</pre> | `[]` | no |
+| <a name="input_destinations"></a> [destinations](#input\_destinations) | List of destinations. Allowed values `port`: 0-65535. Default value `port`: 162. Choices `security`: `noauth`, `auth`, `priv`. Default value `security`: `noauth`. Choices `version`: `v1`, `v2c`, `v3`. Default value `version`: `v2c`. Choices `mgmt_epg_type`: `inb`, `oob`. Default value `mgmt_epg_type`: `inb`. | <pre>list(object({<br/>    hostname_ip   = string<br/>    port          = optional(number, 162)<br/>    community     = string<br/>    security      = optional(string, "noauth")<br/>    version       = optional(string, "v2c")<br/>    mgmt_epg_type = optional(string, "inb")<br/>    mgmt_epg_name = optional(string)<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 

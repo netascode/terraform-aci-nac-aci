@@ -497,6 +497,8 @@ defaults:
         link_level_policies:
           name_suffix: ""
           speed: inherit
+          link_delay_interval: 0
+          link_debounce_interval: 100
           auto: true
           fec_mode: inherit
         port_channel_policies:

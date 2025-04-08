@@ -39,7 +39,7 @@ module "aci_rbac_node_rule" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_node_id"></a> [node\_id](#input\_node\_id) | Node ID. Minimum value: 101. Maximum value: 4000. | `number` | n/a | yes |
-| <a name="input_port_rules"></a> [port\_rules](#input\_port\_rules) | List of RBAC Port Rules for Node. | <pre>list(object({<br>    name   = string<br>    domain = string<br>  }))</pre> | n/a | yes |
+| <a name="input_port_rules"></a> [port\_rules](#input\_port\_rules) | List of RBAC Port Rules for Node. | <pre>list(object({<br/>    name   = string<br/>    domain = string<br/>  }))</pre> | n/a | yes |
 
 ## Outputs
 

@@ -8,6 +8,28 @@ variable "name" {
   }
 }
 
+variable "link_delay_interval" {
+  description = "Link delay."
+  type        = number
+  default     = null
+
+  validation {
+    condition     = var.link_delay_interval == null ? true : var.link_delay_interval >= 0 && var.link_delay_interval <= 10000
+    error_message = "The link delay should be at least 0ms and max 10000ms"
+  }
+}
+
+variable "link_debounce_interval" {
+  description = "Link debounce. Default value is set to 100ms"
+  type        = number
+  default     = 100
+
+  validation {
+    condition     = var.link_debounce_interval >= 0 && var.link_debounce_interval <= 5000
+    error_message = "The link debounce should be at least 0ms and max 5000ms"
+  }
+}
+
 variable "speed" {
   description = "Interface speed. Choices: `inherit`, `auto`, `100M`, `1G`, `10G`, `25G`, `40G`, `100G`, `400G`."
   type        = string
