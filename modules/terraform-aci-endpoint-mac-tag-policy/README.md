@@ -45,7 +45,7 @@ module "aci_endpoint_mac_tag_policy" {
 | <a name="input_bridge_domain"></a> [bridge\_domain](#input\_bridge\_domain) | Bridge domain name. | `string` | `"all"` | no |
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant Name. | `string` | n/a | yes |
 | <a name="input_vrf"></a> [vrf](#input\_vrf) | VRF Name. | `string` | `null` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | Policy Tags | <pre>list(object({<br>    key   = string<br>    value = string<br>  }))</pre> | `[]` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Policy Tags | <pre>list(object({<br/>    key   = string<br/>    value = string<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
