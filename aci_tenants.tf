@@ -1831,8 +1831,8 @@ locals {
             no_stats = try(filter.no_stats, local.defaults.apic.tenants.contracts.subjects.filters.no_stats)
           }]
           consumer_to_provider_service_graph = try("${subject.consumer_to_provider.service_graph}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}", null)
-          consumer_to_provider_qos_class     = try(subject.consumer_to_provider.qos_class, local.defaults.apic.tenants.contracts.subjects.consumer_to_provider.qos_class)
-          consumer_to_provider_target_dscp   = try(subject.consumer_to_provider.target_dscp, local.defaults.apic.tenants.contracts.subjects.consumer_to_provider.target_dscp)
+          consumer_to_provider_qos_class     = try(subject.consumer_to_provider.qos_class, local.defaults.apic.tenants.contracts.subjects.qos_class)
+          consumer_to_provider_target_dscp   = try(subject.consumer_to_provider.target_dscp, local.defaults.apic.tenants.contracts.subjects.target_dscp)
           consumer_to_provider_filters = [for filter in try(subject.consumer_to_provider.filters, []) : {
             filter   = "${filter.filter}${local.defaults.apic.tenants.filters.name_suffix}"
             action   = try(filter.action, local.defaults.apic.tenants.contracts.subjects.filters.action)
@@ -1841,8 +1841,8 @@ locals {
             no_stats = try(filter.no_stats, local.defaults.apic.tenants.contracts.subjects.filters.no_stats)
           }]
           provider_to_consumer_service_graph = try("${subject.provider_to_consumer.service_graph}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}", null)
-          provider_to_consumer_qos_class     = try(subject.provider_to_consumer.qos_class, local.defaults.apic.tenants.contracts.subjects.provider_to_consumer.qos_class)
-          provider_to_consumer_target_dscp   = try(subject.provider_to_consumer.target_dscp, local.defaults.apic.tenants.contracts.subjects.provider_to_consumer.target_dscp)
+          provider_to_consumer_qos_class     = try(subject.provider_to_consumer.qos_class, local.defaults.apic.tenants.contracts.subjects.qos_class)
+          provider_to_consumer_target_dscp   = try(subject.provider_to_consumer.target_dscp, local.defaults.apic.tenants.contracts.subjects.target_dscp)
           provider_to_consumer_filters = [for filter in try(subject.provider_to_consumer.filters, []) : {
             filter   = "${filter.filter}${local.defaults.apic.tenants.filters.name_suffix}"
             action   = try(filter.action, local.defaults.apic.tenants.contracts.subjects.filters.action)

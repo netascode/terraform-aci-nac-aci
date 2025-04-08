@@ -1170,12 +1170,6 @@ defaults:
           target_dscp: unspecified
           reverse_filter_ports: true
           direction: bi-directional
-          consumer_to_provider:
-            qos_class: unspecified
-            target_dscp: unspecified
-          provider_to_consumer:
-            qos_class: unspecified
-            target_dscp: unspecified
           filters:
             action: permit
             priority: default
