@@ -68,14 +68,14 @@ resource "aci_rest_managed" "vzSubj" {
     name        = each.value.name
     nameAlias   = each.value.alias
     descr       = each.value.description
-    revFltPorts = each.value.direction == "bi-directional" ? (each.value.reverse_filter_ports ? "yes" : "no") : "no"
+    revFltPorts = each.value.direction == "bidirectional" ? (each.value.reverse_filter_ports ? "yes" : "no") : "no"
     prio        = each.value.qos_class
     targetDscp  = each.value.target_dscp
   }
 }
 
 resource "aci_rest_managed" "vzRsSubjFiltAtt" {
-  for_each   = { for filter in local.subj_filter_list : filter.id => filter if filter.subjDirection == "bi-directional" }
+  for_each   = { for filter in local.subj_filter_list : filter.id => filter if filter.subjDirection == "bidirectional" }
   dn         = "${aci_rest_managed.vzSubj[each.value.subj].dn}/rssubjFiltAtt-${each.value.filter}"
   class_name = "vzRsSubjFiltAtt"
   content = {
@@ -87,7 +87,7 @@ resource "aci_rest_managed" "vzRsSubjFiltAtt" {
 }
 
 resource "aci_rest_managed" "vzRsSubjGraphAtt" {
-  for_each   = { for subj in var.subjects : subj.name => subj if subj.service_graph != null && subj.direction == "bi-directional" }
+  for_each   = { for subj in var.subjects : subj.name => subj if subj.service_graph != null && subj.direction == "bidirectional" }
   dn         = "${aci_rest_managed.vzSubj[each.key].dn}/rsSubjGraphAtt"
   class_name = "vzRsSubjGraphAtt"
   content = {

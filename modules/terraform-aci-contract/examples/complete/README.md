@@ -37,26 +37,36 @@ module "aci_contract" {
       log      = true
       no_stats = true
     }]
-    consumer_to_provider = {
-      service_graph = "SG1"
-      filters = [{
-        filter   = "FILTER1"
-        action   = "deny"
-        priority = "level1"
-        log      = true
-        no_stats = true
-      }]
-    }
-    provider_to_consumer = {
-      service_graph = "SG1"
-      filters = [{
-        filter   = "FILTER1"
-        action   = "deny"
-        priority = "level1"
-        log      = true
-        no_stats = true
-      }]
-    }
+    },
+    {
+      name                 = "SUB2"
+      alias                = "SUB2-ALIAS"
+      description          = "Subject Description"
+      service_graph        = "SG1"
+      qos_class            = "level5"
+      target_dscp          = "CS1"
+      direciton            = "unidirectional"
+      reverse_filter_ports = false
+      consumer_to_provider = {
+        service_graph = "SG1"
+        filters = [{
+          filter   = "FILTER1"
+          action   = "deny"
+          priority = "level1"
+          log      = true
+          no_stats = true
+        }]
+      }
+      provider_to_consumer = {
+        service_graph = "SG1"
+        filters = [{
+          filter   = "FILTER1"
+          action   = "deny"
+          priority = "level1"
+          log      = true
+          no_stats = true
+        }]
+      }
   }]
 }
 ```

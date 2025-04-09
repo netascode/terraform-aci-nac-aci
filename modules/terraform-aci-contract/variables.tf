@@ -80,7 +80,7 @@ variable "subjects" {
     alias                = optional(string, "")
     description          = optional(string, "")
     reverse_filter_ports = optional(bool, true)
-    direction            = optional(string, "bi-directional")
+    direction            = optional(string, "bidirectional")
     service_graph        = optional(string)
     qos_class            = optional(string, "unspecified")
     target_dscp          = optional(string, "unspecified")
@@ -273,8 +273,8 @@ variable "subjects" {
   validation {
     condition = alltrue([
       for s in var.subjects :
-      (s.direction == "bi-directional" ||
-      (s.direction != "bi-directional" && !s.reverse_filter_ports))
+      (s.direction == "bidirectional" ||
+      (s.direction != "bidirectional" && !s.reverse_filter_ports))
     ])
     error_message = "`reverse_filter_ports` must be set to `false` if direction value is `uni-directional`."
   }
