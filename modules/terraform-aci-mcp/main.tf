@@ -1,6 +1,7 @@
 resource "aci_rest_managed" "mcpInstPol" {
-  dn         = "uni/infra/mcpInstP-default"
-  class_name = "mcpInstPol"
+  dn          = "uni/infra/mcpInstP-default"
+  class_name  = "mcpInstPol"
+  escape_html = false
   content = {
     adminSt        = var.admin_state == true ? "enabled" : "disabled"
     ctrl           = var.per_vlan == true ? "pdu-per-vlan" : ""

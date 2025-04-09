@@ -293,12 +293,14 @@ module "aci_lldp_policy" {
 module "aci_link_level_policy" {
   source = "./modules/terraform-aci-link-level-policy"
 
-  for_each            = { for llp in try(local.access_policies.interface_policies.link_level_policies, []) : llp.name => llp if local.modules.aci_link_level_policy && var.manage_access_policies }
-  name                = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}"
-  speed               = try(each.value.speed, local.defaults.apic.access_policies.interface_policies.link_level_policies.speed)
-  auto                = try(each.value.auto, local.defaults.apic.access_policies.interface_policies.link_level_policies.auto)
-  fec_mode            = try(each.value.fec_mode, local.defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode)
-  physical_media_type = try(each.value.physical_media_type, null)
+  for_each               = { for llp in try(local.access_policies.interface_policies.link_level_policies, []) : llp.name => llp if local.modules.aci_link_level_policy && var.manage_access_policies }
+  name                   = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}"
+  speed                  = try(each.value.speed, local.defaults.apic.access_policies.interface_policies.link_level_policies.speed)
+  link_delay_interval    = try(each.value.link_delay_interval, null)
+  link_debounce_interval = try(each.value.link_debounce_interval, local.defaults.apic.access_policies.interface_policies.link_level_policies.link_debounce_interval)
+  auto                   = try(each.value.auto, local.defaults.apic.access_policies.interface_policies.link_level_policies.auto)
+  fec_mode               = try(each.value.fec_mode, local.defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode)
+  physical_media_type    = try(each.value.physical_media_type, null)
 }
 
 module "aci_macsec_parameters_policy" {
@@ -480,15 +482,17 @@ module "aci_access_leaf_interface_policy_group" {
 module "aci_access_spine_interface_policy_group" {
   source = "./modules/terraform-aci-access-spine-interface-policy-group"
 
-  for_each          = { for pg in try(local.access_policies.spine_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_interface_policy_group && var.manage_access_policies }
-  name              = "${each.value.name}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}"
-  link_level_policy = try("${each.value.link_level_policy}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}", "")
-  cdp_policy        = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
-  aaep              = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
+  for_each                = { for pg in try(local.access_policies.spine_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_interface_policy_group && var.manage_access_policies }
+  name                    = "${each.value.name}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}"
+  link_level_policy       = try("${each.value.link_level_policy}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}", "")
+  cdp_policy              = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
+  macsec_interface_policy = try("${each.value.macsec_interface_policy}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.name_suffix}", "")
+  aaep                    = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
 
   depends_on = [
     module.aci_link_level_policy,
     module.aci_cdp_policy,
+    module.aci_macsec_interfaces_policy,
     module.aci_aaep,
   ]
 }

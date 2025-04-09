@@ -1,7 +1,8 @@
 resource "aci_rest_managed" "l3extOut" {
-  dn         = "uni/tn-${var.tenant}/out-${var.name}"
-  class_name = "l3extOut"
-  annotation = var.annotation
+  dn          = "uni/tn-${var.tenant}/out-${var.name}"
+  class_name  = "l3extOut"
+  annotation  = var.annotation
+  escape_html = false
   content = var.sr_mpls == true ? {
     name          = var.name
     descr         = var.description
@@ -15,10 +16,6 @@ resource "aci_rest_managed" "l3extOut" {
     nameAlias     = var.alias
     targetDscp    = var.target_dscp
     enforceRtctrl = join(",", concat(var.export_route_control_enforcement == true ? ["export"] : [], var.import_route_control_enforcement == true ? ["import"] : []))
-  }
-
-  lifecycle {
-    ignore_changes = [annotation]
   }
 }
 
@@ -64,10 +61,6 @@ resource "aci_rest_managed" "l3extRsEctx" {
   annotation = var.annotation
   content = {
     tnFvCtxName = var.vrf
-  }
-
-  lifecycle {
-    ignore_changes = [annotation]
   }
 }
 
