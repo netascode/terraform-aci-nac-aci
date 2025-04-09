@@ -476,13 +476,13 @@ variable "route_maps" {
   }
   validation {
     condition = alltrue([
-      for route_map in var.route_maps : route_map.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", route_map.description), false)
+      for route_map in var.route_maps : route_map.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", route_map.description)), false)
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
   validation {
     condition = alltrue([
-      for route_map in var.route_maps : route_map.type == null || contains(["combinable", "global"], route_map.type)
+      for route_map in var.route_maps : route_map.type == null || try(contains(["combinable", "global"], route_map.type), false)
     ])
     error_message = "`type`: Allowed values are `combinable` or `global`."
   }
