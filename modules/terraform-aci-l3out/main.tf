@@ -192,7 +192,7 @@ locals {
 
 resource "aci_rest_managed" "rtctrlRsCtxPToSubjP" {
   for_each   = { for match_rules in local.route_maps_match_rules : match_rules.id => match_rules }
-  dn         = "${aci_rest_managed.rtctrlCtxP_route_maps[each.value.context].dn}/rsctxPToSubjP-${each.value.match_rule}"
+  dn         = "${aci_rest_managed.rtctrlCtxP[each.value.context].dn}/rsctxPToSubjP-${each.value.match_rule}"
   class_name = "rtctrlRsCtxPToSubjP"
   content = {
     tnRtctrlSubjPName = each.value.match_rule
