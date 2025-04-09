@@ -894,7 +894,7 @@ locals {
           match_rules = [for rule in try(context.match_rules, []) : "${rule}${local.defaults.apic.tenants.policies.match_rules.name_suffix}"]
         }]
         route_maps = [for route_map in try(l3out.route_maps, []) : {
-          name        = route_map.name
+          name        = "${route_map.name}${local.defaults.apic.tenants.l3outs.route_maps.name_suffix}"
           description = try(route_map.description, "")
           type        = try(route_map.type, local.defaults.apic.tenants.l3outs.route_maps.type)
           contexts = [for context in try(route_map.contexts, []) : {
