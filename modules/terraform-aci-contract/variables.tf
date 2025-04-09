@@ -276,16 +276,16 @@ variable "subjects" {
       (s.direction == "bidirectional" ||
       (s.direction != "bidirectional" && !s.reverse_filter_ports))
     ])
-    error_message = "`reverse_filter_ports` must be set to `false` if direction value is `uni-directional`."
+    error_message = "`reverse_filter_ports` must be set to `false` if direction value is `unidirectional`."
   }
 
   validation {
     condition = alltrue([
       for s in var.subjects :
-      (s.direction == "uni-directional" ||
-      (s.direction != "uni-directional" && (length(s.consumer_to_provider_filters) + length(s.provider_to_consumer_filters) == 0)))
+      (s.direction == "unidirectional" ||
+      (s.direction != "unidirectional" && (length(s.consumer_to_provider_filters) + length(s.provider_to_consumer_filters) == 0)))
     ])
-    error_message = "`direction` must be set to `uni-directional` if consumer_to_provider/provider_to_consumer filters are defined`."
+    error_message = "`direction` must be set to `unidirectional` if consumer_to_provider/provider_to_consumer filters are defined`."
   }
 
 }

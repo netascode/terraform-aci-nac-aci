@@ -96,7 +96,7 @@ resource "aci_rest_managed" "vzRsSubjGraphAtt" {
 }
 
 resource "aci_rest_managed" "vzInTerm" {
-  for_each   = { for subj in var.subjects : subj.name => subj if subj.direction == "uni-directional" }
+  for_each   = { for subj in var.subjects : subj.name => subj if subj.direction == "unidirectional" }
   dn         = "${aci_rest_managed.vzSubj[each.key].dn}/intmnl"
   class_name = "vzInTerm"
   content = {
@@ -106,7 +106,7 @@ resource "aci_rest_managed" "vzInTerm" {
 }
 
 resource "aci_rest_managed" "vzOutTerm" {
-  for_each   = { for subj in var.subjects : subj.name => subj if subj.direction == "uni-directional" }
+  for_each   = { for subj in var.subjects : subj.name => subj if subj.direction == "unidirectional" }
   dn         = "${aci_rest_managed.vzSubj[each.key].dn}/outtmnl"
   class_name = "vzOutTerm"
   content = {
@@ -116,7 +116,7 @@ resource "aci_rest_managed" "vzOutTerm" {
 }
 
 resource "aci_rest_managed" "vzRsFiltAtt_ctp" {
-  for_each   = { for filter in local.subj_filter_list_ctp : filter.id => filter if filter.subjDirection == "uni-directional" }
+  for_each   = { for filter in local.subj_filter_list_ctp : filter.id => filter if filter.subjDirection == "unidirectional" }
   dn         = "${aci_rest_managed.vzInTerm[each.value.subj].dn}/rsfiltAtt-${each.value.filter}"
   class_name = "vzRsFiltAtt"
   content = {
@@ -128,7 +128,7 @@ resource "aci_rest_managed" "vzRsFiltAtt_ctp" {
 }
 
 resource "aci_rest_managed" "vzRsFiltAtt_ptc" {
-  for_each   = { for filter in local.subj_filter_list_ptc : filter.id => filter if filter.subjDirection == "uni-directional" }
+  for_each   = { for filter in local.subj_filter_list_ptc : filter.id => filter if filter.subjDirection == "unidirectional" }
   dn         = "${aci_rest_managed.vzOutTerm[each.value.subj].dn}/rsfiltAtt-${each.value.filter}"
   class_name = "vzRsFiltAtt"
   content = {
@@ -140,7 +140,7 @@ resource "aci_rest_managed" "vzRsFiltAtt_ptc" {
 }
 
 resource "aci_rest_managed" "vzRsInTermGraphAtt" {
-  for_each   = { for subj in var.subjects : subj.name => subj if subj.consumer_to_provider_service_graph != null && subj.direction == "uni-directional" }
+  for_each   = { for subj in var.subjects : subj.name => subj if subj.consumer_to_provider_service_graph != null && subj.direction == "unidirectional" }
   dn         = "${aci_rest_managed.vzInTerm[each.key].dn}/rsInTermGraphAtt"
   class_name = "vzRsInTermGraphAtt"
   content = {
@@ -149,7 +149,7 @@ resource "aci_rest_managed" "vzRsInTermGraphAtt" {
 }
 
 resource "aci_rest_managed" "vzRsOutTermGraphAtt" {
-  for_each   = { for subj in var.subjects : subj.name => subj if subj.provider_to_consumer_service_graph != null && subj.direction == "uni-directional" }
+  for_each   = { for subj in var.subjects : subj.name => subj if subj.provider_to_consumer_service_graph != null && subj.direction == "unidirectional" }
   dn         = "${aci_rest_managed.vzOutTerm[each.key].dn}/rsOutTermGraphAtt"
   class_name = "vzRsOutTermGraphAtt"
   content = {
