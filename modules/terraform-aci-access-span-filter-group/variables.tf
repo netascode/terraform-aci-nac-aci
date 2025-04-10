@@ -22,7 +22,7 @@ variable "description" {
 variable "entries" {
   description = "Access SPAN Filter Group entries. Allowed values `ip_protocol`: `unspecified`, `icmp`, `igmp`, `tcp`, `egp`, `igp`, `udp`, `icmpv6`, `eigrp`, `ospfigp`, `pim`, `l2tp` or a number between 0 and 255. Default value `protocol`: `tcp`. Allowed values `destination_from_port`, `destination_to_port`, `destination_from_port`, `source_from_port`: `source_to_port`, `dns`, `ftpData`, `http`, `https`, `pop3`, `rtsp`, `smtp`, `ssh` or a number between 0 and 65535. Default value `source_from_port`, `source_to_port`, `destination_from_port`, `destination_to_port`: `unspecified`."
   type = list(object({
-    name                  = string
+    name                  = optional(string, "")
     description           = optional(string, "")
     destination_ip        = string
     destination_from_port = optional(string, "unspecified")
