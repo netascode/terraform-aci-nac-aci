@@ -25,33 +25,33 @@ module "aci_contract" {
     }]
     },
     {
-      name                 = "SUB2"
-      alias                = "SUB2-ALIAS"
-      description          = "Subject Description"
-      service_graph        = "SG1"
-      qos_class            = "level5"
-      target_dscp          = "CS1"
-      direciton            = "unidirectional"
-      reverse_filter_ports = false
-      consumer_to_provider = {
-        service_graph = "SG1"
-        filters = [{
-          filter   = "FILTER1"
-          action   = "deny"
-          priority = "level1"
-          log      = true
-          no_stats = true
-        }]
-      }
-      provider_to_consumer = {
-        service_graph = "SG1"
-        filters = [{
-          filter   = "FILTER1"
-          action   = "deny"
-          priority = "level1"
-          log      = true
-          no_stats = true
-        }]
-      }
+      name                               = "SUB2"
+      alias                              = "SUB2-ALIAS"
+      description                        = "Subject Description"
+      service_graph                      = "SG1"
+      qos_class                          = "level5"
+      target_dscp                        = "CS1"
+      direciton                          = "unidirectional"
+      reverse_filter_ports               = false
+      consumer_to_provider_service_graph = "SG1"
+      consumer_to_provider_qos           = "level5"
+      consumer_to_provider_dscp          = "CS1"
+      consumer_to_provider_filters = [{
+        filter   = "FILTER1"
+        action   = "deny"
+        priority = "level1"
+        log      = true
+        no_stats = true
+      }]
+      provider_to_consumer_service_graph = "SG1"
+      provider_to_consumer_qos           = "level5"
+      provider_to_consumer_dscp          = "CS1"
+      provider_to_consumer_filters = [{
+        filter   = "FILTER1"
+        action   = "deny"
+        priority = "level1"
+        log      = true
+        no_stats = true
+      }]
   }]
 }
