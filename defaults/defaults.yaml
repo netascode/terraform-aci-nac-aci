@@ -1454,6 +1454,13 @@ defaults:
           weight_down: 1
         endpoint_mac_tags:
           bridge_domain: all
+        endpoint_retention_policies:
+          name_suffix: ""
+          hold_interval: 300
+          bounce_entry_aging: 630
+          local_endpoint_aging: 900
+          remote_endpoint_aging: 300
+          move_frequrency: 256
       services:
         l4l7_devices:
           name_suffix: ""

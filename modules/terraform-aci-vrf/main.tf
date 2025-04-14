@@ -561,3 +561,12 @@ resource "aci_rest_managed" "fvRtSummSubnet" {
     }
   }
 }
+
+resource "aci_rest_managed" "fvRsCtxToEpRet" {
+  count      = var.endpoint_retention_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvCtx.dn}/rsctxToEpRet"
+  class_name = "fvRsCtxToEpRet"
+  content = {
+    tnFvEpRetPolName = var.endpoint_retention_policy
+  }
+}

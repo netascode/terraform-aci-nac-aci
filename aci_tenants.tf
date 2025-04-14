@@ -27,6 +27,7 @@ locals {
         contract_imported_consumers             = try([for contract in vrf.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
         preferred_group                         = try(vrf.preferred_group, local.defaults.apic.tenants.vrfs.preferred_group)
         transit_route_tag_policy                = try(vrf.transit_route_tag_policy, null) != null ? "${vrf.transit_route_tag_policy}${local.defaults.apic.tenants.policies.route_tag_policies.name_suffix}" : ""
+        endpoint_retention_policy               = try("${vrf.endpoint_retention_policy}${local.defaults.apic.tenants.policies.endpoint_retention_policies.name_suffix}", "")
         ospf_timer_policy                       = try("${vrf.ospf.timer_policy}${local.defaults.apic.tenants.policies.ospf_timer_policies.name_suffix}", "")
         ospf_ipv4_address_family_context_policy = try("${vrf.ospf.ipv4_address_family_context_policy}${local.defaults.apic.tenants.policies.ospf_timer_policies.name_suffix}", "")
         ospf_ipv6_address_family_context_policy = try("${vrf.ospf.ipv6_address_family_context_policy}${local.defaults.apic.tenants.policies.ospf_timer_policies.name_suffix}", "")
@@ -127,6 +128,7 @@ module "aci_vrf" {
   contract_imported_consumers              = each.value.contract_imported_consumers
   preferred_group                          = each.value.preferred_group
   transit_route_tag_policy                 = each.value.transit_route_tag_policy
+  endpoint_retention_policy                = each.value.endpoint_retention_policy
   ospf_timer_policy                        = each.value.ospf_timer_policy
   ospf_ipv4_address_family_context_policy  = each.value.ospf_ipv4_address_family_context_policy
   ospf_ipv6_address_family_context_policy  = each.value.ospf_ipv6_address_family_context_policy
@@ -205,6 +207,7 @@ locals {
         igmp_interface_policy      = try("${bd.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
         igmp_snooping_policy       = try("${bd.igmp_snooping_policy}${local.defaults.apic.tenants.policies.igmp_snooping_policies.name_suffix}", "")
         nd_interface_policy        = try("${bd.nd_interface_policy}${local.defaults.apic.tenants.policies.nd_interface_policies.name_suffix}", "")
+        endpoint_retention_policy  = try("${bd.endpoint_retention_policy}${local.defaults.apic.tenants.policies.endpoint_retention_policies.name_suffix}", "")
         subnets = [for subnet in try(bd.subnets, []) : {
           ip                    = subnet.ip
           description           = try(subnet.description, "")
@@ -259,6 +262,7 @@ module "aci_bridge_domain" {
   igmp_interface_policy      = each.value.igmp_interface_policy
   igmp_snooping_policy       = each.value.igmp_snooping_policy
   nd_interface_policy        = each.value.nd_interface_policy
+  endpoint_retention_policy  = each.value.endpoint_retention_policy
   subnets                    = each.value.subnets
   l3outs                     = each.value.l3outs
   dhcp_labels                = each.value.dhcp_labels
@@ -2265,6 +2269,42 @@ module "aci_dhcp_option_policy" {
   name        = each.value.name
   description = each.value.description
   options     = each.value.options
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
+  endpoint_retention_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.endpoint_retention_policies, []) : {
+        key                   = format("%s/%s", tenant.name, policy.name)
+        tenant                = tenant.name
+        name                  = "${policy.name}${local.defaults.apic.tenants.policies.endpoint_retention_policies.name_suffix}"
+        description           = try(policy.description, "")
+        hold_interval         = try(policy.hold_interval, local.defaults.apic.tenants.policies.endpoint_retention_policies.hold_interval)
+        bounce_entry_aging    = try(policy.bounce_entry_aging, local.defaults.apic.tenants.policies.endpoint_retention_policies.bounce_entry_aging)
+        local_endpoint_aging  = try(policy.local_endpoint_aging, local.defaults.apic.tenants.policies.endpoint_retention_policies.local_endpoint_aging)
+        remote_endpoint_aging = try(policy.remote_endpoint_aging, local.defaults.apic.tenants.policies.endpoint_retention_policies.remote_endpoint_aging)
+        move_frequency        = try(policy.move_frequency, local.defaults.apic.tenants.policies.endpoint_retention_policies.move_frequency)
+      }
+    ]
+  ])
+}
+
+module "aci_endpoint_retention_policy" {
+  source = "./modules/terraform-aci-endpoint-retention-policy"
+
+  for_each              = { for policy in local.endpoint_retention_policies : policy.key => policy if local.modules.aci_endpoint_retention_policy && var.manage_tenants }
+  tenant                = each.value.tenant
+  name                  = each.value.name
+  description           = each.value.description
+  hold_interval         = each.value.hold_interval
+  bounce_entry_aging    = each.value.bounce_entry_aging
+  local_endpoint_aging  = each.value.local_endpoint_aging
+  remote_endpoint_aging = each.value.remote_endpoint_aging
+  move_frequency        = each.value.move_frequency
 
   depends_on = [
     module.aci_tenant,

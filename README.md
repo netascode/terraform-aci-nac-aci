@@ -194,6 +194,7 @@ Additional example repositories:
 | <a name="module_aci_endpoint_ip_tag_policy"></a> [aci\_endpoint\_ip\_tag\_policy](#module\_aci\_endpoint\_ip\_tag\_policy) | ./modules/terraform-aci-endpoint-ip-tag-policy | n/a |
 | <a name="module_aci_endpoint_loop_protection"></a> [aci\_endpoint\_loop\_protection](#module\_aci\_endpoint\_loop\_protection) | ./modules/terraform-aci-endpoint-loop-protection | n/a |
 | <a name="module_aci_endpoint_mac_tag_policy"></a> [aci\_endpoint\_mac\_tag\_policy](#module\_aci\_endpoint\_mac\_tag\_policy) | ./modules/terraform-aci-endpoint-mac-tag-policy | n/a |
+| <a name="module_aci_endpoint_retention_policy"></a> [aci\_endpoint\_retention\_policy](#module\_aci\_endpoint\_retention\_policy) | ./modules/terraform-aci-endpoint-retention-policy | n/a |
 | <a name="module_aci_endpoint_security_group"></a> [aci\_endpoint\_security\_group](#module\_aci\_endpoint\_security\_group) | ./modules/terraform-aci-endpoint-security-group | n/a |
 | <a name="module_aci_error_disabled_recovery"></a> [aci\_error\_disabled\_recovery](#module\_aci\_error\_disabled\_recovery) | ./modules/terraform-aci-error-disabled-recovery | n/a |
 | <a name="module_aci_external_connectivity_policy"></a> [aci\_external\_connectivity\_policy](#module\_aci\_external\_connectivity\_policy) | ./modules/terraform-aci-external-connectivity-policy | n/a |
