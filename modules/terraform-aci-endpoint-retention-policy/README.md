@@ -46,7 +46,7 @@ module "aci_end_point_retention_policy" {
 | <a name="input_bounce_entry_aging"></a> [bounce\_entry\_aging](#input\_bounce\_entry\_aging) | APIC Endpoint Retention bounce entry aging. Minimum value: 150. Maximum value: 65535. Value 0 = infinite. | `number` | `630` | no |
 | <a name="input_local_endpoint_aging"></a> [local\_endpoint\_aging](#input\_local\_endpoint\_aging) | APIC Endpoint Retention local endpoint aging. Minimum value: 120. Maximum value: 65535. Value 0 = infinite. | `number` | `900` | no |
 | <a name="input_remote_endpoint_aging"></a> [remote\_endpoint\_aging](#input\_remote\_endpoint\_aging) | APIC Endpoint Retention remote endpoint aging. Minimum value: 120. Maximum value: 65535. Value 0 = infinite. | `number` | `300` | no |
-| <a name="input_move_frequency"></a> [move\_frequency](#input\_move\_frequency) | APIC Endpoint Retention hold interval. Minimum value: 5. Maximum value: 65535. Value 0 = none. | `number` | `300` | no |
+| <a name="input_move_frequency"></a> [move\_frequency](#input\_move\_frequency) | APIC Endpoint Retention move frequency. Minimum value: 5. Maximum value: 65535. Value 0 = none. | `number` | `300` | no |
 
 ## Outputs
 
