@@ -71,7 +71,7 @@ variable "remote_endpoint_aging" {
   }
 }
 variable "move_frequency" {
-  description = "APIC Endpoint Retention hold interval. Minimum value: 5. Maximum value: 65535. Value 0 = none."
+  description = "APIC Endpoint Retention move frequency. Minimum value: 5. Maximum value: 65535. Value 0 = none."
   type        = number
   default     = 300
 
