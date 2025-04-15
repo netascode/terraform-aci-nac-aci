@@ -35,48 +35,48 @@ variable "hold_interval" {
   default     = 300
 
   validation {
-    condition     = var.hold_interval >= 5 && var.hold_interval <= 65535
+    condition     = (var.hold_interval >= 5 && var.hold_interval <= 65535)
     error_message = "Minimum value: 5. Maximum value: 65535."
   }
 }
 
 variable "bounce_entry_aging" {
-  description = "APIC Endpoint Retention bounce entry aging. Minimum value: 150. Maximum value: 65535."
+  description = "APIC Endpoint Retention bounce entry aging. Minimum value: 150. Maximum value: 65535. Value 0 = infinite."
   type        = number
   default     = 630
 
   validation {
-    condition     = var.bounce_entry_aging >= 150 && var.bounce_entry_aging <= 65535
-    error_message = "Minimum value: 150. Maximum value: 65535."
+    condition     = ( var.bounce_entry_aging >= 150 && var.bounce_entry_aging <= 65535 ) || var.bounce_entry_aging == 0
+    error_message = "Minimum value: 150. Maximum value: 65535. Value 0 = infinite."
   }
 }
 variable "local_endpoint_aging" {
-  description = "APIC Endpoint Retention local endpoint aging. Minimum value: 120. Maximum value: 65535."
+  description = "APIC Endpoint Retention local endpoint aging. Minimum value: 120. Maximum value: 65535. Value 0 = infinite."
   type        = number
   default     = 900
 
   validation {
-    condition     = var.local_endpoint_aging >= 120 && var.local_endpoint_aging <= 65535
+    condition     = ( var.local_endpoint_aging >= 120 && var.local_endpoint_aging <= 65535 ) || var.local_endpoint_aging == 0
     error_message = "Minimum value: 120. Maximum value: 65535."
   }
 }
 variable "remote_endpoint_aging" {
-  description = "APIC Endpoint Retention remote endpoint aging. Minimum value: 120. Maximum value: 65535."
+  description = "APIC Endpoint Retention remote endpoint aging. Minimum value: 120. Maximum value: 65535. Value 0 = infinite."
   type        = number
   default     = 300
 
   validation {
-    condition     = var.remote_endpoint_aging >= 120 && var.remote_endpoint_aging <= 65535
-    error_message = "Minimum value: 120. Maximum value: 65535."
+    condition     = ( var.remote_endpoint_aging >= 120 && var.remote_endpoint_aging <= 65535 ) || var.remote_endpoint_aging == 0
+    error_message = "Minimum value: 120. Maximum value: 65535. Value 0 = infinite."
   }
 }
 variable "move_frequency" {
-  description = "APIC Endpoint Retention hold interval. Minimum value: 5. Maximum value: 65535."
+  description = "APIC Endpoint Retention hold interval. Minimum value: 5. Maximum value: 65535. Value 0 = none."
   type        = number
   default     = 300
 
   validation {
     condition     = var.move_frequency >= 0 && var.move_frequency <= 65535
-    error_message = "Minimum value: 0. Maximum value: 65535."
+    error_message = "Minimum value: 0. Maximum value: 65535. Value 0 = none."
   }
 }
