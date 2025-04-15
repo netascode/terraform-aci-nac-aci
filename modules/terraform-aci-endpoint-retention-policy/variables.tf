@@ -46,7 +46,7 @@ variable "bounce_entry_aging" {
   default     = 630
 
   validation {
-    condition     = ( var.bounce_entry_aging >= 150 && var.bounce_entry_aging <= 65535 ) || var.bounce_entry_aging == 0
+    condition     = (var.bounce_entry_aging >= 150 && var.bounce_entry_aging <= 65535) || var.bounce_entry_aging == 0
     error_message = "Minimum value: 150. Maximum value: 65535. Value 0 = infinite."
   }
 }
@@ -56,7 +56,7 @@ variable "local_endpoint_aging" {
   default     = 900
 
   validation {
-    condition     = ( var.local_endpoint_aging >= 120 && var.local_endpoint_aging <= 65535 ) || var.local_endpoint_aging == 0
+    condition     = (var.local_endpoint_aging >= 120 && var.local_endpoint_aging <= 65535) || var.local_endpoint_aging == 0
     error_message = "Minimum value: 120. Maximum value: 65535."
   }
 }
@@ -66,7 +66,7 @@ variable "remote_endpoint_aging" {
   default     = 300
 
   validation {
-    condition     = ( var.remote_endpoint_aging >= 120 && var.remote_endpoint_aging <= 65535 ) || var.remote_endpoint_aging == 0
+    condition     = (var.remote_endpoint_aging >= 120 && var.remote_endpoint_aging <= 65535) || var.remote_endpoint_aging == 0
     error_message = "Minimum value: 120. Maximum value: 65535. Value 0 = infinite."
   }
 }
