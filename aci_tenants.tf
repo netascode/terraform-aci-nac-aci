@@ -172,7 +172,8 @@ module "aci_vrf" {
     module.aci_contract,
     module.aci_imported_contract,
     module.aci_bgp_timer_policy,
-    module.aci_bgp_route_summarization_policy
+    module.aci_bgp_route_summarization_policy,
+    module.aci_endpoint_retention_policy,
   ]
 }
 
@@ -273,6 +274,7 @@ module "aci_bridge_domain" {
     module.aci_l3out,
     module.aci_dhcp_relay_policy,
     module.aci_dhcp_option_policy,
+    module.aci_endpoint_retention_policy,
   ]
 }
 
