@@ -18,7 +18,7 @@
 - Add support for global SR MPLS configuration
 - Add support for multicast ARP drop for BD
 - Add support for BGP route summarization at the VRF level
-- Add support for access MACsec Policies.
+- Add support for access MACsec Policies
 
 ## 0.9.1
 
