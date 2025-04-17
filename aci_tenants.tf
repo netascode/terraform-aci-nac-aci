@@ -2644,11 +2644,12 @@ locals {
   bgp_best_path_policies = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.policies.bgp_best_path_policies, []) : {
-        key          = format("%s/%s", tenant.name, policy.name)
-        tenant       = tenant.name
-        name         = "${policy.name}${local.defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix}"
-        description  = try(policy.description, "")
-        control_type = try(policy.control_type, local.defaults.apic.tenants.policies.bgp_best_path_policies.control_type)
+        key                     = format("%s/%s", tenant.name, policy.name)
+        tenant                  = tenant.name
+        name                    = "${policy.name}${local.defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix}"
+        description             = try(policy.description, "")
+        as_path_multipath_relax = try(policy.as_path_multipath_relax, local.defaults.apic.tenants.policies.bgp_best_path_policies.as_path_multipath_relax)
+        ignore_igp_metric       = try(policy.ignore_igp_metric, local.defaults.apic.tenants.policies.bgp_best_path_policies.ignore_igp_metric)
       }
     ]
   ])
