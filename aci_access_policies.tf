@@ -717,7 +717,7 @@ module "aci_access_span_filter_group" {
   name        = "${each.value.name}${local.defaults.apic.access_policies.span.filter_groups.name_suffix}"
   description = try(each.value.description, "")
   entries = [for entry in try(each.value.entries, []) : {
-    name                  = "${entry.name}${local.defaults.apic.access_policies.span.filter_groups.entries.name_suffix}"
+    name                  = try("${entry.name}${local.defaults.apic.access_policies.span.filter_groups.entries.name_suffix}", "")
     description           = try(entry.description, "")
     source_ip             = entry.source_ip
     destination_ip        = entry.destination_ip
