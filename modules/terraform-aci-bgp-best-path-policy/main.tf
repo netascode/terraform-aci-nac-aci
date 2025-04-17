@@ -4,6 +4,6 @@ resource "aci_rest_managed" "bgpBestPathCtrlPol" {
   content = {
     name  = var.name
     descr = var.description
-    ctrl  = var.control_type == "multi-path-relax" ? "asPathMultipathRelax" : ""
+    ctrl  = join(",", concat(var.as_path_multipath_relax == true ? ["asPathMultipathRelax"] : [], var.ignore_igp_metric == true ? ["ignoreIgpMetric"] : []))
   }
 }

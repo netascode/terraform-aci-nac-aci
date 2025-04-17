@@ -2657,11 +2657,12 @@ locals {
 module "aci_bgp_best_path_policy" {
   source = "./modules/terraform-aci-bgp-best-path-policy"
 
-  for_each     = { for pol in local.bgp_best_path_policies : pol.key => pol if local.modules.aci_bgp_best_path_policy && var.manage_tenants }
-  tenant       = each.value.tenant
-  name         = each.value.name
-  description  = each.value.description
-  control_type = each.value.control_type
+  for_each                = { for pol in local.bgp_best_path_policies : pol.key => pol if local.modules.aci_bgp_best_path_policy && var.manage_tenants }
+  tenant                  = each.value.tenant
+  name                    = each.value.name
+  description             = each.value.description
+  as_path_multipath_relax = each.value.as_path_multipath_relax
+  ignore_igp_metric       = each.value.ignore_igp_metric
 
   depends_on = [
     module.aci_tenant,
