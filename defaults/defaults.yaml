@@ -1249,7 +1249,8 @@ defaults:
           max_lsa_sleep_interval: 5
         bgp_best_path_policies:
           name_suffix: ""
-          control_type: ""
+          as_path_multipath_relax: false
+          ignore_igp_metric: false
         bgp_route_summarization_policies:
           name_suffix: ""
           as_set: false
