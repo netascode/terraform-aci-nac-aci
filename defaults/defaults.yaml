@@ -1461,7 +1461,7 @@ defaults:
           bounce_entry_aging_interval: 630
           local_endpoint_aging_interval: 900
           remote_endpoint_aging_interval: 300
-          move_frequrency: 256
+          move_frequency: 256
       services:
         l4l7_devices:
           name_suffix: ""
