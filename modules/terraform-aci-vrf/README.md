@@ -22,6 +22,7 @@ module "aci_vrf" {
   data_plane_learning                    = false
   preferred_group                        = true
   transit_route_tag_policy               = "TRP1"
+  endpoint_retention_policy              = "ERP1"
   bgp_timer_policy                       = "BGP1"
   bgp_ipv4_address_family_context_policy = "BGP_AF_IPV4"
   bgp_ipv6_address_family_context_policy = "BGP_AF_IPV6"
@@ -187,6 +188,7 @@ module "aci_vrf" {
 | <a name="input_leaked_internal_prefixes"></a> [leaked\_internal\_prefixes](#input\_leaked\_internal\_prefixes) | List of leaked internal prefixes. Default value `public`: false. | <pre>list(object({<br/>    prefix = string<br/>    public = optional(bool, false)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>      public      = optional(bool)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_leaked_external_prefixes"></a> [leaked\_external\_prefixes](#input\_leaked\_external\_prefixes) | List of leaked external prefixes. | <pre>list(object({<br/>    prefix             = string<br/>    from_prefix_length = optional(number)<br/>    to_prefix_length   = optional(number)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_route_summarization_policies"></a> [route\_summarization\_policies](#input\_route\_summarization\_policies) | List of route summarization policies. | <pre>list(object({<br/>    name = string<br/>    nodes = optional(list(object({<br/>      id  = number<br/>      pod = optional(number, 1)<br/>    })), [])<br/>    subnets = optional(list(object({<br/>      prefix                         = string<br/>      bgp_route_summarization_policy = optional(string, null)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
+| <a name="input_endpoint_retention_policy"></a> [endpoint\_retention\_policy](#input\_endpoint\_retention\_policy) | Endpoint Retention Policy. | `string` | `""` | no |
 
 ## Outputs
 
@@ -211,6 +213,7 @@ module "aci_vrf" {
 | [aci_rest_managed.fvRsBgpCtxPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToBgpCtxAfPol_ipv4](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToBgpCtxAfPol_ipv6](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsCtxToEpRet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToExtRouteTagPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToOspfCtxPol_ipv4](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToOspfCtxPol_ipv6](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

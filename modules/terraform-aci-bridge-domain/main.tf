@@ -193,3 +193,12 @@ resource "aci_rest_managed" "fvRsBDToNdP" {
     tnNdIfPolName = var.nd_interface_policy
   }
 }
+
+resource "aci_rest_managed" "fvRsBdToEpRet" {
+  count      = var.endpoint_retention_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvBD.dn}/rsbdToEpRet"
+  class_name = "fvRsBdToEpRet"
+  content = {
+    tnFvEpRetPolName = var.endpoint_retention_policy
+  }
+}

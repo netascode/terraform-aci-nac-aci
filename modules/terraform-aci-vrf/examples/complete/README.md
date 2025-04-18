@@ -25,6 +25,7 @@ module "aci_vrf" {
   data_plane_learning                    = false
   preferred_group                        = true
   transit_route_tag_policy               = "TRP1"
+  endpoint_retention_policy              = "ERP1"
   bgp_timer_policy                       = "BGP1"
   bgp_ipv4_address_family_context_policy = "BGP_AF_IPV4"
   bgp_ipv6_address_family_context_policy = "BGP_AF_IPV6"
