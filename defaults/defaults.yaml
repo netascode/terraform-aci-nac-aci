@@ -1457,9 +1457,9 @@ defaults:
         endpoint_retention_policies:
           name_suffix: ""
           hold_interval: 300
-          bounce_entry_aging: 630
-          local_endpoint_aging: 900
-          remote_endpoint_aging: 300
+          bounce_entry_aging_interval: 630
+          local_endpoint_aging_interval: 900
+          remote_endpoint_aging_interval: 300
           move_frequrency: 256
       services:
         l4l7_devices:

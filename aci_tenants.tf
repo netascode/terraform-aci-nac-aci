@@ -2281,15 +2281,15 @@ locals {
   endpoint_retention_policies = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.policies.endpoint_retention_policies, []) : {
-        key                   = format("%s/%s", tenant.name, policy.name)
-        tenant                = tenant.name
-        name                  = "${policy.name}${local.defaults.apic.tenants.policies.endpoint_retention_policies.name_suffix}"
-        description           = try(policy.description, "")
-        hold_interval         = try(policy.hold_interval, local.defaults.apic.tenants.policies.endpoint_retention_policies.hold_interval)
-        bounce_entry_aging    = try(policy.bounce_entry_aging, local.defaults.apic.tenants.policies.endpoint_retention_policies.bounce_entry_aging)
-        local_endpoint_aging  = try(policy.local_endpoint_aging, local.defaults.apic.tenants.policies.endpoint_retention_policies.local_endpoint_aging)
-        remote_endpoint_aging = try(policy.remote_endpoint_aging, local.defaults.apic.tenants.policies.endpoint_retention_policies.remote_endpoint_aging)
-        move_frequency        = try(policy.move_frequency, local.defaults.apic.tenants.policies.endpoint_retention_policies.move_frequency)
+        key                            = format("%s/%s", tenant.name, policy.name)
+        tenant                         = tenant.name
+        name                           = "${policy.name}${local.defaults.apic.tenants.policies.endpoint_retention_policies.name_suffix}"
+        description                    = try(policy.description, "")
+        hold_interval                  = try(policy.hold_interval, local.defaults.apic.tenants.policies.endpoint_retention_policies.hold_interval)
+        bounce_entry_aging_interval    = try(policy.bounce_entry_aging_interval, local.defaults.apic.tenants.policies.endpoint_retention_policies.bounce_entry_aging_interval)
+        local_endpoint_aging_interval  = try(policy.local_endpoint_aging_interval, local.defaults.apic.tenants.policies.endpoint_retention_policies.local_endpoint_aging_interval)
+        remote_endpoint_aging_interval = try(policy.remote_endpoint_aging_interval, local.defaults.apic.tenants.policies.endpoint_retention_policies.remote_endpoint_aging_interval)
+        move_frequency                 = try(policy.move_frequency, local.defaults.apic.tenants.policies.endpoint_retention_policies.move_frequency)
       }
     ]
   ])
@@ -2298,15 +2298,15 @@ locals {
 module "aci_endpoint_retention_policy" {
   source = "./modules/terraform-aci-endpoint-retention-policy"
 
-  for_each              = { for policy in local.endpoint_retention_policies : policy.key => policy if local.modules.aci_endpoint_retention_policy && var.manage_tenants }
-  tenant                = each.value.tenant
-  name                  = each.value.name
-  description           = each.value.description
-  hold_interval         = each.value.hold_interval
-  bounce_entry_aging    = each.value.bounce_entry_aging
-  local_endpoint_aging  = each.value.local_endpoint_aging
-  remote_endpoint_aging = each.value.remote_endpoint_aging
-  move_frequency        = each.value.move_frequency
+  for_each                       = { for policy in local.endpoint_retention_policies : policy.key => policy if local.modules.aci_endpoint_retention_policy && var.manage_tenants }
+  tenant                         = each.value.tenant
+  name                           = each.value.name
+  description                    = each.value.description
+  hold_interval                  = each.value.hold_interval
+  bounce_entry_aging_interval    = each.value.bounce_entry_aging_interval
+  local_endpoint_aging_interval  = each.value.local_endpoint_aging_interval
+  remote_endpoint_aging_interval = each.value.remote_endpoint_aging_interval
+  move_frequency                 = each.value.move_frequency
 
   depends_on = [
     module.aci_tenant,
