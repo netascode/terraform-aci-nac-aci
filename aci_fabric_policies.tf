@@ -800,6 +800,7 @@ module "aci_config_export" {
   depends_on = [
     module.aci_remote_location,
     module.aci_fabric_scheduler,
+    module.aci_config_passphrase,
   ]
 }
 
