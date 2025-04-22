@@ -35,6 +35,7 @@ module "aci_access_leaf_interface_profile" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Leaf interface profile name. | `string` | n/a | yes |
+| <a name="input_description"></a> [description](#input\_description) | Leaf interface profile description. | `string` | `""` | no |
 
 ## Outputs
 
@@ -42,6 +43,7 @@ module "aci_access_leaf_interface_profile" {
 |------|-------------|
 | <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `infraAccPortP` object. |
 | <a name="output_name"></a> [name](#output\_name) | Leaf interface profile name. |
+| <a name="output_description"></a> [description](#output\_description) | Leaf interface profile description. |
 
 ## Resources
 
