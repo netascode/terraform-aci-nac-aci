@@ -3188,6 +3188,7 @@ locals {
         threshold_down_action  = try(policy.threshold_down_action, local.defaults.apic.tenants.services.redirect_policies.threshold_down_action)
         ip_sla_policy          = try("${policy.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", "")
         redirect_backup_policy = try("${policy.redirect_backup_policy}${local.defaults.apic.tenants.services.redirect_backup_policies.name_suffix}", "")
+        rewrite_source_mac     = try(policy.rewrite_source_mac, null)
         l3_destinations = [for dest in try(policy.l3_destinations, []) : {
           description           = try(dest.description, "")
           name                  = try(dest.name, "")

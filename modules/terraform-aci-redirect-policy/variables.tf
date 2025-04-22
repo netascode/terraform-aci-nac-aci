@@ -108,6 +108,12 @@ variable "resilient_hashing" {
   default     = false
 }
 
+variable "rewrite_source_mac" {
+  description = "Rewrite source mac."
+  type        = bool
+  default     = false
+}
+
 variable "threshold_down_action" {
   description = "Threshold down action. Choices: `permit`, `deny`, `bypass`."
   type        = string

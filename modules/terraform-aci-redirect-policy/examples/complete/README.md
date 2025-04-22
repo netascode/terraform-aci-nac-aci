@@ -31,6 +31,7 @@ module "aci_redirect_policy" {
   threshold_down_action  = "deny"
   ip_sla_policy          = "SLA1"
   redirect_backup_policy = "REDIRECT_BCK1"
+  rewrite_source_mac     = true
   l3_destinations = [{
     description           = "L3 description"
     name                  = "L3_DEST1"
