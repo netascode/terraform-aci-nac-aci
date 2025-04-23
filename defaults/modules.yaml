@@ -96,6 +96,7 @@ modules:
   aci_l3out_interface_profile: true
   aci_l3out_node_profile: true
   aci_l4l7_device: true
+  aci_ldap: true
   aci_link_level_policy: true
   aci_lldp_policy: true
   aci_login_domain: true

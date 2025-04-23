@@ -1064,6 +1064,7 @@ module "aci_fabric_span_source_group" {
 module "aci_ldap" {
   source = "./modules/terraform-aci-ldap"
 
+  count = local.modules.aci_ldap == true && var.manage_fabric_policies ? 1 : 0
   ldap_providers = [for prov in try(local.fabric_policies.aaa.ldap.providers, []) : {
     hostname_ip          = prov.hostname_ip
     description          = try(prov.description, "")
