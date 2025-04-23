@@ -45,7 +45,6 @@ module "aci_contract" {
       service_graph                      = "SG1"
       qos_class                          = "level5"
       target_dscp                        = "CS1"
-      direciton                          = "unidirectional"
       reverse_filter_ports               = false
       consumer_to_provider_service_graph = "SG1"
       consumer_to_provider_qos           = "level5"

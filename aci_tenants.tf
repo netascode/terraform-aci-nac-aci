@@ -1823,7 +1823,6 @@ locals {
           alias                = try(subject.alias, "")
           description          = try(subject.description, "")
           reverse_filter_ports = try(subject.reverse_filter_ports, local.defaults.apic.tenants.contracts.subjects.reverse_filter_ports)
-          direction            = try(subject.direction, local.defaults.apic.tenants.contracts.subjects.direction)
           service_graph        = try("${subject.service_graph}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}", null)
           qos_class            = try(subject.qos_class, local.defaults.apic.tenants.contracts.subjects.qos_class)
           target_dscp          = try(subject.target_dscp, local.defaults.apic.tenants.contracts.subjects.target_dscp)

@@ -1171,7 +1171,6 @@ defaults:
           qos_class: unspecified
           target_dscp: unspecified
           reverse_filter_ports: true
-          direction: bidirectional
           filters:
             action: permit
             priority: default

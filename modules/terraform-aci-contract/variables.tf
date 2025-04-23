@@ -80,7 +80,6 @@ variable "subjects" {
     alias                = optional(string, "")
     description          = optional(string, "")
     reverse_filter_ports = optional(bool, true)
-    direction            = optional(string, "bidirectional")
     service_graph        = optional(string)
     qos_class            = optional(string, "unspecified")
     target_dscp          = optional(string, "unspecified")
@@ -268,24 +267,6 @@ variable "subjects" {
       (length(s.filters) != 0 && (length(s.provider_to_consumer_filters) == 0 && length(s.consumer_to_provider_filters) == 0)))
     ])
     error_message = "`filters`: When `provider_to_consumer_filters` and/or `consumer_to_provider_filters` are specified, bidirectional `filters` are not allowed in the same subject.`"
-  }
-
-  validation {
-    condition = alltrue([
-      for s in var.subjects :
-      (s.direction == "bidirectional" ||
-      (s.direction != "bidirectional" && !s.reverse_filter_ports))
-    ])
-    error_message = "`reverse_filter_ports` must be set to `false` if direction value is `unidirectional`."
-  }
-
-  validation {
-    condition = alltrue([
-      for s in var.subjects :
-      (s.direction == "unidirectional" ||
-      (s.direction != "unidirectional" && (length(s.consumer_to_provider_filters) + length(s.provider_to_consumer_filters) == 0)))
-    ])
-    error_message = "`direction` must be set to `unidirectional` if consumer_to_provider/provider_to_consumer filters are defined`."
   }
 
 }
