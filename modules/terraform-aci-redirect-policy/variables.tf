@@ -111,7 +111,7 @@ variable "resilient_hashing" {
 variable "rewrite_source_mac" {
   description = "Rewrite source mac."
   type        = bool
-  default     = false
+  default     = null
 }
 
 variable "threshold_down_action" {

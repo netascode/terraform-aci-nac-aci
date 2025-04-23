@@ -13,7 +13,7 @@ resource "aci_rest_managed" "vnsSvcRedirectPol" {
     minThresholdPercent  = var.min_threshold
     programLocalPodOnly  = var.pod_aware == true ? "yes" : "no"
     resilientHashEnabled = var.resilient_hashing == true ? "yes" : "no"
-    srcMacRewriteEnabled = var.rewrite_source_mac == true ? "yes" : "no"
+    srcMacRewriteEnabled = var.rewrite_source_mac != null ? (var.rewrite_source_mac == true ? "yes" : "no") : null
     thresholdDownAction  = var.threshold_down_action
   }
 }
