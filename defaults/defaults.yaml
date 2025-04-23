@@ -1177,11 +1177,28 @@ defaults:
           name_suffix: ""
           qos_class: unspecified
           target_dscp: unspecified
+          reverse_filter_ports: true
           filters:
             action: permit
             priority: default
             log: false
             no_stats: false
+          consumer_to_provider:
+            target_dscp: unspecified
+            qos_class: unspecified
+            filters:
+              action: permit
+              priority: default
+              log: false
+              no_stats: false
+          provider_to_consumer:
+            target_dscp: unspecified
+            qos_class: unspecified
+            filters:
+              action: permit
+              priority: default
+              log: false
+              no_stats: false
       imported_contracts:
         name_suffix: ""
       oob_contracts:
