@@ -93,7 +93,7 @@ resource "aci_rest_managed" "vzRsSubjGraphAtt" {
 }
 
 resource "aci_rest_managed" "vzInTerm" {
-  for_each   = { for subj in var.subjects : subj.name => subj if length(subj.filters) == 0 && length(subj.consumer_to_provider_filters) != 0 }
+  for_each   = { for subj in var.subjects : subj.name => subj if length(subj.filters) == 0 && length(subj.provider_to_consumer_filters) + length(subj.consumer_to_provider_filters) != 0 }
   dn         = "${aci_rest_managed.vzSubj[each.key].dn}/intmnl"
   class_name = "vzInTerm"
   content = {
@@ -103,7 +103,7 @@ resource "aci_rest_managed" "vzInTerm" {
 }
 
 resource "aci_rest_managed" "vzOutTerm" {
-  for_each   = { for subj in var.subjects : subj.name => subj if length(subj.filters) == 0 && length(subj.provider_to_consumer_filters) != 0 }
+  for_each   = { for subj in var.subjects : subj.name => subj if length(subj.filters) == 0 && length(subj.provider_to_consumer_filters) + length(subj.consumer_to_provider_filters) != 0 }
   dn         = "${aci_rest_managed.vzSubj[each.key].dn}/outtmnl"
   class_name = "vzOutTerm"
   content = {
