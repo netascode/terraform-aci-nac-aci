@@ -191,6 +191,7 @@ resource "aci_rest_managed" "vnsRsAbsConnectionConns_NodeN1Provider" {
   count      = var.device_copy ? 0 : 1
   dn         = "${aci_rest_managed.vnsAbsConnection_Provider[0].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsFuncConn_Provider[0].dn}]" # index added
   class_name = "vnsRsAbsConnectionConns"
+  annotation = var.annotation
   content = {
     tDn = aci_rest_managed.vnsAbsFuncConn_Provider[0].dn
   }
