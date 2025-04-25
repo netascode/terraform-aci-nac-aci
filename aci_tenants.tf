@@ -3300,6 +3300,7 @@ module "aci_redirect_policy" {
   redirect_backup_policy = each.value.redirect_backup_policy
   l3_destinations        = each.value.l3_destinations
   l1l2_destinations      = each.value.l1l2_destinations
+  rewrite_source_mac     = each.value.rewrite_source_mac
 
   depends_on = [
     module.aci_tenant,
