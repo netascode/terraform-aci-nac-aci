@@ -303,14 +303,15 @@ resource "aci_rest_managed" "l3extIp" {
   class_name = "l3extIp"
   content = {
     addr = each.value.ip_shared
-    children = each.value.ip_shared_dhcp_relay == true ? [
-      {
-        class_name = "dhcpRelayGwExtIp"
-        attributes = {
-          annotation = "orchestrator:aac"
-        }
-      }
-    ] : []
+  }
+}
+
+resource "aci_rest_managed" "dhcpRelayGwExtIp" {
+  for_each   = { for item in local.interfaces : item.key => item.value if item.value.type != "vpc" && item.value.ip_shared != null && item.value.ip_shared_dhcp_relay == true }
+  dn         = "${aci_rest_managed.l3extRsPathL3OutAtt[each.key].dn}/addr-[${each.value.ip_shared}]/relayGwExtIp"
+  class_name = "dhcpRelayGwExtIp"
+  content = {
+    annotation = "orchestrator:aac"
   }
 }
 
@@ -330,14 +331,15 @@ resource "aci_rest_managed" "l3extIp_A" {
   class_name = "l3extIp"
   content = {
     addr = each.value.ip_shared
-    children = each.value.ip_shared_dhcp_relay == true ? [
-      {
-        class_name = "dhcpRelayGwExtIp"
-        attributes = {
-          annotation = "orchestrator:aac"
-        }
-      }
-    ] : []
+  }
+}
+
+resource "aci_rest_managed" "dhcpRelayGwExtIp_A" {
+  for_each   = { for item in local.interfaces : item.key => item.value if item.value.type == "vpc" && item.value.ip_shared != null && item.value.ip_shared_dhcp_relay == true }
+  dn         = "${aci_rest_managed.l3extMember_A[each.key].dn}/addr-[${each.value.ip_shared}]/relayGwExtIp"
+  class_name = "dhcpRelayGwExtIp"
+  content = {
+    annotation = "orchestrator:aac"
   }
 }
 
@@ -357,14 +359,15 @@ resource "aci_rest_managed" "l3extIp_B" {
   class_name = "l3extIp"
   content = {
     addr = each.value.ip_shared
-    children = each.value.ip_shared_dhcp_relay == true ? [
-      {
-        class_name = "dhcpRelayGwExtIp"
-        attributes = {
-          annotation = "orchestrator:aac"
-        }
-      }
-    ] : []
+  }
+}
+
+resource "aci_rest_managed" "dhcpRelayGwExtIp_B" {
+  for_each   = { for item in local.interfaces : item.key => item.value if item.value.type == "vpc" && item.value.ip_shared != null && item.value.ip_shared_dhcp_relay == true }
+  dn         = "${aci_rest_managed.l3extMember_B[each.key].dn}/addr-[${each.value.ip_shared}]/relayGwExtIp"
+  class_name = "dhcpRelayGwExtIp"
+  content = {
+    annotation = "orchestrator:aac"
   }
 }
 
