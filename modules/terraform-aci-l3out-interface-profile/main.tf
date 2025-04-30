@@ -311,7 +311,6 @@ resource "aci_rest_managed" "dhcpRelayGwExtIp" {
   dn         = "${aci_rest_managed.l3extRsPathL3OutAtt[each.key].dn}/addr-[${each.value.ip_shared}]/relayGwExtIp"
   class_name = "dhcpRelayGwExtIp"
   content = {
-    annotation = "orchestrator:aac"
   }
 }
 
@@ -339,7 +338,6 @@ resource "aci_rest_managed" "dhcpRelayGwExtIp_A" {
   dn         = "${aci_rest_managed.l3extMember_A[each.key].dn}/addr-[${each.value.ip_shared}]/relayGwExtIp"
   class_name = "dhcpRelayGwExtIp"
   content = {
-    annotation = "orchestrator:aac"
   }
 }
 
@@ -367,7 +365,6 @@ resource "aci_rest_managed" "dhcpRelayGwExtIp_B" {
   dn         = "${aci_rest_managed.l3extMember_B[each.key].dn}/addr-[${each.value.ip_shared}]/relayGwExtIp"
   class_name = "dhcpRelayGwExtIp"
   content = {
-    annotation = "orchestrator:aac"
   }
 }
 
