@@ -21,6 +21,7 @@ locals {
         ip_a                     = int.ip_a
         ip_b                     = int.ip_b
         ip_shared                = int.ip_shared
+        ip_shared_dhcp_relay     = int.ip_shared_dhcp_relay
         lladdr                   = int.lladdr
         tDn                      = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : (int.sub_port != null ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}/${int.sub_port}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]"))
         multipod_direct          = int.multipod_direct
@@ -302,6 +303,14 @@ resource "aci_rest_managed" "l3extIp" {
   class_name = "l3extIp"
   content = {
     addr = each.value.ip_shared
+    children = each.value.ip_shared_dhcp_relay == true ? [
+      {
+        class_name = "dhcpRelayGwExtIp"
+        attributes = {
+          annotation = "orchestrator:aac"
+        }
+      }
+    ] : []
   }
 }
 
@@ -321,6 +330,14 @@ resource "aci_rest_managed" "l3extIp_A" {
   class_name = "l3extIp"
   content = {
     addr = each.value.ip_shared
+    children = each.value.ip_shared_dhcp_relay == true ? [
+      {
+        class_name = "dhcpRelayGwExtIp"
+        attributes = {
+          annotation = "orchestrator:aac"
+        }
+      }
+    ] : []
   }
 }
 
@@ -340,6 +357,14 @@ resource "aci_rest_managed" "l3extIp_B" {
   class_name = "l3extIp"
   content = {
     addr = each.value.ip_shared
+    children = each.value.ip_shared_dhcp_relay == true ? [
+      {
+        class_name = "dhcpRelayGwExtIp"
+        attributes = {
+          annotation = "orchestrator:aac"
+        }
+      }
+    ] : []
   }
 }
 
