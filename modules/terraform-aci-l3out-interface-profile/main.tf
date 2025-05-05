@@ -21,6 +21,7 @@ locals {
         ip_a                     = int.ip_a
         ip_b                     = int.ip_b
         ip_shared                = int.ip_shared
+        ip_shared_dhcp_relay     = int.ip_shared_dhcp_relay
         lladdr                   = int.lladdr
         tDn                      = int.type == "vpc" ? "topology/pod-${int.pod_id}/protpaths-${int.node_id}-${int.node2_id}/pathep-[${int.channel}]" : (int.type == "pc" ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[${int.channel}]" : (int.sub_port != null ? "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}/${int.sub_port}]" : "topology/pod-${int.pod_id}/paths-${int.node_id}/pathep-[eth${int.module}/${int.port}]"))
         multipod_direct          = int.multipod_direct
@@ -305,6 +306,14 @@ resource "aci_rest_managed" "l3extIp" {
   }
 }
 
+resource "aci_rest_managed" "dhcpRelayGwExtIp" {
+  for_each   = { for item in local.interfaces : item.key => item.value if item.value.type != "vpc" && item.value.ip_shared != null && item.value.ip_shared_dhcp_relay == true }
+  dn         = "${aci_rest_managed.l3extRsPathL3OutAtt[each.key].dn}/addr-[${each.value.ip_shared}]/relayGwExtIp"
+  class_name = "dhcpRelayGwExtIp"
+  content = {
+  }
+}
+
 resource "aci_rest_managed" "l3extMember_A" {
   for_each   = { for item in local.interfaces : item.key => item.value if item.value.type == "vpc" }
   dn         = "${aci_rest_managed.l3extRsPathL3OutAtt[each.key].dn}/mem-A"
@@ -324,6 +333,14 @@ resource "aci_rest_managed" "l3extIp_A" {
   }
 }
 
+resource "aci_rest_managed" "dhcpRelayGwExtIp_A" {
+  for_each   = { for item in local.interfaces : item.key => item.value if item.value.type == "vpc" && item.value.ip_shared != null && item.value.ip_shared_dhcp_relay == true }
+  dn         = "${aci_rest_managed.l3extMember_A[each.key].dn}/addr-[${each.value.ip_shared}]/relayGwExtIp"
+  class_name = "dhcpRelayGwExtIp"
+  content = {
+  }
+}
+
 resource "aci_rest_managed" "l3extMember_B" {
   for_each   = { for item in local.interfaces : item.key => item.value if item.value.type == "vpc" }
   dn         = "${aci_rest_managed.l3extRsPathL3OutAtt[each.key].dn}/mem-B"
@@ -340,6 +357,14 @@ resource "aci_rest_managed" "l3extIp_B" {
   class_name = "l3extIp"
   content = {
     addr = each.value.ip_shared
+  }
+}
+
+resource "aci_rest_managed" "dhcpRelayGwExtIp_B" {
+  for_each   = { for item in local.interfaces : item.key => item.value if item.value.type == "vpc" && item.value.ip_shared != null && item.value.ip_shared_dhcp_relay == true }
+  dn         = "${aci_rest_managed.l3extMember_B[each.key].dn}/addr-[${each.value.ip_shared}]/relayGwExtIp"
+  class_name = "dhcpRelayGwExtIp"
+  content = {
   }
 }
 
