@@ -902,6 +902,7 @@ defaults:
             mtu: inherit
             mode: regular
             scope: local
+            ip_shared_dhcp_relay: false
             bgp_peers:
               allow_self_as: false
               as_override: false
@@ -974,6 +975,7 @@ defaults:
               mtu: inherit
               mode: regular
               scope: local
+              ip_shared_dhcp_relay: false
               bgp_peers:
                 allow_self_as: false
                 as_override: false
