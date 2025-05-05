@@ -15,13 +15,15 @@ module "aci_apic_connectivity_preference" {
 module "aci_banner" {
   source = "./modules/terraform-aci-banner"
 
-  count                   = local.modules.aci_banner == true && var.manage_fabric_policies ? 1 : 0
-  apic_gui_banner_message = try(local.fabric_policies.banners.apic_gui_banner_message, "")
-  apic_gui_banner_url     = try(local.fabric_policies.banners.apic_gui_banner_url, "")
-  apic_gui_alias          = try(local.fabric_policies.banners.apic_gui_alias, "")
-  apic_cli_banner         = try(local.fabric_policies.banners.apic_cli_banner, "")
-  switch_cli_banner       = try(local.fabric_policies.banners.switch_cli_banner, "")
-  escape_html             = try(local.fabric_policies.banners.escape_html, local.defaults.apic.fabric_policies.banners.escape_html)
+  count                    = local.modules.aci_banner == true && var.manage_fabric_policies ? 1 : 0
+  apic_gui_banner_message  = try(local.fabric_policies.banners.apic_gui_banner_message, "")
+  apic_gui_banner_url      = try(local.fabric_policies.banners.apic_gui_banner_url, "")
+  apic_gui_alias           = try(local.fabric_policies.banners.apic_gui_alias, "")
+  apic_cli_banner          = try(local.fabric_policies.banners.apic_cli_banner, "")
+  switch_cli_banner        = try(local.fabric_policies.banners.switch_cli_banner, "")
+  apic_app_banner          = try(local.fabric_policies.banners.apic_app_banner, "")
+  apic_app_banner_severity = try(local.fabric_policies.banners.apic_app_banner_severity, "info")
+  escape_html              = try(local.fabric_policies.banners.escape_html, local.defaults.apic.fabric_policies.banners.escape_html)
 }
 
 module "aci_endpoint_loop_protection" {
