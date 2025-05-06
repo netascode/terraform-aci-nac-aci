@@ -19,3 +19,14 @@ variable "admin_tx_state" {
   type        = bool
   default     = false
 }
+
+variable "dcbxp_version" {
+  type        = string
+  description = "DCBXP version. Allowed values: CEE, IEEE."
+  default     = "info"
+
+  validation {
+    condition     = contains(["CEE", "IEEE"], var.dcbxp_version)
+    error_message = "Invalid severity: must be one of 'CEE', or 'IEEE'."
+  }
+}
