@@ -22,7 +22,7 @@ module "aci_banner" {
   apic_cli_banner          = try(local.fabric_policies.banners.apic_cli_banner, "")
   switch_cli_banner        = try(local.fabric_policies.banners.switch_cli_banner, "")
   apic_app_banner          = try(local.fabric_policies.banners.apic_app_banner, "")
-  apic_app_banner_severity = try(local.fabric_policies.banners.apic_app_banner_severity, "info")
+  apic_app_banner_severity = try(local.fabric_policies.banners.apic_app_banner_severity, local.defaults.apic.fabric_policies.banners.apic_app_banner_severity)
   escape_html              = try(local.fabric_policies.banners.escape_html, local.defaults.apic.fabric_policies.banners.escape_html)
 }
 
