@@ -507,8 +507,9 @@ module "aci_access_leaf_interface_profile_auto" {
 module "aci_access_leaf_interface_profile_manual" {
   source = "./modules/terraform-aci-access-leaf-interface-profile"
 
-  for_each = { for prof in try(local.access_policies.leaf_interface_profiles, []) : prof.name => prof if local.modules.aci_access_leaf_interface_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies }
-  name     = "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_profiles.name_suffix}"
+  for_each    = { for prof in try(local.access_policies.leaf_interface_profiles, []) : prof.name => prof if local.modules.aci_access_leaf_interface_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies }
+  name        = "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_profiles.name_suffix}"
+  description = each.value.description
 }
 
 locals {
