@@ -17,6 +17,7 @@ module "aci_access_leaf_switch_policy_group" {
   forwarding_scale_policy = "HIGH-DUAL-STACK"
   bfd_ipv4_policy         = "BFD-IPV4-POLICY"
   bfd_ipv6_policy         = "BFD-IPV6-POLICY"
+  copp_leaf_policy        = "COPP-LEAF-POLICY"
 }
 ```
 
@@ -41,6 +42,7 @@ module "aci_access_leaf_switch_policy_group" {
 | <a name="input_forwarding_scale_policy"></a> [forwarding\_scale\_policy](#input\_forwarding\_scale\_policy) | Forwarding scale policy name. | `string` | `""` | no |
 | <a name="input_bfd_ipv4_policy"></a> [bfd\_ipv4\_policy](#input\_bfd\_ipv4\_policy) | BFD IPv4 policy name. | `string` | `""` | no |
 | <a name="input_bfd_ipv6_policy"></a> [bfd\_ipv6\_policy](#input\_bfd\_ipv6\_policy) | BFD IPv6 policy name. | `string` | `""` | no |
+| <a name="input_copp_leaf_policy"></a> [copp\_leaf\_policy](#input\_copp\_leaf\_policy) | CoPP Leaf policy name. | `string` | `""` | no |
 
 ## Outputs
 
@@ -56,5 +58,6 @@ module "aci_access_leaf_switch_policy_group" {
 | [aci_rest_managed.infraAccNodePGrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsBfdIpv4InstPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsBfdIpv6InstPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraRsLeafCoppProfile](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsTopoctrlFwdScaleProfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->
