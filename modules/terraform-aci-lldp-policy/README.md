@@ -40,7 +40,7 @@ module "aci_lldp_policy" {
 | <a name="input_name"></a> [name](#input\_name) | LLDP interface policy name. | `string` | n/a | yes |
 | <a name="input_admin_rx_state"></a> [admin\_rx\_state](#input\_admin\_rx\_state) | Administrative state receive. | `bool` | `false` | no |
 | <a name="input_admin_tx_state"></a> [admin\_tx\_state](#input\_admin\_tx\_state) | Administrative state transmit. | `bool` | `false` | no |
-| <a name="input_dcbxp_version"></a> [dcbxp\_version](#input\_dcbxp\_version) | DCBXP version. Allowed values: CEE, IEEE. | `string` | `"info"` | no |
+| <a name="input_dcbxp_version"></a> [dcbxp\_version](#input\_dcbxp\_version) | DCBXP version. Allowed values: CEE, IEEE. | `string` | `null` | no |
 
 ## Outputs
 
