@@ -25,6 +25,24 @@ variable "switch_cli_banner" {
   type        = string
   default     = ""
 }
+
+variable "apic_app_banner" {
+  description = "APIC Application banner."
+  type        = string
+  default     = ""
+}
+
+variable "apic_app_banner_severity" {
+  type        = string
+  description = "Severity level for the APIC Application banner. Allowed values: info, critical, warning."
+  default     = "info"
+
+  validation {
+    condition     = contains(["info", "critical", "warning"], var.apic_app_banner_severity)
+    error_message = "Invalid severity: must be one of 'info', 'critical', or 'warning'."
+  }
+}
+
 variable "escape_html" {
   description = "Enable escape HTML characters for banner."
   type        = bool
