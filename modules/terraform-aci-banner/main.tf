@@ -7,7 +7,7 @@ resource "aci_rest_managed" "aaaPreLoginBanner" {
     isGuiMessageText      = var.apic_gui_banner_message != "" ? "yes" : "no"
     guiTextMessage        = var.apic_gui_alias
     message               = var.apic_cli_banner
-    showBannerMessage     = var.apic_app_banner != "" ? "true" : "false"
+    showBannerMessage     = var.apic_app_banner != "" ? "yes" : "no"
     bannerMessage         = var.apic_app_banner
     bannerMessageSeverity = var.apic_app_banner_severity
     switchMessage         = var.switch_cli_banner
