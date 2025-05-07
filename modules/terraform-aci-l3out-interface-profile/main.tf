@@ -173,6 +173,9 @@ resource "aci_rest_managed" "ospfRsIfPol" {
   content = {
     tnOspfIfPolName = var.ospf_interface_policy
   }
+  depends_on = [
+    aci_rest_managed.l3extMember_A, aci_rest_managed.l3extMember_B
+  ]
 }
 
 resource "aci_rest_managed" "eigrpIfP" {
