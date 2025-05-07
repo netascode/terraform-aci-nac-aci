@@ -1,3 +1,29 @@
+## 1.0.0 (unreleased)
+
+- Add support for L3Out ND interface policy
+- Add support for endpoint MAC and IP tags
+- Add support for interface shutdown
+- Add support for encapsulation under floating L3outs
+- Add support for atomic counter
+- Add support for enhanced log format in syslog configuration
+- BREAKING CHANGE: Add support for multiple loopbacks in L3out nodes configuration
+- BREAKING CHANGE: Add support for multiple IPv4 and IPv6 import/export route targets under VRF
+- BREAKING CHANGE: Remove default value for smart licensing URL
+- Fix support for service graphs with copy device
+- Add support for MACsec policy in spine interface policy group
+- Add support for BGP protocol profile name
+- Add support for port bringup delay to link level policies
+- BREAKING CHANGE: Optimized interface and switch policy groups: empty policies will not be pushed anymore. Empty resources will be removed from existing statefile with no expected impact on fabric
+- BREAKING CHANGE: Disable escaping HTML characters for all resources that contain passwords
+- Add support for `route_maps` under L3out to configure multiple route maps. This will deprecate `import_route map` and `export_route_map` in the future
+- Enhance SPAN filer group with name being optional attribute
+- BREAKING CHANGE: Enhance BGP best path policy with new attribute `ignore_igp_metric`. Change `control_type` attribute to `as_path_multipath_relax` boolean
+- Add support for endpoint retention policy
+- Add support for unidirectional contracts
+- Add support for `rewrite_source_mac` under redirect policy
+- Add support for DHCP relay in L3out secondary IP address configuration
+- Add support for application banners
+
 ## 0.9.3
 
 - Fix validation for consumed contracts under external EPG
