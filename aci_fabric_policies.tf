@@ -249,7 +249,7 @@ module "aci_fabric_pod_policy_group" {
   snmp_policy              = try("${each.value.snmp_policy}${local.defaults.apic.fabric_policies.pod_policies.snmp_policies.name_suffix}", "")
   date_time_policy         = try("${each.value.date_time_policy}${local.defaults.apic.fabric_policies.pod_policies.date_time_policies.name_suffix}", "")
   management_access_policy = try("${each.value.management_access_policy}${local.defaults.apic.fabric_policies.pod_policies.management_access_policies.name_suffix}", "")
-  macsec_policy            = try("${each.value.macsec_policy}${local.defaults.apic.fabric_policies.pod_policies.macsec_policies.name_suffix}", "")
+  macsec_policy            = try("${each.value.macsec_policy}${local.defaults.apic.fabric_policies.macsec_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_snmp_policy,
@@ -1068,7 +1068,7 @@ module "aci_fabric_macsec_parameters_policy" {
   window_size     = try(each.value.window_size, local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.window_size)
   key_expiry_time = try(each.value.key_expiry_time, local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.key_expiry_time) == "disabled" || try(each.value.key_expiry_time, local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.key_expiry_time) == 0 ? 0 : each.value.key_expiry_time
   security_policy = try(each.value.security_policy, local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.security_policy)
-  type            = local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.type
+  type            = "fabric"
 }
 
 locals {

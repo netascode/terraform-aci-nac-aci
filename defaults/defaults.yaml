@@ -161,8 +161,6 @@ defaults:
           http:
             admin_state: false
             port: 80
-        macsec_policies:
-          name_suffix: ""
       switch_policies:
         node_control_policies:
           name_suffix: ""
@@ -415,17 +413,14 @@ defaults:
           window_size: 64
           key_expiry_time: disabled
           security_policy: should-secure
-          type: fabric
         macsec_keychain_policies:
           name_suffix: ""
           key_policies:
             start_time: now
             end_time: infinite
-          type: fabric
         macsec_interfaces_policies:
           name_suffix: ""
           admin_state: true
-          type: fabric
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
       leaf_interface_profile_name: "LEAF\\g<id>"
