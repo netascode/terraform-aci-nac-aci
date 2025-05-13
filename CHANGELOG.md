@@ -23,6 +23,7 @@
 - Add support for `rewrite_source_mac` under redirect policy
 - Add support for DHCP relay in L3out secondary IP address configuration
 - Add support for application banners
+- Use Terraform functions to merge YAML content instead of data sources
 
 ## 0.9.3
 
