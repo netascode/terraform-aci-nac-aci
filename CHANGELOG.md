@@ -1,4 +1,4 @@
-## 1.0.0 (unreleased)
+## 1.0.0
 
 - Add support for L3Out ND interface policy
 - Add support for endpoint MAC and IP tags
