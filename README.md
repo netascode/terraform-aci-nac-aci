@@ -85,7 +85,7 @@ Additional example repositories:
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
 | <a name="requirement_aci"></a> [aci](#requirement\_aci) | = 2.15.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.3.0 |
 | <a name="requirement_utils"></a> [utils](#requirement\_utils) | = 1.0.0 |
@@ -119,16 +119,14 @@ Additional example repositories:
 | Name | Version |
 |------|---------|
 | <a name="provider_local"></a> [local](#provider\_local) | >= 2.3.0 |
-| <a name="provider_utils"></a> [utils](#provider\_utils) | = 1.0.0 |
+| <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [local_sensitive_file.defaults](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/sensitive_file) | resource |
-| [utils_yaml_merge.defaults](https://registry.terraform.io/providers/netascode/utils/1.0.0/docs/data-sources/yaml_merge) | data source |
-| [utils_yaml_merge.model](https://registry.terraform.io/providers/netascode/utils/1.0.0/docs/data-sources/yaml_merge) | data source |
-| [utils_yaml_merge.modules](https://registry.terraform.io/providers/netascode/utils/1.0.0/docs/data-sources/yaml_merge) | data source |
+| [terraform_data.validation](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 
 ## Modules
 
