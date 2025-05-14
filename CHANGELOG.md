@@ -1,3 +1,7 @@
+## 1.0.1 (unreleased)
+
+- Fix handling of errors when merging invalid YAML content
+
 ## 1.0.0
 
 - Add support for L3Out ND interface policy

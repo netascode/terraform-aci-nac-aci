@@ -8,7 +8,7 @@ terraform {
     }
     utils = {
       source  = "netascode/utils"
-      version = "= 1.0.0"
+      version = ">= 1.0.1"
     }
     local = {
       source  = "hashicorp/local"
