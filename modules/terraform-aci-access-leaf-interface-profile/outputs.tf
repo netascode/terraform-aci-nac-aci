@@ -7,3 +7,8 @@ output "name" {
   value       = aci_rest_managed.infraAccPortP.content.name
   description = "Leaf interface profile name."
 }
+
+output "description" {
+  value       = aci_rest_managed.infraAccPortP.content.descr
+  description = "Leaf interface profile description."
+}
