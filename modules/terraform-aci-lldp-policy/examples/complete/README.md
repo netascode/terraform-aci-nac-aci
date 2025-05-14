@@ -19,6 +19,7 @@ module "aci_lldp_policy" {
   name           = "LLDP-ON"
   admin_rx_state = true
   admin_tx_state = true
+  dcbxp_version  = "IEEE"
 }
 ```
 <!-- END_TF_DOCS -->
