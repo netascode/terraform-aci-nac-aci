@@ -5,6 +5,6 @@ resource "aci_rest_managed" "lldpIfPol" {
     name         = var.name
     adminRxSt    = var.admin_rx_state == true ? "enabled" : "disabled"
     adminTxSt    = var.admin_tx_state == true ? "enabled" : "disabled"
-    portDCBXPVer = try(var.dcbxp_version, null)
+    portDCBXPVer = var.dcbxp_version
   }
 }
