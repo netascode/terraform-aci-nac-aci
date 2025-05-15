@@ -69,3 +69,7 @@ variable "write_default_values_file" {
   type        = string
   default     = ""
 }
+
+variable "aci_username" {}
+variable "aci_password" {}
+variable "aci_url" {}

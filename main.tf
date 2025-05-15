@@ -1,3 +1,10 @@
+provider "aci" {
+  username = var.aci_username
+  password = var.aci_password
+  url      = var.aci_url
+  insecure = true  # Set to false if using valid SSL certs
+}
+
 locals {
   apic               = try(local.model.apic, {})
   access_policies    = try(local.apic.access_policies, {})
@@ -45,4 +52,9 @@ locals {
       ])
     }
   ]
+}
+
+resource "aci_tenant" "example_tenant" {
+  name        = "TF_Tenant"
+  description = "Created via Terraform"
 }
