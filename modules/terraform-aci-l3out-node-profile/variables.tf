@@ -45,10 +45,12 @@ variable "nodes" {
       bfd         = optional(bool, false)
       track_list  = optional(string)
       next_hops = optional(list(object({
-        ip          = string
-        description = optional(string, "")
-        preference  = optional(number, 1)
-        type        = optional(string, "prefix")
+        ip            = string
+        description   = optional(string, "")
+        preference    = optional(number, 1)
+        type          = optional(string, "prefix")
+        ip_sla_policy = optional(string)
+        track_list    = optional(string)
       })), [])
     })), [])
   }))
@@ -94,6 +96,20 @@ variable "nodes" {
       for n in var.nodes : [for s in coalesce(n.static_routes, []) : [for nh in coalesce(s.next_hops, []) : nh.type == null || try(contains(["prefix", "none"], nh.type), false)]]
     ]))
     error_message = "`static_routes.next_hops.type`: Allowed values are `prefix` or `none`."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for n in var.nodes : [for s in coalesce(n.static_routes, []) : [for nh in coalesce(s.next_hops, []) : nh.track_list == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", nh.track_list))]]
+    ]))
+    error_message = "`static_routes.next_hops.track_list`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for n in var.nodes : [for s in coalesce(n.static_routes, []) : [for nh in coalesce(s.next_hops, []) : nh.track_list == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", nh.ip_sla_policy))]]
+    ]))
+    error_message = "`static_routes.next_hops.ip_sla_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -295,7 +311,6 @@ variable "bgp_timer_policy" {
   }
 }
 
-
 variable "bgp_as_path_policy" {
   description = "Node Profile's BGP AS-Path Policy"
   type        = string
@@ -303,6 +318,17 @@ variable "bgp_as_path_policy" {
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_as_path_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "vrf" {
+  description = "VRF name."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.vrf == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.vrf))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
