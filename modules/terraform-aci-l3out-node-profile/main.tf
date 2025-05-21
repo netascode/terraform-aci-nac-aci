@@ -298,24 +298,18 @@ resource "aci_rest_managed" "bgpRsBestPathCtrlPol" {
 
 resource "aci_rest_managed" "ipRsNexthopRouteTrack" {
   for_each   = { for next_hop in local.next_hops : next_hop.key => next_hop.value if next_hop.value.ip_sla_policy != null || next_hop.value.track_list != null }
-  dn         = "${aci_rest_managed.ipRouteP[each.value.static_route].dn}/nh-[${each.value.ip}]/rsNexthopRouteTrack"
+  dn         = "${aci_rest_managed.ipNexthopP[each.key].dn}/rsNexthopRouteTrack"
   class_name = "ipRsNexthopRouteTrack"
   content = {
     tDn = "uni/tn-${var.tenant}/tracklist-${each.value.track_list}"
   }
-  depends_on = [
-    aci_rest_managed.ipNexthopP,
-  ]
 }
 
 resource "aci_rest_managed" "ipRsNHTrackMember" {
   for_each   = { for next_hop in local.next_hops : next_hop.key => next_hop.value if next_hop.value.ip_sla_policy != null }
-  dn         = "${aci_rest_managed.ipRouteP[each.value.static_route].dn}/nh-[${each.value.ip}]/rsNHTrackMember"
+  dn         = "${aci_rest_managed.ipNexthopP[each.key].dn}/rsNHTrackMember"
   class_name = "ipRsNHTrackMember"
   content = {
     tDn = "uni/tn-${var.tenant}/trackmember-${each.value.track_list}"
   }
-  depends_on = [
-    aci_rest_managed.ipNexthopP,
-  ]
 }
