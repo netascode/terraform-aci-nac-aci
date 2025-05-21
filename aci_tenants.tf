@@ -1003,13 +1003,12 @@ locals {
               bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
               track_list  = try(sr.track_list, null)
               next_hops = [for nh in try(sr.next_hops, []) : {
-                ip                        = nh.ip
-                description               = try(nh.description, "")
-                preference                = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
-                type                      = try(nh.type, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type)
-                ip_sla_policy             = try("${nh.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
-                track_list                = try("${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
-                auto_generated_track_list = try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${nh.ip}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
+                ip            = nh.ip
+                description   = try(nh.description, "")
+                preference    = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
+                type          = try(nh.type, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type)
+                ip_sla_policy = try("${nh.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
+                track_list    = try("${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
               }]
             }]
           }]
@@ -1097,13 +1096,12 @@ locals {
             bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
             track_list  = try(sr.track_list, null)
             next_hops = [for nh in try(sr.next_hops, []) : {
-              ip                        = nh.ip
-              description               = try(nh.description, "")
-              preference                = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
-              type                      = try(nh.type, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.type)
-              ip_sla_policy             = try("${nh.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
-              track_list                = try("${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
-              auto_generated_track_list = try("${l3out.vrf}_${nh.ip}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
+              ip            = nh.ip
+              description   = try(nh.description, "")
+              preference    = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
+              type          = try(nh.type, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.type)
+              ip_sla_policy = try("${nh.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
+              track_list    = try("${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
             }]
           }]
         }]
