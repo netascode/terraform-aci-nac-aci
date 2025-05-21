@@ -303,6 +303,9 @@ resource "aci_rest_managed" "ipRsNexthopRouteTrack" {
   content = {
     tDn = "uni/tn-${var.tenant}/tracklist-${each.value.track_list}"
   }
+  depends_on = [
+    aci_rest_managed.ipNexthopP,
+  ]
 }
 
 resource "aci_rest_managed" "ipRsNHTrackMember" {
@@ -312,4 +315,7 @@ resource "aci_rest_managed" "ipRsNHTrackMember" {
   content = {
     tDn = "uni/tn-${var.tenant}/trackmember-${each.value.track_list}"
   }
+  depends_on = [
+    aci_rest_managed.ipNexthopP,
+  ]
 }
