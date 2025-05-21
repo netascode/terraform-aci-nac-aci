@@ -3666,7 +3666,7 @@ module "aci_tenant_span_source_group" {
   ]
 }
 
-ocals {
+locals {
   track_lists_raw = flatten([
     for tenant in local.tenants : concat(
       [
