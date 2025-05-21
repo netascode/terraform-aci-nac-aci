@@ -107,7 +107,7 @@ variable "nodes" {
 
   validation {
     condition = alltrue(flatten([
-      for n in var.nodes : [for s in coalesce(n.static_routes, []) : [for nh in coalesce(s.next_hops, []) : nh.track_list == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", nh.ip_sla_policy))]]
+      for n in var.nodes : [for s in coalesce(n.static_routes, []) : [for nh in coalesce(s.next_hops, []) : nh.ip_sla_policy == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", nh.ip_sla_policy))]]
     ]))
     error_message = "`static_routes.next_hops.ip_sla_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }

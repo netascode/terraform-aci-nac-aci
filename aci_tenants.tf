@@ -982,7 +982,7 @@ locals {
         for np in try(l3out.node_profiles, []) : {
           key                       = format("%s/%s/%s", tenant.name, l3out.name, np.name)
           tenant                    = tenant.name
-          l3out                     = l3out.name
+          l3out                     = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
           name                      = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
           multipod                  = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
           remote_leaf               = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
@@ -1075,8 +1075,8 @@ locals {
       for l3out in try(tenant.l3outs, []) : {
         key                       = format("%s/%s", tenant.name, l3out.name)
         tenant                    = tenant.name
-        l3out                     = l3out.name
-        name                      = l3out.name
+        l3out                     = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
+        name                      = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
         multipod                  = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
         remote_leaf               = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
         bgp_protocol_profile_name = try(l3out.bgp.name, "")
