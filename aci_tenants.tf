@@ -1008,7 +1008,7 @@ locals {
                 preference    = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
                 type          = try(nh.type, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type)
                 ip_sla_policy = try("${nh.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
-                track_list    = try("${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
+                track_list    = try(try(nh.ip_sla_policy, null) != null ? "${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${nh.ip}${local.defaults.apic.tenants.policies.track_lists.name_suffix}" : "${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
               }]
             }]
           }]
@@ -1101,7 +1101,7 @@ locals {
               preference    = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
               type          = try(nh.type, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.type)
               ip_sla_policy = try("${nh.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
-              track_list    = try("${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
+              track_list    = try(try(nh.ip_sla_policy, null) != null ? "${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${nh.ip}${local.defaults.apic.tenants.policies.track_lists.name_suffix}" : "${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
             }]
           }]
         }]
