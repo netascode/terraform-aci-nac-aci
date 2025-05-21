@@ -1472,6 +1472,8 @@ defaults:
           percentage_down: 1
           weight_up: 0
           weight_down: 1
+        track_members:
+          name_suffix: ""
         endpoint_mac_tags:
           bridge_domain: all
         endpoint_retention_policies:

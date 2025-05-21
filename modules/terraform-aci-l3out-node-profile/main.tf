@@ -301,7 +301,7 @@ resource "aci_rest_managed" "ipRsNexthopRouteTrack" {
   dn         = "${aci_rest_managed.ipRouteP[each.value.static_route].dn}/nh-[${each.value.ip}]/rsNexthopRouteTrack"
   class_name = "ipRsNexthopRouteTrack"
   content = {
-    tDn = format("%s%s", "uni/tn-${var.tenant}/tracklist-", each.value.ip_sla_policy != null ? "${var.vrf}_${each.value.ip}" : "${each.value.track_list}")
+    tDn = "uni/tn-${var.tenant}/tracklist-${each.value.track_list}"
   }
 }
 
@@ -310,6 +310,6 @@ resource "aci_rest_managed" "ipRsNHTrackMember" {
   dn         = "${aci_rest_managed.ipRouteP[each.value.static_route].dn}/nh-[${each.value.ip}]/rsNHTrackMember"
   class_name = "ipRsNHTrackMember"
   content = {
-    tDn = "uni/tn-${var.tenant}/trackmember-${var.vrf}_${each.value.ip}"
+    tDn = "uni/tn-${var.tenant}/trackmember-${each.value.track_list}"
   }
 }

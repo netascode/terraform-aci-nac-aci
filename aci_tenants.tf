@@ -982,7 +982,8 @@ locals {
         for np in try(l3out.node_profiles, []) : {
           key                       = format("%s/%s/%s", tenant.name, l3out.name, np.name)
           tenant                    = tenant.name
-          l3out                     = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
+          l3out                     = l3out.name
+          vrf                       = try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
           name                      = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
           multipod                  = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
           remote_leaf               = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
@@ -1002,12 +1003,13 @@ locals {
               bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
               track_list  = try(sr.track_list, null)
               next_hops = [for nh in try(sr.next_hops, []) : {
-                ip            = nh.ip
-                description   = try(nh.description, "")
-                preference    = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
-                type          = try(nh.type, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type)
-                ip_sla_policy = try("${nh.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
-                track_list    = try("${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
+                ip                        = nh.ip
+                description               = try(nh.description, "")
+                preference                = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
+                type                      = try(nh.type, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type)
+                ip_sla_policy             = try("${nh.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
+                track_list                = try("${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
+                auto_generated_track_list = try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${nh.ip}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
               }]
             }]
           }]
@@ -1075,8 +1077,8 @@ locals {
       for l3out in try(tenant.l3outs, []) : {
         key                       = format("%s/%s", tenant.name, l3out.name)
         tenant                    = tenant.name
-        l3out                     = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
-        name                      = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
+        l3out                     = l3out.name
+        name                      = l3out.name
         multipod                  = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
         remote_leaf               = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
         bgp_protocol_profile_name = try(l3out.bgp.name, "")
@@ -1095,12 +1097,13 @@ locals {
             bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
             track_list  = try(sr.track_list, null)
             next_hops = [for nh in try(sr.next_hops, []) : {
-              ip            = nh.ip
-              description   = try(nh.description, "")
-              preference    = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
-              type          = try(nh.type, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.type)
-              ip_sla_policy = try("${nh.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
-              track_list    = try("${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
+              ip                        = nh.ip
+              description               = try(nh.description, "")
+              preference                = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
+              type                      = try(nh.type, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.type)
+              ip_sla_policy             = try("${nh.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
+              track_list                = try("${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
+              auto_generated_track_list = try("${l3out.vrf}_${nh.ip}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
             }]
           }]
         }]
@@ -3667,78 +3670,6 @@ module "aci_tenant_span_source_group" {
   ]
 }
 
-locals {
-  track_lists_raw = flatten([
-    for tenant in local.tenants : concat(
-      [
-        for policy in try(tenant.policies.track_lists, []) : {
-          key             = format("%s/%s", tenant.name, policy.name)
-          tenant          = tenant.name
-          name            = "${policy.name}${local.defaults.apic.tenants.policies.track_lists.name_suffix}"
-          description     = try(policy.description, "")
-          type            = try(policy.type, local.defaults.apic.tenants.policies.track_lists.type)
-          percentage_up   = try(policy.percentage_up, local.defaults.apic.tenants.policies.track_lists.percentage_up)
-          percentage_down = try(policy.percentage_down, local.defaults.apic.tenants.policies.track_lists.percentage_down)
-          weight_up       = try(policy.weight_up, local.defaults.apic.tenants.policies.track_lists.weight_up)
-          weight_down     = try(policy.weight_down, local.defaults.apic.tenants.policies.track_lists.weight_down)
-          track_members   = try(policy.track_members, [])
-        }
-      ],
-      [
-        for l3out in try(tenant.l3outs, []) : concat(
-          [
-            for np in try(l3out.node_profiles, []) : [
-              for node in try(np.nodes, []) : [
-                for static_route in try(node.static_routes, []) : [
-                  for next_hop in try(static_route.next_hops, []) : {
-                    key             = format("%s/%s_%s", tenant.name, l3out.vrf, next_hop.ip)
-                    tenant          = tenant.name
-                    name            = try("${l3out.vrf}_${next_hop.ip}${local.defaults.apic.tenants.policies.track_lists.auto_generated_name_sufix}", null)
-                    description     = try("Generated by l3out: ${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}, node: ${node.node_id}", "")
-                    type            = try(local.defaults.apic.tenants.policies.track_lists.type)
-                    percentage_up   = try(local.defaults.apic.tenants.policies.track_lists.percentage_up)
-                    percentage_down = try(local.defaults.apic.tenants.policies.track_lists.percentage_down)
-                    weight_up       = try(local.defaults.apic.tenants.policies.track_lists.weight_up)
-                    weight_down     = try(local.defaults.apic.tenants.policies.track_lists.weight_down)
-                    track_members   = try(["${l3out.vrf}_${next_hop.ip}${local.defaults.apic.tenants.policies.track_lists.name_suffix}"], [])
-                  } if try(next_hop.ip_sla_policy, null) != null
-                ]
-              ]
-            ]
-          ],
-          [
-            for node in try(l3out.nodes, []) : [
-              for static_route in try(node.static_routes, []) : [
-                for next_hop in try(static_route.next_hops, []) : {
-                  key             = format("%s/%s_%s", tenant.name, l3out.vrf, next_hop.ip)
-                  tenant          = tenant.name
-                  name            = try("${l3out.vrf}_${next_hop.ip}${local.defaults.apic.tenants.policies.track_lists.auto_generated_name_sufix}", null)
-                  description     = try("Generated by l3out: ${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}, node: ${node.node_id}", "")
-                  type            = try(local.defaults.apic.tenants.policies.track_lists.type)
-                  percentage_up   = try(local.defaults.apic.tenants.policies.track_lists.percentage_up)
-                  percentage_down = try(local.defaults.apic.tenants.policies.track_lists.percentage_down)
-                  weight_up       = try(local.defaults.apic.tenants.policies.track_lists.weight_up)
-                  weight_down     = try(local.defaults.apic.tenants.policies.track_lists.weight_down)
-                  track_members   = try(["${l3out.vrf}_${next_hop.ip}${local.defaults.apic.tenants.policies.track_lists.name_suffix}"], [])
-                } if try(next_hop.ip_sla_policy, null) != null
-              ]
-            ]
-          ]
-        )
-      ]
-    )
-  ])
-
-  track_lists_grouped = {
-    for track_list in local.track_lists_raw :
-    track_list.key => track_list...
-  }
-
-  track_lists = [
-    for track_list in local.track_lists_grouped : track_list[0]
-  ]
-}
-
 module "aci_track_list" {
   source = "./modules/terraform-aci-track-list"
 
@@ -3766,7 +3697,7 @@ locals {
         for policy in try(tenant.policies.track_members, []) : {
           key            = format("%s/%s", tenant.name, policy.name)
           tenant         = tenant.name
-          name           = policy.name
+          name           = "${policy.name}${local.defaults.apic.tenants.policies.track_members.name_suffix}"
           description    = try(policy.description, "")
           destination_ip = policy.destination_ip
           scope_type     = policy.scope_type
@@ -3783,11 +3714,11 @@ locals {
                   for next_hop in try(static_route.next_hops, []) : {
                     key            = format("%s/%s_%s", tenant.name, l3out.vrf, next_hop.ip)
                     tenant         = tenant.name
-                    name           = try("${l3out.vrf}_${next_hop.ip}${local.defaults.apic.tenants.policies.track_lists.auto_generated_name_sufix}", null)
-                    description    = try("Generated by l3out: ${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}, node: ${node.node_id}", "")
+                    name           = try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${next_hop.ip}${local.defaults.apic.tenants.policies.track_members.name_suffix}", null)
+                    description    = try("Generated by l3out: ${l3out.name}, node: ${node.node_id}", "")
                     destination_ip = try("${next_hop.ip}", null)
                     scope_type     = "l3out"
-                    scope          = try("${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}", "")
+                    scope          = try("${l3out.name}", "")
                     ip_sla_policy  = try("${next_hop.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
                   } if try(next_hop.ip_sla_policy, null) != null
                 ]
@@ -3800,11 +3731,11 @@ locals {
                 for next_hop in try(static_route.next_hops, []) : {
                   key            = format("%s/%s_%s", tenant.name, l3out.vrf, next_hop.ip)
                   tenant         = tenant.name
-                  name           = try("${l3out.vrf}_${next_hop.ip}${local.defaults.apic.tenants.policies.track_lists.auto_generated_name_sufix}", null)
-                  description    = try("Generated by l3out: ${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}, node: ${node.node_id}", "")
+                  name           = try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${next_hop.ip}${local.defaults.apic.tenants.policies.track_members.name_suffix}", null)
+                  description    = try("Generated by l3out: ${l3out.name}, node: ${node.node_id}", "")
                   destination_ip = try("${next_hop.ip}", null)
                   scope_type     = "l3out"
-                  scope          = try("${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}", "")
+                  scope          = try("${l3out.name}", "")
                   ip_sla_policy  = try("${next_hop.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
                 } if try(next_hop.ip_sla_policy, null) != null
               ]

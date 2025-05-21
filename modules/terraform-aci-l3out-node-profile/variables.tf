@@ -111,6 +111,7 @@ variable "nodes" {
     ]))
     error_message = "`static_routes.next_hops.ip_sla_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
+
 }
 
 variable "bgp_peers" {
