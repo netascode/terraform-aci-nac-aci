@@ -322,14 +322,3 @@ variable "bgp_as_path_policy" {
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
-
-variable "vrf" {
-  description = "VRF name."
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.vrf == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.vrf))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
-  }
-}

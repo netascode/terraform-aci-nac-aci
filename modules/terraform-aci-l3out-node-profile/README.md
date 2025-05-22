@@ -110,7 +110,6 @@ module "aci_l3out_node_profile" {
 | <a name="input_bgp_protocol_profile_name"></a> [bgp\_protocol\_profile\_name](#input\_bgp\_protocol\_profile\_name) | BGP Protocol Name. | `string` | `""` | no |
 | <a name="input_bgp_timer_policy"></a> [bgp\_timer\_policy](#input\_bgp\_timer\_policy) | Node Profile's BGP Timer Policy | `string` | `""` | no |
 | <a name="input_bgp_as_path_policy"></a> [bgp\_as\_path\_policy](#input\_bgp\_as\_path\_policy) | Node Profile's BGP AS-Path Policy | `string` | `""` | no |
-| <a name="input_vrf"></a> [vrf](#input\_vrf) | VRF name. | `string` | `null` | no |
 
 ## Outputs
 
