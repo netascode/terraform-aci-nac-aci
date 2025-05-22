@@ -27,6 +27,7 @@ locals {
             type          = nh.type
             ip_sla_policy = nh.ip_sla_policy
             track_list    = nh.track_list
+            track_member  = nh.track_member
           }
         }
       ]
@@ -310,6 +311,6 @@ resource "aci_rest_managed" "ipRsNHTrackMember" {
   dn         = "${aci_rest_managed.ipNexthopP[each.key].dn}/rsNHTrackMember"
   class_name = "ipRsNHTrackMember"
   content = {
-    tDn = "uni/tn-${var.tenant}/trackmember-${each.value.track_list}"
+    tDn = "uni/tn-${var.tenant}/trackmember-${each.value.track_member}"
   }
 }

@@ -1008,6 +1008,7 @@ locals {
                 type          = try(nh.type, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.type)
                 ip_sla_policy = try("${nh.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
                 track_list    = try(nh.ip_sla_policy, null) != null ? "${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${nh.ip}${local.defaults.apic.tenants.policies.track_lists.name_suffix}" : try("${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
+                track_member  = try(nh.ip_sla_policy, null) != null ? "${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${nh.ip}${local.defaults.apic.tenants.policies.track_members.name_suffix}" : null
               }]
             }]
           }]
@@ -1099,6 +1100,7 @@ locals {
               type          = try(nh.type, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.type)
               ip_sla_policy = try("${nh.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
               track_list    = try(nh.ip_sla_policy, null) != null ? "${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${nh.ip}${local.defaults.apic.tenants.policies.track_lists.name_suffix}" : try("${nh.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
+              track_member  = try(nh.ip_sla_policy, null) != null ? "${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${nh.ip}${local.defaults.apic.tenants.policies.track_members.name_suffix}" : null
             }]
           }]
         }]
@@ -3677,7 +3679,7 @@ locals {
           percentage_down = try(policy.percentage_down, local.defaults.apic.tenants.policies.track_lists.percentage_down)
           weight_up       = try(policy.weight_up, local.defaults.apic.tenants.policies.track_lists.weight_up)
           weight_down     = try(policy.weight_down, local.defaults.apic.tenants.policies.track_lists.weight_down)
-          track_members   = [for tm in try(policy.track_members, []) : "${tm}${local.defaults.apic.tenants.policies.track_lists.name_suffix}"]
+          track_members   = [for tm in try(policy.track_members, []) : "${tm}${local.defaults.apic.tenants.policies.track_members.name_suffix}"]
         }
       ],
       [
