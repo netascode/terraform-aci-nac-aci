@@ -1000,7 +1000,7 @@ locals {
               prefix      = sr.prefix
               preference  = try(sr.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.preference)
               bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
-              track_list  = try(sr.track_list, null)
+              track_list  = try("${sr.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
               next_hops = [for nh in try(sr.next_hops, []) : {
                 ip            = nh.ip
                 description   = try(nh.description, "")
@@ -1092,7 +1092,7 @@ locals {
             prefix      = sr.prefix
             preference  = try(sr.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.preference)
             bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
-            track_list  = try(sr.track_list, null)
+            track_list  = try("${sr.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
             next_hops = [for nh in try(sr.next_hops, []) : {
               ip            = nh.ip
               description   = try(nh.description, "")
