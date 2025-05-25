@@ -1023,4 +1023,5 @@ module "aci_netflow_record" {
   name             = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_records.name_suffix}"
   description      = try(each.value.description, "")
   match_parameters = try(each.value.match_parameters, [])
+  collect_parameters = try(each.value.collect_parameters, [])
 }

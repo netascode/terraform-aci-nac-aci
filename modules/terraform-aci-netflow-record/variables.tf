@@ -31,3 +31,16 @@ variable "match_parameters" {
     error_message = "`match_parameters`: Allowed values: `dst-ip`, `dst-ipv4`, `dst-ipv6`, `dst-mac`, `dst-port`, `ethertype`, `proto`, `src-ip`, `src-ipv4`, `src-ipv6`, `src-mac`, `src-port`, `tos`, `vlan`, `unspecified`."
   }
 }
+
+variable "collect_parameters" {
+  description = "Netflow Record collect parameters. Allowed values: `count-bytes`, `count-pkts`, `src-intf`, `pkt-disp`, `sampler-id`, `tcp-flags`, `ts-first`, `ts-recent`."
+  type        = list(string)
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for p in var.collect_parameters : contains(["count-bytes", "count-pkts", "src-intf", "pkt-disp", "sampler-id", "tcp-flags", "ts-first", "ts-recent"], p)
+    ])
+    error_message = "`collect_parameters`: Allowed values: `count-bytes`, `count-pkts`, `src-intf`, `pkt-disp`, `sampler-id`, `tcp-flags`, `ts-first`, `ts-recent`."
+  }
+}
