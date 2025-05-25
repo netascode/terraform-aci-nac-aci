@@ -1019,9 +1019,9 @@ module "aci_netflow_monitor" {
 module "aci_netflow_record" {
   source = "./modules/terraform-aci-netflow-record"
 
-  for_each         = { for record in try(local.access_policies.interface_policies.netflow_records, []) : record.name => record if local.modules.aci_netflow_record && var.manage_access_policies }
-  name             = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_records.name_suffix}"
-  description      = try(each.value.description, "")
-  match_parameters = try(each.value.match_parameters, [])
+  for_each           = { for record in try(local.access_policies.interface_policies.netflow_records, []) : record.name => record if local.modules.aci_netflow_record && var.manage_access_policies }
+  name               = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_records.name_suffix}"
+  description        = try(each.value.description, "")
+  match_parameters   = try(each.value.match_parameters, [])
   collect_parameters = try(each.value.collect_parameters, [])
 }
