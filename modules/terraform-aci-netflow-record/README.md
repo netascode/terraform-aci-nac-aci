@@ -13,9 +13,10 @@ module "aci_netflow_record" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-netflow-record"
   version = ">= 0.9.0"
 
-  name             = "RECORD1"
-  description      = "Netflow record 1"
-  match_parameters = ["dst-ip", "src-ip"]
+  name               = "RECORD1"
+  description        = "Netflow record 1"
+  match_parameters   = ["dst-ip", "src-ip"]
+  collect_parameters = ["count-packets", "count-bytes"]
 }
 ```
 
@@ -39,6 +40,7 @@ module "aci_netflow_record" {
 | <a name="input_name"></a> [name](#input\_name) | Netflow Record name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Netflow Record description. | `string` | `""` | no |
 | <a name="input_match_parameters"></a> [match\_parameters](#input\_match\_parameters) | Netflow Record match parameters. Allowed values: `dst-ip`, `dst-ipv4`, `dst-ipv6`, `dst-mac`, `dst-port`, `ethertype`, `proto`, `src-ip`, `src-ipv4`, `src-ipv6`, `src-mac`, `src-port`, `tos`, `vlan`, `unspecified`. | `list(string)` | `[]` | no |
+| <a name="input_collect_parameters"></a> [collect\_parameters](#input\_collect\_parameters) | Netflow Record collect parameters. Allowed values: `count-bytes`, `count-pkts`, `src-intf`, `pkt-disp`, `sampler-id`, `tcp-flags`, `ts-first`, `ts-recent`. | `list(string)` | `[]` | no |
 
 ## Outputs
 
