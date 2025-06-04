@@ -1470,10 +1470,12 @@ defaults:
         track_lists:
           name_suffix: ""
           type: percentage
-          percentage_up: 0
-          percentage_down: 1
-          weight_up: 0
-          weight_down: 1
+          percentage_up: 1
+          percentage_down: 0
+          weight_up: 1
+          weight_down: 0
+        track_members:
+          name_suffix: ""
         endpoint_mac_tags:
           bridge_domain: all
         endpoint_retention_policies:
