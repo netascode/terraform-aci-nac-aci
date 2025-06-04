@@ -194,6 +194,14 @@ defaults:
         name_suffix: ""
       leaf_interface_profiles:
         name_suffix: ""
+        selectors:
+          name_suffix: ""
+          port_blocks:
+            name_suffix: ""
+            from_module: 1
+          sub_port_blocks:
+            name_suffix: ""
+            from_module: 1
       spine_interface_profiles:
         name_suffix: ""
       external_connectivity_policy:
