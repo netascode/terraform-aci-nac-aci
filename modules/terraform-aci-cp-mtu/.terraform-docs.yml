@@ -1,0 +1,16 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  # Terraform ACI CP MTU Policy Module
+
+  Manage Control Plane MTU Policy in Cisco ACI.
+
+  Location in GUI:
+  `Fabric` » `Access Policies` » `Policies` » `Interface` » `CP MTU Policy`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
