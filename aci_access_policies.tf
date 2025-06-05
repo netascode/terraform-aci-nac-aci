@@ -288,6 +288,7 @@ module "aci_lldp_policy" {
   name           = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}"
   admin_rx_state = each.value.admin_rx_state
   admin_tx_state = each.value.admin_tx_state
+  dcbxp_version  = try(each.value.dcbxp_version, null)
 }
 
 module "aci_link_level_policy" {
