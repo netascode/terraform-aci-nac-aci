@@ -200,6 +200,7 @@ Additional example repositories:
 | <a name="module_aci_fabric_isis_bfd"></a> [aci\_fabric\_isis\_bfd](#module\_aci\_fabric\_isis\_bfd) | ./modules/terraform-aci-fabric-isis-bfd | n/a |
 | <a name="module_aci_fabric_isis_policy"></a> [aci\_fabric\_isis\_policy](#module\_aci\_fabric\_isis\_policy) | ./modules/terraform-aci-fabric-isis-policy | n/a |
 | <a name="module_aci_fabric_l2_mtu"></a> [aci\_fabric\_l2\_mtu](#module\_aci\_fabric\_l2\_mtu) | ./modules/terraform-aci-fabric-l2-mtu | n/a |
+| <a name="module_aci_fabric_leaf_interface_policy_group"></a> [aci\_fabric\_leaf\_interface\_policy\_group](#module\_aci\_fabric\_leaf\_interface\_policy\_group) | ./modules/terraform-aci-fabric-leaf-interface-policy-group | n/a |
 | <a name="module_aci_fabric_leaf_interface_profile_auto"></a> [aci\_fabric\_leaf\_interface\_profile\_auto](#module\_aci\_fabric\_leaf\_interface\_profile\_auto) | ./modules/terraform-aci-fabric-leaf-interface-profile | n/a |
 | <a name="module_aci_fabric_leaf_interface_profile_manual"></a> [aci\_fabric\_leaf\_interface\_profile\_manual](#module\_aci\_fabric\_leaf\_interface\_profile\_manual) | ./modules/terraform-aci-fabric-leaf-interface-profile | n/a |
 | <a name="module_aci_fabric_leaf_switch_configuration"></a> [aci\_fabric\_leaf\_switch\_configuration](#module\_aci\_fabric\_leaf\_switch\_configuration) | ./modules/terraform-aci-switch-configuration | n/a |
