@@ -60,6 +60,7 @@ modules:
   aci_fabric_l2_mtu: true
   aci_fabric_leaf_interface_profile: true
   aci_fabric_leaf_switch_policy_group: true
+  aci_fabric_leaf_interface_policy_group: true
   aci_fabric_leaf_switch_profile: true
   aci_fabric_pod_policy_group: true
   aci_fabric_pod_profile: true
