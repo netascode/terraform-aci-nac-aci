@@ -501,8 +501,8 @@ locals {
             from_port     = block.from_port
             to_module     = try(block.to_module, block.from_module, local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module)
             to_port       = try(block.to_port, block.from_port)
-            from_sub_port = block.from_port
-            to_sub_port   = try(block.to_port, block.from_port)
+            from_sub_port = block.from_sub_port
+            to_sub_port   = try(block.to_sub_port, block.from_sub_port)
           }]
         }
       }
