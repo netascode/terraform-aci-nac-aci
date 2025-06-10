@@ -1,6 +1,6 @@
 resource "aci_rest_managed" "cpMtuPolicy" {
   dn         = "uni/infra/ifpol-${var.name}"
-  class_name = "fabricIfPol"
+  class_name = "infraCPMtuPol"
 
   content = {
     name  = var.name
