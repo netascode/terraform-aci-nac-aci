@@ -1,19 +1,19 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI Fabric Leaf Interface Selector Module
+# Terraform ACI Fabric Spine Interface Selector Module
 
-Manages ACI Fabric Leaf Interface Selector
+Manages ACI Fabric Spine Interface Selector
 
 Location in GUI:
-`Fabric` » `Fabric Policies` » `Interfaces` » `Leaf Interfaces` » `Profiles` » `XXX`
+`Fabric` » `Fabric Policies` » `Interfaces` » `Spine Interfaces` » `Profiles` » `XXX`
 
 ## Examples
 
 ```hcl
-module "aci_access_leaf_interface_selector" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-leaf-interface-selector"
+module "aci_access_spine_interface_selector" {
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-spine-interface-selector"
   version = ">= 1.0.1"
 
-  interface_profile = "LEAF101"
+  interface_profile = "SPINE101"
   name              = "1-2"
   policy_group      = "FAB1"
   port_blocks = [{
@@ -60,15 +60,15 @@ module "aci_access_leaf_interface_selector" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `fabricLFPortS` object. |
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `fabricSFPortS` object. |
 | <a name="output_name"></a> [name](#output\_name) | Spine interface selector name. |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aci_rest_managed.fabricLFPortS](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fabricPortBlk](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.fabricRsLePortPGrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fabricRsSpPortPGrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fabricSFPortS](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fabricSubPortBlk](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

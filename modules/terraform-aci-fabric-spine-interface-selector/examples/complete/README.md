@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# Fabric Leaf Interface Selector Example
+# Fabric Spine Interface Selector Example
 
 To run this example you need to execute:
 
@@ -12,11 +12,11 @@ $ terraform apply
 Note that this example will create resources. Resources can be destroyed with `terraform destroy`.
 
 ```hcl
-module "aci_access_leaf_interface_selector" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-leaf-interface-selector"
+module "aci_access_spine_interface_selector" {
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-spine-interface-selector"
   version = ">= 1.0.1"
 
-  interface_profile = "LEAF101"
+  interface_profile = "SPINE101"
   name              = "1-2"
   policy_group      = "FAB1"
   port_blocks = [{
