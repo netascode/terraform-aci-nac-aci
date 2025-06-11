@@ -16,6 +16,7 @@ defaults:
       leaf_interface_profile_name: "LEAF\\g<id>"
       leaf_switch_selector_name: "LEAF\\g<id>"
       leaf_interface_selector_name: "ETH\\g<mod>-\\g<port>"
+      leaf_interface_selector_sub_port_name: "ETH\\g<mod>-\\g<port>-\\g<sport>"
       spine_switch_profile_name: "SPINE\\g<id>"
       spine_interface_profile_name: "SPINE\\g<id>"
       spine_switch_selector_name: "SPINE\\g<id>"
@@ -594,6 +595,9 @@ defaults:
         selectors:
           name_suffix: ""
           port_blocks:
+            name_suffix: ""
+            from_module: 1
+          sub_port_blocks:
             name_suffix: ""
             from_module: 1
       leaf_interface_profiles:
