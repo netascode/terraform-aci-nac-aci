@@ -396,7 +396,7 @@ module "aci_fabric_leaf_interface_selector_auto" {
 }
 
 locals {
-  fabric_sub_interface_selectors = flatten([
+  fabric_leaf_sub_interface_selectors = flatten([
     for node in local.nodes : [
       for interface in try(node.interfaces, []) : [
         for sub in try(interface.sub_ports, []) : {
@@ -418,14 +418,14 @@ locals {
           }]
         }
       ]
-    ] if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles)) && node.role == "leaf" && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
+    ] if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles)) && node.role == "leaf" && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
   ])
 }
 
 module "aci_fabric_leaf_interface_selector_sub_auto" {
   source = "./modules/terraform-aci-fabric-leaf-interface-selector"
 
-  for_each          = { for selector in local.fabric_sub_interface_selectors : selector.key => selector if local.modules.aci_fabric_leaf_interface_selector && var.manage_interface_policies && selector.type == "uplink" }
+  for_each          = { for selector in local.fabric_leaf_sub_interface_selectors : selector.key => selector if local.modules.aci_fabric_leaf_interface_selector && var.manage_interface_policies && selector.type == "uplink" }
   name              = each.value.name
   description       = each.value.description
   interface_profile = each.value.interface_profile
@@ -433,7 +433,7 @@ module "aci_fabric_leaf_interface_selector_sub_auto" {
   sub_port_blocks   = each.value.sub_port_blocks
 
   depends_on = [
-    module.aci_access_leaf_interface_profile_auto
+    module.aci_fabric_leaf_interface_profile_auto
   ]
 }
 
