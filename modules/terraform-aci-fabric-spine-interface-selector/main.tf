@@ -1,6 +1,6 @@
-resource "aci_rest_managed" "fabricLFPortS" {
-  dn         = "uni/fabric/leportp-${var.interface_profile}/lefabports-${var.name}-typ-range"
-  class_name = "fabricLFPortS"
+resource "aci_rest_managed" "fabricSFPortS" {
+  dn         = "uni/fabric/spportp-${var.interface_profile}/spfabports-${var.name}-typ-range"
+  class_name = "fabricSFPortS"
   content = {
     name  = var.name
     descr = var.description
@@ -8,18 +8,18 @@ resource "aci_rest_managed" "fabricLFPortS" {
   }
 }
 
-resource "aci_rest_managed" "fabricRsLePortPGrp" {
+resource "aci_rest_managed" "fabricRsSpPortPGrp" {
   count      = var.policy_group != "" ? 1 : 0
-  dn         = "${aci_rest_managed.fabricLFPortS.dn}/rslePortPGrp"
-  class_name = "fabricRsLePortPGrp"
+  dn         = "${aci_rest_managed.fabricSFPortS.dn}/rsspPortPGrp"
+  class_name = "fabricRsSpPortPGrp"
   content = {
-    tDn = "uni/fabric/funcprof/leportgrp-${var.policy_group}"
+    tDn = "uni/fabric/funcprof/spportgrp-${var.policy_group}"
   }
 }
 
 resource "aci_rest_managed" "fabricPortBlk" {
   for_each   = { for block in var.port_blocks : block.name => block }
-  dn         = "${aci_rest_managed.fabricLFPortS.dn}/portblk-${each.value.name}"
+  dn         = "${aci_rest_managed.fabricSFPortS.dn}/portblk-${each.value.name}"
   class_name = "fabricPortBlk"
   content = {
     name     = each.value.name
@@ -33,7 +33,7 @@ resource "aci_rest_managed" "fabricPortBlk" {
 
 resource "aci_rest_managed" "fabricSubPortBlk" {
   for_each   = { for block in var.sub_port_blocks : block.name => block }
-  dn         = "${aci_rest_managed.fabricLFPortS.dn}/subportblk-${each.value.name}"
+  dn         = "${aci_rest_managed.fabricSFPortS.dn}/subportblk-${each.value.name}"
   class_name = "fabricSubPortBlk"
   content = {
     name        = each.value.name

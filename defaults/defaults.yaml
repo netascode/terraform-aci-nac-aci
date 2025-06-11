@@ -196,6 +196,14 @@ defaults:
         name_suffix: ""
       spine_interface_profiles:
         name_suffix: ""
+        selectors:
+          name_suffix: ""
+          port_blocks:
+            name_suffix: ""
+            from_module: 1
+          sub_port_blocks:
+            name_suffix: ""
+            from_module: 1
       external_connectivity_policy:
         name_suffix: ""
         fabric_id: 1

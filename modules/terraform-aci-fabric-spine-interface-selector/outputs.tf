@@ -1,9 +1,9 @@
 output "dn" {
-  value       = aci_rest_managed.fabricLFPortS.id
-  description = "Distinguished name of `fabricLFPortS` object."
+  value       = aci_rest_managed.fabricSFPortS.id
+  description = "Distinguished name of `fabricSFPortS` object."
 }
 
 output "name" {
-  value       = aci_rest_managed.fabricLFPortS.content.name
+  value       = aci_rest_managed.fabricSFPortS.content.name
   description = "Spine interface selector name."
 }
