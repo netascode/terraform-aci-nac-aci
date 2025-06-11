@@ -5,5 +5,5 @@ output "dn" {
 
 output "name" {
   value       = aci_rest_managed.fabricLFPortS.content.name
-  description = "Spine interface selector name."
+  description = "Leaf interface selector name."
 }
