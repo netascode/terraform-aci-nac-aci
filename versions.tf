@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.3.0"
+  required_version = ">= 1.8.0"
 
   required_providers {
     aci = {
@@ -8,7 +8,7 @@ terraform {
     }
     utils = {
       source  = "netascode/utils"
-      version = "= 0.3.0-beta1"
+      version = ">= 1.0.2"
     }
     local = {
       source  = "hashicorp/local"

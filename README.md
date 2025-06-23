@@ -1,11 +1,11 @@
 <!-- BEGIN_TF_DOCS -->
 [![Tests](https://github.com/netascode/terraform-aci-nac-aci/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-nac-aci/actions/workflows/test.yml)
 
-# Terraform ACI Nexus-as-Code Module
+# Terraform ACI Network-as-Code Module
 
 A Terraform module to configure ACI.
 
-This module is part of the Cisco [*Nexus-as-Code*](https://cisco.com/go/nexusascode) project. Its goal is to allow users to instantiate network fabrics in minutes using an easy to use, opinionated data model. It takes away the complexity of having to deal with references, dependencies or loops. By completely separating data (defining variables) from logic (infrastructure declaration), it allows the user to focus on describing the intended configuration while using a set of maintained and tested Terraform Modules without the need to understand the low-level ACI object model. More information can be found here: https://cisco.com/go/nexusascode.
+This module is part of the Cisco [*Network-as-Code*](https://netascode.cisco.com) project. Its goal is to allow users to instantiate network fabrics in minutes using an easy to use, opinionated data model. It takes away the complexity of having to deal with references, dependencies or loops. By completely separating data (defining variables) from logic (infrastructure declaration), it allows the user to focus on describing the intended configuration while using a set of maintained and tested Terraform Modules without the need to understand the low-level ACI object model. More information can be found here: https://netascode.cisco.com.
 
 A comprehensive example using this module is available here: https://github.com/netascode/nac-aci-comprehensive-example
 
@@ -22,7 +22,7 @@ There are six configuration sections which can be selectively enabled or disable
 - `interface_policies`: Configurations applied at the interface level (e.g., assigning interface policy groups to physical ports)
 - `tenants`: Configurations applied at the tenant level (e.g., VRFs and Bridge Domains)
 
-The full data model documentation is available here: https://developer.cisco.com/docs/nexus-as-code/#!data-model
+The full data model documentation is available here: https://netascode.cisco.com/data_model/overview
 
 ## Examples
 
@@ -85,10 +85,10 @@ Additional example repositories:
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
 | <a name="requirement_aci"></a> [aci](#requirement\_aci) | = 2.15.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.3.0 |
-| <a name="requirement_utils"></a> [utils](#requirement\_utils) | = 0.3.0-beta1 |
+| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.0.2 |
 
 ## Inputs
 
@@ -119,16 +119,14 @@ Additional example repositories:
 | Name | Version |
 |------|---------|
 | <a name="provider_local"></a> [local](#provider\_local) | 2.5.3 |
-| <a name="provider_utils"></a> [utils](#provider\_utils) | 1.0.1 |
+| <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [local_sensitive_file.defaults](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/sensitive_file) | resource |
-| [utils_yaml_merge.defaults](https://registry.terraform.io/providers/netascode/utils/0.3.0-beta1/docs/data-sources/yaml_merge) | data source |
-| [utils_yaml_merge.model](https://registry.terraform.io/providers/netascode/utils/0.3.0-beta1/docs/data-sources/yaml_merge) | data source |
-| [utils_yaml_merge.modules](https://registry.terraform.io/providers/netascode/utils/0.3.0-beta1/docs/data-sources/yaml_merge) | data source |
+| [terraform_data.validation](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 
 ## Modules
 

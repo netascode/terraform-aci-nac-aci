@@ -9,7 +9,7 @@ repos:
       - id: terraform_tflint
 
   - repo: https://github.com/terraform-docs/terraform-docs
-    rev: v0.19.0
+    rev: v0.20.0
     hooks:
       - id: terraform-docs-system
         args: ["./examples/vlan_pool_yaml"]
@@ -28,67 +28,111 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-fex-interface-profile"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-fex-interface-profile/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-access-fex-interface-profile/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-fex-interface-selector"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-fex-interface-selector/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-access-fex-interface-selector/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-leaf-interface-policy-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-leaf-interface-policy-group/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-access-leaf-interface-policy-group/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-leaf-interface-profile"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-leaf-interface-profile/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-access-leaf-interface-profile/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-leaf-interface-selector"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-leaf-interface-selector/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-access-leaf-interface-selector/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-leaf-switch-policy-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-leaf-switch-policy-group/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-access-leaf-switch-policy-group/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-leaf-switch-profile"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-leaf-switch-profile/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-access-leaf-switch-profile/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-span-destination-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-span-destination-group/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-access-span-destination-group/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-span-filter-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-span-filter-group/examples/complete"]
+        args:
+          ["./modules/terraform-aci-access-span-filter-group/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-span-source-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-span-source-group/examples/complete"]
+        args:
+          ["./modules/terraform-aci-access-span-source-group/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-spine-interface-policy-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-spine-interface-policy-group/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-access-spine-interface-policy-group/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-spine-interface-profile"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-spine-interface-profile/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-access-spine-interface-profile/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-spine-interface-selector"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-spine-interface-selector/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-access-spine-interface-selector/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-spine-switch-policy-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-spine-switch-policy-group/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-access-spine-switch-policy-group/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-spine-switch-profile"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-access-spine-switch-profile/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-access-spine-switch-profile/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-apic-connectivity-preference"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-apic-connectivity-preference/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-apic-connectivity-preference/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-application-profile"]
       - id: terraform-docs-system
@@ -108,7 +152,8 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bfd-multihop-node-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-bfd-multihop-node-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-bfd-multihop-node-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bfd-policy"]
       - id: terraform-docs-system
@@ -116,7 +161,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-address-family-context-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-bgp-address-family-context-policy/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-bgp-address-family-context-policy/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-best-path-policy"]
       - id: terraform-docs-system
@@ -124,7 +172,8 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-peer-prefix-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-bgp-peer-prefix-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-bgp-peer-prefix-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-policy"]
       - id: terraform-docs-system
@@ -132,7 +181,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-route-summarization-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-bgp-route-summarization-policy/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-bgp-route-summarization-policy/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bgp-timer-policy"]
       - id: terraform-docs-system
@@ -176,7 +228,8 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-device-selection-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-device-selection-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-device-selection-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-dhcp-option-policy"]
       - id: terraform-docs-system
@@ -188,11 +241,15 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-infra-dhcp-relay-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-infra-dhcp-relay-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-infra-dhcp-relay-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-endpoint-retention-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-endpoint-retention-policy/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-endpoint-retention-policy/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-dns-policy"]
       - id: terraform-docs-system
@@ -200,7 +257,8 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-eigrp-interface-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-eigrp-interface-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-eigrp-interface-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-endpoint-group"]
       - id: terraform-docs-system
@@ -212,35 +270,47 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-endpoint-loop-protection"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-endpoint-loop-protection/examples/complete"]
+        args:
+          ["./modules/terraform-aci-endpoint-loop-protection/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-endpoint-security-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-endpoint-security-group/examples/complete"]
+        args:
+          ["./modules/terraform-aci-endpoint-security-group/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-endpoint-ip-tag-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-endpoint-ip-tag-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-endpoint-ip-tag-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-endpoint-mac-tag-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-endpoint-mac-tag-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-endpoint-mac-tag-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-error-disabled-recovery"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-error-disabled-recovery/examples/complete"]
+        args:
+          ["./modules/terraform-aci-error-disabled-recovery/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-external-connectivity-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-external-connectivity-policy/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-external-connectivity-policy/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-external-endpoint-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-external-endpoint-group/examples/complete"]
+        args:
+          ["./modules/terraform-aci-external-endpoint-group/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-interface-configuration"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-fabric-interface-configuration/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-fabric-interface-configuration/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-isis-bfd"]
       - id: terraform-docs-system
@@ -256,19 +326,29 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-leaf-interface-profile"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-fabric-leaf-interface-profile/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-fabric-leaf-interface-profile/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-leaf-switch-policy-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-fabric-leaf-switch-policy-group/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-fabric-leaf-switch-policy-group/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-leaf-switch-profile"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-fabric-leaf-switch-profile/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-fabric-leaf-switch-profile/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-pod-policy-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-fabric-pod-policy-group/examples/complete"]
+        args:
+          ["./modules/terraform-aci-fabric-pod-policy-group/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-pod-profile"]
       - id: terraform-docs-system
@@ -280,23 +360,36 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-span-destination-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-fabric-span-destination-group/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-fabric-span-destination-group/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-span-source-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-fabric-span-source-group/examples/complete"]
+        args:
+          ["./modules/terraform-aci-fabric-span-source-group/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-spine-interface-profile"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-fabric-spine-interface-profile/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-fabric-spine-interface-profile/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-spine-switch-policy-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-fabric-spine-switch-policy-group/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-fabric-spine-switch-policy-group/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-spine-switch-profile"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-fabric-spine-switch-profile/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-fabric-spine-switch-profile/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-wide-settings"]
       - id: terraform-docs-system
@@ -304,7 +397,8 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-link-level-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-fabric-link-level-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-fabric-link-level-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-filter"]
       - id: terraform-docs-system
@@ -316,7 +410,8 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-forwarding-scale-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-forwarding-scale-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-forwarding-scale-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-geolocation"]
       - id: terraform-docs-system
@@ -324,11 +419,15 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-health-score-evaluation-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-health-score-evaluation-policy/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-health-score-evaluation-policy/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-igmp-interface-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-igmp-interface-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-igmp-interface-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-igmp-snooping-policy"]
       - id: terraform-docs-system
@@ -344,7 +443,8 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-inband-endpoint-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-inband-endpoint-group/examples/complete"]
+        args:
+          ["./modules/terraform-aci-inband-endpoint-group/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-inband-node-address"]
       - id: terraform-docs-system
@@ -352,11 +452,15 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-infra-dscp-translation-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-infra-dscp-translation-policy/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-infra-dscp-translation-policy/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-interface-configuration"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-interface-configuration/examples/complete"]
+        args:
+          ["./modules/terraform-aci-interface-configuration/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-interface-shutdown"]
       - id: terraform-docs-system
@@ -392,7 +496,8 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-l3out-interface-profile"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-l3out-interface-profile/examples/complete"]
+        args:
+          ["./modules/terraform-aci-l3out-interface-profile/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-l3out-node-profile"]
       - id: terraform-docs-system
@@ -420,15 +525,18 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-macsec-interfaces-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-macsec-interfaces-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-macsec-interfaces-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-macsec-keychain-policies/"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-macsec-keychain-policies/examples/complete"]
+        args:
+          ["./modules/terraform-aci-macsec-keychain-policies/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-macsec-parameters-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-macsec-parameters-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-macsec-parameters-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-maintenance-group"]
       - id: terraform-docs-system
@@ -436,7 +544,8 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-management-access-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-management-access-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-management-access-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-match-rule"]
       - id: terraform-docs-system
@@ -456,7 +565,8 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-mpls-custom-qos-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-mpls-custom-qos-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-mpls-custom-qos-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-mst-policy"]
       - id: terraform-docs-system
@@ -504,7 +614,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-oob-external-management-instance"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-oob-external-management-instance/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-oob-external-management-instance/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-oob-node-address"]
       - id: terraform-docs-system
@@ -512,7 +625,8 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-ospf-interface-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-ospf-interface-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-ospf-interface-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-ospf-timer-policy"]
       - id: terraform-docs-system
@@ -532,7 +646,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-port-channel-member-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-port-channel-member-policy/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-port-channel-member-policy/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-port-channel-policy"]
       - id: terraform-docs-system
@@ -573,11 +690,13 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-redirect-backup-policy"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-redirect-backup-policy/examples/complete"]
+        args:
+          ["./modules/terraform-aci-redirect-backup-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-redirect-health-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-redirect-health-group/examples/complete"]
+        args:
+          ["./modules/terraform-aci-redirect-health-group/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-redirect-policy"]
       - id: terraform-docs-system
@@ -589,11 +708,13 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-rogue-endpoint-control"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-rogue-endpoint-control/examples/complete"]
+        args:
+          ["./modules/terraform-aci-rogue-endpoint-control/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-route-control-route-map"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-route-control-route-map/examples/complete"]
+        args:
+          ["./modules/terraform-aci-route-control-route-map/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-route-tag-policy"]
       - id: terraform-docs-system
@@ -609,7 +730,8 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-service-graph-template"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-service-graph-template/examples/complete"]
+        args:
+          ["./modules/terraform-aci-service-graph-template/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-set-rule"]
       - id: terraform-docs-system
@@ -633,7 +755,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-sr-mpls-global-configuration"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-sr-mpls-global-configuration/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-sr-mpls-global-configuration/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-storm-control-policy"]
       - id: terraform-docs-system
@@ -665,11 +790,15 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-tenant-span-destination-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-tenant-span-destination-group/examples/complete"]
+        args:
+          [
+            "./modules/terraform-aci-tenant-span-destination-group/examples/complete",
+          ]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-tenant-span-source-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-tenant-span-source-group/examples/complete"]
+        args:
+          ["./modules/terraform-aci-tenant-span-source-group/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-track-list"]
       - id: terraform-docs-system
@@ -705,9 +834,9 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-vspan-destination-group"]
       - id: terraform-docs-system
-        args: ["./modules/terraform-aci-vspan-destination-group/examples/complete"]
+        args:
+          ["./modules/terraform-aci-vspan-destination-group/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-vspan-session"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-vspan-session/examples/complete"]
-
