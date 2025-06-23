@@ -51,7 +51,6 @@ variable "nodes" {
         type          = optional(string, "prefix")
         ip_sla_policy = optional(string)
         track_list    = optional(string)
-        track_member  = optional(string)
       })), [])
     })), [])
   }))
@@ -104,13 +103,6 @@ variable "nodes" {
       for n in var.nodes : [for s in coalesce(n.static_routes, []) : [for nh in coalesce(s.next_hops, []) : nh.track_list == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", nh.track_list))]]
     ]))
     error_message = "`static_routes.next_hops.track_list`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
-  }
-
-  validation {
-    condition = alltrue(flatten([
-      for n in var.nodes : [for s in coalesce(n.static_routes, []) : [for nh in coalesce(s.next_hops, []) : nh.track_member == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", nh.track_member))]]
-    ]))
-    error_message = "l3out.vrf + next_hop.ip: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
