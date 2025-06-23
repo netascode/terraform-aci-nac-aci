@@ -3836,6 +3836,7 @@ module "aci_track_member" {
     module.aci_tenant,
     module.aci_ip_sla_policy,
     module.aci_l3out,
+    module.aci_bridge_domain
   ]
 }
 
