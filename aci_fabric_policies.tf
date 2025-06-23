@@ -335,12 +335,10 @@ module "aci_fabric_leaf_interface_policy_group" {
 
   for_each          = { for pg in try(local.fabric_policies.leaf_interface_policy_groups, []) : pg.name => pg if local.modules.aci_fabric_leaf_interface_policy_group && var.manage_fabric_policies }
   name              = "${each.value.name}${local.defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix}"
-  link_level_policy = try("${each.value.link_level_policy}${local.defaults.apic.fabric_policies.link_level_policies.name_suffix}", "")
-  monitoring_policy = try("${each.value.node_control_policy}${local.defaults.apic.fabric_policies.switch_policies.node_control_policies.name_suffix}", "")
+  link_level_policy = try("${each.value.link_level_policy}${local.defaults.apic.fabric_policies.interface_policies.link_level_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_link_level_policy,
-    module.aci_node_control_policy,
   ]
 }
 

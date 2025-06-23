@@ -7,17 +7,10 @@ resource "aci_rest_managed" "fabricLePortPGrp" {
 }
 
 resource "aci_rest_managed" "fabricRsFIfPol" {
-  dn         = "${aci_rest_managed.fabricLePortPGrp.dn}/rsfIfPolol"
+  dn         = "${aci_rest_managed.fabricLePortPGrp.dn}/rsfIfPol"
   class_name = "fabricRsFIfPol"
   content = {
     tnFabricFIfPolName = var.link_level_policy
   }
 }
 
-resource "aci_rest_managed" "fabricRsMonIfFabricPol" {
-  dn         = "${aci_rest_managed.fabricLePortPGrp.dn}/rsmonIfFabricPol"
-  class_name = "fabricRsMonIfFabricPol"
-  content = {
-    tnMonFabricPolName = var.monitoring_policy
-  }
-}

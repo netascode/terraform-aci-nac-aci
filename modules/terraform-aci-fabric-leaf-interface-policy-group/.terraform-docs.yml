@@ -8,7 +8,7 @@ content: |-
   Manages ACI Fabric Leaf Interface Policy Group
 
   Location in GUI:
-  `Fabric` » `Fabric Policies` » `Interfaces` » `Leaf Interfaces » `Policy Groups` » `Leaf Fabric Port`
+  `Fabric` » `Fabric Policies` » `Interfaces` » `Leaf Interfaces` » `Policy Groups` » `Leaf Fabric Port`
 
   ## Examples
 
