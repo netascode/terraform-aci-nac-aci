@@ -163,7 +163,7 @@ locals {
           to_module   = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
           to_port     = interface.port
         }]
-      } if try(interface.type, null) == null || try(interface.type, null) == "downlink"
+      } if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_spine_switch_interface_profiles, local.defaults.apic.auto_generate_access_spine_switch_interface_profiles)) && node.role == "spine" && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
   ])
 }
@@ -371,7 +371,7 @@ locals {
           to_module   = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
           to_port     = interface.port
         }]
-      } if try(interface.type, null) == "uplink"
+      } if try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_spine_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_spine_switch_interface_profiles)) && node.role == "spine" && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
   ])
 }
@@ -387,7 +387,7 @@ module "aci_fabric_spine_interface_selector_auto" {
   port_blocks       = each.value.port_blocks
 
   depends_on = [
-    module.aci_fabric_leaf_interface_profile_auto
+    module.aci_fabric_spine_interface_profile_auto
   ]
 }
 
@@ -412,7 +412,7 @@ locals {
             to_sub_port   = sub.port
           }]
         }
-      ] if try(interface.type, null) == "uplink"
+      ] if try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_spine_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_spine_switch_interface_profiles)) && node.role == "spine" && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
   ])
 }
@@ -428,7 +428,7 @@ module "aci_fabric_spine_interface_selector_sub_auto" {
   sub_port_blocks   = each.value.sub_port_blocks
 
   depends_on = [
-    module.aci_fabric_leaf_interface_profile_auto
+    module.aci_fabric_spine_interface_profile_auto
   ]
 }
 
