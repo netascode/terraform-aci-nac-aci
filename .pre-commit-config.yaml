@@ -331,6 +331,13 @@ repos:
             "./modules/terraform-aci-fabric-leaf-interface-profile/examples/complete",
           ]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-leaf-interface-selector"]
+      - id: terraform-docs-system
+        args:
+          [
+            "./modules/terraform-aci-fabric-leaf-interface-selector/examples/complete",
+          ]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-leaf-switch-policy-group"]
       - id: terraform-docs-system
         args:

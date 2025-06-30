@@ -36,7 +36,7 @@ locals {
           to_module   = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
           to_port     = interface.port
         }]
-      }
+      } if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles)) && node.role == "leaf" && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
   ])
 }
@@ -83,7 +83,7 @@ locals {
             to_sub_port   = sub.port
           }]
         }
-      ]
+      ] if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles)) && node.role == "leaf" && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
   ])
 }
@@ -125,7 +125,7 @@ locals {
             to_module   = try(interface.module, local.defaults.apic.interface_policies.nodes.fexes.interfaces.module)
             to_port     = interface.port
           }]
-        }
+        } if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
       ]
     ] if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_access_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_access_leaf_switch_interface_profiles)) && node.role == "leaf" && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
   ])
@@ -352,6 +352,84 @@ locals {
       } if try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
     ] if node.role == "leaf" && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
   ])
+}
+
+locals {
+  fabric_leaf_interface_selectors = flatten([
+    for node in local.nodes : [
+      for interface in try(node.interfaces, []) : {
+        key               = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
+        name              = replace(format("%s:%s", try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port), "/^(?P<mod>.+):(?P<port>.+)$/", replace(replace(try(local.fabric_policies.leaf_interface_selector_name, local.defaults.apic.fabric_policies.leaf_interface_selector_name), "\\g<mod>", "$${mod}"), "\\g<port>", "$${port}"))
+        description       = try(local.apic.interface_selector_description, local.defaults.apic.interface_selector_description) ? try(interface.description, "") : ""
+        interface_profile = replace("${node.id}:${node.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_interface_profile_name, local.defaults.apic.fabric_policies.leaf_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
+        policy_group      = try("${interface.policy_group}${local.defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix}", "")
+        port_blocks = [{
+          description = try(interface.description, "")
+          name        = format("%s-%s", try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
+          from_module = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+          from_port   = interface.port
+          to_module   = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+          to_port     = interface.port
+        }]
+      } if try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
+    ] if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles)) && node.role == "leaf" && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
+  ])
+}
+
+module "aci_fabric_leaf_interface_selector_auto" {
+  source = "./modules/terraform-aci-fabric-leaf-interface-selector"
+
+  for_each          = { for selector in local.fabric_leaf_interface_selectors : selector.key => selector if local.modules.aci_fabric_leaf_interface_selector && var.manage_interface_policies }
+  name              = each.value.name
+  description       = each.value.description
+  interface_profile = each.value.interface_profile
+  policy_group      = each.value.policy_group
+  port_blocks       = each.value.port_blocks
+
+  depends_on = [
+    module.aci_fabric_leaf_interface_profile_auto
+  ]
+}
+
+locals {
+  fabric_leaf_sub_interface_selectors = flatten([
+    for node in local.nodes : [
+      for interface in try(node.interfaces, []) : [
+        for sub in try(interface.sub_ports, []) : {
+          key               = format("%s/%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port, sub.port)
+          name              = replace(format("%s:%s:%s", try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port, sub.port), "/^(?P<mod>.+):(?P<port>.+):(?P<sport>.+)$/", replace(replace(replace(try(local.fabric_policies.leaf_interface_selector_sub_port_name, local.defaults.apic.fabric_policies.leaf_interface_selector_sub_port_name), "\\g<mod>", "$${mod}"), "\\g<port>", "$${port}"), "\\g<sport>", "$${sport}"))
+          description       = try(local.apic.interface_selector_description, local.defaults.apic.interface_selector_description) ? try(sub.description, "") : ""
+          interface_profile = replace("${node.id}:${node.name}", "/^(?P<id>.+):(?P<name>.+)$/", replace(replace(try(local.fabric_policies.leaf_interface_profile_name, local.defaults.apic.fabric_policies.leaf_interface_profile_name), "\\g<id>", "$${id}"), "\\g<name>", "$${name}"))
+          policy_group      = try("${sub.policy_group}${local.defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix}", "")
+          sub_port_blocks = [{
+            description   = try(sub.description, "")
+            name          = format("%s-%s-%s", try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port, sub.port)
+            from_module   = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+            from_port     = interface.port
+            to_module     = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+            to_port       = interface.port
+            from_sub_port = sub.port
+            to_sub_port   = sub.port
+          }]
+        }
+      ] if try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
+    ] if(try(local.apic.auto_generate_switch_pod_profiles, local.defaults.apic.auto_generate_switch_pod_profiles) || try(local.apic.auto_generate_fabric_leaf_switch_interface_profiles, local.defaults.apic.auto_generate_fabric_leaf_switch_interface_profiles)) && node.role == "leaf" && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
+  ])
+}
+
+module "aci_fabric_leaf_interface_selector_sub_auto" {
+  source = "./modules/terraform-aci-fabric-leaf-interface-selector"
+
+  for_each          = { for selector in local.fabric_leaf_sub_interface_selectors : selector.key => selector if local.modules.aci_fabric_leaf_interface_selector && var.manage_interface_policies }
+  name              = each.value.name
+  description       = each.value.description
+  interface_profile = each.value.interface_profile
+  policy_group      = each.value.policy_group
+  sub_port_blocks   = each.value.sub_port_blocks
+
+  depends_on = [
+    module.aci_fabric_leaf_interface_profile_auto
+  ]
 }
 
 module "aci_leaf_fabric_interface_configuration" {
