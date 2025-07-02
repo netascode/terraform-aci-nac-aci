@@ -1505,7 +1505,6 @@ defaults:
               faults: true
               session: false
               minimum_severity: warnings
-
       services:
         l4l7_devices:
           name_suffix: ""
