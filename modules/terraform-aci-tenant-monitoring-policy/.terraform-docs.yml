@@ -8,7 +8,7 @@ content: |-
   Manages ACI Tenant Monitoring Policy
 
   Location in GUI:
-  `Tenant` » `XXX` » `Policies` » `Monitoring`
+  `Tenant` » `XXX` » `Policies` » `Monitoring` » `XXX` » `Callhome/Smart Callhome/SNMP/Syslog`
 
   ## Examples
 
