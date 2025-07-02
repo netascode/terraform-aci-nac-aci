@@ -429,7 +429,7 @@ variable "static_ports" {
     ptp_mode             = optional(string, "multicast")
     ptp_profile          = optional(string)
   }))
-  default = []
+  default = [{ "node_id" = 1, "vlan" = 1 }]
 
   validation {
     condition = alltrue([
