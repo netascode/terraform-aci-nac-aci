@@ -1496,6 +1496,7 @@ defaults:
           move_frequency: 256
         monitoring:
           policies:
+            name_suffix: ""
             snmp_traps:
               name_suffix: ""
             syslogs:
