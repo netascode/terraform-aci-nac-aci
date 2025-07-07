@@ -1068,10 +1068,10 @@ locals {
   node_profiles_auto = flatten([
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : {
-        key                       = format("%s/%s", tenant.name, l3out.name)
+        key                       = format("%s/%s", tenant.name, l3out.name_suffix)
         tenant                    = tenant.name
-        l3out                     = l3out.name
-        name                      = l3out.name
+        l3out                     = l3out.name_suffix
+        name                      = l3out.name_suffix
         multipod                  = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
         remote_leaf               = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
         bgp_protocol_profile_name = try(l3out.bgp.name, "")
@@ -1157,9 +1157,9 @@ locals {
       for l3out in try(tenant.l3outs, []) : [
         for np in try(l3out.node_profiles, []) : [
           for ip in try(np.interface_profiles, []) : {
-            key                          = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
+            key                          = format("%s/%s/%s/%s", tenant.name, l3out.name_suffix, np.name, ip.name)
             tenant                       = tenant.name
-            l3out                        = l3out.name
+            l3out                        = l3out.name_suffix
             node_profile                 = np.name
             name                         = "${ip.name}${local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix}"
             description                  = try(ip.description, "")
