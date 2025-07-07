@@ -1506,6 +1506,9 @@ defaults:
               faults: true
               session: false
               minimum_severity: warnings
+            fault_severity_policies:
+              initial_severity: inherit
+              target_severity: inherit
       services:
         l4l7_devices:
           name_suffix: ""

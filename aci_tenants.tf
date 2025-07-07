@@ -3918,6 +3918,15 @@ locals {
           session          = try(syslog_policy.session, local.defaults.apic.tenants.policies.monitoring.policies.syslogs.session)
           minimum_severity = try(syslog_policy.minimum_severity, local.defaults.apic.tenants.policies.monitoring.policies.syslogs.minimum_severity)
         }]
+        fault_severity_policies = [for policy in try(policy.fault_severity_policies, []) : {
+          class = policy.class
+          faults = [for fault in try(policy.faults, []) : {
+            fault_id         = fault.fault_id
+            initial_severity = try(fault.initial_severity, local.defaults.apic.tenants.policies.monitoring.policies.fault_severity_policies.initial_severity)
+            target_severity  = try(fault.target_severity, local.defaults.apic.tenants.policies.monitoring.policies.fault_severity_policies.target_severity)
+            description      = try(fault.description, "")
+          }]
+        }]
       }
     ]
   ])
@@ -3927,11 +3936,12 @@ module "aci_tenant_monitoring_policy" {
   source   = "./modules/terraform-aci-tenant-monitoring-policy"
   for_each = { for pol in local.tenant_montioring_policy : pol.key => pol if local.modules.aci_tenant_monitoring_policy && var.manage_tenants }
 
-  name               = each.value.name
-  description        = each.value.description
-  tenant             = each.value.tenant
-  snmp_trap_policies = each.value.snmp_trap_policies
-  syslog_policies    = each.value.syslog_policies
+  name                    = each.value.name
+  description             = each.value.description
+  tenant                  = each.value.tenant
+  snmp_trap_policies      = each.value.snmp_trap_policies
+  syslog_policies         = each.value.syslog_policies
+  fault_severity_policies = each.value.fault_severity_policies
 
   depends_on = [
     module.aci_snmp_trap_policy,

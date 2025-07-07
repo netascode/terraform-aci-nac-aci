@@ -1,3 +1,17 @@
+locals {
+  faults = flatten([
+    for policy in var.fault_severity_policies : [
+      for fault in policy.faults : {
+        class            = policy.class
+        fault_id         = fault.fault_id
+        initial_severity = fault.initial_severity
+        target_severity  = fault.target_severity
+        description      = fault.description
+      }
+    ]
+  ])
+}
+
 resource "aci_rest_managed" "monEPGPol" {
   dn         = "uni/tn-${var.tenant}/monepg-${var.name}"
   class_name = "monEPGPol"
@@ -42,5 +56,26 @@ resource "aci_rest_managed" "syslogRsDestGroup" {
   class_name = "syslogRsDestGroup"
   content = {
     tDn = "uni/fabric/slgroup-${each.value.name}"
+  }
+}
+
+resource "aci_rest_managed" "monEPGTarget" {
+  for_each   = { for s in var.fault_severity_policies : s.class => s }
+  dn         = "${aci_rest_managed.monEPGPol.dn}/tarepg-${each.value.class}"
+  class_name = "monEPGTarget"
+  content = {
+    scope = each.value.class
+  }
+}
+
+resource "aci_rest_managed" "faultSevAsnP" {
+  for_each   = { for f in local.faults : f.fault_id => f }
+  dn         = "${aci_rest_managed.monEPGTarget[each.value.class].dn}/fsevp-${each.value.fault_id}"
+  class_name = "faultSevAsnP"
+  content = {
+    code    = each.value.fault_id
+    initial = each.value.initial_severity
+    target  = each.value.target_severity
+    descr   = each.value.description
   }
 }
