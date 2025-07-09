@@ -13,7 +13,7 @@ module "aci_tenant_monitoring_policy" {
     minimum_severity = "alerts"
   }]
   fault_severity_policies = [{
-    class = vzRsSubjFiltAtt
+    class = "vzRsSubjFiltAtt"
     faults = [{
       fault_id         = "F1127"
       initial_severity = "warning"
