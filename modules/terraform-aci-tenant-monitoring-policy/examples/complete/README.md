@@ -1,3 +1,17 @@
+<!-- BEGIN_TF_DOCS -->
+# Tenant Monitoring Policy Example
+
+To run this example you need to execute:
+
+```bash
+$ terraform init
+$ terraform plan
+$ terraform apply
+```
+
+Note that this example will create resources. Resources can be destroyed with `terraform destroy`.
+
+```hcl
 module "aci_tenant_monitoring_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-tenant-monitoring-policy"
   version = "> 1.0.1"
@@ -22,3 +36,5 @@ module "aci_tenant_monitoring_policy" {
     }]
   }]
 }
+```
+<!-- END_TF_DOCS -->

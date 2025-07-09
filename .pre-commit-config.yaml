@@ -807,6 +807,10 @@ repos:
         args:
           ["./modules/terraform-aci-tenant-span-source-group/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-monitoring-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-monitoring-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-track-list"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-track-member"]
