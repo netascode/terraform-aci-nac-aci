@@ -3946,5 +3946,6 @@ module "aci_tenant_monitoring_policy" {
   depends_on = [
     module.aci_snmp_trap_policy,
     module.aci_syslog_policy,
+    module.aci_tenant,
   ]
 }
