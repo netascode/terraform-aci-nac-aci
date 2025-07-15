@@ -488,6 +488,57 @@ module "aci_fabric_leaf_interface_profile_manual" {
   name     = "${each.value.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.name_suffix}"
 }
 
+locals {
+  fabric_leaf_interface_selectors_manual = flatten([
+    for profile in try(local.fabric_policies.leaf_interface_profiles, []) : [
+      for selector in try(profile.selectors, []) : {
+        key = "${profile.name}/${selector.name}"
+        value = {
+          name         = "${selector.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.name_suffix}"
+          description  = try(selector.description, "")
+          profile_name = "${profile.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.name_suffix}"
+          policy_group = try("${selector.policy_group}${local.defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix}", "")
+          port_blocks = [for block in try(selector.port_blocks, []) : {
+            description = try(block.description, "")
+            name        = "${block.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.port_blocks.name_suffix}"
+            from_module = try(block.from_module, local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
+            from_port   = block.from_port
+            to_module   = try(block.to_module, block.from_module, local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
+            to_port     = try(block.to_port, block.from_port)
+          }]
+          sub_port_blocks = [for block in try(selector.sub_port_blocks, []) : {
+            description   = try(block.description, "")
+            name          = "${block.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.sub_port_blocks.name_suffix}"
+            from_module   = try(block.from_module, local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module)
+            from_port     = block.from_port
+            to_module     = try(block.to_module, block.from_module, local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module)
+            to_port       = try(block.to_port, block.from_port)
+            from_sub_port = block.from_sub_port
+            to_sub_port   = try(block.to_sub_port, block.from_sub_port)
+          }]
+        }
+      }
+    ]
+  ])
+}
+
+module "aci_fabric_leaf_interface_selector_manual" {
+  source = "./modules/terraform-aci-fabric-leaf-interface-selector"
+
+  for_each          = { for selector in local.fabric_leaf_interface_selectors_manual : selector.key => selector.value if local.modules.aci_fabric_leaf_interface_selector && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
+  interface_profile = each.value.profile_name
+  name              = each.value.name
+  description       = each.value.description
+  policy_group      = each.value.policy_group
+  port_blocks       = each.value.port_blocks
+  sub_port_blocks   = each.value.sub_port_blocks
+
+  depends_on = [
+    module.aci_fabric_leaf_interface_profile_manual,
+    module.aci_fabric_leaf_interface_profile_auto,
+  ]
+}
+
 module "aci_fabric_spine_interface_profile_auto" {
   source = "./modules/terraform-aci-fabric-spine-interface-profile"
 

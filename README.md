@@ -88,7 +88,7 @@ Additional example repositories:
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
 | <a name="requirement_aci"></a> [aci](#requirement\_aci) | = 2.15.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.3.0 |
-| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.0.1 |
+| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.0.2 |
 
 ## Inputs
 
@@ -203,6 +203,9 @@ Additional example repositories:
 | <a name="module_aci_fabric_leaf_interface_policy_group"></a> [aci\_fabric\_leaf\_interface\_policy\_group](#module\_aci\_fabric\_leaf\_interface\_policy\_group) | ./modules/terraform-aci-fabric-leaf-interface-policy-group | n/a |
 | <a name="module_aci_fabric_leaf_interface_profile_auto"></a> [aci\_fabric\_leaf\_interface\_profile\_auto](#module\_aci\_fabric\_leaf\_interface\_profile\_auto) | ./modules/terraform-aci-fabric-leaf-interface-profile | n/a |
 | <a name="module_aci_fabric_leaf_interface_profile_manual"></a> [aci\_fabric\_leaf\_interface\_profile\_manual](#module\_aci\_fabric\_leaf\_interface\_profile\_manual) | ./modules/terraform-aci-fabric-leaf-interface-profile | n/a |
+| <a name="module_aci_fabric_leaf_interface_selector_auto"></a> [aci\_fabric\_leaf\_interface\_selector\_auto](#module\_aci\_fabric\_leaf\_interface\_selector\_auto) | ./modules/terraform-aci-fabric-leaf-interface-selector | n/a |
+| <a name="module_aci_fabric_leaf_interface_selector_manual"></a> [aci\_fabric\_leaf\_interface\_selector\_manual](#module\_aci\_fabric\_leaf\_interface\_selector\_manual) | ./modules/terraform-aci-fabric-leaf-interface-selector | n/a |
+| <a name="module_aci_fabric_leaf_interface_selector_sub_auto"></a> [aci\_fabric\_leaf\_interface\_selector\_sub\_auto](#module\_aci\_fabric\_leaf\_interface\_selector\_sub\_auto) | ./modules/terraform-aci-fabric-leaf-interface-selector | n/a |
 | <a name="module_aci_fabric_leaf_switch_configuration"></a> [aci\_fabric\_leaf\_switch\_configuration](#module\_aci\_fabric\_leaf\_switch\_configuration) | ./modules/terraform-aci-switch-configuration | n/a |
 | <a name="module_aci_fabric_leaf_switch_policy_group"></a> [aci\_fabric\_leaf\_switch\_policy\_group](#module\_aci\_fabric\_leaf\_switch\_policy\_group) | ./modules/terraform-aci-fabric-leaf-switch-policy-group | n/a |
 | <a name="module_aci_fabric_leaf_switch_profile_auto"></a> [aci\_fabric\_leaf\_switch\_profile\_auto](#module\_aci\_fabric\_leaf\_switch\_profile\_auto) | ./modules/terraform-aci-fabric-leaf-switch-profile | n/a |
