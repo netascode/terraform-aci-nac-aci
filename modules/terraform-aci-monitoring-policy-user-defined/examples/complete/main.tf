@@ -4,7 +4,7 @@ module "aci_monitoring_policy_user_defined" {
 
   name = "MON1"
   snmp_trap_policies = [{
-    name              = "SYSLOG1"
+    name              = "SNMP1"
     destination_group = "SNMP_DEST_GROUP1"
   }]
   syslog_policies = [{
