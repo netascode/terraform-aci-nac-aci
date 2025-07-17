@@ -1,18 +1,19 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI Monitoring Policy Module
+# Terraform ACI User-Defined Monitoring Policy Module
 
-Manages ACI Monitoring Policy
+Manages ACI User-Defined Monitoring Policy
 
 Location in GUI:
-`Fabric` » `Fabric Policies` » `Policies` » `Monitoring` » `Common Policy`
+`Fabric` » `Fabric Policies` » `Policies` » `Monitoring`
 
 ## Examples
 
 ```hcl
-module "aci_monitoring_policy" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-monitoring-policy"
-  version = ">= 0.8.0"
+module "aci_monitoring_policy_user_defined" {
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-monitoring-policy-user-defined"
+  version = "> 1.0.1"
 
+  name = "MON1"
   snmp_trap_policies = [{
     name              = "SYSLOG1"
     destination_group = "SNMP_DEST_GROUP1"
@@ -25,6 +26,15 @@ module "aci_monitoring_policy" {
     session           = true
     minimum_severity  = "alerts"
     destination_group = "SYSLOG_DEST_GROUP1"
+  }]
+  fault_severity_policies = [{
+    class = "snmpClient"
+    faults = [{
+      fault_id         = "F1368"
+      description      = "Fault 1368 nice description"
+      initial_severity = "critical"
+      target_severity  = "inherit"
+    }]
   }]
 }
 ```
@@ -46,17 +56,26 @@ module "aci_monitoring_policy" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_name"></a> [name](#input\_name) | Track List name. | `string` | n/a | yes |
+| <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_snmp_trap_policies"></a> [snmp\_trap\_policies](#input\_snmp\_trap\_policies) | List of SNMP trap policies. | <pre>list(object({<br/>    name              = string<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_syslog_policies"></a> [syslog\_policies](#input\_syslog\_policies) | List of syslog policies. Default value `audit`: true. Default value `events`: true. Default value `faults`: true. Default value `session`: false. Default value `minimum_severity`: `warnings`. | <pre>list(object({<br/>    name              = string<br/>    audit             = optional(bool, true)<br/>    events            = optional(bool, true)<br/>    faults            = optional(bool, true)<br/>    session           = optional(bool, false)<br/>    minimum_severity  = optional(string, "warnings")<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
+| <a name="input_fault_severity_policies"></a> [fault\_severity\_policies](#input\_fault\_severity\_policies) | List of Fault Severity Assignment Policies. | <pre>list(object({<br/>    class = string<br/>    faults = list(object({<br/>      fault_id         = string<br/>      initial_severity = optional(string, "inherit")<br/>      target_severity  = optional(string, "inherit")<br/>      description      = optional(string, "")<br/>    }))<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of Fabric `monFabricPol` object. |
+| <a name="output_name"></a> [name](#output\_name) | User-Defined Fabric Monitoring Policy name. |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [aci_rest_managed.faultSevAsnP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.monFabricPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.monFabricTarget](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.snmpRsDestGroup](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.snmpSrc](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.syslogRsDestGroup](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
