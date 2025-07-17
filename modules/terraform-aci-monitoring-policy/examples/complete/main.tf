@@ -3,7 +3,7 @@ module "aci_monitoring_policy" {
   version = ">= 0.8.0"
 
   snmp_trap_policies = [{
-    name              = "SNMP1"
+    name              = "SNMP_1"
     destination_group = "SNMP_DEST_GROUP1"
   }]
   syslog_policies = [{
