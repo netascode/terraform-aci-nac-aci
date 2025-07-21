@@ -825,9 +825,9 @@ locals {
   l3outs = flatten([
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : {
-        key         = format("%s/%s", tenant.name, l3out.name)
+        key         = format("%s/%s", tenant.name, l3out.name_suffix)
         tenant      = tenant.name
-        name        = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
+        name        = "${l3out.name_suffix}${local.defaults.apic.tenants.l3outs.name_suffix}"
         annotation  = try(l3out.ndo_managed, local.defaults.apic.tenants.l3outs.ndo_managed) ? "orchestrator:msc-shadow:no" : null
         alias       = try(l3out.alias, "")
         description = try(l3out.description, "")
@@ -980,9 +980,9 @@ locals {
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : [
         for np in try(l3out.node_profiles, []) : {
-          key                       = format("%s/%s/%s", tenant.name, l3out.name, np.name)
+          key                       = format("%s/%s/%s", tenant.name, l3out.name_suffix, np.name)
           tenant                    = tenant.name
-          l3out                     = l3out.name
+          l3out                     = l3out.name_suffix
           name                      = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
           multipod                  = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
           remote_leaf               = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
@@ -1071,10 +1071,10 @@ locals {
   node_profiles_auto = flatten([
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : {
-        key                       = format("%s/%s", tenant.name, l3out.name)
+        key                       = format("%s/%s", tenant.name, l3out.name_suffix)
         tenant                    = tenant.name
-        l3out                     = l3out.name
-        name                      = l3out.name
+        l3out                     = l3out.name_suffix
+        name                      = l3out.name_suffix
         multipod                  = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
         remote_leaf               = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
         bgp_protocol_profile_name = try(l3out.bgp.name, "")
@@ -1163,21 +1163,21 @@ locals {
       for l3out in try(tenant.l3outs, []) : [
         for np in try(l3out.node_profiles, []) : [
           for ip in try(np.interface_profiles, []) : {
-            key                          = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
+            key                          = format("%s/%s/%s/%s", tenant.name, l3out.name_suffix, np.name, ip.name)
             tenant                       = tenant.name
-            l3out                        = l3out.name
+            l3out                        = l3out.name_suffix
             node_profile                 = np.name
             name                         = "${ip.name}${local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix}"
             description                  = try(ip.description, "")
             multipod                     = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
             remote_leaf                  = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
             bfd_policy                   = try("${ip.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
-            ospf_interface_profile_name  = try(ip.ospf.ospf_interface_profile_name, l3out.name)
+            ospf_interface_profile_name  = try(ip.ospf.ospf_interface_profile_name, l3out.name_suffix)
             ospf_authentication_key      = try(ip.ospf.auth_key, "")
             ospf_authentication_key_id   = try(ip.ospf.auth_key_id, "1")
             ospf_authentication_type     = try(ip.ospf.auth_type, "none")
             ospf_interface_policy        = try(ip.ospf.policy, "")
-            eigrp_interface_profile_name = try(ip.eigrp.interface_profile_name, l3out.name)
+            eigrp_interface_profile_name = try(ip.eigrp.interface_profile_name, l3out.name_suffix)
             eigrp_interface_policy       = try(ip.eigrp.interface_policy, "")
             eigrp_keychain_policy        = try(ip.eigrp.keychain_policy, "")
             pim_policy                   = try("${ip.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
@@ -1328,20 +1328,20 @@ locals {
   interface_profiles_auto = flatten([
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : {
-        key                          = format("%s/%s", tenant.name, l3out.name)
+        key                          = format("%s/%s", tenant.name, l3out.name_suffix)
         tenant                       = tenant.name
-        l3out                        = l3out.name
-        node_profile                 = l3out.name
-        name                         = l3out.name
+        l3out                        = l3out.name_suffix
+        node_profile                 = l3out.name_suffix
+        name                         = l3out.name_suffix
         multipod                     = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
         remote_leaf                  = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
         bfd_policy                   = try("${l3out.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
-        ospf_interface_profile_name  = try(l3out.ospf.ospf_interface_profile_name, l3out.name)
+        ospf_interface_profile_name  = try(l3out.ospf.ospf_interface_profile_name, l3out.name_suffix)
         ospf_authentication_key      = try(l3out.ospf.auth_key, "")
         ospf_authentication_key_id   = try(l3out.ospf.auth_key_id, "1")
         ospf_authentication_type     = try(l3out.ospf.auth_type, "none")
         ospf_interface_policy        = try(l3out.ospf.policy, "")
-        eigrp_interface_profile_name = try(l3out.eigrp.interface_profile_name, l3out.name)
+        eigrp_interface_profile_name = try(l3out.eigrp.interface_profile_name, l3out.name_suffix)
         eigrp_interface_policy       = try(l3out.eigrp.interface_policy, "")
         pim_policy                   = try("${l3out.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
         igmp_interface_policy        = try("${l3out.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
@@ -1490,9 +1490,9 @@ locals {
     for tenant in local.tenants : [
       for l3out in try(tenant.l3outs, []) : [
         for epg in try(l3out.external_endpoint_groups, []) : {
-          key                         = format("%s/%s/%s", tenant.name, l3out.name, epg.name)
+          key                         = format("%s/%s/%s", tenant.name, l3out.name_suffix, epg.name)
           tenant                      = tenant.name
-          l3out                       = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
+          l3out                       = "${l3out.name_suffix}${local.defaults.apic.tenants.l3outs.name_suffix}"
           name                        = "${epg.name}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}"
           annotation                  = try(epg.ndo_managed, local.defaults.apic.tenants.l3outs.external_endpoint_groups.ndo_managed) ? "orchestrator:msc-shadow:no" : null
           alias                       = try(epg.alias, "")
@@ -1592,9 +1592,9 @@ locals {
   sr_mpls_l3outs = flatten([
     for tenant in local.tenants : [
       for l3out in try(tenant.sr_mpls_l3outs, []) : {
-        key                  = format("%s/%s", tenant.name, l3out.name)
+        key                  = format("%s/%s", tenant.name, l3out.name_suffix)
         tenant               = tenant.name
-        name                 = "${l3out.name}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
+        name                 = "${l3out.name_suffix}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
         alias                = try(l3out.alias, "")
         description          = try(l3out.description, "")
         domain               = try("${l3out.domain}${local.defaults.apic.access_policies.routed_domains.name_suffix}", "")
@@ -1602,7 +1602,7 @@ locals {
         transport_data_plane = try(l3out.transport_data_plane, local.defaults.apic.tenants.sr_mpls_l3outs.transport_data_plane)
         sr_mpls              = true
         sr_mpls_infra_l3outs = [for infra_l3out in try(l3out.sr_mpls_infra_l3outs, []) : {
-          name                     = infra_l3out.name
+          name                     = infra_l3out.name_suffix
           outbound_route_map       = try(infra_l3out.outbound_route_map, "")
           inbound_route_map        = try(infra_l3out.inbound_route_map, "")
           external_endpoint_groups = [for eepg in try(infra_l3out.external_endpoint_groups, []) : eepg]
@@ -1635,9 +1635,9 @@ locals {
     for tenant in local.tenants : [
       for l3out in try(tenant.sr_mpls_l3outs, []) : [
         for np in try(l3out.node_profiles, []) : {
-          key                      = format("%s/%s/%s", tenant.name, l3out.name, np.name)
+          key                      = format("%s/%s/%s", tenant.name, l3out.name_suffix, np.name)
           tenant                   = tenant.name
-          l3out                    = l3out.name
+          l3out                    = l3out.name_suffix
           name                     = "${np.name}${local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.name_suffix}"
           sr_mpls                  = true
           mpls_custom_qos_policy   = try(np.mpls_custom_qos_policy, "")
@@ -1696,9 +1696,9 @@ locals {
       for l3out in try(tenant.sr_mpls_l3outs, []) : [
         for np in try(l3out.node_profiles, []) : [
           for ip in try(np.interface_profiles, []) : {
-            key                  = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
+            key                  = format("%s/%s/%s/%s", tenant.name, l3out.name_suffix, np.name, ip.name)
             tenant               = tenant.name
-            l3out                = l3out.name
+            l3out                = l3out.name_suffix
             node_profile         = np.name
             sr_mpls              = true
             transport_data_plane = l3out.transport_data_plane
@@ -1777,9 +1777,9 @@ locals {
     for tenant in local.tenants : [
       for l3out in try(tenant.sr_mpls_l3outs, []) : [
         for epg in try(l3out.external_endpoint_groups, []) : {
-          key                         = format("%s/%s/%s", tenant.name, l3out.name, epg.name)
+          key                         = format("%s/%s/%s", tenant.name, l3out.name_suffix, epg.name)
           tenant                      = tenant.name
-          l3out                       = "${l3out.name}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
+          l3out                       = "${l3out.name_suffix}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
           name                        = "${epg.name}${local.defaults.apic.tenants.sr_mpls_l3outs.external_endpoint_groups.name_suffix}"
           alias                       = try(epg.alias, "")
           description                 = try(epg.description, "")
@@ -3690,7 +3690,7 @@ locals {
                     key             = format("%s/%s_%s", tenant.name, "${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", next_hop.ip)
                     tenant          = tenant.name
                     name            = try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${next_hop.ip}", null)
-                    description     = try("Generated by l3out: ${l3out.name}, node: ${node.node_id}", "")
+                    description     = try("Generated by l3out: ${l3out.name_suffix}, node: ${node.node_id}", "")
                     type            = try(local.defaults.apic.tenants.policies.track_lists.type)
                     percentage_up   = try(local.defaults.apic.tenants.policies.track_lists.percentage_up)
                     percentage_down = try(local.defaults.apic.tenants.policies.track_lists.percentage_down)
@@ -3709,7 +3709,7 @@ locals {
                   key             = format("%s/%s_%s", tenant.name, "${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", next_hop.ip)
                   tenant          = tenant.name
                   name            = try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${next_hop.ip}", null)
-                  description     = try("Generated by l3out: ${l3out.name}, node: ${node.node_id}", "")
+                  description     = try("Generated by l3out: ${l3out.name_suffix}, node: ${node.node_id}", "")
                   type            = try(local.defaults.apic.tenants.policies.track_lists.type)
                   percentage_up   = try(local.defaults.apic.tenants.policies.track_lists.percentage_up)
                   percentage_down = try(local.defaults.apic.tenants.policies.track_lists.percentage_down)
@@ -3780,10 +3780,10 @@ locals {
                     key            = format("%s/%s_%s", tenant.name, "${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", next_hop.ip)
                     tenant         = tenant.name
                     name           = try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${next_hop.ip}", null)
-                    description    = try("Generated by l3out: ${l3out.name}, node: ${node.node_id}", "")
+                    description    = try("Generated by l3out: ${l3out.name_suffix}, node: ${node.node_id}", "")
                     destination_ip = try(next_hop.ip, null)
                     scope_type     = "l3out"
-                    scope          = try(l3out.name, "")
+                    scope          = try(l3out.name_suffix, "")
                     ip_sla_policy  = try("${next_hop.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
                   } if try(next_hop.ip_sla_policy, null) != null
                 ]
@@ -3797,10 +3797,10 @@ locals {
                   key            = format("%s/%s_%s", tenant.name, "${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", next_hop.ip)
                   tenant         = tenant.name
                   name           = try("${l3out.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}_${next_hop.ip}", null)
-                  description    = try("Generated by l3out: ${l3out.name}, node: ${node.node_id}", "")
+                  description    = try("Generated by l3out: ${l3out.name_suffix}, node: ${node.node_id}", "")
                   destination_ip = try(next_hop.ip, null)
                   scope_type     = "l3out"
-                  scope          = try(l3out.name, "")
+                  scope          = try(l3out.name_suffix, "")
                   ip_sla_policy  = try("${next_hop.ip_sla_policy}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}", null)
                 } if try(next_hop.ip_sla_policy, null) != null
               ]
