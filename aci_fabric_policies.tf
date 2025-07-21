@@ -1138,3 +1138,10 @@ module "aci_atomic_counter" {
   admin_state = local.fabric_policies.atomic_counter.admin_state
   mode        = try(local.fabric_policies.atomic_counter.mode, local.defaults.apic.fabric_policies.atomic_counter.mode)
 }
+
+module "aci_cpmtu" {
+  source = "./modules/terraform-cp-mtu"
+
+  count = local.fabric_policies.aci_cp_mtu == true && var.manage_fabric_policies ? 1 : 0
+  CPMtu = try(local.fabric_policies.CPMtu, local.defaults.apic.fabric_policies.CPMtu)
+}
