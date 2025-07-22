@@ -12,7 +12,7 @@ defaults:
     interface_selector_description: false
     bulk_static_ports: false
     fabric_policies:
-      CPMtu: 9000
+      control_plane_mtu: 9000
       leaf_switch_profile_name: "LEAF\\g<id>"
       leaf_interface_profile_name: "LEAF\\g<id>"
       leaf_switch_selector_name: "LEAF\\g<id>"

@@ -12,8 +12,8 @@ $ terraform apply
 Note that this example will create resources. Resources can be destroyed with `terraform destroy`.
 
 ```hcl
-module "aci_port_tracking" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-port-tracking"
+module "aci_control_plane_mtu" {
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-control-plane-mtu"
   version = ">= 0.8.0"
 
   CPMtu        = 9000

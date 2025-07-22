@@ -9,8 +9,8 @@ Location in GUI:
 ## Examples
 
 ```hcl
-module "aci_port_tracking" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-port-tracking"
+module "aci_control_plane_mtu" {
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-control-plane-mtu"
   version = ">= 0.8.0"
 
   CPMtu        = 9000
@@ -35,9 +35,8 @@ module "aci_port_tracking" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | Admin state. | `bool` | `false` | no |
-| <a name="input_CPMtu"></a> [CPMtu](#input\_CPMtu) | CPU MTU policy. | `number` | `9000` | no |
-| <a name="input_APICMtuApply"></a> [APICMtuApply](#input\_APICMtuApply) | APIC MTU apply policy | `bool` | `"false"` | no |
+| <a name="input_control_plane_mtu"></a> [control\_plane\_mtu](#input\_control\_plane\_mtu) | CP MTU policy. | `number` | `9000` | no |
+| <a name="input_apic_mtu_apply"></a> [apic\_mtu\_apply](#input\_apic\_mtu\_apply) | APIC MTU apply policy | `bool` | `"false"` | no |
 
 ## Outputs
 
