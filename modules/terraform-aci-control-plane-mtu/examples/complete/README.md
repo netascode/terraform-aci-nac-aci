@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# Port Tracking Example
+# Control Plane MTU Example
 
 To run this example you need to execute:
 

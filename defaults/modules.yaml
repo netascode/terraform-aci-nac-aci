@@ -176,5 +176,3 @@ modules:
   aci_vspan_destination_group: true
   aci_vspan_session: true
   aci_control_plane_mtu: true
-
-
