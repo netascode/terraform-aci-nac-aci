@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI Port Tracking Module
+# Terraform ACI Control Plane MTU Module
 
-Manages ACI Port Tracking
+Manages ACI Control Plane MTU
 
 Location in GUI:
 `System` » `System Settings` » `CP MTU Policy`
