@@ -659,6 +659,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-port-tracking/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-control-plane-mtu"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-control-plane-mtu/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-psu-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-psu-policy/examples/complete"]
