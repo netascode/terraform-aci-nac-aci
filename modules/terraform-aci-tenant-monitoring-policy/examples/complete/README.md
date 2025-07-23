@@ -16,8 +16,11 @@ module "aci_tenant_monitoring_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-tenant-monitoring-policy"
   version = "> 1.0.1"
 
-  name               = "MON1"
-  snmp_trap_policies = ["SNMP1"]
+  name = "MON1"
+  snmp_trap_policies = [{
+    name              = "SNMP1"
+    destination_group = "DEST1"
+  }]
   syslog_policies = [{
     name             = "SYSLOG1"
     audit            = false

@@ -13,8 +13,11 @@ module "aci_tenant_monitoring_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-tenant-monitoring-policy"
   version = "> 1.0.1"
 
-  name               = "MON1"
-  snmp_trap_policies = ["SNMP1"]
+  name = "MON1"
+  snmp_trap_policies = [{
+    name              = "SNMP1"
+    destination_group = "DEST1"
+  }]
   syslog_policies = [{
     name             = "SYSLOG1"
     audit            = false
@@ -55,8 +58,8 @@ module "aci_tenant_monitoring_policy" {
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Track List name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
-| <a name="input_snmp_trap_policies"></a> [snmp\_trap\_policies](#input\_snmp\_trap\_policies) | List of SNMP trap policy names. | `list(string)` | `[]` | no |
-| <a name="input_syslog_policies"></a> [syslog\_policies](#input\_syslog\_policies) | List of syslog policies. Default value `audit`: true. Default value `events`: true. Default value `faults`: true. Default value `session`: false. Default value `minimum_severity`: `warnings`. | <pre>list(object({<br/>    name             = string<br/>    audit            = optional(bool, true)<br/>    events           = optional(bool, true)<br/>    faults           = optional(bool, true)<br/>    session          = optional(bool, false)<br/>    minimum_severity = optional(string, "warnings")<br/>  }))</pre> | `[]` | no |
+| <a name="input_snmp_trap_policies"></a> [snmp\_trap\_policies](#input\_snmp\_trap\_policies) | List of SNMP trap policy names. | <pre>list(object({<br/>    name              = string<br/>    destination_group = optional(string)<br/>  }))</pre> | `[]` | no |
+| <a name="input_syslog_policies"></a> [syslog\_policies](#input\_syslog\_policies) | List of syslog policies. Default value `audit`: true. Default value `events`: true. Default value `faults`: true. Default value `session`: false. Default value `minimum_severity`: `warnings`. | <pre>list(object({<br/>    name              = string<br/>    audit             = optional(bool, true)<br/>    events            = optional(bool, true)<br/>    faults            = optional(bool, true)<br/>    session           = optional(bool, false)<br/>    minimum_severity  = optional(string, "warnings")<br/>    destination_group = optional(string)<br/>  }))</pre> | `[]` | no |
 | <a name="input_fault_severity_policies"></a> [fault\_severity\_policies](#input\_fault\_severity\_policies) | List of Fault Severity Assignment Policies. | <pre>list(object({<br/>    class = string<br/>    faults = list(object({<br/>      fault_id         = string<br/>      initial_severity = optional(string, "inherit")<br/>      target_severity  = optional(string, "inherit")<br/>      description      = optional(string, "")<br/>    }))<br/>  }))</pre> | `[]` | no |
 
 ## Outputs

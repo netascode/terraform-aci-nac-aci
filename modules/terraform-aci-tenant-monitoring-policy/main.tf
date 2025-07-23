@@ -22,25 +22,25 @@ resource "aci_rest_managed" "monEPGPol" {
 }
 
 resource "aci_rest_managed" "snmpSrc" {
-  for_each   = toset(var.snmp_trap_policies)
-  dn         = "${aci_rest_managed.monEPGPol.dn}/snmpsrc-${each.value}"
+  for_each   = { for snmp in var.snmp_trap_policies : snmp.name => snmp }
+  dn         = "${aci_rest_managed.monEPGPol.dn}/snmpsrc-${each.value.name}"
   class_name = "snmpSrc"
   content = {
-    name = each.value
+    name = each.value.name
   }
 }
 
 resource "aci_rest_managed" "snmpRsDestGroup" {
-  for_each   = toset(var.snmp_trap_policies)
-  dn         = "${aci_rest_managed.snmpSrc[each.value].dn}/rsdestGroup"
+  for_each   = { for snmp in var.snmp_trap_policies : snmp.name => snmp if snmp.destination_group != null }
+  dn         = "${aci_rest_managed.snmpSrc[each.value.name].dn}/rsdestGroup"
   class_name = "snmpRsDestGroup"
   content = {
-    tDn = "uni/fabric/snmpgroup-${each.value}"
+    tDn = "uni/fabric/snmpgroup-${each.value.destination_group}"
   }
 }
 
 resource "aci_rest_managed" "syslogSrc" {
-  for_each   = { for s in var.syslog_policies : s.name => s }
+  for_each   = { for snmp in var.syslog_policies : snmp.name => snmp }
   dn         = "${aci_rest_managed.monEPGPol.dn}/slsrc-${each.value.name}"
   class_name = "syslogSrc"
   content = {
@@ -51,16 +51,16 @@ resource "aci_rest_managed" "syslogSrc" {
 }
 
 resource "aci_rest_managed" "syslogRsDestGroup" {
-  for_each   = { for s in var.syslog_policies : s.name => s }
+  for_each   = { for syslog in var.syslog_policies : syslog.name => syslog if syslog.destination_group != null }
   dn         = "${aci_rest_managed.syslogSrc[each.value.name].dn}/rsdestGroup"
   class_name = "syslogRsDestGroup"
   content = {
-    tDn = "uni/fabric/slgroup-${each.value.name}"
+    tDn = "uni/fabric/slgroup-${each.value.destination_group}"
   }
 }
 
 resource "aci_rest_managed" "monEPGTarget" {
-  for_each   = { for s in var.fault_severity_policies : s.class => s }
+  for_each   = { for fsp in var.fault_severity_policies : fsp.class => fsp }
   dn         = "${aci_rest_managed.monEPGPol.dn}/tarepg-${each.value.class}"
   class_name = "monEPGTarget"
   content = {
