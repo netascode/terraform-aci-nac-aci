@@ -4,7 +4,7 @@ variable "control_plane_mtu" {
   default     = 9000
 
   validation {
-    condition     = var.CPMtu >= 576 && var.CPMtu <= 9216
+    condition     = var.control_plane_mtu >= 576 && var.control_plane_mtu <= 9216
     error_message = "CPMtu policy must be between 576 and 9216."
   }
 }
