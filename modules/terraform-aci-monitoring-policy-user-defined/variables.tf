@@ -92,7 +92,7 @@ variable "fault_severity_policies" {
 
   validation {
     condition = alltrue([
-      for policy in var.fault_severity_policies : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", policy.class))
+      for policy in var.fault_severity_policies : can(regex("^[a-zA-Z0-9]{0,64}$", policy.class))
     ])
     error_message = "`class`. Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
