@@ -344,6 +344,7 @@ defaults:
       monitoring:
         snmp_traps:
           name_suffix: ""
+          destination_group_suffix: ""
           destinations:
             port: 162
             version: v2c
@@ -364,6 +365,7 @@ defaults:
           local_severity: information
           console_admin_state: true
           console_severity: alerts
+          destination_group_suffix: ""
           destinations:
             port: 514
             facility: local7
@@ -379,6 +381,7 @@ defaults:
               target_severity: "inherit"
           snmp_traps:
             name_suffix: ""
+            destination_group_suffix: ""
           syslogs:
             name_suffix: ""
             audit: true
@@ -394,6 +397,7 @@ defaults:
             local_severity: information
             console_admin_state: true
             console_severity: alerts
+            destination_group_suffix: ""
       span:
         destination_groups:
           name_suffix: ""
