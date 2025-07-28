@@ -330,6 +330,19 @@ module "aci_fabric_leaf_switch_policy_group" {
   ]
 }
 
+module "aci_fabric_leaf_interface_policy_group" {
+  source = "./modules/terraform-aci-fabric-leaf-interface-policy-group"
+
+  for_each          = { for pg in try(local.fabric_policies.leaf_interface_policy_groups, []) : pg.name => pg if local.modules.aci_fabric_leaf_interface_policy_group && var.manage_fabric_policies }
+  name              = "${each.value.name}${local.defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix}"
+  description       = try(each.value.description, "")
+  link_level_policy = try("${each.value.link_level_policy}${local.defaults.apic.fabric_policies.interface_policies.link_level_policies.name_suffix}", "")
+
+  depends_on = [
+    module.aci_link_level_policy,
+  ]
+}
+
 module "aci_fabric_spine_switch_policy_group" {
   source = "./modules/terraform-aci-fabric-spine-switch-policy-group"
 
