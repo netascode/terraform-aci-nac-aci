@@ -126,15 +126,15 @@ variable "fault_severity_policies" {
   validation {
     condition = alltrue(flatten([
       for policy in var.fault_severity_policies : [
-        for fault in policy.faults : contains(["warning", "minor", "major", "critical", "inherit", "squelched"], fault.target_severity)
+        for fault in policy.faults : contains(["warning", "minor", "major", "critical", "inherit"], fault.target_severity)
       ]
     ]))
-    error_message = "`target_severity`: Allowed values are `warning`, `minor`, `major`, `critical`, `inherit` or `squelched`."
+    error_message = "`target_severity`: Allowed values are `warning`, `minor`, `major`, `critical` or `inherit`."
   }
   validation {
     condition = alltrue(flatten([
       for policy in var.fault_severity_policies : [
-        for fault in policy.faults : index(["warning", "minor", "major", "critical", "inherit", "squelched"], fault.target_severity) >= index(["warning", "minor", "major", "critical", "inherit", "squelched"], fault.initial_severity)
+        for fault in policy.faults : fault.initial_severity == "squelched" || index(["warning", "minor", "major", "critical", "inherit"], fault.target_severity) >= index(["warning", "minor", "major", "critical", "inherit", "squelched"], fault.initial_severity)
       ]
     ]))
     error_message = "`target_severity` level must be equal or higher than `initial_severity` level."
