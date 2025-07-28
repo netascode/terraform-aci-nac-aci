@@ -175,6 +175,8 @@ defaults:
           name_suffix: ""
       leaf_switch_policy_groups:
         name_suffix: ""
+      leaf_interface_policy_groups:
+        name_suffix: ""
       spine_switch_policy_groups:
         name_suffix: ""
       leaf_switch_profiles:
@@ -189,8 +191,6 @@ defaults:
           name_suffix: ""
           node_blocks:
             name_suffix: ""
-      leaf_interface_policy_groups:
-        name_suffix: ""
       spine_interface_policy_groups:
         name_suffix: ""
       leaf_interface_profiles:
