@@ -3911,7 +3911,7 @@ locals {
         description = try(policy.description, "")
         snmp_trap_policies = [for snmp_policy in try(policy.snmp_traps, []) : {
           name              = "${snmp_policy.name}${local.defaults.apic.tenants.policies.monitoring.policies.snmp_traps.name_suffix}"
-          destination_group = try(snmp_policy.destination_group, null)
+          destination_group = try("${snmp_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}", null)
         }]
         syslog_policies = [for syslog_policy in try(policy.syslogs, []) : {
           name              = "${syslog_policy.name}${local.defaults.apic.tenants.policies.monitoring.policies.syslogs.name_suffix}"
@@ -3920,7 +3920,7 @@ locals {
           faults            = try(syslog_policy.faults, local.defaults.apic.tenants.policies.monitoring.policies.syslogs.faults)
           session           = try(syslog_policy.session, local.defaults.apic.tenants.policies.monitoring.policies.syslogs.session)
           minimum_severity  = try(syslog_policy.minimum_severity, local.defaults.apic.tenants.policies.monitoring.policies.syslogs.minimum_severity)
-          destination_group = try(syslog_policy.destination_group, null)
+          destination_group = try("${syslog_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}", null)
         }]
         fault_severity_policies = [for policy in try(policy.fault_severity_policies, []) : {
           class = policy.class
