@@ -14,6 +14,7 @@ module "aci_fabric_leaf_interface_policy_group" {
   version = ">= 1.0.2"
 
   name              = "LEAFS"
+  description       = "All Leafs"
   link_level_policy = "default"
 }
 ```
@@ -36,6 +37,7 @@ module "aci_fabric_leaf_interface_policy_group" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Leaf interface policy group name. | `string` | n/a | yes |
+| <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_link_level_policy"></a> [link\_level\_policy](#input\_link\_level\_policy) | Link Level policy name. | `string` | `""` | no |
 
 ## Outputs

@@ -2,7 +2,8 @@ resource "aci_rest_managed" "fabricLePortPGrp" {
   dn         = "uni/fabric/funcprof/leportgrp-${var.name}"
   class_name = "fabricLePortPGrp"
   content = {
-    name = var.name
+    name  = var.name
+    descr = var.description
   }
 }
 
