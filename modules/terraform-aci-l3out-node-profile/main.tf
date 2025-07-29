@@ -20,11 +20,13 @@ locals {
         for nh in coalesce(sr.next_hops, []) : {
           key = "${node.node_id}/${sr.prefix}/${nh.ip}"
           value = {
-            static_route = "${node.node_id}/${sr.prefix}"
-            ip           = nh.ip
-            description  = nh.description
-            preference   = nh.preference == 0 ? "unspecified" : nh.preference
-            type         = nh.type
+            static_route  = "${node.node_id}/${sr.prefix}"
+            ip            = nh.ip
+            description   = nh.description
+            preference    = nh.preference == 0 ? "unspecified" : nh.preference
+            type          = nh.type
+            ip_sla_policy = nh.ip_sla_policy
+            track_list    = nh.track_list
           }
         }
       ]
@@ -291,5 +293,23 @@ resource "aci_rest_managed" "bgpRsBestPathCtrlPol" {
   class_name = "bgpRsBestPathCtrlPol"
   content = {
     tnBgpBestPathCtrlPolName = var.bgp_as_path_policy
+  }
+}
+
+resource "aci_rest_managed" "ipRsNexthopRouteTrack" {
+  for_each   = { for next_hop in local.next_hops : next_hop.key => next_hop.value if next_hop.value.ip_sla_policy != null || next_hop.value.track_list != null }
+  dn         = "${aci_rest_managed.ipNexthopP[each.key].dn}/rsNexthopRouteTrack"
+  class_name = "ipRsNexthopRouteTrack"
+  content = {
+    tDn = "uni/tn-${var.tenant}/tracklist-${each.value.track_list}"
+  }
+}
+
+resource "aci_rest_managed" "ipRsNHTrackMember" {
+  for_each   = { for next_hop in local.next_hops : next_hop.key => next_hop.value if next_hop.value.ip_sla_policy != null }
+  dn         = "${aci_rest_managed.ipNexthopP[each.key].dn}/rsNHTrackMember"
+  class_name = "ipRsNHTrackMember"
+  content = {
+    tDn = "uni/tn-${var.tenant}/trackmember-${each.value.track_list}"
   }
 }

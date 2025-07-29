@@ -1,4 +1,4 @@
-## 1.0.1 (unreleased)
+## 1.0.1
 
 - Fix handling of errors when merging invalid YAML content
 - Fix merging of boolean values, where values of `false` were not merged consistently
