@@ -21,6 +21,7 @@ defaults:
       spine_interface_profile_name: "SPINE\\g<id>"
       spine_switch_selector_name: "SPINE\\g<id>"
       spine_interface_selector_name: "ETH\\g<mod>-\\g<port>"
+      spine_interface_selector_sub_port_name: "ETH\\g<mod>-\\g<port>-\\g<sport>"
       pod_profile_name: "POD\\g<id>"
       pod_profile_pod_selector_name: "POD\\g<id>"
       apic_conn_pref: inband
@@ -205,6 +206,14 @@ defaults:
             from_module: 1
       spine_interface_profiles:
         name_suffix: ""
+        selectors:
+          name_suffix: ""
+          port_blocks:
+            name_suffix: ""
+            from_module: 1
+          sub_port_blocks:
+            name_suffix: ""
+            from_module: 1
       external_connectivity_policy:
         name_suffix: ""
         fabric_id: 1
@@ -595,6 +604,9 @@ defaults:
         selectors:
           name_suffix: ""
           port_blocks:
+            name_suffix: ""
+            from_module: 1
+          sub_port_blocks:
             name_suffix: ""
             from_module: 1
       leaf_interface_profiles:

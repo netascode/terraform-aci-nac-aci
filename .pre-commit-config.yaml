@@ -391,6 +391,13 @@ repos:
             "./modules/terraform-aci-fabric-spine-interface-profile/examples/complete",
           ]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-spine-interface-selector"]
+      - id: terraform-docs-system
+        args:
+          [
+            "./modules/terraform-aci-fabric-spine-interface-selector/examples/complete",
+          ]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-spine-switch-policy-group"]
       - id: terraform-docs-system
         args:
