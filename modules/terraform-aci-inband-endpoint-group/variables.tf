@@ -83,11 +83,10 @@ variable "static_routes" {
 variable "subnets" {
   description = "List of subnets. Default value `public`: `false`. Default value `shared`: `false`. Default value `igmp_querier`: `false`. Default value `nd_ra_prefix`: `true`. Default value `no_default_gateway`: `false`. `nlb_mode` allowed values: `mode-mcast-igmp`, `mode-uc` or `mode-mcast-static`."
   type = list(object({
-    description           = optional(string, "")
-    ip                    = string
-    public                = optional(bool, false)
-    shared                = optional(bool, false)
-    ip_dataplane_learning = optional(bool, null)
+    description = optional(string, "")
+    ip          = string
+    public      = optional(bool, false)
+    shared      = optional(bool, false)
   }))
   default = []
 

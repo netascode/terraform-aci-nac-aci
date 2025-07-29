@@ -743,11 +743,10 @@ locals {
         contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
         static_routes               = try(epg.static_routes, [])
         subnets = [for subnet in try(epg.subnets, []) : {
-          description           = try(subnet.description, "")
-          ip                    = subnet.ip
-          public                = try(subnet.public, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.public)
-          shared                = try(subnet.shared, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.shared)
-          ip_dataplane_learning = try(subnet.ip_dataplane_learning, null)
+          description = try(subnet.description, "")
+          ip          = subnet.ip
+          public      = try(subnet.public, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.public)
+          shared      = try(subnet.shared, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.shared)
         }]
       }
     ] if tenant.name == "mgmt"
