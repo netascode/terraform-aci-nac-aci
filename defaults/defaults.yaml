@@ -606,9 +606,6 @@ defaults:
           port_blocks:
             name_suffix: ""
             from_module: 1
-          sub_port_blocks:
-            name_suffix: ""
-            from_module: 1
       leaf_interface_profiles:
         name_suffix: ""
         selectors:
