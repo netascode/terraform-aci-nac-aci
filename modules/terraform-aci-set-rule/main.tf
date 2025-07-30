@@ -87,7 +87,7 @@ resource "aci_rest_managed" "rtctrlSetRtMetricType" {
   class_name = "rtctrlSetRtMetricType"
   content = {
     "metricType" = var.metric_type
-    "type"       = "metric"
+    "type"       = "metric-type"
   }
 }
 
