@@ -1503,6 +1503,21 @@ defaults:
           local_endpoint_aging_interval: 900
           remote_endpoint_aging_interval: 300
           move_frequency: 256
+        monitoring:
+          policies:
+            name_suffix: ""
+            snmp_traps:
+              name_suffix: ""
+            syslogs:
+              name_suffix: ""
+              audit: true
+              events: true
+              faults: true
+              session: false
+              minimum_severity: warnings
+            fault_severity_policies:
+              initial_severity: inherit
+              target_severity: inherit
       services:
         l4l7_devices:
           name_suffix: ""
