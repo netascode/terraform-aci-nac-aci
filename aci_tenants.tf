@@ -3902,7 +3902,7 @@ module "aci_endpoint_ip_tag_policy" {
 }
 
 locals {
-  tenant_montioring_policy = flatten([
+  tenant_monitoring_policy = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.policies.monitoring.policies, []) : {
         key         = format("%s/%s", tenant.name, policy.name)
@@ -3938,7 +3938,7 @@ locals {
 
 module "aci_tenant_monitoring_policy" {
   source   = "./modules/terraform-aci-tenant-monitoring-policy"
-  for_each = { for pol in local.tenant_montioring_policy : pol.key => pol if local.modules.aci_tenant_monitoring_policy && var.manage_tenants }
+  for_each = { for pol in local.tenant_monitoring_policy : pol.key => pol if local.modules.aci_tenant_monitoring_policy && var.manage_tenants }
 
   name                    = each.value.name
   description             = each.value.description
