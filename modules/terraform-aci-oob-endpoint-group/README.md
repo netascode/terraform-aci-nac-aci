@@ -35,7 +35,7 @@ module "aci_oob_endpoint_group" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name"></a> [name](#input\_name) | OOB endpoint group name. | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | OOB endpoint group name. | `string` | `"default"` | no |
 | <a name="input_oob_contract_providers"></a> [oob\_contract\_providers](#input\_oob\_contract\_providers) | List of OOB contract providers. | `list(string)` | `[]` | no |
 | <a name="input_static_routes"></a> [static\_routes](#input\_static\_routes) | List of OOB Static routes | `list(string)` | `[]` | no |
 
