@@ -771,8 +771,8 @@ locals {
   oob_endpoint_groups = flatten([
     for tenant in local.tenants : [
       for epg in try(tenant.oob_endpoint_groups, []) : {
-        key                    = format("%s/%s", tenant.name, epg.name)
-        name                   = "${epg.name}${local.defaults.apic.tenants.oob_endpoint_groups.name_suffix}"
+        key                    = format("%s/%s", tenant.name, try(epg.name, local.defaults.apic.tenants.oob_endpoint_groups.name))
+        name                   = try("${epg.name}${local.defaults.apic.tenants.oob_endpoint_groups.name_suffix}", local.defaults.apic.tenants.oob_endpoint_groups.name)
         oob_contract_providers = try([for contract in epg.oob_contracts.providers : "${contract}${local.defaults.apic.tenants.oob_contracts.name_suffix}"], [])
         static_routes          = try(epg.static_routes, [])
       }
