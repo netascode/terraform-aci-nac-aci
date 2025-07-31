@@ -1253,3 +1253,10 @@ module "aci_atomic_counter" {
   admin_state = local.fabric_policies.atomic_counter.admin_state
   mode        = try(local.fabric_policies.atomic_counter.mode, local.defaults.apic.fabric_policies.atomic_counter.mode)
 }
+
+module "aci_control_plane_mtu" {
+  source = "./modules/terraform-aci-control-plane-mtu"
+
+  count             = local.modules.aci_control_plane_mtu == true && var.manage_fabric_policies ? 1 : 0
+  control_plane_mtu = try(local.fabric_policies.control_plane_mtu, local.defaults.apic.fabric_policies.control_plane_mtu)
+}
