@@ -206,7 +206,7 @@ resource "aci_rest_managed" "eigrpAuthIfP" {
 
 resource "aci_rest_managed" "eigrpRsKeyChainPol" {
   count      = var.eigrp_interface_profile_name != "" && var.eigrp_keychain_policy != "" ? 1 : 0
-  dn         = "${aci_rest_managed.eigrpAuthIfP[0].dn}/keychainp-${var.eigrp_keychain_policy}"
+  dn         = "${aci_rest_managed.eigrpAuthIfP[0].dn}/rsKeyChainPol"
   class_name = "eigrpRsKeyChainPol"
   content = {
     tnFvKeyChainPolName = var.eigrp_keychain_policy
