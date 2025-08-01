@@ -1052,6 +1052,7 @@ locals {
             ttl                   = try(peer.ttl, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.ttl)
             peer_prefix_policy    = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.name_suffix}", null)
             local_as              = try(peer.local_as, null)
+            as_propagate          = try(peer.as_propagate, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.as_propagate)
           } if tenant.name == "infra"]
         }
       ]
@@ -1156,9 +1157,9 @@ locals {
           bfd                   = try(peer.bfd, local.defaults.apic.tenants.l3outs.bgp_infra_peers.bfd)
           password              = try(peer.password, null)
           ttl                   = try(peer.ttl, local.defaults.apic.tenants.l3outs.bgp_infra_peers.ttl)
-          as_propagate          = try(peer.as_propagate, local.defaults.apic.tenants.l3outs.bgp_infra_peers.as_propagate)
           peer_prefix_policy    = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.l3outs.bgp_infra_peers.name_suffix}", null)
           local_as              = try(peer.local_as, null)
+          as_propagate          = try(peer.as_propagate, local.defaults.apic.tenants.l3outs.bgp_infra_peers.as_propagate)
         } if tenant.name == "infra"]
       } if length(try(l3out.nodes, [])) != 0
     ]
