@@ -231,7 +231,7 @@ resource "aci_rest_managed" "bgpInfraPeerP" {
     ctrl     = join(",", concat(each.value.allow_self_as == true ? ["allow-self-as"] : [], each.value.disable_peer_as_check == true ? ["dis-peer-as-check"] : [], ["send-com"], ["send-ext-com"]))
     password = sensitive(each.value.password)
     peerCtrl = join(",", concat(each.value.bfd == true ? ["bfd"] : []))
-    peerT    = "sr-mpls"
+    peerT    = each.value.peer_type
     ttl      = each.value.ttl
     adminSt  = each.value.admin_state == true ? "enabled" : "disabled"
   }

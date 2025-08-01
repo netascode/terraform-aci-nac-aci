@@ -215,7 +215,7 @@ variable "sr_mpls" {
 }
 
 variable "bgp_infra_peers" {
-  description = "List of BGP EVPN peers for SR MPLS L3out. Allowed values `remote_as`: 0-4294967295. Default value `allow_self_as`: false. Default value `disable_peer_as_check`: false. Default value `bfd`: false. Default value `ttl`: 2. Default value `admin_state`: true. Allowed values `local_as`: 0-4294967295. Choices `as_propagate`: `none`, `no-prepend`, `replace-as`, `dual-as`. Default value `as_propagate`: `none`."
+  description = "List of BGP peers for Infra L3out. Allowed values `remote_as`: 0-4294967295. Default value `allow_self_as`: false. Default value `disable_peer_as_check`: false. Default value `bfd`: false. Default value `ttl`: 2. Default value `admin_state`: true. Allowed values `local_as`: 0-4294967295. Choices `as_propagate`: `none`, `no-prepend`, `replace-as`, `dual-as`. Default value `as_propagate`: `none`. Choices `peer_type`: `sr-mpls`, `wan`, `mdp-wan` or `intersite`"
   type = list(object({
     ip                    = string
     remote_as             = string
@@ -229,6 +229,7 @@ variable "bgp_infra_peers" {
     local_as              = optional(number)
     as_propagate          = optional(string, "none")
     peer_prefix_policy    = optional(string)
+    peer_type             = optional(string)
   }))
   default = []
 
@@ -265,6 +266,13 @@ variable "bgp_infra_peers" {
       for b in var.bgp_infra_peers : b.as_propagate == null || try(contains(["none", "no-prepend", "replace-as", "dual-as"], b.as_propagate), false)
     ])
     error_message = "`as_propagate`: Allowed value are: `none`, `no-prepend`, `replace-as` or `dual-as`."
+  }
+
+  validation {
+    condition = alltrue([
+      for b in var.bgp_infra_peers : b.peer_type == null || try(contains(["sr-mpls", "wan", "mdp-wan", "intersite"], b.peer_type), false)
+    ])
+    error_message = "`as_propagate`: Allowed value are: `sr-mpls`, `wan`, `mdp-wan` or `intersite`."
   }
 }
 
