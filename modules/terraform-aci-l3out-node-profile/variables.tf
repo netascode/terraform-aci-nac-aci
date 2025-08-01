@@ -227,8 +227,8 @@ variable "bgp_infra_peers" {
     ttl                   = optional(number, 1)
     admin_state           = optional(bool, true)
     local_as              = optional(number)
-    as_propagate          = optional(string, "none")
     peer_prefix_policy    = optional(string)
+    peer_type             = optional(string)
   }))
   default = []
 
@@ -262,9 +262,9 @@ variable "bgp_infra_peers" {
 
   validation {
     condition = alltrue([
-      for b in var.bgp_infra_peers : b.as_propagate == null || try(contains(["none", "no-prepend", "replace-as", "dual-as"], b.as_propagate), false)
+      for b in var.bgp_infra_peers : b.peer_type == null || try(contains(["sr-mpls", "wan", "mdp-wan", "intersite"], b.peer_type), false)
     ])
-    error_message = "`as_propagate`: Allowed value are: `none`, `no-prepend`, `replace-as` or `dual-as`."
+    error_message = "`as_propagate`: Allowed value are: `sr-mpls`, `wan`, `mdp-wan` or `intersite`."
   }
 }
 
