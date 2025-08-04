@@ -898,6 +898,7 @@ defaults:
           admin_state: true
           as_propagate: none
         bgp_infra_peers:
+          name_suffix: ""
           peer_type: wan
           allow_self_as: false
           disable_peer_as_check: false
@@ -974,6 +975,7 @@ defaults:
             admin_state: true
             as_propagate: none
           bgp_infra_peers:
+            name_suffix: ""
             peer_type: wan
             allow_self_as: false
             disable_peer_as_check: false
