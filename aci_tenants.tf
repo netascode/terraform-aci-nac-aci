@@ -1038,7 +1038,7 @@ locals {
             peer_prefix_policy               = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
             export_route_control             = try("${peer.export_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
             import_route_control             = try("${peer.import_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
-          }]
+          } if tenant.name != "infra"]
           bgp_infra_peers = [for peer in try(np.bgp_infra_peers, []) : {
             ip                    = peer.ip
             remote_as             = peer.remote_as
@@ -1145,7 +1145,7 @@ locals {
           peer_prefix_policy               = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
           export_route_control             = try("${peer.export_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
           import_route_control             = try("${peer.import_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
-        }]
+        } if tenant.name != "infra"]
         bgp_infra_peers = [for peer in try(l3out.bgp_infra_peers, []) : {
           ip                    = peer.ip
           remote_as             = peer.remote_as
