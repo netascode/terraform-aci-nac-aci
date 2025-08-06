@@ -641,6 +641,17 @@ variable "static_endpoints" {
   }
 }
 
+variable "static_aaeps" {
+  description = "List of static aaeps. Allowed values"
+  type = list(object({
+    aaep                 = string
+    encap                = optional(number)
+    primary_encap        = optional(number)
+    deployment_immediacy = optional(string, "lazy")
+    mode                 = optional(string, "regular")
+  }))
+}
+
 variable "l4l7_virtual_ips" {
   description = "List of EPG L4/L7 Virtual IPs."
   type = list(object({
