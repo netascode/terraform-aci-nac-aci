@@ -642,7 +642,7 @@ variable "static_endpoints" {
 }
 
 variable "static_aaeps" {
-  description = "List of static aaeps. Allowed values"
+  description = "List of static aaeps. Allowed values `encap`: `1` - `4096`. Allowed values `primary_encap`: `1` - `4096`. Choices `deployment_immediacy`: `immediate`, `lazy`. Default value `deployment_immediacy`: `lazy`. Choices `mode`: `regular`, `native`, `untagged`. Default value `mode`: `regular`"
   type = list(object({
     aaep                 = string
     encap                = number
