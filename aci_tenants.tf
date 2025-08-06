@@ -428,7 +428,7 @@ locals {
           static_aaeps = [for sa in try(epg.static_aaeps, []) : {
             aaep                 = try(sa.aaep, null)
             encap                = try(sa.encap, null)
-            primaryEncap         = try(sa.primary_encap, null)
+            primary_encap        = try(sa.primary_encap, null)
             mode                 = try(sa.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_aaeps.mode)
             deployment_immediacy = try(sa.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_aaeps.deployment_immediacy)
           }]

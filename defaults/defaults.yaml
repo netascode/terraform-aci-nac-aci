@@ -1098,6 +1098,9 @@ defaults:
             name_suffix: ""
             ip: "0.0.0.0"
             module: 1
+          static_aaeps:
+              deployment_immediacy: lazy
+              mode: regular
           subnets:
             primary_ip: false
             public: false

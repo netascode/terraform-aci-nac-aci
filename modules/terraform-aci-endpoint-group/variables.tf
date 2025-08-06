@@ -645,11 +645,47 @@ variable "static_aaeps" {
   description = "List of static aaeps. Allowed values"
   type = list(object({
     aaep                 = string
-    encap                = optional(number)
+    encap                = number
     primary_encap        = optional(number)
     deployment_immediacy = optional(string, "lazy")
     mode                 = optional(string, "regular")
   }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for sa in var.static_aaeps : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", sa.aaep))
+    ])
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for sa in var.static_aaeps : (sa.encap >= 1 && sa.encap <= 4096)
+    ])
+    error_message = "`vlan`: Minimum value: `1`. Maximum value: `4096`."
+  }
+
+  validation {
+    condition = alltrue([
+      for sa in var.static_aaeps : sa.primary_encap == null || try(sa.primary_encap >= 1 && sa.primary_encap <= 4096, false)
+    ])
+    error_message = "`primary_encap`: Minimum value: `1`. Maximum value: `4096`."
+  }
+
+  validation {
+    condition = alltrue([
+      for sa in var.static_aaeps : sa.deployment_immediacy == null || try(contains(["immediate", "lazy"], sa.deployment_immediacy), false)
+    ])
+    error_message = "`deployment_immediacy`: Allowed values are `immediate` or `lazy`."
+  }
+
+  validation {
+    condition = alltrue([
+      for sa in var.static_aaeps : sa.mode == null || try(contains(["regular", "native", "untagged"], sa.mode), false)
+    ])
+    error_message = "`mode`: Allowed values are `regular`, `native` or `untagged`."
+  }
 }
 
 variable "l4l7_virtual_ips" {
