@@ -12,7 +12,9 @@ defaults:
     interface_selector_description: false
     bulk_static_ports: false
     fabric_policies:
-      control_plane_mtu: 9000
+      control_plane_mtu_policy:
+        mtu: 6000
+        apic_mtu_apply: true
       leaf_switch_profile_name: "LEAF\\g<id>"
       leaf_interface_profile_name: "LEAF\\g<id>"
       leaf_switch_selector_name: "LEAF\\g<id>"

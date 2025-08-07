@@ -22,20 +22,20 @@ module "aci_control_plane_mtu" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.15.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.15.0 |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_control_plane_mtu"></a> [control\_plane\_mtu](#input\_control\_plane\_mtu) | CP MTU policy. | `number` | `9000` | no |
+| <a name="input_mtu"></a> [mtu](#input\_mtu) | CP MTU policy. | `number` | `9000` | no |
 | <a name="input_apic_mtu_apply"></a> [apic\_mtu\_apply](#input\_apic\_mtu\_apply) | APIC MTU apply policy | `bool` | `"false"` | no |
 
 ## Outputs

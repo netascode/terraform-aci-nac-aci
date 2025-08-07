@@ -1,10 +1,10 @@
-variable "control_plane_mtu" {
+variable "mtu" {
   description = "CP MTU policy."
   type        = number
   default     = 9000
 
   validation {
-    condition     = var.control_plane_mtu >= 576 && var.control_plane_mtu <= 9216
+    condition     = var.mtu >= 576 && var.mtu <= 9216
     error_message = "CPMtu policy must be between 576 and 9216."
   }
 }
