@@ -522,6 +522,19 @@ resource "aci_rest_managed" "fvRsDomAtt_vmm" {
   }
 }
 
+resource "aci_rest_managed" "fvRsAepAtt" {
+  for_each   = { for sa in var.static_aaeps : sa.aaep => sa }
+  dn         = "${aci_rest_managed.fvAEPg.dn}/rsaepAtt-${each.value.aaep}"
+  class_name = "fvRsAepAtt"
+  content = {
+    tnInfraAttEntityPName = each.value.aaep
+    encap                 = "vlan-${each.value.encap}"
+    primaryEncap          = each.value.primary_encap != null ? "vlan-${each.value.primary_encap}" : "unknown"
+    mode                  = each.value.mode
+    instrImedcy           = each.value.deployment_immediacy
+  }
+}
+
 resource "aci_rest_managed" "fvUplinkOrderCont" {
   for_each   = { for vmm_vwm in var.vmware_vmm_domains : vmm_vwm.name => vmm_vwm if vmm_vwm.active_uplinks_order != "" || vmm_vwm.standby_uplinks != "" }
   dn         = "${aci_rest_managed.fvRsDomAtt_vmm[each.key].dn}/uplinkorder"
@@ -588,4 +601,3 @@ resource "aci_rest_managed" "fvnsUcastAddrBlk" {
     to   = each.value.to
   }
 }
-
