@@ -50,3 +50,14 @@ resource "aci_rest_managed" "mgmtStaticRoute" {
     prefix = each.value
   }
 }
+
+resource "aci_rest_managed" "fvSubnet" {
+  for_each   = { for subnet in var.subnets : subnet.ip => subnet }
+  dn         = "${aci_rest_managed.mgmtInB.dn}/subnet-[${each.value.ip}]"
+  class_name = "fvSubnet"
+  content = {
+    ip    = each.value.ip
+    descr = each.value.description != null ? each.value.description : ""
+    scope = join(",", concat(each.value.public == true ? ["public"] : ["private"], each.value.shared == true ? ["shared"] : []))
+  }
+}

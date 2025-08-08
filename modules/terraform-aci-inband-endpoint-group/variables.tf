@@ -79,3 +79,21 @@ variable "static_routes" {
     error_message = "Must be a valid IP address in CIDR notation."
   }
 }
+
+variable "subnets" {
+  description = "List of subnets. Default value `public`: `false`. Default value `shared`: `false`. Default value `igmp_querier`: `false`. Default value `nd_ra_prefix`: `true`. Default value `no_default_gateway`: `false`. `nlb_mode` allowed values: `mode-mcast-igmp`, `mode-uc` or `mode-mcast-static`."
+  type = list(object({
+    description = optional(string, "")
+    ip          = string
+    public      = optional(bool, false)
+    shared      = optional(bool, false)
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for s in var.subnets : s.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", s.description))
+    ])
+    error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+}
