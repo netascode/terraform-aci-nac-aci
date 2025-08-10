@@ -1166,8 +1166,8 @@ locals {
             key                          = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
             tenant                       = tenant.name
             l3out                        = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
-            node_profile                 = "${l3out.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
-            name                         = "${l3out.name}${local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix}"
+            node_profile                 = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
+            name                         = "${ip.name}${local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix}"
             description                  = try(ip.description, "")
             multipod                     = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
             remote_leaf                  = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
