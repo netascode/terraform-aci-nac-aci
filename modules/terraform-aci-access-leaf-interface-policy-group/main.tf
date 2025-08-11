@@ -27,6 +27,15 @@ resource "aci_rest_managed" "infraRsCdpIfPol" {
   }
 }
 
+resource "aci_rest_managed" "infraRsCoppIfPol" {
+  count      = var.type != "breakout" ? 1 : 0
+  dn         = "${aci_rest_managed.infraAccGrp.dn}/rscoppIfPol"
+  class_name = "infraRsCoppIfPol"
+  content = {
+    tnCoppIfPolName = var.copp_policy
+  }
+}
+
 resource "aci_rest_managed" "infraRsLldpIfPol" {
   count      = var.type != "breakout" && var.lldp_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rslldpIfPol"

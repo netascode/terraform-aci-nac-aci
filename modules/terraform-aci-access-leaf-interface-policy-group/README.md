@@ -18,6 +18,7 @@ module "aci_access_leaf_interface_policy_group" {
   type                       = "vpc"
   link_level_policy          = "10G"
   cdp_policy                 = "CDP-ON"
+  copp_policy                = "COPP-POLICY"
   lldp_policy                = "LLDP-OFF"
   macsec_interface_policy    = "MACSEC-ON"
   spanning_tree_policy       = "BPDU-GUARD"
@@ -53,6 +54,7 @@ module "aci_access_leaf_interface_policy_group" {
 | <a name="input_map"></a> [map](#input\_map) | Breakout map. Only relevant if `type` is `breakout`. Choices: `none`, `10g-4x`, `25g-4x`, `100g-2x`, `50g-8x`, `100g-4x`. | `string` | `"none"` | no |
 | <a name="input_link_level_policy"></a> [link\_level\_policy](#input\_link\_level\_policy) | Link level policy name. | `string` | `""` | no |
 | <a name="input_cdp_policy"></a> [cdp\_policy](#input\_cdp\_policy) | CDP policy name. | `string` | `""` | no |
+| <a name="input_copp_policy"></a> [copp\_policy](#input\_copp\_policy) | CoPP policy name. | `string` | `""` | no |
 | <a name="input_lldp_policy"></a> [lldp\_policy](#input\_lldp\_policy) | LLDP policy name. | `string` | `""` | no |
 | <a name="input_macsec_interface_policy"></a> [macsec\_interface\_policy](#input\_macsec\_interface\_policy) | MACsec policy name. | `string` | `""` | no |
 | <a name="input_spanning_tree_policy"></a> [spanning\_tree\_policy](#input\_spanning\_tree\_policy) | Spanning tree policy name. | `string` | `""` | no |
@@ -79,6 +81,7 @@ module "aci_access_leaf_interface_policy_group" {
 | [aci_rest_managed.infraAccGrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsAttEntP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsCdpIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraRsCoppIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsHIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsL2IfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsLacpInterfacePol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
