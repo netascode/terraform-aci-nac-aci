@@ -167,6 +167,14 @@ defaults:
           http:
             admin_state: false
             port: 80
+        route_reflector_policies:
+          name_suffix: ""
+        coop_group_policies:
+          name_suffix: ""
+        isis_policies:
+          name_suffix: ""
+        macsec_policies:
+          name_suffix: ""
       switch_policies:
         node_control_policies:
           name_suffix: ""
