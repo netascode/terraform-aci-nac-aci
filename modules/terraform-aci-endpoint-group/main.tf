@@ -533,6 +533,9 @@ resource "aci_rest_managed" "fvRsAepAtt" {
     mode                  = each.value.mode
     instrImedcy           = each.value.deployment_immediacy
   }
+  lifecycle {
+    ignore_changes = [ annotation ]
+  }
 }
 
 resource "aci_rest_managed" "fvUplinkOrderCont" {
