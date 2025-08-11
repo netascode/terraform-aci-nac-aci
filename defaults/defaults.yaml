@@ -1084,6 +1084,10 @@ defaults:
             allow_promiscuous: reject
             forged_transmits: reject
             mac_changes: reject
+          nutanix_vmm_domains:
+            name_suffix: ""
+            ipam: false
+            deployment_immediacy: lazy
           static_ports:
             module: 1
             mode: regular
