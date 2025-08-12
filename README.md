@@ -180,6 +180,7 @@ Additional example repositories:
 | <a name="module_aci_config_export"></a> [aci\_config\_export](#module\_aci\_config\_export) | ./modules/terraform-aci-config-export | n/a |
 | <a name="module_aci_config_passphrase"></a> [aci\_config\_passphrase](#module\_aci\_config\_passphrase) | ./modules/terraform-aci-config-passphrase | n/a |
 | <a name="module_aci_contract"></a> [aci\_contract](#module\_aci\_contract) | ./modules/terraform-aci-contract | n/a |
+| <a name="module_aci_control_plane_mtu"></a> [aci\_control\_plane\_mtu](#module\_aci\_control\_plane\_mtu) | ./modules/terraform-aci-control-plane-mtu | n/a |
 | <a name="module_aci_coop_policy"></a> [aci\_coop\_policy](#module\_aci\_coop\_policy) | ./modules/terraform-aci-coop-policy | n/a |
 | <a name="module_aci_date_time_format"></a> [aci\_date\_time\_format](#module\_aci\_date\_time\_format) | ./modules/terraform-aci-date-time-format | n/a |
 | <a name="module_aci_date_time_policy"></a> [aci\_date\_time\_policy](#module\_aci\_date\_time\_policy) | ./modules/terraform-aci-date-time-policy | n/a |
