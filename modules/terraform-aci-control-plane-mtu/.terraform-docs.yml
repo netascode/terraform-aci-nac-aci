@@ -8,7 +8,7 @@ content: |-
   Manages ACI Control Plane MTU
 
   Location in GUI:
-  `System` » `System Settings` » `CP MTU Policy`
+  `System` » `System Settings` » `Control Plane  MTU`
 
   ## Examples
 

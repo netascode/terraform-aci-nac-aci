@@ -4,14 +4,14 @@
 Manages ACI Control Plane MTU
 
 Location in GUI:
-`System` » `System Settings` » `CP MTU Policy`
+`System` » `System Settings` » `Control Plane  MTU`
 
 ## Examples
 
 ```hcl
 module "aci_control_plane_mtu" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-control-plane-mtu"
-  version = ">= 0.8.0"
+  version = ">= 1.1.0"
 
   CPMtu        = 9000
   APICMtuApply = true
