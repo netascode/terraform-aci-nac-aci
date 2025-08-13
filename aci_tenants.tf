@@ -1245,11 +1245,14 @@ locals {
                 import_route_control             = try("${peer.import_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
               }]
               paths = [for path in try(int.paths, []) : {
-                physical_domain   = try(path.physical_domain, null)
-                vmware_vmm_domain = try(path.vmware_vmm_domain, null)
-                elag              = try(path.elag, null)
-                floating_ip       = path.floating_ip
-                vlan              = try(path.vlan, null)
+                physical_domain    = try(path.physical_domain, null)
+                vmware_vmm_domain  = try(path.vmware_vmm_domain, null)
+                elag               = try(path.elag, null)
+                floating_ip        = path.floating_ip
+                vlan               = try(path.vlan, null)
+                forge_transmit     = try(path.forge_transmit, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.paths.forge_transmit)
+                mac_address_change = try(path.mac_address_change, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.paths.mac_address_change)
+                promiscous_mode    = try(path.promiscous_mode, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.paths.promiscous_mode)
               }]
               micro_bfd_destination_ip = try(int.micro_bfd.destination_ip, null)
               micro_bfd_start_timer    = try(int.micro_bfd.start_timer, null)
@@ -1409,11 +1412,14 @@ locals {
               import_route_control             = try("${peer.import_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
             }]
             paths = [for path in try(int.paths, []) : {
-              physical_domain   = try(path.physical_domain, null)
-              vmware_vmm_domain = try(path.vmware_vmm_domain, null)
-              elag              = try(path.elag, null)
-              floating_ip       = path.floating_ip
-              vlan              = try(path.vlan, null)
+              physical_domain    = try(path.physical_domain, null)
+              vmware_vmm_domain  = try(path.vmware_vmm_domain, null)
+              elag               = try(path.elag, null)
+              floating_ip        = path.floating_ip
+              vlan               = try(path.vlan, null)
+              forge_transmit     = try(path.forge_transmit, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.paths.forge_transmit)
+              mac_address_change = try(path.mac_address_change, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.paths.mac_address_change)
+              promiscous_mode    = try(path.promiscous_mode, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.paths.promiscous_mode)
             }]
             micro_bfd_destination_ip = try(int.micro_bfd.destination_ip, null)
             micro_bfd_start_timer    = try(int.micro_bfd.start_timer, null)

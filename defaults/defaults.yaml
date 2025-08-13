@@ -1015,6 +1015,10 @@ defaults:
                 multicast_address_family: true
                 admin_state: true
                 as_propagate: none
+              paths:
+                forge_transmit: false
+                mac_address_change: false
+                promiscous_mode: false
               micro_bfd:
                 start_timer: 0
         external_endpoint_groups:
