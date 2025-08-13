@@ -382,6 +382,16 @@ locals {
             active_uplinks_order = try(vmm.active_uplinks_order, "")
             standby_uplinks      = try(vmm.standby_uplinks, "")
           }]
+          nutanix_vmm_domains = [for vmm in try(epg.nutanix_vmm_domains, []) : {
+            name                         = "${vmm.name}${local.defaults.apic.tenants.application_profiles.endpoint_groups.nutanix_vmm_domains.name_suffix}"
+            custom_epg_name              = try(vmm.custom_epg_name, "")
+            ipam                         = try(vmm.ipam, local.defaults.apic.tenants.application_profiles.endpoint_groups.nutanix_vmm_domains.ipam)
+            ipam_gateway                 = try(vmm.ipam_gateway, null)
+            dhcp_server_address_override = try(vmm.dhcp_server_address_override, null)
+            dhcp_address_pool            = try(vmm.dhcp_address_pool, null)
+            vlan                         = try(vmm.vlan, null)
+            deployment_immediacy         = try(vmm.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.nutanix_vmm_domains.deployment_immediacy)
+          }]
           static_ports = [for sp in try(epg.static_ports, []) : {
             node_id = try(sp.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == sp.channel][0][0], null)
             # set node2_id to "vpc" if channel IPG is vPC, otherwise "null"
@@ -469,6 +479,7 @@ module "aci_endpoint_group" {
   physical_domains            = each.value.physical_domains
   subnets                     = each.value.subnets
   vmware_vmm_domains          = each.value.vmware_vmm_domains
+  nutanix_vmm_domains         = each.value.nutanix_vmm_domains
   static_ports = [for sp in try(each.value.static_ports, []) : {
     description          = sp.description
     node_id              = sp.node_id
