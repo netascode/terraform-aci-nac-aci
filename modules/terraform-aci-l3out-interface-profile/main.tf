@@ -128,11 +128,14 @@ locals {
       for path in coalesce(int.paths, []) : {
         key = "${int.node_id}/${int.vlan}/${coalesce(path.physical_domain, path.vmware_vmm_domain)}/${path.floating_ip}"
         value = {
-          node        = "${int.node_id}/${int.vlan}"
-          floating_ip = path.floating_ip
-          domain      = path.physical_domain != null ? "phys-${path.physical_domain}" : (path.vmware_vmm_domain != null ? "vmmp-VMware/dom-${path.vmware_vmm_domain}" : "")
-          elag        = path.elag
-          vlan        = path.vlan
+          node               = "${int.node_id}/${int.vlan}"
+          floating_ip        = path.floating_ip
+          domain             = path.physical_domain != null ? "phys-${path.physical_domain}" : (path.vmware_vmm_domain != null ? "vmmp-VMware/dom-${path.vmware_vmm_domain}" : "")
+          elag               = path.elag
+          vlan               = path.vlan
+          forge_transmit     = path.forge_transmit
+          mac_address_change = path.mac_address_change
+          promiscous_mode    = path.promiscous_mode
         }
       }
     ] if int.floating_svi == true
@@ -407,9 +410,12 @@ resource "aci_rest_managed" "l3extRsDynPathAtt" {
   dn         = "${aci_rest_managed.l3extVirtualLIfP[each.value.node].dn}/rsdynPathAtt-[uni/${each.value.domain}]"
   class_name = "l3extRsDynPathAtt"
   content = {
-    floatingAddr = each.value.floating_ip
-    tDn          = "uni/${each.value.domain}"
-    encap        = each.value.vlan != null && each.value.vlan != "" ? "vlan-${each.value.vlan}" : null
+    floatingAddr   = each.value.floating_ip
+    tDn            = "uni/${each.value.domain}"
+    encap          = each.value.vlan != null && each.value.vlan != "" ? "vlan-${each.value.vlan}" : null
+    forgedTransmit = each.value.forge_transmit == true ? "Enabled" : "Disabled"
+    macChange      = each.value.mac_address_change == true ? "Enabled" : "Disabled"
+    promMode       = each.value.promiscous_mode == true ? "Enabled" : "Disabled"
   }
 }
 
