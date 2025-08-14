@@ -694,6 +694,11 @@ locals {
             value       = sel.value
             description = try(sel.description, "")
           }]
+          ip_external_subnet_selectors = [for sel in try(esg.ip_external_subnet_selectors, []) : {
+            value       = sel.value
+            description = try(sel.description, "")
+            shared      = try(sel.shared, "false")
+          }]
         }
       ]
     ]
@@ -703,23 +708,24 @@ locals {
 module "aci_endpoint_security_group" {
   source = "./modules/terraform-aci-endpoint-security-group"
 
-  for_each                    = { for esg in local.endpoint_security_groups : esg.key => esg if local.modules.aci_endpoint_security_group && var.manage_tenants }
-  tenant                      = each.value.tenant
-  application_profile         = each.value.application_profile
-  name                        = each.value.name
-  description                 = each.value.description
-  vrf                         = each.value.vrf
-  shutdown                    = each.value.shutdown
-  intra_esg_isolation         = each.value.intra_esg_isolation
-  preferred_group             = each.value.preferred_group
-  contract_consumers          = each.value.contract_consumers
-  contract_providers          = each.value.contract_providers
-  contract_imported_consumers = each.value.contract_imported_consumers
-  contract_intra_esgs         = each.value.contract_intra_esgs
-  esg_contract_masters        = each.value.esg_contract_masters
-  tag_selectors               = each.value.tag_selectors
-  epg_selectors               = each.value.epg_selectors
-  ip_subnet_selectors         = each.value.ip_subnet_selectors
+  for_each                     = { for esg in local.endpoint_security_groups : esg.key => esg if local.modules.aci_endpoint_security_group && var.manage_tenants }
+  tenant                       = each.value.tenant
+  application_profile          = each.value.application_profile
+  name                         = each.value.name
+  description                  = each.value.description
+  vrf                          = each.value.vrf
+  shutdown                     = each.value.shutdown
+  intra_esg_isolation          = each.value.intra_esg_isolation
+  preferred_group              = each.value.preferred_group
+  contract_consumers           = each.value.contract_consumers
+  contract_providers           = each.value.contract_providers
+  contract_imported_consumers  = each.value.contract_imported_consumers
+  contract_intra_esgs          = each.value.contract_intra_esgs
+  esg_contract_masters         = each.value.esg_contract_masters
+  tag_selectors                = each.value.tag_selectors
+  epg_selectors                = each.value.epg_selectors
+  ip_subnet_selectors          = each.value.ip_subnet_selectors
+  ip_external_subnet_selectors = each.value.ip_external_subnet_selectors
 
   depends_on = [
     module.aci_tenant,
