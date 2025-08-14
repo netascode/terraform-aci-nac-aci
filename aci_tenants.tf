@@ -989,6 +989,7 @@ locals {
           bgp_protocol_profile_name = try(np.bgp.name, "")
           bgp_timer_policy          = try("${np.bgp.timer_policy}${local.defaults.apic.tenants.policies.bgp_timer_policies.name_suffix}", "")
           bgp_as_path_policy        = try("${np.bgp.as_path_policy}${local.defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix}", "")
+          bfd_multihop              = try("${np.bfd_multihop}${local.defaults.apic.tenants.policies.bfd_multihop_node_policies.name_suffix}", "")
           nodes = [for node in try(np.nodes, []) : {
             node_id               = node.node_id
             pod_id                = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
