@@ -212,11 +212,15 @@ resource "aci_rest_managed" "bfdMhNodeP" {
 }
 
 resource "aci_rest_managed" "bfdRsMhNodePol" {
-  count      = var.tenant == "infra" && var.sr_mpls == true && var.bfd_multihop_node_policy != "" ? 1 : 0
+  count      = ((var.tenant == "infra" && var.sr_mpls == true && var.bfd_multihop_node_policy != "") || (var.bfd_multihop != null && var.bfd_multihop.bfd_multihop_node_policy != "")) ? 1 : 0
   dn         = "${aci_rest_managed.bfdMhNodeP[0].dn}/rsMhNodePol"
   class_name = "bfdRsMhNodePol"
   content = {
-    tnBfdMhNodePolName = var.bfd_multihop_node_policy
+    tnBfdMhNodePolName = (
+      var.bfd_multihop != null && var.bfd_multihop.bfd_multihop_node_policy != ""
+      ? var.bfd_multihop.bfd_multihop_node_policy
+      : var.bfd_multihop_node_policy
+    )
   }
 }
 
@@ -293,6 +297,26 @@ resource "aci_rest_managed" "bgpRsBestPathCtrlPol" {
   class_name = "bgpRsBestPathCtrlPol"
   content = {
     tnBgpBestPathCtrlPolName = var.bgp_as_path_policy
+  }
+}
+
+resource "aci_rest_managed" "bfd_multihop" {
+  count      = var.bfd_multihop != null ? 1 : 0
+  dn         = "${aci_rest_managed.l3extLNodeP.dn}/bfdMhNodeP"
+  class_name = "bfdMhNodeP"
+  content = {
+    keyId = var.bfd_multihop.auth_key_id
+    key   = var.bfd_multihop.auth_key
+    type  = var.bfd_multihop.auth_type
+  }
+}
+
+resource "aci_rest_managed" "bfd_multihop_node_policy" {
+  count      = var.bfd_multihop_node_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.bfd_multihop[0].dn}/rsMhNodePol"
+  class_name = "bfdRsMhNodePol"
+  content = {
+    tnBfdMhNodePolName = var.bfd_multihop_node_policy
   }
 }
 
