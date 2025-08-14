@@ -1126,6 +1126,9 @@ defaults:
             match_type: any
             ip_statements:
               use_epg_subnet: true
+            vm_statements:
+              type: vm-name
+              operator: equals
           subnets:
             primary_ip: false
             public: false
