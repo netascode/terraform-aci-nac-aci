@@ -250,3 +250,27 @@ variable "ip_subnet_selectors" {
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
+
+variable "ip_external_subnet_selectors" {
+  description = "List of IP subnet selectors."
+  type = list(object({
+    value       = string
+    description = optional(string, "")
+    shared      = optional(bool, false)
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for ess in var.ip_external_subnet_selectors : can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}\\/([0-9]){1,2}$", ess.value))
+    ])
+    error_message = "`value`: Valid ip format example: 192.168.1.0/24."
+  }
+
+  validation {
+    condition = alltrue([
+      for ess in var.ip_external_subnet_selectors : ess.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", ess.description))
+    ])
+    error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+}
