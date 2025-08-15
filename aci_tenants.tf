@@ -2510,6 +2510,9 @@ locals {
         external_endpoint_group        = try(policy.external_endpoint_group.name, null) != null ? "${policy.external_endpoint_group.name}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}" : ""
         external_endpoint_group_l3out  = try(policy.external_endpoint_group.l3out, null) != null ? "${policy.external_endpoint_group.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}" : ""
         external_endpoint_group_tenant = try(policy.external_endpoint_group.tenant, tenant.name)
+        endpoint_security_group        = try(policy.endpoint_security_group.name, null) != null ? "${policy.endpoint_security_group.name}${local.defaults.apic.tenants.application_profiles.name_suffix}" : ""
+        endpoint_security_group_app    = try(policy.endpoint_security_group.app, null) != null ? "${policy.endpoint_security_group.app}${local.defaults.apic.tenants.application_profiles.endpoint_security_groups.name_suffix}" : ""
+        endpoint_security_group_tenant = try(policy.endpoint_security_group.tenant, tenant.name)
       }
     ]
   ])
@@ -2542,6 +2545,9 @@ module "aci_set_rule" {
   external_endpoint_group        = each.value.external_endpoint_group
   external_endpoint_group_l3out  = each.value.external_endpoint_group_l3out
   external_endpoint_group_tenant = each.value.external_endpoint_group_tenant
+  endpoint_security_group        = each.value.endpoint_security_group
+  endpoint_security_group_app    = each.value.endpoint_security_group_app
+  endpoint_security_group_tenant = each.value.endpoint_security_group_tenant
 
   depends_on = [
     module.aci_tenant,
