@@ -1047,6 +1047,7 @@ locals {
       for interface in try(node.interfaces, []) : {
         key     = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
         node_id = node.id
+        pod_id  = try([for node_ in local.node_policies.nodes : node_.pod if node_.id == node.id][0], local.defaults.apic.node_policies.nodes.pod)
         module  = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
         port    = interface.port
       } if try(interface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
@@ -1059,6 +1060,7 @@ module "aci_interface_shutdown" {
 
   for_each = { for int in local.interface_shutdown : int.key => int if local.modules.aci_interface_shutdown && var.manage_fabric_policies }
   node_id  = each.value.node_id
+  pod_id   = each.value.pod_id
   module   = each.value.module
   port     = each.value.port
 }
