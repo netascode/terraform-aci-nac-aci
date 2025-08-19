@@ -66,16 +66,16 @@ module "aci_endpoint_security_group" {
   ]
   ip_external_subnet_selectors = [
     {
-      value = "1.1.1.0/24"
+      ip = "1.1.1.0/24"
     },
     {
-      value = "1.1.2.0/24"
+      ip = "1.1.2.0/24"
     },
     {
-      value = "1.1.3.0/24"
+      ip = "1.1.3.0/24"
     },
     {
-      value       = "1.1.4.0/24"
+      ip       = "1.1.4.0/24"
       description = "foo"
       shared      = true
     }

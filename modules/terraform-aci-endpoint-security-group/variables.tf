@@ -254,7 +254,7 @@ variable "ip_subnet_selectors" {
 variable "ip_external_subnet_selectors" {
   description = "List of IP subnet selectors."
   type = list(object({
-    value       = string
+    ip       = string
     description = optional(string, "")
     shared      = optional(bool, false)
   }))
@@ -262,9 +262,9 @@ variable "ip_external_subnet_selectors" {
 
   validation {
     condition = alltrue([
-      for ess in var.ip_external_subnet_selectors : can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}\\/([0-9]){1,2}$", ess.value))
+      for ess in var.ip_external_subnet_selectors : can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}\\/([0-9]){1,2}$", ess.ip))
     ])
-    error_message = "`value`: Valid ip format example: 192.168.1.0/24."
+    error_message = "`ip`: Valid ip format example: 192.168.1.0/24."
   }
 
   validation {
