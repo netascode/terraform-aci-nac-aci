@@ -2551,9 +2551,6 @@ module "aci_set_rule" {
   external_endpoint_group        = each.value.external_endpoint_group
   external_endpoint_group_l3out  = each.value.external_endpoint_group_l3out
   external_endpoint_group_tenant = each.value.external_endpoint_group_tenant
-  endpoint_security_group        = each.value.endpoint_security_group
-  endpoint_security_group_app    = each.value.endpoint_security_group_app
-  endpoint_security_group_tenant = each.value.endpoint_security_group_tenant
 
   depends_on = [
     module.aci_tenant,
