@@ -13,10 +13,11 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.,:-]{0,64}$", var.name))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`, `,`. Maximum characters: 64."
+    condition     = can(regex("^(?!([-+]?\\d*\\.?\\d+[eE][-+]?\\d+)$)[a-zA-Z0-9_.,:-]{1,64}$", var.name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`, `,`. Maximum characters: 64. It must not be in a format that can be interpreted as scientific notation (e.g., '1e20')."
   }
 }
+
 variable "description" {
   description = "Leaf interface selector description."
   type        = string
