@@ -1,6 +1,7 @@
 resource "aci_rest_managed" "fileRemotePath" {
-  dn         = "uni/fabric/path-${var.name}"
-  class_name = "fileRemotePath"
+  dn          = "uni/fabric/path-${var.name}"
+  class_name  = "fileRemotePath"
+  escape_html = false
   content = {
     name                         = var.name
     host                         = var.hostname_ip

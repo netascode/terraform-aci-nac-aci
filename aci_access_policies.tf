@@ -316,17 +316,77 @@ module "aci_lldp_policy" {
   name           = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}"
   admin_rx_state = each.value.admin_rx_state
   admin_tx_state = each.value.admin_tx_state
+  dcbxp_version  = try(each.value.dcbxp_version, null)
 }
 
 module "aci_link_level_policy" {
   source = "./modules/terraform-aci-link-level-policy"
 
-  for_each            = { for llp in try(local.access_policies.interface_policies.link_level_policies, []) : llp.name => llp if local.modules.aci_link_level_policy && var.manage_access_policies }
-  name                = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}"
-  speed               = try(each.value.speed, local.defaults.apic.access_policies.interface_policies.link_level_policies.speed)
-  auto                = try(each.value.auto, local.defaults.apic.access_policies.interface_policies.link_level_policies.auto)
-  fec_mode            = try(each.value.fec_mode, local.defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode)
-  physical_media_type = try(each.value.physical_media_type, null)
+  for_each               = { for llp in try(local.access_policies.interface_policies.link_level_policies, []) : llp.name => llp if local.modules.aci_link_level_policy && var.manage_access_policies }
+  name                   = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}"
+  speed                  = try(each.value.speed, local.defaults.apic.access_policies.interface_policies.link_level_policies.speed)
+  link_delay_interval    = try(each.value.link_delay_interval, null)
+  link_debounce_interval = try(each.value.link_debounce_interval, local.defaults.apic.access_policies.interface_policies.link_level_policies.link_debounce_interval)
+  auto                   = try(each.value.auto, local.defaults.apic.access_policies.interface_policies.link_level_policies.auto)
+  fec_mode               = try(each.value.fec_mode, local.defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode)
+  physical_media_type    = try(each.value.physical_media_type, null)
+}
+
+module "aci_macsec_parameters_policy" {
+  source = "./modules/terraform-aci-macsec-parameters-policy"
+
+  for_each               = { for mpp in try(local.access_policies.interface_policies.macsec_parameters_policies, []) : mpp.name => mpp if local.modules.aci_macsec_parameters_policy && var.manage_access_policies }
+  name                   = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.name_suffix}"
+  description            = try(each.value.description, "")
+  cipher_suite           = try(each.value.cipher_suite, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.cipher_suite)
+  key_server_priority    = try(each.value.key_server_priority, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.key_server_priority)
+  window_size            = try(each.value.window_size, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.window_size)
+  key_expiry_time        = try(each.value.key_expiry_time, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.key_expiry_time) == "disabled" || try(each.value.key_expiry_time, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.key_expiry_time) == 0 ? 0 : each.value.key_expiry_time
+  security_policy        = try(each.value.security_policy, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.security_policy)
+  confidentiality_offset = try(each.value.confidentiality_offset, local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.confidentiality_offset)
+}
+
+locals {
+  macsec_keychain_policies = flatten([
+    for mkc in try(local.access_policies.interface_policies.macsec_keychain_policies, []) : {
+      name        = "${mkc.name}${local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.name_suffix}"
+      description = try(mkc.description, "")
+      key_policies = [for kp in try(mkc.key_policies, []) : {
+        name           = try(kp.name, "")
+        key_name       = kp.key_name
+        pre_shared_key = kp.pre_shared_key
+        description    = try(kp.description, "")
+        start_time     = try(kp.start_time, local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.key_policies.start_time)
+        end_time       = try(kp.end_time, local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.key_policies.end_time)
+        }
+      ]
+    }
+  ])
+}
+
+module "aci_macsec_keychain_policies" {
+  source = "./modules/terraform-aci-macsec-keychain-policies"
+
+  for_each     = { for mkc in try(local.macsec_keychain_policies, []) : mkc.name => mkc if local.modules.aci_macsec_keychain_policies && var.manage_access_policies }
+  name         = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.name_suffix}"
+  description  = each.value.description
+  key_policies = each.value.key_policies
+}
+
+module "aci_macsec_interfaces_policy" {
+  source = "./modules/terraform-aci-macsec-interfaces-policy"
+
+  for_each                 = { for mip in try(local.access_policies.interface_policies.macsec_interfaces_policies, []) : mip.name => mip if local.modules.aci_macsec_interfaces_policy && var.manage_access_policies }
+  name                     = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.name_suffix}"
+  description              = try(each.value.description, "")
+  admin_state              = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.admin_state)
+  macsec_keychain_policy   = "${each.value.macsec_keychain_policy}${local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.name_suffix}"
+  macsec_parameters_policy = "${each.value.macsec_parameters_policy}${local.defaults.apic.access_policies.interface_policies.macsec_parameters_policies.name_suffix}"
+
+  depends_on = [
+    module.aci_macsec_keychain_policies,
+    module.aci_macsec_parameters_policy
+  ]
 }
 
 module "aci_port_channel_policy" {
@@ -422,6 +482,7 @@ module "aci_access_leaf_interface_policy_group" {
   ingress_data_plane_policing_policy = try("${each.value.ingress_data_plane_policing_policy}${local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.name_suffix}", "")
   lldp_policy                        = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
   spanning_tree_policy               = try("${each.value.spanning_tree_policy}${local.defaults.apic.access_policies.interface_policies.spanning_tree_policies.name_suffix}", "")
+  macsec_interface_policy            = try("${each.value.macsec_interface_policy}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.name_suffix}", "")
   mcp_policy                         = try("${each.value.mcp_policy}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}", "")
   l2_policy                          = try("${each.value.l2_policy}${local.defaults.apic.access_policies.interface_policies.l2_policies.name_suffix}", "")
   storm_control_policy               = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")
@@ -441,6 +502,7 @@ module "aci_access_leaf_interface_policy_group" {
     module.aci_spanning_tree_policy,
     module.aci_mcp_policy,
     module.aci_l2_policy,
+    module.aci_macsec_interfaces_policy,
     module.aci_storm_control_policy,
     module.aci_port_channel_policy,
     module.aci_port_channel_member_policy,
@@ -452,15 +514,17 @@ module "aci_access_leaf_interface_policy_group" {
 module "aci_access_spine_interface_policy_group" {
   source = "./modules/terraform-aci-access-spine-interface-policy-group"
 
-  for_each          = { for pg in try(local.access_policies.spine_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_interface_policy_group && var.manage_access_policies }
-  name              = "${each.value.name}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}"
-  link_level_policy = try("${each.value.link_level_policy}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}", "")
-  cdp_policy        = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
-  aaep              = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
+  for_each                = { for pg in try(local.access_policies.spine_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_interface_policy_group && var.manage_access_policies }
+  name                    = "${each.value.name}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}"
+  link_level_policy       = try("${each.value.link_level_policy}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}", "")
+  cdp_policy              = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
+  macsec_interface_policy = try("${each.value.macsec_interface_policy}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.name_suffix}", "")
+  aaep                    = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
 
   depends_on = [
     module.aci_link_level_policy,
     module.aci_cdp_policy,
+    module.aci_macsec_interfaces_policy,
     module.aci_aaep,
   ]
 }
@@ -685,7 +749,7 @@ module "aci_access_span_filter_group" {
   name        = "${each.value.name}${local.defaults.apic.access_policies.span.filter_groups.name_suffix}"
   description = try(each.value.description, "")
   entries = [for entry in try(each.value.entries, []) : {
-    name                  = "${entry.name}${local.defaults.apic.access_policies.span.filter_groups.entries.name_suffix}"
+    name                  = try("${entry.name}${local.defaults.apic.access_policies.span.filter_groups.entries.name_suffix}", "")
     description           = try(entry.description, "")
     source_ip             = entry.source_ip
     destination_ip        = entry.destination_ip
@@ -706,7 +770,7 @@ locals {
     module              = try(group.module, local.defaults.apic.access_policies.span.destination_groups.module)
     port                = try(group.port, 0)
     sub_port            = try(group.sub_port, 0)
-    channel             = try(group.channel, "")
+    channel             = try("${group.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "")
     ip                  = try(group.ip, "")
     source_prefix       = try(group.source_prefix, "")
     dscp                = try(group.dscp, local.defaults.apic.access_policies.span.destination_groups.dscp)
@@ -716,8 +780,8 @@ locals {
     span_version        = try(group.version, local.defaults.apic.access_policies.span.destination_groups.version)
     enforce_version     = try(group.enforce_version, local.defaults.apic.access_policies.span.destination_groups.enforce_version)
     tenant              = try(group.tenant, "")
-    application_profile = try(group.application_profile, "")
-    endpoint_group      = try(group.endpoint_group, "")
+    application_profile = try("${group.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}", "")
+    endpoint_group      = try("${group.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}", "")
   }]
 }
 
@@ -751,8 +815,8 @@ locals {
     name                    = "${group.name}${local.defaults.apic.access_policies.span.source_groups.name_suffix}"
     description             = try(group.description, "")
     admin_state             = try(group.admin_state, local.defaults.apic.access_policies.span.source_groups.admin_state)
-    filter_group            = try(group.filter_group, "")
-    destination_name        = try(group.destination.name, null)
+    filter_group            = try("${group.filter_group}${local.defaults.apic.access_policies.span.filter_groups.name_suffix}", "")
+    destination_name        = try(group.destination.name, "") != "" ? "${group.destination.name}${local.defaults.apic.access_policies.span.destination_groups.name_suffix}" : null
     destination_description = try(group.destination.description, "")
     sources = [for source in try(group.sources, []) : {
       description         = try(source.description, "")
@@ -760,9 +824,9 @@ locals {
       direction           = try(source.direction, local.defaults.apic.access_policies.span.source_groups.sources.direction)
       span_drop           = try(source.span_drop, local.defaults.apic.access_policies.span.source_groups.sources.span_drop)
       tenant              = try(source.tenant, null)
-      application_profile = try(source.application_profile, null)
-      endpoint_group      = try(source.endpoint_group, null)
-      l3out               = try(source.l3out, null)
+      application_profile = try(source.application_profile, "") != "" ? "${source.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}" : null
+      endpoint_group      = try(source.endpoint_group, "") != "" ? "${source.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}" : null
+      l3out               = try(source.l3out, "") != "" ? "${source.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}" : null
       vlan                = try(source.vlan, null)
       access_paths = [for ap in try(source.access_paths, []) : {
         node_id = try(ap.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == ap.channel][0][0], null)
@@ -775,7 +839,7 @@ locals {
         port     = try(ap.port, null)
         sub_port = try(ap.sub_port, null)
         module   = try(ap.module, local.defaults.apic.access_policies.span.source_groups.sources.access_paths.module)
-        channel  = try(ap.channel, null)
+        channel  = try(ap.channel, "") != "" ? "${ap.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}" : null
         type     = try(ap.type, null)
       }]
     }]
@@ -827,8 +891,8 @@ module "aci_vspan_destination_group" {
     name                = "${dest.name}${local.defaults.apic.access_policies.vspan.destination_groups.destinations.name_suffix}"
     description         = try(dest.description, "")
     tenant              = try(dest.tenant, null)
-    application_profile = try(dest.application_profile, null)
-    endpoint_group      = try(dest.endpoint_group, null)
+    application_profile = try(dest.application_profile, "") != "" ? "${dest.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}" : null
+    endpoint_group      = try(dest.endpoint_group, "") != "" ? "${dest.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}" : null
     endpoint            = try(dest.endpoint, null)
     ip                  = try(dest.ip, null)
     mtu                 = try(dest.mtu, local.defaults.apic.access_policies.vspan.destination_groups.destinations.mtu)
@@ -843,15 +907,15 @@ locals {
     name                    = "${session.name}${local.defaults.apic.access_policies.vspan.sessions.name_suffix}"
     description             = try(session.description, "")
     admin_state             = try(session.admin_state, local.defaults.apic.access_policies.vspan.sessions.admin_state)
-    destination_name        = try(session.destination.name, null)
+    destination_name        = try(session.destination.name, "") != "" ? "${session.destination.name}${local.defaults.apic.access_policies.vspan.destination_groups.name_suffix}" : null
     destination_description = try(session.destination.description, "")
     sources = [for source in try(session.sources, []) : {
       description         = try(source.description, "")
       name                = source.name
       direction           = try(source.direction, local.defaults.apic.access_policies.vspan.sessions.sources.direction)
       tenant              = try(source.tenant, null)
-      application_profile = try(source.application_profile, null)
-      endpoint_group      = try(source.endpoint_group, null)
+      application_profile = try(source.application_profile, "") != "" ? "${source.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}" : null
+      endpoint_group      = try(source.endpoint_group, "") != "" ? "${source.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}" : null
       endpoint            = try(source.endpoint, null)
       access_paths = [for ap in try(source.access_paths, []) : {
         node_id = try(ap.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == ap.channel][0][0], null)
@@ -864,7 +928,7 @@ locals {
         port     = try(ap.port, null)
         sub_port = try(ap.sub_port, null)
         module   = try(ap.module, local.defaults.apic.access_policies.vspan.sessions.sources.access_paths.module)
-        channel  = try(ap.channel, null)
+        channel  = try(ap.channel, "") != "" ? "${ap.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}" : null
       }]
     }]
   }]
@@ -961,6 +1025,17 @@ module "aci_netflow_exporter" {
   vrf                     = try("${each.value.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
   l3out                   = try("${each.value.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}", "")
   external_endpoint_group = try("${each.value.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}", "")
+}
+
+module "aci_netflow_vmm_exporter" {
+  source = "./modules/terraform-aci-netflow-vmm-exporter"
+
+  for_each         = { for exporter in try(local.access_policies.interface_policies.netflow_vmm_exporters, []) : exporter.name => exporter if local.modules.aci_netflow_vmm_exporter && var.manage_access_policies }
+  name             = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_vmm_exporters.name_suffix}"
+  description      = try(each.value.description, "")
+  destination_port = each.value.destination_port
+  destination_ip   = each.value.destination_ip
+  source_ip        = try(each.value.source_ip, local.defaults.apic.access_policies.interface_policies.netflow_vmm_exporters.source_ip)
 }
 
 module "aci_netflow_monitor" {

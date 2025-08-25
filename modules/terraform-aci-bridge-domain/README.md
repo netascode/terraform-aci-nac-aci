@@ -25,6 +25,7 @@ module "aci_bridge_domain" {
   ep_move_detection          = true
   virtual_mac                = "22:22:22:22:22:22"
   l3_multicast               = true
+  multicast_arp_drop         = true
   multi_destination_flooding = "drop"
   unicast_routing            = false
   unknown_unicast            = "flood"
@@ -32,6 +33,7 @@ module "aci_bridge_domain" {
   unknown_ipv6_multicast     = "opt-flood"
   vrf                        = "VRF1"
   nd_interface_policy        = "ND_INTF_POL1"
+  endpoint_retention_policy  = "ERP1"
   subnets = [{
     description        = "Subnet Description"
     ip                 = "1.1.1.1/24"
@@ -85,6 +87,7 @@ module "aci_bridge_domain" {
 | <a name="input_mac"></a> [mac](#input\_mac) | MAC address. Format: `12:34:56:78:9A:BC`. | `string` | `"00:22:BD:F8:19:FF"` | no |
 | <a name="input_ep_move_detection"></a> [ep\_move\_detection](#input\_ep\_move\_detection) | Endpoint move detection flag. | `bool` | `false` | no |
 | <a name="input_clear_remote_mac_entries"></a> [clear\_remote\_mac\_entries](#input\_clear\_remote\_mac\_entries) | Clear remote MAC entries flag. | `bool` | `false` | no |
+| <a name="input_multicast_arp_drop"></a> [multicast\_arp\_drop](#input\_multicast\_arp\_drop) | Drop ARP with Multicast SMAC. | `bool` | `null` | no |
 | <a name="input_virtual_mac"></a> [virtual\_mac](#input\_virtual\_mac) | Virtual MAC address. Format: `12:34:56:78:9A:BC`. | `string` | `"not-applicable"` | no |
 | <a name="input_l3_multicast"></a> [l3\_multicast](#input\_l3\_multicast) | L3 multicast. | `bool` | `false` | no |
 | <a name="input_pim_source_filter"></a> [pim\_source\_filter](#input\_pim\_source\_filter) | PIM source filter. | `string` | `""` | no |
@@ -98,9 +101,10 @@ module "aci_bridge_domain" {
 | <a name="input_igmp_interface_policy"></a> [igmp\_interface\_policy](#input\_igmp\_interface\_policy) | IGMP interface policy. | `string` | `""` | no |
 | <a name="input_igmp_snooping_policy"></a> [igmp\_snooping\_policy](#input\_igmp\_snooping\_policy) | IGMP snooping policy. | `string` | `""` | no |
 | <a name="input_nd_interface_policy"></a> [nd\_interface\_policy](#input\_nd\_interface\_policy) | ND interface policy. | `string` | `""` | no |
-| <a name="input_subnets"></a> [subnets](#input\_subnets) | List of subnets. Default value `primary_ip`: `false`. Default value `public`: `false`. Default value `shared`: `false`. Default value `igmp_querier`: `false`. Default value `nd_ra_prefix`: `true`. Default value `no_default_gateway`: `false`. Default value `virtual`: `false`. | <pre>list(object({<br>    description           = optional(string, "")<br>    ip                    = string<br>    primary_ip            = optional(bool, false)<br>    public                = optional(bool, false)<br>    shared                = optional(bool, false)<br>    igmp_querier          = optional(bool, false)<br>    nd_ra_prefix          = optional(bool, true)<br>    no_default_gateway    = optional(bool, false)<br>    virtual               = optional(bool, false)<br>    nd_ra_prefix_policy   = optional(string, "")<br>    ip_dataplane_learning = optional(bool, null)<br>    tags = optional(list(object({<br>      key   = string<br>      value = string<br>    })), [])<br>  }))</pre> | `[]` | no |
+| <a name="input_subnets"></a> [subnets](#input\_subnets) | List of subnets. Default value `primary_ip`: `false`. Default value `public`: `false`. Default value `shared`: `false`. Default value `igmp_querier`: `false`. Default value `nd_ra_prefix`: `true`. Default value `no_default_gateway`: `false`. Default value `virtual`: `false`. | <pre>list(object({<br/>    description           = optional(string, "")<br/>    ip                    = string<br/>    primary_ip            = optional(bool, false)<br/>    public                = optional(bool, false)<br/>    shared                = optional(bool, false)<br/>    igmp_querier          = optional(bool, false)<br/>    nd_ra_prefix          = optional(bool, true)<br/>    no_default_gateway    = optional(bool, false)<br/>    virtual               = optional(bool, false)<br/>    nd_ra_prefix_policy   = optional(string, "")<br/>    ip_dataplane_learning = optional(bool, null)<br/>    tags = optional(list(object({<br/>      key   = string<br/>      value = string<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_l3outs"></a> [l3outs](#input\_l3outs) | List of l3outs | `list(string)` | `[]` | no |
-| <a name="input_dhcp_labels"></a> [dhcp\_labels](#input\_dhcp\_labels) | List of DHCP labels | <pre>list(object({<br>    dhcp_relay_policy  = string<br>    dhcp_option_policy = optional(string)<br>    scope              = optional(string, "tenant")<br>  }))</pre> | `[]` | no |
+| <a name="input_dhcp_labels"></a> [dhcp\_labels](#input\_dhcp\_labels) | List of DHCP labels | <pre>list(object({<br/>    dhcp_relay_policy  = string<br/>    dhcp_option_policy = optional(string)<br/>    scope              = optional(string, "tenant")<br/>  }))</pre> | `[]` | no |
+| <a name="input_endpoint_retention_policy"></a> [endpoint\_retention\_policy](#input\_endpoint\_retention\_policy) | Endpoint Retention Policy. | `string` | `""` | no |
 
 ## Outputs
 
@@ -118,6 +122,7 @@ module "aci_bridge_domain" {
 | [aci_rest_managed.fvBD](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBDToNdP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBDToOut](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsBdToEpRet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtx](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsIgmpsn](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsNdPfxPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

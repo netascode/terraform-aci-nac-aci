@@ -35,7 +35,7 @@ variable "nodes" {
     pod_id                  = optional(number, 1)
     router_id               = string
     router_id_as_loopback   = optional(bool, true)
-    loopback                = optional(string)
+    loopbacks               = optional(list(string))
     mpls_transport_loopback = optional(string)
     segment_id              = optional(number)
     static_routes = optional(list(object({
@@ -45,10 +45,12 @@ variable "nodes" {
       bfd         = optional(bool, false)
       track_list  = optional(string)
       next_hops = optional(list(object({
-        ip          = string
-        description = optional(string, "")
-        preference  = optional(number, 1)
-        type        = optional(string, "prefix")
+        ip            = string
+        description   = optional(string, "")
+        preference    = optional(number, 1)
+        type          = optional(string, "prefix")
+        ip_sla_policy = optional(string)
+        track_list    = optional(string)
       })), [])
     })), [])
   }))
@@ -70,7 +72,7 @@ variable "nodes" {
 
   validation {
     condition = alltrue(flatten([
-      for n in var.nodes : [for s in coalesce(n.static_routes, []) : can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", s.description))]
+      for n in var.nodes : [for s in coalesce(n.static_routes, []) : can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", s.description))]
     ]))
     error_message = "`static_routes.description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -95,6 +97,21 @@ variable "nodes" {
     ]))
     error_message = "`static_routes.next_hops.type`: Allowed values are `prefix` or `none`."
   }
+
+  validation {
+    condition = alltrue(flatten([
+      for n in var.nodes : [for s in coalesce(n.static_routes, []) : [for nh in coalesce(s.next_hops, []) : nh.track_list == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", nh.track_list))]]
+    ]))
+    error_message = "`static_routes.next_hops.track_list`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for n in var.nodes : [for s in coalesce(n.static_routes, []) : [for nh in coalesce(s.next_hops, []) : nh.ip_sla_policy == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", nh.ip_sla_policy))]]
+    ]))
+    error_message = "`static_routes.next_hops.ip_sla_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
 }
 
 variable "bgp_peers" {
@@ -138,7 +155,7 @@ variable "bgp_peers" {
 
   validation {
     condition = alltrue([
-      for b in var.bgp_peers : b.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", b.description)), false)
+      for b in var.bgp_peers : b.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", b.description)), false)
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -224,7 +241,7 @@ variable "bgp_infra_peers" {
 
   validation {
     condition = alltrue([
-      for b in var.bgp_infra_peers : b.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", b.description)), false)
+      for b in var.bgp_infra_peers : b.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", b.description)), false)
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -273,6 +290,17 @@ variable "bfd_multihop_node_policy" {
   }
 }
 
+variable "bgp_protocol_profile_name" {
+  description = "BGP Protocol Name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_protocol_profile_name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "bgp_timer_policy" {
   description = "Node Profile's BGP Timer Policy"
   type        = string
@@ -283,7 +311,6 @@ variable "bgp_timer_policy" {
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
-
 
 variable "bgp_as_path_policy" {
   description = "Node Profile's BGP AS-Path Policy"

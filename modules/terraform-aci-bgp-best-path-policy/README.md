@@ -13,10 +13,11 @@ module "aci_bgp_best_path_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-bgp-best-path-policy"
   version = ">= 0.8.0"
 
-  name         = "ABC"
-  tenant       = "TEN1"
-  description  = "My BGP Best Path Policy"
-  control_type = "multi-path-relax"
+  name                    = "ABC"
+  tenant                  = "TEN1"
+  description             = "My BGP Best Path Policy"
+  as_path_multipath_relax = true
+  ignore_igp_metric       = false
 }
 ```
 
@@ -40,7 +41,8 @@ module "aci_bgp_best_path_policy" {
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | BGP best path policy name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | BGP best path policy description. | `string` | `""` | no |
-| <a name="input_control_type"></a> [control\_type](#input\_control\_type) | BGP best path policy control type. Allowed value: `multi-path-relax`. | `string` | `""` | no |
+| <a name="input_as_path_multipath_relax"></a> [as\_path\_multipath\_relax](#input\_as\_path\_multipath\_relax) | Flag to Relax AS-Path restriction. | `bool` | `false` | no |
+| <a name="input_ignore_igp_metric"></a> [ignore\_igp\_metric](#input\_ignore\_igp\_metric) | Flag to Ignore IGP metric. | `bool` | `false` | no |
 
 ## Outputs
 

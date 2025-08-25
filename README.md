@@ -1,11 +1,11 @@
 <!-- BEGIN_TF_DOCS -->
 [![Tests](https://github.com/netascode/terraform-aci-nac-aci/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-nac-aci/actions/workflows/test.yml)
 
-# Terraform ACI Nexus-as-Code Module
+# Terraform ACI Network-as-Code Module
 
 A Terraform module to configure ACI.
 
-This module is part of the Cisco [*Nexus-as-Code*](https://cisco.com/go/nexusascode) project. Its goal is to allow users to instantiate network fabrics in minutes using an easy to use, opinionated data model. It takes away the complexity of having to deal with references, dependencies or loops. By completely separating data (defining variables) from logic (infrastructure declaration), it allows the user to focus on describing the intended configuration while using a set of maintained and tested Terraform Modules without the need to understand the low-level ACI object model. More information can be found here: https://cisco.com/go/nexusascode.
+This module is part of the Cisco [*Network-as-Code*](https://netascode.cisco.com) project. Its goal is to allow users to instantiate network fabrics in minutes using an easy to use, opinionated data model. It takes away the complexity of having to deal with references, dependencies or loops. By completely separating data (defining variables) from logic (infrastructure declaration), it allows the user to focus on describing the intended configuration while using a set of maintained and tested Terraform Modules without the need to understand the low-level ACI object model. More information can be found here: https://netascode.cisco.com.
 
 A comprehensive example using this module is available here: https://github.com/netascode/nac-aci-comprehensive-example
 
@@ -22,7 +22,7 @@ There are six configuration sections which can be selectively enabled or disable
 - `interface_policies`: Configurations applied at the interface level (e.g., assigning interface policy groups to physical ports)
 - `tenants`: Configurations applied at the tenant level (e.g., VRFs and Bridge Domains)
 
-The full data model documentation is available here: https://developer.cisco.com/docs/nexus-as-code/#!data-model
+The full data model documentation is available here: https://netascode.cisco.com/data_model/overview
 
 ## Examples
 
@@ -85,10 +85,10 @@ Additional example repositories:
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.15.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.17.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.3.0 |
-| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 0.2.5 |
+| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.0.2 |
 
 ## Inputs
 
@@ -119,16 +119,14 @@ Additional example repositories:
 | Name | Version |
 |------|---------|
 | <a name="provider_local"></a> [local](#provider\_local) | 2.5.3 |
-| <a name="provider_utils"></a> [utils](#provider\_utils) | 1.0.2 |
+| <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [local_sensitive_file.defaults](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/sensitive_file) | resource |
-| [utils_yaml_merge.defaults](https://registry.terraform.io/providers/netascode/utils/latest/docs/data-sources/yaml_merge) | data source |
-| [utils_yaml_merge.model](https://registry.terraform.io/providers/netascode/utils/latest/docs/data-sources/yaml_merge) | data source |
-| [utils_yaml_merge.modules](https://registry.terraform.io/providers/netascode/utils/latest/docs/data-sources/yaml_merge) | data source |
+| [terraform_data.validation](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 
 ## Modules
 
@@ -164,6 +162,7 @@ Additional example repositories:
 | <a name="module_aci_access_spine_switch_profile_manual"></a> [aci\_access\_spine\_switch\_profile\_manual](#module\_aci\_access\_spine\_switch\_profile\_manual) | ./modules/terraform-aci-access-spine-switch-profile | n/a |
 | <a name="module_aci_apic_connectivity_preference"></a> [aci\_apic\_connectivity\_preference](#module\_aci\_apic\_connectivity\_preference) | ./modules/terraform-aci-apic-connectivity-preference | n/a |
 | <a name="module_aci_application_profile"></a> [aci\_application\_profile](#module\_aci\_application\_profile) | ./modules/terraform-aci-application-profile | n/a |
+| <a name="module_aci_atomic_counter"></a> [aci\_atomic\_counter](#module\_aci\_atomic\_counter) | ./modules/terraform-aci-atomic-counter | n/a |
 | <a name="module_aci_banner"></a> [aci\_banner](#module\_aci\_banner) | ./modules/terraform-aci-banner | n/a |
 | <a name="module_aci_bfd_interface_policy"></a> [aci\_bfd\_interface\_policy](#module\_aci\_bfd\_interface\_policy) | ./modules/terraform-aci-bfd-interface-policy | n/a |
 | <a name="module_aci_bfd_ipv4_policy"></a> [aci\_bfd\_ipv4\_policy](#module\_aci\_bfd\_ipv4\_policy) | ./modules/terraform-aci-bfd-policy | n/a |
@@ -191,7 +190,10 @@ Additional example repositories:
 | <a name="module_aci_dns_policy"></a> [aci\_dns\_policy](#module\_aci\_dns\_policy) | ./modules/terraform-aci-dns-policy | n/a |
 | <a name="module_aci_eigrp_interface_policy"></a> [aci\_eigrp\_interface\_policy](#module\_aci\_eigrp\_interface\_policy) | ./modules/terraform-aci-eigrp-interface-policy | n/a |
 | <a name="module_aci_endpoint_group"></a> [aci\_endpoint\_group](#module\_aci\_endpoint\_group) | ./modules/terraform-aci-endpoint-group | n/a |
+| <a name="module_aci_endpoint_ip_tag_policy"></a> [aci\_endpoint\_ip\_tag\_policy](#module\_aci\_endpoint\_ip\_tag\_policy) | ./modules/terraform-aci-endpoint-ip-tag-policy | n/a |
 | <a name="module_aci_endpoint_loop_protection"></a> [aci\_endpoint\_loop\_protection](#module\_aci\_endpoint\_loop\_protection) | ./modules/terraform-aci-endpoint-loop-protection | n/a |
+| <a name="module_aci_endpoint_mac_tag_policy"></a> [aci\_endpoint\_mac\_tag\_policy](#module\_aci\_endpoint\_mac\_tag\_policy) | ./modules/terraform-aci-endpoint-mac-tag-policy | n/a |
+| <a name="module_aci_endpoint_retention_policy"></a> [aci\_endpoint\_retention\_policy](#module\_aci\_endpoint\_retention\_policy) | ./modules/terraform-aci-endpoint-retention-policy | n/a |
 | <a name="module_aci_endpoint_security_group"></a> [aci\_endpoint\_security\_group](#module\_aci\_endpoint\_security\_group) | ./modules/terraform-aci-endpoint-security-group | n/a |
 | <a name="module_aci_error_disabled_recovery"></a> [aci\_error\_disabled\_recovery](#module\_aci\_error\_disabled\_recovery) | ./modules/terraform-aci-error-disabled-recovery | n/a |
 | <a name="module_aci_external_connectivity_policy"></a> [aci\_external\_connectivity\_policy](#module\_aci\_external\_connectivity\_policy) | ./modules/terraform-aci-external-connectivity-policy | n/a |
@@ -199,8 +201,12 @@ Additional example repositories:
 | <a name="module_aci_fabric_isis_bfd"></a> [aci\_fabric\_isis\_bfd](#module\_aci\_fabric\_isis\_bfd) | ./modules/terraform-aci-fabric-isis-bfd | n/a |
 | <a name="module_aci_fabric_isis_policy"></a> [aci\_fabric\_isis\_policy](#module\_aci\_fabric\_isis\_policy) | ./modules/terraform-aci-fabric-isis-policy | n/a |
 | <a name="module_aci_fabric_l2_mtu"></a> [aci\_fabric\_l2\_mtu](#module\_aci\_fabric\_l2\_mtu) | ./modules/terraform-aci-fabric-l2-mtu | n/a |
+| <a name="module_aci_fabric_leaf_interface_policy_group"></a> [aci\_fabric\_leaf\_interface\_policy\_group](#module\_aci\_fabric\_leaf\_interface\_policy\_group) | ./modules/terraform-aci-fabric-leaf-interface-policy-group | n/a |
 | <a name="module_aci_fabric_leaf_interface_profile_auto"></a> [aci\_fabric\_leaf\_interface\_profile\_auto](#module\_aci\_fabric\_leaf\_interface\_profile\_auto) | ./modules/terraform-aci-fabric-leaf-interface-profile | n/a |
 | <a name="module_aci_fabric_leaf_interface_profile_manual"></a> [aci\_fabric\_leaf\_interface\_profile\_manual](#module\_aci\_fabric\_leaf\_interface\_profile\_manual) | ./modules/terraform-aci-fabric-leaf-interface-profile | n/a |
+| <a name="module_aci_fabric_leaf_interface_selector_auto"></a> [aci\_fabric\_leaf\_interface\_selector\_auto](#module\_aci\_fabric\_leaf\_interface\_selector\_auto) | ./modules/terraform-aci-fabric-leaf-interface-selector | n/a |
+| <a name="module_aci_fabric_leaf_interface_selector_manual"></a> [aci\_fabric\_leaf\_interface\_selector\_manual](#module\_aci\_fabric\_leaf\_interface\_selector\_manual) | ./modules/terraform-aci-fabric-leaf-interface-selector | n/a |
+| <a name="module_aci_fabric_leaf_interface_selector_sub_auto"></a> [aci\_fabric\_leaf\_interface\_selector\_sub\_auto](#module\_aci\_fabric\_leaf\_interface\_selector\_sub\_auto) | ./modules/terraform-aci-fabric-leaf-interface-selector | n/a |
 | <a name="module_aci_fabric_leaf_switch_configuration"></a> [aci\_fabric\_leaf\_switch\_configuration](#module\_aci\_fabric\_leaf\_switch\_configuration) | ./modules/terraform-aci-switch-configuration | n/a |
 | <a name="module_aci_fabric_leaf_switch_policy_group"></a> [aci\_fabric\_leaf\_switch\_policy\_group](#module\_aci\_fabric\_leaf\_switch\_policy\_group) | ./modules/terraform-aci-fabric-leaf-switch-policy-group | n/a |
 | <a name="module_aci_fabric_leaf_switch_profile_auto"></a> [aci\_fabric\_leaf\_switch\_profile\_auto](#module\_aci\_fabric\_leaf\_switch\_profile\_auto) | ./modules/terraform-aci-fabric-leaf-switch-profile | n/a |
@@ -214,11 +220,15 @@ Additional example repositories:
 | <a name="module_aci_fabric_span_source_group"></a> [aci\_fabric\_span\_source\_group](#module\_aci\_fabric\_span\_source\_group) | ./modules/terraform-aci-fabric-span-source-group | n/a |
 | <a name="module_aci_fabric_spine_interface_profile_auto"></a> [aci\_fabric\_spine\_interface\_profile\_auto](#module\_aci\_fabric\_spine\_interface\_profile\_auto) | ./modules/terraform-aci-fabric-spine-interface-profile | n/a |
 | <a name="module_aci_fabric_spine_interface_profile_manual"></a> [aci\_fabric\_spine\_interface\_profile\_manual](#module\_aci\_fabric\_spine\_interface\_profile\_manual) | ./modules/terraform-aci-fabric-spine-interface-profile | n/a |
+| <a name="module_aci_fabric_spine_interface_selector_auto"></a> [aci\_fabric\_spine\_interface\_selector\_auto](#module\_aci\_fabric\_spine\_interface\_selector\_auto) | ./modules/terraform-aci-fabric-spine-interface-selector | n/a |
+| <a name="module_aci_fabric_spine_interface_selector_manual"></a> [aci\_fabric\_spine\_interface\_selector\_manual](#module\_aci\_fabric\_spine\_interface\_selector\_manual) | ./modules/terraform-aci-fabric-spine-interface-selector | n/a |
+| <a name="module_aci_fabric_spine_interface_selector_sub_auto"></a> [aci\_fabric\_spine\_interface\_selector\_sub\_auto](#module\_aci\_fabric\_spine\_interface\_selector\_sub\_auto) | ./modules/terraform-aci-fabric-spine-interface-selector | n/a |
 | <a name="module_aci_fabric_spine_switch_configuration"></a> [aci\_fabric\_spine\_switch\_configuration](#module\_aci\_fabric\_spine\_switch\_configuration) | ./modules/terraform-aci-switch-configuration | n/a |
 | <a name="module_aci_fabric_spine_switch_policy_group"></a> [aci\_fabric\_spine\_switch\_policy\_group](#module\_aci\_fabric\_spine\_switch\_policy\_group) | ./modules/terraform-aci-fabric-spine-switch-policy-group | n/a |
 | <a name="module_aci_fabric_spine_switch_profile_auto"></a> [aci\_fabric\_spine\_switch\_profile\_auto](#module\_aci\_fabric\_spine\_switch\_profile\_auto) | ./modules/terraform-aci-fabric-spine-switch-profile | n/a |
 | <a name="module_aci_fabric_spine_switch_profile_manual"></a> [aci\_fabric\_spine\_switch\_profile\_manual](#module\_aci\_fabric\_spine\_switch\_profile\_manual) | ./modules/terraform-aci-fabric-spine-switch-profile | n/a |
 | <a name="module_aci_fabric_wide_settings"></a> [aci\_fabric\_wide\_settings](#module\_aci\_fabric\_wide\_settings) | ./modules/terraform-aci-fabric-wide-settings | n/a |
+| <a name="module_aci_fex_interface_shutdown"></a> [aci\_fex\_interface\_shutdown](#module\_aci\_fex\_interface\_shutdown) | ./modules/terraform-aci-interface-shutdown | n/a |
 | <a name="module_aci_filter"></a> [aci\_filter](#module\_aci\_filter) | ./modules/terraform-aci-filter | n/a |
 | <a name="module_aci_firmware_group"></a> [aci\_firmware\_group](#module\_aci\_firmware\_group) | ./modules/terraform-aci-firmware-group | n/a |
 | <a name="module_aci_forwarding_scale_policy"></a> [aci\_forwarding\_scale\_policy](#module\_aci\_forwarding\_scale\_policy) | ./modules/terraform-aci-forwarding-scale-policy | n/a |
@@ -233,6 +243,7 @@ Additional example repositories:
 | <a name="module_aci_infra_dhcp_relay_policy"></a> [aci\_infra\_dhcp\_relay\_policy](#module\_aci\_infra\_dhcp\_relay\_policy) | ./modules/terraform-aci-infra-dhcp-relay-policy | n/a |
 | <a name="module_aci_infra_dscp_translation_policy"></a> [aci\_infra\_dscp\_translation\_policy](#module\_aci\_infra\_dscp\_translation\_policy) | ./modules/terraform-aci-infra-dscp-translation-policy | n/a |
 | <a name="module_aci_interface_configuration_fex"></a> [aci\_interface\_configuration\_fex](#module\_aci\_interface\_configuration\_fex) | ./modules/terraform-aci-interface-configuration | n/a |
+| <a name="module_aci_interface_shutdown"></a> [aci\_interface\_shutdown](#module\_aci\_interface\_shutdown) | ./modules/terraform-aci-interface-shutdown | n/a |
 | <a name="module_aci_interface_type"></a> [aci\_interface\_type](#module\_aci\_interface\_type) | ./modules/terraform-aci-interface-type | n/a |
 | <a name="module_aci_ip_aging"></a> [aci\_ip\_aging](#module\_aci\_ip\_aging) | ./modules/terraform-aci-ip-aging | n/a |
 | <a name="module_aci_ip_sla_policy"></a> [aci\_ip\_sla\_policy](#module\_aci\_ip\_sla\_policy) | ./modules/terraform-aci-ip-sla-policy | n/a |
@@ -253,6 +264,9 @@ Additional example repositories:
 | <a name="module_aci_link_level_policy"></a> [aci\_link\_level\_policy](#module\_aci\_link\_level\_policy) | ./modules/terraform-aci-link-level-policy | n/a |
 | <a name="module_aci_lldp_policy"></a> [aci\_lldp\_policy](#module\_aci\_lldp\_policy) | ./modules/terraform-aci-lldp-policy | n/a |
 | <a name="module_aci_login_domain"></a> [aci\_login\_domain](#module\_aci\_login\_domain) | ./modules/terraform-aci-login-domain | n/a |
+| <a name="module_aci_macsec_interfaces_policy"></a> [aci\_macsec\_interfaces\_policy](#module\_aci\_macsec\_interfaces\_policy) | ./modules/terraform-aci-macsec-interfaces-policy | n/a |
+| <a name="module_aci_macsec_keychain_policies"></a> [aci\_macsec\_keychain\_policies](#module\_aci\_macsec\_keychain\_policies) | ./modules/terraform-aci-macsec-keychain-policies | n/a |
+| <a name="module_aci_macsec_parameters_policy"></a> [aci\_macsec\_parameters\_policy](#module\_aci\_macsec\_parameters\_policy) | ./modules/terraform-aci-macsec-parameters-policy | n/a |
 | <a name="module_aci_maintenance_group"></a> [aci\_maintenance\_group](#module\_aci\_maintenance\_group) | ./modules/terraform-aci-maintenance-group | n/a |
 | <a name="module_aci_management_access_policy"></a> [aci\_management\_access\_policy](#module\_aci\_management\_access\_policy) | ./modules/terraform-aci-management-access-policy | n/a |
 | <a name="module_aci_match_rule"></a> [aci\_match\_rule](#module\_aci\_match\_rule) | ./modules/terraform-aci-match-rule | n/a |
@@ -267,6 +281,7 @@ Additional example repositories:
 | <a name="module_aci_netflow_exporter"></a> [aci\_netflow\_exporter](#module\_aci\_netflow\_exporter) | ./modules/terraform-aci-netflow-exporter | n/a |
 | <a name="module_aci_netflow_monitor"></a> [aci\_netflow\_monitor](#module\_aci\_netflow\_monitor) | ./modules/terraform-aci-netflow-monitor | n/a |
 | <a name="module_aci_netflow_record"></a> [aci\_netflow\_record](#module\_aci\_netflow\_record) | ./modules/terraform-aci-netflow-record | n/a |
+| <a name="module_aci_netflow_vmm_exporter"></a> [aci\_netflow\_vmm\_exporter](#module\_aci\_netflow\_vmm\_exporter) | ./modules/terraform-aci-netflow-vmm-exporter | n/a |
 | <a name="module_aci_node_control_policy"></a> [aci\_node\_control\_policy](#module\_aci\_node\_control\_policy) | ./modules/terraform-aci-node-control-policy | n/a |
 | <a name="module_aci_node_registration"></a> [aci\_node\_registration](#module\_aci\_node\_registration) | ./modules/terraform-aci-node-registration | n/a |
 | <a name="module_aci_oob_contract"></a> [aci\_oob\_contract](#module\_aci\_oob\_contract) | ./modules/terraform-aci-oob-contract | n/a |
@@ -306,16 +321,19 @@ Additional example repositories:
 | <a name="module_aci_spine_fabric_interface_configuration"></a> [aci\_spine\_fabric\_interface\_configuration](#module\_aci\_spine\_fabric\_interface\_configuration) | ./modules/terraform-aci-fabric-interface-configuration | n/a |
 | <a name="module_aci_spine_interface_configuration"></a> [aci\_spine\_interface\_configuration](#module\_aci\_spine\_interface\_configuration) | ./modules/terraform-aci-interface-configuration | n/a |
 | <a name="module_aci_sr_mpls_external_endpoint_group"></a> [aci\_sr\_mpls\_external\_endpoint\_group](#module\_aci\_sr\_mpls\_external\_endpoint\_group) | ./modules/terraform-aci-external-endpoint-group | n/a |
+| <a name="module_aci_sr_mpls_global_configuration"></a> [aci\_sr\_mpls\_global\_configuration](#module\_aci\_sr\_mpls\_global\_configuration) | ./modules/terraform-aci-sr-mpls-global-configuration | n/a |
 | <a name="module_aci_sr_mpls_l3out"></a> [aci\_sr\_mpls\_l3out](#module\_aci\_sr\_mpls\_l3out) | ./modules/terraform-aci-l3out | n/a |
 | <a name="module_aci_sr_mpls_l3out_interface_profile_manual"></a> [aci\_sr\_mpls\_l3out\_interface\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_interface\_profile\_manual) | ./modules/terraform-aci-l3out-interface-profile | n/a |
 | <a name="module_aci_sr_mpls_l3out_node_profile_manual"></a> [aci\_sr\_mpls\_l3out\_node\_profile\_manual](#module\_aci\_sr\_mpls\_l3out\_node\_profile\_manual) | ./modules/terraform-aci-l3out-node-profile | n/a |
 | <a name="module_aci_storm_control_policy"></a> [aci\_storm\_control\_policy](#module\_aci\_storm\_control\_policy) | ./modules/terraform-aci-storm-control-policy | n/a |
+| <a name="module_aci_subinterface_shutdown"></a> [aci\_subinterface\_shutdown](#module\_aci\_subinterface\_shutdown) | ./modules/terraform-aci-interface-shutdown | n/a |
 | <a name="module_aci_syslog_policy"></a> [aci\_syslog\_policy](#module\_aci\_syslog\_policy) | ./modules/terraform-aci-syslog-policy | n/a |
 | <a name="module_aci_system_global_gipo"></a> [aci\_system\_global\_gipo](#module\_aci\_system\_global\_gipo) | ./modules/terraform-aci-system-global-gipo | n/a |
 | <a name="module_aci_system_performance"></a> [aci\_system\_performance](#module\_aci\_system\_performance) | ./modules/terraform-aci-system-performance | n/a |
 | <a name="module_aci_tacacs"></a> [aci\_tacacs](#module\_aci\_tacacs) | ./modules/terraform-aci-tacacs | n/a |
 | <a name="module_aci_tenant"></a> [aci\_tenant](#module\_aci\_tenant) | ./modules/terraform-aci-tenant | n/a |
 | <a name="module_aci_tenant_data_plane_policing_policy"></a> [aci\_tenant\_data\_plane\_policing\_policy](#module\_aci\_tenant\_data\_plane\_policing\_policy) | ./modules/terraform-aci-data-plane-policing-policy | n/a |
+| <a name="module_aci_tenant_monitoring_policy"></a> [aci\_tenant\_monitoring\_policy](#module\_aci\_tenant\_monitoring\_policy) | ./modules/terraform-aci-tenant-monitoring-policy | n/a |
 | <a name="module_aci_tenant_span_destination_group"></a> [aci\_tenant\_span\_destination\_group](#module\_aci\_tenant\_span\_destination\_group) | ./modules/terraform-aci-tenant-span-destination-group | n/a |
 | <a name="module_aci_tenant_span_source_group"></a> [aci\_tenant\_span\_source\_group](#module\_aci\_tenant\_span\_source\_group) | ./modules/terraform-aci-tenant-span-source-group | n/a |
 | <a name="module_aci_track_list"></a> [aci\_track\_list](#module\_aci\_track\_list) | ./modules/terraform-aci-track-list | n/a |

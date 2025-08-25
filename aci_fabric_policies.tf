@@ -15,13 +15,15 @@ module "aci_apic_connectivity_preference" {
 module "aci_banner" {
   source = "./modules/terraform-aci-banner"
 
-  count                   = local.modules.aci_banner == true && var.manage_fabric_policies ? 1 : 0
-  apic_gui_banner_message = try(local.fabric_policies.banners.apic_gui_banner_message, "")
-  apic_gui_banner_url     = try(local.fabric_policies.banners.apic_gui_banner_url, "")
-  apic_gui_alias          = try(local.fabric_policies.banners.apic_gui_alias, "")
-  apic_cli_banner         = try(local.fabric_policies.banners.apic_cli_banner, "")
-  switch_cli_banner       = try(local.fabric_policies.banners.switch_cli_banner, "")
-  escape_html             = try(local.fabric_policies.banners.escape_html, local.defaults.apic.fabric_policies.banners.escape_html)
+  count                    = local.modules.aci_banner == true && var.manage_fabric_policies ? 1 : 0
+  apic_gui_banner_message  = try(local.fabric_policies.banners.apic_gui_banner_message, "")
+  apic_gui_banner_url      = try(local.fabric_policies.banners.apic_gui_banner_url, "")
+  apic_gui_alias           = try(local.fabric_policies.banners.apic_gui_alias, "")
+  apic_cli_banner          = try(local.fabric_policies.banners.apic_cli_banner, "")
+  switch_cli_banner        = try(local.fabric_policies.banners.switch_cli_banner, "")
+  apic_app_banner          = try(local.fabric_policies.banners.apic_app_banner, "")
+  apic_app_banner_severity = try(local.fabric_policies.banners.apic_app_banner_severity, local.defaults.apic.fabric_policies.banners.apic_app_banner_severity)
+  escape_html              = try(local.fabric_policies.banners.escape_html, local.defaults.apic.fabric_policies.banners.escape_html)
 }
 
 module "aci_endpoint_loop_protection" {
@@ -328,6 +330,19 @@ module "aci_fabric_leaf_switch_policy_group" {
   ]
 }
 
+module "aci_fabric_leaf_interface_policy_group" {
+  source = "./modules/terraform-aci-fabric-leaf-interface-policy-group"
+
+  for_each          = { for pg in try(local.fabric_policies.leaf_interface_policy_groups, []) : pg.name => pg if local.modules.aci_fabric_leaf_interface_policy_group && var.manage_fabric_policies }
+  name              = "${each.value.name}${local.defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix}"
+  description       = try(each.value.description, "")
+  link_level_policy = try("${each.value.link_level_policy}${local.defaults.apic.fabric_policies.interface_policies.link_level_policies.name_suffix}", "")
+
+  depends_on = [
+    module.aci_link_level_policy,
+  ]
+}
+
 module "aci_fabric_spine_switch_policy_group" {
   source = "./modules/terraform-aci-fabric-spine-switch-policy-group"
 
@@ -460,6 +475,57 @@ module "aci_fabric_spine_switch_configuration" {
   ]
 }
 
+locals {
+  fabric_spine_interface_selectors_manual = flatten([
+    for profile in try(local.fabric_policies.spine_interface_profiles, []) : [
+      for selector in try(profile.selectors, []) : {
+        key = "${profile.name}/${selector.name}"
+        value = {
+          name         = "${selector.name}${local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.name_suffix}"
+          description  = try(selector.description, "")
+          profile_name = "${profile.name}${local.defaults.apic.fabric_policies.spine_interface_profiles.name_suffix}"
+          policy_group = try("${selector.policy_group}${local.defaults.apic.fabric_policies.spine_interface_policy_groups.name_suffix}", "")
+          port_blocks = [for block in try(selector.port_blocks, []) : {
+            description = try(block.description, "")
+            name        = "${block.name}${local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.port_blocks.name_suffix}"
+            from_module = try(block.from_module, local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.port_blocks.from_module)
+            from_port   = block.from_port
+            to_module   = try(block.to_module, block.from_module, local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.port_blocks.from_module)
+            to_port     = try(block.to_port, block.from_port)
+          }]
+          sub_port_blocks = [for block in try(selector.sub_port_blocks, []) : {
+            description   = try(block.description, "")
+            name          = "${block.name}${local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.sub_port_blocks.name_suffix}"
+            from_module   = try(block.from_module, local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.sub_port_blocks.from_module)
+            from_port     = block.from_port
+            to_module     = try(block.to_module, block.from_module, local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.sub_port_blocks.from_module)
+            to_port       = try(block.to_port, block.from_port)
+            from_sub_port = block.from_sub_port
+            to_sub_port   = try(block.to_sub_port, block.from_sub_port)
+          }]
+        }
+      }
+    ]
+  ])
+}
+
+module "aci_fabric_spine_interface_selector_manual" {
+  source = "./modules/terraform-aci-fabric-spine-interface-selector"
+
+  for_each          = { for selector in local.fabric_spine_interface_selectors_manual : selector.key => selector.value if local.modules.aci_fabric_spine_interface_selector && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
+  interface_profile = each.value.profile_name
+  name              = each.value.name
+  description       = each.value.description
+  policy_group      = each.value.policy_group
+  port_blocks       = each.value.port_blocks
+  sub_port_blocks   = each.value.sub_port_blocks
+
+  depends_on = [
+    module.aci_fabric_spine_interface_profile_manual,
+    module.aci_fabric_spine_interface_profile_auto,
+  ]
+}
+
 module "aci_fabric_leaf_interface_profile_auto" {
   source = "./modules/terraform-aci-fabric-leaf-interface-profile"
 
@@ -472,6 +538,57 @@ module "aci_fabric_leaf_interface_profile_manual" {
 
   for_each = { for prof in try(local.fabric_policies.leaf_interface_profiles, []) : prof.name => prof if local.modules.aci_fabric_leaf_interface_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
   name     = "${each.value.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.name_suffix}"
+}
+
+locals {
+  fabric_leaf_interface_selectors_manual = flatten([
+    for profile in try(local.fabric_policies.leaf_interface_profiles, []) : [
+      for selector in try(profile.selectors, []) : {
+        key = "${profile.name}/${selector.name}"
+        value = {
+          name         = "${selector.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.name_suffix}"
+          description  = try(selector.description, "")
+          profile_name = "${profile.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.name_suffix}"
+          policy_group = try("${selector.policy_group}${local.defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix}", "")
+          port_blocks = [for block in try(selector.port_blocks, []) : {
+            description = try(block.description, "")
+            name        = "${block.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.port_blocks.name_suffix}"
+            from_module = try(block.from_module, local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
+            from_port   = block.from_port
+            to_module   = try(block.to_module, block.from_module, local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
+            to_port     = try(block.to_port, block.from_port)
+          }]
+          sub_port_blocks = [for block in try(selector.sub_port_blocks, []) : {
+            description   = try(block.description, "")
+            name          = "${block.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.sub_port_blocks.name_suffix}"
+            from_module   = try(block.from_module, local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module)
+            from_port     = block.from_port
+            to_module     = try(block.to_module, block.from_module, local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module)
+            to_port       = try(block.to_port, block.from_port)
+            from_sub_port = block.from_sub_port
+            to_sub_port   = try(block.to_sub_port, block.from_sub_port)
+          }]
+        }
+      }
+    ]
+  ])
+}
+
+module "aci_fabric_leaf_interface_selector_manual" {
+  source = "./modules/terraform-aci-fabric-leaf-interface-selector"
+
+  for_each          = { for selector in local.fabric_leaf_interface_selectors_manual : selector.key => selector.value if local.modules.aci_fabric_leaf_interface_selector && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
+  interface_profile = each.value.profile_name
+  name              = each.value.name
+  description       = each.value.description
+  policy_group      = each.value.policy_group
+  port_blocks       = each.value.port_blocks
+  sub_port_blocks   = each.value.sub_port_blocks
+
+  depends_on = [
+    module.aci_fabric_leaf_interface_profile_manual,
+    module.aci_fabric_leaf_interface_profile_auto,
+  ]
 }
 
 module "aci_fabric_spine_interface_profile_auto" {
@@ -544,6 +661,7 @@ module "aci_vmware_vmm_domain" {
   vswitch_lldp_policy         = try(each.value.vswitch.lldp_policy, "")
   vswitch_port_channel_policy = try(each.value.vswitch.port_channel_policy, "")
   vswitch_mtu_policy          = try(each.value.vswitch.mtu_policy, "")
+  vswitch_netflow_policy      = try(each.value.vswitch.netflow_exporter_policy, "")
   security_domains            = try(each.value.security_domains, [])
   credential_policies = [for cp in try(each.value.credential_policies, []) : {
     name     = "${cp.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.credential_policies.name_suffix}"
@@ -613,8 +731,8 @@ module "aci_tacacs" {
   protocol            = try(each.value.protocol, local.defaults.apic.fabric_policies.aaa.tacacs_providers.protocol)
   monitoring          = try(each.value.monitoring, local.defaults.apic.fabric_policies.aaa.tacacs_providers.monitoring)
   monitoring_username = try(each.value.monitoring_username, "")
-  monitoring_password = try(each.value.monitoring_password, "")
-  key                 = try(each.value.key, "")
+  monitoring_password = try(each.value.monitoring_password, null)
+  key                 = try(each.value.key, null)
   port                = try(each.value.port, local.defaults.apic.fabric_policies.aaa.tacacs_providers.port)
   retries             = try(each.value.retries, local.defaults.apic.fabric_policies.aaa.tacacs_providers.retries)
   timeout             = try(each.value.timeout, local.defaults.apic.fabric_policies.aaa.tacacs_providers.timeout)
@@ -631,8 +749,8 @@ module "aci_radius" {
   protocol            = try(each.value.protocol, local.defaults.apic.fabric_policies.aaa.radius_providers.protocol)
   monitoring          = try(each.value.monitoring, local.defaults.apic.fabric_policies.aaa.radius_providers.monitoring)
   monitoring_username = try(each.value.monitoring_username, "")
-  monitoring_password = try(each.value.monitoring_password, "")
-  key                 = try(each.value.key, "")
+  monitoring_password = try(each.value.monitoring_password, null)
+  key                 = try(each.value.key, null)
   port                = try(each.value.port, local.defaults.apic.fabric_policies.aaa.radius_providers.port)
   retries             = try(each.value.retries, local.defaults.apic.fabric_policies.aaa.radius_providers.retries)
   timeout             = try(each.value.timeout, local.defaults.apic.fabric_policies.aaa.radius_providers.timeout)
@@ -712,7 +830,7 @@ module "aci_keyring" {
   description    = try(each.value.description, "")
   ca_certificate = try(each.value.ca_certificate, "")
   certificate    = try(each.value.certificate, "")
-  private_key    = try(each.value.private_key, "")
+  private_key    = try(each.value.private_key, null)
 
   depends_on = [
     module.aci_ca_certificate
@@ -799,6 +917,7 @@ module "aci_config_export" {
   depends_on = [
     module.aci_remote_location,
     module.aci_fabric_scheduler,
+    module.aci_config_passphrase,
   ]
 }
 
@@ -922,13 +1041,89 @@ module "aci_interface_type" {
   type     = each.value.type
 }
 
+locals {
+  interface_shutdown = flatten([
+    for node in try(local.interface_policies.nodes, []) : [
+      for interface in try(node.interfaces, []) : {
+        key     = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
+        node_id = node.id
+        pod_id  = try([for node_ in local.node_policies.nodes : node_.pod if node_.id == node.id][0], local.defaults.apic.node_policies.nodes.pod)
+        module  = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+        port    = interface.port
+      } if try(interface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
+    ] if try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
+  ])
+}
+
+module "aci_interface_shutdown" {
+  source = "./modules/terraform-aci-interface-shutdown"
+
+  for_each = { for int in local.interface_shutdown : int.key => int if local.modules.aci_interface_shutdown && var.manage_fabric_policies }
+  node_id  = each.value.node_id
+  pod_id   = each.value.pod_id
+  module   = each.value.module
+  port     = each.value.port
+}
+
+locals {
+  subinterface_shutdown = flatten([
+    for node in try(local.interface_policies.nodes, []) : [
+      for interface in try(node.interfaces, []) : [
+        for subinterface in try(interface.sub_ports, []) : {
+          key      = format("%s/%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port, subinterface.port)
+          node_id  = node.id
+          module   = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+          port     = interface.port
+          sub_port = subinterface.port
+        } if try(subinterface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.sub_ports.shutdown)
+      ]
+    ] if try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
+  ])
+}
+
+module "aci_subinterface_shutdown" {
+  source = "./modules/terraform-aci-interface-shutdown"
+
+  for_each = { for int in local.subinterface_shutdown : int.key => int if local.modules.aci_interface_shutdown && var.manage_fabric_policies }
+  node_id  = each.value.node_id
+  module   = each.value.module
+  port     = each.value.port
+  sub_port = each.value.sub_port
+}
+
+locals {
+  fex_interface_shutdown = flatten([
+    for node in try(local.interface_policies.nodes, []) : [
+      for fex in try(node.fexes, []) : [
+        for interface in try(fex.interfaces, []) : {
+          key     = format("%s/%s/%s/%s", node.id, fex.id, try(interface.module, local.defaults.apic.interface_policies.nodes.fexes.interfaces.module), interface.port)
+          node_id = node.id
+          fex_id  = fex.id
+          module  = try(interface.module, local.defaults.apic.interface_policies.nodes.fexes.interfaces.module)
+          port    = interface.port
+        } if try(interface.shutdown, local.defaults.apic.interface_policies.nodes.fexes.interfaces.shutdown)
+      ]
+    ] if try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false
+  ])
+}
+
+module "aci_fex_interface_shutdown" {
+  source = "./modules/terraform-aci-interface-shutdown"
+
+  for_each = { for int in local.fex_interface_shutdown : int.key => int if local.modules.aci_interface_shutdown && var.manage_fabric_policies }
+  node_id  = each.value.node_id
+  fex_id   = each.value.fex_id
+  module   = each.value.module
+  port     = each.value.port
+}
+
 module "aci_smart_licensing" {
   source = "./modules/terraform-aci-smart-licensing"
 
   count              = local.modules.aci_smart_licensing == true && try(local.fabric_policies.smart_licensing.registration_token, "") != "" && var.manage_fabric_policies ? 1 : 0
   mode               = try(local.fabric_policies.smart_licensing.mode, local.defaults.apic.fabric_policies.smart_licensing.mode)
   registration_token = try(local.fabric_policies.smart_licensing.registration_token, "")
-  url                = try(local.fabric_policies.smart_licensing.url, local.defaults.apic.fabric_policies.smart_licensing.url)
+  url                = try(local.fabric_policies.smart_licensing.url, null)
   proxy_hostname_ip  = try(local.fabric_policies.smart_licensing.proxy.hostname_ip, "")
   proxy_port         = try(local.fabric_policies.smart_licensing.proxy.port, local.defaults.apic.fabric_policies.smart_licensing.proxy.port)
 }
@@ -988,13 +1183,14 @@ module "aci_fabric_span_source_group" {
 module "aci_ldap" {
   source = "./modules/terraform-aci-ldap"
 
+  count = local.modules.aci_ldap == true && var.manage_fabric_policies ? 1 : 0
   ldap_providers = [for prov in try(local.fabric_policies.aaa.ldap.providers, []) : {
     hostname_ip          = prov.hostname_ip
     description          = try(prov.description, "")
     port                 = try(prov.port, local.defaults.apic.fabric_policies.aaa.ldap.providers.port)
     bind_dn              = try(prov.bind_dn, "")
     base_dn              = try(prov.base_dn, "")
-    password             = try(prov.password, "")
+    password             = try(prov.password, null)
     timeout              = try(prov.timeout, local.defaults.apic.fabric_policies.aaa.ldap.providers.timeout)
     retries              = try(prov.retries, local.defaults.apic.fabric_policies.aaa.ldap.providers.retries)
     enable_ssl           = try(prov.enable_ssl, local.defaults.apic.fabric_policies.aaa.ldap.providers.enable_ssl)
@@ -1005,7 +1201,7 @@ module "aci_ldap" {
     mgmt_epg_name        = try(prov.mgmt_epg, local.defaults.apic.fabric_policies.aaa.ldap.providers.mgmt_epg) == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
     monitoring           = try(prov.server_monitoring, local.defaults.apic.fabric_policies.aaa.ldap.providers.server_monitoring)
     monitoring_username  = try(prov.monitoring_username, local.defaults.apic.fabric_policies.aaa.ldap.providers.monitoring_username)
-    monitoring_password  = try(prov.monitoring_password, "")
+    monitoring_password  = try(prov.monitoring_password, null)
   }]
   group_map_rules = [for rule in try(local.fabric_policies.aaa.ldap.group_map_rules, []) : {
     name        = rule.name
@@ -1042,4 +1238,20 @@ module "aci_fabric_link_level_policy" {
   name                   = each.value.name
   description            = try(each.value.description, "")
   link_debounce_interval = try(each.value.link_debounce_interval, local.defaults.apic.fabric_policies.interface_policies.link_level_policies.link_debounce_interval)
+}
+
+module "aci_sr_mpls_global_configuration" {
+  source = "./modules/terraform-aci-sr-mpls-global-configuration"
+
+  count                   = local.modules.aci_sr_mpls_global_configuration == true && try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum, local.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum, "") != "" && var.manage_fabric_policies ? 1 : 0
+  sr_global_block_minimum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum)
+  sr_global_block_maximum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum)
+}
+
+module "aci_atomic_counter" {
+  source = "./modules/terraform-aci-atomic-counter"
+
+  count       = try(local.fabric_policies.atomic_counter.admin_state, null) != null && local.modules.aci_atomic_counter && var.manage_fabric_policies ? 1 : 0
+  admin_state = local.fabric_policies.atomic_counter.admin_state
+  mode        = try(local.fabric_policies.atomic_counter.mode, local.defaults.apic.fabric_policies.atomic_counter.mode)
 }

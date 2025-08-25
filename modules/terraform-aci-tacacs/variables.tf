@@ -14,7 +14,7 @@ variable "description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -50,14 +50,14 @@ variable "monitoring_username" {
 variable "monitoring_password" {
   description = "Monitoring password."
   type        = string
-  default     = ""
+  default     = null
   sensitive   = true
 }
 
 variable "key" {
   description = "Key."
   type        = string
-  default     = ""
+  default     = null
   sensitive   = true
 }
 

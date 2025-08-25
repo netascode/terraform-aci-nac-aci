@@ -4,6 +4,8 @@ module "aci_firmware_group" {
   for_each = { for np in try(local.node_policies.update_groups, {}) : np.name => np if local.modules.aci_firmware_group && var.manage_node_policies }
   name     = "${each.value.name}${local.defaults.apic.node_policies.update_groups.name_suffix}"
   node_ids = [for node in try(local.node_policies.nodes, []) : node.id if try(node.update_group, "") == each.value.name]
+
+  depends_on = [module.aci_maintenance_group]
 }
 
 module "aci_maintenance_group" {
@@ -31,6 +33,7 @@ module "aci_vpc_group" {
   depends_on = [
     module.aci_access_leaf_switch_profile_auto,
     module.aci_access_leaf_switch_profile_manual,
+    module.aci_access_leaf_switch_configuration
   ]
 }
 

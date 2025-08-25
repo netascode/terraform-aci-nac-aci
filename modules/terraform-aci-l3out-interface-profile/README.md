@@ -27,6 +27,7 @@ module "aci_l3out_interface_profile" {
   ospf_authentication_type    = "md5"
   ospf_interface_policy       = "OSPF1"
   igmp_interface_policy       = "IIP"
+  nd_interface_policy         = "NDIP-SUPPRESS_RA"
   qos_class                   = "level2"
   custom_qos_policy           = "CQP"
   dhcp_labels = [
@@ -36,21 +37,23 @@ module "aci_l3out_interface_profile" {
     }
   ]
   interfaces = [{
-    description = "Interface 1"
-    type        = "vpc"
-    svi         = true
-    scope       = "local"
-    vlan        = 5
-    mac         = "12:34:56:78:90:AB"
-    mtu         = "1500"
-    mode        = "native"
-    node_id     = 201
-    node2_id    = 202
-    pod_id      = 2
-    channel     = "VPC1"
-    ip_a        = "1.1.1.2/24"
-    ip_b        = "1.1.1.3/24"
-    ip_shared   = "1.1.1.1/24"
+    description          = "Interface 1"
+    type                 = "vpc"
+    svi                  = true
+    scope                = "local"
+    vlan                 = 5
+    mac                  = "12:34:56:78:90:AB"
+    mtu                  = "1500"
+    mode                 = "native"
+    node_id              = 201
+    node2_id             = 202
+    pod_id               = 2
+    channel              = "VPC1"
+    ip_a                 = "1.1.1.2/24"
+    ip_b                 = "1.1.1.3/24"
+    ip_shared            = "1.1.1.1/24"
+    ip_shared_dhcp_relay = true
+    lladdr               = "fe80::ffff:ffff:ffff:ffff"
     bgp_peers = [{
       ip                               = "4.4.4.4"
       remote_as                        = 12345
@@ -79,6 +82,19 @@ module "aci_l3out_interface_profile" {
       export_route_control             = "ERC"
       import_route_control             = "IRC"
     }]
+    },
+    {
+      description  = "Interface 2"
+      floating_svi = true
+      node_id      = 201
+      ip           = "1.1.2.1/24"
+      svi          = true
+      vlan         = 6
+      paths = [{
+        physical_domain = PD-DOM1
+        floating_ip     = "1.1.2.1/24"
+        vlan            = "vlan-5"
+      }]
   }]
 }
 ```
@@ -88,13 +104,13 @@ module "aci_l3out_interface_profile" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.15.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.15.0 |
 
 ## Inputs
 
@@ -116,9 +132,10 @@ module "aci_l3out_interface_profile" {
 | <a name="input_eigrp_interface_policy"></a> [eigrp\_interface\_policy](#input\_eigrp\_interface\_policy) | EIGRP interface policy name. | `string` | `""` | no |
 | <a name="input_pim_policy"></a> [pim\_policy](#input\_pim\_policy) | PIM policy name. | `string` | `""` | no |
 | <a name="input_igmp_interface_policy"></a> [igmp\_interface\_policy](#input\_igmp\_interface\_policy) | IGMP interface policy name. | `string` | `""` | no |
+| <a name="input_nd_interface_policy"></a> [nd\_interface\_policy](#input\_nd\_interface\_policy) | ND interface policy. | `string` | `""` | no |
 | <a name="input_qos_class"></a> [qos\_class](#input\_qos\_class) | QoS class. Choices: `level1`, `level2`, `level3`, `level4`, `level5`, `level6`, `unspecified`. | `string` | `"unspecified"` | no |
 | <a name="input_custom_qos_policy"></a> [custom\_qos\_policy](#input\_custom\_qos\_policy) | Custom QoS policy name. | `string` | `""` | no |
-| <a name="input_interfaces"></a> [interfaces](#input\_interfaces) | List of interfaces. Default value `svi`: false. Default value `floating_svi`: false. Choices `type`. `access`, `pc`, `vpc`. Default value `type`: `access`. Allowed values `vlan`: 1-4096. Format `mac`: `12:34:56:78:9A:BC`. `mtu`: Allowed values are `inherit` or a number between 576 and 9216. Allowed values `node_id`, `node2_id`: 1-4000. Allowed values `pod_id`: 1-255. Default value `pod_id`: 1. Allowed values `module`: 1-9. Default value `module`: 1. Allowed values `port`: 1-127. Default value `bgp_peers.bfd`: false. Allowed values `bgp_peers.ttl`: 1-255. Default value `bgp_peers.ttl`: 1. Allowed values `bgp_peers.weight`: 0-65535. Default value `bgp_peers.weight`: 0. Allowed values `bgp_peers.remote_as`: 0-4294967295. | <pre>list(object({<br/>    description     = optional(string, "")<br/>    type            = optional(string, "access")<br/>    node_id         = number<br/>    node2_id        = optional(number)<br/>    pod_id          = optional(number, 1)<br/>    module          = optional(number, 1)<br/>    port            = optional(number)<br/>    sub_port        = optional(number)<br/>    channel         = optional(string)<br/>    ip              = optional(string)<br/>    svi             = optional(bool, false)<br/>    autostate       = optional(bool, false)<br/>    floating_svi    = optional(bool, false)<br/>    vlan            = optional(number)<br/>    mac             = optional(string, "00:22:BD:F8:19:FF")<br/>    mtu             = optional(string, "inherit")<br/>    mode            = optional(string, "regular")<br/>    ip_a            = optional(string)<br/>    ip_b            = optional(string)<br/>    ip_shared       = optional(string)<br/>    scope           = optional(string, "local")<br/>    multipod_direct = optional(bool, false)<br/>    bgp_peers = optional(list(object({<br/>      ip                               = string<br/>      remote_as                        = string<br/>      description                      = optional(string, "")<br/>      allow_self_as                    = optional(bool, false)<br/>      as_override                      = optional(bool, false)<br/>      disable_peer_as_check            = optional(bool, false)<br/>      next_hop_self                    = optional(bool, false)<br/>      send_community                   = optional(bool, false)<br/>      send_ext_community               = optional(bool, false)<br/>      password                         = optional(string)<br/>      allowed_self_as_count            = optional(number, 3)<br/>      bfd                              = optional(bool, false)<br/>      disable_connected_check          = optional(bool, false)<br/>      ttl                              = optional(number, 1)<br/>      weight                           = optional(number, 0)<br/>      remove_all_private_as            = optional(bool, false)<br/>      remove_private_as                = optional(bool, false)<br/>      replace_private_as_with_local_as = optional(bool, false)<br/>      unicast_address_family           = optional(bool, true)<br/>      multicast_address_family         = optional(bool, true)<br/>      admin_state                      = optional(bool, true)<br/>      local_as                         = optional(number)<br/>      as_propagate                     = optional(string, "none")<br/>      peer_prefix_policy               = optional(string)<br/>      export_route_control             = optional(string)<br/>      import_route_control             = optional(string)<br/>    })), [])<br/>    paths = optional(list(object({<br/>      physical_domain   = optional(string)<br/>      vmware_vmm_domain = optional(string)<br/>      elag              = optional(string)<br/>      floating_ip       = string<br/>    })), [])<br/>    micro_bfd_destination_ip = optional(string, "")<br/>    micro_bfd_start_timer    = optional(number, 0)<br/>  }))</pre> | `[]` | no |
+| <a name="input_interfaces"></a> [interfaces](#input\_interfaces) | List of interfaces. Default value `svi`: false. Default value `floating_svi`: false. Choices `type`. `access`, `pc`, `vpc`. Default value `type`: `access`. Allowed values `vlan`: 1-4096. Format `mac`: `12:34:56:78:9A:BC`. `mtu`: Allowed values are `inherit` or a number between 576 and 9216. Allowed values `node_id`, `node2_id`: 1-4000. Allowed values `pod_id`: 1-255. Default value `pod_id`: 1. Allowed values `module`: 1-9. Default value `module`: 1. Allowed values `port`: 1-127. Default value `bgp_peers.bfd`: false. Allowed values `bgp_peers.ttl`: 1-255. Default value `bgp_peers.ttl`: 1. Allowed values `bgp_peers.weight`: 0-65535. Default value `bgp_peers.weight`: 0. Allowed values `bgp_peers.remote_as`: 0-4294967295. | <pre>list(object({<br/>    description          = optional(string, "")<br/>    type                 = optional(string, "access")<br/>    node_id              = number<br/>    node2_id             = optional(number)<br/>    pod_id               = optional(number, 1)<br/>    module               = optional(number, 1)<br/>    port                 = optional(number)<br/>    sub_port             = optional(number)<br/>    channel              = optional(string)<br/>    ip                   = optional(string)<br/>    svi                  = optional(bool, false)<br/>    autostate            = optional(bool, false)<br/>    floating_svi         = optional(bool, false)<br/>    vlan                 = optional(number)<br/>    mac                  = optional(string, "00:22:BD:F8:19:FF")<br/>    mtu                  = optional(string, "inherit")<br/>    mode                 = optional(string, "regular")<br/>    ip_a                 = optional(string)<br/>    ip_b                 = optional(string)<br/>    ip_shared            = optional(string)<br/>    ip_shared_dhcp_relay = optional(bool, null)<br/>    lladdr               = optional(string, "::")<br/>    scope                = optional(string, "local")<br/>    multipod_direct      = optional(bool, false)<br/>    bgp_peers = optional(list(object({<br/>      ip                               = string<br/>      remote_as                        = string<br/>      description                      = optional(string, "")<br/>      allow_self_as                    = optional(bool, false)<br/>      as_override                      = optional(bool, false)<br/>      disable_peer_as_check            = optional(bool, false)<br/>      next_hop_self                    = optional(bool, false)<br/>      send_community                   = optional(bool, false)<br/>      send_ext_community               = optional(bool, false)<br/>      password                         = optional(string)<br/>      allowed_self_as_count            = optional(number, 3)<br/>      bfd                              = optional(bool, false)<br/>      disable_connected_check          = optional(bool, false)<br/>      ttl                              = optional(number, 1)<br/>      weight                           = optional(number, 0)<br/>      remove_all_private_as            = optional(bool, false)<br/>      remove_private_as                = optional(bool, false)<br/>      replace_private_as_with_local_as = optional(bool, false)<br/>      unicast_address_family           = optional(bool, true)<br/>      multicast_address_family         = optional(bool, true)<br/>      admin_state                      = optional(bool, true)<br/>      local_as                         = optional(number)<br/>      as_propagate                     = optional(string, "none")<br/>      peer_prefix_policy               = optional(string)<br/>      export_route_control             = optional(string)<br/>      import_route_control             = optional(string)<br/>    })), [])<br/>    paths = optional(list(object({<br/>      physical_domain   = optional(string)<br/>      vmware_vmm_domain = optional(string)<br/>      elag              = optional(string)<br/>      floating_ip       = string<br/>      vlan              = optional(string)<br/>    })), [])<br/>    micro_bfd_destination_ip = optional(string, "")<br/>    micro_bfd_start_timer    = optional(number, 0)<br/>  }))</pre> | `[]` | no |
 | <a name="input_multipod"></a> [multipod](#input\_multipod) | Multipod L3out flag. | `bool` | `false` | no |
 | <a name="input_remote_leaf"></a> [remote\_leaf](#input\_remote\_leaf) | Remote leaf L3out flag. | `bool` | `false` | no |
 | <a name="input_sr_mpls"></a> [sr\_mpls](#input\_sr\_mpls) | SR MPLS L3out flag. | `bool` | `false` | no |
@@ -154,6 +171,9 @@ module "aci_l3out_interface_profile" {
 | [aci_rest_managed.bgpRsPeerToProfile_import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.bgpRsPeerToProfile_import_floating](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.dhcpLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.dhcpRelayGwExtIp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.dhcpRelayGwExtIp_A](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.dhcpRelayGwExtIp_B](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.dhcpRsDhcpOptionPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.eigrpAuthIfP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.eigrpIfP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
@@ -164,6 +184,7 @@ module "aci_l3out_interface_profile" {
 | [aci_rest_managed.l3extIp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extIp_A](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extIp_B](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extIp_float](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extLIfP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extMember_A](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extMember_B](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
@@ -171,6 +192,7 @@ module "aci_l3out_interface_profile" {
 | [aci_rest_managed.l3extRsEgressQosDppPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsIngressQosDppPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsLIfPCustQosPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extRsNdIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsPathL3OutAtt](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsVSwitchEnhancedLagPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extVirtualLIfP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

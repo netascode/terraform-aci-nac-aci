@@ -30,6 +30,7 @@ module "aci_l3out_interface_profile" {
   ospf_authentication_type    = "md5"
   ospf_interface_policy       = "OSPF1"
   igmp_interface_policy       = "IIP"
+  nd_interface_policy         = "NDIP-SUPPRESS_RA"
   qos_class                   = "level2"
   custom_qos_policy           = "CQP"
   dhcp_labels = [
@@ -39,21 +40,23 @@ module "aci_l3out_interface_profile" {
     }
   ]
   interfaces = [{
-    description = "Interface 1"
-    type        = "vpc"
-    svi         = true
-    scope       = "local"
-    vlan        = 5
-    mac         = "12:34:56:78:90:AB"
-    mtu         = "1500"
-    mode        = "native"
-    node_id     = 201
-    node2_id    = 202
-    pod_id      = 2
-    channel     = "VPC1"
-    ip_a        = "1.1.1.2/24"
-    ip_b        = "1.1.1.3/24"
-    ip_shared   = "1.1.1.1/24"
+    description          = "Interface 1"
+    type                 = "vpc"
+    svi                  = true
+    scope                = "local"
+    vlan                 = 5
+    mac                  = "12:34:56:78:90:AB"
+    mtu                  = "1500"
+    mode                 = "native"
+    node_id              = 201
+    node2_id             = 202
+    pod_id               = 2
+    channel              = "VPC1"
+    ip_a                 = "1.1.1.2/24"
+    ip_b                 = "1.1.1.3/24"
+    ip_shared            = "1.1.1.1/24"
+    ip_shared_dhcp_relay = true
+    lladdr               = "fe80::ffff:ffff:ffff:ffff"
     bgp_peers = [{
       ip                               = "4.4.4.4"
       remote_as                        = 12345
@@ -82,6 +85,19 @@ module "aci_l3out_interface_profile" {
       export_route_control             = "ERC"
       import_route_control             = "IRC"
     }]
+    },
+    {
+      description  = "Interface 2"
+      floating_svi = true
+      node_id      = 201
+      ip           = "1.1.2.1/24"
+      svi          = true
+      vlan         = 6
+      paths = [{
+        physical_domain = PD-DOM1
+        floating_ip     = "1.1.2.1/24"
+        vlan            = "vlan-5"
+      }]
   }]
 }
 ```

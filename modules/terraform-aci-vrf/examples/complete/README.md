@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_vrf" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-vrf"
-  version = ">= 0.8.0"
+  version = ">= 0.9.2"
 
   tenant                                 = "ABC"
   name                                   = "VRF1"
@@ -25,13 +25,14 @@ module "aci_vrf" {
   data_plane_learning                    = false
   preferred_group                        = true
   transit_route_tag_policy               = "TRP1"
+  endpoint_retention_policy              = "ERP1"
   bgp_timer_policy                       = "BGP1"
   bgp_ipv4_address_family_context_policy = "BGP_AF_IPV4"
   bgp_ipv6_address_family_context_policy = "BGP_AF_IPV6"
-  bgp_ipv4_import_route_target           = "route-target:as2-nn2:10:10"
-  bgp_ipv4_export_route_target           = "route-target:as2-nn2:10:10"
-  bgp_ipv6_import_route_target           = "route-target:as2-nn2:10:10"
-  bgp_ipv6_export_route_target           = "route-target:as2-nn2:10:10"
+  bgp_ipv4_import_route_target           = ["route-target:as2-nn2:10:10", "route-target:as2-nn2:10:11"]
+  bgp_ipv4_export_route_target           = ["route-target:as2-nn2:10:12", "route-target:as2-nn2:10:13"]
+  bgp_ipv6_import_route_target           = ["route-target:as2-nn2:10:14", "route-target:as2-nn2:10:15"]
+  bgp_ipv6_export_route_target           = ["route-target:as2-nn2:10:16", "route-target:as2-nn2:10:17"]
   dns_labels                             = ["DNS1"]
   contract_consumers                     = ["CON1"]
   contract_providers                     = ["CON1"]
@@ -107,6 +108,17 @@ module "aci_vrf" {
       description = "Leak to VRF2"
       tenant      = "ABC"
       vrf         = "VRF2"
+    }]
+  }]
+  route_summarization_policies = [{
+    name = "RSP1"
+    nodes = [{
+      id  = 105
+      pod = 2
+    }]
+    subnets = [{
+      prefix                         = "1.1.0.0/16"
+      bgp_route_summarization_policy = "ABC"
     }]
   }]
 }

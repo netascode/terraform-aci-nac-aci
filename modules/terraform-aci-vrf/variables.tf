@@ -46,7 +46,7 @@ variable "description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -164,44 +164,52 @@ variable "bgp_ipv6_address_family_context_policy" {
 
 variable "bgp_ipv4_import_route_target" {
   description = "VRF BGP IPv4 import route target."
-  type        = string
-  default     = ""
+  type        = list(string)
+  default     = []
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_ipv4_import_route_target))
+    condition = alltrue([
+      for rt in var.bgp_ipv4_import_route_target : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rt))
+    ])
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
 variable "bgp_ipv4_export_route_target" {
   description = "VRF BGP IPv4 export route target."
-  type        = string
-  default     = ""
+  type        = list(string)
+  default     = []
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_ipv4_export_route_target))
+    condition = alltrue([
+      for rt in var.bgp_ipv4_export_route_target : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rt))
+    ])
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
 variable "bgp_ipv6_import_route_target" {
   description = "VRF BGP IPv6 import route target."
-  type        = string
-  default     = ""
+  type        = list(string)
+  default     = []
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_ipv6_import_route_target))
+    condition = alltrue([
+      for rt in var.bgp_ipv6_import_route_target : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rt))
+    ])
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
 variable "bgp_ipv6_export_route_target" {
   description = "VRF BGP IPv6 export route target."
-  type        = string
-  default     = ""
+  type        = list(string)
+  default     = []
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_ipv6_export_route_target))
+    condition = alltrue([
+      for rt in var.bgp_ipv6_export_route_target : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rt))
+    ])
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
@@ -523,7 +531,7 @@ variable "leaked_internal_prefixes" {
 
   validation {
     condition = alltrue(flatten([
-      for p in var.leaked_internal_prefixes : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", d.description))]
+      for p in var.leaked_internal_prefixes : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", d.description))]
     ]))
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -573,7 +581,7 @@ variable "leaked_external_prefixes" {
 
   validation {
     condition = alltrue(flatten([
-      for p in var.leaked_external_prefixes : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", d.description))]
+      for p in var.leaked_external_prefixes : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", d.description))]
     ]))
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -590,5 +598,60 @@ variable "leaked_external_prefixes" {
       for p in var.leaked_external_prefixes : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", d.vrf))]
     ]))
     error_message = "`vrf`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "route_summarization_policies" {
+  description = "List of route summarization policies."
+  type = list(object({
+    name = string
+    nodes = optional(list(object({
+      id  = number
+      pod = optional(number, 1)
+    })), [])
+    subnets = optional(list(object({
+      prefix                         = string
+      bgp_route_summarization_policy = optional(string, null)
+    })), [])
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for p in var.route_summarization_policies : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", p.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for p in var.route_summarization_policies : [for n in coalesce(p.nodes, []) : n.id >= 101 && n.id <= 4000]
+    ]))
+    error_message = "`nodes.id`: Allowed values: `101`-`4000`."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for p in var.route_summarization_policies : [for n in coalesce(p.nodes, []) : n.pod >= 1 && n.pod <= 255]
+    ]))
+    error_message = "`nodes.pod`: Allowed values: `1`-`255`."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for p in var.route_summarization_policies : [for s in coalesce(p.subnets, []) : s.bgp_route_summarization_policy == null || can(regex("^[a-zA-Z0-9_.:-]{1,64}$", s.bgp_route_summarization_policy))]
+    ]))
+    error_message = "`subnets.bgp_route_summarization_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "endpoint_retention_policy" {
+  description = "Endpoint Retention Policy."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.endpoint_retention_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

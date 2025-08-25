@@ -40,13 +40,13 @@ module "aci_date_time_policy" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.15.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.15.0 |
 
 ## Inputs
 
@@ -58,8 +58,8 @@ module "aci_date_time_policy" {
 | <a name="input_ntp_auth_state"></a> [ntp\_auth\_state](#input\_ntp\_auth\_state) | NTP authentication state. | `bool` | `false` | no |
 | <a name="input_apic_ntp_server_master_mode"></a> [apic\_ntp\_server\_master\_mode](#input\_apic\_ntp\_server\_master\_mode) | APIC NTP server master mode. | `bool` | `false` | no |
 | <a name="input_apic_ntp_server_state"></a> [apic\_ntp\_server\_state](#input\_apic\_ntp\_server\_state) | APIC NTP server state. | `bool` | `false` | no |
-| <a name="input_ntp_servers"></a> [ntp\_servers](#input\_ntp\_servers) | List of NTP servers. Default value `preferred`: false. Choices `mgmt_epg_type`: `inb`, `oob`. Default value `mgmt_epg_type`: `inb`. Allowed values `auth_key_id`: 1-65535. | <pre>list(object({<br>    hostname_ip   = string<br>    preferred     = optional(bool, false)<br>    mgmt_epg_type = optional(string, "inb")<br>    mgmt_epg_name = optional(string)<br>    auth_key_id   = optional(number)<br>  }))</pre> | `[]` | no |
-| <a name="input_ntp_keys"></a> [ntp\_keys](#input\_ntp\_keys) | List of keys. Allowed values `id`: 1-65535. Choices `auth_type`: `md5`, `sha1`. | <pre>list(object({<br>    id        = number<br>    key       = string<br>    auth_type = string<br>    trusted   = bool<br>  }))</pre> | `[]` | no |
+| <a name="input_ntp_servers"></a> [ntp\_servers](#input\_ntp\_servers) | List of NTP servers. Default value `preferred`: false. Choices `mgmt_epg_type`: `inb`, `oob`. Default value `mgmt_epg_type`: `inb`. Allowed values `auth_key_id`: 1-65535. | <pre>list(object({<br/>    hostname_ip   = string<br/>    preferred     = optional(bool, false)<br/>    mgmt_epg_type = optional(string, "inb")<br/>    mgmt_epg_name = optional(string)<br/>    auth_key_id   = optional(number)<br/>  }))</pre> | `[]` | no |
+| <a name="input_ntp_keys"></a> [ntp\_keys](#input\_ntp\_keys) | List of keys. Allowed values `id`: 1-65535. Choices `auth_type`: `md5`, `sha1`. | <pre>list(object({<br/>    id        = number<br/>    key       = string<br/>    auth_type = string<br/>    trusted   = bool<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 

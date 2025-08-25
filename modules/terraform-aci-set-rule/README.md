@@ -83,8 +83,8 @@ module "aci_set_rule" {
 | <a name="input_preference"></a> [preference](#input\_preference) | Preference. Allowed values `preference`: 0-4294967295. | `number` | `null` | no |
 | <a name="input_metric"></a> [metric](#input\_metric) | Metric. Allowed values `metric`: 0-4294967295. | `number` | `null` | no |
 | <a name="input_metric_type"></a> [metric\_type](#input\_metric\_type) | Metric Type. Choice `metric_type`: `ospf-type1` or `ospf-type1`. | `string` | `""` | no |
-| <a name="input_additional_communities"></a> [additional\_communities](#input\_additional\_communities) | Additional communities. | <pre>list(object({<br>    community   = string<br>    description = optional(string, "")<br>  }))</pre> | `[]` | no |
-| <a name="input_set_as_paths"></a> [set\_as\_paths](#input\_set\_as\_paths) | AS-Path Set List. | <pre>list(object({<br>    criteria = optional(string, "prepend")<br>    count    = optional(number, 1)<br>    asns = list(object({<br>      order      = optional(number, 0)<br>      asn_number = number<br>    }))<br>  }))</pre> | `[]` | no |
+| <a name="input_additional_communities"></a> [additional\_communities](#input\_additional\_communities) | Additional communities. | <pre>list(object({<br/>    community   = string<br/>    description = optional(string, "")<br/>  }))</pre> | `[]` | no |
+| <a name="input_set_as_paths"></a> [set\_as\_paths](#input\_set\_as\_paths) | AS-Path Set List. | <pre>list(object({<br/>    criteria = optional(string, "prepend")<br/>    count    = optional(number, 1)<br/>    asns = list(object({<br/>      order      = optional(number, 0)<br/>      asn_number = number<br/>    }))<br/>  }))</pre> | `[]` | no |
 | <a name="input_next_hop_propagation"></a> [next\_hop\_propagation](#input\_next\_hop\_propagation) | Next Hop Propagation. | `bool` | `false` | no |
 | <a name="input_multipath"></a> [multipath](#input\_multipath) | Multipath. | `bool` | `false` | no |
 | <a name="input_external_endpoint_group"></a> [external\_endpoint\_group](#input\_external\_endpoint\_group) | External endpoint group name. | `string` | `""` | no |

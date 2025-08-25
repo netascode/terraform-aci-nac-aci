@@ -59,6 +59,15 @@ resource "aci_rest_managed" "vmmRsVswitchOverrideMtuPol" {
   }
 }
 
+resource "aci_rest_managed" "vmmRsVswitchExporterPol" {
+  count      = var.vswitch_netflow_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.vmmVSwitchPolicyCont.dn}/rsvswitchExporterPol-[uni/infra/vmmexporterpol-${var.vswitch_netflow_policy}]"
+  class_name = "vmmRsVswitchExporterPol"
+  content = {
+    tDn = "uni/infra/vmmexporterpol-${var.vswitch_netflow_policy}"
+  }
+}
+
 resource "aci_rest_managed" "lacpEnhancedLagPol" {
   for_each   = { for elag in var.vswitch_enhanced_lags : elag.name => elag }
   dn         = "${aci_rest_managed.vmmVSwitchPolicyCont.dn}/enlacplagp-${each.value.name}"
@@ -89,9 +98,10 @@ resource "aci_rest_managed" "vmmCtrlrP" {
 }
 
 resource "aci_rest_managed" "vmmUsrAccP" {
-  for_each   = { for cred in var.credential_policies : cred.name => cred }
-  dn         = "${aci_rest_managed.vmmDomP.dn}/usracc-${each.value.name}"
-  class_name = "vmmUsrAccP"
+  for_each    = { for cred in var.credential_policies : cred.name => cred }
+  dn          = "${aci_rest_managed.vmmDomP.dn}/usracc-${each.value.name}"
+  class_name  = "vmmUsrAccP"
+  escape_html = false
   content = {
     name = each.value.name
     usr  = each.value.username

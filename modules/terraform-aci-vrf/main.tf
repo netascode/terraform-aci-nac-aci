@@ -26,6 +26,19 @@ locals {
       }
     ]
   ])
+  route_summarization_subnets = flatten([
+    for pol in var.route_summarization_policies : [
+      for subnet in pol.subnets : {
+        key = "${pol.name}/${subnet.prefix}"
+        value = {
+          policy = pol.name
+          prefix = subnet.prefix
+          tDn    = subnet.bgp_route_summarization_policy != null ? "uni/tn-${var.tenant}/bgprtsum-${subnet.bgp_route_summarization_policy}" : "uni/tn-common/bgprtsum-default"
+        }
+      }
+    ]
+
+  ])
 }
 
 resource "aci_rest_managed" "fvCtx" {
@@ -143,7 +156,7 @@ resource "aci_rest_managed" "fvRsCtxToBgpCtxAfPol_ipv6" {
 }
 
 resource "aci_rest_managed" "bgpRtTargetP_ipv4" {
-  count      = var.bgp_ipv4_import_route_target != "" || var.bgp_ipv4_export_route_target != "" ? 1 : 0
+  count      = length(var.bgp_ipv4_import_route_target) > 0 || length(var.bgp_ipv4_export_route_target) > 0 ? 1 : 0
   dn         = "${aci_rest_managed.fvCtx.dn}/rtp-ipv4-ucast"
   class_name = "bgpRtTargetP"
   content = {
@@ -152,27 +165,27 @@ resource "aci_rest_managed" "bgpRtTargetP_ipv4" {
 }
 
 resource "aci_rest_managed" "bgpRtTarget_ipv4_import" {
-  count      = var.bgp_ipv4_import_route_target != "" ? 1 : 0
-  dn         = "${aci_rest_managed.bgpRtTargetP_ipv4[0].dn}/rt-[${var.bgp_ipv4_import_route_target}]-import"
+  for_each   = toset(var.bgp_ipv4_import_route_target)
+  dn         = "${aci_rest_managed.bgpRtTargetP_ipv4[0].dn}/rt-[${each.value}]-import"
   class_name = "bgpRtTarget"
   content = {
-    rt   = var.bgp_ipv4_import_route_target
+    rt   = each.value
     type = "import"
   }
 }
 
 resource "aci_rest_managed" "bgpRtTarget_ipv4_export" {
-  count      = var.bgp_ipv4_export_route_target != "" ? 1 : 0
-  dn         = "${aci_rest_managed.bgpRtTargetP_ipv4[0].dn}/rt-[${var.bgp_ipv4_export_route_target}]-export"
+  for_each   = toset(var.bgp_ipv4_export_route_target)
+  dn         = "${aci_rest_managed.bgpRtTargetP_ipv4[0].dn}/rt-[${each.value}]-export"
   class_name = "bgpRtTarget"
   content = {
-    rt   = var.bgp_ipv4_export_route_target
+    rt   = each.value
     type = "export"
   }
 }
 
 resource "aci_rest_managed" "bgpRtTargetP_ipv6" {
-  count      = var.bgp_ipv6_import_route_target != "" || var.bgp_ipv6_export_route_target != "" ? 1 : 0
+  count      = length(var.bgp_ipv6_import_route_target) > 0 || length(var.bgp_ipv6_export_route_target) > 0 ? 1 : 0
   dn         = "${aci_rest_managed.fvCtx.dn}/rtp-ipv6-ucast"
   class_name = "bgpRtTargetP"
   content = {
@@ -181,21 +194,21 @@ resource "aci_rest_managed" "bgpRtTargetP_ipv6" {
 }
 
 resource "aci_rest_managed" "bgpRtTarget_ipv6_import" {
-  count      = var.bgp_ipv6_import_route_target != "" ? 1 : 0
-  dn         = "${aci_rest_managed.bgpRtTargetP_ipv6[0].dn}/rt-[${var.bgp_ipv6_import_route_target}]-import"
+  for_each   = toset(var.bgp_ipv6_import_route_target)
+  dn         = "${aci_rest_managed.bgpRtTargetP_ipv6[0].dn}/rt-[${each.value}]-import"
   class_name = "bgpRtTarget"
   content = {
-    rt   = var.bgp_ipv6_import_route_target
+    rt   = each.value
     type = "import"
   }
 }
 
 resource "aci_rest_managed" "bgpRtTarget_ipv6_export" {
-  count      = var.bgp_ipv6_export_route_target != "" ? 1 : 0
-  dn         = "${aci_rest_managed.bgpRtTargetP_ipv6[0].dn}/rt-[${var.bgp_ipv6_export_route_target}]-export"
+  for_each   = toset(var.bgp_ipv6_export_route_target)
+  dn         = "${aci_rest_managed.bgpRtTargetP_ipv6[0].dn}/rt-[${each.value}]-export"
   class_name = "bgpRtTarget"
   content = {
-    rt   = var.bgp_ipv6_export_route_target
+    rt   = each.value
     type = "export"
   }
 }
@@ -509,5 +522,51 @@ resource "aci_rest_managed" "leakTo_external" {
     tenantName = each.value.tenant
     ctxName    = each.value.vrf
     descr      = each.value.description
+  }
+}
+
+resource "aci_rest_managed" "fvCtxRtSummPol" {
+  for_each   = { for pol in var.route_summarization_policies : pol.name => pol }
+  dn         = "${aci_rest_managed.fvCtx.dn}/ctxrtsummpol-${each.value.name}"
+  class_name = "fvCtxRtSummPol"
+  content = {
+    name = each.value.name
+  }
+
+  dynamic "child" {
+    for_each = { for node in each.value.nodes : node.id => node }
+    content {
+      rn         = "rsnodeRtSummAtt-[topology/pod-${child.value.pod}/node-${child.value.id}]"
+      class_name = "fvRsNodeRtSummAtt"
+      content = {
+        tDn = "topology/pod-${child.value.pod}/node-${child.value.id}"
+      }
+    }
+  }
+}
+
+resource "aci_rest_managed" "fvRtSummSubnet" {
+  for_each   = { for subnet in local.route_summarization_subnets : subnet.key => subnet.value }
+  dn         = "${aci_rest_managed.fvCtxRtSummPol[each.value.policy].dn}/rtsummsubnet-[${each.value.prefix}]"
+  class_name = "fvRtSummSubnet"
+  content = {
+    prefix = each.value.prefix
+  }
+
+  child {
+    rn         = "rsSubnetToRtSummPol"
+    class_name = "fvRsSubnetToRtSummPol"
+    content = {
+      tDn = each.value.tDn
+    }
+  }
+}
+
+resource "aci_rest_managed" "fvRsCtxToEpRet" {
+  count      = var.endpoint_retention_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvCtx.dn}/rsctxToEpRet"
+  class_name = "fvRsCtxToEpRet"
+  content = {
+    tnFvEpRetPolName = var.endpoint_retention_policy
   }
 }

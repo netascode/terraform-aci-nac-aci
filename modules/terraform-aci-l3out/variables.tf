@@ -46,7 +46,7 @@ variable "description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -288,7 +288,7 @@ variable "import_route_map_description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.import_route_map_description))
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.import_route_map_description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -325,7 +325,7 @@ variable "import_route_map_contexts" {
 
   validation {
     condition = alltrue([
-      for c in var.import_route_map_contexts : c.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description)), false)
+      for c in var.import_route_map_contexts : c.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description)), false)
     ])
     error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -378,7 +378,7 @@ variable "export_route_map_description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.export_route_map_description))
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.export_route_map_description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
@@ -415,7 +415,7 @@ variable "export_route_map_contexts" {
 
   validation {
     condition = alltrue([
-      for c in var.export_route_map_contexts : c.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description)), false)
+      for c in var.export_route_map_contexts : c.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", c.description)), false)
     ])
     error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
@@ -449,6 +449,98 @@ variable "export_route_map_contexts" {
     ]))
     error_message = "`match_rules`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
+}
+
+variable "route_maps" {
+  description = "List of route maps"
+  type = list(object({
+    name        = string
+    description = optional(string, "")
+    type        = optional(string, "combinable")
+    contexts = list(object({
+      name        = string
+      description = optional(string, "")
+      action      = optional(string, "permit")
+      order       = optional(number, 0)
+      set_rule    = optional(string)
+      match_rules = optional(list(string), [])
+    }))
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for route_map in var.route_maps : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", route_map.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+  validation {
+    condition = alltrue([
+      for route_map in var.route_maps : route_map.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", route_map.description)), false)
+    ])
+    error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+  validation {
+    condition = alltrue([
+      for route_map in var.route_maps : route_map.type == null || try(contains(["combinable", "global"], route_map.type), false)
+    ])
+    error_message = "`type`: Allowed values are `combinable` or `global`."
+  }
+  validation {
+    condition = alltrue(flatten([
+      for route_map in var.route_maps : [
+        for context in route_map.contexts : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", context.name))
+      ]
+    ]))
+    error_message = "`contexts.name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for route_map in var.route_maps : [
+        for context in route_map.contexts : context.description == null || try(can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", context.description)), false)
+      ]
+    ]))
+    error_message = "`contexts.description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, `}`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for route_map in var.route_maps : [
+        for context in route_map.contexts : context.action == null || try(contains(["permit", "deny"], context.action), false)
+      ]
+    ]))
+    error_message = "`contexts.action`: Allowed values are `permit` or `deny`."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for route_map in var.route_maps : [
+        for context in route_map.contexts : context.order == null || try(context.order >= 0 && context.order <= 9, false)
+      ]
+    ]))
+    error_message = "`contexts.order`: Minimum value: 0. Maximum value: 9."
+  }
+  validation {
+    condition = alltrue(flatten([
+      for route_map in var.route_maps : [
+        for context in route_map.contexts : context.set_rule == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", context.set_rule)), false)
+      ]
+    ]))
+    error_message = "`contexts.set_rule`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue(flatten(flatten([
+      for route_map in var.route_maps : [
+        for context in route_map.contexts : [
+          for match_rule in context.match_rules : match_rule == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", match_rule)), false)
+        ]
+      ]
+    ])))
+    error_message = "`contexts.match_rules`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
 }
 
 variable "multipod" {

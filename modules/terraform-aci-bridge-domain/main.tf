@@ -33,6 +33,7 @@ resource "aci_rest_managed" "fvBD" {
     unkMcastAct           = var.unknown_ipv4_multicast
     v6unkMcastAct         = var.unknown_ipv6_multicast
     epClear               = var.clear_remote_mac_entries == true ? "yes" : "no"
+    mcastARPDrop          = var.multicast_arp_drop != null ? (var.multicast_arp_drop == true ? "yes" : "no") : null
   }
 }
 
@@ -190,5 +191,14 @@ resource "aci_rest_managed" "fvRsBDToNdP" {
   class_name = "fvRsBDToNdP"
   content = {
     tnNdIfPolName = var.nd_interface_policy
+  }
+}
+
+resource "aci_rest_managed" "fvRsBdToEpRet" {
+  count      = var.endpoint_retention_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvBD.dn}/rsbdToEpRet"
+  class_name = "fvRsBdToEpRet"
+  content = {
+    tnFvEpRetPolName = var.endpoint_retention_policy
   }
 }

@@ -10,7 +10,7 @@ resource "aci_rest_managed" "infraAccGrp" {
 }
 
 resource "aci_rest_managed" "infraRsHIfPol" {
-  count      = var.type != "breakout" ? 1 : 0
+  count      = var.type != "breakout" && var.link_level_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rshIfPol"
   class_name = "infraRsHIfPol"
   content = {
@@ -19,7 +19,7 @@ resource "aci_rest_managed" "infraRsHIfPol" {
 }
 
 resource "aci_rest_managed" "infraRsCdpIfPol" {
-  count      = var.type != "breakout" ? 1 : 0
+  count      = var.type != "breakout" && var.cdp_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rscdpIfPol"
   class_name = "infraRsCdpIfPol"
   content = {
@@ -28,7 +28,7 @@ resource "aci_rest_managed" "infraRsCdpIfPol" {
 }
 
 resource "aci_rest_managed" "infraRsLldpIfPol" {
-  count      = var.type != "breakout" ? 1 : 0
+  count      = var.type != "breakout" && var.lldp_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rslldpIfPol"
   class_name = "infraRsLldpIfPol"
   content = {
@@ -54,8 +54,17 @@ resource "aci_rest_managed" "infraRsQosIngressDppIfPol" {
   }
 }
 
+resource "aci_rest_managed" "infraRsMacsecIfPol" {
+  count      = var.macsec_interface_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraAccGrp.dn}/rsmacsecIfPol"
+  class_name = "infraRsMacsecIfPol"
+  content = {
+    tnMacsecIfPolName = var.macsec_interface_policy
+  }
+}
+
 resource "aci_rest_managed" "infraRsStpIfPol" {
-  count      = var.type != "breakout" ? 1 : 0
+  count      = var.type != "breakout" && var.spanning_tree_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rsstpIfPol"
   class_name = "infraRsStpIfPol"
   content = {
@@ -64,7 +73,7 @@ resource "aci_rest_managed" "infraRsStpIfPol" {
 }
 
 resource "aci_rest_managed" "infraRsMcpIfPol" {
-  count      = var.type != "breakout" ? 1 : 0
+  count      = var.type != "breakout" && var.mcp_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rsmcpIfPol"
   class_name = "infraRsMcpIfPol"
   content = {
@@ -73,7 +82,7 @@ resource "aci_rest_managed" "infraRsMcpIfPol" {
 }
 
 resource "aci_rest_managed" "infraRsL2IfPol" {
-  count      = var.type != "breakout" ? 1 : 0
+  count      = var.type != "breakout" && var.l2_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rsl2IfPol"
   class_name = "infraRsL2IfPol"
   content = {
@@ -82,7 +91,7 @@ resource "aci_rest_managed" "infraRsL2IfPol" {
 }
 
 resource "aci_rest_managed" "infraRsStormctrlIfPol" {
-  count      = var.type != "breakout" ? 1 : 0
+  count      = var.type != "breakout" && var.storm_control_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rsstormctrlIfPol"
   class_name = "infraRsStormctrlIfPol"
   content = {
@@ -91,7 +100,7 @@ resource "aci_rest_managed" "infraRsStormctrlIfPol" {
 }
 
 resource "aci_rest_managed" "infraRsLacpPol" {
-  count      = (var.type == "vpc" || var.type == "pc") ? 1 : 0
+  count      = (var.type == "vpc" || var.type == "pc") && var.port_channel_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rslacpPol"
   class_name = "infraRsLacpPol"
   content = {
