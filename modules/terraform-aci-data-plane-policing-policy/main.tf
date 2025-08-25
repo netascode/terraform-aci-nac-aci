@@ -1,7 +1,6 @@
 resource "aci_rest_managed" "qosDppPol" {
   dn         = try(var.tenant != null, false) ? "uni/tn-${var.tenant}/qosdpppol-${var.name}" : "uni/infra/qosdpppol-${var.name}"
   class_name = "qosDppPol"
-
   content = {
     name            = var.name
     adminSt         = var.admin_state ? "enabled" : "disabled"

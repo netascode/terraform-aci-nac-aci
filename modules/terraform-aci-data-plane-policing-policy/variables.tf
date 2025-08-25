@@ -113,12 +113,12 @@ variable "burst_excessive" {
 
 variable "burst_excessive_unit" {
   type        = string
-  description = "Excessive Burst unit.  Allowed values: `unspecified`, `byte`, `kilo`, `mega`, `giga`, `msec`, `usec`."
+  description = "Excessive Burst unit.  Allowed values: `unspecified`, `kilo`, `mega`, `giga`, `msec`, `usec`."
   default     = "unspecified"
 
   validation {
-    condition     = var.burst_excessive_unit == null || try(contains(["unspecified", "byte", "kilo", "mega", "giga", "msec", "usec"], var.burst_excessive_unit), false)
-    error_message = "Allowed values: `unspecified`, `byte`, `kilo`, `mega`, `giga`, `msec`, `usec`."
+    condition     = var.burst_excessive_unit == null || try(contains(["unspecified", "kilo", "mega", "giga", "msec", "usec"], var.burst_excessive_unit), false)
+    error_message = "Allowed values: `unspecified`, `kilo`, `mega`, `giga`, `msec`, `usec`."
   }
 }
 

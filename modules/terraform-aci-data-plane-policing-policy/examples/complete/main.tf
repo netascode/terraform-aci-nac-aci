@@ -1,6 +1,6 @@
 module "aci_data_plane_policing_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-data-aci-data-plane-policing-policy"
-  version = ">= 0.8.0"
+  version = ">= 0.9.3"
 
   name            = "dpp-pol1"
   adminSt         = true

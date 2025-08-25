@@ -12,7 +12,7 @@ Location in GUI:
 ```hcl
 module "aci_data_plane_policing_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-data-aci-data-plane-policing-policy"
-  version = ">= 0.8.0"
+  version = ">= 0.9.3"
 
   name            = "dpp-pol1"
   adminSt         = true
@@ -43,14 +43,14 @@ module "aci_data_plane_policing_policy" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.15.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.15.0 |
 
 ## Inputs
 
@@ -67,7 +67,7 @@ module "aci_data_plane_policing_policy" {
 | <a name="input_rate"></a> [rate](#input\_rate) | Committed Information Rate. Allowed Values: A number between 0 and 4,398,046,510,080. | `number` | n/a | yes |
 | <a name="input_rate_unit"></a> [rate\_unit](#input\_rate\_unit) | Committed Rate Unit. Allowed Values: `unspecified`, `kilo`, `mega`, `giga`. | `string` | `"unspecified"` | no |
 | <a name="input_burst_excessive"></a> [burst\_excessive](#input\_burst\_excessive) | Excessive burst size (2R3C policer only). Allowed Values: `unspecified`, or a number between 0 and 549,755,813,760. | `string` | `"unspecified"` | no |
-| <a name="input_burst_excessive_unit"></a> [burst\_excessive\_unit](#input\_burst\_excessive\_unit) | Excessive Burst unit.  Allowed values: `unspecified`, `byte`, `kilo`, `mega`, `giga`, `msec`, `usec`. | `string` | `"unspecified"` | no |
+| <a name="input_burst_excessive_unit"></a> [burst\_excessive\_unit](#input\_burst\_excessive\_unit) | Excessive Burst unit.  Allowed values: `unspecified`, `kilo`, `mega`, `giga`, `msec`, `usec`. | `string` | `"unspecified"` | no |
 | <a name="input_burst"></a> [burst](#input\_burst) | Committed burst size. Allowed Values: `unspecified`, or a number between 0 and 549,755,813,760. | `string` | `"unspecified"` | no |
 | <a name="input_burst_unit"></a> [burst\_unit](#input\_burst\_unit) | Burst unit.  Allowed values: `unspecified`, `kilo`, `mega`, `giga`, `msec`, `usec`. | `string` | `"unspecified"` | no |
 | <a name="input_conform_action"></a> [conform\_action](#input\_conform\_action) | Conform Action. Allowed Values: `transmit`, `drop`, or `mark`. | `string` | `"transmit"` | no |
