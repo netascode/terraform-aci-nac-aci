@@ -63,6 +63,29 @@ variable "cdp_policy" {
   }
 }
 
+variable "ingress_data_plane_policing_policy" {
+  description = "Ingress Data Plane Policing policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.ingress_data_plane_policing_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "egress_data_plane_policing_policy" {
+  description = "Egress Data Plane Policing policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.egress_data_plane_policing_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+
 variable "lldp_policy" {
   description = "LLDP policy name."
   type        = string
