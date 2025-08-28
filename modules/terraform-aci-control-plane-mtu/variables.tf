@@ -5,7 +5,7 @@ variable "mtu" {
 
   validation {
     condition     = var.mtu >= 576 && var.mtu <= 9216
-    error_message = "CPMtu policy must be between 576 and 9216."
+    error_message = "Control Plane MTU must be between 576 and 9216."
   }
 }
 
