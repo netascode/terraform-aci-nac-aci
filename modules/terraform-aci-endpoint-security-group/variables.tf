@@ -238,13 +238,6 @@ variable "ip_subnet_selectors" {
 
   validation {
     condition = alltrue([
-      for iss in var.ip_subnet_selectors : can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}\\/([0-9]){1,2}$", iss.value))
-    ])
-    error_message = "`value`: Valid ip format example: 192.168.1.0/24."
-  }
-
-  validation {
-    condition = alltrue([
       for iss in var.ip_subnet_selectors : iss.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", iss.description))
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
