@@ -10,8 +10,8 @@ variable "mtu" {
 }
 
 variable "apic_mtu_apply" {
-  description = "APIC MTU apply policy"
+  description = "APIC MTU apply policy. Set to null to omit the attribute for older APIC versions."
   type        = bool
-  default     = "false"
+  default     = null
 }
 

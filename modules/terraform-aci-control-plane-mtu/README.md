@@ -36,7 +36,7 @@ module "aci_control_plane_mtu" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_mtu"></a> [mtu](#input\_mtu) | CP MTU policy. | `number` | `9000` | no |
-| <a name="input_apic_mtu_apply"></a> [apic\_mtu\_apply](#input\_apic\_mtu\_apply) | APIC MTU apply policy | `bool` | `"false"` | no |
+| <a name="input_apic_mtu_apply"></a> [apic\_mtu\_apply](#input\_apic\_mtu\_apply) | APIC MTU apply policy. Set to null to omit the attribute for older APIC versions. | `bool` | `null` | no |
 
 ## Outputs
 

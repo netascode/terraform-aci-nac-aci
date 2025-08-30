@@ -1143,5 +1143,5 @@ module "aci_control_plane_mtu" {
   source = "./modules/terraform-aci-control-plane-mtu"
 
   mtu            = try(local.fabric_policies.control_plane_mtu.mtu, local.defaults.apic.fabric_policies.control_plane_mtu.mtu)
-  apic_mtu_apply = try(local.fabric_policies.control_plane_mtu.apic_mtu_apply, local.defaults.apic.fabric_policies.control_plane_mtu.apic_mtu_apply)
+  apic_mtu_apply = try(local.fabric_policies.control_plane_mtu.apic_mtu_apply, null)
 }
