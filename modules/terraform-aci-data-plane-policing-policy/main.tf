@@ -4,25 +4,25 @@ resource "aci_rest_managed" "qosDppPol" {
   content = {
     name            = var.name
     adminSt         = var.admin_state ? "enabled" : "disabled"
-    type            = var.type
     mode            = var.mode
+    type            = var.type
     sharingMode     = var.sharing_mode
-    pir             = var.type == "2R3C" ? var.peak_rate : null
-    pirUnit         = var.type == "2R3C" ? var.peak_rate_unit : null
+    conformAction   = var.conform_action
+    conformMarkCos  = var.conform_mark_cos
+    conformMarkDscp = var.conform_mark_dscp
+    exceedAction    = var.exceed_action
+    exceedMarkCos   = var.exceed_mark_cos
+    exceedMarkDscp  = var.exceed_mark_dscp
+    violateAction   = var.violate_action
+    violateMarkCos  = var.violate_mark_cos
+    violateMarkDscp = var.violate_mark_dscp
     rate            = var.rate
     rateUnit        = var.rate_unit
-    be              = var.type == "2R3C" ? var.burst_excessive : null
-    beUnit          = var.type == "2R3C" ? var.burst_excessive_unit : null
     burst           = var.burst
     burstUnit       = var.burst_unit
-    conformAction   = var.conform_action
-    conformMarkCos  = var.conform_action == "mark" ? var.conform_mark_cos : null
-    conformMarkDscp = var.conform_action == "mark" ? var.conform_mark_dscp : null
-    exceedAction    = var.exceed_action
-    exceedMarkCos   = var.exceed_action == "mark" ? var.exceed_mark_cos : null
-    exceedMarkDscp  = var.exceed_action == "mark" ? var.exceed_mark_dscp : null
-    violateAction   = var.violate_action
-    violateMarkCos  = var.violate_action == "mark" ? var.violate_mark_cos : null
-    violateMarkDscp = var.violate_action == "mark" ? var.violate_mark_dscp : null
+    pir             = var.peak_rate
+    pirUnit         = var.peak_rate_unit
+    be              = var.burst_excessive
+    beUnit          = var.burst_excessive_unit
   }
 }
