@@ -1152,6 +1152,9 @@ defaults:
             operator: equals
       inb_endpoint_groups:
         name_suffix: ""
+        subnets:
+          public: false
+          shared: false
       oob_endpoint_groups:
         name_suffix: ""
         name: default

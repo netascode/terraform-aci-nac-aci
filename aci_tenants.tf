@@ -756,6 +756,12 @@ locals {
         contract_providers          = try([for contract in epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
         contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
         static_routes               = try(epg.static_routes, [])
+        subnets = [for subnet in try(epg.subnets, []) : {
+          description = try(subnet.description, "")
+          ip          = subnet.ip
+          public      = try(subnet.public, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.public)
+          shared      = try(subnet.shared, local.defaults.apic.tenants.application_profiles.endpoint_groups.subnets.shared)
+        }]
       }
     ] if tenant.name == "mgmt"
   ])
@@ -772,7 +778,7 @@ module "aci_inband_endpoint_group" {
   contract_providers          = each.value.contract_providers
   contract_imported_consumers = each.value.contract_imported_consumers
   static_routes               = each.value.static_routes
-
+  subnets                     = each.value.subnets
   depends_on = [
     module.aci_tenant,
     module.aci_contract,
@@ -996,7 +1002,7 @@ locals {
         for np in try(l3out.node_profiles, []) : {
           key                       = format("%s/%s/%s", tenant.name, l3out.name, np.name)
           tenant                    = tenant.name
-          l3out                     = l3out.name
+          l3out                     = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
           name                      = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
           multipod                  = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
           remote_leaf               = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
@@ -1087,8 +1093,8 @@ locals {
       for l3out in try(tenant.l3outs, []) : {
         key                       = format("%s/%s", tenant.name, l3out.name)
         tenant                    = tenant.name
-        l3out                     = l3out.name
-        name                      = l3out.name
+        l3out                     = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
+        name                      = "${l3out.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
         multipod                  = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
         remote_leaf               = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
         bgp_protocol_profile_name = try(l3out.bgp.name, "")
@@ -1179,8 +1185,8 @@ locals {
           for ip in try(np.interface_profiles, []) : {
             key                          = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
             tenant                       = tenant.name
-            l3out                        = l3out.name
-            node_profile                 = np.name
+            l3out                        = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
+            node_profile                 = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
             name                         = "${ip.name}${local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix}"
             description                  = try(ip.description, "")
             multipod                     = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
@@ -1344,9 +1350,9 @@ locals {
       for l3out in try(tenant.l3outs, []) : {
         key                          = format("%s/%s", tenant.name, l3out.name)
         tenant                       = tenant.name
-        l3out                        = l3out.name
-        node_profile                 = l3out.name
-        name                         = l3out.name
+        l3out                        = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
+        node_profile                 = "${l3out.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
+        name                         = "${l3out.name}${local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.name_suffix}"
         multipod                     = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
         remote_leaf                  = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
         bfd_policy                   = try("${l3out.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
@@ -1651,7 +1657,7 @@ locals {
         for np in try(l3out.node_profiles, []) : {
           key                      = format("%s/%s/%s", tenant.name, l3out.name, np.name)
           tenant                   = tenant.name
-          l3out                    = l3out.name
+          l3out                    = "${l3out.name}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
           name                     = "${np.name}${local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.name_suffix}"
           sr_mpls                  = true
           mpls_custom_qos_policy   = try(np.mpls_custom_qos_policy, "")
@@ -1712,8 +1718,8 @@ locals {
           for ip in try(np.interface_profiles, []) : {
             key                  = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
             tenant               = tenant.name
-            l3out                = l3out.name
-            node_profile         = np.name
+            l3out                = "${l3out.name}${local.defaults.apic.tenants.sr_mpls_l3outs.name_suffix}"
+            node_profile         = "${np.name}${local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.name_suffix}"
             sr_mpls              = true
             transport_data_plane = l3out.transport_data_plane
             name                 = "${ip.name}${local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.interface_profiles.name_suffix}"
