@@ -72,6 +72,15 @@ resource "aci_rest_managed" "l3extLoopBackIfP" {
   }
 }
 
+resource "aci_rest_managed" "l3extIntersiteLoopBackIfP" {
+  for_each   = { for node in var.nodes : node.node_id => node if var.tenant == "infra" && node.intersite_loopback != null }
+  dn         = "${aci_rest_managed.l3extRsNodeL3OutAtt[each.key].dn}/sitelbp-[${each.value.intersite_loopback}]"
+  class_name = "l3extIntersiteLoopBackIfP"
+  content = {
+    addr = each.value.intersite_loopback
+  }
+}
+
 resource "aci_rest_managed" "ipRouteP" {
   for_each   = { for item in local.static_routes : item.key => item.value }
   dn         = "${aci_rest_managed.l3extRsNodeL3OutAtt[each.value.node].dn}/rt-[${each.value.prefix}]"

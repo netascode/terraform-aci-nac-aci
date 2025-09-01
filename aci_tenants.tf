@@ -995,6 +995,7 @@ locals {
             router_id             = node.router_id
             router_id_as_loopback = try(node.router_id_as_loopback, local.defaults.apic.tenants.l3outs.node_profiles.nodes.router_id_as_loopback)
             loopbacks             = try(node.loopbacks, [])
+            intersite_loopback    = try(node.intersite_loopback, null)
             static_routes = [for sr in try(node.static_routes, []) : {
               description = try(sr.description, "")
               prefix      = sr.prefix
@@ -1102,6 +1103,7 @@ locals {
           router_id             = node.router_id
           router_id_as_loopback = try(node.router_id_as_loopback, local.defaults.apic.tenants.l3outs.nodes.router_id_as_loopback)
           loopbacks             = try(node.loopbacks, [])
+          intersite_loopback    = try(node.intersite_loopback, null)
           static_routes = [for sr in try(node.static_routes, []) : {
             description = try(sr.description, "")
             prefix      = sr.prefix
