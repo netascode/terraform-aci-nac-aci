@@ -7,20 +7,6 @@ resource "aci_rest_managed" "infraAccGrp" {
     lagT      = var.type == "vpc" ? "node" : var.type == "pc" ? "link" : null
     brkoutMap = var.type == "breakout" ? var.map : null
   }
-  child {
-    class_name = "infraRsQosEgressDppIfPol"
-    rn         = "rsQosEgressDppIfPol"
-    content = {
-      tnQosDppPolName = var.egress_data_plane_policing_policy
-    }
-  }
-  child {
-    class_name = "infraRsQosIngressDppIfPol"
-    rn         = "rsQosIngressDppIfPol"
-    content = {
-      tnQosDppPolName = var.ingress_data_plane_policing_policy
-    }
-  }
 }
 
 resource "aci_rest_managed" "infraRsHIfPol" {
@@ -47,6 +33,24 @@ resource "aci_rest_managed" "infraRsLldpIfPol" {
   class_name = "infraRsLldpIfPol"
   content = {
     tnLldpIfPolName = var.lldp_policy
+  }
+}
+
+resource "aci_rest_managed" "infraRsQosEgressDppIfPol" {
+  count      = var.type != "breakout" && var.egress_data_plane_policing_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraAccGrp.dn}/rsQosEgressDppIfPol"
+  class_name = "infraRsQosEgressDppIfPol"
+  content = {
+    tnQosDppPolName = var.egress_data_plane_policing_policy
+  }
+}
+
+resource "aci_rest_managed" "infraRsQosIngressDppIfPol" {
+  count      = var.type != "breakout" && var.ingress_data_plane_policing_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraAccGrp.dn}/rsQosIngressDppIfPol"
+  class_name = "infraRsQosIngressDppIfPol"
+  content = {
+    tnQosDppPolName = var.ingress_data_plane_policing_policy
   }
 }
 
