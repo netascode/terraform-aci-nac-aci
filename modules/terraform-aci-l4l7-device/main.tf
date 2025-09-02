@@ -22,7 +22,7 @@ locals {
   logical_iface_concrete_iface = flatten([
     for logical_iface in var.logical_interfaces : [
       for concrete_iface in lookup(logical_iface, "concrete_interfaces", []) : {
-        id             = "${logical_iface.name}-${concrete_iface.interface}"
+        id             = "${logical_iface.name}-${concrete_iface.device}-${concrete_iface.interface}"
         logical_iface  = logical_iface.name
         concrete_iface = concrete_iface.interface
         device         = concrete_iface.device
