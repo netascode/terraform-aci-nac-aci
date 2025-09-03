@@ -12,9 +12,6 @@ defaults:
     interface_selector_description: false
     bulk_static_ports: false
     fabric_policies:
-      control_plane_mtu:
-        mtu: 6000
-        apic_mtu_apply: true
       leaf_switch_profile_name: "LEAF\\g<id>"
       leaf_interface_profile_name: "LEAF\\g<id>"
       leaf_switch_selector_name: "LEAF\\g<id>"
@@ -30,6 +27,8 @@ defaults:
       apic_conn_pref: inband
       atomic_counter:
         mode: trail
+      control_plane_mtu:
+        mtu: 9000
       banners:
         apic_gui_alias: ""
         apic_gui_banner_url: ""
@@ -836,6 +835,7 @@ defaults:
         name_suffix: ""
         ndo_managed: false
         mac: 00:22:BD:F8:19:FF
+        virtual_mac: not-applicable
         ep_move_detection: false
         arp_flooding: true
         ip_dataplane_learning: true
