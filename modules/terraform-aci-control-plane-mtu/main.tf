@@ -3,6 +3,6 @@ resource "aci_rest_managed" "infraCPMtuPol" {
   class_name = "infraCPMtuPol"
   content = {
     CPMtu        = var.mtu
-    APICMtuApply = var.apic_mtu_apply == "true" ? "yes" : "no"
+    APICMtuApply = var.apic_mtu_apply == "true" ? "yes" : null
   }
 }
