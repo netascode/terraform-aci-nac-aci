@@ -167,6 +167,9 @@ modules:
   aci_tenant: true
   aci_tenant_span_destination_group: true
   aci_tenant_span_source_group: true
+  aci_tenant_netflow_exporter: true
+  aci_tenant_netflow_record: true
+  aci_tenant_netflow_monitor: true
   aci_tenant_monitoring_policy: true
   aci_track_list: true
   aci_track_member: true

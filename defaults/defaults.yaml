@@ -1509,6 +1509,15 @@ defaults:
           local_endpoint_aging_interval: 900
           remote_endpoint_aging_interval: 300
           move_frequency: 256
+        netflow_exporters:
+          name_suffix: ""
+          source_type: custom-src-ip
+          source_ip: 0.0.0.0
+          dscp: CS2
+        netflow_monitors:
+          name_suffix: ""
+        netflow_records:
+          name_suffix: ""          
         monitoring:
           policies:
             name_suffix: ""
