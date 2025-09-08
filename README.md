@@ -333,6 +333,9 @@ Additional example repositories:
 | <a name="module_aci_tacacs"></a> [aci\_tacacs](#module\_aci\_tacacs) | ./modules/terraform-aci-tacacs | n/a |
 | <a name="module_aci_tenant"></a> [aci\_tenant](#module\_aci\_tenant) | ./modules/terraform-aci-tenant | n/a |
 | <a name="module_aci_tenant_monitoring_policy"></a> [aci\_tenant\_monitoring\_policy](#module\_aci\_tenant\_monitoring\_policy) | ./modules/terraform-aci-tenant-monitoring-policy | n/a |
+| <a name="module_aci_tenant_netflow_exporter"></a> [aci\_tenant\_netflow\_exporter](#module\_aci\_tenant\_netflow\_exporter) | ./modules/terraform-aci-tenant-netflow-exporter | n/a |
+| <a name="module_aci_tenant_netflow_monitor"></a> [aci\_tenant\_netflow\_monitor](#module\_aci\_tenant\_netflow\_monitor) | ./modules/terraform-aci-tenant-netflow-monitor | n/a |
+| <a name="module_aci_tenant_netflow_record"></a> [aci\_tenant\_netflow\_record](#module\_aci\_tenant\_netflow\_record) | ./modules/terraform-aci-tenant-netflow-record | n/a |
 | <a name="module_aci_tenant_span_destination_group"></a> [aci\_tenant\_span\_destination\_group](#module\_aci\_tenant\_span\_destination\_group) | ./modules/terraform-aci-tenant-span-destination-group | n/a |
 | <a name="module_aci_tenant_span_source_group"></a> [aci\_tenant\_span\_source\_group](#module\_aci\_tenant\_span\_source\_group) | ./modules/terraform-aci-tenant-span-source-group | n/a |
 | <a name="module_aci_track_list"></a> [aci\_track\_list](#module\_aci\_track\_list) | ./modules/terraform-aci-track-list | n/a |
