@@ -87,6 +87,24 @@ resource "aci_rest_managed" "fvMacAttr" {
   ]
 }
 
+resource "aci_rest_managed" "fvVmAttr" {
+  for_each   = { for vm_statement in var.vm_statements : vm_statement.name => vm_statement }
+  dn         = "${aci_rest_managed.fvAEPg.dn}/crtrn/vmattr-${each.value.name}"
+  class_name = "fvVmAttr"
+  content = {
+    operator  = each.value.operator
+    type      = each.value.type
+    value     = each.value.value
+    category  = each.value.category
+    labelName = each.value.label
+    name      = each.value.name
+  }
+
+  depends_on = [
+    aci_rest_managed.fvCrtrn
+  ]
+}
+
 resource "aci_rest_managed" "fvSubnet" {
   for_each   = { for subnet in var.subnets : subnet.ip => subnet }
   dn         = "${aci_rest_managed.fvAEPg.dn}/subnet-[${each.value.ip}]"
