@@ -327,7 +327,7 @@ variable "bfd_multihop" {
   description = "BFD multihop authentication parameters."
   type = object({
     auth_key_id              = optional(number, 1)
-    auth_key                 = optional(string, "")
+    auth_key                 = optional(string, null)
     auth_type                = optional(string, "sha1")
     bfd_multihop_node_policy = optional(string, "")
   })
@@ -349,9 +349,10 @@ variable "bfd_multihop" {
   validation {
     condition = (
       var.bfd_multihop.auth_key == null ||
-      can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bfd_multihop.auth_key))
+      var.bfd_multihop.auth_key == "" ||
+      can(regex("^[a-zA-Z0-9_.:-]{1,20}$", var.bfd_multihop.auth_key))
     )
-    error_message = "`auth_key`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    error_message = "`auth_key`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Minimum characters: 1, Maximum characters: 20."
   }
 
   validation {

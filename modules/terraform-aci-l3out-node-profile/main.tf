@@ -300,26 +300,6 @@ resource "aci_rest_managed" "bgpRsBestPathCtrlPol" {
   }
 }
 
-resource "aci_rest_managed" "bfd_multihop" {
-  count      = var.bfd_multihop != null ? 1 : 0
-  dn         = "${aci_rest_managed.l3extLNodeP.dn}/bfdMhNodeP"
-  class_name = "bfdMhNodeP"
-  content = {
-    keyId = var.bfd_multihop.auth_key_id
-    key   = var.bfd_multihop.auth_key
-    type  = var.bfd_multihop.auth_type
-  }
-}
-
-resource "aci_rest_managed" "bfd_multihop_node_policy" {
-  count      = var.bfd_multihop_node_policy != "" ? 1 : 0
-  dn         = "${aci_rest_managed.bfd_multihop[0].dn}/rsMhNodePol"
-  class_name = "bfdRsMhNodePol"
-  content = {
-    tnBfdMhNodePolName = var.bfd_multihop_node_policy
-  }
-}
-
 resource "aci_rest_managed" "ipRsNexthopRouteTrack" {
   for_each   = { for next_hop in local.next_hops : next_hop.key => next_hop.value if next_hop.value.ip_sla_policy != null || next_hop.value.track_list != null }
   dn         = "${aci_rest_managed.ipNexthopP[each.key].dn}/rsNexthopRouteTrack"
@@ -335,5 +315,28 @@ resource "aci_rest_managed" "ipRsNHTrackMember" {
   class_name = "ipRsNHTrackMember"
   content = {
     tDn = "uni/tn-${var.tenant}/trackmember-${each.value.track_list}"
+  }
+}
+
+resource "aci_rest_managed" "bfdMhNodeP_" {
+  count      = var.bfd_multihop != null ? 1 : 0
+  dn         = "${aci_rest_managed.l3extLNodeP.dn}/bfdMhNodeP"
+  class_name = "bfdMhNodeP"
+  content = {
+    keyId = var.bfd_multihop.auth_key_id
+    key   = var.bfd_multihop.auth_key
+    type  = var.bfd_multihop.auth_type
+  }
+  lifecycle {
+    ignore_changes = [content["key"]]
+  }
+}
+
+resource "aci_rest_managed" "bfdRsMhNodePol_" {
+  count      = var.bfd_multihop_node_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.bfdMhNodeP_[0].dn}/rsMhNodePol"
+  class_name = "bfdRsMhNodePol"
+  content = {
+    tnBfdMhNodePolName = var.bfd_multihop_node_policy
   }
 }

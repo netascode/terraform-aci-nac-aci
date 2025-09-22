@@ -110,7 +110,7 @@ module "aci_l3out_node_profile" {
 | <a name="input_bgp_protocol_profile_name"></a> [bgp\_protocol\_profile\_name](#input\_bgp\_protocol\_profile\_name) | BGP Protocol Name. | `string` | `""` | no |
 | <a name="input_bgp_timer_policy"></a> [bgp\_timer\_policy](#input\_bgp\_timer\_policy) | Node Profile's BGP Timer Policy | `string` | `""` | no |
 | <a name="input_bgp_as_path_policy"></a> [bgp\_as\_path\_policy](#input\_bgp\_as\_path\_policy) | Node Profile's BGP AS-Path Policy | `string` | `""` | no |
-| <a name="input_bfd_multihop"></a> [bfd\_multihop](#input\_bfd\_multihop) | BFD multihop authentication parameters. | <pre>object({<br/>    auth_key_id              = optional(number, 1)<br/>    auth_key                 = optional(string, "")<br/>    auth_type                = optional(string, "sha1")<br/>    bfd_multihop_node_policy = optional(string, "")<br/>  })</pre> | <pre>{<br/>  "auth_key": "",<br/>  "auth_key_id": 1,<br/>  "auth_type": "sha1"<br/>}</pre> | no |
+| <a name="input_bfd_multihop"></a> [bfd\_multihop](#input\_bfd\_multihop) | BFD multihop authentication parameters. | <pre>object({<br/>    auth_key_id              = optional(number, 1)<br/>    auth_key                 = optional(string, null)<br/>    auth_type                = optional(string, "sha1")<br/>    bfd_multihop_node_policy = optional(string, "")<br/>  })</pre> | <pre>{<br/>  "auth_key": "",<br/>  "auth_key_id": 1,<br/>  "auth_type": "sha1"<br/>}</pre> | no |
 
 ## Outputs
 
@@ -124,7 +124,9 @@ module "aci_l3out_node_profile" {
 | Name | Type |
 |------|------|
 | [aci_rest_managed.bfdMhNodeP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.bfdMhNodeP_](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.bfdRsMhNodePol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.bfdRsMhNodePol_](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.bgpAsP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.bgpAsP-bgpInfraPeerP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.bgpInfraPeerP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
