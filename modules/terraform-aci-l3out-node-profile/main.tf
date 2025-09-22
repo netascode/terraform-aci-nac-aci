@@ -212,15 +212,11 @@ resource "aci_rest_managed" "bfdMhNodeP" {
 }
 
 resource "aci_rest_managed" "bfdRsMhNodePol" {
-  count      = ((var.tenant == "infra" && var.sr_mpls == true && var.bfd_multihop_node_policy != "") || (var.bfd_multihop != null && var.bfd_multihop.bfd_multihop_node_policy != "")) ? 1 : 0
+  count      = var.tenant == "infra" && var.sr_mpls == true && var.bfd_multihop_node_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.bfdMhNodeP[0].dn}/rsMhNodePol"
   class_name = "bfdRsMhNodePol"
   content = {
-    tnBfdMhNodePolName = (
-      var.bfd_multihop != null && var.bfd_multihop.bfd_multihop_node_policy != ""
-      ? var.bfd_multihop.bfd_multihop_node_policy
-      : var.bfd_multihop_node_policy
-    )
+    tnBfdMhNodePolName = var.bfd_multihop_node_policy
   }
 }
 
