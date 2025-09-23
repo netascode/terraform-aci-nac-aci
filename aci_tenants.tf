@@ -19,7 +19,7 @@ locals {
         annotation                              = try(vrf.ndo_managed, local.defaults.apic.tenants.vrfs.ndo_managed) ? "orchestrator:msc-shadow:no" : null
         alias                                   = try(vrf.alias, "")
         description                             = try(vrf.description, "")
-        enforcement_direction                   = try(vrf.enforcement_direction, local.defaults.apic.tenants.vrfs.enforcement_direction)
+        enforcement_direction                   = try(vrf.ndo_managed, local.defaults.apic.tenants.vrfs.ndo_managed) ? null : try(vrf.enforcement_direction, local.defaults.apic.tenants.vrfs.enforcement_direction)
         enforcement_preference                  = try(vrf.enforcement_preference, local.defaults.apic.tenants.vrfs.enforcement_preference)
         data_plane_learning                     = try(vrf.data_plane_learning, local.defaults.apic.tenants.vrfs.data_plane_learning)
         contract_consumers                      = try([for contract in vrf.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
