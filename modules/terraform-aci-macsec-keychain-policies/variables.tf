@@ -60,3 +60,14 @@ variable "key_policies" {
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
+
+variable "type" {
+  description = "Type of Keychain policy. Allowed values: `access` or `fabric`."
+  type        = string
+  default     = "access"
+
+  validation {
+    condition     = contains(["access", "fabric"], var.type)
+    error_message = "Allowed values are `access` or `fabric`."
+  }
+}
