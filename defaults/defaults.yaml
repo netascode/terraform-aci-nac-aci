@@ -430,8 +430,6 @@ defaults:
       macsec_parameters_policies:
         name_suffix: ""
         cipher_suite: gcm-aes-xpn-256
-        confidentiality_offset: offset-0
-        key_server_priority: 16
         window_size: 64
         key_expiry_time: disabled
         security_policy: should-secure
@@ -443,6 +441,7 @@ defaults:
       macsec_interfaces_policies:
         name_suffix: ""
         admin_state: true
+
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
       leaf_interface_profile_name: "LEAF\\g<id>"
