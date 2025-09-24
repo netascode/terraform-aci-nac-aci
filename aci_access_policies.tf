@@ -1025,3 +1025,51 @@ module "aci_netflow_record" {
   description      = try(each.value.description, "")
   match_parameters = try(each.value.match_parameters, [])
 }
+
+locals {
+  access_monitoring_policy = flatten([
+    for policy in try(local.access_policies.monitoring.policies, []) : {
+      key         = format("%s", policy.name)
+      name        = "${policy.name}${local.defaults.apic.access_policies.monitoring.policies.name_suffix}"
+      description = try(policy.description, "")
+      snmp_trap_policies = [for snmp_policy in try(policy.snmp_traps, []) : {
+        name              = "${snmp_policy.name}${local.defaults.apic.access_policies.monitoring.policies.snmp_traps.name_suffix}"
+        destination_group = try("${snmp_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}", null)
+      }]
+      syslog_policies = [for syslog_policy in try(policy.syslogs, []) : {
+        name              = "${syslog_policy.name}${local.defaults.apic.access_policies.monitoring.policies.syslogs.name_suffix}"
+        audit             = try(syslog_policy.audit, local.defaults.apic.access_policies.monitoring.policies.syslogs.audit)
+        events            = try(syslog_policy.events, local.defaults.apic.access_policies.monitoring.policies.syslogs.events)
+        faults            = try(syslog_policy.faults, local.defaults.apic.access_policies.monitoring.policies.syslogs.faults)
+        session           = try(syslog_policy.session, local.defaults.apic.access_policies.monitoring.policies.syslogs.session)
+        minimum_severity  = try(syslog_policy.minimum_severity, local.defaults.apic.access_policies.monitoring.policies.syslogs.minimum_severity)
+        destination_group = try("${syslog_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}", null)
+      }]
+      fault_severity_policies = [for fault_policy in try(policy.fault_severity_policies, []) : {
+        class = fault_policy.class
+        faults = [for fault in try(fault_policy.faults, []) : {
+          fault_id         = fault.fault_id
+          initial_severity = try(fault.initial_severity, local.defaults.apic.access_policies.monitoring.policies.fault_severity_policies.initial_severity)
+          target_severity  = try(fault.target_severity, local.defaults.apic.access_policies.monitoring.policies.fault_severity_policies.target_severity)
+          description      = try(fault.description, "")
+        }]
+      }]
+    }
+  ])
+}
+
+module "aci_access_monitoring_policy" {
+  source   = "./modules/terraform-aci-access-monitoring-policy"
+  for_each = { for pol in local.access_monitoring_policy : pol.key => pol if local.modules.aci_access_monitoring_policy && var.manage_access_policies }
+
+  name                    = each.value.name
+  description             = each.value.description
+  snmp_trap_policies      = each.value.snmp_trap_policies
+  syslog_policies         = each.value.syslog_policies
+  fault_severity_policies = each.value.fault_severity_policies
+
+  depends_on = [
+    module.aci_snmp_trap_policy,
+    module.aci_syslog_policy,
+  ]
+}

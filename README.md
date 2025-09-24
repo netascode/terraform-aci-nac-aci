@@ -148,6 +148,7 @@ Additional example repositories:
 | <a name="module_aci_access_leaf_switch_policy_group"></a> [aci\_access\_leaf\_switch\_policy\_group](#module\_aci\_access\_leaf\_switch\_policy\_group) | ./modules/terraform-aci-access-leaf-switch-policy-group | n/a |
 | <a name="module_aci_access_leaf_switch_profile_auto"></a> [aci\_access\_leaf\_switch\_profile\_auto](#module\_aci\_access\_leaf\_switch\_profile\_auto) | ./modules/terraform-aci-access-leaf-switch-profile | n/a |
 | <a name="module_aci_access_leaf_switch_profile_manual"></a> [aci\_access\_leaf\_switch\_profile\_manual](#module\_aci\_access\_leaf\_switch\_profile\_manual) | ./modules/terraform-aci-access-leaf-switch-profile | n/a |
+| <a name="module_aci_access_monitoring_policy"></a> [aci\_access\_monitoring\_policy](#module\_aci\_access\_monitoring\_policy) | ./modules/terraform-aci-access-monitoring-policy | n/a |
 | <a name="module_aci_access_span_destination_group"></a> [aci\_access\_span\_destination\_group](#module\_aci\_access\_span\_destination\_group) | ./modules/terraform-aci-access-span-destination-group | n/a |
 | <a name="module_aci_access_span_filter_group"></a> [aci\_access\_span\_filter\_group](#module\_aci\_access\_span\_filter\_group) | ./modules/terraform-aci-access-span-filter-group | n/a |
 | <a name="module_aci_access_span_source_group"></a> [aci\_access\_span\_source\_group](#module\_aci\_access\_span\_source\_group) | ./modules/terraform-aci-access-span-source-group | n/a |
