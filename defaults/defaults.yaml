@@ -404,23 +404,22 @@ defaults:
       sr_mpls_global_configuration:
         sr_global_block_minimum: 16000
         sr_global_block_maximum: 23999
-      macsec_policies:
-        macsec_parameters_policies:
-          name_suffix: ""
-          cipher_suite: gcm-aes-xpn-256
-          confidentiality_offset: offset-0
-          key_server_priority: 16
-          window_size: 64
-          key_expiry_time: disabled
-          security_policy: should-secure
-        macsec_keychain_policies:
-          name_suffix: ""
-          key_policies:
-            start_time: now
-            end_time: infinite
-        macsec_interfaces_policies:
-          name_suffix: ""
-          admin_state: true
+      macsec_parameters_policies:
+        name_suffix: ""
+        cipher_suite: gcm-aes-xpn-256
+        confidentiality_offset: offset-0
+        key_server_priority: 16
+        window_size: 64
+        key_expiry_time: disabled
+        security_policy: should-secure
+      macsec_keychain_policies:
+        name_suffix: ""
+        key_policies:
+          start_time: now
+          end_time: infinite
+      macsec_interfaces_policies:
+        name_suffix: ""
+        admin_state: true
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
       leaf_interface_profile_name: "LEAF\\g<id>"

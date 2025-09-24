@@ -1061,20 +1061,20 @@ module "aci_sr_mpls_global_configuration" {
 module "aci_fabric_macsec_parameters_policy" {
   source = "./modules/terraform-aci-macsec-parameters-policy"
 
-  for_each        = { for mpp in try(local.fabric_policies.macsec_policies.macsec_parameters_policies, []) : mpp.name => mpp if local.modules.aci_macsec_parameters_policy && var.manage_fabric_policies }
-  name            = "${each.value.name}${local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.name_suffix}"
+  for_each        = { for mpp in try(local.fabric_policies.macsec_parameters_policies, []) : mpp.name => mpp if local.modules.aci_macsec_parameters_policy && var.manage_fabric_policies }
+  name            = "${each.value.name}${local.defaults.apic.fabric_policies.macsec_parameters_policies.name_suffix}"
   description     = try(each.value.description, "")
-  cipher_suite    = try(each.value.cipher_suite, local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.cipher_suite)
-  window_size     = try(each.value.window_size, local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.window_size)
-  key_expiry_time = try(each.value.key_expiry_time, local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.key_expiry_time) == "disabled" || try(each.value.key_expiry_time, local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.key_expiry_time) == 0 ? 0 : each.value.key_expiry_time
-  security_policy = try(each.value.security_policy, local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.security_policy)
+  cipher_suite    = try(each.value.cipher_suite, local.defaults.apic.fabric_policies.macsec_parameters_policies.cipher_suite)
+  window_size     = try(each.value.window_size, local.defaults.apic.fabric_policies.macsec_parameters_policies.window_size)
+  key_expiry_time = try(each.value.key_expiry_time, local.defaults.apic.fabric_policies.macsec_parameters_policies.key_expiry_time) == "disabled" || try(each.value.key_expiry_time, local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.key_expiry_time) == 0 ? 0 : each.value.key_expiry_time
+  security_policy = try(each.value.security_policy, local.defaults.apic.fabric_policies.macsec_parameters_policies.security_policy)
   type            = "fabric"
 }
 
 locals {
   fabric_macsec_keychain_policies = flatten([
-    for mkc in try(local.fabric_policies.macsec_policies.macsec_keychain_policies, []) : {
-      name        = "${mkc.name}${local.defaults.apic.fabric_policies.macsec_policies.macsec_keychain_policies.name_suffix}"
+    for mkc in try(local.fabric_policies.macsec_keychain_policies, []) : {
+      name        = "${mkc.name}${local.defaults.apic.fabric_policies.macsec_keychain_policies.name_suffix}"
       description = try(mkc.description, "")
       type        = "fabric"
       key_policies = [for kp in try(mkc.key_policies, []) : {
@@ -1082,8 +1082,8 @@ locals {
         key_name       = kp.key_name
         pre_shared_key = kp.pre_shared_key
         description    = try(kp.description, "")
-        start_time     = try(kp.start_time, local.defaults.apic.fabric_policies.macsec_policies.macsec_keychain_policies.key_policies.start_time)
-        end_time       = try(kp.end_time, local.defaults.apic.fabric_policies.macsec_policies.macsec_keychain_policies.key_policies.end_time)
+        start_time     = try(kp.start_time, local.defaults.apic.fabric_policies.macsec_keychain_policies.key_policies.start_time)
+        end_time       = try(kp.end_time, local.defaults.apic.fabric_policies.macsec_keychain_policies.key_policies.end_time)
         }
       ]
     }
@@ -1094,7 +1094,7 @@ module "aci_fabric_macsec_keychain_policies" {
   source = "./modules/terraform-aci-macsec-keychain-policies"
 
   for_each     = { for mkc in try(local.fabric_macsec_keychain_policies, []) : mkc.name => mkc if local.modules.aci_macsec_keychain_policies && var.manage_fabric_policies }
-  name         = "${each.value.name}${local.defaults.apic.fabric_policies.macsec_policies.macsec_keychain_policies.name_suffix}"
+  name         = "${each.value.name}${local.defaults.apic.fabric_policies.macsec_keychain_policies.name_suffix}"
   type         = each.value.type
   description  = each.value.description
   key_policies = each.value.key_policies
@@ -1103,12 +1103,12 @@ module "aci_fabric_macsec_keychain_policies" {
 module "aci_fabric_macsec_interfaces_policy" {
   source = "./modules/terraform-aci-macsec-interfaces-policy"
 
-  for_each                 = { for mip in try(local.fabric_policies.macsec_policies.macsec_interfaces_policies, []) : mip.name => mip if local.modules.aci_macsec_interfaces_policy && var.manage_fabric_policies }
-  name                     = "${each.value.name}${local.defaults.apic.fabric_policies.macsec_policies.macsec_interfaces_policies.name_suffix}"
+  for_each                 = { for mip in try(local.fabric_policies.macsec_interfaces_policies, []) : mip.name => mip if local.modules.aci_macsec_interfaces_policy && var.manage_fabric_policies }
+  name                     = "${each.value.name}${local.defaults.apic.fabric_policies.macsec_interfaces_policies.name_suffix}"
   description              = try(each.value.description, "")
-  admin_state              = try(each.value.admin_state, local.defaults.apic.fabric_policies.macsec_policies.macsec_interfaces_policies.admin_state)
-  macsec_keychain_policy   = "${each.value.macsec_keychain_policy}${local.defaults.apic.fabric_policies.macsec_policies.macsec_keychain_policies.name_suffix}"
-  macsec_parameters_policy = "${each.value.macsec_parameters_policy}${local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.name_suffix}"
+  admin_state              = try(each.value.admin_state, local.defaults.apic.fabric_policies.macsec_interfaces_policies.admin_state)
+  macsec_keychain_policy   = "${each.value.macsec_keychain_policy}${local.defaults.apic.fabric_policies.macsec_keychain_policies.name_suffix}"
+  macsec_parameters_policy = "${each.value.macsec_parameters_policy}${local.defaults.apic.fabric_policies.macsec_parameters_policies.name_suffix}"
   type                     = "fabric"
 
   depends_on = [
