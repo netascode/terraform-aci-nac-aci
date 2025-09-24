@@ -929,6 +929,15 @@ defaults:
           multicast_address_family: true
           admin_state: true
           as_propagate: none
+        bgp_infra_peers:
+          name_suffix: ""
+          peer_type: wan
+          allow_self_as: false
+          disable_peer_as_check: false
+          ttl: 2
+          bfd: false
+          admin_state: true
+          as_propagate: none
         redistribution_route_maps:
           source: static
         dhcp_labels:
@@ -995,6 +1004,15 @@ defaults:
             replace_private_as_with_local_as: false
             unicast_address_family: true
             multicast_address_family: true
+            admin_state: true
+            as_propagate: none
+          bgp_infra_peers:
+            name_suffix: ""
+            peer_type: wan
+            allow_self_as: false
+            disable_peer_as_check: false
+            ttl: 2
+            bfd: false
             admin_state: true
             as_propagate: none
           nodes:

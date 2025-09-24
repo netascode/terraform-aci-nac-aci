@@ -1001,6 +1001,7 @@ locals {
             router_id             = node.router_id
             router_id_as_loopback = try(node.router_id_as_loopback, local.defaults.apic.tenants.l3outs.node_profiles.nodes.router_id_as_loopback)
             loopbacks             = try(node.loopbacks, [])
+            intersite_loopback    = l3out.vrf == "overlay-1" ? try(node.intersite_loopback, null) : null
             static_routes = [for sr in try(node.static_routes, []) : {
               description = try(sr.description, "")
               prefix      = sr.prefix
@@ -1044,7 +1045,22 @@ locals {
             peer_prefix_policy               = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
             export_route_control             = try("${peer.export_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
             import_route_control             = try("${peer.import_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
-          }]
+          } if tenant.name != "infra"]
+          bgp_infra_peers = [for peer in try(np.bgp_infra_peers, []) : {
+            ip                    = peer.ip
+            remote_as             = peer.remote_as
+            admin_state           = try(peer.admin_state, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.admin_state)
+            description           = try(peer.description, "")
+            allow_self_as         = try(peer.allow_self_as, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.allow_self_as)
+            disable_peer_as_check = try(peer.disable_peer_as_check, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.disable_peer_as_check)
+            peer_type             = try(peer.peer_type, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.peer_type)
+            bfd                   = try(peer.bfd, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.bfd)
+            password              = try(peer.password, null)
+            ttl                   = try(peer.ttl, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.ttl)
+            peer_prefix_policy    = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.name_suffix}", null)
+            local_as              = try(peer.local_as, null)
+            as_propagate          = try(peer.as_propagate, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.as_propagate)
+          } if tenant.name == "infra"]
         }
       ]
     ]
@@ -1065,6 +1081,7 @@ module "aci_l3out_node_profile_manual" {
   bgp_as_path_policy        = each.value.bgp_as_path_policy
   nodes                     = each.value.nodes
   bgp_peers                 = each.value.bgp_peers
+  bgp_infra_peers           = each.value.bgp_infra_peers
 
   depends_on = [
     module.aci_tenant,
@@ -1092,6 +1109,7 @@ locals {
           router_id             = node.router_id
           router_id_as_loopback = try(node.router_id_as_loopback, local.defaults.apic.tenants.l3outs.nodes.router_id_as_loopback)
           loopbacks             = try(node.loopbacks, [])
+          intersite_loopback    = l3out.vrf == "overlay-1" ? try(node.intersite_loopback, null) : null
           static_routes = [for sr in try(node.static_routes, []) : {
             description = try(sr.description, "")
             prefix      = sr.prefix
@@ -1135,7 +1153,22 @@ locals {
           peer_prefix_policy               = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
           export_route_control             = try("${peer.export_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
           import_route_control             = try("${peer.import_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
-        }]
+        } if tenant.name != "infra"]
+        bgp_infra_peers = [for peer in try(l3out.bgp_infra_peers, []) : {
+          ip                    = peer.ip
+          remote_as             = peer.remote_as
+          admin_state           = try(peer.admin_state, local.defaults.apic.tenants.l3outs.bgp_infra_peers.admin_state)
+          description           = try(peer.description, "")
+          allow_self_as         = try(peer.allow_self_as, local.defaults.apic.tenants.l3outs.bgp_infra_peers.allow_self_as)
+          disable_peer_as_check = try(peer.disable_peer_as_check, local.defaults.apic.tenants.l3outs.bgp_infra_peers.disable_peer_as_check)
+          peer_type             = try(peer.peer_type, local.defaults.apic.tenants.l3outs.bgp_infra_peers.peer_type)
+          bfd                   = try(peer.bfd, local.defaults.apic.tenants.l3outs.bgp_infra_peers.bfd)
+          password              = try(peer.password, null)
+          ttl                   = try(peer.ttl, local.defaults.apic.tenants.l3outs.bgp_infra_peers.ttl)
+          peer_prefix_policy    = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.l3outs.bgp_infra_peers.name_suffix}", null)
+          local_as              = try(peer.local_as, null)
+          as_propagate          = try(peer.as_propagate, local.defaults.apic.tenants.l3outs.bgp_infra_peers.as_propagate)
+        } if tenant.name == "infra"]
       } if length(try(l3out.nodes, [])) != 0
     ]
   ])
@@ -1155,6 +1188,7 @@ module "aci_l3out_node_profile_auto" {
   bgp_as_path_policy        = each.value.bgp_as_path_policy
   nodes                     = each.value.nodes
   bgp_peers                 = each.value.bgp_peers
+  bgp_infra_peers           = each.value.bgp_infra_peers
 
   depends_on = [
     module.aci_tenant,
@@ -1670,6 +1704,7 @@ locals {
             local_as              = try(peer.local_as, null)
             as_propagate          = try(peer.as_propagate, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.as_propagate)
             peer_prefix_policy    = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
+            peer_type             = "sr-mpls"
           }]
         }
       ]
