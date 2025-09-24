@@ -511,6 +511,21 @@ defaults:
           name_suffix: ""
           node_blocks:
             name_suffix: ""
+      monitoring:
+        policies:
+            name_suffix: ""
+            snmp_traps:
+              name_suffix: ""
+            syslogs:
+              name_suffix: ""
+              audit: true
+              events: true
+              faults: true
+              session: false
+              minimum_severity: warnings
+            fault_severity_policies:
+              initial_severity: inherit
+              target_severity: inherit
       interface_policies:
         cdp_policies:
           name_suffix: ""
@@ -777,21 +792,6 @@ defaults:
             direction: both
             access_paths:
               module: 1
-      monitoring:
-          policies:
-            name_suffix: ""
-            snmp_traps:
-              name_suffix: ""
-            syslogs:
-              name_suffix: ""
-              audit: true
-              events: true
-              faults: true
-              session: false
-              minimum_severity: warnings
-            fault_severity_policies:
-              initial_severity: inherit
-              target_severity: inherit
     node_policies:
       oob_endpoint_group: default
       inb_endpoint_group: default
