@@ -16,18 +16,26 @@ defaults:
       leaf_interface_profile_name: "LEAF\\g<id>"
       leaf_switch_selector_name: "LEAF\\g<id>"
       leaf_interface_selector_name: "ETH\\g<mod>-\\g<port>"
+      leaf_interface_selector_sub_port_name: "ETH\\g<mod>-\\g<port>-\\g<sport>"
       spine_switch_profile_name: "SPINE\\g<id>"
       spine_interface_profile_name: "SPINE\\g<id>"
       spine_switch_selector_name: "SPINE\\g<id>"
       spine_interface_selector_name: "ETH\\g<mod>-\\g<port>"
+      spine_interface_selector_sub_port_name: "ETH\\g<mod>-\\g<port>-\\g<sport>"
       pod_profile_name: "POD\\g<id>"
       pod_profile_pod_selector_name: "POD\\g<id>"
       apic_conn_pref: inband
+      atomic_counter:
+        mode: trail
+      control_plane_mtu:
+        mtu: 9000
       banners:
         apic_gui_alias: ""
         apic_gui_banner_url: ""
         apic_cli_banner: ""
         switch_cli_banner: ""
+        apic_app_banner: ""
+        apic_app_banner_severity: "info"
         escape_html: true
       ep_loop_protection:
         admin_state: false
@@ -170,6 +178,8 @@ defaults:
           name_suffix: ""
       leaf_switch_policy_groups:
         name_suffix: ""
+      leaf_interface_policy_groups:
+        name_suffix: ""
       spine_switch_policy_groups:
         name_suffix: ""
       leaf_switch_profiles:
@@ -184,14 +194,28 @@ defaults:
           name_suffix: ""
           node_blocks:
             name_suffix: ""
-      leaf_interface_policy_groups:
-        name_suffix: ""
       spine_interface_policy_groups:
         name_suffix: ""
       leaf_interface_profiles:
         name_suffix: ""
+        selectors:
+          name_suffix: ""
+          port_blocks:
+            name_suffix: ""
+            from_module: 1
+          sub_port_blocks:
+            name_suffix: ""
+            from_module: 1
       spine_interface_profiles:
         name_suffix: ""
+        selectors:
+          name_suffix: ""
+          port_blocks:
+            name_suffix: ""
+            from_module: 1
+          sub_port_blocks:
+            name_suffix: ""
+            from_module: 1
       external_connectivity_policy:
         name_suffix: ""
         fabric_id: 1
@@ -386,7 +410,6 @@ defaults:
               module: 1
       smart_licensing:
         mode: "smart-licensing"
-        url: "https://tools.cisco.com/its/service/oddce/services/DDCEService"
         proxy:
           port: "443"
       l2_mtu_policies:
@@ -503,6 +526,21 @@ defaults:
           name_suffix: ""
           node_blocks:
             name_suffix: ""
+      monitoring:
+        policies:
+            name_suffix: ""
+            snmp_traps:
+              name_suffix: ""
+            syslogs:
+              name_suffix: ""
+              audit: true
+              events: true
+              faults: true
+              session: false
+              minimum_severity: warnings
+            fault_severity_policies:
+              initial_severity: inherit
+              target_severity: inherit
       interface_policies:
         cdp_policies:
           name_suffix: ""
@@ -511,6 +549,8 @@ defaults:
         link_level_policies:
           name_suffix: ""
           speed: inherit
+          link_delay_interval: 0
+          link_debounce_interval: 100
           auto: true
           fec_mode: inherit
         port_channel_policies:
@@ -825,6 +865,7 @@ defaults:
         name_suffix: ""
         ndo_managed: false
         mac: 00:22:BD:F8:19:FF
+        virtual_mac: not-applicable
         ep_move_detection: false
         arp_flooding: true
         ip_dataplane_learning: true
@@ -863,6 +904,13 @@ defaults:
           area_control_redistribute: true
           area_control_summary: true
           area_control_suppress_fa: false
+        route_maps:
+          name_suffix: ""
+          type: combinable
+          contexts:
+            name_suffix: ""
+            action: "permit"
+            order: 0
         bgp_peers:
           allow_self_as: false
           as_override: false
@@ -907,6 +955,7 @@ defaults:
             mtu: inherit
             mode: regular
             scope: local
+            ip_shared_dhcp_relay: false
             bgp_peers:
               allow_self_as: false
               as_override: false
@@ -979,6 +1028,7 @@ defaults:
               mtu: inherit
               mode: regular
               scope: local
+              ip_shared_dhcp_relay: false
               bgp_peers:
                 allow_self_as: false
                 as_override: false
@@ -1132,6 +1182,9 @@ defaults:
             operator: equals
       inb_endpoint_groups:
         name_suffix: ""
+        subnets:
+          public: false
+          shared: false
       oob_endpoint_groups:
         name_suffix: ""
         name: default
@@ -1182,11 +1235,28 @@ defaults:
           name_suffix: ""
           qos_class: unspecified
           target_dscp: unspecified
+          reverse_filter_ports: true
           filters:
             action: permit
             priority: default
             log: false
             no_stats: false
+          consumer_to_provider:
+            target_dscp: unspecified
+            qos_class: unspecified
+            filters:
+              action: permit
+              priority: default
+              log: false
+              no_stats: false
+          provider_to_consumer:
+            target_dscp: unspecified
+            qos_class: unspecified
+            filters:
+              action: permit
+              priority: default
+              log: false
+              no_stats: false
       imported_contracts:
         name_suffix: ""
       oob_contracts:
@@ -1254,7 +1324,8 @@ defaults:
           max_lsa_sleep_interval: 5
         bgp_best_path_policies:
           name_suffix: ""
-          control_type: ""
+          as_path_multipath_relax: false
+          ignore_igp_metric: false
         bgp_route_summarization_policies:
           name_suffix: ""
           as_set: false
@@ -1453,10 +1524,36 @@ defaults:
         track_lists:
           name_suffix: ""
           type: percentage
-          percentage_up: 0
-          percentage_down: 1
-          weight_up: 0
-          weight_down: 1
+          percentage_up: 1
+          percentage_down: 0
+          weight_up: 1
+          weight_down: 0
+        track_members:
+          name_suffix: ""
+        endpoint_mac_tags:
+          bridge_domain: all
+        endpoint_retention_policies:
+          name_suffix: ""
+          hold_interval: 300
+          bounce_entry_aging_interval: 630
+          local_endpoint_aging_interval: 900
+          remote_endpoint_aging_interval: 300
+          move_frequency: 256
+        monitoring:
+          policies:
+            name_suffix: ""
+            snmp_traps:
+              name_suffix: ""
+            syslogs:
+              name_suffix: ""
+              audit: true
+              events: true
+              faults: true
+              session: false
+              minimum_severity: warnings
+            fault_severity_policies:
+              initial_severity: inherit
+              target_severity: inherit
       services:
         l4l7_devices:
           name_suffix: ""

@@ -88,6 +88,7 @@ resource "aci_rest_managed" "vnsAbsNode" {
 }
 
 resource "aci_rest_managed" "vnsAbsFuncConn_Provider" {
+  count      = var.device_copy ? 0 : 1
   dn         = "${aci_rest_managed.vnsAbsNode.dn}/AbsFConn-provider"
   class_name = "vnsAbsFuncConn"
   annotation = var.annotation
@@ -98,12 +99,23 @@ resource "aci_rest_managed" "vnsAbsFuncConn_Provider" {
 }
 
 resource "aci_rest_managed" "vnsAbsFuncConn_Consumer" {
+  count      = var.device_copy ? 0 : 1
   dn         = "${aci_rest_managed.vnsAbsNode.dn}/AbsFConn-consumer"
   class_name = "vnsAbsFuncConn"
   annotation = var.annotation
   content = {
     attNotify = "no"
     name      = "consumer"
+  }
+}
+
+resource "aci_rest_managed" "vnsAbsFuncConn_Copy" {
+  count      = var.device_copy ? 1 : 0
+  dn         = "${aci_rest_managed.vnsAbsNode.dn}/AbsFConn-copy"
+  class_name = "vnsAbsFuncConn"
+  content = {
+    attNotify = "no"
+    name      = "copy"
   }
 }
 
@@ -121,7 +133,7 @@ resource "aci_rest_managed" "vnsAbsConnection_Consumer" {
   class_name = "vnsAbsConnection"
   annotation = var.annotation
   content = {
-    adjType       = "L3"
+    adjType       = var.device_copy == true ? "L2" : "L3"
     connDir       = "provider"
     connType      = "external"
     directConnect = var.consumer_direct_connect ? "yes" : "no"
@@ -131,6 +143,7 @@ resource "aci_rest_managed" "vnsAbsConnection_Consumer" {
 }
 
 resource "aci_rest_managed" "vnsRsAbsConnectionConns_ConT1" {
+  count      = var.device_copy ? 0 : 1
   dn         = "${aci_rest_managed.vnsAbsConnection_Consumer.dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsTermConn_T1.dn}]"
   class_name = "vnsRsAbsConnectionConns"
   annotation = var.annotation
@@ -140,15 +153,17 @@ resource "aci_rest_managed" "vnsRsAbsConnectionConns_ConT1" {
 }
 
 resource "aci_rest_managed" "vnsRsAbsConnectionConns_NodeN1Consumer" {
-  dn         = "${aci_rest_managed.vnsAbsConnection_Consumer.dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsFuncConn_Consumer.dn}]"
+  count      = var.device_copy ? 0 : 1
+  dn         = "${aci_rest_managed.vnsAbsConnection_Consumer.dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsFuncConn_Consumer[0].dn}]" # index added
   class_name = "vnsRsAbsConnectionConns"
   annotation = var.annotation
   content = {
-    tDn = aci_rest_managed.vnsAbsFuncConn_Consumer.dn
+    tDn = aci_rest_managed.vnsAbsFuncConn_Consumer[0].dn
   }
 }
 
 resource "aci_rest_managed" "vnsAbsConnection_Provider" {
+  count      = var.device_copy ? 0 : 1
   dn         = "${aci_rest_managed.vnsAbsGraph.dn}/AbsConnection-C2"
   class_name = "vnsAbsConnection"
   annotation = var.annotation
@@ -163,7 +178,8 @@ resource "aci_rest_managed" "vnsAbsConnection_Provider" {
 }
 
 resource "aci_rest_managed" "vnsRsAbsConnectionConns_ConT2" {
-  dn         = "${aci_rest_managed.vnsAbsConnection_Provider.dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsTermConn_T2.dn}]"
+  count      = var.device_copy ? 0 : 1
+  dn         = "${aci_rest_managed.vnsAbsConnection_Provider[0].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsTermConn_T2.dn}]"
   class_name = "vnsRsAbsConnectionConns"
   annotation = var.annotation
   content = {
@@ -172,10 +188,44 @@ resource "aci_rest_managed" "vnsRsAbsConnectionConns_ConT2" {
 }
 
 resource "aci_rest_managed" "vnsRsAbsConnectionConns_NodeN1Provider" {
-  dn         = "${aci_rest_managed.vnsAbsConnection_Provider.dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsFuncConn_Provider.dn}]"
+  count      = var.device_copy ? 0 : 1
+  dn         = "${aci_rest_managed.vnsAbsConnection_Provider[0].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsFuncConn_Provider[0].dn}]" # index added
   class_name = "vnsRsAbsConnectionConns"
   annotation = var.annotation
   content = {
-    tDn = aci_rest_managed.vnsAbsFuncConn_Provider.dn
+    tDn = aci_rest_managed.vnsAbsFuncConn_Provider[0].dn
   }
+}
+
+resource "aci_rest_managed" "vnsRsAbsConnectionConns_ConCP1" {
+  count      = var.device_copy ? 1 : 0
+  dn         = "${aci_rest_managed.vnsAbsConnection_Consumer.dn}/rsabsCopyConnection-[${aci_rest_managed.vnsAbsFuncConn_Copy[0].dn}]"
+  class_name = "vnsRsAbsCopyConnection"
+  content = {
+    tDn = aci_rest_managed.vnsAbsFuncConn_Copy[0].dn
+  }
+}
+
+resource "aci_rest_managed" "vnsRsAbsConnectionConns_ConT1CP" {
+  count      = var.device_copy ? 1 : 0
+  dn         = "${aci_rest_managed.vnsAbsConnection_Consumer.dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsTermConn_T1.dn}]"
+  class_name = "vnsRsAbsConnectionConns"
+  content = {
+    tDn = aci_rest_managed.vnsAbsTermConn_T1.dn
+  }
+  depends_on = [
+    aci_rest_managed.vnsRsAbsConnectionConns_ConCP1
+  ]
+}
+
+resource "aci_rest_managed" "vnsRsAbsConnectionConns_ConT2CP" {
+  count      = var.device_copy ? 1 : 0
+  dn         = "${aci_rest_managed.vnsAbsConnection_Consumer.dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsTermConn_T2.dn}]"
+  class_name = "vnsRsAbsConnectionConns"
+  content = {
+    tDn = aci_rest_managed.vnsAbsTermConn_T2.dn
+  }
+  depends_on = [
+    aci_rest_managed.vnsRsAbsConnectionConns_ConCP1
+  ]
 }

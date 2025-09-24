@@ -41,7 +41,7 @@ module "aci_smart_licensing" {
 | <a name="input_proxy_port"></a> [proxy\_port](#input\_proxy\_port) | Proxy port | `string` | `"443"` | no |
 | <a name="input_mode"></a> [mode](#input\_mode) | Mode | `string` | `"smart-licensing"` | no |
 | <a name="input_registration_token"></a> [registration\_token](#input\_registration\_token) | Registration token ID | `string` | n/a | yes |
-| <a name="input_url"></a> [url](#input\_url) | URL | `string` | `"https://tools.cisco.com/its/service/oddce/services/DDCEService"` | no |
+| <a name="input_url"></a> [url](#input\_url) | URL | `string` | `null` | no |
 
 ## Outputs
 

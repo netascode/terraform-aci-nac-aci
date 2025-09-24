@@ -22,13 +22,14 @@ module "aci_vrf" {
   data_plane_learning                    = false
   preferred_group                        = true
   transit_route_tag_policy               = "TRP1"
+  endpoint_retention_policy              = "ERP1"
   bgp_timer_policy                       = "BGP1"
   bgp_ipv4_address_family_context_policy = "BGP_AF_IPV4"
   bgp_ipv6_address_family_context_policy = "BGP_AF_IPV6"
-  bgp_ipv4_import_route_target           = "route-target:as2-nn2:10:10"
-  bgp_ipv4_export_route_target           = "route-target:as2-nn2:10:10"
-  bgp_ipv6_import_route_target           = "route-target:as2-nn2:10:10"
-  bgp_ipv6_export_route_target           = "route-target:as2-nn2:10:10"
+  bgp_ipv4_import_route_target           = ["route-target:as2-nn2:10:10", "route-target:as2-nn2:10:11"]
+  bgp_ipv4_export_route_target           = ["route-target:as2-nn2:10:12", "route-target:as2-nn2:10:13"]
+  bgp_ipv6_import_route_target           = ["route-target:as2-nn2:10:14", "route-target:as2-nn2:10:15"]
+  bgp_ipv6_export_route_target           = ["route-target:as2-nn2:10:16", "route-target:as2-nn2:10:17"]
   dns_labels                             = ["DNS1"]
   contract_consumers                     = ["CON1"]
   contract_providers                     = ["CON1"]
@@ -142,7 +143,7 @@ module "aci_vrf" {
 | <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | `null` | no |
 | <a name="input_alias"></a> [alias](#input\_alias) | VRF alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | VRF description. | `string` | `""` | no |
-| <a name="input_enforcement_direction"></a> [enforcement\_direction](#input\_enforcement\_direction) | VRF enforcement direction. Choices: `ingress`, `egress`. | `string` | `"ingress"` | no |
+| <a name="input_enforcement_direction"></a> [enforcement\_direction](#input\_enforcement\_direction) | VRF enforcement direction. Choices: `ingress`, `egress`. | `string` | `null` | no |
 | <a name="input_enforcement_preference"></a> [enforcement\_preference](#input\_enforcement\_preference) | VRF enforcement preference. Choices: `enforced`, `unenforced`. | `string` | `"enforced"` | no |
 | <a name="input_data_plane_learning"></a> [data\_plane\_learning](#input\_data\_plane\_learning) | VRF data plane learning. | `bool` | `true` | no |
 | <a name="input_preferred_group"></a> [preferred\_group](#input\_preferred\_group) | VRF preferred group member. | `bool` | `false` | no |
@@ -153,10 +154,10 @@ module "aci_vrf" {
 | <a name="input_bgp_timer_policy"></a> [bgp\_timer\_policy](#input\_bgp\_timer\_policy) | VRF BGP timer policy name. | `string` | `""` | no |
 | <a name="input_bgp_ipv4_address_family_context_policy"></a> [bgp\_ipv4\_address\_family\_context\_policy](#input\_bgp\_ipv4\_address\_family\_context\_policy) | VRF BGP IPv4 Address Family Context policy name. | `string` | `""` | no |
 | <a name="input_bgp_ipv6_address_family_context_policy"></a> [bgp\_ipv6\_address\_family\_context\_policy](#input\_bgp\_ipv6\_address\_family\_context\_policy) | VRF BGP IPv6 Address Family Context policy name. | `string` | `""` | no |
-| <a name="input_bgp_ipv4_import_route_target"></a> [bgp\_ipv4\_import\_route\_target](#input\_bgp\_ipv4\_import\_route\_target) | VRF BGP IPv4 import route target. | `string` | `""` | no |
-| <a name="input_bgp_ipv4_export_route_target"></a> [bgp\_ipv4\_export\_route\_target](#input\_bgp\_ipv4\_export\_route\_target) | VRF BGP IPv4 export route target. | `string` | `""` | no |
-| <a name="input_bgp_ipv6_import_route_target"></a> [bgp\_ipv6\_import\_route\_target](#input\_bgp\_ipv6\_import\_route\_target) | VRF BGP IPv6 import route target. | `string` | `""` | no |
-| <a name="input_bgp_ipv6_export_route_target"></a> [bgp\_ipv6\_export\_route\_target](#input\_bgp\_ipv6\_export\_route\_target) | VRF BGP IPv6 export route target. | `string` | `""` | no |
+| <a name="input_bgp_ipv4_import_route_target"></a> [bgp\_ipv4\_import\_route\_target](#input\_bgp\_ipv4\_import\_route\_target) | VRF BGP IPv4 import route target. | `list(string)` | `[]` | no |
+| <a name="input_bgp_ipv4_export_route_target"></a> [bgp\_ipv4\_export\_route\_target](#input\_bgp\_ipv4\_export\_route\_target) | VRF BGP IPv4 export route target. | `list(string)` | `[]` | no |
+| <a name="input_bgp_ipv6_import_route_target"></a> [bgp\_ipv6\_import\_route\_target](#input\_bgp\_ipv6\_import\_route\_target) | VRF BGP IPv6 import route target. | `list(string)` | `[]` | no |
+| <a name="input_bgp_ipv6_export_route_target"></a> [bgp\_ipv6\_export\_route\_target](#input\_bgp\_ipv6\_export\_route\_target) | VRF BGP IPv6 export route target. | `list(string)` | `[]` | no |
 | <a name="input_dns_labels"></a> [dns\_labels](#input\_dns\_labels) | List of VRF DNS labels. | `list(string)` | `[]` | no |
 | <a name="input_contract_consumers"></a> [contract\_consumers](#input\_contract\_consumers) | List of contract consumers. | `list(string)` | `[]` | no |
 | <a name="input_contract_providers"></a> [contract\_providers](#input\_contract\_providers) | List of contract providers. | `list(string)` | `[]` | no |
@@ -187,6 +188,7 @@ module "aci_vrf" {
 | <a name="input_leaked_internal_prefixes"></a> [leaked\_internal\_prefixes](#input\_leaked\_internal\_prefixes) | List of leaked internal prefixes. Default value `public`: false. | <pre>list(object({<br/>    prefix = string<br/>    public = optional(bool, false)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>      public      = optional(bool)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_leaked_external_prefixes"></a> [leaked\_external\_prefixes](#input\_leaked\_external\_prefixes) | List of leaked external prefixes. | <pre>list(object({<br/>    prefix             = string<br/>    from_prefix_length = optional(number)<br/>    to_prefix_length   = optional(number)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_route_summarization_policies"></a> [route\_summarization\_policies](#input\_route\_summarization\_policies) | List of route summarization policies. | <pre>list(object({<br/>    name = string<br/>    nodes = optional(list(object({<br/>      id  = number<br/>      pod = optional(number, 1)<br/>    })), [])<br/>    subnets = optional(list(object({<br/>      prefix                         = string<br/>      bgp_route_summarization_policy = optional(string, null)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
+| <a name="input_endpoint_retention_policy"></a> [endpoint\_retention\_policy](#input\_endpoint\_retention\_policy) | Endpoint Retention Policy. | `string` | `""` | no |
 
 ## Outputs
 
@@ -211,6 +213,7 @@ module "aci_vrf" {
 | [aci_rest_managed.fvRsBgpCtxPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToBgpCtxAfPol_ipv4](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToBgpCtxAfPol_ipv6](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsCtxToEpRet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToExtRouteTagPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToOspfCtxPol_ipv4](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToOspfCtxPol_ipv6](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

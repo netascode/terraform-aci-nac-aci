@@ -29,13 +29,15 @@ variable "description" {
   }
 }
 
-variable "control_type" {
-  description = "BGP best path policy control type. Allowed value: `multi-path-relax`."
-  type        = string
-  default     = ""
+variable "as_path_multipath_relax" {
+  description = "Flag to Relax AS-Path restriction."
+  type        = bool
+  default     = false
 
-  validation {
-    condition     = var.control_type == "" || var.control_type == "multi-path-relax"
-    error_message = "Allowed value: `multi-path-relax`."
-  }
+}
+
+variable "ignore_igp_metric" {
+  description = "Flag to Ignore IGP metric."
+  type        = bool
+  default     = false
 }

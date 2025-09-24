@@ -288,17 +288,20 @@ module "aci_lldp_policy" {
   name           = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}"
   admin_rx_state = each.value.admin_rx_state
   admin_tx_state = each.value.admin_tx_state
+  dcbxp_version  = try(each.value.dcbxp_version, null)
 }
 
 module "aci_link_level_policy" {
   source = "./modules/terraform-aci-link-level-policy"
 
-  for_each            = { for llp in try(local.access_policies.interface_policies.link_level_policies, []) : llp.name => llp if local.modules.aci_link_level_policy && var.manage_access_policies }
-  name                = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}"
-  speed               = try(each.value.speed, local.defaults.apic.access_policies.interface_policies.link_level_policies.speed)
-  auto                = try(each.value.auto, local.defaults.apic.access_policies.interface_policies.link_level_policies.auto)
-  fec_mode            = try(each.value.fec_mode, local.defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode)
-  physical_media_type = try(each.value.physical_media_type, null)
+  for_each               = { for llp in try(local.access_policies.interface_policies.link_level_policies, []) : llp.name => llp if local.modules.aci_link_level_policy && var.manage_access_policies }
+  name                   = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}"
+  speed                  = try(each.value.speed, local.defaults.apic.access_policies.interface_policies.link_level_policies.speed)
+  link_delay_interval    = try(each.value.link_delay_interval, null)
+  link_debounce_interval = try(each.value.link_debounce_interval, local.defaults.apic.access_policies.interface_policies.link_level_policies.link_debounce_interval)
+  auto                   = try(each.value.auto, local.defaults.apic.access_policies.interface_policies.link_level_policies.auto)
+  fec_mode               = try(each.value.fec_mode, local.defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode)
+  physical_media_type    = try(each.value.physical_media_type, null)
 }
 
 module "aci_macsec_parameters_policy" {
@@ -482,15 +485,17 @@ module "aci_access_leaf_interface_policy_group" {
 module "aci_access_spine_interface_policy_group" {
   source = "./modules/terraform-aci-access-spine-interface-policy-group"
 
-  for_each          = { for pg in try(local.access_policies.spine_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_interface_policy_group && var.manage_access_policies }
-  name              = "${each.value.name}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}"
-  link_level_policy = try("${each.value.link_level_policy}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}", "")
-  cdp_policy        = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
-  aaep              = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
+  for_each                = { for pg in try(local.access_policies.spine_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_interface_policy_group && var.manage_access_policies }
+  name                    = "${each.value.name}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}"
+  link_level_policy       = try("${each.value.link_level_policy}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}", "")
+  cdp_policy              = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
+  macsec_interface_policy = try("${each.value.macsec_interface_policy}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.name_suffix}", "")
+  aaep                    = try("${each.value.aaep}${local.defaults.apic.access_policies.aaeps.name_suffix}", "")
 
   depends_on = [
     module.aci_link_level_policy,
     module.aci_cdp_policy,
+    module.aci_macsec_interfaces_policy,
     module.aci_aaep,
   ]
 }
@@ -715,7 +720,7 @@ module "aci_access_span_filter_group" {
   name        = "${each.value.name}${local.defaults.apic.access_policies.span.filter_groups.name_suffix}"
   description = try(each.value.description, "")
   entries = [for entry in try(each.value.entries, []) : {
-    name                  = "${entry.name}${local.defaults.apic.access_policies.span.filter_groups.entries.name_suffix}"
+    name                  = try("${entry.name}${local.defaults.apic.access_policies.span.filter_groups.entries.name_suffix}", "")
     description           = try(entry.description, "")
     source_ip             = entry.source_ip
     destination_ip        = entry.destination_ip
@@ -1021,4 +1026,52 @@ module "aci_netflow_record" {
   name             = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_records.name_suffix}"
   description      = try(each.value.description, "")
   match_parameters = try(each.value.match_parameters, [])
+}
+
+locals {
+  access_monitoring_policy = flatten([
+    for policy in try(local.access_policies.monitoring.policies, []) : {
+      key         = format("%s", policy.name)
+      name        = "${policy.name}${local.defaults.apic.access_policies.monitoring.policies.name_suffix}"
+      description = try(policy.description, "")
+      snmp_trap_policies = [for snmp_policy in try(policy.snmp_traps, []) : {
+        name              = "${snmp_policy.name}${local.defaults.apic.access_policies.monitoring.policies.snmp_traps.name_suffix}"
+        destination_group = try("${snmp_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}", null)
+      }]
+      syslog_policies = [for syslog_policy in try(policy.syslogs, []) : {
+        name              = "${syslog_policy.name}${local.defaults.apic.access_policies.monitoring.policies.syslogs.name_suffix}"
+        audit             = try(syslog_policy.audit, local.defaults.apic.access_policies.monitoring.policies.syslogs.audit)
+        events            = try(syslog_policy.events, local.defaults.apic.access_policies.monitoring.policies.syslogs.events)
+        faults            = try(syslog_policy.faults, local.defaults.apic.access_policies.monitoring.policies.syslogs.faults)
+        session           = try(syslog_policy.session, local.defaults.apic.access_policies.monitoring.policies.syslogs.session)
+        minimum_severity  = try(syslog_policy.minimum_severity, local.defaults.apic.access_policies.monitoring.policies.syslogs.minimum_severity)
+        destination_group = try("${syslog_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}", null)
+      }]
+      fault_severity_policies = [for fault_policy in try(policy.fault_severity_policies, []) : {
+        class = fault_policy.class
+        faults = [for fault in try(fault_policy.faults, []) : {
+          fault_id         = fault.fault_id
+          initial_severity = try(fault.initial_severity, local.defaults.apic.access_policies.monitoring.policies.fault_severity_policies.initial_severity)
+          target_severity  = try(fault.target_severity, local.defaults.apic.access_policies.monitoring.policies.fault_severity_policies.target_severity)
+          description      = try(fault.description, "")
+        }]
+      }]
+    }
+  ])
+}
+
+module "aci_access_monitoring_policy" {
+  source   = "./modules/terraform-aci-access-monitoring-policy"
+  for_each = { for pol in local.access_monitoring_policy : pol.key => pol if local.modules.aci_access_monitoring_policy && var.manage_access_policies }
+
+  name                    = each.value.name
+  description             = each.value.description
+  snmp_trap_policies      = each.value.snmp_trap_policies
+  syslog_policies         = each.value.syslog_policies
+  fault_severity_policies = each.value.fault_severity_policies
+
+  depends_on = [
+    module.aci_snmp_trap_policy,
+    module.aci_syslog_policy,
+  ]
 }

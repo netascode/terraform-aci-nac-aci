@@ -1,6 +1,7 @@
 resource "aci_rest_managed" "aaaRadiusProvider" {
-  dn         = "uni/userext/radiusext/radiusprovider-${var.hostname_ip}"
-  class_name = "aaaRadiusProvider"
+  dn          = "uni/userext/radiusext/radiusprovider-${var.hostname_ip}"
+  class_name  = "aaaRadiusProvider"
+  escape_html = false
   content = {
     name               = var.hostname_ip
     descr              = var.description

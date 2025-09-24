@@ -1,6 +1,7 @@
 resource "aci_rest_managed" "aaaTacacsPlusProvider" {
-  dn         = "uni/userext/tacacsext/tacacsplusprovider-${var.hostname_ip}"
-  class_name = "aaaTacacsPlusProvider"
+  dn          = "uni/userext/tacacsext/tacacsplusprovider-${var.hostname_ip}"
+  class_name  = "aaaTacacsPlusProvider"
+  escape_html = false
   content = {
     name               = var.hostname_ip
     descr              = var.description

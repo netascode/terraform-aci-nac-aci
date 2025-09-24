@@ -20,14 +20,27 @@ locals {
         for nh in coalesce(sr.next_hops, []) : {
           key = "${node.node_id}/${sr.prefix}/${nh.ip}"
           value = {
-            static_route = "${node.node_id}/${sr.prefix}"
-            ip           = nh.ip
-            description  = nh.description
-            preference   = nh.preference == 0 ? "unspecified" : nh.preference
-            type         = nh.type
+            static_route  = "${node.node_id}/${sr.prefix}"
+            ip            = nh.ip
+            description   = nh.description
+            preference    = nh.preference == 0 ? "unspecified" : nh.preference
+            type          = nh.type
+            ip_sla_policy = nh.ip_sla_policy
+            track_list    = nh.track_list
           }
         }
       ]
+    ]
+  ])
+  loopback_list = flatten([
+    for node in var.nodes : [
+      for lp in coalesce(node.loopbacks, []) : {
+        key = "${node.node_id}/${lp}"
+        value = {
+          ip   = lp
+          node = node.node_id
+        }
+      }
     ]
   ])
 }
@@ -51,11 +64,11 @@ resource "aci_rest_managed" "l3extRsNodeL3OutAtt" {
 }
 
 resource "aci_rest_managed" "l3extLoopBackIfP" {
-  for_each   = { for node in var.nodes : node.node_id => node if node.router_id_as_loopback == false && node.loopback != null }
-  dn         = "${aci_rest_managed.l3extRsNodeL3OutAtt[each.key].dn}/lbp-[${each.value.loopback}]"
+  for_each   = { for item in local.loopback_list : item.key => item.value if item.value.ip != null }
+  dn         = "${aci_rest_managed.l3extRsNodeL3OutAtt[each.value.node].dn}/lbp-[${each.value.ip}]"
   class_name = "l3extLoopBackIfP"
   content = {
-    addr = each.value.loopback
+    addr = each.value.ip
   }
 }
 
@@ -102,9 +115,10 @@ resource "aci_rest_managed" "l3extInfraNodeP" {
 }
 
 resource "aci_rest_managed" "bgpPeerP" {
-  for_each   = { for peer in var.bgp_peers : peer.ip => peer }
-  dn         = "${aci_rest_managed.l3extLNodeP.dn}/peerP-[${each.value.ip}]"
-  class_name = "bgpPeerP"
+  for_each    = { for peer in var.bgp_peers : peer.ip => peer }
+  dn          = "${aci_rest_managed.l3extLNodeP.dn}/peerP-[${each.value.ip}]"
+  class_name  = "bgpPeerP"
+  escape_html = false
   content = {
     addr             = each.value.ip
     descr            = each.value.description
@@ -173,8 +187,8 @@ resource "aci_rest_managed" "bgpRsPeerToProfile_import" {
 }
 
 resource "aci_rest_managed" "mplsNodeSidP" {
-  for_each   = { for node in var.nodes : node.node_id => node if node.loopback != null && var.tenant == "infra" && var.sr_mpls == true }
-  dn         = "${aci_rest_managed.l3extLoopBackIfP[each.key].dn}/nodesidp-${each.value.segment_id}"
+  for_each   = { for node in var.nodes : node.node_id => node if node.loopbacks != null && var.tenant == "infra" && var.sr_mpls == true }
+  dn         = "${aci_rest_managed.l3extLoopBackIfP["${each.value.node_id}/${each.value.loopbacks[0]}"].dn}/nodesidp-${each.value.segment_id}"
   class_name = "mplsNodeSidP"
   content = {
     loopbackAddr = each.value.mpls_transport_loopback
@@ -207,9 +221,10 @@ resource "aci_rest_managed" "bfdRsMhNodePol" {
 }
 
 resource "aci_rest_managed" "bgpInfraPeerP" {
-  for_each   = { for peer in var.bgp_infra_peers : peer.ip => peer }
-  dn         = "${aci_rest_managed.l3extLNodeP.dn}/infraPeerP-[${each.value.ip}]"
-  class_name = "bgpInfraPeerP"
+  for_each    = { for peer in var.bgp_infra_peers : peer.ip => peer }
+  dn          = "${aci_rest_managed.l3extLNodeP.dn}/infraPeerP-[${each.value.ip}]"
+  class_name  = "bgpInfraPeerP"
+  escape_html = false
   content = {
     addr     = each.value.ip
     descr    = each.value.description
@@ -255,9 +270,12 @@ resource "aci_rest_managed" "bgpRsPeerPfxPol-bgpInfraPeerP" {
 }
 
 resource "aci_rest_managed" "bgpProtP" {
-  count      = var.bgp_timer_policy != "" || var.bgp_as_path_policy != "" ? 1 : 0
+  count      = var.bgp_protocol_profile_name != "" || var.bgp_timer_policy != "" || var.bgp_as_path_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.l3extLNodeP.dn}/protp"
   class_name = "bgpProtP"
+  content = {
+    name = var.bgp_protocol_profile_name
+  }
 }
 
 resource "aci_rest_managed" "bgpRsBgpNodeCtxPol" {
@@ -275,5 +293,23 @@ resource "aci_rest_managed" "bgpRsBestPathCtrlPol" {
   class_name = "bgpRsBestPathCtrlPol"
   content = {
     tnBgpBestPathCtrlPolName = var.bgp_as_path_policy
+  }
+}
+
+resource "aci_rest_managed" "ipRsNexthopRouteTrack" {
+  for_each   = { for next_hop in local.next_hops : next_hop.key => next_hop.value if next_hop.value.ip_sla_policy != null || next_hop.value.track_list != null }
+  dn         = "${aci_rest_managed.ipNexthopP[each.key].dn}/rsNexthopRouteTrack"
+  class_name = "ipRsNexthopRouteTrack"
+  content = {
+    tDn = "uni/tn-${var.tenant}/tracklist-${each.value.track_list}"
+  }
+}
+
+resource "aci_rest_managed" "ipRsNHTrackMember" {
+  for_each   = { for next_hop in local.next_hops : next_hop.key => next_hop.value if next_hop.value.ip_sla_policy != null }
+  dn         = "${aci_rest_managed.ipNexthopP[each.key].dn}/rsNHTrackMember"
+  class_name = "ipRsNHTrackMember"
+  content = {
+    tDn = "uni/tn-${var.tenant}/trackmember-${each.value.track_list}"
   }
 }

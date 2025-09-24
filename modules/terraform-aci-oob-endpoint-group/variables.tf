@@ -1,6 +1,7 @@
 variable "name" {
   description = "OOB endpoint group name."
   type        = string
+  default     = "default"
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))

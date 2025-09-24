@@ -14,7 +14,7 @@ module "aci_l3out_node_profile" {
     pod_id                = 2
     router_id             = "2.2.2.2"
     router_id_as_loopback = false
-    loopback              = "12.12.12.12"
+    loopbacks             = ["12.12.12.12", "2001:db8:42f8:2c07:85a3:0000:0000:abcd"]
     static_routes = [{
       prefix      = "0.0.0.0/0"
       description = "Default Route"
@@ -25,7 +25,16 @@ module "aci_l3out_node_profile" {
         description = "Next Hop Description"
         preference  = 10
         type        = "prefix"
-      }]
+        track_list  = "TRACK_LIST1"
+        },
+        {
+          ip            = "5.5.5.5"
+          description   = "Next Hop Description"
+          preference    = 10
+          type          = "prefix"
+          ip_sla_policy = "IP_SLA_POLICY1"
+        }
+      ]
     }]
   }]
   bgp_peers = [{
