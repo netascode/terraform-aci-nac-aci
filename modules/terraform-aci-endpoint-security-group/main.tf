@@ -2,11 +2,12 @@ resource "aci_rest_managed" "fvESg" {
   dn         = "uni/tn-${var.tenant}/ap-${var.application_profile}/esg-${var.name}"
   class_name = "fvESg"
   content = {
-    name       = var.name
-    descr      = var.description
-    pcEnfPref  = var.intra_esg_isolation == true ? "enforced" : "unenforced"
-    prefGrMemb = var.preferred_group == true ? "include" : "exclude"
-    shutdown   = var.shutdown == true ? "yes" : "no"
+    name        = var.name
+    descr       = var.description
+    instrImedcy = var.deployment_immediacy
+    pcEnfPref   = var.intra_esg_isolation == true ? "enforced" : "unenforced"
+    prefGrMemb  = var.preferred_group == true ? "include" : "exclude"
+    shutdown    = var.shutdown == true ? "yes" : "no"
   }
 }
 
