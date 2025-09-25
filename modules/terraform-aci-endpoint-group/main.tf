@@ -522,6 +522,50 @@ resource "aci_rest_managed" "fvRsDomAtt_vmm" {
   }
 }
 
+resource "null_resource" "nutanix_vmm_ipam_disable" {
+  for_each = { for vmm_ntx in var.nutanix_vmm_domains : vmm_ntx.name => vmm_ntx }
+
+  triggers = {
+    ipam_disable = each.value.ipam != false ? "yes" : "no"
+  }
+}
+
+resource "aci_rest_managed" "fvRsDomAtt_vmm_nutanix" {
+  for_each   = { for vmm_ntx in var.nutanix_vmm_domains : vmm_ntx.name => vmm_ntx }
+  dn         = "${aci_rest_managed.fvAEPg.dn}/rsdomAtt-[uni/vmmp-Nutanix/dom-${each.value.name}]"
+  class_name = "fvRsDomAtt"
+  content = {
+    tDn              = "uni/vmmp-Nutanix/dom-${each.value.name}"
+    customEpgName    = each.value.custom_epg_name
+    encapMode        = "auto"
+    encap            = each.value.vlan != null ? "vlan-${each.value.vlan}" : "unknown"
+    instrImedcy      = each.value.deployment_immediacy
+    resImedcy        = "pre-provision"
+    switchingMode    = "native"
+    ipamEnabled      = each.value.ipam != false ? "yes" : "no"
+    ipamGateway      = each.value.ipam_gateway != null ? each.value.ipam_gateway : "0.0.0.0"
+    ipamDhcpOverride = each.value.dhcp_server_address_override != null ? each.value.dhcp_server_address_override : "0.0.0.0"
+  }
+  lifecycle {
+    replace_triggered_by = [null_resource.nutanix_vmm_ipam_disable[each.key]]
+  }
+}
+
+resource "aci_rest_managed" "fvAEPgAddrMgmtPoolAtt_vmm_nutanix" {
+  for_each   = { for vmm_ntx in var.nutanix_vmm_domains : vmm_ntx.name => vmm_ntx if vmm_ntx.ipam && vmm_ntx.dhcp_address_pool != null }
+  dn         = "${aci_rest_managed.fvAEPg.dn}/rsdomAtt-[uni/vmmp-Nutanix/dom-${each.value.name}]/epgipampoolatt"
+  class_name = "fvAEPgAddrMgmtPoolAtt"
+  content    = {}
+  child {
+    class_name = "fvRsAddrMgmtPool"
+    rn         = "rsAddrMgmtPool"
+    content = {
+      tDn = "uni/tn-${var.tenant}/ipampool-${each.value.dhcp_address_pool}"
+    }
+  }
+  depends_on = [aci_rest_managed.fvRsDomAtt_vmm_nutanix]
+}
+
 resource "aci_rest_managed" "fvUplinkOrderCont" {
   for_each   = { for vmm_vwm in var.vmware_vmm_domains : vmm_vwm.name => vmm_vwm if vmm_vwm.active_uplinks_order != "" || vmm_vwm.standby_uplinks != "" }
   dn         = "${aci_rest_managed.fvRsDomAtt_vmm[each.key].dn}/uplinkorder"
