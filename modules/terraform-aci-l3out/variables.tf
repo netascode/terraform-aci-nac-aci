@@ -567,21 +567,21 @@ variable "sr_mpls_infra_l3outs" {
 
   validation {
     condition = alltrue([
-      for i in var.sr_mpls_infra_l3outs : can(regex("^[a-zA-Z0-9_.-]{0,64}$", i.name))
+      for i in var.sr_mpls_infra_l3outs : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", i.name))
     ])
     error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for i in var.sr_mpls_infra_l3outs : can(regex("^[a-zA-Z0-9_.-]{0,64}$", i.outbound_route_map))
+      for i in var.sr_mpls_infra_l3outs : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", i.outbound_route_map))
     ])
     error_message = "`outbound_route_map`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for i in var.sr_mpls_infra_l3outs : can(regex("^[a-zA-Z0-9_.-]{0,64}$", i.inbound_route_map))
+      for i in var.sr_mpls_infra_l3outs : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", i.inbound_route_map))
     ])
     error_message = "`inbound_route_map`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
@@ -589,7 +589,7 @@ variable "sr_mpls_infra_l3outs" {
   validation {
     condition = alltrue([
       for i in var.sr_mpls_infra_l3outs : alltrue([
-        for e in i.external_endpoint_groups : can(regex("^[a-zA-Z0-9_.-]{0,64}$", e))
+        for e in i.external_endpoint_groups : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", e))
       ])
     ])
     error_message = "`external_endpoint_groups`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
