@@ -222,6 +222,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-coop-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-data-plane-policing-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-data-plane-policing-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-date-time-format"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-date-time-format/examples/complete"]
