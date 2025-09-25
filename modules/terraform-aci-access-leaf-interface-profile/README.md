@@ -13,7 +13,8 @@ module "aci_access_leaf_interface_profile" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-access-leaf-interface-profile"
   version = ">= 0.8.0"
 
-  name = "INT-PROF1"
+  name        = "INT-PROF1"
+  description = "Interface profile 101"
 }
 ```
 
@@ -43,7 +44,6 @@ module "aci_access_leaf_interface_profile" {
 |------|-------------|
 | <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `infraAccPortP` object. |
 | <a name="output_name"></a> [name](#output\_name) | Leaf interface profile name. |
-| <a name="output_description"></a> [description](#output\_description) | Leaf interface profile description. |
 
 ## Resources
 
