@@ -546,17 +546,9 @@ defaults:
         data_plane_policing_policies:
           name_suffix: ""
           admin_state: false
-          type: 1R2C
           mode: bit
+          type: 1R2C
           sharing_mode: dedicated
-          rate: 0
-          rate_unit: unspecified
-          burst: unspecified
-          burst_unit: unspecified
-          peak_rate: 0
-          peak_rate_unit: unspecified
-          burst_excessive: unspecified
-          burst_excessive_unit: unspecified
           conform_action: transmit
           conform_mark_cos: unspecified
           conform_mark_dscp: unspecified
@@ -566,6 +558,14 @@ defaults:
           violate_action: drop
           violate_mark_cos: unspecified
           violate_mark_dscp: unspecified
+          rate: 0
+          rate_unit: unspecified
+          burst: unspecified
+          burst_unit: unspecified
+          peak_rate: 0
+          peak_rate_unit: unspecified
+          burst_excessive: unspecified
+          burst_excessive_unit: unspecified
         lldp_policies:
           name_suffix: ""
         link_level_policies:
@@ -1384,17 +1384,9 @@ defaults:
         data_plane_policing_policies:
           name_suffix: ""
           admin_state: false
-          type: 1R2C
           mode: bit
+          type: 1R2C
           sharing_mode: dedicated
-          rate: 0
-          rate_unit: unspecified
-          burst: unspecified
-          burst_unit: unspecified
-          peak_rate: 0
-          peak_rate_unit: unspecified
-          burst_excessive: unspecified
-          burst_excessive_unit: unspecified
           conform_action: transmit
           conform_mark_cos: unspecified
           conform_mark_dscp: unspecified
@@ -1404,6 +1396,14 @@ defaults:
           violate_action: drop
           violate_mark_cos: unspecified
           violate_mark_dscp: unspecified
+          rate: 0
+          rate_unit: unspecified
+          burst: unspecified
+          burst_unit: unspecified
+          peak_rate: 0
+          peak_rate_unit: unspecified
+          burst_excessive: unspecified
+          burst_excessive_unit: unspecified
         route_tag_policies:
           name_suffix: ""
           tag: 4294967295
