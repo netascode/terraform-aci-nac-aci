@@ -44,6 +44,16 @@ module "aci_useg_endpoint_group" {
     name = "mac_2"
     mac  = "02:aa:68:22:58:d2"
   }]
+
+  vm_statements = [{
+    name  = "vm_name"
+    value = "BackEnd"
+    }, {
+    name  = "operating_system"
+    value = "Win11"
+    type  = "guest-os"
+  }]
+
   subnets = [{
     description        = "Subnet Description"
     ip                 = "1.2.2.1/24"
