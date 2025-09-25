@@ -2687,22 +2687,22 @@ locals {
         type                 = try(policy.type, local.defaults.apic.tenants.policies.data_plane_policing_policies.type)
         sharing_mode         = try(policy.sharing_mode, local.defaults.apic.tenants.policies.data_plane_policing_policies.sharing_mode)
         conform_action       = try(policy.conform_action, local.defaults.apic.tenants.policies.data_plane_policing_policies.conform_action)
-        conform_mark_cos     = try(policy.conform_action == "mark", false) ? try(policy.conform_mark_cos, local.defaults.apic.tenants.policies.data_plane_policing_policies.conform_mark_cos) : local.defaults.apic.tenants.policies.data_plane_policing_policies.conform_mark_cos
-        conform_mark_dscp    = try(policy.conform_action == "mark", false) ? try(policy.conform_mark_dscp, local.defaults.apic.tenants.policies.data_plane_policing_policies.conform_mark_dscp) : local.defaults.apic.tenants.policies.data_plane_policing_policies.conform_mark_dscp
+        conform_mark_cos     = try(policy.conform_action == "mark", false) ? try(policy.conform_mark_cos, local.defaults.apic.tenants.policies.data_plane_policing_policies.conform_mark_cos) : null
+        conform_mark_dscp    = try(policy.conform_action == "mark", false) ? try(policy.conform_mark_dscp, local.defaults.apic.tenants.policies.data_plane_policing_policies.conform_mark_dscp) : null
         exceed_action        = try(policy.exceed_action, local.defaults.apic.tenants.policies.data_plane_policing_policies.exceed_action)
-        exceed_mark_cos      = try(policy.exceed_action == "mark", false) ? try(policy.exceed_mark_cos, local.defaults.apic.tenants.policies.data_plane_policing_policies.exceed_mark_cos) : local.defaults.apic.tenants.policies.data_plane_policing_policies.exceed_mark_cos
-        exceed_mark_dscp     = try(policy.exceed_action == "mark", false) ? try(policy.exceed_mark_dscp, local.defaults.apic.tenants.policies.data_plane_policing_policies.exceed_mark_dscp) : local.defaults.apic.tenants.policies.data_plane_policing_policies.exceed_mark_dscp
+        exceed_mark_cos      = try(policy.exceed_action == "mark", false) ? try(policy.exceed_mark_cos, local.defaults.apic.tenants.policies.data_plane_policing_policies.exceed_mark_cos) : null
+        exceed_mark_dscp     = try(policy.exceed_action == "mark", false) ? try(policy.exceed_mark_dscp, local.defaults.apic.tenants.policies.data_plane_policing_policies.exceed_mark_dscp) : null
         violate_action       = try(policy.violate_action, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_action)
-        violate_mark_cos     = try(policy.violate_action == "mark", false) ? try(policy.violate_mark_cos, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_mark_cos) : local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_mark_cos
-        violate_mark_dscp    = try(policy.violate_action == "mark", false) ? try(policy.violate_mark_dscp, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_mark_dscp) : local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_mark_dscp
+        violate_mark_cos     = try(policy.violate_action == "mark", false) ? try(policy.violate_mark_cos, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_mark_cos) : null
+        violate_mark_dscp    = try(policy.violate_action == "mark", false) ? try(policy.violate_mark_dscp, local.defaults.apic.tenants.policies.data_plane_policing_policies.violate_mark_dscp) : null
         rate                 = try(policy.rate, local.defaults.apic.tenants.policies.data_plane_policing_policies.rate)
         rate_unit            = try(policy.rate_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.rate_unit)
         burst                = try(policy.burst, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst)
         burst_unit           = try(policy.burst_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_unit)
-        peak_rate            = try(policy.type == "2R3C", false) ? try(policy.peak_rate, local.defaults.apic.tenants.policies.data_plane_policing_policies.peak_rate) : local.defaults.apic.tenants.policies.data_plane_policing_policies.peak_rate
-        peak_rate_unit       = try(policy.type == "2R3C", false) ? try(policy.peak_rate_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.peak_rate_unit) : local.defaults.apic.tenants.policies.data_plane_policing_policies.peak_rate_unit
-        burst_excessive      = try(policy.type == "2R3C", false) ? try(policy.burst_excessive, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_excessive) : local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_excessive
-        burst_excessive_unit = try(policy.type == "2R3C", false) ? try(policy.burst_excessive_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_excessive_unit) : local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_excessive_unit
+        peak_rate            = try(policy.type == "2R3C", false) ? try(policy.peak_rate, local.defaults.apic.tenants.policies.data_plane_policing_policies.peak_rate) : null
+        peak_rate_unit       = try(policy.type == "2R3C", false) ? try(policy.peak_rate_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.peak_rate_unit) : null
+        burst_excessive      = try(policy.type == "2R3C", false) ? try(policy.burst_excessive, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_excessive) : null
+        burst_excessive_unit = try(policy.type == "2R3C", false) ? try(policy.burst_excessive_unit, local.defaults.apic.tenants.policies.data_plane_policing_policies.burst_excessive_unit) : null
       }
     ]
   ])
