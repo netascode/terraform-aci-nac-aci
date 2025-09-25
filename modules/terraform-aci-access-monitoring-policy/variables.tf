@@ -1,15 +1,5 @@
-variable "tenant" {
-  description = "Tenant name."
-  type        = string
-
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
-  }
-}
-
 variable "name" {
-  description = "Tenant monitoring policy name."
+  description = "Access monitoring policy name."
   type        = string
 
   validation {
@@ -24,13 +14,13 @@ variable "description" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+    condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, `}`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
 }
 
 variable "snmp_trap_policies" {
-  description = "List of SNMP trap policy names."
+  description = "List of SNMP trap policies."
   type = list(object({
     name              = string
     destination_group = optional(string)
@@ -41,14 +31,14 @@ variable "snmp_trap_policies" {
     condition = alltrue([
       for snmp in var.snmp_trap_policies : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", snmp.name))
     ])
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
       for snmp in var.snmp_trap_policies : snmp.destination_group == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", snmp.destination_group))
     ])
-    error_message = "`destination_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters `destination_group`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
@@ -78,16 +68,17 @@ variable "syslog_policies" {
     ])
     error_message = "`minimum_severity`: Allowed values are `emergencies`, `alerts`, `critical`, `errors`, `warnings`, `notifications`, `information` or `debugging`."
   }
+
   validation {
     condition = alltrue([
       for syslog in var.syslog_policies : syslog.destination_group == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", syslog.destination_group))
     ])
-    error_message = "`destination_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    error_message = "Allowed characters `destination_group`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
 variable "fault_severity_policies" {
-  description = "List of Fault Severity Assignment Policies."
+  description = "List of fault severity policies."
   type = list(object({
     class = string
     faults = list(object({
@@ -101,10 +92,11 @@ variable "fault_severity_policies" {
 
   validation {
     condition = alltrue([
-      for policy in var.fault_severity_policies : can(regex("^[a-zA-Z0-9]{0,64}$", policy.class))
+      for policy in var.fault_severity_policies : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", policy.class))
     ])
-    error_message = "`class`. Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`. Required `pkg+className`. Maximum characters: 64."
+    error_message = "Allowed characters `class`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Required `pkg+className`.Maximum characters: 64."
   }
+
   validation {
     condition = alltrue(flatten([
       for policy in var.fault_severity_policies : [

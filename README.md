@@ -148,6 +148,7 @@ Additional example repositories:
 | <a name="module_aci_access_leaf_switch_policy_group"></a> [aci\_access\_leaf\_switch\_policy\_group](#module\_aci\_access\_leaf\_switch\_policy\_group) | ./modules/terraform-aci-access-leaf-switch-policy-group | n/a |
 | <a name="module_aci_access_leaf_switch_profile_auto"></a> [aci\_access\_leaf\_switch\_profile\_auto](#module\_aci\_access\_leaf\_switch\_profile\_auto) | ./modules/terraform-aci-access-leaf-switch-profile | n/a |
 | <a name="module_aci_access_leaf_switch_profile_manual"></a> [aci\_access\_leaf\_switch\_profile\_manual](#module\_aci\_access\_leaf\_switch\_profile\_manual) | ./modules/terraform-aci-access-leaf-switch-profile | n/a |
+| <a name="module_aci_access_monitoring_policy"></a> [aci\_access\_monitoring\_policy](#module\_aci\_access\_monitoring\_policy) | ./modules/terraform-aci-access-monitoring-policy | n/a |
 | <a name="module_aci_access_span_destination_group"></a> [aci\_access\_span\_destination\_group](#module\_aci\_access\_span\_destination\_group) | ./modules/terraform-aci-access-span-destination-group | n/a |
 | <a name="module_aci_access_span_filter_group"></a> [aci\_access\_span\_filter\_group](#module\_aci\_access\_span\_filter\_group) | ./modules/terraform-aci-access-span-filter-group | n/a |
 | <a name="module_aci_access_span_source_group"></a> [aci\_access\_span\_source\_group](#module\_aci\_access\_span\_source\_group) | ./modules/terraform-aci-access-span-source-group | n/a |
@@ -180,6 +181,7 @@ Additional example repositories:
 | <a name="module_aci_config_export"></a> [aci\_config\_export](#module\_aci\_config\_export) | ./modules/terraform-aci-config-export | n/a |
 | <a name="module_aci_config_passphrase"></a> [aci\_config\_passphrase](#module\_aci\_config\_passphrase) | ./modules/terraform-aci-config-passphrase | n/a |
 | <a name="module_aci_contract"></a> [aci\_contract](#module\_aci\_contract) | ./modules/terraform-aci-contract | n/a |
+| <a name="module_aci_control_plane_mtu"></a> [aci\_control\_plane\_mtu](#module\_aci\_control\_plane\_mtu) | ./modules/terraform-aci-control-plane-mtu | n/a |
 | <a name="module_aci_coop_policy"></a> [aci\_coop\_policy](#module\_aci\_coop\_policy) | ./modules/terraform-aci-coop-policy | n/a |
 | <a name="module_aci_data_plane_policing_policy"></a> [aci\_data\_plane\_policing\_policy](#module\_aci\_data\_plane\_policing\_policy) | ./modules/terraform-aci-data-plane-policing-policy | n/a |
 | <a name="module_aci_date_time_format"></a> [aci\_date\_time\_format](#module\_aci\_date\_time\_format) | ./modules/terraform-aci-date-time-format | n/a |
@@ -212,6 +214,9 @@ Additional example repositories:
 | <a name="module_aci_fabric_leaf_switch_profile_auto"></a> [aci\_fabric\_leaf\_switch\_profile\_auto](#module\_aci\_fabric\_leaf\_switch\_profile\_auto) | ./modules/terraform-aci-fabric-leaf-switch-profile | n/a |
 | <a name="module_aci_fabric_leaf_switch_profile_manual"></a> [aci\_fabric\_leaf\_switch\_profile\_manual](#module\_aci\_fabric\_leaf\_switch\_profile\_manual) | ./modules/terraform-aci-fabric-leaf-switch-profile | n/a |
 | <a name="module_aci_fabric_link_level_policy"></a> [aci\_fabric\_link\_level\_policy](#module\_aci\_fabric\_link\_level\_policy) | ./modules/terraform-aci-fabric-link-level-policy | n/a |
+| <a name="module_aci_fabric_macsec_interfaces_policy"></a> [aci\_fabric\_macsec\_interfaces\_policy](#module\_aci\_fabric\_macsec\_interfaces\_policy) | ./modules/terraform-aci-macsec-interfaces-policy | n/a |
+| <a name="module_aci_fabric_macsec_keychain_policies"></a> [aci\_fabric\_macsec\_keychain\_policies](#module\_aci\_fabric\_macsec\_keychain\_policies) | ./modules/terraform-aci-macsec-keychain-policies | n/a |
+| <a name="module_aci_fabric_macsec_parameters_policy"></a> [aci\_fabric\_macsec\_parameters\_policy](#module\_aci\_fabric\_macsec\_parameters\_policy) | ./modules/terraform-aci-macsec-parameters-policy | n/a |
 | <a name="module_aci_fabric_pod_policy_group"></a> [aci\_fabric\_pod\_policy\_group](#module\_aci\_fabric\_pod\_policy\_group) | ./modules/terraform-aci-fabric-pod-policy-group | n/a |
 | <a name="module_aci_fabric_pod_profile_auto"></a> [aci\_fabric\_pod\_profile\_auto](#module\_aci\_fabric\_pod\_profile\_auto) | ./modules/terraform-aci-fabric-pod-profile | n/a |
 | <a name="module_aci_fabric_pod_profile_manual"></a> [aci\_fabric\_pod\_profile\_manual](#module\_aci\_fabric\_pod\_profile\_manual) | ./modules/terraform-aci-fabric-pod-profile | n/a |

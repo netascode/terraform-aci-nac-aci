@@ -9,12 +9,12 @@ variable "name" {
 }
 
 variable "profile" {
-  description = "Profile. Choices: `dual-stack`, `ipv4`, `high-dual-stack`, `high-lpm`."
+  description = "Profile. Choices: `dual-stack`, `ipv4`, `high-dual-stack`, `high-lpm`, `high-policy`, `high-ipv4-ep`, `mcast-heavy`, `max-lpm`."
   type        = string
   default     = "dual-stack"
 
   validation {
-    condition     = contains(["dual-stack", "ipv4", "high-dual-stack", "high-lpm"], var.profile)
-    error_message = "Valid values are `dual-stack`, `ipv4`, `high-dual-stack` or `high-lpm`."
+    condition     = contains(["dual-stack", "ipv4", "high-dual-stack", "high-lpm", "high-policy", "high-ipv4-ep", "mcast-heavy", "max-lpm"], var.profile)
+    error_message = "Valid values are `dual-stack`, `ipv4`, `high-dual-stack`, `high-lpm`, `high-policy`, `high-ipv4-ep`, `mcast-heavy`  or `max-lpm`."
   }
 }

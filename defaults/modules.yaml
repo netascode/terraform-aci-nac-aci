@@ -113,6 +113,7 @@ modules:
   aci_mcp: true
   aci_mcp_policy: true
   aci_monitoring_policy: true
+  aci_access_monitoring_policy: true
   aci_mpls_custom_qos_policy: true
   aci_mst_policy: true
   aci_multicast_route_map: true
@@ -180,3 +181,4 @@ modules:
   aci_vrf: true
   aci_vspan_destination_group: true
   aci_vspan_session: true
+  aci_control_plane_mtu: true

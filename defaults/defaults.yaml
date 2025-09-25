@@ -27,6 +27,8 @@ defaults:
       apic_conn_pref: inband
       atomic_counter:
         mode: trail
+      control_plane_mtu:
+        mtu: 9000
       banners:
         apic_gui_alias: ""
         apic_gui_banner_url: ""
@@ -425,6 +427,20 @@ defaults:
       sr_mpls_global_configuration:
         sr_global_block_minimum: 16000
         sr_global_block_maximum: 23999
+      macsec_parameters_policies:
+        name_suffix: ""
+        cipher_suite: gcm-aes-xpn-256
+        window_size: 64
+        key_expiry_time: disabled
+        security_policy: should-secure
+      macsec_keychain_policies:
+        name_suffix: ""
+        key_policies:
+          start_time: now
+          end_time: infinite
+      macsec_interfaces_policies:
+        name_suffix: ""
+        admin_state: true
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
@@ -509,6 +525,21 @@ defaults:
           name_suffix: ""
           node_blocks:
             name_suffix: ""
+      monitoring:
+        policies:
+            name_suffix: ""
+            snmp_traps:
+              name_suffix: ""
+            syslogs:
+              name_suffix: ""
+              audit: true
+              events: true
+              faults: true
+              session: false
+              minimum_severity: warnings
+            fault_severity_policies:
+              initial_severity: inherit
+              target_severity: inherit
       interface_policies:
         cdp_policies:
           name_suffix: ""
@@ -856,6 +887,7 @@ defaults:
         name_suffix: ""
         ndo_managed: false
         mac: 00:22:BD:F8:19:FF
+        virtual_mac: not-applicable
         ep_move_detection: false
         arp_flooding: true
         ip_dataplane_learning: true
@@ -1172,6 +1204,9 @@ defaults:
             operator: equals
       inb_endpoint_groups:
         name_suffix: ""
+        subnets:
+          public: false
+          shared: false
       oob_endpoint_groups:
         name_suffix: ""
         name: default
