@@ -1250,9 +1250,9 @@ locals {
                 elag               = try(path.elag, null)
                 floating_ip        = path.floating_ip
                 vlan               = try(path.vlan, null)
-                forge_transmit     = try(path.forge_transmit, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.paths.forge_transmit)
-                mac_address_change = try(path.mac_address_change, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.paths.mac_address_change)
-                promiscous_mode    = try(path.promiscous_mode, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.paths.promiscous_mode)
+                forge_transmit     = try(path.forge_transmit, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.paths.forge_transmit, null)
+                mac_address_change = try(path.mac_address_change, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.paths.mac_address_change, null)
+                promiscous_mode    = try(path.promiscous_mode, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.paths.promiscous_mode, null)
               }]
               micro_bfd_destination_ip = try(int.micro_bfd.destination_ip, null)
               micro_bfd_start_timer    = try(int.micro_bfd.start_timer, null)
