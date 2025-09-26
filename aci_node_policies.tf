@@ -67,6 +67,10 @@ module "aci_inband_node_address" {
   v6_gateway          = try(each.value.inb_v6_gateway, "::")
   endpoint_group      = try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
   endpoint_group_vlan = [for epg in local.inband_endpoint_groups : epg.vlan if epg.name == try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)][0]
+
+  depends_on = [
+    module.aci_inband_endpoint_group
+  ]
 }
 
 module "aci_oob_node_address" {
