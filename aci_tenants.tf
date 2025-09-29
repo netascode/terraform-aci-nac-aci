@@ -565,6 +565,14 @@ locals {
             name = mac_statement.name
             mac  = upper(mac_statement.mac)
           }]
+          useg_attributes_vm_statements = [for vm_statement in try(useg_epg.useg_attributes.vm_statements, []) : {
+            name     = vm_statement.name
+            type     = try(vm_statement.type, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.useg_attributes.vm_statements.type)
+            operator = try(vm_statement.operator, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.useg_attributes.vm_statements.operator)
+            value    = vm_statement.value
+            category = try(vm_statement.category, null)
+            label    = try(vm_statement.label, null)
+          }]
           subnets = [for subnet in try(useg_epg.subnets, []) : {
             description         = try(subnet.description, "")
             ip                  = subnet.ip
@@ -639,6 +647,7 @@ module "aci_useg_endpoint_group" {
   match_type                  = each.value.useg_attributes_match_type
   ip_statements               = each.value.useg_attributes_ip_statements
   mac_statements              = each.value.useg_attributes_mac_statements
+  vm_statements               = each.value.useg_attributes_vm_statements
   subnets                     = each.value.subnets
   vmware_vmm_domains          = each.value.vmware_vmm_domains
   static_leafs = [for sl in try(each.value.static_leafs, []) : {
