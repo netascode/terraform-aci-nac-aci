@@ -235,14 +235,16 @@ resource "aci_rest_managed" "bgpInfraPeerP" {
   class_name  = "bgpInfraPeerP"
   escape_html = false
   content = {
-    addr     = each.value.ip
-    descr    = each.value.description
-    ctrl     = join(",", concat(each.value.allow_self_as == true ? ["allow-self-as"] : [], each.value.disable_peer_as_check == true ? ["dis-peer-as-check"] : [], ["send-com"], ["send-ext-com"]))
-    password = sensitive(each.value.password)
-    peerCtrl = join(",", concat(each.value.bfd == true ? ["bfd"] : []))
-    peerT    = each.value.peer_type
-    ttl      = each.value.ttl
-    adminSt  = each.value.admin_state == true ? "enabled" : "disabled"
+    addr          = each.value.ip
+    descr         = each.value.description
+    ctrl          = join(",", concat(each.value.allow_self_as == true ? ["allow-self-as"] : [], each.value.as_override == true ? ["as-override"] : [], each.value.disable_peer_as_check == true ? ["dis-peer-as-check"] : [], each.value.next_hop_self == true ? ["nh-self"] : [], each.value.send_community == true ? ["send-com"] : [], each.value.send_ext_community == true ? ["send-ext-com"] : []))
+    password      = sensitive(each.value.password)
+    peerCtrl      = join(",", concat(each.value.bfd == true ? ["bfd"] : []))
+    peerT         = each.value.peer_type
+    ttl           = each.value.ttl
+    adminSt       = each.value.admin_state == true ? "enabled" : "disabled"
+    srcIfT        = each.value.source_interface_type
+    dataPlaneAddr = each.value.data_plane_address
   }
 
   lifecycle {

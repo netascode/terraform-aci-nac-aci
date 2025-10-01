@@ -223,6 +223,10 @@ variable "bgp_infra_peers" {
     description           = optional(string, "")
     allow_self_as         = optional(bool, false)
     disable_peer_as_check = optional(bool, false)
+    as_override           = optional(bool, false)
+    next_hop_self         = optional(bool, false)
+    send_community        = optional(bool, false)
+    send_ext_community    = optional(bool, false)
     password              = optional(string)
     bfd                   = optional(bool, false)
     ttl                   = optional(number, 1)
@@ -231,6 +235,8 @@ variable "bgp_infra_peers" {
     as_propagate          = optional(string, "none")
     peer_prefix_policy    = optional(string)
     peer_type             = optional(string)
+    source_interface_type = optional(string, "l3out-loopback")
+    data_plane_address    = optional(string, null)
   }))
   default = []
 
@@ -271,9 +277,21 @@ variable "bgp_infra_peers" {
 
   validation {
     condition = alltrue([
-      for b in var.bgp_infra_peers : b.peer_type == null || try(contains(["sr-mpls", "wan", "mdp-wan", "intersite"], b.peer_type), false)
+      for b in var.bgp_infra_peers : b.peer_type == null || try(contains(["sr-mpls", "wan", "mdp-wan", "vxlan-bgw", "intersite"], b.peer_type), false)
     ])
-    error_message = "`as_propagate`: Allowed value are: `sr-mpls`, `wan`, `mdp-wan` or `intersite`."
+    error_message = "`peer_type`: Allowed value are: `sr-mpls`, `wan`, `mdp-wan`, 'vxlan-bgw' or `intersite`."
+  }
+  validation {
+    condition = alltrue([
+      for b in var.bgp_infra_peers : try(contains(["l3out-loopback", "routable-loopback"], b.source_interface_type), false)
+    ])
+    error_message = "`source_interface_type`: Allowed value are: `l3out-loopback` or `routable-loopback`."
+  }
+  validation {
+    condition = alltrue([
+      for b in var.bgp_infra_peers : (b.data_plane_address == null && b.source_interface_type != "routable-loopback") || b.data_plane_address != null
+    ])
+    error_message = "`data_plane_address`: Must be set if `source_interface_type` is `routable-loopback`."
   }
 }
 

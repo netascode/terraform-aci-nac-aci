@@ -902,10 +902,15 @@ defaults:
           peer_type: wan
           allow_self_as: false
           disable_peer_as_check: false
+          send_community: false
+          send_ext_community: false
+          next_hop_self: false
+          as_override: false
           ttl: 2
           bfd: false
           admin_state: true
           as_propagate: none
+          source_interface_type: l3out-loopback
         redistribution_route_maps:
           source: static
         dhcp_labels:
@@ -979,10 +984,15 @@ defaults:
             peer_type: wan
             allow_self_as: false
             disable_peer_as_check: false
+            send_community: false
+            send_ext_community: false
+            next_hop_self: false
+            as_override: false
             ttl: 2
             bfd: false
             admin_state: true
             as_propagate: none
+            source_interface_type: l3out-loopback
           nodes:
             pod: 1
             router_id_as_loopback: true
