@@ -248,7 +248,7 @@ resource "aci_rest_managed" "bgpInfraPeerP" {
   }
 
   lifecycle {
-    ignore_changes = [content["password"]]
+    ignore_changes = [content["password"], content["srcIfT"], content["peerT"]]
   }
 }
 
