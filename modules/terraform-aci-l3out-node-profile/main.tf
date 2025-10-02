@@ -230,19 +230,19 @@ resource "aci_rest_managed" "bfdRsMhNodePol" {
 }
 
 resource "aci_rest_managed" "bgpInfraPeerP" {
-  for_each    = { for peer in var.bgp_infra_peers : peer.ip => peer }
+  for_each    = { for peer in var.bgp_infra_peers : peer.ip => peer if var.sr_mpls == true || (var.sr_mpls == false && peer.peer_type != "sr-mpls" && peer.peer_type != "vxlan-bgw") }
   dn          = "${aci_rest_managed.l3extLNodeP.dn}/infraPeerP-[${each.value.ip}]"
   class_name  = "bgpInfraPeerP"
   escape_html = false
   content = {
     addr          = each.value.ip
     descr         = each.value.description
-    ctrl          = join(",", concat(each.value.allow_self_as == true ? ["allow-self-as"] : [], each.value.as_override == true ? ["as-override"] : [], each.value.disable_peer_as_check == true ? ["dis-peer-as-check"] : [], each.value.next_hop_self == true ? ["nh-self"] : [], each.value.send_community == true ? ["send-com"] : [], each.value.send_ext_community == true ? ["send-ext-com"] : []))
-    password      = sensitive(each.value.password)
+    ctrl          = join(",", concat(each.value.allow_self_as && each.value.peer_type != "intersite" == true ? ["allow-self-as"] : [], each.value.as_override && each.value.peer_type != "intersite" == true ? ["as-override"] : [], each.value.disable_peer_as_check && each.value.peer_type != "intersite" == true ? ["dis-peer-as-check"] : [], each.value.next_hop_self && each.value.peer_type != "intersite" == true ? ["nh-self"] : [], each.value.send_community == true ? ["send-com"] : [], each.value.send_ext_community == true ? ["send-ext-com"] : []))
+    password      = each.value.peer_type != "intersite" ? sensitive(each.value.password) : ""
     peerCtrl      = join(",", concat(each.value.bfd == true ? ["bfd"] : []))
     peerT         = each.value.peer_type
     ttl           = each.value.ttl
-    adminSt       = each.value.admin_state == true ? "enabled" : "disabled"
+    adminSt       = each.value.admin_state == true || each.value.peer_type == "intersite" ? "enabled" : "disabled"
     srcIfT        = each.value.source_interface_type
     dataPlaneAddr = each.value.data_plane_address
   }
@@ -253,7 +253,7 @@ resource "aci_rest_managed" "bgpInfraPeerP" {
 }
 
 resource "aci_rest_managed" "bgpAsP-bgpInfraPeerP" {
-  for_each   = { for peer in var.bgp_infra_peers : peer.ip => peer }
+  for_each   = { for peer in var.bgp_infra_peers : peer.ip => peer if var.sr_mpls || (var.sr_mpls == false && peer.peer_type != "sr-mpls" && peer.peer_type != "vxlan-bgw") }
   dn         = "${aci_rest_managed.bgpInfraPeerP[each.key].dn}/as"
   class_name = "bgpAsP"
   content = {
@@ -262,7 +262,7 @@ resource "aci_rest_managed" "bgpAsP-bgpInfraPeerP" {
 }
 
 resource "aci_rest_managed" "bgpLocalAsnP-bgpInfraPeerP" {
-  for_each   = { for peer in var.bgp_infra_peers : peer.ip => peer if peer.local_as != null }
+  for_each   = { for peer in var.bgp_infra_peers : peer.ip => peer if(var.sr_mpls || (var.sr_mpls == false && peer.peer_type != "sr-mpls" && peer.peer_type != "vxlan-bgw")) && peer.local_as != null }
   dn         = "${aci_rest_managed.bgpInfraPeerP[each.key].dn}/localasn"
   class_name = "bgpLocalAsnP"
   content = {
@@ -272,7 +272,7 @@ resource "aci_rest_managed" "bgpLocalAsnP-bgpInfraPeerP" {
 }
 
 resource "aci_rest_managed" "bgpRsPeerPfxPol-bgpInfraPeerP" {
-  for_each   = { for peer in var.bgp_infra_peers : peer.ip => peer if peer.peer_prefix_policy != null }
+  for_each   = { for peer in var.bgp_infra_peers : peer.ip => peer if(var.sr_mpls || (var.sr_mpls == false && peer.peer_type != "sr-mpls" && peer.peer_type != "vxlan-bgw")) && peer.peer_prefix_policy != null }
   dn         = "${aci_rest_managed.bgpInfraPeerP[each.key].dn}/rspeerPfxPol"
   class_name = "bgpRsPeerPfxPol"
   content = {
