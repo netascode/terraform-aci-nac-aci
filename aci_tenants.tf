@@ -1060,6 +1060,7 @@ locals {
             as_propagate          = try(peer.as_propagate, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.as_propagate)
             source_interface_type = try(peer.peer_type, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.peer_type) == "wan" ? try(peer.source_interface_type, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.source_interface_type) : null
             data_plane_address    = try(peer.peer_type, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.peer_type) == "wan" && try(peer.source_interface_type, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.source_interface_type) == "routable-loopback" ? try(peer.data_plane_address, null) : null
+            peer_prefix_policy    = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
           } if tenant.name == "infra"]
         }
       ]
@@ -1174,6 +1175,7 @@ locals {
           as_propagate          = try(peer.as_propagate, local.defaults.apic.tenants.l3outs.bgp_infra_peers.as_propagate)
           source_interface_type = try(peer.peer_type, local.defaults.apic.tenants.l3outs.bgp_infra_peers.peer_type) == "wan" ? try(peer.source_interface_type, local.defaults.apic.tenants.l3outs.bgp_infra_peers.source_interface_type) : null
           data_plane_address    = try(peer.peer_type, local.defaults.apic.tenants.l3outs.bgp_infra_peers.peer_type) == "wan" && try(peer.source_interface_type, local.defaults.apic.tenants.l3outs.bgp_infra_peers.source_interface_type) == "routable-loopback" ? try(peer.data_plane_address, null) : null
+          peer_prefix_policy               = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
         } if tenant.name == "infra"]
       } if length(try(l3out.nodes, [])) != 0
     ]
