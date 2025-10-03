@@ -399,16 +399,16 @@ variable "vm_statements" {
 
   validation {
     condition = alltrue([
-      for vm_statement in var.vm_statements : try(contains(["vm-name", "guest-os", "hv", "vm", "vnic", "domain", "rootContName", "custom-label", "tag", "vm-folder", "vmfolder-path"], vm_statement.type), false) || try(tonumber(vm_statement.type) >= 0 && tonumber(vm_statement.type) <= 10, false)
+      for vm_statement in var.vm_statements : try(contains(["vm-name", "guest-os", "hv", "vm", "vnic", "domain", "rootContName", "custom-label", "tag", "vm-folder", "vmfolder-path"], vm_statement.type), false)
     ])
-    error_message = "`type`: Allowed values are `vm-name`, `guest-os`, `hv`, `vm`, `vnic`, `domain`, `rootContName`, `custom-label`, `tag`, `vm-folder`, `vmfolder-path` or a number between 0 and 10."
+    error_message = "`type`: Allowed values are `vm-name`, `guest-os`, `hv`, `vm`, `vnic`, `domain`, `rootContName`, `custom-label`, `tag`, `vm-folder`, `vmfolder-path`."
   }
 
   validation {
     condition = alltrue([
-      for vm_statement in var.vm_statements : try(contains(["equals", "contains", "startsWith", "endsWith", "notEquals"], vm_statement.operator), false) || try(tonumber(vm_statement.operator) >= 0 && tonumber(vm_statement.operator) <= 4, false)
+      for vm_statement in var.vm_statements : try(contains(["equals", "contains", "startsWith", "endsWith", "notEquals"], vm_statement.operator), false)
     ])
-    error_message = "`operator`: Allowed values are `equals`, `contains`, `startsWith`, `endsWith`, `notEquals` or a number between 0 and 4."
+    error_message = "`operator`: Allowed values are `equals`, `contains`, `startsWith`, `endsWith`, `notEquals`."
   }
 }
 
