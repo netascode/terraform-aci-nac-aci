@@ -72,15 +72,6 @@ resource "aci_rest_managed" "l3extLoopBackIfP" {
   }
 }
 
-resource "aci_rest_managed" "l3extIntersiteLoopBackIfP" {
-  for_each   = { for node in var.nodes : node.node_id => node if var.tenant == "infra" && node.intersite_loopback != null }
-  dn         = "${aci_rest_managed.l3extRsNodeL3OutAtt[each.key].dn}/sitelbp-[${each.value.intersite_loopback}]"
-  class_name = "l3extIntersiteLoopBackIfP"
-  content = {
-    addr = each.value.intersite_loopback
-  }
-}
-
 resource "aci_rest_managed" "ipRouteP" {
   for_each   = { for item in local.static_routes : item.key => item.value }
   dn         = "${aci_rest_managed.l3extRsNodeL3OutAtt[each.value.node].dn}/rt-[${each.value.prefix}]"
@@ -237,12 +228,12 @@ resource "aci_rest_managed" "bgpInfraPeerP" {
   content = {
     addr          = each.value.ip
     descr         = each.value.description
-    ctrl          = join(",", concat(each.value.allow_self_as && each.value.peer_type != "intersite" == true ? ["allow-self-as"] : [], each.value.as_override && each.value.peer_type != "intersite" == true ? ["as-override"] : [], each.value.disable_peer_as_check && each.value.peer_type != "intersite" == true ? ["dis-peer-as-check"] : [], each.value.next_hop_self && each.value.peer_type != "intersite" == true ? ["nh-self"] : [], each.value.send_community == true ? ["send-com"] : [], each.value.send_ext_community == true ? ["send-ext-com"] : []))
-    password      = each.value.peer_type != "intersite" ? sensitive(each.value.password) : ""
+    ctrl          = join(",", concat(each.value.allow_self_as == true ? ["allow-self-as"] : [], each.value.as_override == true ? ["as-override"] : [], each.value.disable_peer_as_check == true ? ["dis-peer-as-check"] : [], each.value.next_hop_self == true ? ["nh-self"] : [], each.value.send_community == true ? ["send-com"] : [], each.value.send_ext_community == true ? ["send-ext-com"] : []))
+    password      = sensitive(each.value.password)
     peerCtrl      = join(",", concat(each.value.bfd == true ? ["bfd"] : []))
     peerT         = each.value.peer_type
     ttl           = each.value.ttl
-    adminSt       = each.value.admin_state == true || each.value.peer_type == "intersite" ? "enabled" : "disabled"
+    adminSt       = each.value.admin_state == true ? "enabled" : "disabled"
     srcIfT        = each.value.source_interface_type
     dataPlaneAddr = each.value.data_plane_address
   }

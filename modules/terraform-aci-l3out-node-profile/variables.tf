@@ -277,9 +277,9 @@ variable "bgp_infra_peers" {
 
   validation {
     condition = alltrue([
-      for b in var.bgp_infra_peers : b.peer_type == null || try(contains(["sr-mpls", "wan", "mdp-wan", "vxlan-bgw", "intersite"], b.peer_type), false)
+      for b in var.bgp_infra_peers : b.peer_type == null || try(contains(["sr-mpls", "wan", "mdp-wan", "vxlan-bgw"], b.peer_type), false)
     ])
-    error_message = "`peer_type`: Allowed value are: `sr-mpls`, `wan`, `mdp-wan`, 'vxlan-bgw' or `intersite`."
+    error_message = "`peer_type`: Allowed value are: `sr-mpls`, `wan`, `mdp-wan` or 'vxlan-bgw'."
   }
   validation {
     condition = alltrue([
