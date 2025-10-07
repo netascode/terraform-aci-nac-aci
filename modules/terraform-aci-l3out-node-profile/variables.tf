@@ -36,7 +36,6 @@ variable "nodes" {
     router_id               = string
     router_id_as_loopback   = optional(bool, true)
     loopbacks               = optional(list(string))
-    intersite_loopback      = optional(string)
     mpls_transport_loopback = optional(string)
     segment_id              = optional(number)
     static_routes = optional(list(object({
