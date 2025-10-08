@@ -956,6 +956,9 @@ defaults:
           source: static
         dhcp_labels:
           scope: infra
+        bfd_multihop_auth:
+          type: none
+          key_id: 1
         nodes:
           pod: 1
           router_id_as_loopback: true
@@ -1001,6 +1004,9 @@ defaults:
               start_timer: 0
         node_profiles:
           name_suffix: ""
+          bfd_multihop_auth:
+            type: none
+            key_id: 1
           bgp_peers:
             allow_self_as: false
             as_override: false

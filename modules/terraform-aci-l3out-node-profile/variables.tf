@@ -322,3 +322,31 @@ variable "bgp_as_path_policy" {
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
+
+variable "bfd_multihop_auth_key_id" {
+  description = "BFD Multihop authentication key ID"
+  type        = number
+  default     = 1
+
+  validation {
+    condition     = var.bfd_multihop_auth_key_id >= 1 && var.bfd_multihop_auth_key_id <= 255
+    error_message = "`auth_key_id`: Minimum value: `1`. Maximum value: `255`."
+  }
+}
+
+variable "bfd_multihop_auth_key" {
+  description = "BFD Multihop authentication key"
+  type        = string
+  default     = ""
+}
+
+variable "bfd_multihop_auth_type" {
+  description = "BFD Multihop authentication type"
+  type        = string
+  default     = "none"
+
+  validation {
+    condition     = contains(["sha1", "none"], var.bfd_multihop_auth_type)
+    error_message = "`auth_type`: Allowed values are `sha1` or `none`."
+  }
+}
