@@ -323,43 +323,30 @@ variable "bgp_as_path_policy" {
   }
 }
 
-variable "bfd_multihop" {
-  description = "BFD multihop authentication parameters."
-  type = object({
-    auth_key_id              = optional(number, 1)
-    auth_key                 = optional(string, null)
-    auth_type                = optional(string, "sha1")
-    bfd_multihop_node_policy = optional(string, "")
-  })
-
-  default = {
-    auth_key_id = 1
-    auth_key    = ""
-    auth_type   = "sha1"
-  }
+variable "bfd_multihop_auth_key_id" {
+  description = "BFD Multihop authentication key ID"
+  type        = number
+  default     = 1
 
   validation {
-    condition = (
-      var.bfd_multihop.auth_key_id == null ||
-      (var.bfd_multihop.auth_key_id >= 1 && var.bfd_multihop.auth_key_id <= 255)
-    )
+    condition     = var.bfd_multihop_auth_key_id >= 1 && var.bfd_multihop_auth_key_id <= 255
     error_message = "`auth_key_id`: Minimum value: `1`. Maximum value: `255`."
   }
+}
+
+variable "bfd_multihop_auth_key" {
+  description = "BFD Multihop authentication key"
+  type        = string
+  default     = ""
+}
+
+variable "bfd_multihop_auth_type" {
+  description = "BFD Multihop authentication type"
+  type        = string
+  default     = "none"
 
   validation {
-    condition = (
-      var.bfd_multihop.auth_key == null ||
-      var.bfd_multihop.auth_key == "" ||
-      can(regex("^[a-zA-Z0-9_.:-]{1,20}$", var.bfd_multihop.auth_key))
-    )
-    error_message = "`auth_key`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Minimum characters: 1, Maximum characters: 20."
-  }
-
-  validation {
-    condition = (
-      var.bfd_multihop.auth_type == null ||
-      contains(["sha1", "none"], var.bfd_multihop.auth_type)
-    )
+    condition     = contains(["sha1", "none"], var.bfd_multihop_auth_type)
     error_message = "`auth_type`: Allowed values are `sha1` or `none`."
   }
 }

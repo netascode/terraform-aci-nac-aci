@@ -989,17 +989,10 @@ locals {
           bgp_protocol_profile_name = try(np.bgp.name, "")
           bgp_timer_policy          = try("${np.bgp.timer_policy}${local.defaults.apic.tenants.policies.bgp_timer_policies.name_suffix}", "")
           bgp_as_path_policy        = try("${np.bgp.as_path_policy}${local.defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix}", "")
-          bfd_multihop = try({
-            auth_key_id              = np.bfd_multihop.auth_key_id
-            auth_key                 = np.bfd_multihop.auth_key
-            auth_type                = np.bfd_multihop.auth_type
-            bfd_multihop_node_policy = "${np.bfd_multihop.bfd_multihop_node_policy}${local.defaults.apic.tenants.policies.bfd_multihop_node_policies.name_suffix}"
-            }, {
-            auth_key_id              = 1
-            auth_key                 = ""
-            auth_type                = "sha1"
-            bfd_multihop_node_policy = ""
-          })
+          bfd_multihop_node_policy  = try("${np.bfd_multihop_node_policy}${local.defaults.apic.tenants.policies.bfd_multihop_node_policies.name_suffix}")
+          bfd_multihop_auth_key_id  = try(np.bfd_multihop_auth.key_id, local.defaults.apic.tenants.l3outs.node_profiles.bfd_multihop_auth.key_id)
+          bfd_multihop_auth_key     = try(np.bfd_multihop_auth.key, null)
+          bfd_multihop_auth_type    = try(np.bfd_multihop_auth.type, local.defaults.apic.tenants.l3outs.node_profiles.bfd_multihop_auth.type)
           nodes = [for node in try(np.nodes, []) : {
             node_id               = node.node_id
             pod_id                = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
@@ -1070,6 +1063,10 @@ module "aci_l3out_node_profile_manual" {
   bgp_as_path_policy        = each.value.bgp_as_path_policy
   nodes                     = each.value.nodes
   bgp_peers                 = each.value.bgp_peers
+  bfd_multihop_node_policy  = each.value.bfd_multihop_node_policy
+  bfd_multihop_auth_key_id  = each.value.bfd_multihop_auth_key_id
+  bfd_multihop_auth_key     = each.value.bfd_multihop_auth_key
+  bfd_multihop_auth_type    = each.value.bfd_multihop_auth_type
 
   depends_on = [
     module.aci_tenant,
@@ -1091,6 +1088,10 @@ locals {
         bgp_protocol_profile_name = try(l3out.bgp.name, "")
         bgp_timer_policy          = try("${l3out.bgp.timer_policy}${local.defaults.apic.tenants.policies.bgp_timer_policies.name_suffix}", "")
         bgp_as_path_policy        = try("${l3out.bgp.as_path_policy}${local.defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix}", "")
+        bfd_multihop_node_policy  = try("${l3out.bfd_multihop_node_policy}${local.defaults.apic.tenants.policies.bfd_multihop_node_policies.name_suffix}", "")
+        bfd_multihop_auth_key_id  = try(l3out.bfd_multihop_auth.key_id, local.defaults.apic.tenants.l3outs.bfd_multihop_auth.key_id)
+        bfd_multihop_auth_key     = try(l3out.bfd_multihop_auth.key, "")
+        bfd_multihop_auth_type    = try(l3out.bfd_multihop_auth.type, local.defaults.apic.tenants.l3outs.bfd_multihop_auth.type)
         nodes = [for node in try(l3out.nodes, []) : {
           node_id               = node.node_id
           pod_id                = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.nodes.pod)
@@ -1160,6 +1161,10 @@ module "aci_l3out_node_profile_auto" {
   bgp_as_path_policy        = each.value.bgp_as_path_policy
   nodes                     = each.value.nodes
   bgp_peers                 = each.value.bgp_peers
+  bfd_multihop_node_policy  = each.value.bfd_multihop_node_policy
+  bfd_multihop_auth_key_id  = each.value.bfd_multihop_auth_key_id
+  bfd_multihop_auth_key     = each.value.bfd_multihop_auth_key
+  bfd_multihop_auth_type    = each.value.bfd_multihop_auth_type
 
   depends_on = [
     module.aci_tenant,
