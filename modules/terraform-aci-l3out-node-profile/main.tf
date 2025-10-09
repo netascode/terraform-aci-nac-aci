@@ -206,13 +206,23 @@ resource "aci_rest_managed" "l3extRsLNodePMplsCustQosPol" {
 }
 
 resource "aci_rest_managed" "bfdMhNodeP" {
-  count      = var.tenant == "infra" && var.sr_mpls == true && var.bfd_multihop_node_policy != "" ? 1 : 0
+  count      = var.bfd_multihop_node_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.l3extLNodeP.dn}/bfdMhNodeP"
   class_name = "bfdMhNodeP"
+
+  content = {
+    keyId = var.bfd_multihop_auth_key_id
+    key   = var.bfd_multihop_auth_key
+    type  = var.bfd_multihop_auth_type
+  }
+
+  lifecycle {
+    ignore_changes = [content["key"]]
+  }
 }
 
 resource "aci_rest_managed" "bfdRsMhNodePol" {
-  count      = var.tenant == "infra" && var.sr_mpls == true && var.bfd_multihop_node_policy != "" ? 1 : 0
+  count      = var.bfd_multihop_node_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.bfdMhNodeP[0].dn}/rsMhNodePol"
   class_name = "bfdRsMhNodePol"
   content = {

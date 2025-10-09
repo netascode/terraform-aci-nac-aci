@@ -21,6 +21,7 @@ module "aci_macsec_parameters_policy" {
   window_size            = 1024
   key_expiry_time        = 120
   security_policy        = "must-secure"
+  type                   = "access"
 }
 ```
 
@@ -49,6 +50,7 @@ module "aci_macsec_parameters_policy" {
 | <a name="input_window_size"></a> [window\_size](#input\_window\_size) | Replay Protection Window Size. Minimum value: `0`. Maximum value `4294967295`. Default: `64` | `number` | `64` | no |
 | <a name="input_key_expiry_time"></a> [key\_expiry\_time](#input\_key\_expiry\_time) | SAK Expiry Time (in seconds). Values are `0` (disabled); or Minimum value `60`, Maximum value `2592000` | `number` | `0` | no |
 | <a name="input_security_policy"></a> [security\_policy](#input\_security\_policy) | Security Policy. Choices are: `must-secure` or `should-secure`. | `string` | `"should-secure"` | no |
+| <a name="input_type"></a> [type](#input\_type) | Type of Parameter Policy. Allowed values: `access` or `fabric`. | `string` | `"access"` | no |
 
 ## Outputs
 

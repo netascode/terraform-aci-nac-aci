@@ -206,7 +206,7 @@ resource "aci_rest_managed" "eigrpAuthIfP" {
 
 resource "aci_rest_managed" "eigrpRsKeyChainPol" {
   count      = var.eigrp_interface_profile_name != "" && var.eigrp_keychain_policy != "" ? 1 : 0
-  dn         = "${aci_rest_managed.eigrpAuthIfP[0].dn}/keychainp-${var.eigrp_keychain_policy}"
+  dn         = "${aci_rest_managed.eigrpAuthIfP[0].dn}/rsKeyChainPol"
   class_name = "eigrpRsKeyChainPol"
   content = {
     tnFvKeyChainPolName = var.eigrp_keychain_policy
@@ -614,5 +614,23 @@ resource "aci_rest_managed" "dhcpRsDhcpOptionPol" {
   class_name = "dhcpRsDhcpOptionPol"
   content = {
     tnDhcpOptionPolName = each.value.dhcp_option_policy
+  }
+}
+
+resource "aci_rest_managed" "l3extRsEgressQosDppPol" {
+  count      = var.egress_data_plane_policing_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.l3extLIfP.dn}/rsegressQosDppPol"
+  class_name = "l3extRsEgressQosDppPol"
+  content = {
+    tnQosDppPolName = var.egress_data_plane_policing_policy
+  }
+}
+
+resource "aci_rest_managed" "l3extRsIngressQosDppPol" {
+  count      = var.ingress_data_plane_policing_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.l3extLIfP.dn}/rsingressQosDppPol"
+  class_name = "l3extRsIngressQosDppPol"
+  content = {
+    tnQosDppPolName = var.ingress_data_plane_policing_policy
   }
 }

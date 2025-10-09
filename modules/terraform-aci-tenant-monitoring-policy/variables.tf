@@ -9,7 +9,7 @@ variable "tenant" {
 }
 
 variable "name" {
-  description = "Track List name."
+  description = "Tenant monitoring policy name."
   type        = string
 
   validation {

@@ -36,7 +36,7 @@ module "aci_forwarding_scale_policy" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Forwarding scale policy name. | `string` | n/a | yes |
-| <a name="input_profile"></a> [profile](#input\_profile) | Profile. Choices: `dual-stack`, `ipv4`, `high-dual-stack`, `high-lpm`. | `string` | `"dual-stack"` | no |
+| <a name="input_profile"></a> [profile](#input\_profile) | Profile. Choices: `dual-stack`, `ipv4`, `high-dual-stack`, `high-lpm`, `high-policy`, `high-ipv4-ep`, `mcast-heavy`, `max-lpm`. | `string` | `"dual-stack"` | no |
 
 ## Outputs
 
