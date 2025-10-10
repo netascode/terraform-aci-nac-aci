@@ -1007,7 +1007,7 @@ locals {
           bgp_protocol_profile_name = try(np.bgp.name, "")
           bgp_timer_policy          = try("${np.bgp.timer_policy}${local.defaults.apic.tenants.policies.bgp_timer_policies.name_suffix}", "")
           bgp_as_path_policy        = try("${np.bgp.as_path_policy}${local.defaults.apic.tenants.policies.bgp_best_path_policies.name_suffix}", "")
-          bfd_multihop_node_policy  = try("${np.bfd_multihop_node_policy}${local.defaults.apic.tenants.policies.bfd_multihop_node_policies.name_suffix}")
+          bfd_multihop_node_policy  = try("${np.bfd_multihop_node_policy}${local.defaults.apic.tenants.policies.bfd_multihop_node_policies.name_suffix}", "")
           bfd_multihop_auth_key_id  = try(np.bfd_multihop_auth.key_id, local.defaults.apic.tenants.l3outs.node_profiles.bfd_multihop_auth.key_id)
           bfd_multihop_auth_key     = try(np.bfd_multihop_auth.key, null)
           bfd_multihop_auth_type    = try(np.bfd_multihop_auth.type, local.defaults.apic.tenants.l3outs.node_profiles.bfd_multihop_auth.type)
