@@ -293,6 +293,13 @@ variable "trunk_port_groups" {
   default = []
 
   validation {
+    condition = alltrue([
+      for tpg in var.trunk_port_groups : tpg.immediacy == null || try(contains(["immediate", "lazy"], tpg.immediacy), false)
+    ])
+    error_message = "`immediacy`: Allowed values are `immediate` or `lazy`."
+  }
+
+  validation {
     condition = alltrue(flatten([
       for tpg in var.trunk_port_groups : [for vlan_range in coalesce(tpg.vlan_ranges, []) : vlan_range.from >= 1 && vlan_range.from <= 4096]
     ]))

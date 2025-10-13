@@ -166,28 +166,28 @@ resource "aci_rest_managed" "vmmUsrAggr" {
   class_name = "vmmUsrAggr"
   content = {
     name           = each.value.name
-    aggrImedcy     = try(each.value.immediacy, "lazy")
+    aggrImedcy     = each.value.immediacy
     forgedTransmit = each.value.forged_transmit == true ? "Enabled" : "Disabled"
     macChange      = each.value.mac_change == true ? "Enabled" : "Disabled"
     promMode       = each.value.promiscuous_mode == true ? "Enabled" : "Disabled"
   }
-  dynamic "child" {
-    for_each = each.value.enhanced_lag_policy != null ? [0] : []
-    content {
-      rn         = "rsUsrAggrLagPolAtt"
-      class_name = "vmmRsUsrAggrLagPolAtt"
-      content = {
-        tDn = "${aci_rest_managed.vmmDomP.dn}/vswitchpolcont/enlacplagp-${each.value.enhanced_lag_policy}"
-      }
-    }
-  }
   depends_on = [aci_rest_managed.lacpEnhancedLagPol]
+}
+
+resource "aci_rest_managed" "vmmRsUsrAggrLagPolAtt" {
+  for_each   = { for tpg in var.trunk_port_groups : tpg.name => tpg if tpg.enhanced_lag_policy != null }
+  dn         = "${aci_rest_managed.vmmDomP.dn}/usraggr-${each.value.name}"
+  class_name = "vmmRsUsrAggrLagPolAtt"
+  content = {
+    tDn = "${aci_rest_managed.vmmDomP.dn}/vswitchpolcont/enlacplagp-${each.value.enhanced_lag_policy}"
+  }
+  depends_on = [aci_rest_managed.vmmUsrAggr]
 }
 
 locals {
   vlan_ranges = flatten([
     for tpg in var.trunk_port_groups : [
-      for vlan_range in coalesce(tpg.vlan_ranges, []) : {
+      for vlan_range in try(tpg.vlan_ranges, []) : {
         key = "usraggr-${tpg.name}/from-[vlan-${vlan_range.from}]-to-[vlan-${vlan_range.to}]"
         value = {
           trunk_port_group = tpg.name
@@ -201,7 +201,7 @@ locals {
 
 resource "aci_rest_managed" "fvnsEncapBlk" {
   for_each   = { for vp in local.vlan_ranges : vp.key => vp.value }
-  dn         = "${aci_rest_managed.vmmDomP.dn}/usraggr-${each.value.trunk_port_group}/from-[vlan-${each.value.from}]-to-[vlan-${each.value.to}]"
+  dn         = "${aci_rest_managed.vmmUsrAggr[each.value.trunk_port_group].dn}/from-[vlan-${each.value.from}]-to-[vlan-${each.value.to}]"
   class_name = "fvnsEncapBlk"
   content = {
     from = "vlan-${each.value.from}"
