@@ -63,12 +63,45 @@ variable "port" {
 }
 
 variable "sla_type" {
-  description = "IP SLA Policy type. Valid values are `icmp`, `tcp` or `l2ping`."
+  description = "IP SLA Policy type. Valid values are `icmp`, `tcp`, `l2ping` or `http`."
   type        = string
   default     = "icmp"
 
   validation {
-    condition     = contains(["icmp", "tcp", "l2ping"], var.sla_type)
-    error_message = "Valid values are `icmp`, `tcp` or `l2ping`."
+    condition     = contains(["icmp", "tcp", "l2ping", "http"], var.sla_type)
+    error_message = "Valid values are `icmp`, `tcp`, `l2ping` or `http`."
+  }
+}
+
+variable "http_method" {
+  description = "IP SLA Policy HTTP method. Only applicable when sla_type is 'http'."
+  type        = string
+  default     = "get"
+
+  validation {
+    condition     = contains(["get"], var.http_method)
+    error_message = "Valid values are `get`."
+  }
+}
+
+variable "http_version" {
+  description = "IP SLA Policy HTTP version. Only applicable when sla_type is 'http'."
+  type        = string
+  default     = "HTTP10"
+
+  validation {
+    condition     = contains(["HTTP10", "HTTP11"], var.http_version)
+    error_message = "Valid values are `HTTP10` or `HTTP11`."
+  }
+}
+
+variable "http_uri" {
+  description = "IP SLA Policy HTTP URI. Only applicable when sla_type is 'http'."
+  type        = string
+  default     = "/"
+
+  validation {
+    condition     = can(regex("^/.{0,512}$", var.http_uri))
+    error_message = "HTTP URI must start with '/' and be maximum 513 characters."
   }
 }
