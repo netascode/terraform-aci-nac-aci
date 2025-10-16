@@ -8,5 +8,8 @@ resource "aci_rest_managed" "fvIPSLAMonitoringPol" {
     slaFrequency        = var.frequency
     slaPort             = var.port
     slaType             = var.sla_type
+    httpMethod          = var.http_method
+    httpVersion         = var.http_version
+    httpUri             = var.http_uri
   }
 }
