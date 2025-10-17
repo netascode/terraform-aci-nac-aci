@@ -176,7 +176,7 @@ resource "aci_rest_managed" "vmmUsrAggr" {
 
 resource "aci_rest_managed" "vmmRsUsrAggrLagPolAtt" {
   for_each   = { for tpg in var.trunk_port_groups : tpg.name => tpg if tpg.enhanced_lag_policy != null }
-  dn         = "${aci_rest_managed.vmmDomP.dn}/usraggr-${each.value.name}"
+  dn         = "${aci_rest_managed.vmmUsrAggr[each.value.name].dn}/rsUsrAggrLagPolAtt"
   class_name = "vmmRsUsrAggrLagPolAtt"
   content = {
     tDn = "${aci_rest_managed.vmmDomP.dn}/vswitchpolcont/enlacplagp-${each.value.enhanced_lag_policy}"
