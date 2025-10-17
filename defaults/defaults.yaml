@@ -255,6 +255,20 @@ defaults:
           mgmt_epg: inb
           dvs_version: unmanaged
           statistics: false
+      nutanix_vmm_domains:
+        name_suffix: ""
+        access_mode: read-write
+        allocation: dynamic
+        custom_vswitch_name: ""
+        credential_policies:
+          name_suffix: ""
+        controller_profile:
+          name_suffix: ""
+          aos_version: unknown
+          statistics: false
+          cluster_controller:
+            name_suffix: ""
+            port: 0
       aaa:
         remote_user_login_policy: no-login
         default_fallback_check: false
