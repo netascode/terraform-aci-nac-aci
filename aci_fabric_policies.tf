@@ -1338,7 +1338,7 @@ module "aci_nutanix_vmm_domain" {
     username = cp.username
     password = cp.password
   }]
-  controller_profile = try({ 
+  controller_profile = try({
     "${each.value.controller_profile.name}" = {
       name        = "${each.value.controller_profile.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.name_suffix}"
       hostname_ip = each.value.controller_profile.hostname_ip
@@ -1348,7 +1348,7 @@ module "aci_nutanix_vmm_domain" {
       statistics  = try(each.value.controller_profile.statistics, local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.statistics)
     }
   }, {})
-  cluster_controller = try({ 
+  cluster_controller = try({
     "${each.value.controller_profile.cluster_controller.name}" = {
       name               = "${each.value.controller_profile.cluster_controller.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.cluster_controller.name_suffix}"
       hostname_ip        = each.value.controller_profile.cluster_controller.hostname_ip

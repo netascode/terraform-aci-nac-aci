@@ -44,14 +44,15 @@ module "aci_routed_domain" {
 module "aci_aaep" {
   source = "./modules/terraform-aci-aaep"
 
-  for_each           = { for aaep in try(local.access_policies.aaeps, []) : aaep.name => aaep if local.modules.aci_aaep && var.manage_access_policies }
-  name               = "${each.value.name}${local.defaults.apic.access_policies.aaeps.name_suffix}"
-  description        = try(each.value.description, "")
-  infra_vlan         = try(each.value.infra_vlan, local.defaults.apic.access_policies.aaeps.infra_vlan) == true ? try(local.access_policies.infra_vlan, 0) : 0
-  physical_domains   = [for dom in try(each.value.physical_domains, []) : "${dom}${local.defaults.apic.access_policies.physical_domains.name_suffix}"]
-  routed_domains     = [for dom in try(each.value.routed_domains, []) : "${dom}${local.defaults.apic.access_policies.routed_domains.name_suffix}"]
-  vmware_vmm_domains = try(each.value.vmware_vmm_domains, [])
-  endpoint_groups    = try(each.value.endpoint_groups, [])
+  for_each            = { for aaep in try(local.access_policies.aaeps, []) : aaep.name => aaep if local.modules.aci_aaep && var.manage_access_policies }
+  name                = "${each.value.name}${local.defaults.apic.access_policies.aaeps.name_suffix}"
+  description         = try(each.value.description, "")
+  infra_vlan          = try(each.value.infra_vlan, local.defaults.apic.access_policies.aaeps.infra_vlan) == true ? try(local.access_policies.infra_vlan, 0) : 0
+  physical_domains    = [for dom in try(each.value.physical_domains, []) : "${dom}${local.defaults.apic.access_policies.physical_domains.name_suffix}"]
+  routed_domains      = [for dom in try(each.value.routed_domains, []) : "${dom}${local.defaults.apic.access_policies.routed_domains.name_suffix}"]
+  vmware_vmm_domains  = try(each.value.vmware_vmm_domains, [])
+  nutanix_vmm_domains = try(each.value.nutanix_vmm_domains, [])
+  endpoint_groups     = try(each.value.endpoint_groups, [])
 
   depends_on = [
     module.aci_physical_domain,

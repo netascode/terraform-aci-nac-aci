@@ -383,6 +383,14 @@ locals {
             active_uplinks_order = try(vmm.active_uplinks_order, "")
             standby_uplinks      = try(vmm.standby_uplinks, "")
           }]
+          nutanix_vmm_domains = [for vmm in try(epg.nutanix_vmm_domains, []) : {
+            name                         = "${vmm.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.name_suffix}"
+            vlan                         = try(vmm.vlan, null)
+            gateway_address              = try(vmm.gateway_address, null)
+            dhcp_server_address_override = try(vmm.ipam.dhcp_server_address_override, local.defaults.apic.tenants.application_profiles.endpoint_groups.nutanix_vmm_domains.ipam.dhcp_server_address_override)
+            deployment_immediacy         = try(vmm.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.nutanix_vmm_domains.deployment_immediacy)
+            custom_epg_name              = try(vmm.custom_epg_name, "")
+          }]
           static_ports = [for sp in try(epg.static_ports, []) : {
             node_id = try(sp.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == sp.channel][0][0], null)
             # set node2_id to "vpc" if channel IPG is vPC, otherwise "null"

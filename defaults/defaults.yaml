@@ -1159,6 +1159,10 @@ defaults:
             allow_promiscuous: reject
             forged_transmits: reject
             mac_changes: reject
+          nutanix_vmm_domains:
+            deployment_immediacy: lazy
+            ipam:
+              dhcp_server_address_override: "0.0.0.0"
           static_ports:
             module: 1
             mode: regular
