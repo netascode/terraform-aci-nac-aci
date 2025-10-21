@@ -688,6 +688,18 @@ module "aci_vmware_vmm_domain" {
     num_links = try(vel.num_links, local.defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.num_links)
   }]
   uplinks = try(each.value.uplinks, [])
+  trunk_port_groups = [for tpg in try(each.value.trunk_port_groups, []) : {
+    name                = "${tpg.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.name_suffix}"
+    promiscuous_mode    = try(tpg.promiscuous_mode, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.promiscuous_mode)
+    immediacy           = try(tpg.immediacy, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.immediacy)
+    mac_change          = try(tpg.mac_change, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.mac_change)
+    forged_transmit     = try(tpg.forged_transmit, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.forged_transmit)
+    enhanced_lag_policy = try(tpg.enhanced_lag_policy, null)
+    vlan_ranges = !contains(keys(tpg), "vlan_ranges") ? null : [for vlan in tpg.vlan_ranges : {
+      from = vlan.from
+      to   = vlan.to
+    }]
+  }]
 }
 
 module "aci_aaa" {

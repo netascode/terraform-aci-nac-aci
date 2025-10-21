@@ -255,6 +255,12 @@ defaults:
           mgmt_epg: inb
           dvs_version: unmanaged
           statistics: false
+        trunk_port_groups:
+          name_suffix: ""
+          promiscuous_mode: false
+          immediacy: lazy
+          mac_change: false
+          forged_transmit: false
       nutanix_vmm_domains:
         name_suffix: ""
         access_mode: read-write

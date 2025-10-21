@@ -94,6 +94,7 @@ module "aci_vmware_vmm_domain" {
 | <a name="input_credential_policies"></a> [credential\_policies](#input\_credential\_policies) | List of vCenter credentials. | <pre>list(object({<br/>    name     = string<br/>    username = string<br/>    password = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_uplinks"></a> [uplinks](#input\_uplinks) | List of vSwitch uplinks. Allowed range for `id`: 1-32. | <pre>list(object({<br/>    id   = number<br/>    name = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_security_domains"></a> [security\_domains](#input\_security\_domains) | Security domains associated to VMware VMM domain | `list(string)` | `[]` | no |
+| <a name="input_trunk_port_groups"></a> [trunk\_port\_groups](#input\_trunk\_port\_groups) | VMM trunk port groups. | <pre>list(object({<br/>    name                = string<br/>    promiscuous_mode    = optional(bool, false)<br/>    immediacy           = optional(string, "lazy")<br/>    mac_change          = optional(bool, false)<br/>    forged_transmit     = optional(bool, false)<br/>    enhanced_lag_policy = optional(string)<br/>    vlan_ranges = optional(list(object({<br/>      from = number<br/>      to   = number<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -107,12 +108,14 @@ module "aci_vmware_vmm_domain" {
 | Name | Type |
 |------|------|
 | [aci_rest_managed.aaaDomainRef](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvnsEncapBlk](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsVlanNs](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.lacpEnhancedLagPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmCtrlrP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmDomP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmRsAcc](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmRsMgmtEPg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vmmRsUsrAggrLagPolAtt](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmRsVswitchExporterPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmRsVswitchOverrideCdpIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmRsVswitchOverrideLacpPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
@@ -121,5 +124,6 @@ module "aci_vmware_vmm_domain" {
 | [aci_rest_managed.vmmUplinkP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmUplinkPCont](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmUsrAccP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vmmUsrAggr](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vmmVSwitchPolicyCont](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->
