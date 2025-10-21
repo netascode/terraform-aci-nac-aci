@@ -13,7 +13,7 @@ module "aci_nutanix_vmm_domain" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-nutanix-vmm-domain"
   version = ">= 0.8.0"
 
-  name                = "VMW1"
+  name                = "NTNX1"
   access_mode         = "read-write"
   vlan_pool           = "VLANPOOL1"
   allocation          = "dynamic"
@@ -71,11 +71,11 @@ module "aci_nutanix_vmm_domain" {
 | <a name="input_access_mode"></a> [access\_mode](#input\_access\_mode) | Access mode. Choices: `read-only`, `read-write`. | `string` | `"read-write"` | no |
 | <a name="input_vlan_pool"></a> [vlan\_pool](#input\_vlan\_pool) | Vlan pool name. | `string` | `null` | no |
 | <a name="input_allocation"></a> [allocation](#input\_allocation) | Vlan pool allocation mode. Choices: `static`, `dynamic`. | `string` | `"dynamic"` | no |
-| <a name="input_custom_vswitch_name"></a> [custom\_vswitch\_name](#input\_custom\_vswitch\_name) | Custom vSwitch name. | `string` | n/a | yes |
+| <a name="input_custom_vswitch_name"></a> [custom\_vswitch\_name](#input\_custom\_vswitch\_name) | Custom vSwitch name. | `string` | `""` | no |
 | <a name="input_security_domains"></a> [security\_domains](#input\_security\_domains) | Security domains associated to Nutanix VMM domain | `list(string)` | `[]` | no |
 | <a name="input_credential_policies"></a> [credential\_policies](#input\_credential\_policies) | List of Nutanix credentials. | <pre>list(object({<br/>    name     = string<br/>    username = string<br/>    password = string<br/>  }))</pre> | `[]` | no |
-| <a name="input_controller_profile"></a> [controller\_profile](#input\_controller\_profile) | Controller Profile. Only one Controller Profile is allowed per Nutanix VMM domain. | <pre>map(object({<br/>    name        = string<br/>    hostname_ip = string<br/>    datacenter  = string<br/>    aos_version = optional(string, "unknown")<br/>    credentials = optional(string)<br/>    statistics  = optional(bool, false)<br/>  }))</pre> | `{}` | no |
-| <a name="input_cluster_controller"></a> [cluster\_controller](#input\_cluster\_controller) | Cluster Controller. Only one Cluster Controller is allowed per Controller Profile. | <pre>map(object({<br/>    name               = string<br/>    hostname_ip        = string<br/>    cluster_name       = string<br/>    credentials        = optional(string)<br/>    port               = number<br/>    controller_profile = string<br/>  }))</pre> | `{}` | no |
+| <a name="input_controller_profile"></a> [controller\_profile](#input\_controller\_profile) | Controller Profile. Only one Controller Profile is allowed per Nutanix VMM domain. Default AOS version is `unknown`. Default statistics collection is `false`. | <pre>map(object({<br/>    name        = string<br/>    hostname_ip = string<br/>    datacenter  = string<br/>    aos_version = optional(string, "unknown")<br/>    credentials = string<br/>    statistics  = optional(bool, false)<br/>  }))</pre> | `{}` | no |
+| <a name="input_cluster_controller"></a> [cluster\_controller](#input\_cluster\_controller) | Cluster Controller. Only one Cluster Controller is allowed per Controller Profile. Default port is `0`. | <pre>map(object({<br/>    name               = string<br/>    hostname_ip        = string<br/>    cluster_name       = string<br/>    credentials        = string<br/>    port               = optional(number, 0)<br/>    controller_profile = string<br/>  }))</pre> | `{}` | no |
 
 ## Outputs
 

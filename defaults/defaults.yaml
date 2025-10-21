@@ -259,7 +259,6 @@ defaults:
         name_suffix: ""
         access_mode: read-write
         allocation: dynamic
-        custom_vswitch_name: ""
         credential_policies:
           name_suffix: ""
         controller_profile:
@@ -1162,6 +1161,7 @@ defaults:
           nutanix_vmm_domains:
             deployment_immediacy: lazy
             ipam:
+              gateway_address: "0.0.0.0"
               dhcp_server_address_override: "0.0.0.0"
           static_ports:
             module: 1

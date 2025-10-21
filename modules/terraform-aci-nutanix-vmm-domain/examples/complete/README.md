@@ -16,7 +16,7 @@ module "aci_nutanix_vmm_domain" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-nutanix-vmm-domain"
   version = ">= 0.8.0"
 
-  name                = "VMW1"
+  name                = "NTNX1"
   access_mode         = "read-write"
   vlan_pool           = "VLANPOOL1"
   allocation          = "dynamic"

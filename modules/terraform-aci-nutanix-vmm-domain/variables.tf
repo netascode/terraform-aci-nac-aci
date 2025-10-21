@@ -15,7 +15,7 @@ variable "access_mode" {
 
   validation {
     condition     = contains(["read-only", "read-write"], var.access_mode)
-    error_message = "Allowed values are `read-only` or `read-write`."
+    error_message = "Allowed values are `read-only` or `read-write`. Default is `read-write`."
   }
 }
 
@@ -37,13 +37,14 @@ variable "allocation" {
 
   validation {
     condition     = contains(["static", "dynamic"], var.allocation)
-    error_message = "Allowed values are `static` or `dynamic`."
+    error_message = "Allowed values are `static` or `dynamic`. Default is `dynamic`."
   }
 }
 
 variable "custom_vswitch_name" {
   description = "Custom vSwitch name."
   type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.custom_vswitch_name))
@@ -89,13 +90,13 @@ variable "credential_policies" {
 }
 
 variable "controller_profile" {
-  description = "Controller Profile. Only one Controller Profile is allowed per Nutanix VMM domain."
+  description = "Controller Profile. Only one Controller Profile is allowed per Nutanix VMM domain. Default AOS version is `unknown`. Default statistics collection is `false`."
   type = map(object({
     name        = string
     hostname_ip = string
     datacenter  = string
     aos_version = optional(string, "unknown")
-    credentials = optional(string)
+    credentials = string
     statistics  = optional(bool, false)
   }))
   default = {}
@@ -125,7 +126,7 @@ variable "controller_profile" {
     condition = alltrue([
       for v in values(var.controller_profile) : v.aos_version == null || contains(["unknown", "6.5", "6.6"], v.aos_version)
     ])
-    error_message = "`aos_version`: Allowed values are `unknown`, `6.5`, `6.6`."
+    error_message = "`aos_version`: Allowed values are `unknown`, `6.5`, `6.6`. Default is `unknown`."
   }
 
   validation {
@@ -137,13 +138,13 @@ variable "controller_profile" {
 }
 
 variable "cluster_controller" {
-  description = "Cluster Controller. Only one Cluster Controller is allowed per Controller Profile."
+  description = "Cluster Controller. Only one Cluster Controller is allowed per Controller Profile. Default port is `0`."
   type = map(object({
     name               = string
     hostname_ip        = string
     cluster_name       = string
-    credentials        = optional(string)
-    port               = number
+    credentials        = string
+    port               = optional(number, 0)
     controller_profile = string
   }))
   default = {}
