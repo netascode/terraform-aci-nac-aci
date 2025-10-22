@@ -76,10 +76,10 @@ variable "sla_type" {
 variable "http_method" {
   description = "IP SLA Policy HTTP method. Only applicable when sla_type is 'http'."
   type        = string
-  default     = "get"
+  default     = null
 
   validation {
-    condition     = contains(["get"], var.http_method)
+    condition     = var.http_method == null || contains(["get"], var.http_method)
     error_message = "Valid values are `get`."
   }
 }
@@ -87,10 +87,10 @@ variable "http_method" {
 variable "http_version" {
   description = "IP SLA Policy HTTP version. Only applicable when sla_type is 'http'."
   type        = string
-  default     = "HTTP10"
+  default     = null
 
   validation {
-    condition     = contains(["HTTP10", "HTTP11"], var.http_version)
+    condition     = var.http_version == null || contains(["HTTP10", "HTTP11"], var.http_version)
     error_message = "Valid values are `HTTP10` or `HTTP11`."
   }
 }
@@ -98,10 +98,10 @@ variable "http_version" {
 variable "http_uri" {
   description = "IP SLA Policy HTTP URI. Only applicable when sla_type is 'http'."
   type        = string
-  default     = "/"
+  default     = null
 
   validation {
-    condition     = can(regex("^/.{0,512}$", var.http_uri))
+    condition     = var.http_uri == null || can(regex("^/.{0,512}$", var.http_uri))
     error_message = "HTTP URI must start with '/' and be maximum 513 characters."
   }
 }

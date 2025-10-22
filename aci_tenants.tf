@@ -2393,9 +2393,9 @@ locals {
         frequency    = try(policy.frequency, local.defaults.apic.tenants.policies.ip_sla_policies.frequency)
         sla_type     = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type)
         port         = try(policy.port, local.defaults.apic.tenants.policies.ip_sla_policies.port)
-        http_method  = try(policy.http_method, local.defaults.apic.tenants.policies.ip_sla_policies.http_method)
-        http_version = try(policy.http_version, local.defaults.apic.tenants.policies.ip_sla_policies.http_version)
-        http_uri     = try(policy.http_uri, local.defaults.apic.tenants.policies.ip_sla_policies.http_uri)
+        http_method  = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type) == "http" ? try(policy.http_method, local.defaults.apic.tenants.policies.ip_sla_policies.http_method) : null
+        http_version = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type) == "http" ? try(policy.http_version, local.defaults.apic.tenants.policies.ip_sla_policies.http_version) : null
+        http_uri     = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type) == "http" ? try(policy.http_uri, local.defaults.apic.tenants.policies.ip_sla_policies.http_uri) : null
       }
     ]
   ])
