@@ -31,3 +31,9 @@ variable "node_ids" {
     error_message = "Minimum value: 1. Maximum value: 4000."
   }
 }
+
+variable "scheduler" {
+  description = "Scheduler name."
+  type        = string
+  default     = "default"
+}
