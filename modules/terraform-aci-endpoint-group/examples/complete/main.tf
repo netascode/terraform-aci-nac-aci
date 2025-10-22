@@ -49,6 +49,15 @@ module "aci_endpoint_group" {
     mac_changes          = true
     custom_epg_name      = "custom-epg-name"
   }]
+  nutanix_vmm_domains = [{
+    name                         = "NTNX1"
+    vlan                         = 123
+    deployment_immediacy         = "lazy"
+    custom_epg_name              = "custom-epg-name"
+    gateway_address              = "192.168.1.1"
+    dhcp_server_address_override = "192.168.1.10"
+    dhcp_address_pool            = "IPAM-DHCP-POOL1"
+  }]
   static_ports = [{
     node_id              = 101
     vlan                 = 123
