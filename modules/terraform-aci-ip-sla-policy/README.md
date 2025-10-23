@@ -47,9 +47,9 @@ module "aci_ip_sla_policy" {
 | <a name="input_frequency"></a> [frequency](#input\_frequency) | IP SLA Policy frequency. Allowed values `frequency`: 1-300. | `number` | `60` | no |
 | <a name="input_port"></a> [port](#input\_port) | IP SLA Policy port. Allowed values `port`: 1-65535. | `number` | `0` | no |
 | <a name="input_sla_type"></a> [sla\_type](#input\_sla\_type) | IP SLA Policy type. Valid values are `icmp`, `tcp`, `l2ping` or `http`. | `string` | `"icmp"` | no |
-| <a name="input_http_method"></a> [http\_method](#input\_http\_method) | IP SLA Policy HTTP method. Only applicable when sla\_type is 'http'. | `string` | `"get"` | no |
-| <a name="input_http_version"></a> [http\_version](#input\_http\_version) | IP SLA Policy HTTP version. Only applicable when sla\_type is 'http'. | `string` | `"HTTP10"` | no |
-| <a name="input_http_uri"></a> [http\_uri](#input\_http\_uri) | IP SLA Policy HTTP URI. Only applicable when sla\_type is 'http'. | `string` | `"/"` | no |
+| <a name="input_http_method"></a> [http\_method](#input\_http\_method) | IP SLA Policy HTTP method. Only applicable when sla\_type is 'http'. | `string` | `null` | no |
+| <a name="input_http_version"></a> [http\_version](#input\_http\_version) | IP SLA Policy HTTP version. Only applicable when sla\_type is 'http'. | `string` | `null` | no |
+| <a name="input_http_uri"></a> [http\_uri](#input\_http\_uri) | IP SLA Policy HTTP URI. Only applicable when sla\_type is 'http'. | `string` | `null` | no |
 
 ## Outputs
 
@@ -57,10 +57,6 @@ module "aci_ip_sla_policy" {
 |------|-------------|
 | <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `fvIPSLAMonitoringPol` object. |
 | <a name="output_name"></a> [name](#output\_name) | IP SLA Policy name. |
-| <a name="output_sla_type"></a> [sla\_type](#output\_sla\_type) | IP SLA Policy type. |
-| <a name="output_http_method"></a> [http\_method](#output\_http\_method) | IP SLA Policy HTTP method. |
-| <a name="output_http_version"></a> [http\_version](#output\_http\_version) | IP SLA Policy HTTP version. |
-| <a name="output_http_uri"></a> [http\_uri](#output\_http\_uri) | IP SLA Policy HTTP URI. |
 
 ## Resources
 
