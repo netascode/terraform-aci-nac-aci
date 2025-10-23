@@ -13,8 +13,9 @@ module "aci_maintenance_group" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-maintenance-group"
   version = ">= 0.8.0"
 
-  name     = "UG1"
-  node_ids = [101]
+  name      = "UG1"
+  node_ids  = [101]
+  scheduler = "scheduler1"
 }
 ```
 
@@ -38,6 +39,7 @@ module "aci_maintenance_group" {
 | <a name="input_name"></a> [name](#input\_name) | Maintenance group name. | `string` | n/a | yes |
 | <a name="input_target_version"></a> [target\_version](#input\_target\_version) | Target version. | `string` | `""` | no |
 | <a name="input_node_ids"></a> [node\_ids](#input\_node\_ids) | List of node IDs. Minimum value: 1. Maximum value: 4000. | `list(number)` | `[]` | no |
+| <a name="input_scheduler"></a> [scheduler](#input\_scheduler) | Scheduler name. | `string` | `"default"` | no |
 
 ## Outputs
 

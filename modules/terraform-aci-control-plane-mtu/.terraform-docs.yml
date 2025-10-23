@@ -1,0 +1,34 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  # Terraform ACI Control Plane MTU Module
+
+  Manages ACI Control Plane MTU
+
+  Location in GUI:
+  `System` » `System Settings` » `Control Plane  MTU`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

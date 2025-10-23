@@ -247,14 +247,17 @@ module "aci_fabric_pod_policy_group" {
 
   for_each                 = { for pg in try(local.fabric_policies.pod_policy_groups, []) : pg.name => pg if local.modules.aci_fabric_pod_policy_group && var.manage_fabric_policies }
   name                     = "${each.value.name}${local.defaults.apic.fabric_policies.pod_policy_groups.name_suffix}"
+  description              = try(each.value.description, "")
   snmp_policy              = try("${each.value.snmp_policy}${local.defaults.apic.fabric_policies.pod_policies.snmp_policies.name_suffix}", "")
   date_time_policy         = try("${each.value.date_time_policy}${local.defaults.apic.fabric_policies.pod_policies.date_time_policies.name_suffix}", "")
   management_access_policy = try("${each.value.management_access_policy}${local.defaults.apic.fabric_policies.pod_policies.management_access_policies.name_suffix}", "")
+  macsec_policy            = try("${each.value.macsec_policy}${local.defaults.apic.fabric_policies.macsec_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_snmp_policy,
     module.aci_date_time_policy,
     module.aci_management_access_policy,
+    module.aci_macsec_interfaces_policy,
   ]
 }
 
@@ -685,6 +688,18 @@ module "aci_vmware_vmm_domain" {
     num_links = try(vel.num_links, local.defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.num_links)
   }]
   uplinks = try(each.value.uplinks, [])
+  trunk_port_groups = [for tpg in try(each.value.trunk_port_groups, []) : {
+    name                = "${tpg.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.name_suffix}"
+    promiscuous_mode    = try(tpg.promiscuous_mode, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.promiscuous_mode)
+    immediacy           = try(tpg.immediacy, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.immediacy)
+    mac_change          = try(tpg.mac_change, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.mac_change)
+    forged_transmit     = try(tpg.forged_transmit, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.forged_transmit)
+    enhanced_lag_policy = try(tpg.enhanced_lag_policy, null)
+    vlan_ranges = !contains(keys(tpg), "vlan_ranges") ? null : [for vlan in tpg.vlan_ranges : {
+      from = vlan.from
+      to   = vlan.to
+    }]
+  }]
 }
 
 module "aci_aaa" {
@@ -1047,6 +1062,7 @@ locals {
       for interface in try(node.interfaces, []) : {
         key     = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
         node_id = node.id
+        pod_id  = try([for node_ in local.node_policies.nodes : node_.pod if node_.id == node.id][0], local.defaults.apic.node_policies.nodes.pod)
         module  = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
         port    = interface.port
       } if try(interface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
@@ -1059,6 +1075,7 @@ module "aci_interface_shutdown" {
 
   for_each = { for int in local.interface_shutdown : int.key => int if local.modules.aci_interface_shutdown && var.manage_fabric_policies }
   node_id  = each.value.node_id
+  pod_id   = each.value.pod_id
   module   = each.value.module
   port     = each.value.port
 }
@@ -1245,11 +1262,75 @@ module "aci_sr_mpls_global_configuration" {
   sr_global_block_minimum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum)
   sr_global_block_maximum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum)
 }
+module "aci_fabric_macsec_parameters_policy" {
+  source = "./modules/terraform-aci-macsec-parameters-policy"
 
+  for_each        = { for mpp in try(local.fabric_policies.macsec_parameters_policies, []) : mpp.name => mpp if local.modules.aci_macsec_parameters_policy && var.manage_fabric_policies }
+  name            = "${each.value.name}${local.defaults.apic.fabric_policies.macsec_parameters_policies.name_suffix}"
+  description     = try(each.value.description, "")
+  cipher_suite    = try(each.value.cipher_suite, local.defaults.apic.fabric_policies.macsec_parameters_policies.cipher_suite)
+  window_size     = try(each.value.window_size, local.defaults.apic.fabric_policies.macsec_parameters_policies.window_size)
+  key_expiry_time = try(each.value.key_expiry_time, local.defaults.apic.fabric_policies.macsec_parameters_policies.key_expiry_time) == "disabled" || try(each.value.key_expiry_time, local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.key_expiry_time) == 0 ? 0 : each.value.key_expiry_time
+  security_policy = try(each.value.security_policy, local.defaults.apic.fabric_policies.macsec_parameters_policies.security_policy)
+  type            = "fabric"
+}
+
+locals {
+  fabric_macsec_keychain_policies = flatten([
+    for mkc in try(local.fabric_policies.macsec_keychain_policies, []) : {
+      name        = "${mkc.name}${local.defaults.apic.fabric_policies.macsec_keychain_policies.name_suffix}"
+      description = try(mkc.description, "")
+      type        = "fabric"
+      key_policies = [for kp in try(mkc.key_policies, []) : {
+        name           = try(kp.name, "")
+        key_name       = kp.key_name
+        pre_shared_key = kp.pre_shared_key
+        description    = try(kp.description, "")
+        start_time     = try(kp.start_time, local.defaults.apic.fabric_policies.macsec_keychain_policies.key_policies.start_time)
+        end_time       = try(kp.end_time, local.defaults.apic.fabric_policies.macsec_keychain_policies.key_policies.end_time)
+        }
+      ]
+    }
+  ])
+}
+
+module "aci_fabric_macsec_keychain_policies" {
+  source = "./modules/terraform-aci-macsec-keychain-policies"
+
+  for_each     = { for mkc in try(local.fabric_macsec_keychain_policies, []) : mkc.name => mkc if local.modules.aci_macsec_keychain_policies && var.manage_fabric_policies }
+  name         = "${each.value.name}${local.defaults.apic.fabric_policies.macsec_keychain_policies.name_suffix}"
+  type         = each.value.type
+  description  = each.value.description
+  key_policies = each.value.key_policies
+}
+
+module "aci_fabric_macsec_interfaces_policy" {
+  source = "./modules/terraform-aci-macsec-interfaces-policy"
+
+  for_each                 = { for mip in try(local.fabric_policies.macsec_interfaces_policies, []) : mip.name => mip if local.modules.aci_macsec_interfaces_policy && var.manage_fabric_policies }
+  name                     = "${each.value.name}${local.defaults.apic.fabric_policies.macsec_interfaces_policies.name_suffix}"
+  description              = try(each.value.description, "")
+  admin_state              = try(each.value.admin_state, local.defaults.apic.fabric_policies.macsec_interfaces_policies.admin_state)
+  macsec_keychain_policy   = "${each.value.macsec_keychain_policy}${local.defaults.apic.fabric_policies.macsec_keychain_policies.name_suffix}"
+  macsec_parameters_policy = "${each.value.macsec_parameters_policy}${local.defaults.apic.fabric_policies.macsec_parameters_policies.name_suffix}"
+  type                     = "fabric"
+
+  depends_on = [
+    module.aci_macsec_keychain_policies,
+    module.aci_macsec_parameters_policy
+  ]
+}
 module "aci_atomic_counter" {
   source = "./modules/terraform-aci-atomic-counter"
 
   count       = try(local.fabric_policies.atomic_counter.admin_state, null) != null && local.modules.aci_atomic_counter && var.manage_fabric_policies ? 1 : 0
   admin_state = local.fabric_policies.atomic_counter.admin_state
   mode        = try(local.fabric_policies.atomic_counter.mode, local.defaults.apic.fabric_policies.atomic_counter.mode)
+}
+
+module "aci_control_plane_mtu" {
+  source = "./modules/terraform-aci-control-plane-mtu"
+
+  mtu            = try(local.fabric_policies.control_plane_mtu.mtu, local.defaults.apic.fabric_policies.control_plane_mtu.mtu)
+  apic_mtu_apply = try(local.fabric_policies.control_plane_mtu.apic_mtu_apply, null)
 }
