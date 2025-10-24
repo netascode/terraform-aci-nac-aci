@@ -91,6 +91,20 @@ resource "aci_rest_managed" "l3extRsSubnetToRtSumm" {
   dn         = "${aci_rest_managed.l3extSubnet[each.value.prefix].dn}/rsSubnetToRtSumm"
   class_name = "l3extRsSubnetToRtSumm"
   content = {
-    tDn = each.value.bgp_route_summarization ? (each.value.bgp_route_summarization_policy != "" ? "uni/tn-${var.tenant}/bgprtsum-${each.value.bgp_route_summarization_policy}" : "uni/tn-common/bgprtsum-default") : (each.value.ospf_route_summarization ? "uni/tn-common/ospfrtsumm-default" : (each.value.eigrp_route_summarization ? "uni/tn-${var.tenant}/eigrprtsumm-eigrp_pol" : null))
+    tDn = each.value.bgp_route_summarization ? (
+      each.value.bgp_route_summarization_policy != "" ?
+      "uni/tn-${var.tenant}/bgprtsum-${each.value.bgp_route_summarization_policy}" :
+      "uni/tn-common/bgprtsum-default"
+      ) : (
+      each.value.ospf_route_summarization ? (
+        try(each.value.ospf_route_summarization_policy, "") != "" ?
+        "uni/tn-${var.tenant}/ospfrtsumm-${each.value.ospf_route_summarization_policy}" :
+        "uni/tn-common/ospfrtsumm-default"
+        ) : (
+        each.value.eigrp_route_summarization ?
+        "uni/tn-${var.tenant}/eigrprtsumm-eigrp_pol" :
+        null
+      )
+    )
   }
 }

@@ -116,22 +116,23 @@ variable "route_control_profiles" {
 variable "subnets" {
   description = "List of subnets. Default value `import_route_control`: false. Default value `export_route_control`: false. Default value `shared_route_control`: false. Default value `import_security`: true. Default value `shared_security`: false. Default value `aggregate_import_route_control`: false. Default value `aggregate_export_route_control`: false. Default value `aggregate_shared_route_control`: false. Default value `bgp_route_summarization`: false. Default value `ospf_route_summarization`: false. Default value `eigrp_route_summarization`: false."
   type = list(object({
-    name                           = optional(string, "")
-    annotation                     = optional(string, null)
-    prefix                         = string
-    description                    = optional(string, "")
-    import_route_control           = optional(bool, false)
-    export_route_control           = optional(bool, false)
-    shared_route_control           = optional(bool, false)
-    import_security                = optional(bool, true)
-    shared_security                = optional(bool, false)
-    aggregate_import_route_control = optional(bool, false)
-    aggregate_export_route_control = optional(bool, false)
-    aggregate_shared_route_control = optional(bool, false)
-    bgp_route_summarization        = optional(bool, false)
-    bgp_route_summarization_policy = optional(string, "")
-    ospf_route_summarization       = optional(bool, false)
-    eigrp_route_summarization      = optional(bool, false)
+    name                            = optional(string, "")
+    annotation                      = optional(string, null)
+    prefix                          = string
+    description                     = optional(string, "")
+    import_route_control            = optional(bool, false)
+    export_route_control            = optional(bool, false)
+    shared_route_control            = optional(bool, false)
+    import_security                 = optional(bool, true)
+    shared_security                 = optional(bool, false)
+    aggregate_import_route_control  = optional(bool, false)
+    aggregate_export_route_control  = optional(bool, false)
+    aggregate_shared_route_control  = optional(bool, false)
+    bgp_route_summarization         = optional(bool, false)
+    bgp_route_summarization_policy  = optional(string, "")
+    ospf_route_summarization        = optional(bool, false)
+    ospf_route_summarization_policy = optional(string, "")
+    eigrp_route_summarization       = optional(bool, false)
     route_control_profiles = optional(list(object({
       name      = string
       direction = optional(string, "import")
@@ -151,6 +152,20 @@ variable "subnets" {
       for s in var.subnets : s.description == null || try(can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", s.description)), false)
     ])
     error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  validation {
+    condition = alltrue([
+      for s in var.subnets : s.bgp_route_summarization_policy == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.bgp_route_summarization_policy)), false)
+    ])
+    error_message = "`bgp_route_summarization_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for s in var.subnets : s.ospf_route_summarization_policy == null || try(can(regex("^[a-zA-Z0-9_.:-]{0,64}$", s.ospf_route_summarization_policy)), false)
+    ])
+    error_message = "`ospf_route_summarization_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {

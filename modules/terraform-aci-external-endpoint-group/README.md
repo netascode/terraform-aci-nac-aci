@@ -10,35 +10,67 @@ Location in GUI:
 
 ```hcl
 module "aci_external_endpoint_group" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-external-endpoint-group"
-  version = ">= 0.8.0"
+  source = "../.."
 
-  tenant          = "ABC"
-  l3out           = "L3OUT1"
-  name            = "EXTEPG1"
-  alias           = "EXTEPG1-ALIAS"
-  description     = "My Description"
-  preferred_group = true
-  qos_class       = "level2"
-  target_dscp     = "CS2"
-  subnets = [{
-    name                           = "SUBNET1"
-    prefix                         = "10.0.0.0/8"
-    description                    = "My Subnet Description"
-    import_route_control           = true
-    export_route_control           = true
-    shared_route_control           = true
-    import_security                = true
-    shared_security                = true
-    aggregate_import_route_control = true
-    aggregate_export_route_control = true
-    aggregate_shared_route_control = true
-    bgp_route_summarization        = true
-    bgp_route_summarization_policy = "BGP_RS_Policy1"
-  }]
+  tenant                      = "TF"
+  l3out                       = "L3OUT1"
+  name                        = "EXTEPG1"
+  alias                       = "EXTEPG1-ALIAS"
+  description                 = "My Description"
+  preferred_group             = true
+  qos_class                   = "level3"
+  target_dscp                 = "CS0"
   contract_consumers          = ["CON1"]
   contract_providers          = ["CON1"]
-  contract_imported_consumers = ["ICON1"]
+  contract_imported_consumers = ["IMPORTED-CON1"]
+  route_control_profiles = [{
+    name      = "RCP1"
+    direction = "export"
+  }]
+  subnets = [
+    {
+      name                           = "SUBNET1"
+      prefix                         = "10.1.1.0/24"
+      description                    = "Subnet with BGP route summarization"
+      import_route_control           = true
+      export_route_control           = true
+      shared_route_control           = true
+      import_security                = true
+      shared_security                = false
+      aggregate_import_route_control = true
+      aggregate_export_route_control = true
+      aggregate_shared_route_control = true
+      bgp_route_summarization        = true
+      bgp_route_summarization_policy = "my-custom-bgp-policy"
+      route_control_profiles = [{
+        name      = "RCP1"
+        direction = "import"
+      }]
+    },
+    {
+      name                            = "SUBNET2"
+      prefix                          = "10.2.0.0/16"
+      description                     = "Subnet with OSPF route summarization - custom policy"
+      export_route_control            = true
+      ospf_route_summarization        = true
+      ospf_route_summarization_policy = "my-custom-ospf-policy"
+    },
+    {
+      name                     = "SUBNET3"
+      prefix                   = "10.3.0.0/16"
+      description              = "Subnet with OSPF route summarization - default policy"
+      export_route_control     = true
+      ospf_route_summarization = true
+      # ospf_route_summarization_policy not specified, will use default
+    },
+    {
+      name                      = "SUBNET4"
+      prefix                    = "10.4.0.0/16"
+      description               = "Subnet with EIGRP route summarization"
+      export_route_control      = true
+      eigrp_route_summarization = true
+    }
+  ]
 }
 ```
 
@@ -69,7 +101,7 @@ module "aci_external_endpoint_group" {
 | <a name="input_qos_class"></a> [qos\_class](#input\_qos\_class) | QoS class. Choices: `level1`, `level2`, `level3`, `level4`, `level5`, `level6`, `unspecified`. | `string` | `"unspecified"` | no |
 | <a name="input_target_dscp"></a> [target\_dscp](#input\_target\_dscp) | Target DSCP. Choices: `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS3`, `AF31`, `AF32`, `AF33`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6`, `CS7`, `unspecified` or a number between `0` and `63`. | `string` | `"unspecified"` | no |
 | <a name="input_route_control_profiles"></a> [route\_control\_profiles](#input\_route\_control\_profiles) | List of route control profiles. Choices `direction`: `import`, `export`. | <pre>list(object({<br/>    name      = string<br/>    direction = optional(string, "import")<br/>  }))</pre> | `[]` | no |
-| <a name="input_subnets"></a> [subnets](#input\_subnets) | List of subnets. Default value `import_route_control`: false. Default value `export_route_control`: false. Default value `shared_route_control`: false. Default value `import_security`: true. Default value `shared_security`: false. Default value `aggregate_import_route_control`: false. Default value `aggregate_export_route_control`: false. Default value `aggregate_shared_route_control`: false. Default value `bgp_route_summarization`: false. Default value `ospf_route_summarization`: false. Default value `eigrp_route_summarization`: false. | <pre>list(object({<br/>    name                           = optional(string, "")<br/>    annotation                     = optional(string, null)<br/>    prefix                         = string<br/>    description                    = optional(string, "")<br/>    import_route_control           = optional(bool, false)<br/>    export_route_control           = optional(bool, false)<br/>    shared_route_control           = optional(bool, false)<br/>    import_security                = optional(bool, true)<br/>    shared_security                = optional(bool, false)<br/>    aggregate_import_route_control = optional(bool, false)<br/>    aggregate_export_route_control = optional(bool, false)<br/>    aggregate_shared_route_control = optional(bool, false)<br/>    bgp_route_summarization        = optional(bool, false)<br/>    bgp_route_summarization_policy = optional(string, "")<br/>    ospf_route_summarization       = optional(bool, false)<br/>    eigrp_route_summarization      = optional(bool, false)<br/>    route_control_profiles = optional(list(object({<br/>      name      = string<br/>      direction = optional(string, "import")<br/>    })), [])<br/>  }))</pre> | `[]` | no |
+| <a name="input_subnets"></a> [subnets](#input\_subnets) | List of subnets. Default value `import_route_control`: false. Default value `export_route_control`: false. Default value `shared_route_control`: false. Default value `import_security`: true. Default value `shared_security`: false. Default value `aggregate_import_route_control`: false. Default value `aggregate_export_route_control`: false. Default value `aggregate_shared_route_control`: false. Default value `bgp_route_summarization`: false. Default value `ospf_route_summarization`: false. Default value `eigrp_route_summarization`: false. | <pre>list(object({<br/>    name                            = optional(string, "")<br/>    annotation                      = optional(string, null)<br/>    prefix                          = string<br/>    description                     = optional(string, "")<br/>    import_route_control            = optional(bool, false)<br/>    export_route_control            = optional(bool, false)<br/>    shared_route_control            = optional(bool, false)<br/>    import_security                 = optional(bool, true)<br/>    shared_security                 = optional(bool, false)<br/>    aggregate_import_route_control  = optional(bool, false)<br/>    aggregate_export_route_control  = optional(bool, false)<br/>    aggregate_shared_route_control  = optional(bool, false)<br/>    bgp_route_summarization         = optional(bool, false)<br/>    bgp_route_summarization_policy  = optional(string, "")<br/>    ospf_route_summarization        = optional(bool, false)<br/>    ospf_route_summarization_policy = optional(string, "")<br/>    eigrp_route_summarization       = optional(bool, false)<br/>    route_control_profiles = optional(list(object({<br/>      name      = string<br/>      direction = optional(string, "import")<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_contract_consumers"></a> [contract\_consumers](#input\_contract\_consumers) | List of contract consumers. | `list(string)` | `[]` | no |
 | <a name="input_contract_providers"></a> [contract\_providers](#input\_contract\_providers) | List of contract providers. | `list(string)` | `[]` | no |
 | <a name="input_contract_imported_consumers"></a> [contract\_imported\_consumers](#input\_contract\_imported\_consumers) | List of imported contract consumers. | `list(string)` | `[]` | no |
