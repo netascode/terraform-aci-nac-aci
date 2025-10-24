@@ -2427,14 +2427,17 @@ locals {
   ip_sla_policies = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.policies.ip_sla_policies, []) : {
-        key         = format("%s/%s", tenant.name, policy.name)
-        tenant      = tenant.name
-        name        = "${policy.name}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}"
-        description = try(policy.description, "")
-        multiplier  = try(policy.multiplier, local.defaults.apic.tenants.policies.ip_sla_policies.multiplier)
-        frequency   = try(policy.frequency, local.defaults.apic.tenants.policies.ip_sla_policies.frequency)
-        sla_type    = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type)
-        port        = try(policy.port, local.defaults.apic.tenants.policies.ip_sla_policies.port)
+        key          = format("%s/%s", tenant.name, policy.name)
+        tenant       = tenant.name
+        name         = "${policy.name}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}"
+        description  = try(policy.description, "")
+        multiplier   = try(policy.multiplier, local.defaults.apic.tenants.policies.ip_sla_policies.multiplier)
+        frequency    = try(policy.frequency, local.defaults.apic.tenants.policies.ip_sla_policies.frequency)
+        sla_type     = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type)
+        port         = try(policy.port, local.defaults.apic.tenants.policies.ip_sla_policies.port)
+        http_method  = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type) == "http" ? try(policy.http_method, local.defaults.apic.tenants.policies.ip_sla_policies.http_method) : null
+        http_version = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type) == "http" ? try(policy.http_version, local.defaults.apic.tenants.policies.ip_sla_policies.http_version) : null
+        http_uri     = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type) == "http" ? try(policy.http_uri, local.defaults.apic.tenants.policies.ip_sla_policies.http_uri) : null
       }
     ]
   ])
@@ -2443,14 +2446,17 @@ locals {
 module "aci_ip_sla_policy" {
   source = "./modules/terraform-aci-ip-sla-policy"
 
-  for_each    = { for policy in local.ip_sla_policies : policy.key => policy if local.modules.aci_ip_sla_policy && var.manage_tenants }
-  tenant      = each.value.tenant
-  name        = each.value.name
-  description = each.value.description
-  multiplier  = each.value.multiplier
-  frequency   = each.value.frequency
-  sla_type    = each.value.sla_type
-  port        = each.value.port
+  for_each     = { for policy in local.ip_sla_policies : policy.key => policy if local.modules.aci_ip_sla_policy && var.manage_tenants }
+  tenant       = each.value.tenant
+  name         = each.value.name
+  description  = each.value.description
+  multiplier   = each.value.multiplier
+  frequency    = each.value.frequency
+  sla_type     = each.value.sla_type
+  port         = each.value.port
+  http_method  = each.value.http_method
+  http_version = each.value.http_version
+  http_uri     = each.value.http_uri
 
   depends_on = [
     module.aci_tenant,
