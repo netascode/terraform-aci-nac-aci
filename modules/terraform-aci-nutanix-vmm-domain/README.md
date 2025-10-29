@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
 # Terraform ACI Nutanix VMM Domain Module
 
-Manages ACI VMware VMM Domain
+Manages ACI Nutanix VMM Domain
 
 Location in GUI:
 `Virtual Networking` » `Nutanix`

@@ -541,7 +541,6 @@ resource "aci_rest_managed" "fvRsDomAtt_vmm_ntnx" {
     encapMode        = "auto"
     instrImedcy      = each.value.deployment_immediacy
     resImedcy        = "pre-provision"
-    switchingMode    = "native"
     customEpgName    = each.value.custom_epg_name
     ipamEnabled      = each.value.gateway_address != "0.0.0.0" ? "yes" : "no"
     ipamGateway      = each.value.gateway_address
@@ -553,8 +552,6 @@ resource "aci_rest_managed" "fvAEPgAddrMgmtPoolAtt" {
   for_each   = { for vmm_ntnx in var.nutanix_vmm_domains : vmm_ntnx.name => vmm_ntnx if vmm_ntnx.dhcp_address_pool != "" }
   dn         = "${aci_rest_managed.fvRsDomAtt_vmm_ntnx[each.value.name].dn}/epgipampoolatt"
   class_name = "fvAEPgAddrMgmtPoolAtt"
-  content    = {}
-  depends_on = [aci_rest_managed.fvRsDomAtt_vmm_ntnx]
 }
 
 resource "aci_rest_managed" "fvRsAddrMgmtPool" {
@@ -564,7 +561,6 @@ resource "aci_rest_managed" "fvRsAddrMgmtPool" {
   content = {
     tDn = "uni/tn-${var.tenant}/ipampool-${each.value.dhcp_address_pool}"
   }
-  depends_on = [aci_rest_managed.fvAEPgAddrMgmtPoolAtt]
 }
 
 resource "aci_rest_managed" "fvUplinkOrderCont" {
