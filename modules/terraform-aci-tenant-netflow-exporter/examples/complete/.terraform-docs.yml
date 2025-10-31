@@ -3,7 +3,7 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Netflow Exporter Example
+  # Tenant Netflow Exporter Example
 
   To run this example you need to execute:
 

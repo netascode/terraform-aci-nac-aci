@@ -202,3 +202,13 @@ resource "aci_rest_managed" "fvRsBdToEpRet" {
     tnFvEpRetPolName = var.endpoint_retention_policy
   }
 }
+
+resource "aci_rest_managed" "fvRsBDToNetflowMonitorPol" {
+  for_each   = { for policy in var.netflow_monitor_policies : "${policy.name}-${policy.ip_filter_type}" => policy }
+  dn         = "${aci_rest_managed.fvBD.dn}/rsBDToNetflowMonitorPol-[${each.value.name}]-${each.value.ip_filter_type}"
+  class_name = "fvRsBDToNetflowMonitorPol"
+  content = {
+    tnNetflowMonitorPolName = each.value.name
+    fltType                 = each.value.ip_filter_type
+  }
+}

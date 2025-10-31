@@ -36,6 +36,12 @@ module "aci_l3out_interface_profile" {
       dhcp_option_policy = "DHCP_OPTION1"
     }
   ]
+  netflow_monitor_policies = [
+    {
+      name           = "MONITOR1"
+      ip_filter_type = "ipv4"
+    }
+  ]
   interfaces = [{
     description          = "Interface 1"
     type                 = "vpc"
@@ -141,6 +147,7 @@ module "aci_l3out_interface_profile" {
 | <a name="input_sr_mpls"></a> [sr\_mpls](#input\_sr\_mpls) | SR MPLS L3out flag. | `bool` | `false` | no |
 | <a name="input_transport_data_plane"></a> [transport\_data\_plane](#input\_transport\_data\_plane) | Transport Data Plane. Allowed values: `sr_mpls`, `mpls`. Default value: `sr_mpls`. | `string` | `"sr_mpls"` | no |
 | <a name="input_dhcp_labels"></a> [dhcp\_labels](#input\_dhcp\_labels) | List of DHCP labels | <pre>list(object({<br/>    dhcp_relay_policy  = string<br/>    dhcp_option_policy = optional(string)<br/>    scope              = optional(string, "infra")<br/>  }))</pre> | `[]` | no |
+| <a name="input_netflow_monitor_policies"></a> [netflow\_monitor\_policies](#input\_netflow\_monitor\_policies) | List of Netflow monitor policies | <pre>list(object({<br/>    name           = string<br/>    ip_filter_type = optional(string, "ipv4")<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -188,6 +195,7 @@ module "aci_l3out_interface_profile" {
 | [aci_rest_managed.l3extMember_B](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsDynPathAtt](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsLIfPCustQosPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extRsLIfPToNetflowMonitorPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsNdIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsPathL3OutAtt](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsVSwitchEnhancedLagPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

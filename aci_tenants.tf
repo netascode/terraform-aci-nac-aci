@@ -228,6 +228,10 @@ locals {
           dhcp_option_policy = try("${label.dhcp_option_policy}${local.defaults.apic.tenants.policies.dhcp_option_policies.name_suffix}", "")
           scope              = try(label.scope, local.defaults.apic.tenants.bridge_domains.dhcp_labels.scope)
         }]
+        netflow_monitor_policies = [for policy in try(bd.netflow_monitor_policies, []) : {
+          name           = try("${policy.name}${local.defaults.apic.tenants.policies.netflow_monitors.name_suffix}", "")
+          ip_filter_type = try(policy.ip_filter_type, local.defaults.apic.tenants.bridge_domains.netflow_monitor_policies.ip_filter_type)
+        }]
       }
     ]
   ])
@@ -267,6 +271,7 @@ module "aci_bridge_domain" {
   subnets                    = each.value.subnets
   l3outs                     = each.value.l3outs
   dhcp_labels                = each.value.dhcp_labels
+  netflow_monitor_policies   = each.value.netflow_monitor_policies
 
   depends_on = [
     module.aci_tenant,
@@ -1197,6 +1202,10 @@ locals {
               scope              = try(label.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.dhcp_labels.scope)
               }
             ]
+            netflow_monitor_policies = [for policy in try(ip.netflow_monitor_policies, []) : {
+              name           = policy.name
+              ip_filter_type = policy.ip_filter_type
+            }]
             interfaces = [for int in try(ip.interfaces, []) : {
               ip                   = try(int.ip, "")
               svi                  = try(int.svi, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.svi)
@@ -1293,6 +1302,7 @@ module "aci_l3out_interface_profile_manual" {
   qos_class                    = each.value.qos_class
   custom_qos_policy            = each.value.custom_qos_policy
   dhcp_labels                  = each.value.dhcp_labels
+  netflow_monitor_policies     = each.value.netflow_monitor_policies
   interfaces = [for int in try(each.value.interfaces, []) : {
     ip                       = int.ip
     svi                      = int.svi
@@ -1360,6 +1370,10 @@ locals {
           scope              = try(label.scope, local.defaults.apic.tenants.l3outs.dhcp_labels.scope)
           }
         ]
+        netflow_monitor_policies = [for policy in try(l3out.netflow_monitor_policies, []) : {
+          name           = policy.name
+          ip_filter_type = policy.ip_filter_type
+        }]
         interfaces = flatten([for node in try(l3out.nodes, []) : [
           for int in try(node.interfaces, []) : {
             ip                   = try(int.ip, "")
@@ -1454,6 +1468,7 @@ module "aci_l3out_interface_profile_auto" {
   qos_class                    = each.value.qos_class
   custom_qos_policy            = each.value.custom_qos_policy
   dhcp_labels                  = each.value.dhcp_labels
+  netflow_monitor_policies     = each.value.netflow_monitor_policies
   interfaces = [for int in try(each.value.interfaces, []) : {
     ip                       = int.ip
     svi                      = int.svi
@@ -4039,6 +4054,7 @@ module "aci_tenant_netflow_monitor" {
     module.aci_tenant,
     module.aci_vrf,
     module.aci_tenant_netflow_exporter,
+    module.aci_tenant_netflow_record,
   ]
 }
 

@@ -9,9 +9,9 @@ Location in GUI:
 ## Examples
 
 ```hcl
-module "aci_netflow_record" {
+module "aci_tenant_netflow_record" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-tenant-netflow-record"
-  version = ">= 0.9.0"
+  version = "> 1.1.0"
 
   name             = "RECORD1"
   description      = "Netflow record 1"
@@ -24,18 +24,19 @@ module "aci_netflow_record" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.13.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.13.0 |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_tenant"></a> [tenant](#input\_tenant) | Netflow record tenant name. | `string` | `""` | no |
 | <a name="input_name"></a> [name](#input\_name) | Netflow Record name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Netflow Record description. | `string` | `""` | no |
 | <a name="input_match_parameters"></a> [match\_parameters](#input\_match\_parameters) | Netflow Record match parameters. Allowed values: `dst-ip`, `dst-ipv4`, `dst-ipv6`, `dst-mac`, `dst-port`, `ethertype`, `proto`, `src-ip`, `src-ipv4`, `src-ipv6`, `src-mac`, `src-port`, `tos`, `vlan`, `unspecified`. | `list(string)` | `[]` | no |

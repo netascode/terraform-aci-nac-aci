@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# Netflow Record Example
+# Tenant Netflow Record Example
 
 To run this example you need to execute:
 
@@ -12,9 +12,9 @@ $ terraform apply
 Note that this example will create resources. Resources can be destroyed with `terraform destroy`.
 
 ```hcl
-module "aci_netflow_record" {
+module "aci_tenant_netflow_record" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-tenant-netflow-record"
-  version = ">= 0.9.0"
+  version = "> 1.1.0"
 
   name             = "RECORD1"
   description      = "Netflow record 1"

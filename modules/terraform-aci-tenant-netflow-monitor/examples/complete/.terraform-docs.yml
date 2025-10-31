@@ -3,7 +3,7 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Netflow Monitor Example
+  # Tenant Netflow Monitor Example
 
   To run this example you need to execute:
 

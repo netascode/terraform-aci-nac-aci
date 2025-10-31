@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_tenant_netflow_exporter" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-tenant-netflow-exporter"
-  version = ">= 0.9.0"
+  version = "> 1.1.0"
 
   name                = "EXPORTER1"
   description         = "Netflow exporter 1"

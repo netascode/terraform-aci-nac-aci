@@ -616,3 +616,13 @@ resource "aci_rest_managed" "dhcpRsDhcpOptionPol" {
     tnDhcpOptionPolName = each.value.dhcp_option_policy
   }
 }
+
+resource "aci_rest_managed" "l3extRsLIfPToNetflowMonitorPol" {
+  for_each   = { for policy in var.netflow_monitor_policies : "${policy.name}-${policy.ip_filter_type}" => policy }
+  dn         = "${aci_rest_managed.l3extLIfP.dn}/rslIfPToNetflowMonitorPol-[${each.value.name}]-${each.value.ip_filter_type}"
+  class_name = "l3extRsLIfPToNetflowMonitorPol"
+  content = {
+    tnNetflowMonitorPolName = each.value.name
+    fltType                 = each.value.ip_filter_type
+  }
+}

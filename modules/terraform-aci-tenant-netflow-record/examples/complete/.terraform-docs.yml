@@ -3,7 +3,7 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Netflow Record Example
+  # Tenant Netflow Record Example
 
   To run this example you need to execute:
 

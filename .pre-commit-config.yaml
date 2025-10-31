@@ -813,6 +813,18 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-tenant/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-netflow-exporter"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-netflow-exporter/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-netflow-monitor"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-netflow-monitor/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-netflow-record"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-netflow-record/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-tenant-span-destination-group"]
       - id: terraform-docs-system
         args:
