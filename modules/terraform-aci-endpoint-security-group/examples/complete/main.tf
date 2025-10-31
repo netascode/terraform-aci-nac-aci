@@ -8,6 +8,7 @@ module "aci_endpoint_security_group" {
   application_profile         = "AP1"
   vrf                         = "VRF1"
   shutdown                    = false
+  deployment_immediacy        = lazy
   intra_esg_isolation         = true
   preferred_group             = true
   contract_consumers          = ["CON1"]
