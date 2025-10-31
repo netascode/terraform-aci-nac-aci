@@ -58,6 +58,10 @@ module "aci_bridge_domain" {
     dhcp_relay_policy  = "DHCP_RELAY_1"
     dhcp_option_policy = "DHCP_OPTION_1"
   }]
+  netflow_monitor_policies = [{
+    name           = "NETFLOW_MONITOR_1"
+    ip_filter_type = "ipv4"
+  }]
 }
 ```
 <!-- END_TF_DOCS -->
