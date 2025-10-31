@@ -1309,30 +1309,30 @@ locals {
 module "aci_l3out_interface_profile_manual" {
   source = "./modules/terraform-aci-l3out-interface-profile"
 
-  for_each                     = { for ip in local.interface_profiles_manual : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
-  tenant                       = each.value.tenant
-  l3out                        = each.value.l3out
-  node_profile                 = each.value.node_profile
-  name                         = each.value.name
-  description                  = each.value.description
-  multipod                     = each.value.multipod
-  remote_leaf                  = each.value.remote_leaf
-  bfd_policy                   = each.value.bfd_policy
-  ospf_interface_profile_name  = each.value.ospf_interface_profile_name
-  ospf_authentication_key      = each.value.ospf_authentication_key
-  ospf_authentication_key_id   = each.value.ospf_authentication_key_id
-  ospf_authentication_type     = each.value.ospf_authentication_type
-  ospf_interface_policy        = each.value.ospf_interface_policy
-  eigrp_interface_profile_name = each.value.eigrp_interface_profile_name
-  eigrp_interface_policy       = each.value.eigrp_interface_policy
-  eigrp_keychain_policy        = each.value.eigrp_keychain_policy
-  pim_policy                   = each.value.pim_policy
-  igmp_interface_policy        = each.value.igmp_interface_policy
-  nd_interface_policy          = each.value.nd_interface_policy
-  qos_class                    = each.value.qos_class
-  custom_qos_policy            = each.value.custom_qos_policy
-  dhcp_labels                  = each.value.dhcp_labels
-  netflow_monitor_policies     = each.value.netflow_monitor_policies
+  for_each                           = { for ip in local.interface_profiles_manual : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
+  tenant                             = each.value.tenant
+  l3out                              = each.value.l3out
+  node_profile                       = each.value.node_profile
+  name                               = each.value.name
+  description                        = each.value.description
+  multipod                           = each.value.multipod
+  remote_leaf                        = each.value.remote_leaf
+  bfd_policy                         = each.value.bfd_policy
+  ospf_interface_profile_name        = each.value.ospf_interface_profile_name
+  ospf_authentication_key            = each.value.ospf_authentication_key
+  ospf_authentication_key_id         = each.value.ospf_authentication_key_id
+  ospf_authentication_type           = each.value.ospf_authentication_type
+  ospf_interface_policy              = each.value.ospf_interface_policy
+  eigrp_interface_profile_name       = each.value.eigrp_interface_profile_name
+  eigrp_interface_policy             = each.value.eigrp_interface_policy
+  eigrp_keychain_policy              = each.value.eigrp_keychain_policy
+  pim_policy                         = each.value.pim_policy
+  igmp_interface_policy              = each.value.igmp_interface_policy
+  nd_interface_policy                = each.value.nd_interface_policy
+  qos_class                          = each.value.qos_class
+  custom_qos_policy                  = each.value.custom_qos_policy
+  dhcp_labels                        = each.value.dhcp_labels
+  netflow_monitor_policies           = each.value.netflow_monitor_policies
   egress_data_plane_policing_policy  = each.value.egress_data_plane_policing_policy
   ingress_data_plane_policing_policy = each.value.ingress_data_plane_policing_policy
   interfaces = [for int in try(each.value.interfaces, []) : {
@@ -1481,28 +1481,28 @@ locals {
 module "aci_l3out_interface_profile_auto" {
   source = "./modules/terraform-aci-l3out-interface-profile"
 
-  for_each                     = { for ip in local.interface_profiles_auto : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
-  tenant                       = each.value.tenant
-  l3out                        = each.value.l3out
-  node_profile                 = each.value.node_profile
-  name                         = each.value.name
-  multipod                     = each.value.multipod
-  remote_leaf                  = each.value.remote_leaf
-  bfd_policy                   = each.value.bfd_policy
-  ospf_interface_profile_name  = each.value.ospf_interface_profile_name
-  ospf_authentication_key      = each.value.ospf_authentication_key
-  ospf_authentication_key_id   = each.value.ospf_authentication_key_id
-  ospf_authentication_type     = each.value.ospf_authentication_type
-  ospf_interface_policy        = each.value.ospf_interface_policy
-  eigrp_interface_profile_name = each.value.eigrp_interface_profile_name
-  eigrp_interface_policy       = each.value.eigrp_interface_policy
-  pim_policy                   = each.value.pim_policy
-  igmp_interface_policy        = each.value.igmp_interface_policy
-  nd_interface_policy          = each.value.nd_interface_policy
-  qos_class                    = each.value.qos_class
-  custom_qos_policy            = each.value.custom_qos_policy
-  dhcp_labels                  = each.value.dhcp_labels
-  netflow_monitor_policies     = each.value.netflow_monitor_policies
+  for_each                           = { for ip in local.interface_profiles_auto : ip.key => ip if local.modules.aci_l3out_interface_profile && var.manage_tenants }
+  tenant                             = each.value.tenant
+  l3out                              = each.value.l3out
+  node_profile                       = each.value.node_profile
+  name                               = each.value.name
+  multipod                           = each.value.multipod
+  remote_leaf                        = each.value.remote_leaf
+  bfd_policy                         = each.value.bfd_policy
+  ospf_interface_profile_name        = each.value.ospf_interface_profile_name
+  ospf_authentication_key            = each.value.ospf_authentication_key
+  ospf_authentication_key_id         = each.value.ospf_authentication_key_id
+  ospf_authentication_type           = each.value.ospf_authentication_type
+  ospf_interface_policy              = each.value.ospf_interface_policy
+  eigrp_interface_profile_name       = each.value.eigrp_interface_profile_name
+  eigrp_interface_policy             = each.value.eigrp_interface_policy
+  pim_policy                         = each.value.pim_policy
+  igmp_interface_policy              = each.value.igmp_interface_policy
+  nd_interface_policy                = each.value.nd_interface_policy
+  qos_class                          = each.value.qos_class
+  custom_qos_policy                  = each.value.custom_qos_policy
+  dhcp_labels                        = each.value.dhcp_labels
+  netflow_monitor_policies           = each.value.netflow_monitor_policies
   egress_data_plane_policing_policy  = each.value.egress_data_plane_policing_policy
   ingress_data_plane_policing_policy = each.value.ingress_data_plane_policing_policy
   interfaces = [for int in try(each.value.interfaces, []) : {

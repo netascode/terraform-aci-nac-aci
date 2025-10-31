@@ -510,6 +510,8 @@ variable "netflow_monitor_policies" {
       for p in var.netflow_monitor_policies : contains(["ipv4", "ipv6", "ce", "unspecified"], p.ip_filter_type)
     ])
     error_message = "`ip_filter_type`: Allowed values: `ipv4`, `ipv6`, `ce`, `unspecified`"
+  }
+}
 variable "ingress_data_plane_policing_policy" {
   description = "Ingress Data Plane Policing policy name."
   type        = string
