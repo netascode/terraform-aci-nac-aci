@@ -378,6 +378,40 @@ variable "mac_statements" {
   }
 }
 
+variable "vm_statements" {
+  description = "VM Statements for VM type uSeg Attributes"
+  type = list(object({
+    name     = string
+    type     = optional(string, "vm-name")
+    operator = optional(string, "equals")
+    value    = string
+    category = optional(string, "")
+    label    = optional(string, "")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for vm_statement in var.vm_statements : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", vm_statement.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for vm_statement in var.vm_statements : try(contains(["vm-name", "guest-os", "hv", "vm", "vnic", "domain", "rootContName", "custom-label", "tag", "vm-folder", "vmfolder-path"], vm_statement.type), false)
+    ])
+    error_message = "`type`: Allowed values are `vm-name`, `guest-os`, `hv`, `vm`, `vnic`, `domain`, `rootContName`, `custom-label`, `tag`, `vm-folder`, `vmfolder-path`."
+  }
+
+  validation {
+    condition = alltrue([
+      for vm_statement in var.vm_statements : try(contains(["equals", "contains", "startsWith", "endsWith", "notEquals"], vm_statement.operator), false)
+    ])
+    error_message = "`operator`: Allowed values are `equals`, `contains`, `startsWith`, `endsWith`, `notEquals`."
+  }
+}
+
 variable "l4l7_address_pools" {
   description = "List of EPG L4/L7 Address Pools."
   type = list(object({

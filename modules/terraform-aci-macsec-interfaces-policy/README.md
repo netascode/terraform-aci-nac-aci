@@ -17,6 +17,7 @@ module "aci_macsec_interfaces_policy" {
   admin_state              = true
   macsec_parameters_policy = "macsec-parameter-policy"
   macsec_keychain_policy   = "macsec-keychain-policy"
+  type                     = "access"
 }
 ```
 
@@ -42,6 +43,7 @@ module "aci_macsec_interfaces_policy" {
 | <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | The administrative state of the MACsec Interface Policy | `bool` | `true` | no |
 | <a name="input_macsec_parameters_policy"></a> [macsec\_parameters\_policy](#input\_macsec\_parameters\_policy) | MACsec Parameters Policy Name | `string` | n/a | yes |
 | <a name="input_macsec_keychain_policy"></a> [macsec\_keychain\_policy](#input\_macsec\_keychain\_policy) | MACsec KeyChain Policy Name | `string` | n/a | yes |
+| <a name="input_type"></a> [type](#input\_type) | Type of MacSec Interface Policy. Allowed values: `access` or `fabric`. | `string` | `"access"` | no |
 
 ## Outputs
 

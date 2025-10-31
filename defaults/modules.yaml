@@ -38,6 +38,7 @@ modules:
   aci_contract: true
   aci_coop_policy: true
   aci_date_time_format: true
+  aci_data_plane_policing_policy: true
   aci_date_time_policy: true
   aci_device_selection_policy: true
   aci_dhcp_option_policy: true
@@ -112,6 +113,7 @@ modules:
   aci_mcp: true
   aci_mcp_policy: true
   aci_monitoring_policy: true
+  aci_access_monitoring_policy: true
   aci_mpls_custom_qos_policy: true
   aci_mst_policy: true
   aci_multicast_route_map: true

@@ -20,6 +20,7 @@ module "aci_fabric_pod_policy_group" {
   snmp_policy              = "SNMP1"
   date_time_policy         = "DATE1"
   management_access_policy = "MAP1"
+  macsec_policy            = "MACSEC1"
 }
 ```
 <!-- END_TF_DOCS -->

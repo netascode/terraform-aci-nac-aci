@@ -281,6 +281,34 @@ module "aci_cdp_policy" {
   admin_state = each.value.admin_state
 }
 
+module "aci_data_plane_policing_policy" {
+  source = "./modules/terraform-aci-data-plane-policing-policy"
+
+  for_each             = { for dpp in try(local.access_policies.interface_policies.data_plane_policing_policies, []) : dpp.name => dpp if local.modules.aci_data_plane_policing_policy && var.manage_access_policies }
+  name                 = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.name_suffix}"
+  admin_state          = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.admin_state)
+  type                 = try(each.value.type, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.type)
+  mode                 = try(each.value.mode, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.mode)
+  sharing_mode         = try(each.value.sharing_mode, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.sharing_mode)
+  rate                 = try(each.value.rate, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.rate)
+  rate_unit            = try(each.value.rate_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.rate_unit)
+  burst                = try(each.value.burst, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst)
+  burst_unit           = try(each.value.burst_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst_unit)
+  conform_action       = try(each.value.conform_action, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.conform_action)
+  conform_mark_cos     = try(each.value.conform_action == "mark", false) ? try(each.value.conform_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.conform_mark_cos) : null
+  conform_mark_dscp    = try(each.value.conform_action == "mark", false) ? try(each.value.conform_mark_dscp, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.conform_mark_dscp) : null
+  exceed_action        = try(each.value.exceed_action, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.exceed_action)
+  exceed_mark_cos      = try(each.value.exceed_action == "mark", false) ? try(each.value.exceed_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.exceed_mark_cos) : null
+  exceed_mark_dscp     = try(each.value.exceed_action == "mark", false) ? try(each.value.exceed_mark_dscp, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.exceed_mark_dscp) : null
+  violate_action       = try(each.value.violate_action, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_action)
+  violate_mark_cos     = try(each.value.violate_action == "mark", false) ? try(each.value.violate_mark_cos, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_mark_cos) : null
+  violate_mark_dscp    = try(each.value.violate_action == "mark", false) ? try(each.value.violate_mark_dscp, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.violate_mark_dscp) : null
+  peak_rate            = try(each.value.type == "2R3C", false) ? try(each.value.peak_rate, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.peak_rate) : null
+  peak_rate_unit       = try(each.value.type == "2R3C", false) ? try(each.value.peak_rate_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.peak_rate_unit) : null
+  burst_excessive      = try(each.value.type == "2R3C", false) ? try(each.value.burst_excessive, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst_excessive) : null
+  burst_excessive_unit = try(each.value.type == "2R3C", false) ? try(each.value.burst_excessive_unit, local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.burst_excessive_unit) : null
+}
+
 module "aci_lldp_policy" {
   source = "./modules/terraform-aci-lldp-policy"
 
@@ -323,6 +351,7 @@ locals {
     for mkc in try(local.access_policies.interface_policies.macsec_keychain_policies, []) : {
       name        = "${mkc.name}${local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.name_suffix}"
       description = try(mkc.description, "")
+      type        = "access"
       key_policies = [for kp in try(mkc.key_policies, []) : {
         name           = try(kp.name, "")
         key_name       = kp.key_name
@@ -341,6 +370,7 @@ module "aci_macsec_keychain_policies" {
 
   for_each     = { for mkc in try(local.macsec_keychain_policies, []) : mkc.name => mkc if local.modules.aci_macsec_keychain_policies && var.manage_access_policies }
   name         = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.macsec_keychain_policies.name_suffix}"
+  type         = each.value.type
   description  = each.value.description
   key_policies = each.value.key_policies
 }
@@ -443,21 +473,23 @@ module "aci_storm_control_policy" {
 module "aci_access_leaf_interface_policy_group" {
   source = "./modules/terraform-aci-access-leaf-interface-policy-group"
 
-  for_each                   = { for pg in try(local.access_policies.leaf_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_leaf_interface_policy_group && var.manage_access_policies }
-  name                       = "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}"
-  description                = try(each.value.description, "")
-  type                       = each.value.type
-  map                        = try(each.value.map, local.defaults.apic.access_policies.leaf_interface_policy_groups.map)
-  link_level_policy          = try("${each.value.link_level_policy}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}", "")
-  cdp_policy                 = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
-  lldp_policy                = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
-  spanning_tree_policy       = try("${each.value.spanning_tree_policy}${local.defaults.apic.access_policies.interface_policies.spanning_tree_policies.name_suffix}", "")
-  macsec_interface_policy    = try("${each.value.macsec_interface_policy}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.name_suffix}", "")
-  mcp_policy                 = try("${each.value.mcp_policy}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}", "")
-  l2_policy                  = try("${each.value.l2_policy}${local.defaults.apic.access_policies.interface_policies.l2_policies.name_suffix}", "")
-  storm_control_policy       = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")
-  port_channel_policy        = try("${each.value.port_channel_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix}", "")
-  port_channel_member_policy = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
+  for_each                           = { for pg in try(local.access_policies.leaf_interface_policy_groups, []) : pg.name => pg if local.modules.aci_access_leaf_interface_policy_group && var.manage_access_policies }
+  name                               = "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}"
+  description                        = try(each.value.description, "")
+  type                               = each.value.type
+  map                                = try(each.value.map, local.defaults.apic.access_policies.leaf_interface_policy_groups.map)
+  link_level_policy                  = try("${each.value.link_level_policy}${local.defaults.apic.access_policies.interface_policies.link_level_policies.name_suffix}", "")
+  cdp_policy                         = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
+  egress_data_plane_policing_policy  = try("${each.value.egress_data_plane_policing_policy}${local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.name_suffix}", "")
+  ingress_data_plane_policing_policy = try("${each.value.ingress_data_plane_policing_policy}${local.defaults.apic.access_policies.interface_policies.data_plane_policing_policies.name_suffix}", "")
+  lldp_policy                        = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
+  spanning_tree_policy               = try("${each.value.spanning_tree_policy}${local.defaults.apic.access_policies.interface_policies.spanning_tree_policies.name_suffix}", "")
+  macsec_interface_policy            = try("${each.value.macsec_interface_policy}${local.defaults.apic.access_policies.interface_policies.macsec_interfaces_policies.name_suffix}", "")
+  mcp_policy                         = try("${each.value.mcp_policy}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}", "")
+  l2_policy                          = try("${each.value.l2_policy}${local.defaults.apic.access_policies.interface_policies.l2_policies.name_suffix}", "")
+  storm_control_policy               = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")
+  port_channel_policy                = try("${each.value.port_channel_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix}", "")
+  port_channel_member_policy         = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
   netflow_monitor_policies = [for monitor in try(each.value.netflow_monitor_policies, []) : {
     name           = "${monitor.name}${local.defaults.apic.access_policies.interface_policies.netflow_monitors.name_suffix}"
     ip_filter_type = try(monitor.ip_filter_type, local.defaults.apic.access_policies.leaf_interface_policy_groups.netflow_monitor_policies.ip_filter_type)
@@ -467,6 +499,7 @@ module "aci_access_leaf_interface_policy_group" {
   depends_on = [
     module.aci_link_level_policy,
     module.aci_cdp_policy,
+    module.aci_data_plane_policing_policy,
     module.aci_lldp_policy,
     module.aci_spanning_tree_policy,
     module.aci_mcp_policy,
@@ -508,8 +541,9 @@ module "aci_access_leaf_interface_profile_auto" {
 module "aci_access_leaf_interface_profile_manual" {
   source = "./modules/terraform-aci-access-leaf-interface-profile"
 
-  for_each = { for prof in try(local.access_policies.leaf_interface_profiles, []) : prof.name => prof if local.modules.aci_access_leaf_interface_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies }
-  name     = "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_profiles.name_suffix}"
+  for_each    = { for prof in try(local.access_policies.leaf_interface_profiles, []) : prof.name => prof if local.modules.aci_access_leaf_interface_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_access_policies }
+  name        = "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_profiles.name_suffix}"
+  description = try(each.value.description, "")
 }
 
 locals {
@@ -524,7 +558,7 @@ locals {
           fex_id            = try(selector.fex_id, 0)
           fex_profile       = try("${selector.fex_profile}${local.defaults.apic.access_policies.fex_interface_profiles.name_suffix}", "")
           policy_group      = try("${selector.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "")
-          policy_group_type = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == selector.policy_group][0], "access")
+          policy_group_type = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == selector.policy_group][0], strcontains(try(selector.policy_group, ""), "system-breakout") ? "breakout" : "access")
           port_blocks = [for block in try(selector.port_blocks, []) : {
             description = try(block.description, "")
             name        = "${block.name}${local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.name_suffix}"
@@ -1024,4 +1058,52 @@ module "aci_netflow_record" {
   name             = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.netflow_records.name_suffix}"
   description      = try(each.value.description, "")
   match_parameters = try(each.value.match_parameters, [])
+}
+
+locals {
+  access_monitoring_policy = flatten([
+    for policy in try(local.access_policies.monitoring.policies, []) : {
+      key         = format("%s", policy.name)
+      name        = "${policy.name}${local.defaults.apic.access_policies.monitoring.policies.name_suffix}"
+      description = try(policy.description, "")
+      snmp_trap_policies = [for snmp_policy in try(policy.snmp_traps, []) : {
+        name              = "${snmp_policy.name}${local.defaults.apic.access_policies.monitoring.policies.snmp_traps.name_suffix}"
+        destination_group = try("${snmp_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}", null)
+      }]
+      syslog_policies = [for syslog_policy in try(policy.syslogs, []) : {
+        name              = "${syslog_policy.name}${local.defaults.apic.access_policies.monitoring.policies.syslogs.name_suffix}"
+        audit             = try(syslog_policy.audit, local.defaults.apic.access_policies.monitoring.policies.syslogs.audit)
+        events            = try(syslog_policy.events, local.defaults.apic.access_policies.monitoring.policies.syslogs.events)
+        faults            = try(syslog_policy.faults, local.defaults.apic.access_policies.monitoring.policies.syslogs.faults)
+        session           = try(syslog_policy.session, local.defaults.apic.access_policies.monitoring.policies.syslogs.session)
+        minimum_severity  = try(syslog_policy.minimum_severity, local.defaults.apic.access_policies.monitoring.policies.syslogs.minimum_severity)
+        destination_group = try("${syslog_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}", null)
+      }]
+      fault_severity_policies = [for fault_policy in try(policy.fault_severity_policies, []) : {
+        class = fault_policy.class
+        faults = [for fault in try(fault_policy.faults, []) : {
+          fault_id         = fault.fault_id
+          initial_severity = try(fault.initial_severity, local.defaults.apic.access_policies.monitoring.policies.fault_severity_policies.initial_severity)
+          target_severity  = try(fault.target_severity, local.defaults.apic.access_policies.monitoring.policies.fault_severity_policies.target_severity)
+          description      = try(fault.description, "")
+        }]
+      }]
+    }
+  ])
+}
+
+module "aci_access_monitoring_policy" {
+  source   = "./modules/terraform-aci-access-monitoring-policy"
+  for_each = { for pol in local.access_monitoring_policy : pol.key => pol if local.modules.aci_access_monitoring_policy && var.manage_access_policies }
+
+  name                    = each.value.name
+  description             = each.value.description
+  snmp_trap_policies      = each.value.snmp_trap_policies
+  syslog_policies         = each.value.syslog_policies
+  fault_severity_policies = each.value.fault_severity_policies
+
+  depends_on = [
+    module.aci_snmp_trap_policy,
+    module.aci_syslog_policy,
+  ]
 }
