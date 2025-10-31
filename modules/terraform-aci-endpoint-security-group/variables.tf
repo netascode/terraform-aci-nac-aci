@@ -58,7 +58,7 @@ variable "shutdown" {
 variable "deployment_immediacy" {
   description = "Deployment Immediacy"
   type        = string
-  default     = "lazy"
+  default     = null
   validation {
     condition     = contains(["immediate", "lazy"], var.deployment_immediacy)
     error_message = "`deployment_immediacy`: Allowed values are `immediate` or `lazy`."

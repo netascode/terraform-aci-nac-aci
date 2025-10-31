@@ -1143,7 +1143,6 @@ defaults:
         endpoint_security_groups:
           name_suffix: ""
           shutdown: false
-          deployment_immediacy: lazy
           intra_esg_isolation: false
           preferred_group: false
           tag_selectors:

@@ -102,7 +102,7 @@ module "aci_endpoint_security_group" {
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_vrf"></a> [vrf](#input\_vrf) | VRF name. | `string` | n/a | yes |
 | <a name="input_shutdown"></a> [shutdown](#input\_shutdown) | Shutdown. | `bool` | `false` | no |
-| <a name="input_deployment_immediacy"></a> [deployment\_immediacy](#input\_deployment\_immediacy) | Deployment Immediacy | `string` | `"lazy"` | no |
+| <a name="input_deployment_immediacy"></a> [deployment\_immediacy](#input\_deployment\_immediacy) | Deployment Immediacy | `string` | `null` | no |
 | <a name="input_intra_esg_isolation"></a> [intra\_esg\_isolation](#input\_intra\_esg\_isolation) | Intra ESG isolation. | `bool` | `false` | no |
 | <a name="input_preferred_group"></a> [preferred\_group](#input\_preferred\_group) | Preferred group membership. | `bool` | `false` | no |
 | <a name="input_contract_consumers"></a> [contract\_consumers](#input\_contract\_consumers) | List of contract consumers. | `list(string)` | `[]` | no |

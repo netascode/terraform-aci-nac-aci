@@ -667,7 +667,7 @@ locals {
           description                 = try(esg.description, "")
           vrf                         = "${esg.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}"
           shutdown                    = try(esg.shutdown, local.defaults.apic.tenants.application_profiles.endpoint_security_groups.shutdown)
-          deployment_immediacy        = try(esg.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_security_groups.deployment_immediacy)
+          deployment_immediacy        = try(esg.deployment_immediacy, null)
           intra_esg_isolation         = try(esg.intra_esg_isolation, local.defaults.apic.tenants.application_profiles.endpoint_security_groups.intra_esg_isolation)
           preferred_group             = try(esg.preferred_group, local.defaults.apic.tenants.application_profiles.endpoint_security_groups.preferred_group)
           contract_consumers          = try([for contract in esg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
