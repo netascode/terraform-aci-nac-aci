@@ -909,6 +909,8 @@ defaults:
         multicast_arp_drop: false
         dhcp_labels:
           scope: tenant
+        netflow_monitor_policies:
+          ip_filter_type: ipv4
         subnets:
           primary_ip: false
           public: false
@@ -965,6 +967,8 @@ defaults:
         bfd_multihop_auth:
           type: none
           key_id: 1
+        netflow_monitor_policies:
+          ip_filter_type: ipv4
         nodes:
           pod: 1
           router_id_as_loopback: true
@@ -1050,6 +1054,8 @@ defaults:
               auth_type: none
             dhcp_labels:
               scope: infra
+            netflow_monitor_policies:
+              ip_filter_type: ipv4
             interfaces:
               pod: 1
               module: 1
@@ -1602,15 +1608,6 @@ defaults:
           local_endpoint_aging_interval: 900
           remote_endpoint_aging_interval: 300
           move_frequency: 256
-        netflow_exporters:
-          name_suffix: ""
-          source_type: custom-src-ip
-          source_ip: 0.0.0.0
-          dscp: CS2
-        netflow_monitors:
-          name_suffix: ""
-        netflow_records:
-          name_suffix: ""          
         monitoring:
           policies:
             name_suffix: ""
@@ -1626,6 +1623,15 @@ defaults:
             fault_severity_policies:
               initial_severity: inherit
               target_severity: inherit
+        netflow_exporters:
+          name_suffix: ""
+          source_type: custom-src-ip
+          source_ip: 0.0.0.0
+          dscp: CS2
+        netflow_monitors:
+          name_suffix: ""
+        netflow_records:
+          name_suffix: ""
       services:
         l4l7_devices:
           name_suffix: ""
