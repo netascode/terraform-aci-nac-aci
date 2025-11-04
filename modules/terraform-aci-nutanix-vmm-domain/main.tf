@@ -19,10 +19,6 @@ resource "aci_rest_managed" "infraRsVlanNs" {
   content = {
     tDn = try("uni/infra/vlanns-[${var.vlan_pool}]-${var.allocation}", null)
   }
-
-  lifecycle {
-    ignore_changes = [content["tDn"]]
-  }
 }
 
 resource "aci_rest_managed" "aaaDomainRef" {
