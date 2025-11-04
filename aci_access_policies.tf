@@ -559,7 +559,7 @@ locals {
           fex_id            = try(selector.fex_id, 0)
           fex_profile       = try("${selector.fex_profile}${local.defaults.apic.access_policies.fex_interface_profiles.name_suffix}", "")
           policy_group      = try("${selector.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "")
-          policy_group_type = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == selector.policy_group][0], "access")
+          policy_group_type = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == selector.policy_group][0], strcontains(try(selector.policy_group, ""), "system-breakout") ? "breakout" : "access")
           port_blocks = [for block in try(selector.port_blocks, []) : {
             description = try(block.description, "")
             name        = "${block.name}${local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.name_suffix}"

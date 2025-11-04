@@ -228,6 +228,10 @@ locals {
           dhcp_option_policy = try("${label.dhcp_option_policy}${local.defaults.apic.tenants.policies.dhcp_option_policies.name_suffix}", "")
           scope              = try(label.scope, local.defaults.apic.tenants.bridge_domains.dhcp_labels.scope)
         }]
+        netflow_monitor_policies = [for policy in try(bd.netflow_monitor_policies, []) : {
+          name           = try("${policy.name}${local.defaults.apic.tenants.policies.netflow_monitors.name_suffix}", "")
+          ip_filter_type = try(policy.ip_filter_type, local.defaults.apic.tenants.bridge_domains.netflow_monitor_policies.ip_filter_type)
+        }]
       }
     ]
   ])
@@ -267,6 +271,7 @@ module "aci_bridge_domain" {
   subnets                    = each.value.subnets
   l3outs                     = each.value.l3outs
   dhcp_labels                = each.value.dhcp_labels
+  netflow_monitor_policies   = each.value.netflow_monitor_policies
 
   depends_on = [
     module.aci_tenant,
@@ -689,6 +694,7 @@ locals {
           description                 = try(esg.description, "")
           vrf                         = "${esg.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}"
           shutdown                    = try(esg.shutdown, local.defaults.apic.tenants.application_profiles.endpoint_security_groups.shutdown)
+          deployment_immediacy        = try(esg.deployment_immediacy, null)
           intra_esg_isolation         = try(esg.intra_esg_isolation, local.defaults.apic.tenants.application_profiles.endpoint_security_groups.intra_esg_isolation)
           preferred_group             = try(esg.preferred_group, local.defaults.apic.tenants.application_profiles.endpoint_security_groups.preferred_group)
           contract_consumers          = try([for contract in esg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
@@ -732,6 +738,7 @@ module "aci_endpoint_security_group" {
   description                 = each.value.description
   vrf                         = each.value.vrf
   shutdown                    = each.value.shutdown
+  deployment_immediacy        = each.value.deployment_immediacy
   intra_esg_isolation         = each.value.intra_esg_isolation
   preferred_group             = each.value.preferred_group
   contract_consumers          = each.value.contract_consumers
@@ -1237,6 +1244,10 @@ locals {
               scope              = try(label.scope, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.dhcp_labels.scope)
               }
             ]
+            netflow_monitor_policies = [for policy in try(ip.netflow_monitor_policies, []) : {
+              name           = policy.name
+              ip_filter_type = policy.ip_filter_type
+            }]
             interfaces = [for int in try(ip.interfaces, []) : {
               ip                   = try(int.ip, "")
               svi                  = try(int.svi, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.svi)
@@ -1333,6 +1344,7 @@ module "aci_l3out_interface_profile_manual" {
   qos_class                          = each.value.qos_class
   custom_qos_policy                  = each.value.custom_qos_policy
   dhcp_labels                        = each.value.dhcp_labels
+  netflow_monitor_policies           = each.value.netflow_monitor_policies
   egress_data_plane_policing_policy  = each.value.egress_data_plane_policing_policy
   ingress_data_plane_policing_policy = each.value.ingress_data_plane_policing_policy
   interfaces = [for int in try(each.value.interfaces, []) : {
@@ -1404,6 +1416,10 @@ locals {
           scope              = try(label.scope, local.defaults.apic.tenants.l3outs.dhcp_labels.scope)
           }
         ]
+        netflow_monitor_policies = [for policy in try(l3out.netflow_monitor_policies, []) : {
+          name           = policy.name
+          ip_filter_type = policy.ip_filter_type
+        }]
         interfaces = flatten([for node in try(l3out.nodes, []) : [
           for int in try(node.interfaces, []) : {
             ip                   = try(int.ip, "")
@@ -1498,6 +1514,7 @@ module "aci_l3out_interface_profile_auto" {
   qos_class                          = each.value.qos_class
   custom_qos_policy                  = each.value.custom_qos_policy
   dhcp_labels                        = each.value.dhcp_labels
+  netflow_monitor_policies           = each.value.netflow_monitor_policies
   egress_data_plane_policing_policy  = each.value.egress_data_plane_policing_policy
   ingress_data_plane_policing_policy = each.value.ingress_data_plane_policing_policy
   interfaces = [for int in try(each.value.interfaces, []) : {
@@ -2437,14 +2454,17 @@ locals {
   ip_sla_policies = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.policies.ip_sla_policies, []) : {
-        key         = format("%s/%s", tenant.name, policy.name)
-        tenant      = tenant.name
-        name        = "${policy.name}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}"
-        description = try(policy.description, "")
-        multiplier  = try(policy.multiplier, local.defaults.apic.tenants.policies.ip_sla_policies.multiplier)
-        frequency   = try(policy.frequency, local.defaults.apic.tenants.policies.ip_sla_policies.frequency)
-        sla_type    = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type)
-        port        = try(policy.port, local.defaults.apic.tenants.policies.ip_sla_policies.port)
+        key          = format("%s/%s", tenant.name, policy.name)
+        tenant       = tenant.name
+        name         = "${policy.name}${local.defaults.apic.tenants.policies.ip_sla_policies.name_suffix}"
+        description  = try(policy.description, "")
+        multiplier   = try(policy.multiplier, local.defaults.apic.tenants.policies.ip_sla_policies.multiplier)
+        frequency    = try(policy.frequency, local.defaults.apic.tenants.policies.ip_sla_policies.frequency)
+        sla_type     = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type)
+        port         = try(policy.port, local.defaults.apic.tenants.policies.ip_sla_policies.port)
+        http_method  = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type) == "http" ? try(policy.http_method, local.defaults.apic.tenants.policies.ip_sla_policies.http_method) : null
+        http_version = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type) == "http" ? try(policy.http_version, local.defaults.apic.tenants.policies.ip_sla_policies.http_version) : null
+        http_uri     = try(policy.sla_type, local.defaults.apic.tenants.policies.ip_sla_policies.sla_type) == "http" ? try(policy.http_uri, local.defaults.apic.tenants.policies.ip_sla_policies.http_uri) : null
       }
     ]
   ])
@@ -2453,14 +2473,17 @@ locals {
 module "aci_ip_sla_policy" {
   source = "./modules/terraform-aci-ip-sla-policy"
 
-  for_each    = { for policy in local.ip_sla_policies : policy.key => policy if local.modules.aci_ip_sla_policy && var.manage_tenants }
-  tenant      = each.value.tenant
-  name        = each.value.name
-  description = each.value.description
-  multiplier  = each.value.multiplier
-  frequency   = each.value.frequency
-  sla_type    = each.value.sla_type
-  port        = each.value.port
+  for_each     = { for policy in local.ip_sla_policies : policy.key => policy if local.modules.aci_ip_sla_policy && var.manage_tenants }
+  tenant       = each.value.tenant
+  name         = each.value.name
+  description  = each.value.description
+  multiplier   = each.value.multiplier
+  frequency    = each.value.frequency
+  sla_type     = each.value.sla_type
+  port         = each.value.port
+  http_method  = each.value.http_method
+  http_version = each.value.http_version
+  http_uri     = each.value.http_uri
 
   depends_on = [
     module.aci_tenant,
@@ -4069,5 +4092,117 @@ module "aci_tenant_monitoring_policy" {
     module.aci_snmp_trap_policy,
     module.aci_syslog_policy,
     module.aci_tenant,
+  ]
+}
+
+locals {
+  netflow_exporters = flatten([
+    for tenant in local.tenants : [
+      for exporter in try(tenant.policies.netflow_exporters, []) : {
+        key              = format("%s/%s/%s", tenant.name, exporter.name, try(exporter.vrf, "novrf"))
+        name             = "${exporter.name}${local.defaults.apic.tenants.policies.netflow_exporters.name_suffix}"
+        description      = try(exporter.description, "")
+        destination_port = exporter.destination_port
+        destination_ip   = exporter.destination_ip
+        dscp             = try(exporter.dscp, local.defaults.apic.tenants.policies.netflow_exporters.dscp)
+        source_type      = try(exporter.source_type, local.defaults.apic.tenants.policies.netflow_exporters.source_type)
+        source_ip        = try(exporter.source_ip, local.defaults.apic.tenants.policies.netflow_exporters.source_ip)
+
+        epg_type                = try(exporter.epg_type, "")
+        tenant                  = tenant.name
+        application_profile     = try("${exporter.application_profile}${local.defaults.apic.tenants.application_profiles.name_suffix}", "")
+        endpoint_group          = try("${exporter.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}", "")
+        vrf                     = try("${exporter.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}", "")
+        l3out                   = try("${exporter.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}", "")
+        external_endpoint_group = try("${exporter.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}", "")
+      }
+    ]
+  ])
+}
+
+module "aci_tenant_netflow_exporter" {
+  source = "./modules/terraform-aci-tenant-netflow-exporter"
+
+  for_each                = { for pol in local.netflow_exporters : pol.key => pol if local.modules.aci_tenant_netflow_exporter && var.manage_tenants }
+  name                    = each.value.name
+  description             = each.value.description
+  destination_port        = each.value.destination_port
+  destination_ip          = each.value.destination_ip
+  dscp                    = each.value.dscp
+  source_type             = each.value.source_type
+  source_ip               = each.value.source_ip
+  epg_type                = each.value.epg_type
+  tenant                  = each.value.tenant
+  application_profile     = each.value.application_profile
+  endpoint_group          = each.value.endpoint_group
+  vrf                     = each.value.vrf
+  l3out                   = each.value.l3out
+  external_endpoint_group = each.value.external_endpoint_group
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_vrf,
+  ]
+}
+
+locals {
+  netflow_monitors = flatten([
+    for tenant in local.tenants : [
+      for monitor in try(tenant.policies.netflow_monitors, []) : {
+        key            = format("%s/%s", tenant.name, monitor.name)
+        name           = "${monitor.name}${local.defaults.apic.tenants.policies.netflow_monitors.name_suffix}"
+        description    = try(monitor.description, "")
+        flow_record    = try(monitor.flow_record, "")
+        flow_exporters = try(monitor.flow_exporters, [])
+        tenant         = tenant.name
+      }
+    ]
+  ])
+}
+
+module "aci_tenant_netflow_monitor" {
+  source = "./modules/terraform-aci-tenant-netflow-monitor"
+
+  for_each       = { for pol in local.netflow_monitors : pol.key => pol if local.modules.aci_tenant_netflow_monitor && var.manage_tenants }
+  tenant         = each.value.tenant
+  name           = each.value.name
+  description    = each.value.description
+  flow_record    = each.value.flow_record
+  flow_exporters = each.value.flow_exporters
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_vrf,
+    module.aci_tenant_netflow_exporter,
+    module.aci_tenant_netflow_record,
+  ]
+}
+
+locals {
+  netflow_records = flatten([
+    for tenant in local.tenants : [
+      for record in try(tenant.policies.netflow_records, []) : {
+        key              = format("%s/%s", tenant.name, record.name)
+        name             = "${record.name}${local.defaults.apic.tenants.policies.netflow_records.name_suffix}"
+        description      = try(record.description, "")
+        match_parameters = try(record.match_parameters, [])
+        tenant           = tenant.name
+      }
+    ]
+  ])
+}
+
+module "aci_tenant_netflow_record" {
+  source = "./modules/terraform-aci-tenant-netflow-record"
+
+  for_each         = { for pol in local.netflow_records : pol.key => pol if local.modules.aci_tenant_netflow_record && var.manage_tenants }
+  name             = each.value.name
+  description      = each.value.description
+  match_parameters = each.value.match_parameters
+  tenant           = each.value.tenant
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_vrf,
   ]
 }

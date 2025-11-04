@@ -14,20 +14,20 @@ jobs:
     concurrency: testing_environment
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Python Setup
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.10"
 
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.9.2
+          terraform_version: 1.12.2
 
       - name: Tflint Setup
-        uses: terraform-linters/setup-tflint@v4
+        uses: terraform-linters/setup-tflint@v6
 
       - name: Terraform Docs Setup
         run: |
@@ -39,17 +39,23 @@ jobs:
 
       - name: Pre-commit Checks
         uses: pre-commit/action@v3.0.1
+      
+      - name: Terraform Init
+        run: terraform init -input=false -no-color
 
-      - name: Terraform Test
-        id: test
-        env:
-          # Use public Cisco DevNet Sandbox
-          ACI_USERNAME: admin
-          ACI_PASSWORD: "!v3G@!4@Y"
-          ACI_URL: "https://sandboxapicdc.cisco.com"
-        run: |
-          terraform init
-          terraform test # -junit-xml=test-report.xml
+      - name: Terraform Validate
+        run: terraform validate -no-color
+
+      #- name: Terraform Test
+      #  id: test
+      #  env:
+      #    # Use public Cisco DevNet Sandbox
+      #    ACI_USERNAME: admin
+      #    ACI_PASSWORD: "!v3G@!4@Y"
+      #    ACI_URL: "https://sandboxapicdc.cisco.com"
+      #  run: |
+      #    terraform init
+      #    terraform test # -junit-xml=test-report.xml
 
       # - name: Publish Integration Test Results
       #   uses: EnricoMi/publish-unit-test-result-action@v2

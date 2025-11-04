@@ -1331,6 +1331,7 @@ module "aci_atomic_counter" {
 module "aci_control_plane_mtu" {
   source = "./modules/terraform-aci-control-plane-mtu"
 
+  count          = try(local.fabric_policies.control_plane_mtu.mtu, null) != null && local.modules.aci_control_plane_mtu && var.manage_fabric_policies ? 1 : 0
   mtu            = try(local.fabric_policies.control_plane_mtu.mtu, local.defaults.apic.fabric_policies.control_plane_mtu.mtu)
   apic_mtu_apply = try(local.fabric_policies.control_plane_mtu.apic_mtu_apply, null)
 }
