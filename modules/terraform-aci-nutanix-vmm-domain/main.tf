@@ -7,6 +7,10 @@ resource "aci_rest_managed" "vmmDomP" {
     customSwitchName = var.custom_vswitch_name
     mode             = "nutanix_pc"
   }
+
+  lifecycle {
+    ignore_changes = [content["customSwitchName"]]
+  }
 }
 
 resource "aci_rest_managed" "infraRsVlanNs" {
@@ -14,6 +18,10 @@ resource "aci_rest_managed" "infraRsVlanNs" {
   class_name = "infraRsVlanNs"
   content = {
     tDn = try("uni/infra/vlanns-[${var.vlan_pool}]-${var.allocation}", null)
+  }
+
+  lifecycle {
+    ignore_changes = [content["tDn"]]
   }
 }
 

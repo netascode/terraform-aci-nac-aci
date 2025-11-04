@@ -47,7 +47,7 @@ variable "custom_vswitch_name" {
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.custom_vswitch_name))
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,512}$", var.custom_vswitch_name))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
