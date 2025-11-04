@@ -29,6 +29,7 @@ modules:
   aci_bgp_peer_prefix_policy: true
   aci_bgp_policy: true
   aci_bgp_route_summarization_policy: true
+  aci_ospf_route_summarization_policy: true
   aci_bgp_timer_policy: true
   aci_bridge_domain: true
   aci_ca_certificate: true

@@ -2177,6 +2177,38 @@ module "aci_eigrp_interface_policy" {
 }
 
 locals {
+  ospf_route_summarization_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.ospf_route_summarization_policies, []) : {
+        key                = format("%s/%s", tenant.name, policy.name)
+        tenant             = tenant.name
+        name               = "${policy.name}${local.defaults.apic.tenants.policies.ospf_route_summarization_policies.name_suffix}"
+        description        = try(policy.description, "")
+        cost               = try(policy.cost, local.defaults.apic.tenants.policies.ospf_route_summarization_policies.cost)
+        inter_area_enabled = try(policy.inter_area_enabled, local.defaults.apic.tenants.policies.ospf_route_summarization_policies.inter_area_enabled)
+        tag                = try(policy.tag, local.defaults.apic.tenants.policies.ospf_route_summarization_policies.tag)
+      }
+    ]
+  ])
+}
+
+module "aci_ospf_route_summarization_policy" {
+  source = "./modules/terraform-aci-ospf-route-summarization-policy"
+
+  for_each           = { for pol in local.ospf_route_summarization_policies : pol.key => pol if local.modules.aci_ospf_route_summarization_policy && var.manage_tenants }
+  tenant             = each.value.tenant
+  name               = each.value.name
+  description        = each.value.description
+  cost               = each.value.cost
+  inter_area_enabled = each.value.inter_area_enabled
+  tag                = each.value.tag
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
   bgp_route_summarization_policies = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.policies.bgp_route_summarization_policies, []) : {
