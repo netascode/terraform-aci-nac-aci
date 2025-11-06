@@ -889,3 +889,7 @@ repos:
         args: ["./modules/terraform-aci-vspan-session"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-vspan-session/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-nutanix-vmm-domain"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-nutanix-vmm-domain/examples/complete"]

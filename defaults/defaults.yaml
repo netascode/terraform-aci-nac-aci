@@ -261,6 +261,19 @@ defaults:
           immediacy: lazy
           mac_change: false
           forged_transmit: false
+      nutanix_vmm_domains:
+        name_suffix: ""
+        access_mode: read-write
+        allocation: dynamic
+        credential_policies:
+          name_suffix: ""
+        controller_profile:
+          name_suffix: ""
+          aos_version: unknown
+          statistics: false
+          cluster_controller:
+            name_suffix: ""
+            port: 0
       aaa:
         remote_user_login_policy: no-login
         default_fallback_check: false
@@ -1157,6 +1170,11 @@ defaults:
             allow_promiscuous: reject
             forged_transmits: reject
             mac_changes: reject
+          nutanix_vmm_domains:
+            deployment_immediacy: lazy
+            ipam:
+              gateway_address: "0.0.0.0"
+              dhcp_server_address_override: "0.0.0.0"
           static_ports:
             module: 1
             mode: regular

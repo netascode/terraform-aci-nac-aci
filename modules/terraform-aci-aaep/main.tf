@@ -1,8 +1,9 @@
 locals {
-  physical_domains   = [for dom in var.physical_domains : "uni/phys-${dom}"]
-  routed_domains     = [for dom in var.routed_domains : "uni/l3dom-${dom}"]
-  vmware_vmm_domains = [for dom in var.vmware_vmm_domains : "uni/vmmp-VMware/dom-${dom}"]
-  domains            = concat(local.physical_domains, local.routed_domains, local.vmware_vmm_domains)
+  physical_domains    = [for dom in var.physical_domains : "uni/phys-${dom}"]
+  routed_domains      = [for dom in var.routed_domains : "uni/l3dom-${dom}"]
+  vmware_vmm_domains  = [for dom in var.vmware_vmm_domains : "uni/vmmp-VMware/dom-${dom}"]
+  nutanix_vmm_domains = [for dom in var.nutanix_vmm_domains : "uni/vmmp-Nutanix/dom-${dom}"]
+  domains             = concat(local.physical_domains, local.routed_domains, local.vmware_vmm_domains, local.nutanix_vmm_domains)
 }
 
 resource "aci_rest_managed" "infraAttEntityP" {
