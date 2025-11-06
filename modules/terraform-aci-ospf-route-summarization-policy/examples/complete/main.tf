@@ -1,5 +1,6 @@
 module "aci_ospf_route_summarization_policy" {
-  source = "netascode/nac-aci/aci//modules/terraform-aci-ospf-route-summarization-policy"
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-ospf-route-summarization-policy"
+  version = ">= 0.8.0"
 
   tenant             = "ABC"
   name               = "OSPF_SUM1"
