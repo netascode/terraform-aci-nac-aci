@@ -55,6 +55,16 @@ variable "shutdown" {
   default     = false
 }
 
+variable "deployment_immediacy" {
+  description = "Deployment Immediacy"
+  type        = string
+  default     = null
+  validation {
+    condition     = var.deployment_immediacy == null || try(contains(["immediate", "lazy"], var.deployment_immediacy), false)
+    error_message = "`deployment_immediacy`: Allowed values are `immediate` or `lazy`."
+  }
+}
+
 variable "intra_esg_isolation" {
   description = "Intra ESG isolation."
   type        = bool
@@ -235,13 +245,6 @@ variable "ip_subnet_selectors" {
     description = optional(string, "")
   }))
   default = []
-
-  validation {
-    condition = alltrue([
-      for iss in var.ip_subnet_selectors : can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}\\/([0-9]){1,2}$", iss.value))
-    ])
-    error_message = "`value`: Valid ip format example: 192.168.1.0/24."
-  }
 
   validation {
     condition = alltrue([

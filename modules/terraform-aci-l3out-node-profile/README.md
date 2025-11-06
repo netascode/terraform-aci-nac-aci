@@ -36,7 +36,16 @@ module "aci_l3out_node_profile" {
         description = "Next Hop Description"
         preference  = 10
         type        = "prefix"
-      }]
+        track_list  = "TRACK_LIST1"
+        },
+        {
+          ip            = "5.5.5.5"
+          description   = "Next Hop Description"
+          preference    = 10
+          type          = "prefix"
+          ip_sla_policy = "IP_SLA_POLICY1"
+        }
+      ]
     }]
   }]
   bgp_peers = [{
@@ -90,7 +99,7 @@ module "aci_l3out_node_profile" {
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_l3out"></a> [l3out](#input\_l3out) | L3out name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Node profile name. | `string` | n/a | yes |
-| <a name="input_nodes"></a> [nodes](#input\_nodes) | List of nodes. Allowed values `node_id`: 1-4000. Allowed values `pod_id`: 1-255. Default value `pod_id`: 1. Default value `router_id_as_loopback`: true. Allowed values `static_routes.preference`: 1-255. Default value `static_routes.preference`: 1. Default value `static_routes.bfd`: false. Allowed values `static_routes.next_hops.preference`: 0-255. Default value `static_routes.next_hops.preference`: 1. Choices `type`: `prefix`, `none`. Default value `type`: `prefix`. | <pre>list(object({<br/>    node_id                 = number<br/>    pod_id                  = optional(number, 1)<br/>    router_id               = string<br/>    router_id_as_loopback   = optional(bool, true)<br/>    loopbacks               = optional(list(string))<br/>    mpls_transport_loopback = optional(string)<br/>    segment_id              = optional(number)<br/>    static_routes = optional(list(object({<br/>      prefix      = string<br/>      description = optional(string, "")<br/>      preference  = optional(number, 1)<br/>      bfd         = optional(bool, false)<br/>      track_list  = optional(string)<br/>      next_hops = optional(list(object({<br/>        ip          = string<br/>        description = optional(string, "")<br/>        preference  = optional(number, 1)<br/>        type        = optional(string, "prefix")<br/>      })), [])<br/>    })), [])<br/>  }))</pre> | `[]` | no |
+| <a name="input_nodes"></a> [nodes](#input\_nodes) | List of nodes. Allowed values `node_id`: 1-4000. Allowed values `pod_id`: 1-255. Default value `pod_id`: 1. Default value `router_id_as_loopback`: true. Allowed values `static_routes.preference`: 1-255. Default value `static_routes.preference`: 1. Default value `static_routes.bfd`: false. Allowed values `static_routes.next_hops.preference`: 0-255. Default value `static_routes.next_hops.preference`: 1. Choices `type`: `prefix`, `none`. Default value `type`: `prefix`. | <pre>list(object({<br/>    node_id                 = number<br/>    pod_id                  = optional(number, 1)<br/>    router_id               = string<br/>    router_id_as_loopback   = optional(bool, true)<br/>    loopbacks               = optional(list(string))<br/>    mpls_transport_loopback = optional(string)<br/>    segment_id              = optional(number)<br/>    static_routes = optional(list(object({<br/>      prefix      = string<br/>      description = optional(string, "")<br/>      preference  = optional(number, 1)<br/>      bfd         = optional(bool, false)<br/>      track_list  = optional(string)<br/>      next_hops = optional(list(object({<br/>        ip            = string<br/>        description   = optional(string, "")<br/>        preference    = optional(number, 1)<br/>        type          = optional(string, "prefix")<br/>        ip_sla_policy = optional(string)<br/>        track_list    = optional(string)<br/>      })), [])<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_bgp_peers"></a> [bgp\_peers](#input\_bgp\_peers) | List of BGP peers. Allowed values `remote_as`: 0-4294967295. Default value `allow_self_as`: false. Default value `as_override`: false. Default value `disable_peer_as_check`: false. Default value `next_hop_self`: false. Default value `send_community`: false. Default value `send_ext_community`: false. Allowed values `allowed_self_as_count`: 1-10. Default value `allowed_self_as_count`: 3. Default value `bfd`: false. Default value `disable_connected_check`: false. Allowed values `ttl`: 1-255. Default value `ttl`: 1. Allowed values `weight`: 0-65535. Default value `weight`: 0. Default value `remove_all_private_as`: false. Default value `remove_private_as`: false. Default value `replace_private_as_with_local_as`: false. Default value `unicast_address_family`: true. Default value `multicast_address_family`: true. Default value `admin_state`: true. Allowed values `local_as`: 0-4294967295. Choices `as_propagate`: `none`, `no-prepend`, `replace-as`, `dual-as`. Default value `as_propagate`: `none`. | <pre>list(object({<br/>    ip                               = string<br/>    remote_as                        = string<br/>    description                      = optional(string, "")<br/>    allow_self_as                    = optional(bool, false)<br/>    as_override                      = optional(bool, false)<br/>    disable_peer_as_check            = optional(bool, false)<br/>    next_hop_self                    = optional(bool, false)<br/>    send_community                   = optional(bool, false)<br/>    send_ext_community               = optional(bool, false)<br/>    password                         = optional(string)<br/>    allowed_self_as_count            = optional(number, 3)<br/>    bfd                              = optional(bool, false)<br/>    disable_connected_check          = optional(bool, false)<br/>    ttl                              = optional(number, 1)<br/>    weight                           = optional(number, 0)<br/>    remove_all_private_as            = optional(bool, false)<br/>    remove_private_as                = optional(bool, false)<br/>    replace_private_as_with_local_as = optional(bool, false)<br/>    unicast_address_family           = optional(bool, true)<br/>    multicast_address_family         = optional(bool, true)<br/>    admin_state                      = optional(bool, true)<br/>    local_as                         = optional(number)<br/>    as_propagate                     = optional(string, "none")<br/>    peer_prefix_policy               = optional(string)<br/>    export_route_control             = optional(string)<br/>    import_route_control             = optional(string)<br/>  }))</pre> | `[]` | no |
 | <a name="input_multipod"></a> [multipod](#input\_multipod) | Multipod L3out flag. | `bool` | `false` | no |
 | <a name="input_remote_leaf"></a> [remote\_leaf](#input\_remote\_leaf) | Remote leaf L3out flag. | `bool` | `false` | no |
@@ -101,6 +110,9 @@ module "aci_l3out_node_profile" {
 | <a name="input_bgp_protocol_profile_name"></a> [bgp\_protocol\_profile\_name](#input\_bgp\_protocol\_profile\_name) | BGP Protocol Name. | `string` | `""` | no |
 | <a name="input_bgp_timer_policy"></a> [bgp\_timer\_policy](#input\_bgp\_timer\_policy) | Node Profile's BGP Timer Policy | `string` | `""` | no |
 | <a name="input_bgp_as_path_policy"></a> [bgp\_as\_path\_policy](#input\_bgp\_as\_path\_policy) | Node Profile's BGP AS-Path Policy | `string` | `""` | no |
+| <a name="input_bfd_multihop_auth_key_id"></a> [bfd\_multihop\_auth\_key\_id](#input\_bfd\_multihop\_auth\_key\_id) | BFD Multihop authentication key ID | `number` | `1` | no |
+| <a name="input_bfd_multihop_auth_key"></a> [bfd\_multihop\_auth\_key](#input\_bfd\_multihop\_auth\_key) | BFD Multihop authentication key | `string` | `""` | no |
+| <a name="input_bfd_multihop_auth_type"></a> [bfd\_multihop\_auth\_type](#input\_bfd\_multihop\_auth\_type) | BFD Multihop authentication type | `string` | `"none"` | no |
 
 ## Outputs
 
@@ -130,6 +142,8 @@ module "aci_l3out_node_profile" {
 | [aci_rest_managed.bgpRsPeerToProfile_import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.ipNexthopP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.ipRouteP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.ipRsNHTrackMember](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.ipRsNexthopRouteTrack](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.ipRsRouteTrack](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extInfraNodeP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extLNodeP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

@@ -39,7 +39,16 @@ module "aci_l3out_node_profile" {
         description = "Next Hop Description"
         preference  = 10
         type        = "prefix"
-      }]
+        track_list  = "TRACK_LIST1"
+        },
+        {
+          ip            = "5.5.5.5"
+          description   = "Next Hop Description"
+          preference    = 10
+          type          = "prefix"
+          ip_sla_policy = "IP_SLA_POLICY1"
+        }
+      ]
     }]
   }]
   bgp_peers = [{

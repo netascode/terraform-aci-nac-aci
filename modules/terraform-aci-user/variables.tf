@@ -14,8 +14,11 @@ variable "password" {
   sensitive   = true
 
   validation {
-    condition     = can(regex("^.{1,256}$", var.password))
-    error_message = "Maximum characters: 256."
+    condition = (
+      length(var.password) >= 1 &&
+      length(var.password) <= 256
+    )
+    error_message = "Password must be between 1 and 256 characters."
   }
 }
 
@@ -174,8 +177,12 @@ variable "ssh_keys" {
 
   validation {
     condition = alltrue([
-      for s in var.ssh_keys : can(regex("^[a-zA-Z0-9=\n\r/+ _.@-]{1,16384}$", s.data))
+      for s in var.ssh_keys : (
+        length(s.data) >= 1 &&
+        length(s.data) <= 16384 &&
+        can(regex("^[a-zA-Z0-9=\n\r/+ _.@-]*$", s.data))
+      )
     ])
-    error_message = "Allowed characters `data`: `a`-`z`, `A`-`Z`, `0`-`9`, `=`, `\n`, `\r`, `+`, ` `, `_`, `.`, `@`, `-`. Maximum characters: 16384."
+    error_message = "Allowed characters `data`: `a`-`z`, `A`-`Z`, `0`-`9`, `=`, `\n`, `\r`, `/`, `+`, ` `, `_`, `.`, `@`, `-`. Maximum characters: 16384."
   }
 }

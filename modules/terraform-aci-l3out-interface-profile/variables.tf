@@ -489,3 +489,47 @@ variable "dhcp_labels" {
     error_message = "`scope`: Allowed values: `tenant`, `infra`."
   }
 }
+
+variable "netflow_monitor_policies" {
+  description = "List of Netflow monitor policies"
+  type = list(object({
+    name           = string
+    ip_filter_type = optional(string, "ipv4")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for p in var.netflow_monitor_policies : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", p.name))
+    ])
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+
+  }
+  validation {
+    condition = alltrue([
+      for p in var.netflow_monitor_policies : contains(["ipv4", "ipv6", "ce", "unspecified"], p.ip_filter_type)
+    ])
+    error_message = "`ip_filter_type`: Allowed values: `ipv4`, `ipv6`, `ce`, `unspecified`"
+  }
+}
+variable "ingress_data_plane_policing_policy" {
+  description = "Ingress Data Plane Policing policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.ingress_data_plane_policing_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "egress_data_plane_policing_policy" {
+  description = "Egress Data Plane Policing policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.egress_data_plane_policing_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}

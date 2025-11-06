@@ -247,14 +247,17 @@ module "aci_fabric_pod_policy_group" {
 
   for_each                 = { for pg in try(local.fabric_policies.pod_policy_groups, []) : pg.name => pg if local.modules.aci_fabric_pod_policy_group && var.manage_fabric_policies }
   name                     = "${each.value.name}${local.defaults.apic.fabric_policies.pod_policy_groups.name_suffix}"
+  description              = try(each.value.description, "")
   snmp_policy              = try("${each.value.snmp_policy}${local.defaults.apic.fabric_policies.pod_policies.snmp_policies.name_suffix}", "")
   date_time_policy         = try("${each.value.date_time_policy}${local.defaults.apic.fabric_policies.pod_policies.date_time_policies.name_suffix}", "")
   management_access_policy = try("${each.value.management_access_policy}${local.defaults.apic.fabric_policies.pod_policies.management_access_policies.name_suffix}", "")
+  macsec_policy            = try("${each.value.macsec_policy}${local.defaults.apic.fabric_policies.macsec_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_snmp_policy,
     module.aci_date_time_policy,
     module.aci_management_access_policy,
+    module.aci_macsec_interfaces_policy,
   ]
 }
 
@@ -327,6 +330,19 @@ module "aci_fabric_leaf_switch_policy_group" {
   depends_on = [
     module.aci_psu_policy,
     module.aci_node_control_policy,
+  ]
+}
+
+module "aci_fabric_leaf_interface_policy_group" {
+  source = "./modules/terraform-aci-fabric-leaf-interface-policy-group"
+
+  for_each          = { for pg in try(local.fabric_policies.leaf_interface_policy_groups, []) : pg.name => pg if local.modules.aci_fabric_leaf_interface_policy_group && var.manage_fabric_policies }
+  name              = "${each.value.name}${local.defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix}"
+  description       = try(each.value.description, "")
+  link_level_policy = try("${each.value.link_level_policy}${local.defaults.apic.fabric_policies.interface_policies.link_level_policies.name_suffix}", "")
+
+  depends_on = [
+    module.aci_link_level_policy,
   ]
 }
 
@@ -462,6 +478,57 @@ module "aci_fabric_spine_switch_configuration" {
   ]
 }
 
+locals {
+  fabric_spine_interface_selectors_manual = flatten([
+    for profile in try(local.fabric_policies.spine_interface_profiles, []) : [
+      for selector in try(profile.selectors, []) : {
+        key = "${profile.name}/${selector.name}"
+        value = {
+          name         = "${selector.name}${local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.name_suffix}"
+          description  = try(selector.description, "")
+          profile_name = "${profile.name}${local.defaults.apic.fabric_policies.spine_interface_profiles.name_suffix}"
+          policy_group = try("${selector.policy_group}${local.defaults.apic.fabric_policies.spine_interface_policy_groups.name_suffix}", "")
+          port_blocks = [for block in try(selector.port_blocks, []) : {
+            description = try(block.description, "")
+            name        = "${block.name}${local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.port_blocks.name_suffix}"
+            from_module = try(block.from_module, local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.port_blocks.from_module)
+            from_port   = block.from_port
+            to_module   = try(block.to_module, block.from_module, local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.port_blocks.from_module)
+            to_port     = try(block.to_port, block.from_port)
+          }]
+          sub_port_blocks = [for block in try(selector.sub_port_blocks, []) : {
+            description   = try(block.description, "")
+            name          = "${block.name}${local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.sub_port_blocks.name_suffix}"
+            from_module   = try(block.from_module, local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.sub_port_blocks.from_module)
+            from_port     = block.from_port
+            to_module     = try(block.to_module, block.from_module, local.defaults.apic.fabric_policies.spine_interface_profiles.selectors.sub_port_blocks.from_module)
+            to_port       = try(block.to_port, block.from_port)
+            from_sub_port = block.from_sub_port
+            to_sub_port   = try(block.to_sub_port, block.from_sub_port)
+          }]
+        }
+      }
+    ]
+  ])
+}
+
+module "aci_fabric_spine_interface_selector_manual" {
+  source = "./modules/terraform-aci-fabric-spine-interface-selector"
+
+  for_each          = { for selector in local.fabric_spine_interface_selectors_manual : selector.key => selector.value if local.modules.aci_fabric_spine_interface_selector && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
+  interface_profile = each.value.profile_name
+  name              = each.value.name
+  description       = each.value.description
+  policy_group      = each.value.policy_group
+  port_blocks       = each.value.port_blocks
+  sub_port_blocks   = each.value.sub_port_blocks
+
+  depends_on = [
+    module.aci_fabric_spine_interface_profile_manual,
+    module.aci_fabric_spine_interface_profile_auto,
+  ]
+}
+
 module "aci_fabric_leaf_interface_profile_auto" {
   source = "./modules/terraform-aci-fabric-leaf-interface-profile"
 
@@ -474,6 +541,57 @@ module "aci_fabric_leaf_interface_profile_manual" {
 
   for_each = { for prof in try(local.fabric_policies.leaf_interface_profiles, []) : prof.name => prof if local.modules.aci_fabric_leaf_interface_profile && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
   name     = "${each.value.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.name_suffix}"
+}
+
+locals {
+  fabric_leaf_interface_selectors_manual = flatten([
+    for profile in try(local.fabric_policies.leaf_interface_profiles, []) : [
+      for selector in try(profile.selectors, []) : {
+        key = "${profile.name}/${selector.name}"
+        value = {
+          name         = "${selector.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.name_suffix}"
+          description  = try(selector.description, "")
+          profile_name = "${profile.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.name_suffix}"
+          policy_group = try("${selector.policy_group}${local.defaults.apic.fabric_policies.leaf_interface_policy_groups.name_suffix}", "")
+          port_blocks = [for block in try(selector.port_blocks, []) : {
+            description = try(block.description, "")
+            name        = "${block.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.port_blocks.name_suffix}"
+            from_module = try(block.from_module, local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
+            from_port   = block.from_port
+            to_module   = try(block.to_module, block.from_module, local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
+            to_port     = try(block.to_port, block.from_port)
+          }]
+          sub_port_blocks = [for block in try(selector.sub_port_blocks, []) : {
+            description   = try(block.description, "")
+            name          = "${block.name}${local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.sub_port_blocks.name_suffix}"
+            from_module   = try(block.from_module, local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module)
+            from_port     = block.from_port
+            to_module     = try(block.to_module, block.from_module, local.defaults.apic.fabric_policies.leaf_interface_profiles.selectors.sub_port_blocks.from_module)
+            to_port       = try(block.to_port, block.from_port)
+            from_sub_port = block.from_sub_port
+            to_sub_port   = try(block.to_sub_port, block.from_sub_port)
+          }]
+        }
+      }
+    ]
+  ])
+}
+
+module "aci_fabric_leaf_interface_selector_manual" {
+  source = "./modules/terraform-aci-fabric-leaf-interface-selector"
+
+  for_each          = { for selector in local.fabric_leaf_interface_selectors_manual : selector.key => selector.value if local.modules.aci_fabric_leaf_interface_selector && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == false && var.manage_fabric_policies }
+  interface_profile = each.value.profile_name
+  name              = each.value.name
+  description       = each.value.description
+  policy_group      = each.value.policy_group
+  port_blocks       = each.value.port_blocks
+  sub_port_blocks   = each.value.sub_port_blocks
+
+  depends_on = [
+    module.aci_fabric_leaf_interface_profile_manual,
+    module.aci_fabric_leaf_interface_profile_auto,
+  ]
 }
 
 module "aci_fabric_spine_interface_profile_auto" {
@@ -570,6 +688,18 @@ module "aci_vmware_vmm_domain" {
     num_links = try(vel.num_links, local.defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.num_links)
   }]
   uplinks = try(each.value.uplinks, [])
+  trunk_port_groups = [for tpg in try(each.value.trunk_port_groups, []) : {
+    name                = "${tpg.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.name_suffix}"
+    promiscuous_mode    = try(tpg.promiscuous_mode, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.promiscuous_mode)
+    immediacy           = try(tpg.immediacy, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.immediacy)
+    mac_change          = try(tpg.mac_change, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.mac_change)
+    forged_transmit     = try(tpg.forged_transmit, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.forged_transmit)
+    enhanced_lag_policy = try(tpg.enhanced_lag_policy, null)
+    vlan_ranges = !contains(keys(tpg), "vlan_ranges") ? null : [for vlan in tpg.vlan_ranges : {
+      from = vlan.from
+      to   = vlan.to
+    }]
+  }]
 }
 
 module "aci_aaa" {
@@ -984,6 +1114,7 @@ locals {
       for interface in try(node.interfaces, []) : {
         key     = format("%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port)
         node_id = node.id
+        pod_id  = try([for node_ in local.node_policies.nodes : node_.pod if node_.id == node.id][0], local.defaults.apic.node_policies.nodes.pod)
         module  = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
         port    = interface.port
       } if try(interface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.shutdown)
@@ -996,6 +1127,7 @@ module "aci_interface_shutdown" {
 
   for_each = { for int in local.interface_shutdown : int.key => int if local.modules.aci_interface_shutdown && var.manage_fabric_policies }
   node_id  = each.value.node_id
+  pod_id   = each.value.pod_id
   module   = each.value.module
   port     = each.value.port
 }
@@ -1182,11 +1314,113 @@ module "aci_sr_mpls_global_configuration" {
   sr_global_block_minimum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_minimum)
   sr_global_block_maximum = try(local.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum, local.defaults.apic.fabric_policies.sr_mpls_global_configuration.sr_global_block_maximum)
 }
+module "aci_fabric_macsec_parameters_policy" {
+  source = "./modules/terraform-aci-macsec-parameters-policy"
 
+  for_each        = { for mpp in try(local.fabric_policies.macsec_parameters_policies, []) : mpp.name => mpp if local.modules.aci_macsec_parameters_policy && var.manage_fabric_policies }
+  name            = "${each.value.name}${local.defaults.apic.fabric_policies.macsec_parameters_policies.name_suffix}"
+  description     = try(each.value.description, "")
+  cipher_suite    = try(each.value.cipher_suite, local.defaults.apic.fabric_policies.macsec_parameters_policies.cipher_suite)
+  window_size     = try(each.value.window_size, local.defaults.apic.fabric_policies.macsec_parameters_policies.window_size)
+  key_expiry_time = try(each.value.key_expiry_time, local.defaults.apic.fabric_policies.macsec_parameters_policies.key_expiry_time) == "disabled" || try(each.value.key_expiry_time, local.defaults.apic.fabric_policies.macsec_policies.macsec_parameters_policies.key_expiry_time) == 0 ? 0 : each.value.key_expiry_time
+  security_policy = try(each.value.security_policy, local.defaults.apic.fabric_policies.macsec_parameters_policies.security_policy)
+  type            = "fabric"
+}
+
+locals {
+  fabric_macsec_keychain_policies = flatten([
+    for mkc in try(local.fabric_policies.macsec_keychain_policies, []) : {
+      name        = "${mkc.name}${local.defaults.apic.fabric_policies.macsec_keychain_policies.name_suffix}"
+      description = try(mkc.description, "")
+      type        = "fabric"
+      key_policies = [for kp in try(mkc.key_policies, []) : {
+        name           = try(kp.name, "")
+        key_name       = kp.key_name
+        pre_shared_key = kp.pre_shared_key
+        description    = try(kp.description, "")
+        start_time     = try(kp.start_time, local.defaults.apic.fabric_policies.macsec_keychain_policies.key_policies.start_time)
+        end_time       = try(kp.end_time, local.defaults.apic.fabric_policies.macsec_keychain_policies.key_policies.end_time)
+        }
+      ]
+    }
+  ])
+}
+
+module "aci_fabric_macsec_keychain_policies" {
+  source = "./modules/terraform-aci-macsec-keychain-policies"
+
+  for_each     = { for mkc in try(local.fabric_macsec_keychain_policies, []) : mkc.name => mkc if local.modules.aci_macsec_keychain_policies && var.manage_fabric_policies }
+  name         = "${each.value.name}${local.defaults.apic.fabric_policies.macsec_keychain_policies.name_suffix}"
+  type         = each.value.type
+  description  = each.value.description
+  key_policies = each.value.key_policies
+}
+
+module "aci_fabric_macsec_interfaces_policy" {
+  source = "./modules/terraform-aci-macsec-interfaces-policy"
+
+  for_each                 = { for mip in try(local.fabric_policies.macsec_interfaces_policies, []) : mip.name => mip if local.modules.aci_macsec_interfaces_policy && var.manage_fabric_policies }
+  name                     = "${each.value.name}${local.defaults.apic.fabric_policies.macsec_interfaces_policies.name_suffix}"
+  description              = try(each.value.description, "")
+  admin_state              = try(each.value.admin_state, local.defaults.apic.fabric_policies.macsec_interfaces_policies.admin_state)
+  macsec_keychain_policy   = "${each.value.macsec_keychain_policy}${local.defaults.apic.fabric_policies.macsec_keychain_policies.name_suffix}"
+  macsec_parameters_policy = "${each.value.macsec_parameters_policy}${local.defaults.apic.fabric_policies.macsec_parameters_policies.name_suffix}"
+  type                     = "fabric"
+
+  depends_on = [
+    module.aci_macsec_keychain_policies,
+    module.aci_macsec_parameters_policy
+  ]
+}
 module "aci_atomic_counter" {
   source = "./modules/terraform-aci-atomic-counter"
 
   count       = try(local.fabric_policies.atomic_counter.admin_state, null) != null && local.modules.aci_atomic_counter && var.manage_fabric_policies ? 1 : 0
   admin_state = local.fabric_policies.atomic_counter.admin_state
   mode        = try(local.fabric_policies.atomic_counter.mode, local.defaults.apic.fabric_policies.atomic_counter.mode)
+}
+
+module "aci_control_plane_mtu" {
+  source = "./modules/terraform-aci-control-plane-mtu"
+
+  count          = try(local.fabric_policies.control_plane_mtu.mtu, null) != null && local.modules.aci_control_plane_mtu && var.manage_fabric_policies ? 1 : 0
+  mtu            = try(local.fabric_policies.control_plane_mtu.mtu, local.defaults.apic.fabric_policies.control_plane_mtu.mtu)
+  apic_mtu_apply = try(local.fabric_policies.control_plane_mtu.apic_mtu_apply, null)
+}
+
+module "aci_nutanix_vmm_domain" {
+  source = "./modules/terraform-aci-nutanix-vmm-domain"
+
+  for_each            = { for vmm in try(local.fabric_policies.nutanix_vmm_domains, []) : vmm.name => vmm if local.modules.aci_nutanix_vmm_domain && var.manage_fabric_policies }
+  name                = "${each.value.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.name_suffix}"
+  access_mode         = try(each.value.access_mode, local.defaults.apic.fabric_policies.nutanix_vmm_domains.access_mode)
+  vlan_pool           = try("${each.value.vlan_pool}${local.defaults.apic.access_policies.vlan_pools.name_suffix}", null)
+  allocation          = try(each.value.allocation, local.defaults.apic.fabric_policies.nutanix_vmm_domains.allocation)
+  custom_vswitch_name = try(each.value.custom_vswitch_name, "")
+  security_domains    = try(each.value.security_domains, [])
+  credential_policies = [for cp in try(each.value.credential_policies, []) : {
+    name     = "${cp.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.credential_policies.name_suffix}"
+    username = cp.username
+    password = cp.password
+  }]
+  controller_profile = try({
+    (each.value.controller_profile.name) = {
+      name        = "${each.value.controller_profile.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.name_suffix}"
+      hostname_ip = each.value.controller_profile.hostname_ip
+      datacenter  = each.value.controller_profile.datacenter
+      aos_version = try(each.value.controller_profile.aos_version, local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.aos_version)
+      credentials = each.value.controller_profile.credentials
+      statistics  = try(each.value.controller_profile.statistics, local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.statistics)
+    }
+  }, {})
+  cluster_controller = try({
+    (each.value.controller_profile.cluster_controller.name) = {
+      name               = "${each.value.controller_profile.cluster_controller.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.cluster_controller.name_suffix}"
+      hostname_ip        = each.value.controller_profile.cluster_controller.hostname_ip
+      cluster_name       = each.value.controller_profile.cluster_controller.cluster_name
+      credentials        = each.value.controller_profile.cluster_controller.credentials
+      port               = try(each.value.controller_profile.cluster_controller.port, local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.cluster_controller.port)
+      controller_profile = "${each.value.controller_profile.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.name_suffix}"
+    }
+  }, {})
 }

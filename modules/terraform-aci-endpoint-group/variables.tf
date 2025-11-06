@@ -360,6 +360,48 @@ variable "vmware_vmm_domains" {
 
 }
 
+variable "nutanix_vmm_domains" {
+  description = "List of Nutanix VMM domains. Default value `gateway_address`: `0.0.0.0`. Default value `dhcp_server_address_override`: `0.0.0.0`. Choices `deployment_immediacy`: `immediate`, `lazy`. Default value `deployment_immediacy`: `lazy`."
+  type = list(object({
+    name                         = string
+    vlan                         = optional(number)
+    deployment_immediacy         = optional(string, "lazy")
+    custom_epg_name              = optional(string, "")
+    gateway_address              = optional(string, "0.0.0.0")
+    dhcp_server_address_override = optional(string, "0.0.0.0")
+    dhcp_address_pool            = optional(string, "")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for dom in var.nutanix_vmm_domains : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", dom.name))
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for dom in var.nutanix_vmm_domains : dom.vlan == null || try(dom.vlan >= 1 && dom.vlan <= 4096, false)
+    ])
+    error_message = "`vlan`: Minimum value: `1`. Maximum value: `4096`."
+  }
+
+  validation {
+    condition = alltrue([
+      for dom in var.nutanix_vmm_domains : dom.deployment_immediacy == null || try(contains(["immediate", "lazy"], dom.deployment_immediacy), false)
+    ])
+    error_message = "`deployment_immediacy`: Allowed values are `immediate` or `lazy`."
+  }
+
+  validation {
+    condition = alltrue([
+      for dom in var.nutanix_vmm_domains : dom.custom_epg_name == null || can(regex("^.{0,80}$", dom.custom_epg_name))
+    ])
+    error_message = "`custom_epg_name`: Maximum characters: 80."
+  }
+}
+
 variable "static_leafs" {
   description = "List of static leaf switches. Allowed values `pod_id`: `1` - `255`. Default value `pod_id`: `1`. Allowed values `node_id`: `1` - `4000`. Allowed values `vlan`: `1` - `4096`. Choices `mode`: `regular`, `native`, `untagged`. Default value `mode`: `regular`. Choices `deployment_immediacy`: `immediate`, `lazy`. Default value `deployment_immediacy`: `immediate`"
   type = list(object({
@@ -676,6 +718,16 @@ variable "l4l7_address_pools" {
   }
 }
 
+variable "data_plane_policing_policy" {
+  type        = string
+  description = "Data Plane Policing Policy to apply to EPG."
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.data_plane_policing_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
 variable "bulk_static_ports" {
   description = "Use bulk resource to configure static ports."
   type        = bool

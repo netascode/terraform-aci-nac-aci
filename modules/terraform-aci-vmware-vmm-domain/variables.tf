@@ -275,3 +275,42 @@ variable "security_domains" {
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
+
+variable "trunk_port_groups" {
+  description = "VMM trunk port groups."
+  type = list(object({
+    name                = string
+    promiscuous_mode    = optional(bool, false)
+    immediacy           = optional(string, "lazy")
+    mac_change          = optional(bool, false)
+    forged_transmit     = optional(bool, false)
+    enhanced_lag_policy = optional(string)
+    vlan_ranges = optional(list(object({
+      from = number
+      to   = number
+    })), [])
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for tpg in var.trunk_port_groups : tpg.immediacy == null || try(contains(["immediate", "lazy"], tpg.immediacy), false)
+    ])
+    error_message = "`immediacy`: Allowed values are `immediate` or `lazy`."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for tpg in var.trunk_port_groups : [for vlan_range in coalesce(tpg.vlan_ranges, []) : vlan_range.from >= 1 && vlan_range.from <= 4096]
+    ]))
+    error_message = "Allowed values `from`: 1-4096."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for tpg in var.trunk_port_groups : [for vlan_range in coalesce(tpg.vlan_ranges, []) : vlan_range.to >= 1 && vlan_range.to <= 4096 && vlan_range.to >= vlan_range.from]
+    ]))
+    error_message = "Allowed values `to`: 1-4096 and higher than or equal to `from`."
+  }
+
+}

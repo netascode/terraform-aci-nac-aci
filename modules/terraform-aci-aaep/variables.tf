@@ -69,6 +69,19 @@ variable "vmware_vmm_domains" {
   }
 }
 
+variable "nutanix_vmm_domains" {
+  description = "Nutanix VMM domains."
+  type        = list(string)
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for ntnxd in var.nutanix_vmm_domains : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", ntnxd))
+    ])
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "endpoint_groups" {
   description = "List of application endpoint groups. Allowed values `vlan`, `primary_vlan`, `secondary_vlan`: `1` - `4096`. Choices `mode`: `regular`, `native`, `untagged`. Default value `mode`: `regular`. Choices `deployment_immediacy`: `immediate`, `lazy`. Default value `deployment_immediacy`: `lazy`."
   type = list(object({

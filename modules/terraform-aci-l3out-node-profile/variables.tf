@@ -45,10 +45,12 @@ variable "nodes" {
       bfd         = optional(bool, false)
       track_list  = optional(string)
       next_hops = optional(list(object({
-        ip          = string
-        description = optional(string, "")
-        preference  = optional(number, 1)
-        type        = optional(string, "prefix")
+        ip            = string
+        description   = optional(string, "")
+        preference    = optional(number, 1)
+        type          = optional(string, "prefix")
+        ip_sla_policy = optional(string)
+        track_list    = optional(string)
       })), [])
     })), [])
   }))
@@ -95,6 +97,21 @@ variable "nodes" {
     ]))
     error_message = "`static_routes.next_hops.type`: Allowed values are `prefix` or `none`."
   }
+
+  validation {
+    condition = alltrue(flatten([
+      for n in var.nodes : [for s in coalesce(n.static_routes, []) : [for nh in coalesce(s.next_hops, []) : nh.track_list == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", nh.track_list))]]
+    ]))
+    error_message = "`static_routes.next_hops.track_list`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for n in var.nodes : [for s in coalesce(n.static_routes, []) : [for nh in coalesce(s.next_hops, []) : nh.ip_sla_policy == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", nh.ip_sla_policy))]]
+    ]))
+    error_message = "`static_routes.next_hops.ip_sla_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
 }
 
 variable "bgp_peers" {
@@ -295,7 +312,6 @@ variable "bgp_timer_policy" {
   }
 }
 
-
 variable "bgp_as_path_policy" {
   description = "Node Profile's BGP AS-Path Policy"
   type        = string
@@ -304,5 +320,33 @@ variable "bgp_as_path_policy" {
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgp_as_path_policy))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "bfd_multihop_auth_key_id" {
+  description = "BFD Multihop authentication key ID"
+  type        = number
+  default     = 1
+
+  validation {
+    condition     = var.bfd_multihop_auth_key_id >= 1 && var.bfd_multihop_auth_key_id <= 255
+    error_message = "`auth_key_id`: Minimum value: `1`. Maximum value: `255`."
+  }
+}
+
+variable "bfd_multihop_auth_key" {
+  description = "BFD Multihop authentication key"
+  type        = string
+  default     = ""
+}
+
+variable "bfd_multihop_auth_type" {
+  description = "BFD Multihop authentication type"
+  type        = string
+  default     = "none"
+
+  validation {
+    condition     = contains(["sha1", "none"], var.bfd_multihop_auth_type)
+    error_message = "`auth_type`: Allowed values are `sha1` or `none`."
   }
 }

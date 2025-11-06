@@ -1,4 +1,18 @@
-## 1.0.1 (unreleased)
+## 1.1.0
+
+- Add support for DCBXP version under LLDP interface policy
+- Add support for IP SLA policy under static route next hop
+- Add support for fabric leaf interface selector
+- Add support for fabric leaf interface policy group
+- Add support for fabric spine interface selector
+- Add support for tenant monitoring policies
+- Change OOB endpoint group to be an optional attribute
+- Fix OSPF metric type for set rules
+- Fix missing values for target DSCP under contract subjects
+- Fix the EIGRP key chain configuration under L3out interface profile
+
+
+## 1.0.1
 
 - Fix handling of errors when merging invalid YAML content
 - Fix merging of boolean values, where values of `false` were not merged consistently
