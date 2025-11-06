@@ -261,6 +261,7 @@ defaults:
           immediacy: lazy
           mac_change: false
           forged_transmit: false
+
       nutanix_vmm_domains:
         name_suffix: ""
         access_mode: read-write
@@ -274,6 +275,7 @@ defaults:
           cluster_controller:
             name_suffix: ""
             port: 0
+
       aaa:
         remote_user_login_policy: no-login
         default_fallback_check: false
@@ -1161,7 +1163,6 @@ defaults:
           preferred_group: false
           qos_class: unspecified
           vmware_vmm_domains:
-            name_suffix: ""
             u_segmentation: false
             delimiter: ""
             netflow: false
