@@ -17,7 +17,7 @@ locals {
   next_hops = flatten([
     for node in var.nodes : [
       for sr in coalesce(node.static_routes, []) : [
-        for nh in length(coalesce(sr.next_hops, [])) > 0 ? coalesce(sr.next_hops, []) : [{ ip = "0.0.0.0/0", type = "none", description = null, preference = 0, ip_sla_policy = null, track_list = null }] : {
+        for nh in coalesce(sr.next_hops, []) : {
           key = "${node.node_id}/${sr.prefix}/${nh.ip}"
           value = {
             static_route  = "${node.node_id}/${sr.prefix}"
