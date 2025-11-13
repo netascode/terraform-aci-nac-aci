@@ -250,11 +250,14 @@ variable "interfaces" {
       import_route_control             = optional(string)
     })), [])
     paths = optional(list(object({
-      physical_domain   = optional(string)
-      vmware_vmm_domain = optional(string)
-      elag              = optional(string)
-      floating_ip       = string
-      vlan              = optional(string)
+      physical_domain    = optional(string)
+      vmware_vmm_domain  = optional(string)
+      elag               = optional(string)
+      floating_ip        = string
+      vlan               = optional(string)
+      forge_transmit     = optional(bool, false)
+      mac_address_change = optional(bool, false)
+      promiscous_mode    = optional(bool, false)
     })), [])
     micro_bfd_destination_ip = optional(string, "")
     micro_bfd_start_timer    = optional(number, 0)
