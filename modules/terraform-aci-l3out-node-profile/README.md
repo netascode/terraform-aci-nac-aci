@@ -57,6 +57,34 @@ module "aci_l3out_node_profile" {
         }]
     }]
   }]
+  bgp_peers = [{
+    ip                               = "4.4.4.4"
+    remote_as                        = 12345
+    description                      = "BGP Peer Description"
+    allow_self_as                    = true
+    as_override                      = true
+    disable_peer_as_check            = true
+    next_hop_self                    = false
+    send_community                   = true
+    send_ext_community               = true
+    password                         = "BgpPassword"
+    allowed_self_as_count            = 5
+    bfd                              = true
+    disable_connected_check          = true
+    ttl                              = 2
+    weight                           = 200
+    remove_all_private_as            = true
+    remove_private_as                = true
+    replace_private_as_with_local_as = true
+    unicast_address_family           = false
+    multicast_address_family         = false
+    admin_state                      = false
+    local_as                         = 12346
+    as_propagate                     = "no-prepend"
+    peer_prefix_policy               = "PPP"
+    export_route_control             = "ERC"
+    import_route_control             = "IRC"
+  }]
 }
 ```
 
