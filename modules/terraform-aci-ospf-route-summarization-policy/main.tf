@@ -5,8 +5,6 @@ resource "aci_rest_managed" "ospfRtSummPol" {
     name             = var.name
     descr            = var.description
     cost             = var.cost
-    interAreaEnabled = var.inter_area_enabled == true ? "yes" : "no"
-    tag              = var.tag
-    nameAlias        = var.name_alias
+    interAreaEnabled = var.inter_area == true ? "yes" : "no"
   }
 }

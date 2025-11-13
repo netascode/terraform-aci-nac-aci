@@ -44,30 +44,8 @@ variable "cost" {
   }
 }
 
-variable "inter_area_enabled" {
+variable "inter_area" {
   description = "Inter-area enabled."
   type        = bool
   default     = false
-}
-
-variable "tag" {
-  description = "Route tag. Minimum value: 0. Maximum value: 4294967295."
-  type        = number
-  default     = 0
-
-  validation {
-    condition     = var.tag >= 0 && var.tag <= 4294967295
-    error_message = "Minimum value: 0. Maximum value: 4294967295."
-  }
-}
-
-variable "name_alias" {
-  description = "Name alias."
-  type        = string
-  default     = ""
-
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name_alias))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
-  }
 }
