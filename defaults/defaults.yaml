@@ -1362,6 +1362,11 @@ defaults:
           bandwidth: 0
           delay: 0
           delay_unit: tens-of-micro
+        ospf_route_summarization_policies:
+          name_suffix: ""
+          cost: unspecified
+          inter_area_enabled: false
+          tag: 0
         ospf_timer_policies:
           name_suffix: ""
           reference_bandwidth: 40000
