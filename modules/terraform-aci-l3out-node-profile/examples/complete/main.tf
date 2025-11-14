@@ -20,12 +20,13 @@ module "aci_l3out_node_profile" {
       description = "Default Route"
       preference  = 10
       bfd         = true
-      next_hops = [{
-        ip          = "3.3.3.3"
-        description = "Next Hop Description"
-        preference  = 10
-        type        = "prefix"
-        track_list  = "TRACK_POL"
+      next_hops = [
+        {
+          ip          = "3.3.3.3"
+          description = "Next Hop Description"
+          preference  = 10
+          type        = "prefix"
+          track_list  = "TRACK_LIST1"
         },
         {
           ip            = "5.5.5.5"
@@ -33,7 +34,7 @@ module "aci_l3out_node_profile" {
           preference    = 10
           type          = "prefix"
           ip_sla_policy = "IP_SLA_POLICY1"
-          track_list    = "TRACK_POL"
+          track_list    = "TRACK_LIST1"
         }
       ]
       },
