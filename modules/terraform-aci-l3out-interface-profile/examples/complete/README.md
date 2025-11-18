@@ -39,6 +39,12 @@ module "aci_l3out_interface_profile" {
       dhcp_option_policy = "DHCP_OPTION1"
     }
   ]
+  netflow_monitor_policies = [
+    {
+      name           = "MONITOR1"
+      ip_filter_type = "ipv4"
+    }
+  ]
   interfaces = [{
     description          = "Interface 1"
     type                 = "vpc"

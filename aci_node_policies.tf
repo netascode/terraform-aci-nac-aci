@@ -15,6 +15,7 @@ module "aci_maintenance_group" {
   name           = "${each.value.name}${local.defaults.apic.node_policies.update_groups.name_suffix}"
   target_version = try(each.value.target_version, "")
   node_ids       = [for node in try(local.node_policies.nodes, []) : node.id if try(node.update_group, "") == each.value.name]
+  scheduler      = try(each.value.scheduler, "") != "" ? "${each.value.scheduler}${local.defaults.apic.fabric_policies.schedulers.name_suffix}" : local.defaults.apic.node_policies.update_groups.scheduler
 }
 
 module "aci_vpc_group" {

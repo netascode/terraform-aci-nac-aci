@@ -15,7 +15,7 @@ resource "aci_rest_managed" "maintRsPolScheduler" {
   dn         = "${aci_rest_managed.maintMaintP.dn}/rspolScheduler"
   class_name = "maintRsPolScheduler"
   content = {
-    tnTrigSchedPName = "default"
+    tnTrigSchedPName = var.scheduler
   }
 }
 

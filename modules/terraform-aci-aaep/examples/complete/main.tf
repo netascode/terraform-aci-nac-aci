@@ -2,12 +2,13 @@ module "aci_aaep" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-aaep"
   version = ">= 0.8.0"
 
-  name               = "AAEP1"
-  description        = "AAEP1 Description"
-  infra_vlan         = 10
-  physical_domains   = ["PD1"]
-  routed_domains     = ["RD1"]
-  vmware_vmm_domains = ["VMM1"]
+  name                = "AAEP1"
+  description         = "AAEP1 Description"
+  infra_vlan          = 10
+  physical_domains    = ["PD1"]
+  routed_domains      = ["RD1"]
+  vmware_vmm_domains  = ["VMM1"]
+  nutanix_vmm_domains = ["NTNX1"]
   endpoint_groups = [{
     tenant               = "TF"
     application_profile  = "AP1"

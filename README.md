@@ -289,11 +289,13 @@ Additional example repositories:
 | <a name="module_aci_netflow_vmm_exporter"></a> [aci\_netflow\_vmm\_exporter](#module\_aci\_netflow\_vmm\_exporter) | ./modules/terraform-aci-netflow-vmm-exporter | n/a |
 | <a name="module_aci_node_control_policy"></a> [aci\_node\_control\_policy](#module\_aci\_node\_control\_policy) | ./modules/terraform-aci-node-control-policy | n/a |
 | <a name="module_aci_node_registration"></a> [aci\_node\_registration](#module\_aci\_node\_registration) | ./modules/terraform-aci-node-registration | n/a |
+| <a name="module_aci_nutanix_vmm_domain"></a> [aci\_nutanix\_vmm\_domain](#module\_aci\_nutanix\_vmm\_domain) | ./modules/terraform-aci-nutanix-vmm-domain | n/a |
 | <a name="module_aci_oob_contract"></a> [aci\_oob\_contract](#module\_aci\_oob\_contract) | ./modules/terraform-aci-oob-contract | n/a |
 | <a name="module_aci_oob_endpoint_group"></a> [aci\_oob\_endpoint\_group](#module\_aci\_oob\_endpoint\_group) | ./modules/terraform-aci-oob-endpoint-group | n/a |
 | <a name="module_aci_oob_external_management_instance"></a> [aci\_oob\_external\_management\_instance](#module\_aci\_oob\_external\_management\_instance) | ./modules/terraform-aci-oob-external-management-instance | n/a |
 | <a name="module_aci_oob_node_address"></a> [aci\_oob\_node\_address](#module\_aci\_oob\_node\_address) | ./modules/terraform-aci-oob-node-address | n/a |
 | <a name="module_aci_ospf_interface_policy"></a> [aci\_ospf\_interface\_policy](#module\_aci\_ospf\_interface\_policy) | ./modules/terraform-aci-ospf-interface-policy | n/a |
+| <a name="module_aci_ospf_route_summarization_policy"></a> [aci\_ospf\_route\_summarization\_policy](#module\_aci\_ospf\_route\_summarization\_policy) | ./modules/terraform-aci-ospf-route-summarization-policy | n/a |
 | <a name="module_aci_ospf_timer_policy"></a> [aci\_ospf\_timer\_policy](#module\_aci\_ospf\_timer\_policy) | ./modules/terraform-aci-ospf-timer-policy | n/a |
 | <a name="module_aci_physical_domain"></a> [aci\_physical\_domain](#module\_aci\_physical\_domain) | ./modules/terraform-aci-physical-domain | n/a |
 | <a name="module_aci_pim_policy"></a> [aci\_pim\_policy](#module\_aci\_pim\_policy) | ./modules/terraform-aci-pim-policy | n/a |
@@ -339,6 +341,9 @@ Additional example repositories:
 | <a name="module_aci_tenant"></a> [aci\_tenant](#module\_aci\_tenant) | ./modules/terraform-aci-tenant | n/a |
 | <a name="module_aci_tenant_data_plane_policing_policy"></a> [aci\_tenant\_data\_plane\_policing\_policy](#module\_aci\_tenant\_data\_plane\_policing\_policy) | ./modules/terraform-aci-data-plane-policing-policy | n/a |
 | <a name="module_aci_tenant_monitoring_policy"></a> [aci\_tenant\_monitoring\_policy](#module\_aci\_tenant\_monitoring\_policy) | ./modules/terraform-aci-tenant-monitoring-policy | n/a |
+| <a name="module_aci_tenant_netflow_exporter"></a> [aci\_tenant\_netflow\_exporter](#module\_aci\_tenant\_netflow\_exporter) | ./modules/terraform-aci-tenant-netflow-exporter | n/a |
+| <a name="module_aci_tenant_netflow_monitor"></a> [aci\_tenant\_netflow\_monitor](#module\_aci\_tenant\_netflow\_monitor) | ./modules/terraform-aci-tenant-netflow-monitor | n/a |
+| <a name="module_aci_tenant_netflow_record"></a> [aci\_tenant\_netflow\_record](#module\_aci\_tenant\_netflow\_record) | ./modules/terraform-aci-tenant-netflow-record | n/a |
 | <a name="module_aci_tenant_span_destination_group"></a> [aci\_tenant\_span\_destination\_group](#module\_aci\_tenant\_span\_destination\_group) | ./modules/terraform-aci-tenant-span-destination-group | n/a |
 | <a name="module_aci_tenant_span_source_group"></a> [aci\_tenant\_span\_source\_group](#module\_aci\_tenant\_span\_source\_group) | ./modules/terraform-aci-tenant-span-source-group | n/a |
 | <a name="module_aci_track_list"></a> [aci\_track\_list](#module\_aci\_track\_list) | ./modules/terraform-aci-track-list | n/a |

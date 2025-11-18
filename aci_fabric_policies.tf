@@ -688,6 +688,18 @@ module "aci_vmware_vmm_domain" {
     num_links = try(vel.num_links, local.defaults.apic.fabric_policies.vmware_vmm_domains.vswitch.enhanced_lags.num_links)
   }]
   uplinks = try(each.value.uplinks, [])
+  trunk_port_groups = [for tpg in try(each.value.trunk_port_groups, []) : {
+    name                = "${tpg.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.name_suffix}"
+    promiscuous_mode    = try(tpg.promiscuous_mode, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.promiscuous_mode)
+    immediacy           = try(tpg.immediacy, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.immediacy)
+    mac_change          = try(tpg.mac_change, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.mac_change)
+    forged_transmit     = try(tpg.forged_transmit, local.defaults.apic.fabric_policies.vmware_vmm_domains.trunk_port_groups.forged_transmit)
+    enhanced_lag_policy = try(tpg.enhanced_lag_policy, null)
+    vlan_ranges = !contains(keys(tpg), "vlan_ranges") ? null : [for vlan in tpg.vlan_ranges : {
+      from = vlan.from
+      to   = vlan.to
+    }]
+  }]
 }
 
 module "aci_aaa" {
@@ -1319,6 +1331,44 @@ module "aci_atomic_counter" {
 module "aci_control_plane_mtu" {
   source = "./modules/terraform-aci-control-plane-mtu"
 
+  count          = try(local.fabric_policies.control_plane_mtu.mtu, null) != null && local.modules.aci_control_plane_mtu && var.manage_fabric_policies ? 1 : 0
   mtu            = try(local.fabric_policies.control_plane_mtu.mtu, local.defaults.apic.fabric_policies.control_plane_mtu.mtu)
   apic_mtu_apply = try(local.fabric_policies.control_plane_mtu.apic_mtu_apply, null)
+}
+
+module "aci_nutanix_vmm_domain" {
+  source = "./modules/terraform-aci-nutanix-vmm-domain"
+
+  for_each            = { for vmm in try(local.fabric_policies.nutanix_vmm_domains, []) : vmm.name => vmm if local.modules.aci_nutanix_vmm_domain && var.manage_fabric_policies }
+  name                = "${each.value.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.name_suffix}"
+  access_mode         = try(each.value.access_mode, local.defaults.apic.fabric_policies.nutanix_vmm_domains.access_mode)
+  vlan_pool           = try("${each.value.vlan_pool}${local.defaults.apic.access_policies.vlan_pools.name_suffix}", null)
+  allocation          = try(each.value.allocation, local.defaults.apic.fabric_policies.nutanix_vmm_domains.allocation)
+  custom_vswitch_name = try(each.value.custom_vswitch_name, "")
+  security_domains    = try(each.value.security_domains, [])
+  credential_policies = [for cp in try(each.value.credential_policies, []) : {
+    name     = "${cp.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.credential_policies.name_suffix}"
+    username = cp.username
+    password = cp.password
+  }]
+  controller_profile = try({
+    (each.value.controller_profile.name) = {
+      name        = "${each.value.controller_profile.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.name_suffix}"
+      hostname_ip = each.value.controller_profile.hostname_ip
+      datacenter  = each.value.controller_profile.datacenter
+      aos_version = try(each.value.controller_profile.aos_version, local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.aos_version)
+      credentials = each.value.controller_profile.credentials
+      statistics  = try(each.value.controller_profile.statistics, local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.statistics)
+    }
+  }, {})
+  cluster_controller = try({
+    (each.value.controller_profile.cluster_controller.name) = {
+      name               = "${each.value.controller_profile.cluster_controller.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.cluster_controller.name_suffix}"
+      hostname_ip        = each.value.controller_profile.cluster_controller.hostname_ip
+      cluster_name       = each.value.controller_profile.cluster_controller.cluster_name
+      credentials        = each.value.controller_profile.cluster_controller.credentials
+      port               = try(each.value.controller_profile.cluster_controller.port, local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.cluster_controller.port)
+      controller_profile = "${each.value.controller_profile.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.controller_profile.name_suffix}"
+    }
+  }, {})
 }

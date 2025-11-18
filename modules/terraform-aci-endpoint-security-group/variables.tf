@@ -55,6 +55,16 @@ variable "shutdown" {
   default     = false
 }
 
+variable "deployment_immediacy" {
+  description = "Deployment Immediacy"
+  type        = string
+  default     = null
+  validation {
+    condition     = var.deployment_immediacy == null || try(contains(["immediate", "lazy"], var.deployment_immediacy), false)
+    error_message = "`deployment_immediacy`: Allowed values are `immediate` or `lazy`."
+  }
+}
+
 variable "intra_esg_isolation" {
   description = "Intra ESG isolation."
   type        = bool

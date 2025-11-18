@@ -29,6 +29,7 @@ modules:
   aci_bgp_peer_prefix_policy: true
   aci_bgp_policy: true
   aci_bgp_route_summarization_policy: true
+  aci_ospf_route_summarization_policy: true
   aci_bgp_timer_policy: true
   aci_bridge_domain: true
   aci_ca_certificate: true
@@ -169,6 +170,9 @@ modules:
   aci_tenant: true
   aci_tenant_span_destination_group: true
   aci_tenant_span_source_group: true
+  aci_tenant_netflow_exporter: true
+  aci_tenant_netflow_record: true
+  aci_tenant_netflow_monitor: true
   aci_tenant_monitoring_policy: true
   aci_track_list: true
   aci_track_member: true
@@ -182,3 +186,4 @@ modules:
   aci_vspan_destination_group: true
   aci_vspan_session: true
   aci_control_plane_mtu: true
+  aci_nutanix_vmm_domain: true

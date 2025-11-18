@@ -255,6 +255,27 @@ defaults:
           mgmt_epg: inb
           dvs_version: unmanaged
           statistics: false
+        trunk_port_groups:
+          name_suffix: ""
+          promiscuous_mode: false
+          immediacy: lazy
+          mac_change: false
+          forged_transmit: false
+
+      nutanix_vmm_domains:
+        name_suffix: ""
+        access_mode: read-write
+        allocation: dynamic
+        credential_policies:
+          name_suffix: ""
+        controller_profile:
+          name_suffix: ""
+          aos_version: unknown
+          statistics: false
+          cluster_controller:
+            name_suffix: ""
+            port: 0
+
       aaa:
         remote_user_login_policy: no-login
         default_fallback_check: false
@@ -903,6 +924,8 @@ defaults:
         multicast_arp_drop: false
         dhcp_labels:
           scope: tenant
+        netflow_monitor_policies:
+          ip_filter_type: ipv4
         subnets:
           primary_ip: false
           public: false
@@ -973,6 +996,8 @@ defaults:
         bfd_multihop_auth:
           type: none
           key_id: 1
+        netflow_monitor_policies:
+          ip_filter_type: ipv4
         nodes:
           pod: 1
           router_id_as_loopback: true
@@ -1072,6 +1097,8 @@ defaults:
               auth_type: none
             dhcp_labels:
               scope: infra
+            netflow_monitor_policies:
+              ip_filter_type: ipv4
             interfaces:
               pod: 1
               module: 1
@@ -1164,7 +1191,6 @@ defaults:
           preferred_group: false
           qos_class: unspecified
           vmware_vmm_domains:
-            name_suffix: ""
             u_segmentation: false
             delimiter: ""
             netflow: false
@@ -1173,6 +1199,11 @@ defaults:
             allow_promiscuous: reject
             forged_transmits: reject
             mac_changes: reject
+          nutanix_vmm_domains:
+            deployment_immediacy: lazy
+            ipam:
+              gateway_address: "0.0.0.0"
+              dhcp_server_address_override: "0.0.0.0"
           static_ports:
             module: 1
             mode: regular
@@ -1348,6 +1379,10 @@ defaults:
           priority: 1
           lsa_retransmit_interval: 5
           lsa_transmit_delay: 1
+        ospf_route_summarization_policies:
+          name_suffix: ""
+          cost: unspecified
+          inter_area: false
         eigrp_interface_policies:
           name_suffix: ""
           bfd: false
@@ -1547,6 +1582,9 @@ defaults:
           frequency: 60
           sla_type: icmp
           port: 0
+          http_method: get
+          http_version: HTTP11
+          http_uri: /
         trust_control_policies:
           name_suffix: ""
           dhcp_v4_server: false
@@ -1636,6 +1674,15 @@ defaults:
             fault_severity_policies:
               initial_severity: inherit
               target_severity: inherit
+        netflow_exporters:
+          name_suffix: ""
+          source_type: custom-src-ip
+          source_ip: 0.0.0.0
+          dscp: CS2
+        netflow_monitors:
+          name_suffix: ""
+        netflow_records:
+          name_suffix: ""
       services:
         l4l7_devices:
           name_suffix: ""
