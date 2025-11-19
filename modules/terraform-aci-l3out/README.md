@@ -40,6 +40,8 @@ module "aci_l3out" {
   default_route_leak_policy_criteria      = "in-addition"
   default_route_leak_policy_context_scope = false
   default_route_leak_policy_outside_scope = false
+  vxlan_enabled                           = false
+  bgw_pol_set                             = "Border Gateway Set Name"
   redistribution_route_maps = [{
     source    = "direct"
     route_map = "RRM"
@@ -126,7 +128,8 @@ module "aci_l3out" {
 | <a name="input_multipod"></a> [multipod](#input\_multipod) | Multipod L3out flag. | `bool` | `true` | no |
 | <a name="input_sr_mpls"></a> [sr\_mpls](#input\_sr\_mpls) | SR MPLS L3out flag. | `bool` | `false` | no |
 | <a name="input_sr_mpls_infra_l3outs"></a> [sr\_mpls\_infra\_l3outs](#input\_sr\_mpls\_infra\_l3outs) | SR MPLS Infra L3Outs. | <pre>list(object({<br/>    name                     = string<br/>    outbound_route_map       = optional(string, "")<br/>    inbound_route_map        = optional(string, "")<br/>    external_endpoint_groups = optional(list(string), [])<br/>  }))</pre> | `[]` | no |
-
+| <a name="input_vxlan_enabled"></a> [vxlan_enabled](#input_vxlan_enabled) | Enable VXLAN for L3out. | `bool` | `false` | no |
+| <a name="input_bgw_pol_set"></a> [bgw_pol_set](#input_bgw_pol_set) | Border Gateway Policy Set name. | `string` | `""` | no |
 ## Outputs
 
 | Name | Description |

@@ -106,6 +106,11 @@ locals {
             bgp_route_summarization_policy = try(subnet.bgp_route_summarization_policy, null) != null ? "${subnet.bgp_route_summarization_policy}${local.defaults.apic.tenants.policies.bgp_route_summarization_policies.name_suffix}" : null
           }]
         }]
+        vxlan_enabled                             = try(vrf.vxlan_stretch, null) != null ? true : false
+        bgw_pol_set                               = try("${vrf.vxlan_stretch.border_gateway_policy_set}${local.defaults.apic.tenants.policies.border_gateway_policy_set.name_suffix}", "")
+        normalized_vni                            = try(vrf.vxlan_stretch.normalized_vni, null)
+        import_route_map                          = try(vrf.vxlan_stretch.import_route_map, "")
+        export_route_map                          = try(vrf.vxlan_stretch.export_route_map, "")
       }
     ]
   ])
@@ -166,7 +171,11 @@ module "aci_vrf" {
   leaked_internal_prefixes                 = each.value.leaked_internal_prefixes
   leaked_external_prefixes                 = each.value.leaked_external_prefixes
   route_summarization_policies             = each.value.route_summarization_policies
-
+  vxlan_enabled                            = each.value.vxlan_enabled
+  bgw_pol_set                              = each.value.bgw_pol_set
+  normalized_vni                           = each.value.normalized_vni
+  import_route_map                         = each.value.import_route_map
+  export_route_map                         = each.value.export_route_map
   depends_on = [
     module.aci_tenant,
     module.aci_contract,
@@ -205,6 +214,9 @@ locals {
         unknown_ipv4_multicast     = try(bd.unknown_ipv4_multicast, local.defaults.apic.tenants.bridge_domains.unknown_ipv4_multicast)
         unknown_ipv6_multicast     = try(bd.unknown_ipv6_multicast, local.defaults.apic.tenants.bridge_domains.unknown_ipv6_multicast)
         vrf                        = "${bd.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}"
+        vxlan_enabled              = try(bd.vxlan_stretch, null) != null ? true : false
+        normalized_vni             = try(bd.vxlan_stretch.normalized_vni, null)
+        border_gateway_policy_set  = try("${bd.vxlan_stretch.border_gateway_policy_set}${local.defaults.apic.tenants.policies.border_gateway_policy_set.name_suffix}", "")
         igmp_interface_policy      = try("${bd.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
         igmp_snooping_policy       = try("${bd.igmp_snooping_policy}${local.defaults.apic.tenants.policies.igmp_snooping_policies.name_suffix}", "")
         nd_interface_policy        = try("${bd.nd_interface_policy}${local.defaults.apic.tenants.policies.nd_interface_policies.name_suffix}", "")
@@ -264,6 +276,9 @@ module "aci_bridge_domain" {
   unknown_ipv4_multicast     = each.value.unknown_ipv4_multicast
   unknown_ipv6_multicast     = each.value.unknown_ipv6_multicast
   vrf                        = each.value.vrf
+  vxlan_enabled              = each.value.vxlan_enabled
+  normalized_vni             = each.value.normalized_vni
+  bgw_pol_set                = each.value.border_gateway_policy_set
   igmp_interface_policy      = each.value.igmp_interface_policy
   igmp_snooping_policy       = each.value.igmp_snooping_policy
   nd_interface_policy        = each.value.nd_interface_policy
@@ -693,6 +708,7 @@ locals {
           name                        = "${esg.name}${local.defaults.apic.tenants.application_profiles.endpoint_security_groups.name_suffix}"
           description                 = try(esg.description, "")
           vrf                         = "${esg.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}"
+          normalized_pctag            = try(esg.normalized_pctag, null)
           shutdown                    = try(esg.shutdown, local.defaults.apic.tenants.application_profiles.endpoint_security_groups.shutdown)
           deployment_immediacy        = try(esg.deployment_immediacy, null)
           intra_esg_isolation         = try(esg.intra_esg_isolation, local.defaults.apic.tenants.application_profiles.endpoint_security_groups.intra_esg_isolation)
@@ -737,6 +753,7 @@ module "aci_endpoint_security_group" {
   name                        = each.value.name
   description                 = each.value.description
   vrf                         = each.value.vrf
+  normalized_pctag            = each.value.normalized_pctag
   shutdown                    = each.value.shutdown
   deployment_immediacy        = each.value.deployment_immediacy
   intra_esg_isolation         = each.value.intra_esg_isolation
@@ -1694,7 +1711,6 @@ module "aci_sr_mpls_l3out" {
   vrf                  = each.value.vrf
   sr_mpls              = each.value.sr_mpls
   sr_mpls_infra_l3outs = each.value.sr_mpls_infra_l3outs
-
   depends_on = [
     module.aci_tenant,
   ]
@@ -1888,6 +1904,285 @@ module "aci_sr_mpls_external_endpoint_group" {
   depends_on = [
     module.aci_tenant,
     module.aci_sr_mpls_l3out,
+    module.aci_contract,
+    module.aci_imported_contract,
+  ]
+}
+
+locals {
+  vxlan_l3outs = flatten([
+    for tenant in local.tenants : [
+      for l3out in try(tenant.vxlan_l3outs, []) : {
+        key                  = format("%s/%s", tenant.name, l3out.name)
+        tenant               = tenant.name
+        name                 = "${l3out.name}${local.defaults.apic.tenants.vxlan_l3outs.name_suffix}"
+        alias                = try(l3out.alias, "")
+        description          = try(l3out.description, "")
+        vrf                  = "overlay-1"
+        vxlan_enabled        = true
+        bgw_pol_set          = try(l3out.border_gateway_policy_set, "")
+      }
+    ]
+  ])
+}
+
+module "aci_vxlan_l3out" {
+  source = "./modules/terraform-aci-l3out"
+
+  for_each             = { for l3out in local.vxlan_l3outs : l3out.key => l3out if try(local.modules.aci_vxlan_l3out, true) && var.manage_tenants }
+  tenant               = each.value.tenant
+  name                 = each.value.name
+  alias                = each.value.alias
+  description          = each.value.description
+  routed_domain        = ""
+  vrf                  = each.value.vrf
+  vxlan_enabled        = each.value.vxlan_enabled
+  bgw_pol_set          = each.value.bgw_pol_set
+  depends_on = [
+    module.aci_tenant,
+    module.border_gateway_policy_set
+  ]
+}
+
+locals {
+  vxlan_interface_profiles_manual = flatten([
+    for tenant in local.tenants : [
+      for l3out in try(tenant.vxlan_l3outs, []) : [
+        for np in try(l3out.node_profiles, []) : [
+          for ip in try(np.interface_profiles, []) : {
+            key                  = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
+            tenant               = tenant.name
+            l3out                = "${l3out.name}${local.defaults.apic.tenants.vxlan_l3outs.name_suffix}"
+            node_profile         = "${np.name}${local.defaults.apic.tenants.vxlan_l3outs.node_profiles.name_suffix}"
+            name                 = "${ip.name}${local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.name_suffix}"
+            bfd_policy           = try("${ip.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
+            interfaces = [for int in try(ip.interfaces, []) : {
+              ip_a        = try(int.ip, "")
+              vlan        = try(int.vlan, null)
+              description = try(int.description, "")
+              type        = try(int.port, null) != null ? "access" : try([for pg in local.leaf_interface_policy_group_mapping : pg.type if pg.name == int.channel][0], "pc")
+              mac         = try(int.mac, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.mac)
+              mtu         = try(int.mtu, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.mtu)
+              node_id     = try(int.node_id, try(int.channel, null) != null ? try([for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == int.channel][0][0], null) : null)
+              pod_id      = try(int.pod_id, null)
+              module      = try(int.module, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.module)
+              port        = try(int.port, null)
+              channel     = try("${int.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", null)
+              ip          = try(int.ip, null)
+              bgp_peers = [for peer in try(int.bgp_peers, []) : {
+                ip                     = peer.ip
+                remote_as              = peer.remote_as
+                description            = try(peer.description, "")
+                allow_self_as          = true
+                send_community         = try(peer.send_community, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.send_community)
+                send_ext_community     = try(peer.send_ext_community, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.send_ext_community)
+                password               = try(peer.password, null)
+                bfd                    = try(peer.bfd, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.bfd)
+                unicast_address_family = try(peer.unicast_address_family, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.unicast_address_family)
+                multicast_address_family = false
+                admin_state            = try(peer.admin_state, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.admin_state)
+                local_as               = try(peer.local_as, null)
+                peer_prefix_policy     = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
+              }]
+            }]
+          }
+        ]
+      ]
+    ]
+  ])
+}
+
+module "aci_vxlan_l3out_interface_profile_manual" {
+  source = "./modules/terraform-aci-l3out-interface-profile"
+
+  for_each             = { for ip in local.vxlan_interface_profiles_manual : ip.key => ip if try(local.modules.aci_vxlan_l3out_interface_profile, true) && var.manage_tenants }
+  tenant               = each.value.tenant
+  l3out                = each.value.l3out
+  node_profile         = each.value.node_profile
+  name                 = each.value.name
+  bfd_policy           = each.value.bfd_policy
+  interfaces = [for int in try(each.value.interfaces, []) : {
+    ip_a        = int.ip_a
+    vlan        = int.vlan
+    # SVI is not supported for VXLAN L3OUT interfaces
+    svi                  = false 
+    description = int.description
+    type        = int.type
+    mac         = int.mac
+    mtu         = int.mtu
+    node_id     = int.node_id
+    pod_id      = try(int.pod_id, [for node in local.node_policies.nodes : node.pod if node.id == int.node_id][0], local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.pod)
+    module      = int.module
+    port        = int.port
+    channel     = int.channel
+    ip          = int.ip
+    bgp_peers   = int.bgp_peers
+  }]
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_vxlan_node_profiles_manual,
+  ]
+}
+
+locals {
+  border_gateway_policy_set = flatten([
+    for tenant in local.tenants : [
+      {
+        key                     = format("%s/%s", tenant.name, tenant.policies.border_gateway_policy_set.name)
+        tenant                  = tenant.name
+        name                    = "${tenant.policies.border_gateway_policy_set.name}${local.defaults.apic.tenants.policies.border_gateway_policy_set.name_suffix}"
+        vxlan_site_id           = tenant.policies.border_gateway_policy_set.vxlan_site_id
+        external_data_plane_ips = [
+          for external_data_plane_ip in try(tenant.policies.border_gateway_policy_set.external_data_plane_ips, []) : {
+            pod_id = external_data_plane_ip.pod_id
+            ip     = external_data_plane_ip.ip
+          }
+        ]
+      }
+      # This is supported only in Infra Tenant.
+    ] if tenant.name == "infra" && try(tenant.policies.border_gateway_policy_set, null) != null
+  ])
+}
+
+module "border_gateway_policy_set" {
+  source = "./modules/terraform-aci-border-gateway-policy-set"
+  
+  for_each                = { for policy in local.border_gateway_policy_set : policy.key => policy if try(local.modules.border_gateway_policy_set, true) && var.manage_tenants }
+  name                    = each.value.name
+  vxlan_site_id           = each.value.vxlan_site_id
+  external_data_plane_ips = each.value.external_data_plane_ips
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
+  remote_vxlan_fabrics = flatten([
+    for tenant in local.tenants : [
+      for remote_vxlan_fabric in try(tenant.policies.remote_vxlan_fabrics, []) : {
+        key                     = format("%s/%s", tenant.name, remote_vxlan_fabric.name)
+        tenant                  = tenant.name
+        name                    = "${remote_vxlan_fabric.name}${local.defaults.apic.tenants.policies.remote_vxlan_fabrics.name_suffix}"
+        bgw_pol_set = remote_vxlan_fabric.border_gateway_policy_set
+        remote_evpn_peers = [
+          for peer in try(remote_vxlan_fabric.remote_evpn_peers, []) : {
+            ip     = peer.ip
+            remote_as = peer.remote_as
+            description                      = try(peer.description, "")
+            admin_state                      = try(peer.admin_state, local.defaults.apic.tenants.policies.remote_vxlan_fabrics.admin_state)
+            allow_self_as                    = try(peer.allow_self_as, local.defaults.apic.tenants.policies.remote_vxlan_fabrics.allow_self_as)
+            disable_peer_as_check            = try(peer.disable_peer_as_check, local.defaults.apic.tenants.policies.remote_vxlan_fabrics.disable_peer_as_check)
+            password                         = try(peer.password, null)
+            ttl                              = try(peer.ttl, local.defaults.apic.tenants.policies.remote_vxlan_fabrics.ttl)
+            peer_prefix_policy               = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", "")
+            as_propagate                     = try(peer.as_propagate, local.defaults.apic.tenants.policies.remote_vxlan_fabrics.as_propagate)
+            local_as                         = try(peer.local_as, null)
+          }
+        ]
+      }
+      # This is supported only in Infra Tenant.
+    ] if tenant.name == "infra" && try(tenant.policies.remote_vxlan_fabrics, null) != null
+  ])
+}
+
+module "remote_vxlan_fabrics" {
+  source = "./modules/terraform-aci-remote-vxlan-fabric-policy"
+  for_each                = { for policy in local.remote_vxlan_fabrics : policy.key => policy if try(local.modules.remote_vxlan_fabrics, true) && var.manage_tenants }
+  tenant                  = each.value.tenant
+  name                    = each.value.name
+  remote_evpn_peers           = each.value.remote_evpn_peers
+  bgw_pol_set = each.value.bgw_pol_set
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
+  vxlan_node_profiles_manual = flatten([
+    for tenant in local.tenants : [
+      for l3out in try(tenant.vxlan_l3outs, []) : [
+        for np in try(l3out.node_profiles, []) : {
+          key                      = format("%s/%s/%s", tenant.name, l3out.name, np.name)
+          tenant                   = tenant.name
+          description              = try(np.description, "")
+          l3out                    = "${l3out.name}${local.defaults.apic.tenants.vxlan_l3outs.name_suffix}"
+          name                     = "${np.name}${local.defaults.apic.tenants.vxlan_l3outs.node_profiles.name_suffix}"
+          vxlan_enabled            = true
+          vxlan_custom_qos_policy  = try(np.vxlan_custom_qos_policy, "")
+            nodes = [for node in try(np.nodes, []) : {
+            node_id               = node.node_id
+            pod_id                = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
+            router_id             = try(node.router_id, null)
+            router_id_as_loopback = false
+            # for standard L3OUT the loopback is a list. In the VXLAN Case however we can only have 1 per node. So here I convert from string to list
+            loopbacks             = try(node.loopback, null) != null ? [node.loopback] : []
+          }]
+        }
+      ]
+    ]
+  ])
+}
+
+module "aci_vxlan_node_profiles_manual" {
+  source = "./modules/terraform-aci-l3out-node-profile"
+
+  for_each                 = { for np in local.vxlan_node_profiles_manual : np.key => np if try(local.modules.aci_vxlan_l3out_node_profile, true) && var.manage_tenants }
+  tenant                   = each.value.tenant
+  l3out                    = each.value.l3out
+  name                     = each.value.name
+  description              = each.value.description
+  vxlan_custom_qos_policy  = try(each.value.vxlan_custom_qos_policy, "")
+  vxlan_enabled            = each.value.vxlan_enabled
+  nodes                    = each.value.nodes
+  depends_on = [
+    module.aci_tenant,
+    module.aci_vxlan_l3out,
+  ]
+}
+
+locals {
+  # This is a hidden object in APIC that the user can't configure.
+  # hardcode the name to the l3out name and creates it by default.
+  vxlan_external_endpoint_groups = flatten([
+    for tenant in local.tenants : [
+      for l3out in try(tenant.vxlan_l3outs, []) : {
+        key                         = format("%s/%s/%s", tenant.name, l3out.name, l3out.name)
+        tenant                      = tenant.name
+        l3out                       = "${l3out.name}${local.defaults.apic.tenants.vxlan_l3outs.name_suffix}"
+        name                        = "${l3out.name}${local.defaults.apic.tenants.vxlan_l3outs.external_endpoint_groups.name_suffix}"
+        alias                       = ""
+        description                 = ""
+        preferred_group             = try(l3out.preferred_group, local.defaults.apic.tenants.vxlan_l3outs.external_endpoint_groups.preferred_group)
+        contract_consumers          = []
+        contract_providers          = []
+        contract_imported_consumers = []
+        subnets = []
+      }
+    ]
+  ])
+}
+
+module "aci_vxlan_external_endpoint_group" {
+  source = "./modules/terraform-aci-external-endpoint-group"
+
+  for_each                    = { for epg in local.vxlan_external_endpoint_groups : epg.key => epg if try(local.modules.vxlan_aci_external_endpoint_group, true) && var.manage_tenants }
+  tenant                      = each.value.tenant
+  l3out                       = each.value.l3out
+  name                        = each.value.name
+  alias                       = each.value.alias
+  description                 = each.value.description
+  preferred_group             = each.value.preferred_group
+  contract_consumers          = each.value.contract_consumers
+  contract_providers          = each.value.contract_providers
+  contract_imported_consumers = each.value.contract_imported_consumers
+  subnets                     = each.value.subnets
+
+  depends_on = [
+    module.aci_tenant,
+    module.aci_vxlan_l3out,
     module.aci_contract,
     module.aci_imported_contract,
   ]
@@ -2840,6 +3135,51 @@ module "aci_mpls_custom_qos_policy" {
   source = "./modules/terraform-aci-mpls-custom-qos-policy"
 
   for_each      = { for pol in local.mpls_custom_qos_policies : pol.key => pol if local.modules.aci_mpls_custom_qos_policy && var.manage_tenants }
+  name          = each.value.name
+  description   = each.value.description
+  alias         = each.value.alias
+  ingress_rules = each.value.ingress_rules
+  egress_rules  = each.value.egress_rules
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
+  vxlan_custom_qos_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.vxlan_custom_qos_policies, []) : {
+        key         = format("%s/%s", tenant.name, policy.name)
+        name        = "${policy.name}${local.defaults.apic.tenants.policies.vxlan_custom_qos_policies.name_suffix}"
+        description = try(policy.description, "")
+        alias       = try(policy.alias, "")
+        ingress_rules = [
+          for ing in try(policy.ingress_rules, []) : {
+            dscp_from    = ing.dscp_from
+            dscp_to      = ing.dscp_to
+            priority    = try(ing.priority, local.defaults.apic.tenants.policies.vxlan_custom_qos_policies.ingress_rules.priority)
+            dscp_target = try(ing.dscp_target, local.defaults.apic.tenants.policies.vxlan_custom_qos_policies.ingress_rules.dscp_target)
+            cos_target  = try(ing.cos_target, local.defaults.apic.tenants.policies.vxlan_custom_qos_policies.ingress_rules.cos_target)
+          }
+        ]
+        egress_rules = [
+          for eg in try(policy.egress_rules, []) : {
+            dscp_from  = eg.dscp_from
+            dscp_to    = eg.dscp_to
+            dscp_overlay_target = try(eg.dscp_overlay_target, local.defaults.apic.tenants.policies.vxlan_custom_qos_policies.egress_rules.dscp_overlay_target)
+            cos_target = try(eg.cos_target, local.defaults.apic.tenants.policies.vxlan_custom_qos_policies.egress_rules.cos_target)
+          }
+        ]
+      }
+    ] if tenant.name == "infra"
+  ])
+}
+
+module "aci_vxlan_custom_qos_policy" {
+  source = "./modules/terraform-aci-vxlan-custom-qos-policy"
+
+  for_each      = { for pol in local.vxlan_custom_qos_policies : pol.key => pol if try(local.modules.aci_vxlan_custom_qos_policy, true) && var.manage_tenants }
   name          = each.value.name
   description   = each.value.description
   alias         = each.value.alias

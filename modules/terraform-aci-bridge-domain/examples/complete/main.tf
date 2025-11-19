@@ -21,6 +21,9 @@ module "aci_bridge_domain" {
   unknown_ipv4_multicast     = "opt-flood"
   unknown_ipv6_multicast     = "opt-flood"
   vrf                        = "VRF1"
+  vxlan_enabled              = false
+  normalized_vni             = 2
+  bgw_pol_set                = "Border_Gateway_Policy_Set"
   nd_interface_policy        = "ND_INTF_POL1"
   endpoint_retention_policy  = "ERP1"
   subnets = [{

@@ -570,3 +570,64 @@ resource "aci_rest_managed" "fvRsCtxToEpRet" {
     tnFvEpRetPolName = var.endpoint_retention_policy
   }
 }
+
+resource "aci_rest_managed" "l3extOut" {
+  count      = var.vxlan_enabled ? 1 : 0
+  dn         = "uni/tn-${var.tenant}/out-vxlan_vrf_${var.tenant}_${var.name}"
+  class_name = "l3extOut"
+}
+
+resource "aci_rest_managed" "l3extInstP" {
+  count      = var.vxlan_enabled ? 1 : 0
+  dn         = "${aci_rest_managed.l3extOut[0].dn}/instP-vxlan_vrf_${var.tenant}_${var.name}_vxlanInstP"
+  class_name = "l3extInstP"
+}
+
+resource "aci_rest_managed" "vxlanExtP" {
+  count      = var.vxlan_enabled ? 1 : 0
+  dn         = "${aci_rest_managed.l3extOut[0].dn}/vxlanextp"
+  class_name = "vxlanExtP"
+}
+
+resource "aci_rest_managed" "l3extRsEctx" {
+  count      = var.vxlan_enabled ? 1 : 0
+  dn         = "${aci_rest_managed.l3extOut[0].dn}/rsectx"
+  class_name = "l3extRsEctx"
+  content = {
+    tnFvCtxName = var.name
+  }
+}
+
+resource "aci_rest_managed" "l3extVxGwFabrics" {
+  count      = var.vxlan_enabled ? 1 : 0
+  dn         = "${aci_rest_managed.l3extOut[0].dn}/vxgwfabrics"
+  depends_on = [ aci_rest_managed.vxlanExtP ]
+  class_name = "l3extVxGwFabrics"
+  content = {
+    remoteVni = var.normalized_vni
+  }
+}
+
+resource "aci_rest_managed" "l3extConsBgwSet" {
+  count      = var.vxlan_enabled ? 1 : 0
+  dn         = "${aci_rest_managed.l3extVxGwFabrics[0].dn}/consbgwset-${var.bgw_pol_set}"
+  depends_on = [ aci_rest_managed.vxlanExtP ]
+  class_name = "l3extConsBgwSet"
+  content = {
+    name = var.bgw_pol_set
+  }
+}
+
+resource "aci_rest_managed" "l3extRsVxGwToRtProfile-import" {
+  count      = var.import_route_map != "" ? 1 : 0
+  dn         = "uni/tn-${var.tenant}/out-vxlan_vrf_${var.tenant}_${var.name}/vxgwfabrics/rsvxGwToRtProfile-[uni/tn-${var.tenant}/prof-${var.import_route_map}]-import"
+  depends_on = [ aci_rest_managed.vxlanExtP ]
+  class_name = "l3extRsVxGwToRtProfile"
+}
+
+resource "aci_rest_managed" "l3extRsVxGwToRtProfile-export" {
+  count      = var.export_route_map != "" ? 1 : 0
+  dn         = "uni/tn-${var.tenant}/out-vxlan_vrf_${var.tenant}_${var.name}/vxgwfabrics/rsvxGwToRtProfile-[uni/tn-${var.tenant}/prof-${var.export_route_map}]-export"
+  depends_on = [ aci_rest_managed.vxlanExtP ]
+  class_name = "l3extRsVxGwToRtProfile"
+}

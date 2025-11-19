@@ -20,6 +20,7 @@ module "aci_l3out_node_profile" {
   bgp_as_path_policy = "BGP_AS_PATH-1"
   multipod           = true
   remote_leaf        = false
+  vxlan_enabled      = false
   nodes = [{
     node_id               = 201
     pod_id                = 2
@@ -113,7 +114,7 @@ module "aci_l3out_node_profile" {
 | <a name="input_bfd_multihop_auth_key_id"></a> [bfd\_multihop\_auth\_key\_id](#input\_bfd\_multihop\_auth\_key\_id) | BFD Multihop authentication key ID | `number` | `1` | no |
 | <a name="input_bfd_multihop_auth_key"></a> [bfd\_multihop\_auth\_key](#input\_bfd\_multihop\_auth\_key) | BFD Multihop authentication key | `string` | `""` | no |
 | <a name="input_bfd_multihop_auth_type"></a> [bfd\_multihop\_auth\_type](#input\_bfd\_multihop\_auth\_type) | BFD Multihop authentication type | `string` | `"none"` | no |
-
+| <a name="input_vxlan_enabled"></a> [vxlan_enabled](#input_vxlan_enabled) | VXLAN enabled flag. | `bool` | `false` | no |
 ## Outputs
 
 | Name | Description |
