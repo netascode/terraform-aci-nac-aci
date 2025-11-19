@@ -57,7 +57,7 @@ variable "enforcement_direction" {
   default     = null
 
   validation {
-    condition     = var.enforcement_direction == null || contains(["ingress", "egress"], var.enforcement_direction)
+    condition     = var.enforcement_direction == null ? true : contains(["ingress", "egress"], var.enforcement_direction)
     error_message = "Valid values are `ingress` or `egress`."
   }
 }
