@@ -32,6 +32,9 @@ module "aci_bridge_domain" {
   unknown_ipv4_multicast     = "opt-flood"
   unknown_ipv6_multicast     = "opt-flood"
   vrf                        = "VRF1"
+  vxlan_stretch              = true
+  normalized_vni             = 2
+  bgw_pol_set                = "Border_Gateway_Policy_Set"
   nd_interface_policy        = "ND_INTF_POL1"
   endpoint_retention_policy  = "ERP1"
   subnets = [{
@@ -76,7 +79,6 @@ module "aci_bridge_domain" {
 | <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
 
 ## Inputs
-
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
@@ -110,7 +112,9 @@ module "aci_bridge_domain" {
 | <a name="input_dhcp_labels"></a> [dhcp\_labels](#input\_dhcp\_labels) | List of DHCP labels | <pre>list(object({<br/>    dhcp_relay_policy  = string<br/>    dhcp_option_policy = optional(string)<br/>    scope              = optional(string, "tenant")<br/>  }))</pre> | `[]` | no |
 | <a name="input_endpoint_retention_policy"></a> [endpoint\_retention\_policy](#input\_endpoint\_retention\_policy) | Endpoint Retention Policy. | `string` | `""` | no |
 | <a name="input_netflow_monitor_policies"></a> [netflow\_monitor\_policies](#input\_netflow\_monitor\_policies) | List of Netflow Monitor policies | <pre>list(object({<br/>    name           = string<br/>    ip_filter_type = optional(string, "ipv4")<br/>  }))</pre> | `[]` | no |
-
+| <a name="input_vxlan_stretch"></a> [vxlan\_stretch](#input\_vxlan\_stretch) | VXLAN stretch flag. | `bool` | `false` | no |
+| <a name="input_normalized_vni"></a> [normalized\_vni](#input\_normalized\_vni) | Normalized VNI. Only applicable when vxlan_stretch is enabled. | `number` | `null` | no |
+| <a name="input_bgw_pol_set"></a> [bgw\_pol\_set](#input\_bgw\_pol\_set) | Border Gateway Policy Set. Only applicable when vxlan_stretch is enabled. | `string` | `""` | no |
 ## Outputs
 
 | Name | Description |

@@ -50,6 +50,7 @@ resource "aci_rest_managed" "l3extLNodeP" {
   class_name = "l3extLNodeP"
   content = {
     name = var.name
+    descr = var.description
   }
 }
 
@@ -202,6 +203,15 @@ resource "aci_rest_managed" "l3extRsLNodePMplsCustQosPol" {
   class_name = "l3extRsLNodePMplsCustQosPol"
   content = {
     tDn = "uni/tn-infra/qosmplscustom-${var.mpls_custom_qos_policy}"
+  }
+}
+
+resource "aci_rest_managed" "l3extRsLNodePVxlanCustQosPol" {
+  count      = var.tenant == "infra" && var.vxlan_enabled == true && var.vxlan_custom_qos_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.l3extLNodeP.dn}/rslNodePVxlanCustQosPol"
+  class_name = "l3extRsLNodePVxlanCustQosPol"
+  content = {
+    tDn = "uni/tn-infra/qosvxlancustom-${var.vxlan_custom_qos_policy}"
   }
 }
 

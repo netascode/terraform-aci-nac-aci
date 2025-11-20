@@ -128,3 +128,12 @@ resource "aci_rest_managed" "fvEPSelector" {
     aci_rest_managed.fvRsScope,
   ]
 }
+
+resource "aci_rest_managed" "fvRemoteSGT" {
+  count      = var.normalized_pctag != null ? 1 : 0
+  dn         = "${aci_rest_managed.fvESg.dn}/remotesgt"
+  class_name = "fvRemoteSGT"
+  content = {
+    remotePcTag = var.normalized_pctag
+  }
+}

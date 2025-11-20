@@ -51,12 +51,12 @@ variable "serial_number" {
 }
 
 variable "type" {
-  description = "Node type. Choices: `remote-leaf-wan`, `virtual`, `tier-2-leaf`, `unspecified`."
+  description = "Node type. Choices: `remote-leaf-wan`, `virtual`, `tier-2-leaf`, border-gateway`, `unspecified`."
   type        = string
   default     = "unspecified"
 
   validation {
-    condition     = contains(["remote-leaf-wan", "virtual", "tier-2-leaf", "unspecified"], var.type)
+    condition     = contains(["remote-leaf-wan", "virtual", "tier-2-leaf", "border-gateway", "unspecified"], var.type)
     error_message = "Allowed values: `remote-leaf-wan`, `virtual`, `tier-2-leaf` or `unspecified`."
   }
 }

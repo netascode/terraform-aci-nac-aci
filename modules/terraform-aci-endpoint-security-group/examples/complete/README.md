@@ -29,6 +29,7 @@ module "aci_endpoint_security_group" {
   contract_providers          = ["CON1"]
   contract_imported_consumers = ["IMPORTED-CON1"]
   contract_intra_esgs         = ["CON1"]
+  normalized_pctag            = 23
   esg_contract_masters = [
     {
       tenant                  = "TF"

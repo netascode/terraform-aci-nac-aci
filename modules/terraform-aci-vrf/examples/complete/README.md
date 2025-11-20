@@ -37,6 +37,10 @@ module "aci_vrf" {
   contract_consumers                     = ["CON1"]
   contract_providers                     = ["CON1"]
   contract_imported_consumers            = ["I_CON1"]
+  vxlan_enabled                          = false
+  bgw_pol_set                            = "GorderGatewayPolicySet"
+  import_route_map                       = "RM-Import"
+  export_route_map                       = "RM-Export"
   pim_enabled                            = true
   pim_mtu                                = 9200
   pim_fast_convergence                   = true

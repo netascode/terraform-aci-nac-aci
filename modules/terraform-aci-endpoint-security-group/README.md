@@ -26,6 +26,7 @@ module "aci_endpoint_security_group" {
   contract_providers          = ["CON1"]
   contract_imported_consumers = ["IMPORTED-CON1"]
   contract_intra_esgs         = ["CON1"]
+  normalized_pctag            = 23
   esg_contract_masters = [
     {
       tenant                  = "TF"
@@ -113,7 +114,7 @@ module "aci_endpoint_security_group" {
 | <a name="input_tag_selectors"></a> [tag\_selectors](#input\_tag\_selectors) | List of tag selectors.  Choices `operator`: `contains`, `equals`, `regex`. Default value `operator`: `equals`. | <pre>list(object({<br/>    key         = string<br/>    operator    = optional(string, "equals")<br/>    value       = string<br/>    description = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_epg_selectors"></a> [epg\_selectors](#input\_epg\_selectors) | List of EPG selectors. | <pre>list(object({<br/>    tenant              = string<br/>    application_profile = string<br/>    endpoint_group      = string<br/>    description         = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_ip_subnet_selectors"></a> [ip\_subnet\_selectors](#input\_ip\_subnet\_selectors) | List of IP subnet selectors. | <pre>list(object({<br/>    value       = string<br/>    description = optional(string, "")<br/>  }))</pre> | `[]` | no |
-
+| <a name="input_normalized_pctag"></a> [normalized_pctag](#input\_normalized\_pctag) | Normalized PC tag. | `number` | `null` | no |
 ## Outputs
 
 | Name | Description |

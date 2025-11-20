@@ -3,20 +3,16 @@ resource "aci_rest_managed" "l3extOut" {
   class_name  = "l3extOut"
   annotation  = var.annotation
   escape_html = false
-  content = var.sr_mpls == true ? {
-    name          = var.name
-    descr         = var.description
-    nameAlias     = var.alias
-    targetDscp    = var.target_dscp
-    enforceRtctrl = join(",", concat(var.export_route_control_enforcement == true ? ["export"] : [], var.import_route_control_enforcement == true ? ["import"] : []))
-    mplsEnabled   = "yes"
-    } : {
-    name          = var.name
-    descr         = var.description
-    nameAlias     = var.alias
-    targetDscp    = var.target_dscp
-    enforceRtctrl = join(",", concat(var.export_route_control_enforcement == true ? ["export"] : [], var.import_route_control_enforcement == true ? ["import"] : []))
-  }
+  content = merge(
+    {
+      name          = var.name
+      descr         = var.description
+      nameAlias     = var.alias
+      targetDscp    = var.target_dscp
+      enforceRtctrl = join(",", concat(var.export_route_control_enforcement == true ? ["export"] : [], var.import_route_control_enforcement == true ? ["import"] : []))
+    },
+    var.sr_mpls == true ? { mplsEnabled = "yes" } : {},
+  )
 }
 
 resource "aci_rest_managed" "ospfExtP" {
@@ -47,7 +43,7 @@ resource "aci_rest_managed" "bgpExtP" {
 }
 
 resource "aci_rest_managed" "l3extRsL3DomAtt" {
-  count      = var.sr_mpls == true && var.tenant != "infra" ? 0 : 1
+  count      = (var.sr_mpls == true && var.tenant != "infra") || (var.vxlan_enabled == true && var.tenant == "infra") ? 0 : 1
   dn         = "${aci_rest_managed.l3extOut.dn}/rsl3DomAtt"
   class_name = "l3extRsL3DomAtt"
   content = {
@@ -325,6 +321,24 @@ resource "aci_rest_managed" "mplsExtP" {
   class_name = "mplsExtP"
 }
 
+resource "aci_rest_managed" "vxlanExtP" {
+  count      = var.tenant == "infra" && var.vxlan_enabled == true ? 1 : 0
+  depends_on = [aci_rest_managed.l3extRsEctx]
+  dn         = "${aci_rest_managed.l3extOut.dn}/vxlanextp"
+  
+  class_name = "vxlanExtP"
+}
+
+resource "aci_rest_managed" "l3extRsProvBgwSet" {
+  count      = var.tenant == "infra" && var.vxlan_enabled == true ? 1 : 0
+  depends_on = [aci_rest_managed.vxlanExtP]
+  dn         = "${aci_rest_managed.l3extOut.dn}/rsProvBgwSet"
+  class_name = "l3extRsProvBgwSet"
+  content = {
+    tDn: "uni/tn-infra/vxlanbgwset-${var.bgw_pol_set}"
+  }
+  
+}
 
 resource "aci_rest_managed" "mplsRsLabelPol" {
   count      = var.tenant == "infra" && var.sr_mpls == true ? 1 : 0
