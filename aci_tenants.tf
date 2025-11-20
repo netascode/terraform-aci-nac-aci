@@ -1040,7 +1040,14 @@ locals {
               preference  = try(sr.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.preference)
               bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
               track_list  = try("${sr.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
-              next_hops = [for nh in try(sr.next_hops, []) : {
+              next_hops = [for nh in length(try(sr.next_hops, [])) > 0 ? try(sr.next_hops, []) : [{
+                ip            = "0.0.0.0/0",
+                type          = "none",
+                description   = null,
+                preference    = 0,
+                ip_sla_policy = null,
+                track_list    = null
+                }] : {
                 ip            = nh.ip
                 description   = try(nh.description, "")
                 preference    = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
@@ -1139,7 +1146,14 @@ locals {
             preference  = try(sr.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.preference)
             bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
             track_list  = try("${sr.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
-            next_hops = [for nh in try(sr.next_hops, []) : {
+            next_hops = [for nh in length(try(sr.next_hops, [])) > 0 ? try(sr.next_hops, []) : [{
+              ip            = "0.0.0.0/0",
+              type          = "none",
+              description   = null,
+              preference    = 0,
+              ip_sla_policy = null,
+              track_list    = null
+              }] : {
               ip            = nh.ip
               description   = try(nh.description, "")
               preference    = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
