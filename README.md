@@ -88,7 +88,7 @@ Additional example repositories:
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
 | <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.17.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.3.0 |
-| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.0.2 |
+| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.0.2, < 2.0.0 |
 
 ## Inputs
 
