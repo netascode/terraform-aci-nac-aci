@@ -13,7 +13,7 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.,:-]{0,64}$", var.name))
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.name))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`, `,`. Maximum characters: 64."
   }
 }
@@ -75,12 +75,13 @@ variable "policy_group" {
 variable "port_blocks" {
   description = "List of port blocks. Allowed values `from_module`, `to_module`: 1-9. Default value `from_module`, `to_module`: 1. Allowed values `from_port`, `to_port`: 1-127. Default value `to_port`: `from_port`."
   type = list(object({
-    name        = string
-    description = optional(string, "")
-    from_module = optional(number, 1)
-    to_module   = optional(number)
-    from_port   = number
-    to_port     = optional(number)
+    name                       = string
+    description                = optional(string, "")
+    from_module                = optional(number, 1)
+    to_module                  = optional(number)
+    from_port                  = number
+    to_port                    = optional(number)
+    port_channel_member_policy = optional(string, null)
   }))
   default = []
 
@@ -125,19 +126,27 @@ variable "port_blocks" {
     ])
     error_message = "`to_port`: Minimum value: 1. Maximum value: 127."
   }
+
+  validation {
+    condition = alltrue([
+      for pb in var.port_blocks : pb.port_channel_member_policy == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", pb.port_channel_member_policy))
+    ])
+    error_message = "`port_channel_member_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
 }
 
 variable "sub_port_blocks" {
   description = "List of sub port blocks. Allowed values `from_module`, `to_module`: 1-9. Default value `from_module`, `to_module`: 1. Allowed values `from_port`, `to_port`: 1-127. Default value `to_port`: `from_port`. Allowed values `from_sub_port`, `to_sub_port`: 1-16. Default value `to_sub_port`: `from_sub_port`."
   type = list(object({
-    name          = string
-    description   = optional(string, "")
-    from_module   = optional(number, 1)
-    to_module     = optional(number)
-    from_port     = number
-    to_port       = optional(number)
-    from_sub_port = number
-    to_sub_port   = optional(number)
+    name                       = string
+    description                = optional(string, "")
+    from_module                = optional(number, 1)
+    to_module                  = optional(number)
+    from_port                  = number
+    to_port                    = optional(number)
+    from_sub_port              = number
+    to_sub_port                = optional(number)
+    port_channel_member_policy = optional(string, null)
   }))
   default = []
 
@@ -195,5 +204,12 @@ variable "sub_port_blocks" {
       for pb in var.sub_port_blocks : pb.to_sub_port == null || try(pb.to_sub_port >= 1 && pb.to_sub_port <= 16, false)
     ])
     error_message = "`to_sub_port`: Minimum value: 1. Maximum value: 16."
+  }
+
+  validation {
+    condition = alltrue([
+      for pb in var.sub_port_blocks : pb.port_channel_member_policy == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", pb.port_channel_member_policy))
+    ])
+    error_message = "`port_channel_member_policy`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
