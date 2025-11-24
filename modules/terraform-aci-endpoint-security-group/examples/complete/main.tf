@@ -76,7 +76,7 @@ module "aci_endpoint_security_group" {
       ip = "1.1.3.0/24"
     },
     {
-      ip       = "1.1.4.0/24"
+      ip          = "1.1.4.0/24"
       description = "foo"
       shared      = true
     }

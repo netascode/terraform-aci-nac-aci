@@ -1270,6 +1270,8 @@ defaults:
           preferred_group: false
           tag_selectors:
             operator: equals
+          ip_external_subnet_selectors:
+            shared: false
       inb_endpoint_groups:
         name_suffix: ""
         subnets:

@@ -130,12 +130,12 @@ resource "aci_rest_managed" "fvEPSelector" {
 }
 
 resource "aci_rest_managed" "fvExternalSubnetSelector" {
-  for_each   = { for ess in var.ip_external_subnet_selectors : "${ess.ip}" => ess }
+  for_each   = { for ess in var.ip_external_subnet_selectors : ess.ip => ess }
   dn         = "${aci_rest_managed.fvESg.dn}/extsubselector-[${each.key}]"
   class_name = "fvExternalSubnetSelector"
   content = {
-    descr           = each.value.description
-    shared          = each.value.shared == true ? "yes" : "no"
+    descr  = each.value.description
+    shared = each.value.shared == true ? "yes" : "no"
   }
 
   depends_on = [

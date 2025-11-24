@@ -723,9 +723,9 @@ locals {
             description = try(sel.description, "")
           }]
           ip_external_subnet_selectors = [for sel in try(esg.ip_external_subnet_selectors, []) : {
-            ip       = sel.ip
+            ip          = sel.ip
             description = try(sel.description, "")
-            shared      = try(sel.shared, "false")
+            shared      = try(sel.shared, local.defaults.apic.tenants.application_profiles.endpoint_security_groups.ip_external_subnet_selectors.shared)
           }]
         }
       ]

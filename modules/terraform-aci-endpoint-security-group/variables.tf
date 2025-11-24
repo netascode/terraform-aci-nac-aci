@@ -257,7 +257,7 @@ variable "ip_subnet_selectors" {
 variable "ip_external_subnet_selectors" {
   description = "List of IP subnet selectors."
   type = list(object({
-    ip       = string
+    ip          = string
     description = optional(string, "")
     shared      = optional(bool, false)
   }))
