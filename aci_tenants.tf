@@ -722,6 +722,11 @@ locals {
             value       = sel.value
             description = try(sel.description, "")
           }]
+          ip_external_subnet_selectors = [for sel in try(esg.ip_external_subnet_selectors, []) : {
+            ip          = sel.ip
+            description = try(sel.description, "")
+            shared      = try(sel.shared, local.defaults.apic.tenants.application_profiles.endpoint_security_groups.ip_external_subnet_selectors.shared)
+          }]
         }
       ]
     ]
@@ -731,24 +736,24 @@ locals {
 module "aci_endpoint_security_group" {
   source = "./modules/terraform-aci-endpoint-security-group"
 
-  for_each                    = { for esg in local.endpoint_security_groups : esg.key => esg if local.modules.aci_endpoint_security_group && var.manage_tenants }
-  tenant                      = each.value.tenant
-  application_profile         = each.value.application_profile
-  name                        = each.value.name
-  description                 = each.value.description
-  vrf                         = each.value.vrf
-  shutdown                    = each.value.shutdown
-  deployment_immediacy        = each.value.deployment_immediacy
-  intra_esg_isolation         = each.value.intra_esg_isolation
-  preferred_group             = each.value.preferred_group
-  contract_consumers          = each.value.contract_consumers
-  contract_providers          = each.value.contract_providers
-  contract_imported_consumers = each.value.contract_imported_consumers
-  contract_intra_esgs         = each.value.contract_intra_esgs
-  esg_contract_masters        = each.value.esg_contract_masters
-  tag_selectors               = each.value.tag_selectors
-  epg_selectors               = each.value.epg_selectors
-  ip_subnet_selectors         = each.value.ip_subnet_selectors
+  for_each                     = { for esg in local.endpoint_security_groups : esg.key => esg if local.modules.aci_endpoint_security_group && var.manage_tenants }
+  tenant                       = each.value.tenant
+  application_profile          = each.value.application_profile
+  name                         = each.value.name
+  description                  = each.value.description
+  vrf                          = each.value.vrf
+  shutdown                     = each.value.shutdown
+  intra_esg_isolation          = each.value.intra_esg_isolation
+  preferred_group              = each.value.preferred_group
+  contract_consumers           = each.value.contract_consumers
+  contract_providers           = each.value.contract_providers
+  contract_imported_consumers  = each.value.contract_imported_consumers
+  contract_intra_esgs          = each.value.contract_intra_esgs
+  esg_contract_masters         = each.value.esg_contract_masters
+  tag_selectors                = each.value.tag_selectors
+  epg_selectors                = each.value.epg_selectors
+  ip_subnet_selectors          = each.value.ip_subnet_selectors
+  ip_external_subnet_selectors = each.value.ip_external_subnet_selectors
 
   depends_on = [
     module.aci_tenant,
@@ -2677,6 +2682,9 @@ locals {
         external_endpoint_group        = try(policy.external_endpoint_group.name, null) != null ? "${policy.external_endpoint_group.name}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}" : ""
         external_endpoint_group_l3out  = try(policy.external_endpoint_group.l3out, null) != null ? "${policy.external_endpoint_group.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}" : ""
         external_endpoint_group_tenant = try(policy.external_endpoint_group.tenant, tenant.name)
+        endpoint_security_group        = try(policy.endpoint_security_group.name, null) != null ? "${policy.endpoint_security_group.name}${local.defaults.apic.tenants.application_profiles.name_suffix}" : ""
+        endpoint_security_group_app    = try(policy.endpoint_security_group.app, null) != null ? "${policy.endpoint_security_group.app}${local.defaults.apic.tenants.application_profiles.endpoint_security_groups.name_suffix}" : ""
+        endpoint_security_group_tenant = try(policy.endpoint_security_group.tenant, tenant.name)
       }
     ]
   ])
