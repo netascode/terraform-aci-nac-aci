@@ -27,6 +27,8 @@ defaults:
       apic_conn_pref: inband
       atomic_counter:
         mode: trail
+      control_plane_mtu:
+        mtu: 9000
       banners:
         apic_gui_alias: ""
         apic_gui_banner_url: ""
@@ -253,6 +255,27 @@ defaults:
           mgmt_epg: inb
           dvs_version: unmanaged
           statistics: false
+        trunk_port_groups:
+          name_suffix: ""
+          promiscuous_mode: false
+          immediacy: lazy
+          mac_change: false
+          forged_transmit: false
+
+      nutanix_vmm_domains:
+        name_suffix: ""
+        access_mode: read-write
+        allocation: dynamic
+        credential_policies:
+          name_suffix: ""
+        controller_profile:
+          name_suffix: ""
+          aos_version: unknown
+          statistics: false
+          cluster_controller:
+            name_suffix: ""
+            port: 0
+
       aaa:
         remote_user_login_policy: no-login
         default_fallback_check: false
@@ -425,6 +448,20 @@ defaults:
       sr_mpls_global_configuration:
         sr_global_block_minimum: 16000
         sr_global_block_maximum: 23999
+      macsec_parameters_policies:
+        name_suffix: ""
+        cipher_suite: gcm-aes-xpn-256
+        window_size: 64
+        key_expiry_time: disabled
+        security_policy: should-secure
+      macsec_keychain_policies:
+        name_suffix: ""
+        key_policies:
+          start_time: now
+          end_time: infinite
+      macsec_interfaces_policies:
+        name_suffix: ""
+        admin_state: true
 
     access_policies:
       leaf_switch_profile_name: "LEAF\\g<id>"
@@ -509,9 +546,47 @@ defaults:
           name_suffix: ""
           node_blocks:
             name_suffix: ""
+      monitoring:
+        policies:
+            name_suffix: ""
+            snmp_traps:
+              name_suffix: ""
+            syslogs:
+              name_suffix: ""
+              audit: true
+              events: true
+              faults: true
+              session: false
+              minimum_severity: warnings
+            fault_severity_policies:
+              initial_severity: inherit
+              target_severity: inherit
       interface_policies:
         cdp_policies:
           name_suffix: ""
+        data_plane_policing_policies:
+          name_suffix: ""
+          admin_state: false
+          mode: bit
+          type: 1R2C
+          sharing_mode: dedicated
+          conform_action: transmit
+          conform_mark_cos: unspecified
+          conform_mark_dscp: unspecified
+          exceed_action: drop
+          exceed_mark_cos: unspecified
+          exceed_mark_dscp: unspecified
+          violate_action: drop
+          violate_mark_cos: unspecified
+          violate_mark_dscp: unspecified
+          rate: 0
+          rate_unit: unspecified
+          burst: unspecified
+          burst_unit: unspecified
+          peak_rate: 0
+          peak_rate_unit: unspecified
+          burst_excessive: unspecified
+          burst_excessive_unit: unspecified
         lldp_policies:
           name_suffix: ""
         link_level_policies:
@@ -833,6 +908,7 @@ defaults:
         name_suffix: ""
         ndo_managed: false
         mac: 00:22:BD:F8:19:FF
+        virtual_mac: not-applicable
         ep_move_detection: false
         arp_flooding: true
         ip_dataplane_learning: true
@@ -848,6 +924,8 @@ defaults:
         multicast_arp_drop: false
         dhcp_labels:
           scope: tenant
+        netflow_monitor_policies:
+          ip_filter_type: ipv4
         subnets:
           primary_ip: false
           public: false
@@ -897,10 +975,29 @@ defaults:
           multicast_address_family: true
           admin_state: true
           as_propagate: none
+        bgp_infra_peers:
+          name_suffix: ""
+          peer_type: wan
+          allow_self_as: false
+          disable_peer_as_check: false
+          send_community: false
+          send_ext_community: false
+          next_hop_self: false
+          as_override: false
+          ttl: 2
+          bfd: false
+          admin_state: true
+          as_propagate: none
+          source_interface_type: l3out-loopback
         redistribution_route_maps:
           source: static
         dhcp_labels:
           scope: infra
+        bfd_multihop_auth:
+          type: none
+          key_id: 1
+        netflow_monitor_policies:
+          ip_filter_type: ipv4
         nodes:
           pod: 1
           router_id_as_loopback: true
@@ -946,6 +1043,9 @@ defaults:
               start_timer: 0
         node_profiles:
           name_suffix: ""
+          bfd_multihop_auth:
+            type: none
+            key_id: 1
           bgp_peers:
             allow_self_as: false
             as_override: false
@@ -965,6 +1065,20 @@ defaults:
             multicast_address_family: true
             admin_state: true
             as_propagate: none
+          bgp_infra_peers:
+            name_suffix: ""
+            peer_type: wan
+            allow_self_as: false
+            disable_peer_as_check: false
+            send_community: false
+            send_ext_community: false
+            next_hop_self: false
+            as_override: false
+            ttl: 2
+            bfd: false
+            admin_state: true
+            as_propagate: none
+            source_interface_type: l3out-loopback
           nodes:
             pod: 1
             router_id_as_loopback: true
@@ -983,6 +1097,8 @@ defaults:
               auth_type: none
             dhcp_labels:
               scope: infra
+            netflow_monitor_policies:
+              ip_filter_type: ipv4
             interfaces:
               pod: 1
               module: 1
@@ -1075,7 +1191,6 @@ defaults:
           preferred_group: false
           qos_class: unspecified
           vmware_vmm_domains:
-            name_suffix: ""
             u_segmentation: false
             delimiter: ""
             netflow: false
@@ -1084,6 +1199,11 @@ defaults:
             allow_promiscuous: reject
             forged_transmits: reject
             mac_changes: reject
+          nutanix_vmm_domains:
+            deployment_immediacy: lazy
+            ipam:
+              gateway_address: "0.0.0.0"
+              dhcp_server_address_override: "0.0.0.0"
           static_ports:
             module: 1
             mode: regular
@@ -1126,6 +1246,9 @@ defaults:
             match_type: any
             ip_statements:
               use_epg_subnet: true
+            vm_statements:
+              type: vm-name
+              operator: equals
           subnets:
             primary_ip: false
             public: false
@@ -1149,6 +1272,9 @@ defaults:
             operator: equals
       inb_endpoint_groups:
         name_suffix: ""
+        subnets:
+          public: false
+          shared: false
       oob_endpoint_groups:
         name_suffix: ""
         name: default
@@ -1253,6 +1379,10 @@ defaults:
           priority: 1
           lsa_retransmit_interval: 5
           lsa_transmit_delay: 1
+        ospf_route_summarization_policies:
+          name_suffix: ""
+          cost: unspecified
+          inter_area: false
         eigrp_interface_policies:
           name_suffix: ""
           bfd: false
@@ -1323,6 +1453,29 @@ defaults:
           name_suffix: ""
           options:
             name_suffix: ""
+        data_plane_policing_policies:
+          name_suffix: ""
+          admin_state: false
+          mode: bit
+          type: 1R2C
+          sharing_mode: dedicated
+          conform_action: transmit
+          conform_mark_cos: unspecified
+          conform_mark_dscp: unspecified
+          exceed_action: drop
+          exceed_mark_cos: unspecified
+          exceed_mark_dscp: unspecified
+          violate_action: drop
+          violate_mark_cos: unspecified
+          violate_mark_dscp: unspecified
+          rate: 0
+          rate_unit: unspecified
+          burst: unspecified
+          burst_unit: unspecified
+          peak_rate: 0
+          peak_rate_unit: unspecified
+          burst_excessive: unspecified
+          burst_excessive_unit: unspecified
         route_tag_policies:
           name_suffix: ""
           tag: 4294967295
@@ -1429,6 +1582,9 @@ defaults:
           frequency: 60
           sla_type: icmp
           port: 0
+          http_method: get
+          http_version: HTTP11
+          http_uri: /
         trust_control_policies:
           name_suffix: ""
           dhcp_v4_server: false
@@ -1518,6 +1674,15 @@ defaults:
             fault_severity_policies:
               initial_severity: inherit
               target_severity: inherit
+        netflow_exporters:
+          name_suffix: ""
+          source_type: custom-src-ip
+          source_ip: 0.0.0.0
+          dscp: CS2
+        netflow_monitors:
+          name_suffix: ""
+        netflow_records:
+          name_suffix: ""
       services:
         l4l7_devices:
           name_suffix: ""

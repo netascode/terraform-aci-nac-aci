@@ -24,6 +24,7 @@ module "aci_macsec_parameters_policy" {
   window_size            = 1024
   key_expiry_time        = 120
   security_policy        = "must-secure"
+  type                   = "access"
 }
 ```
 <!-- END_TF_DOCS -->

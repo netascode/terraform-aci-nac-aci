@@ -31,12 +31,13 @@ module "aci_l3out_node_profile" {
       description = "Default Route"
       preference  = 10
       bfd         = true
-      next_hops = [{
-        ip          = "3.3.3.3"
-        description = "Next Hop Description"
-        preference  = 10
-        type        = "prefix"
-        track_list  = "TRACK_LIST1"
+      next_hops = [
+        {
+          ip          = "3.3.3.3"
+          description = "Next Hop Description"
+          preference  = 10
+          type        = "prefix"
+          track_list  = "TRACK_LIST1"
         },
         {
           ip            = "5.5.5.5"
@@ -44,8 +45,17 @@ module "aci_l3out_node_profile" {
           preference    = 10
           type          = "prefix"
           ip_sla_policy = "IP_SLA_POLICY1"
+          track_list    = "TRACK_LIST1"
         }
       ]
+      },
+      {
+        prefix = "192.168.1.1/32"
+        next_hops = [{
+          ip         = "0.0.0.0/0"
+          preference = 0
+          type       = "none"
+        }]
     }]
   }]
   bgp_peers = [{
@@ -104,12 +114,15 @@ module "aci_l3out_node_profile" {
 | <a name="input_multipod"></a> [multipod](#input\_multipod) | Multipod L3out flag. | `bool` | `false` | no |
 | <a name="input_remote_leaf"></a> [remote\_leaf](#input\_remote\_leaf) | Remote leaf L3out flag. | `bool` | `false` | no |
 | <a name="input_sr_mpls"></a> [sr\_mpls](#input\_sr\_mpls) | SR MPLS L3out flag. | `bool` | `false` | no |
-| <a name="input_bgp_infra_peers"></a> [bgp\_infra\_peers](#input\_bgp\_infra\_peers) | List of BGP EVPN peers for SR MPLS L3out. Allowed values `remote_as`: 0-4294967295. Default value `allow_self_as`: false. Default value `disable_peer_as_check`: false. Default value `bfd`: false. Default value `ttl`: 2. Default value `admin_state`: true. Allowed values `local_as`: 0-4294967295. Choices `as_propagate`: `none`, `no-prepend`, `replace-as`, `dual-as`. Default value `as_propagate`: `none`. | <pre>list(object({<br/>    ip                    = string<br/>    remote_as             = string<br/>    description           = optional(string, "")<br/>    allow_self_as         = optional(bool, false)<br/>    disable_peer_as_check = optional(bool, false)<br/>    password              = optional(string)<br/>    bfd                   = optional(bool, false)<br/>    ttl                   = optional(number, 1)<br/>    admin_state           = optional(bool, true)<br/>    local_as              = optional(number)<br/>    as_propagate          = optional(string, "none")<br/>    peer_prefix_policy    = optional(string)<br/>  }))</pre> | `[]` | no |
+| <a name="input_bgp_infra_peers"></a> [bgp\_infra\_peers](#input\_bgp\_infra\_peers) | List of BGP peers for Infra L3out. Allowed values `remote_as`: 0-4294967295. Default value `allow_self_as`: false. Default value `disable_peer_as_check`: false. Default value `bfd`: false. Default value `ttl`: 2. Default value `admin_state`: true. Allowed values `local_as`: 0-4294967295. Choices `as_propagate`: `none`, `no-prepend`, `replace-as`, `dual-as`. Default value `as_propagate`: `none`. Choices `peer_type`: `sr-mpls`, `wan`, `mdp-wan` or `intersite` | <pre>list(object({<br/>    ip                    = string<br/>    remote_as             = string<br/>    description           = optional(string, "")<br/>    allow_self_as         = optional(bool, false)<br/>    disable_peer_as_check = optional(bool, false)<br/>    as_override           = optional(bool, false)<br/>    next_hop_self         = optional(bool, false)<br/>    send_community        = optional(bool, false)<br/>    send_ext_community    = optional(bool, false)<br/>    password              = optional(string)<br/>    bfd                   = optional(bool, false)<br/>    ttl                   = optional(number, 1)<br/>    admin_state           = optional(bool, true)<br/>    local_as              = optional(number)<br/>    as_propagate          = optional(string, "none")<br/>    peer_prefix_policy    = optional(string)<br/>    peer_type             = optional(string)<br/>    source_interface_type = optional(string, "l3out-loopback")<br/>    data_plane_address    = optional(string, null)<br/>  }))</pre> | `[]` | no |
 | <a name="input_mpls_custom_qos_policy"></a> [mpls\_custom\_qos\_policy](#input\_mpls\_custom\_qos\_policy) | MPLS Customer QoS Policy | `string` | `""` | no |
 | <a name="input_bfd_multihop_node_policy"></a> [bfd\_multihop\_node\_policy](#input\_bfd\_multihop\_node\_policy) | BFD Multihop Node Policy | `string` | `""` | no |
 | <a name="input_bgp_protocol_profile_name"></a> [bgp\_protocol\_profile\_name](#input\_bgp\_protocol\_profile\_name) | BGP Protocol Name. | `string` | `""` | no |
 | <a name="input_bgp_timer_policy"></a> [bgp\_timer\_policy](#input\_bgp\_timer\_policy) | Node Profile's BGP Timer Policy | `string` | `""` | no |
 | <a name="input_bgp_as_path_policy"></a> [bgp\_as\_path\_policy](#input\_bgp\_as\_path\_policy) | Node Profile's BGP AS-Path Policy | `string` | `""` | no |
+| <a name="input_bfd_multihop_auth_key_id"></a> [bfd\_multihop\_auth\_key\_id](#input\_bfd\_multihop\_auth\_key\_id) | BFD Multihop authentication key ID | `number` | `1` | no |
+| <a name="input_bfd_multihop_auth_key"></a> [bfd\_multihop\_auth\_key](#input\_bfd\_multihop\_auth\_key) | BFD Multihop authentication key | `string` | `""` | no |
+| <a name="input_bfd_multihop_auth_type"></a> [bfd\_multihop\_auth\_type](#input\_bfd\_multihop\_auth\_type) | BFD Multihop authentication type | `string` | `"none"` | no |
 
 ## Outputs
 

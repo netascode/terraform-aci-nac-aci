@@ -54,10 +54,10 @@ variable "description" {
 variable "enforcement_direction" {
   description = "VRF enforcement direction. Choices: `ingress`, `egress`."
   type        = string
-  default     = "ingress"
+  default     = null
 
   validation {
-    condition     = contains(["ingress", "egress"], var.enforcement_direction)
+    condition     = var.enforcement_direction == null ? true : contains(["ingress", "egress"], var.enforcement_direction)
     error_message = "Valid values are `ingress` or `egress`."
   }
 }

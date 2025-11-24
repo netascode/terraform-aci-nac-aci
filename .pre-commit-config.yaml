@@ -75,6 +75,10 @@ repos:
             "./modules/terraform-aci-access-leaf-switch-profile/examples/complete",
           ]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-monitoring-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-access-monitoring-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-access-span-destination-group"]
       - id: terraform-docs-system
         args:
@@ -217,6 +221,10 @@ repos:
         args: ["./modules/terraform-aci-coop-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-coop-policy/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-data-plane-policing-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-data-plane-policing-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-date-time-format"]
       - id: terraform-docs-system
@@ -649,6 +657,13 @@ repos:
         args:
           ["./modules/terraform-aci-ospf-interface-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ospf-route-summarization-policy"]
+      - id: terraform-docs-system
+        args:
+          [
+            "./modules/terraform-aci-ospf-route-summarization-policy/examples/complete",
+          ]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-ospf-timer-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-ospf-timer-policy/examples/complete"]
@@ -679,6 +694,10 @@ repos:
         args: ["./modules/terraform-aci-port-tracking"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-port-tracking/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-control-plane-mtu"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-control-plane-mtu/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-psu-policy"]
       - id: terraform-docs-system
@@ -809,6 +828,18 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-tenant/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-netflow-exporter"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-netflow-exporter/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-netflow-monitor"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-netflow-monitor/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-netflow-record"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tenant-netflow-record/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-tenant-span-destination-group"]
       - id: terraform-docs-system
         args:
@@ -865,3 +896,7 @@ repos:
         args: ["./modules/terraform-aci-vspan-session"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-vspan-session/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-nutanix-vmm-domain"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-nutanix-vmm-domain/examples/complete"]

@@ -131,6 +131,15 @@ resource "aci_rest_managed" "fvRsBd" {
   }
 }
 
+resource "aci_rest_managed" "fvRsDppPol" {
+  count      = var.data_plane_policing_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvAEPg.dn}/rsdppPol"
+  class_name = "fvRsDppPol"
+  content = {
+    tnQosDppPolName = var.data_plane_policing_policy
+  }
+}
+
 resource "aci_rest_managed" "fvRsCustQosPol" {
   count      = var.custom_qos_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.fvAEPg.dn}/rscustQosPol"
@@ -519,6 +528,38 @@ resource "aci_rest_managed" "fvRsDomAtt_vmm" {
     resImedcy     = each.value.resolution_immediacy
     switchingMode = "native"
     customEpgName = each.value.custom_epg_name
+  }
+}
+
+resource "aci_rest_managed" "fvRsDomAtt_vmm_ntnx" {
+  for_each   = { for vmm_ntnx in var.nutanix_vmm_domains : vmm_ntnx.name => vmm_ntnx }
+  dn         = "${aci_rest_managed.fvAEPg.dn}/rsdomAtt-[uni/vmmp-Nutanix/dom-${each.value.name}]"
+  class_name = "fvRsDomAtt"
+  content = {
+    tDn              = "uni/vmmp-Nutanix/dom-${each.value.name}"
+    encap            = each.value.vlan != null ? "vlan-${each.value.vlan}" : "unknown"
+    encapMode        = "auto"
+    instrImedcy      = each.value.deployment_immediacy
+    resImedcy        = "pre-provision"
+    customEpgName    = each.value.custom_epg_name
+    ipamEnabled      = each.value.gateway_address != "0.0.0.0" ? "yes" : "no"
+    ipamGateway      = each.value.gateway_address
+    ipamDhcpOverride = each.value.dhcp_server_address_override
+  }
+}
+
+resource "aci_rest_managed" "fvAEPgAddrMgmtPoolAtt" {
+  for_each   = { for vmm_ntnx in var.nutanix_vmm_domains : vmm_ntnx.name => vmm_ntnx if vmm_ntnx.dhcp_address_pool != "" }
+  dn         = "${aci_rest_managed.fvRsDomAtt_vmm_ntnx[each.value.name].dn}/epgipampoolatt"
+  class_name = "fvAEPgAddrMgmtPoolAtt"
+}
+
+resource "aci_rest_managed" "fvRsAddrMgmtPool" {
+  for_each   = { for vmm_ntnx in var.nutanix_vmm_domains : vmm_ntnx.name => vmm_ntnx if vmm_ntnx.dhcp_address_pool != "" }
+  dn         = "${aci_rest_managed.fvAEPgAddrMgmtPoolAtt[each.value.name].dn}/rsAddrMgmtPool"
+  class_name = "fvRsAddrMgmtPool"
+  content = {
+    tDn = "uni/tn-${var.tenant}/ipampool-${each.value.dhcp_address_pool}"
   }
 }
 

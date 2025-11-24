@@ -4,6 +4,7 @@ module "aci_macsec_keychain_policies" {
 
   name        = "macsec-keychain-pol"
   description = "Keychain Description"
+  type        = "access"
   key_policies = [{
     name           = "keypolicy1"
     description    = "Key Policy Description"
