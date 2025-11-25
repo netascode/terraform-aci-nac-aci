@@ -133,6 +133,9 @@ locals {
           domain      = path.physical_domain != null ? "phys-${path.physical_domain}" : (path.vmware_vmm_domain != null ? "vmmp-VMware/dom-${path.vmware_vmm_domain}" : "")
           elag        = path.elag
           vlan        = path.vlan
+          forged_transmit     = path.forged_transmit
+          mac_change = path.mac_change
+          promiscous_mode    = path.promiscous_mode
         }
       }
     ] if int.floating_svi == true
@@ -410,6 +413,9 @@ resource "aci_rest_managed" "l3extRsDynPathAtt" {
     floatingAddr = each.value.floating_ip
     tDn          = "uni/${each.value.domain}"
     encap        = each.value.vlan != null && each.value.vlan != "" ? "vlan-${each.value.vlan}" : null
+    forgedTransmit = each.value.forged_transmit == true ? "Enabled" : "Disabled"
+    macChange      = each.value.mac_change == true ? "Enabled" : "Disabled"
+    promMode       = each.value.promiscous_mode == true ? "Enabled" : "Disabled"
   }
 }
 
