@@ -561,22 +561,24 @@ locals {
           policy_group      = try("${selector.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "")
           policy_group_type = try([for pg in local.access_policies.leaf_interface_policy_groups : pg.type if pg.name == selector.policy_group][0], strcontains(try(selector.policy_group, ""), "system-breakout") ? "breakout" : "access")
           port_blocks = [for block in try(selector.port_blocks, []) : {
-            description = try(block.description, "")
-            name        = "${block.name}${local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.name_suffix}"
-            from_module = try(block.from_module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
-            from_port   = block.from_port
-            to_module   = try(block.to_module, block.from_module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
-            to_port     = try(block.to_port, block.from_port)
+            description                = try(block.description, "")
+            name                       = "${block.name}${local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.name_suffix}"
+            from_module                = try(block.from_module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
+            from_port                  = block.from_port
+            to_module                  = try(block.to_module, block.from_module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
+            to_port                    = try(block.to_port, block.from_port)
+            port_channel_member_policy = try("${block.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", null)
           }]
           sub_port_blocks = [for block in try(selector.sub_port_blocks, []) : {
-            description   = try(block.description, "")
-            name          = "${block.name}${local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.name_suffix}"
-            from_module   = try(block.from_module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
-            from_port     = block.from_port
-            to_module     = try(block.to_module, block.from_module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
-            to_port       = try(block.to_port, block.from_port)
-            from_sub_port = block.from_sub_port
-            to_sub_port   = try(block.to_sub_port, block.from_sub_port)
+            description                = try(block.description, "")
+            name                       = "${block.name}${local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.name_suffix}"
+            from_module                = try(block.from_module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
+            from_port                  = block.from_port
+            to_module                  = try(block.to_module, block.from_module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
+            to_port                    = try(block.to_port, block.from_port)
+            from_sub_port              = block.from_sub_port
+            to_sub_port                = try(block.to_sub_port, block.from_sub_port)
+            port_channel_member_policy = try("${block.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", null)
           }]
         }
       }

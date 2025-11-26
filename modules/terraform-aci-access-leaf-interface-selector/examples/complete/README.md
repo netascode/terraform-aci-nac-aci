@@ -21,17 +21,19 @@ module "aci_access_leaf_interface_selector" {
   policy_group_type = "access"
   policy_group      = "ACC1"
   port_blocks = [{
-    name        = "PB1"
-    description = "My Description"
-    from_port   = 1
-    to_port     = 2
+    name                       = "PB1"
+    description                = "My Description"
+    from_port                  = 1
+    to_port                    = 2
+    port_channel_member_policy = "FAST_LACP"
   }]
   sub_port_blocks = [{
-    name          = "SPB1"
-    description   = "My Description"
-    from_port     = 1
-    from_sub_port = 1
-    to_sub_port   = 2
+    name                       = "SPB1"
+    description                = "My Description"
+    from_port                  = 1
+    from_sub_port              = 1
+    to_sub_port                = 2
+    port_channel_member_policy = "FAST_LACP"
   }]
 }
 ```
