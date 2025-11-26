@@ -567,7 +567,6 @@ locals {
             from_port                  = block.from_port
             to_module                  = try(block.to_module, block.from_module, local.defaults.apic.access_policies.leaf_interface_profiles.selectors.port_blocks.from_module)
             to_port                    = try(block.to_port, block.from_port)
-            policy_group               = try("${selector.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "")
             port_channel_member_policy = try("${block.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", null)
           }]
           sub_port_blocks = [for block in try(selector.sub_port_blocks, []) : {
@@ -579,7 +578,6 @@ locals {
             to_port                    = try(block.to_port, block.from_port)
             from_sub_port              = block.from_sub_port
             to_sub_port                = try(block.to_sub_port, block.from_sub_port)
-            policy_group               = try("${selector.policy_group}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", "")
             port_channel_member_policy = try("${block.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", null)
           }]
         }
