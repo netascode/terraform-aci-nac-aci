@@ -611,7 +611,7 @@ resource "aci_rest_managed" "l3extVxGwFabrics" {
 resource "aci_rest_managed" "l3extConsBgwSet" {
   count      = var.vxlan_enabled ? 1 : 0
   dn         = "${aci_rest_managed.l3extVxGwFabrics[0].dn}/consbgwset-${var.bgw_pol_set}"
-  depends_on = [ aci_rest_managed.vxlanExtP ]
+  depends_on = [ aci_rest_managed.l3extVxGwFabrics ]
   class_name = "l3extConsBgwSet"
   content = {
     name = var.bgw_pol_set
@@ -621,13 +621,13 @@ resource "aci_rest_managed" "l3extConsBgwSet" {
 resource "aci_rest_managed" "l3extRsVxGwToRtProfile-import" {
   count      = var.import_route_map != "" ? 1 : 0
   dn         = "uni/tn-${var.tenant}/out-vxlan_vrf_${var.tenant}_${var.name}/vxgwfabrics/rsvxGwToRtProfile-[uni/tn-${var.tenant}/prof-${var.import_route_map}]-import"
-  depends_on = [ aci_rest_managed.vxlanExtP ]
+  depends_on = [ aci_rest_managed.l3extVxGwFabrics ]
   class_name = "l3extRsVxGwToRtProfile"
 }
 
 resource "aci_rest_managed" "l3extRsVxGwToRtProfile-export" {
   count      = var.export_route_map != "" ? 1 : 0
   dn         = "uni/tn-${var.tenant}/out-vxlan_vrf_${var.tenant}_${var.name}/vxgwfabrics/rsvxGwToRtProfile-[uni/tn-${var.tenant}/prof-${var.export_route_map}]-export"
-  depends_on = [ aci_rest_managed.vxlanExtP ]
+  depends_on = [ aci_rest_managed.l3extVxGwFabrics ]
   class_name = "l3extRsVxGwToRtProfile"
 }
