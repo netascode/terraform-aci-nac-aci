@@ -1003,6 +1003,20 @@ defaults:
           multicast_address_family: true
           admin_state: true
           as_propagate: none
+        bgp_infra_peers:
+          name_suffix: ""
+          peer_type: wan
+          allow_self_as: false
+          disable_peer_as_check: false
+          send_community: false
+          send_ext_community: false
+          next_hop_self: false
+          as_override: false
+          ttl: 2
+          bfd: false
+          admin_state: true
+          as_propagate: none
+          source_interface_type: l3out-loopback
         redistribution_route_maps:
           source: static
         dhcp_labels:
@@ -1079,6 +1093,20 @@ defaults:
             multicast_address_family: true
             admin_state: true
             as_propagate: none
+          bgp_infra_peers:
+            name_suffix: ""
+            peer_type: wan
+            allow_self_as: false
+            disable_peer_as_check: false
+            send_community: false
+            send_ext_community: false
+            next_hop_self: false
+            as_override: false
+            ttl: 2
+            bfd: false
+            admin_state: true
+            as_propagate: none
+            source_interface_type: l3out-loopback
           nodes:
             pod: 1
             router_id_as_loopback: true
@@ -1270,6 +1298,8 @@ defaults:
           preferred_group: false
           tag_selectors:
             operator: equals
+          ip_external_subnet_selectors:
+            shared: false
       inb_endpoint_groups:
         name_suffix: ""
         subnets:
@@ -1379,6 +1409,10 @@ defaults:
           priority: 1
           lsa_retransmit_interval: 5
           lsa_transmit_delay: 1
+        ospf_route_summarization_policies:
+          name_suffix: ""
+          cost: unspecified
+          inter_area: false
         eigrp_interface_policies:
           name_suffix: ""
           bfd: false

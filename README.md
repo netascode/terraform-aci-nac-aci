@@ -88,7 +88,7 @@ Additional example repositories:
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
 | <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.17.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.3.0 |
-| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.0.2 |
+| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.0.2, < 2.0.0 |
 
 ## Inputs
 
@@ -296,6 +296,7 @@ Additional example repositories:
 | <a name="module_aci_oob_external_management_instance"></a> [aci\_oob\_external\_management\_instance](#module\_aci\_oob\_external\_management\_instance) | ./modules/terraform-aci-oob-external-management-instance | n/a |
 | <a name="module_aci_oob_node_address"></a> [aci\_oob\_node\_address](#module\_aci\_oob\_node\_address) | ./modules/terraform-aci-oob-node-address | n/a |
 | <a name="module_aci_ospf_interface_policy"></a> [aci\_ospf\_interface\_policy](#module\_aci\_ospf\_interface\_policy) | ./modules/terraform-aci-ospf-interface-policy | n/a |
+| <a name="module_aci_ospf_route_summarization_policy"></a> [aci\_ospf\_route\_summarization\_policy](#module\_aci\_ospf\_route\_summarization\_policy) | ./modules/terraform-aci-ospf-route-summarization-policy | n/a |
 | <a name="module_aci_ospf_timer_policy"></a> [aci\_ospf\_timer\_policy](#module\_aci\_ospf\_timer\_policy) | ./modules/terraform-aci-ospf-timer-policy | n/a |
 | <a name="module_aci_physical_domain"></a> [aci\_physical\_domain](#module\_aci\_physical\_domain) | ./modules/terraform-aci-physical-domain | n/a |
 | <a name="module_aci_pim_policy"></a> [aci\_pim\_policy](#module\_aci\_pim\_policy) | ./modules/terraform-aci-pim-policy | n/a |

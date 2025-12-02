@@ -722,6 +722,11 @@ locals {
             value       = sel.value
             description = try(sel.description, "")
           }]
+          ip_external_subnet_selectors = [for sel in try(esg.ip_external_subnet_selectors, []) : {
+            ip          = sel.ip
+            description = try(sel.description, "")
+            shared      = try(sel.shared, local.defaults.apic.tenants.application_profiles.endpoint_security_groups.ip_external_subnet_selectors.shared)
+          }]
         }
       ]
     ]
@@ -731,24 +736,24 @@ locals {
 module "aci_endpoint_security_group" {
   source = "./modules/terraform-aci-endpoint-security-group"
 
-  for_each                    = { for esg in local.endpoint_security_groups : esg.key => esg if local.modules.aci_endpoint_security_group && var.manage_tenants }
-  tenant                      = each.value.tenant
-  application_profile         = each.value.application_profile
-  name                        = each.value.name
-  description                 = each.value.description
-  vrf                         = each.value.vrf
-  shutdown                    = each.value.shutdown
-  deployment_immediacy        = each.value.deployment_immediacy
-  intra_esg_isolation         = each.value.intra_esg_isolation
-  preferred_group             = each.value.preferred_group
-  contract_consumers          = each.value.contract_consumers
-  contract_providers          = each.value.contract_providers
-  contract_imported_consumers = each.value.contract_imported_consumers
-  contract_intra_esgs         = each.value.contract_intra_esgs
-  esg_contract_masters        = each.value.esg_contract_masters
-  tag_selectors               = each.value.tag_selectors
-  epg_selectors               = each.value.epg_selectors
-  ip_subnet_selectors         = each.value.ip_subnet_selectors
+  for_each                     = { for esg in local.endpoint_security_groups : esg.key => esg if local.modules.aci_endpoint_security_group && var.manage_tenants }
+  tenant                       = each.value.tenant
+  application_profile          = each.value.application_profile
+  name                         = each.value.name
+  description                  = each.value.description
+  vrf                          = each.value.vrf
+  shutdown                     = each.value.shutdown
+  intra_esg_isolation          = each.value.intra_esg_isolation
+  preferred_group              = each.value.preferred_group
+  contract_consumers           = each.value.contract_consumers
+  contract_providers           = each.value.contract_providers
+  contract_imported_consumers  = each.value.contract_imported_consumers
+  contract_intra_esgs          = each.value.contract_intra_esgs
+  esg_contract_masters         = each.value.esg_contract_masters
+  tag_selectors                = each.value.tag_selectors
+  epg_selectors                = each.value.epg_selectors
+  ip_subnet_selectors          = each.value.ip_subnet_selectors
+  ip_external_subnet_selectors = each.value.ip_external_subnet_selectors
 
   depends_on = [
     module.aci_tenant,
@@ -1040,7 +1045,14 @@ locals {
               preference  = try(sr.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.preference)
               bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
               track_list  = try("${sr.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
-              next_hops = [for nh in try(sr.next_hops, []) : {
+              next_hops = [for nh in length(try(sr.next_hops, [])) > 0 ? try(sr.next_hops, []) : [{
+                ip            = "0.0.0.0/0",
+                type          = "none",
+                description   = null,
+                preference    = 0,
+                ip_sla_policy = null,
+                track_list    = null
+                }] : {
                 ip            = nh.ip
                 description   = try(nh.description, "")
                 preference    = try(nh.preference, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.next_hops.preference)
@@ -1077,7 +1089,28 @@ locals {
             peer_prefix_policy               = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
             export_route_control             = try("${peer.export_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
             import_route_control             = try("${peer.import_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
-          }]
+          } if tenant.name != "infra"]
+          bgp_infra_peers = [for peer in try(np.bgp_infra_peers, []) : {
+            ip                    = peer.ip
+            remote_as             = peer.remote_as
+            admin_state           = try(peer.admin_state, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.admin_state)
+            description           = try(peer.description, "")
+            allow_self_as         = try(peer.allow_self_as, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.allow_self_as)
+            disable_peer_as_check = try(peer.disable_peer_as_check, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.disable_peer_as_check)
+            as_override           = try(peer.as_override, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.as_override)
+            next_hop_self         = try(peer.next_hop_self, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.next_hop_self)
+            send_community        = try(peer.send_community, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.send_community)
+            send_ext_community    = try(peer.send_ext_community, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.send_ext_community)
+            peer_type             = try(peer.peer_type, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.peer_type)
+            bfd                   = try(peer.bfd, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.bfd)
+            password              = try(peer.password, null)
+            ttl                   = try(peer.ttl, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.ttl)
+            local_as              = try(peer.local_as, null)
+            as_propagate          = try(peer.as_propagate, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.as_propagate)
+            source_interface_type = try(peer.peer_type, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.peer_type) == "wan" ? try(peer.source_interface_type, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.source_interface_type) : null
+            data_plane_address    = try(peer.peer_type, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.peer_type) == "wan" && try(peer.source_interface_type, local.defaults.apic.tenants.l3outs.node_profiles.bgp_infra_peers.source_interface_type) == "routable-loopback" ? try(peer.data_plane_address, null) : null
+            peer_prefix_policy    = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
+          } if tenant.name == "infra"]
         }
       ]
     ]
@@ -1098,6 +1131,7 @@ module "aci_l3out_node_profile_manual" {
   bgp_as_path_policy        = each.value.bgp_as_path_policy
   nodes                     = each.value.nodes
   bgp_peers                 = each.value.bgp_peers
+  bgp_infra_peers           = each.value.bgp_infra_peers
   bfd_multihop_node_policy  = each.value.bfd_multihop_node_policy
   bfd_multihop_auth_key_id  = each.value.bfd_multihop_auth_key_id
   bfd_multihop_auth_key     = each.value.bfd_multihop_auth_key
@@ -1139,7 +1173,14 @@ locals {
             preference  = try(sr.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.preference)
             bfd         = try(sr.bfd, local.defaults.apic.tenants.l3outs.node_profiles.nodes.static_routes.bfd)
             track_list  = try("${sr.track_list}${local.defaults.apic.tenants.policies.track_lists.name_suffix}", null)
-            next_hops = [for nh in try(sr.next_hops, []) : {
+            next_hops = [for nh in length(try(sr.next_hops, [])) > 0 ? try(sr.next_hops, []) : [{
+              ip            = "0.0.0.0/0",
+              type          = "none",
+              description   = null,
+              preference    = 0,
+              ip_sla_policy = null,
+              track_list    = null
+              }] : {
               ip            = nh.ip
               description   = try(nh.description, "")
               preference    = try(nh.preference, local.defaults.apic.tenants.l3outs.nodes.static_routes.next_hops.preference)
@@ -1176,7 +1217,28 @@ locals {
           peer_prefix_policy               = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
           export_route_control             = try("${peer.export_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
           import_route_control             = try("${peer.import_route_control}${local.defaults.apic.tenants.policies.route_control_route_maps.name_suffix}", null)
-        }]
+        } if tenant.name != "infra"]
+        bgp_infra_peers = [for peer in try(l3out.bgp_infra_peers, []) : {
+          ip                    = peer.ip
+          remote_as             = peer.remote_as
+          admin_state           = try(peer.admin_state, local.defaults.apic.tenants.l3outs.bgp_infra_peers.admin_state)
+          description           = try(peer.description, "")
+          allow_self_as         = try(peer.allow_self_as, local.defaults.apic.tenants.l3outs.bgp_infra_peers.allow_self_as)
+          disable_peer_as_check = try(peer.disable_peer_as_check, local.defaults.apic.tenants.l3outs.bgp_infra_peers.disable_peer_as_check)
+          as_override           = try(peer.as_override, local.defaults.apic.tenants.l3outs.bgp_infra_peers.as_override)
+          next_hop_self         = try(peer.next_hop_self, local.defaults.apic.tenants.l3outs.bgp_infra_peers.next_hop_self)
+          send_community        = try(peer.send_community, local.defaults.apic.tenants.l3outs.bgp_infra_peers.send_community)
+          send_ext_community    = try(peer.send_ext_community, local.defaults.apic.tenants.l3outs.bgp_infra_peers.send_ext_community)
+          peer_type             = try(peer.peer_type, local.defaults.apic.tenants.l3outs.bgp_infra_peers.peer_type)
+          bfd                   = try(peer.bfd, local.defaults.apic.tenants.l3outs.bgp_infra_peers.bfd)
+          password              = try(peer.password, null)
+          ttl                   = try(peer.ttl, local.defaults.apic.tenants.l3outs.bgp_infra_peers.ttl)
+          local_as              = try(peer.local_as, null)
+          as_propagate          = try(peer.as_propagate, local.defaults.apic.tenants.l3outs.bgp_infra_peers.as_propagate)
+          source_interface_type = try(peer.peer_type, local.defaults.apic.tenants.l3outs.bgp_infra_peers.peer_type) == "wan" ? try(peer.source_interface_type, local.defaults.apic.tenants.l3outs.bgp_infra_peers.source_interface_type) : null
+          data_plane_address    = try(peer.peer_type, local.defaults.apic.tenants.l3outs.bgp_infra_peers.peer_type) == "wan" && try(peer.source_interface_type, local.defaults.apic.tenants.l3outs.bgp_infra_peers.source_interface_type) == "routable-loopback" ? try(peer.data_plane_address, null) : null
+          peer_prefix_policy    = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
+        } if tenant.name == "infra"]
       } if length(try(l3out.nodes, [])) != 0
     ]
   ])
@@ -1196,6 +1258,7 @@ module "aci_l3out_node_profile_auto" {
   bgp_as_path_policy        = each.value.bgp_as_path_policy
   nodes                     = each.value.nodes
   bgp_peers                 = each.value.bgp_peers
+  bgp_infra_peers           = each.value.bgp_infra_peers
   bfd_multihop_node_policy  = each.value.bfd_multihop_node_policy
   bfd_multihop_auth_key_id  = each.value.bfd_multihop_auth_key_id
   bfd_multihop_auth_key     = each.value.bfd_multihop_auth_key
@@ -1577,22 +1640,23 @@ locals {
             direction = try(rcp.direction, local.defaults.apic.tenants.l3outs.external_endpoint_groups.route_control_profiles.direction)
           }]
           subnets = [for subnet in try(epg.subnets, []) : {
-            name                           = try(subnet.name, "")
-            annotation                     = try(subnet.ndo_managed, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ndo_managed) ? "orchestrator:msc" : null
-            prefix                         = subnet.prefix
-            description                    = try(subnet.description, "")
-            import_route_control           = try(subnet.import_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_route_control)
-            export_route_control           = try(subnet.export_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.export_route_control)
-            shared_route_control           = try(subnet.shared_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.shared_route_control)
-            import_security                = try(subnet.import_security, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_security)
-            shared_security                = try(subnet.shared_security, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.shared_security)
-            aggregate_import_route_control = try(subnet.aggregate_import_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_import_route_control)
-            aggregate_export_route_control = try(subnet.aggregate_export_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_export_route_control)
-            aggregate_shared_route_control = try(subnet.aggregate_shared_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_shared_route_control)
-            bgp_route_summarization        = try(subnet.bgp_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.bgp_route_summarization)
-            bgp_route_summarization_policy = try(subnet.bgp_route_summarization_policy, "")
-            ospf_route_summarization       = try(subnet.ospf_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ospf_route_summarization)
-            eigrp_route_summarization      = try(subnet.eigrp_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.eigrp_route_summarization)
+            name                            = try(subnet.name, "")
+            annotation                      = try(subnet.ndo_managed, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ndo_managed) ? "orchestrator:msc" : null
+            prefix                          = subnet.prefix
+            description                     = try(subnet.description, "")
+            import_route_control            = try(subnet.import_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_route_control)
+            export_route_control            = try(subnet.export_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.export_route_control)
+            shared_route_control            = try(subnet.shared_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.shared_route_control)
+            import_security                 = try(subnet.import_security, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.import_security)
+            shared_security                 = try(subnet.shared_security, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.shared_security)
+            aggregate_import_route_control  = try(subnet.aggregate_import_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_import_route_control)
+            aggregate_export_route_control  = try(subnet.aggregate_export_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_export_route_control)
+            aggregate_shared_route_control  = try(subnet.aggregate_shared_route_control, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.aggregate_shared_route_control)
+            bgp_route_summarization         = try(subnet.bgp_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.bgp_route_summarization)
+            bgp_route_summarization_policy  = try(subnet.bgp_route_summarization_policy, "")
+            ospf_route_summarization        = try(subnet.ospf_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.ospf_route_summarization)
+            ospf_route_summarization_policy = try(subnet.ospf_route_summarization_policy, "")
+            eigrp_route_summarization       = try(subnet.eigrp_route_summarization, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.eigrp_route_summarization)
             route_control_profiles = [for rcp in try(subnet.route_control_profiles, []) : {
               name      = rcp.name
               direction = try(rcp.direction, local.defaults.apic.tenants.l3outs.external_endpoint_groups.subnets.route_control_profiles.direction)
@@ -1733,6 +1797,9 @@ locals {
             local_as              = try(peer.local_as, null)
             as_propagate          = try(peer.as_propagate, local.defaults.apic.tenants.sr_mpls_l3outs.node_profiles.evpn_connectivity.as_propagate)
             peer_prefix_policy    = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
+            peer_type             = "sr-mpls"
+            send_community        = true
+            send_ext_community    = true
           }]
         }
       ]
@@ -2204,6 +2271,36 @@ module "aci_eigrp_interface_policy" {
 }
 
 locals {
+  ospf_route_summarization_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.ospf_route_summarization_policies, []) : {
+        key         = format("%s/%s", tenant.name, policy.name)
+        tenant      = tenant.name
+        name        = "${policy.name}${local.defaults.apic.tenants.policies.ospf_route_summarization_policies.name_suffix}"
+        description = try(policy.description, "")
+        cost        = try(policy.cost, local.defaults.apic.tenants.policies.ospf_route_summarization_policies.cost)
+        inter_area  = try(policy.inter_area, local.defaults.apic.tenants.policies.ospf_route_summarization_policies.inter_area)
+      }
+    ]
+  ])
+}
+
+module "aci_ospf_route_summarization_policy" {
+  source = "./modules/terraform-aci-ospf-route-summarization-policy"
+
+  for_each    = { for pol in local.ospf_route_summarization_policies : pol.key => pol if local.modules.aci_ospf_route_summarization_policy && var.manage_tenants }
+  tenant      = each.value.tenant
+  name        = each.value.name
+  description = each.value.description
+  cost        = each.value.cost
+  inter_area  = each.value.inter_area
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
   bgp_route_summarization_policies = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.policies.bgp_route_summarization_policies, []) : {
@@ -2585,6 +2682,9 @@ locals {
         external_endpoint_group        = try(policy.external_endpoint_group.name, null) != null ? "${policy.external_endpoint_group.name}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}" : ""
         external_endpoint_group_l3out  = try(policy.external_endpoint_group.l3out, null) != null ? "${policy.external_endpoint_group.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}" : ""
         external_endpoint_group_tenant = try(policy.external_endpoint_group.tenant, tenant.name)
+        endpoint_security_group        = try(policy.endpoint_security_group.name, null) != null ? "${policy.endpoint_security_group.name}${local.defaults.apic.tenants.application_profiles.name_suffix}" : ""
+        endpoint_security_group_app    = try(policy.endpoint_security_group.app, null) != null ? "${policy.endpoint_security_group.app}${local.defaults.apic.tenants.application_profiles.endpoint_security_groups.name_suffix}" : ""
+        endpoint_security_group_tenant = try(policy.endpoint_security_group.tenant, tenant.name)
       }
     ]
   ])

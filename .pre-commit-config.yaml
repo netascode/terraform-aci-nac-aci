@@ -661,6 +661,13 @@ repos:
         args:
           ["./modules/terraform-aci-ospf-interface-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ospf-route-summarization-policy"]
+      - id: terraform-docs-system
+        args:
+          [
+            "./modules/terraform-aci-ospf-route-summarization-policy/examples/complete",
+          ]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-ospf-timer-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-ospf-timer-policy/examples/complete"]
