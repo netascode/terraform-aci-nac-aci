@@ -255,9 +255,9 @@ variable "interfaces" {
       elag              = optional(string)
       floating_ip       = string
       vlan              = optional(string)
-      forged_transmit     = optional(bool, false)
-      mac_change = optional(bool, false)
-      promiscous_mode    = optional(bool, false)
+      forged_transmit   = optional(bool, false)
+      mac_change        = optional(bool, false)
+      promiscous_mode   = optional(bool, false)
     })), [])
     micro_bfd_destination_ip = optional(string, "")
     micro_bfd_start_timer    = optional(number, 0)
