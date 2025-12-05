@@ -674,7 +674,7 @@ locals {
         value = {
           name         = "${selector.name}${local.defaults.apic.access_policies.spine_interface_profiles.selectors.name_suffix}"
           profile_name = "${profile.name}${local.defaults.apic.access_policies.spine_interface_profiles.name_suffix}"
-          policy_group = try("${selector.policy_group}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}", null)
+          policy_group = try("${selector.policy_group}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}", "")
           port_blocks = [for block in try(selector.port_blocks, []) : {
             description = try(block.description, "")
             name        = "${block.name}${local.defaults.apic.access_policies.spine_interface_profiles.selectors.port_blocks.name_suffix}"
