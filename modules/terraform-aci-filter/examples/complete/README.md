@@ -31,6 +31,11 @@ module "aci_filter" {
     destination_from_port = "234"
     destination_to_port   = "235"
     stateful              = true
+    }, {
+    name                 = "ENTRY2"
+    ethertype            = "ipv4"
+    protocol             = "tcp"
+    match_only_fragments = true
   }]
 }
 ```

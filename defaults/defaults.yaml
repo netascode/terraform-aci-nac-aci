@@ -1365,6 +1365,7 @@ defaults:
           source_from_port: unspecified
           destination_from_port: unspecified
           stateful: false
+          match_only_fragments: false
       policies:
         custom_qos:
           name_suffix: ""
