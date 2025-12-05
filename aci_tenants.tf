@@ -1715,6 +1715,7 @@ locals {
           destination_from_port = try(entry.destination_from_port, local.defaults.apic.tenants.filters.entries.destination_from_port)
           destination_to_port   = try(entry.destination_to_port, entry.destination_from_port, local.defaults.apic.tenants.filters.entries.destination_from_port)
           stateful              = try(entry.stateful, local.defaults.apic.tenants.filters.entries.stateful)
+          match_only_fragments  = try(entry.match_only_fragments, local.defaults.apic.tenants.filters.entries.match_only_fragments)
         }]
       }
     ]
