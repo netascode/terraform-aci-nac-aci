@@ -440,6 +440,13 @@ locals {
             vlan           = try(se.vlan, null)
             additional_ips = try(se.additional_ips, [])
           }]
+          static_aaeps = [for sa in try(epg.static_aaeps, []) : {
+            name                 = try(sa.name, null)
+            encap                = try(sa.encap, null)
+            primary_encap        = try(sa.primary_encap, null)
+            mode                 = try(sa.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_aaeps.mode)
+            deployment_immediacy = try(sa.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_aaeps.deployment_immediacy)
+          }]
           l4l7_virtual_ips = [for vip in try(epg.l4l7_virtual_ips, []) : {
             ip          = vip.ip
             description = try(vip.description, "")
@@ -526,6 +533,13 @@ module "aci_endpoint_group" {
     module         = se.module
     vlan           = se.vlan
     additional_ips = se.additional_ips
+  }]
+  static_aaeps = [for sa in try(each.value.static_aaeps, []) : {
+    name                 = sa.name
+    encap                = sa.encap
+    primary_encap        = sa.primary_encap
+    mode                 = sa.mode
+    deployment_immediacy = sa.deployment_immediacy
   }]
   l4l7_virtual_ips   = each.value.l4l7_virtual_ips
   l4l7_address_pools = each.value.l4l7_address_pools
