@@ -984,10 +984,14 @@ module "aci_syslog_policy" {
 module "aci_monitoring_policy" {
   source = "./modules/terraform-aci-monitoring-policy"
 
-  count              = local.modules.aci_monitoring_policy == true && var.manage_fabric_policies ? 1 : 0
-  snmp_trap_policies = [for policy in try(local.fabric_policies.monitoring.snmp_traps, []) : "${policy.name}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}"]
+  count = local.modules.aci_monitoring_policy == true && var.manage_fabric_policies ? 1 : 0
+  snmp_trap_policies = [for policy in try(local.fabric_policies.monitoring.snmp_traps, []) : {
+    name       = try("${policy.source_name}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}", "${policy.name}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}")
+    dest_group = "${policy.name}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}"
+  }]
   syslog_policies = [for policy in try(local.fabric_policies.monitoring.syslogs, []) : {
-    name             = "${policy.name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}"
+    name             = try("${policy.source_name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}", "${policy.name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}")
+    dest_group       = "${policy.name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}"
     audit            = try(policy.audit, local.defaults.apic.fabric_policies.monitoring.syslogs.audit)
     events           = try(policy.events, local.defaults.apic.fabric_policies.monitoring.syslogs.events)
     faults           = try(policy.faults, local.defaults.apic.fabric_policies.monitoring.syslogs.faults)
