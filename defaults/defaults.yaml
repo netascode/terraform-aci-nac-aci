@@ -1362,10 +1362,10 @@ defaults:
           name_suffix: ""
           ethertype: ip
           protocol: tcp
+          match_only_fragments: false
           source_from_port: unspecified
           destination_from_port: unspecified
           stateful: false
-          match_only_fragments: false
       policies:
         custom_qos:
           name_suffix: ""
