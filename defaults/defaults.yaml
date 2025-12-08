@@ -1568,6 +1568,24 @@ defaults:
           version: "v2"
           max_mcast_entries: unlimited
           reserved_mcast_entries: undefined
+        hsrp_interface_policies:
+          name_suffix: ""
+          bfd_enable: false
+          use_bia: false
+          delay: 0
+          reload_delay: 0
+        hsrp_group_policies:
+          name_suffix: ""
+          preempt: false
+          hello_interval: 3000
+          hold_interval: 10000
+          priority: 100
+          hsrp_type: simple
+          key: ""
+          preempt_delay_min: 0
+          preempt_delay_reload: 0
+          preempt_delay_sync: 0
+          timeout: 0
         qos:
           name_suffix: ""
           dscp_priority_maps:

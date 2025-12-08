@@ -2762,6 +2762,86 @@ module "aci_bfd_interface_policy" {
 }
 
 locals {
+  hsrp_interface_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.hsrp_interface_policies, []) : {
+        key          = format("%s/%s", tenant.name, policy.name)
+        tenant       = tenant.name
+        name         = "${policy.name}${local.defaults.apic.tenants.policies.hsrp_interface_policies.name_suffix}"
+        description  = try(policy.description, "")
+        bfd_enable   = try(policy.bfd_enable, local.defaults.apic.tenants.policies.hsrp_interface_policies.bfd_enable)
+        use_bia      = try(policy.use_bia, local.defaults.apic.tenants.policies.hsrp_interface_policies.use_bia)
+        delay        = try(policy.delay, local.defaults.apic.tenants.policies.hsrp_interface_policies.delay)
+        reload_delay = try(policy.reload_delay, local.defaults.apic.tenants.policies.hsrp_interface_policies.reload_delay)
+      }
+    ]
+  ])
+}
+
+module "aci_hsrp_interface_policy" {
+  source = "./modules/terraform-aci-hsrp-interface-policy"
+
+  for_each     = { for pol in local.hsrp_interface_policies : pol.key => pol if local.modules.aci_hsrp_interface_policy && var.manage_tenants }
+  tenant       = each.value.tenant
+  name         = each.value.name
+  description  = each.value.description
+  bfd_enable   = each.value.bfd_enable
+  use_bia      = each.value.use_bia
+  delay        = each.value.delay
+  reload_delay = each.value.reload_delay
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
+  hsrp_group_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.hsrp_group_policies, []) : {
+        key                  = format("%s/%s", tenant.name, policy.name)
+        tenant               = tenant.name
+        name                 = "${policy.name}${local.defaults.apic.tenants.policies.hsrp_group_policies.name_suffix}"
+        description          = try(policy.description, "")
+        preempt              = try(policy.preempt, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt)
+        hello_interval       = try(policy.hello_interval, local.defaults.apic.tenants.policies.hsrp_group_policies.hello_interval)
+        hold_interval        = try(policy.hold_interval, local.defaults.apic.tenants.policies.hsrp_group_policies.hold_interval)
+        priority             = try(policy.priority, local.defaults.apic.tenants.policies.hsrp_group_policies.priority)
+        hsrp_type            = try(policy.hsrp_type, local.defaults.apic.tenants.policies.hsrp_group_policies.hsrp_type)
+        key                  = try(policy.key, local.defaults.apic.tenants.policies.hsrp_group_policies.key)
+        preempt_delay_min    = try(policy.preempt_delay_min, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt_delay_min)
+        preempt_delay_reload = try(policy.preempt_delay_reload, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt_delay_reload)
+        preempt_delay_sync   = try(policy.preempt_delay_sync, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt_delay_sync)
+        timeout              = try(policy.timeout, local.defaults.apic.tenants.policies.hsrp_group_policies.timeout)
+      }
+    ]
+  ])
+}
+
+module "aci_hsrp_group_policy" {
+  source = "./modules/terraform-aci-hsrp-group-policy"
+
+  for_each             = { for pol in local.hsrp_group_policies : pol.key => pol if local.modules.aci_hsrp_group_policy && var.manage_tenants }
+  tenant               = each.value.tenant
+  name                 = each.value.name
+  description          = each.value.description
+  preempt              = each.value.preempt
+  hello_interval       = each.value.hello_interval
+  hold_interval        = each.value.hold_interval
+  priority             = each.value.priority
+  hsrp_type            = each.value.hsrp_type
+  key                  = each.value.key
+  preempt_delay_min    = each.value.preempt_delay_min
+  preempt_delay_reload = each.value.preempt_delay_reload
+  preempt_delay_sync   = each.value.preempt_delay_sync
+  timeout              = each.value.timeout
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
   qos_policies = flatten([
     for tenant in local.tenants : [
       for policy in try(tenant.policies.qos, []) : {
