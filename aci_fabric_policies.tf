@@ -939,8 +939,8 @@ module "aci_config_export" {
 module "aci_snmp_trap_policy" {
   source = "./modules/terraform-aci-snmp-trap-policy"
 
-  for_each    = { for trap in try(local.fabric_policies.monitoring.snmp_traps, []) : trap.name => trap if local.modules.aci_snmp_trap_policy && var.manage_fabric_policies }
-  name        = "${each.value.name}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}"
+  for_each    = { for trap in try(local.fabric_policies.monitoring.snmp_traps, []) : try(trap.destination_group, trap.name) => trap if local.modules.aci_snmp_trap_policy && var.manage_fabric_policies }
+  name        = "${each.key}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}"
   description = try(each.value.description, "")
   destinations = [for dest in try(each.value.destinations, []) : {
     hostname_ip   = dest.hostname_ip
@@ -956,8 +956,8 @@ module "aci_snmp_trap_policy" {
 module "aci_syslog_policy" {
   source = "./modules/terraform-aci-syslog-policy"
 
-  for_each            = { for syslog in try(local.fabric_policies.monitoring.syslogs, []) : syslog.name => syslog if local.modules.aci_syslog_policy && var.manage_fabric_policies }
-  name                = "${each.value.name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}"
+  for_each            = { for syslog in try(local.fabric_policies.monitoring.syslogs, []) : try(syslog.destination_group, syslog.name) => syslog if local.modules.aci_syslog_policy && var.manage_fabric_policies }
+  name                = "${each.key}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}"
   description         = try(each.value.description, "")
   format              = try(each.value.format, local.defaults.apic.fabric_policies.monitoring.syslogs.format)
   show_millisecond    = try(each.value.show_millisecond, local.defaults.apic.fabric_policies.monitoring.syslogs.show_millisecond)
