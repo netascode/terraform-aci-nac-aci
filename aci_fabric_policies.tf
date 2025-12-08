@@ -986,17 +986,17 @@ module "aci_monitoring_policy" {
 
   count = local.modules.aci_monitoring_policy == true && var.manage_fabric_policies ? 1 : 0
   snmp_trap_policies = [for policy in try(local.fabric_policies.monitoring.snmp_traps, []) : {
-    name       = try("${policy.source_name}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}", "${policy.name}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}")
-    dest_group = "${policy.name}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}"
+    name              = "${policy.name}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}"
+    destination_group = try("${policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}", "${policy.name}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}")
   }]
   syslog_policies = [for policy in try(local.fabric_policies.monitoring.syslogs, []) : {
-    name             = try("${policy.source_name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}", "${policy.name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}")
-    dest_group       = "${policy.name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}"
-    audit            = try(policy.audit, local.defaults.apic.fabric_policies.monitoring.syslogs.audit)
-    events           = try(policy.events, local.defaults.apic.fabric_policies.monitoring.syslogs.events)
-    faults           = try(policy.faults, local.defaults.apic.fabric_policies.monitoring.syslogs.faults)
-    session          = try(policy.session, local.defaults.apic.fabric_policies.monitoring.syslogs.session)
-    minimum_severity = try(policy.minimum_severity, local.defaults.apic.fabric_policies.monitoring.syslogs.minimum_severity)
+    name              = "${policy.name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}"
+    destination_group = try("${policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}", "${policy.name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}")
+    audit             = try(policy.audit, local.defaults.apic.fabric_policies.monitoring.syslogs.audit)
+    events            = try(policy.events, local.defaults.apic.fabric_policies.monitoring.syslogs.events)
+    faults            = try(policy.faults, local.defaults.apic.fabric_policies.monitoring.syslogs.faults)
+    session           = try(policy.session, local.defaults.apic.fabric_policies.monitoring.syslogs.session)
+    minimum_severity  = try(policy.minimum_severity, local.defaults.apic.fabric_policies.monitoring.syslogs.minimum_severity)
   }]
 
   depends_on = [
