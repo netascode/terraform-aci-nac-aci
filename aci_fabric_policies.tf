@@ -991,12 +991,12 @@ module "aci_monitoring_policy" {
   }]
   syslog_policies = [for policy in try(local.fabric_policies.monitoring.syslogs, []) : {
     name              = "${policy.name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}"
-    destination_group = try("${policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}", "${policy.name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}")
     audit             = try(policy.audit, local.defaults.apic.fabric_policies.monitoring.syslogs.audit)
     events            = try(policy.events, local.defaults.apic.fabric_policies.monitoring.syslogs.events)
     faults            = try(policy.faults, local.defaults.apic.fabric_policies.monitoring.syslogs.faults)
     session           = try(policy.session, local.defaults.apic.fabric_policies.monitoring.syslogs.session)
     minimum_severity  = try(policy.minimum_severity, local.defaults.apic.fabric_policies.monitoring.syslogs.minimum_severity)
+    destination_group = try("${policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}", "${policy.name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}")
   }]
 
   depends_on = [
