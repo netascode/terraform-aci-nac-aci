@@ -441,7 +441,7 @@ locals {
             additional_ips = try(se.additional_ips, [])
           }]
           static_aaeps = [for sa in try(epg.static_aaeps, []) : {
-            name                 = try(sa.name, null)
+            name                 = try("${sa.name}${local.defaults.apic.access_policies.aaeps.name_suffix}", null)
             encap                = try(sa.encap, null)
             primary_encap        = try(sa.primary_encap, null)
             mode                 = try(sa.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_aaeps.mode)
