@@ -2808,7 +2808,7 @@ locals {
         hold_interval        = try(policy.hold_interval, local.defaults.apic.tenants.policies.hsrp_group_policies.hold_interval)
         priority             = try(policy.priority, local.defaults.apic.tenants.policies.hsrp_group_policies.priority)
         hsrp_type            = try(policy.hsrp_type, local.defaults.apic.tenants.policies.hsrp_group_policies.hsrp_type)
-        key                  = try(policy.key, local.defaults.apic.tenants.policies.hsrp_group_policies.key)
+        auth_key             = try(policy.key, local.defaults.apic.tenants.policies.hsrp_group_policies.key)
         preempt_delay_min    = try(policy.preempt_delay_min, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt_delay_min)
         preempt_delay_reload = try(policy.preempt_delay_reload, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt_delay_reload)
         preempt_delay_sync   = try(policy.preempt_delay_sync, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt_delay_sync)
@@ -2830,7 +2830,7 @@ module "aci_hsrp_group_policy" {
   hold_interval        = each.value.hold_interval
   priority             = each.value.priority
   hsrp_type            = each.value.hsrp_type
-  key                  = each.value.key
+  key                  = each.value.auth_key
   preempt_delay_min    = each.value.preempt_delay_min
   preempt_delay_reload = each.value.preempt_delay_reload
   preempt_delay_sync   = each.value.preempt_delay_sync
