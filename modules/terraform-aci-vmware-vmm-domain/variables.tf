@@ -195,9 +195,9 @@ variable "vcenters" {
 
   validation {
     condition = alltrue([
-      for v in var.vcenters : v.dvs_version == null || try(contains(["unmanaged", "5.1", "5.5", "6.0", "6.5", "6.6", "7.0"], v.dvs_version), false)
+      for v in var.vcenters : v.dvs_version == null || try(contains(["unmanaged", "5.1", "5.5", "6.0", "6.5", "6.6", "7.0", "8.0"], v.dvs_version), false)
     ])
-    error_message = "`dvs_version`: Allowed values are `unmanaged`, `5.1`, `5.5`, `6.0`, `6.5`, `6.6` or `7.0`."
+    error_message = "`dvs_version`: Allowed values are `unmanaged`, `5.1`, `5.5`, `6.0`, `6.5`, `6.6`, `7.0` or `8.0`."
   }
 
   validation {
