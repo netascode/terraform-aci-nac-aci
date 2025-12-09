@@ -53,7 +53,7 @@ resource "aci_rest_managed" "aaaPwdStrengthProfile" {
     pwdMinLength        = var.min_password_length
     pwdMaxLength        = var.max_password_length
     pwdStrengthTestType = var.password_strength_test_type
-    pwdClassFlags       = var.password_strength_test_type == "custom" ? join(",", sort(var.password_class_flags)) : join(",", ["digits", "lowercase", "uppercase"])
+    pwdClassFlags       = var.password_strength_test_type == "custom" ? join(",", sort(var.password_class_flags)) : null
   }
 
   depends_on = [
