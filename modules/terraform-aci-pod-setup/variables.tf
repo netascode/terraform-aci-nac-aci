@@ -36,22 +36,23 @@ variable "remote_pools" {
     ])
     error_message = "`id`: Minimum value: 1. Maximum value: 255."
   }
-  variable "resiliency_groups" {
-    description = "Remote Leaf Resiliency Group"
-    type = list(object({
-      name        = string
-      description = optional(string)
-      pools = list(object({
-        pool_id = string
-      }))
-    }))
-    default = []
+}
 
-    validation {
-      condition = alltrue([
-        for rg in var.resiliency_groups : length(rg.pools) > 0
-      ])
-      error_message = "Resiliency Group must have at least one pool."
-    }
+variable "resiliency_groups" {
+  description = "Remote Leaf Resiliency Group"
+  type = list(object({
+    name        = string
+    description = optional(string)
+    pools = list(object({
+      pool_id = string
+    }))
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for rg in var.resiliency_groups : length(rg.pools) > 0
+    ])
+    error_message = "Resiliency Group must have at least one pool."
   }
 }
