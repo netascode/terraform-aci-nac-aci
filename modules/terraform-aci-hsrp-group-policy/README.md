@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI HSRP Group Policy Module
+# Terraform ACI HSRP
 
 Manages ACI HSRP Group Policy
 
