@@ -1,10 +1,10 @@
 resource "aci_rest_managed" "hsrpIfPol" {
   dn         = "uni/tn-${var.tenant}/hsrpIfPol-${var.name}"
   class_name = "hsrpIfPol"
+  annotation = var.annotation != "" ? var.annotation : "orchestrator:terraform"
   content = {
-    name       = var.name
-    descr      = var.description
-    annotation = var.annotation != "" ? var.annotation : "orchestrator:terraform"
+    name  = var.name
+    descr = var.description
     ctrl = join(",", concat(
       var.bfd_enable ? ["bfd"] : [],
       var.use_bia ? ["bia"] : []

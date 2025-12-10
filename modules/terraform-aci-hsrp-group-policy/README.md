@@ -1,10 +1,10 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI IP SLA Policy Module
+# Terraform ACI HSRP Group Policy Module
 
-Manages ACI IP SLA Policy
+Manages ACI HSRP Group Policy
 
 Location in GUI:
-`Tenants` » `XXX` » `Policies` » `Protocol` » `IP SLA` » `IP SLA Monitoring Policies`
+`Tenants` » `XXX` » `Policies` » `Protocol` » `HSRP` » `HSRP Group Policies`
 
 ## Examples
 

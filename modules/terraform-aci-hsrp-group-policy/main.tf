@@ -1,13 +1,11 @@
 resource "aci_rest_managed" "hsrpGroupPol" {
   dn         = "uni/tn-${var.tenant}/hsrpGroupPol-${var.name}"
   class_name = "hsrpGroupPol"
+  annotation = var.annotation != "" ? var.annotation : "orchestrator:terraform"
   content = {
-    name       = var.name
-    descr      = var.description
-    annotation = var.annotation != "" ? var.annotation : "orchestrator:terraform"
-    ctrl = join(",", concat(
-      var.preempt ? ["preempt"] : []
-    ))
+    name               = var.name
+    descr              = var.description
+    ctrl               = var.preempt ? "preempt" : ""
     helloIntvl         = var.hello_interval
     holdIntvl          = var.hold_interval
     key                = var.key

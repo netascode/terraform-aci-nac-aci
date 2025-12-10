@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# IP SLA Policy Example
+# HSRP Interface Policy Example
 
 To run this example you need to execute:
 

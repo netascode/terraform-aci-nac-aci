@@ -3,12 +3,12 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Terraform ACI IP SLA Policy Module
+  # Terraform ACI HSRP
 
-  Manages ACI IP SLA Policy
+  Manages ACI HSRP Group Policy
 
   Location in GUI:
-  `Tenants` » `XXX` » `Policies` » `Protocol` » `IP SLA` » `IP SLA Monitoring Policies`
+  `Tenants` » `XXX` » `Policies` » `Protocol` » `HSRP` » `HSRP Group Policies`
 
   ## Examples
 
