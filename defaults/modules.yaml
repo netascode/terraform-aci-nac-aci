@@ -187,3 +187,5 @@ modules:
   aci_vspan_session: true
   aci_control_plane_mtu: true
   aci_nutanix_vmm_domain: true
+  aci_hsrp_interface_policy: true
+  aci_hsrp_group_policy: true

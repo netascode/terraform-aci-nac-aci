@@ -239,6 +239,8 @@ Additional example repositories:
 | <a name="module_aci_forwarding_scale_policy"></a> [aci\_forwarding\_scale\_policy](#module\_aci\_forwarding\_scale\_policy) | ./modules/terraform-aci-forwarding-scale-policy | n/a |
 | <a name="module_aci_geolocation"></a> [aci\_geolocation](#module\_aci\_geolocation) | ./modules/terraform-aci-geolocation | n/a |
 | <a name="module_aci_health_score_evaluation_policy"></a> [aci\_health\_score\_evaluation\_policy](#module\_aci\_health\_score\_evaluation\_policy) | ./modules/terraform-aci-health-score-evaluation-policy | n/a |
+| <a name="module_aci_hsrp_group_policy"></a> [aci\_hsrp\_group\_policy](#module\_aci\_hsrp\_group\_policy) | ./modules/terraform-aci-hsrp-group-policy | n/a |
+| <a name="module_aci_hsrp_interface_policy"></a> [aci\_hsrp\_interface\_policy](#module\_aci\_hsrp\_interface\_policy) | ./modules/terraform-aci-hsrp-interface-policy | n/a |
 | <a name="module_aci_igmp_interface_policy"></a> [aci\_igmp\_interface\_policy](#module\_aci\_igmp\_interface\_policy) | ./modules/terraform-aci-igmp-interface-policy | n/a |
 | <a name="module_aci_igmp_snooping_policy"></a> [aci\_igmp\_snooping\_policy](#module\_aci\_igmp\_snooping\_policy) | ./modules/terraform-aci-igmp-snooping-policy | n/a |
 | <a name="module_aci_imported_contract"></a> [aci\_imported\_contract](#module\_aci\_imported\_contract) | ./modules/terraform-aci-imported-contract | n/a |
