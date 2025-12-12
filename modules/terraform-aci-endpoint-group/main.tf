@@ -531,6 +531,22 @@ resource "aci_rest_managed" "fvRsDomAtt_vmm" {
   }
 }
 
+resource "aci_rest_managed" "fvRsAepAtt" {
+  for_each   = { for sa in var.static_aaeps : sa.name => sa }
+  dn         = "${aci_rest_managed.fvAEPg.dn}/rsaepAtt-${each.value.name}"
+  class_name = "fvRsAepAtt"
+  content = {
+    tnInfraAttEntityPName = each.value.name
+    encap                 = "vlan-${each.value.encap}"
+    primaryEncap          = each.value.primary_encap != null ? "vlan-${each.value.primary_encap}" : "unknown"
+    mode                  = each.value.mode
+    instrImedcy           = each.value.deployment_immediacy
+  }
+  lifecycle {
+    ignore_changes = [annotation]
+  }
+}
+
 resource "aci_rest_managed" "fvRsDomAtt_vmm_ntnx" {
   for_each   = { for vmm_ntnx in var.nutanix_vmm_domains : vmm_ntnx.name => vmm_ntnx }
   dn         = "${aci_rest_managed.fvAEPg.dn}/rsdomAtt-[uni/vmmp-Nutanix/dom-${each.value.name}]"
