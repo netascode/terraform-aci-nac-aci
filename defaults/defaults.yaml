@@ -1014,6 +1014,9 @@ defaults:
             multipod_direct: false
             autostate: false
             floating_svi: false
+            forged_transmit: false
+            mac_change: false
+            promiscous_mode: false
             ip: 0.0.0.0
             mac: 00:22:BD:F8:19:FF
             mtu: inherit
@@ -1105,6 +1108,9 @@ defaults:
               svi: false
               autostate: false
               floating_svi: false
+              forged_transmit: false
+              mac_change: false
+              promiscous_mode: false
               multipod_direct: false
               ip: 0.0.0.0
               mac: 00:22:BD:F8:19:FF
@@ -1133,10 +1139,6 @@ defaults:
                 as_propagate: none
               micro_bfd:
                 start_timer: 0
-              paths:
-                forged_transmit: false
-                mac_change: false
-                promiscous_mode: false
         external_endpoint_groups:
           name_suffix: ""
           ndo_managed: false
