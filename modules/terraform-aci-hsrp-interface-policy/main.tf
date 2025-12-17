@@ -1,7 +1,6 @@
 resource "aci_rest_managed" "hsrpIfPol" {
   dn         = "uni/tn-${var.tenant}/hsrpIfPol-${var.name}"
   class_name = "hsrpIfPol"
-  annotation = var.annotation != "" ? var.annotation : "orchestrator:terraform"
   content = {
     name  = var.name
     descr = var.description
@@ -11,8 +10,5 @@ resource "aci_rest_managed" "hsrpIfPol" {
     ))
     delay       = var.delay
     reloadDelay = var.reload_delay
-    nameAlias   = var.alias
-    ownerKey    = var.owner_key
-    ownerTag    = var.owner_tag
   }
 }

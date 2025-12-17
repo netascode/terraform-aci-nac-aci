@@ -1,15 +1,12 @@
 module "aci_hsrp_interface_policy" {
-  source = "../.."
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-hsrp-interface-policy"
+  version = ">= 0.8.0"
 
-  tenant       = "OSPF_TEST"
-  name         = "hsrp_interface_policy"
-  alias        = "hsrp_if_pol"
-  description  = "HSRP Interface Policy with BFD enabled"
-  annotation   = "orchestrator:terraform"
+  tenant       = "ABC"
+  name         = "HSRP_IF1"
+  description  = "My Description"
   bfd_enable   = true
-  use_bia      = true
+  use_bia      = false
   delay        = 5
   reload_delay = 10
-  owner_key    = "network_team"
-  owner_tag    = "production"
 }

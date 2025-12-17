@@ -18,17 +18,6 @@ variable "name" {
   }
 }
 
-variable "alias" {
-  description = "Alias for object."
-  type        = string
-  default     = ""
-
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.alias))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
-  }
-}
-
 variable "description" {
   description = "Description."
   type        = string
@@ -37,17 +26,6 @@ variable "description" {
   validation {
     condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
-  }
-}
-
-variable "annotation" {
-  description = "Annotation. User annotation for object. Suggested format: orchestrator:value"
-  type        = string
-  default     = ""
-
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,128}$", var.annotation))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 128."
   }
 }
 
@@ -154,27 +132,5 @@ variable "hsrp_type" {
   validation {
     condition     = contains(["simple", "md5"], var.hsrp_type)
     error_message = "Allowed values are `simple` or `md5`."
-  }
-}
-
-variable "owner_key" {
-  description = "Owner key for enabling clients to own their data for entity correlation."
-  type        = string
-  default     = ""
-
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,128}$", var.owner_key))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 128."
-  }
-}
-
-variable "owner_tag" {
-  description = "Owner tag for enabling clients to add their own data."
-  type        = string
-  default     = ""
-
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.owner_tag))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

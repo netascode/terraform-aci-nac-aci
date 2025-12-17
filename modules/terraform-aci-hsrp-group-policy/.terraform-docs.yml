@@ -3,7 +3,7 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Terraform ACI HSRP
+  # Terraform ACI HSRP Group Policy Module
 
   Manages ACI HSRP Group Policy
 
