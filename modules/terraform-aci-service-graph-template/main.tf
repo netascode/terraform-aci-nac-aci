@@ -133,7 +133,7 @@ resource "aci_rest_managed" "vnsAbsConnection_Consumer" {
   class_name = "vnsAbsConnection"
   annotation = var.annotation
   content = {
-    adjType       = var.device_copy == true ? "L2" : "L3"
+    adjType       = var.device_copy == true ? "L2" : var.device_adjacency_type
     connDir       = "provider"
     connType      = "external"
     directConnect = var.consumer_direct_connect ? "yes" : "no"
@@ -168,7 +168,7 @@ resource "aci_rest_managed" "vnsAbsConnection_Provider" {
   class_name = "vnsAbsConnection"
   annotation = var.annotation
   content = {
-    adjType       = "L3"
+    adjType       = var.device_adjacency_type
     connDir       = "provider"
     connType      = "external"
     directConnect = var.provider_direct_connect ? "yes" : "no"

@@ -1745,6 +1745,8 @@ defaults:
             direct_connect: false
           provider:
             direct_connect: false
+          device:
+            adjacency_type: "L3"
         device_selection_policies:
           consumer:
             l3_destination: true

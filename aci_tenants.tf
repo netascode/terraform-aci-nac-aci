@@ -3645,6 +3645,7 @@ locals {
         device_copy             = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.copy_device, local.defaults.apic.tenants.services.l4l7_devices.copy_device) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : local.defaults.apic.tenants.services.l4l7_devices.copy_device
         device_managed          = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.managed, local.defaults.apic.tenants.services.l4l7_devices.managed) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : local.defaults.apic.tenants.services.l4l7_devices.managed
         device_node_name        = (length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.copy_device, local.defaults.apic.tenants.services.l4l7_devices.copy_device) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : false) == true ? try(sgt.device.node_name, "CP1") : try(sgt.device.node_name, "N1")
+        device_adjacency_type   = try(sgt.device.adjacency_type, local.defaults.apic.tenants.services.service_graph_templates.device.adjacency_type)
         consumer_direct_connect = try(sgt.consumer.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.consumer.direct_connect)
         provider_direct_connect = try(sgt.provider.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.provider.direct_connect)
       }
@@ -3670,6 +3671,7 @@ module "aci_service_graph_template" {
   device_copy             = each.value.device_copy
   device_managed          = each.value.device_managed
   device_node_name        = each.value.device_node_name
+  device_adjacency_type   = each.value.device_adjacency_type
   consumer_direct_connect = each.value.consumer_direct_connect
   provider_direct_connect = each.value.provider_direct_connect
 
