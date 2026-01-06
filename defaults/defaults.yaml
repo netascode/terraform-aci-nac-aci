@@ -884,8 +884,10 @@ defaults:
         data_plane_learning: true
         enforcement_direction: ingress
         enforcement_preference: enforced
-        leaked_internal_prefixes:
+        # EPG/BD Subnets (leakInternalSubnet)
+        leaked_internal_subnets:
           public: false
+        # Internal Prefixes (leakInternalPrefix) - APIC 5.2+ - no defaults needed
         pim:
           mtu: 1500
           bsr_forward_updates: false

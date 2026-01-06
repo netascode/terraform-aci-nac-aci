@@ -75,14 +75,26 @@ locals {
           group_prefix   = pol.group_prefix
           source_address = pol.source_address
         }]
-        leaked_internal_prefixes = [for prefix in try(vrf.leaked_internal_prefixes, []) : {
+        # EPG/BD Subnets (leakInternalSubnet)
+        leaked_internal_subnets = [for prefix in try(vrf.leaked_internal_subnets, []) : {
           prefix = prefix.prefix
-          public = try(prefix.public, local.defaults.apic.tenants.vrfs.leaked_internal_prefixes.public)
+          public = try(prefix.public, local.defaults.apic.tenants.vrfs.leaked_internal_subnets.public)
           destinations = [for dest in try(prefix.destinations, []) : {
             description = try(dest.description, "")
             tenant      = dest.tenant
             vrf         = dest.vrf
             public      = try(dest.public, null)
+          }]
+        }]
+        # Internal Prefixes (leakInternalPrefix) - APIC 5.2+
+        leaked_internal_prefixes = [for prefix in try(vrf.leaked_internal_prefixes, []) : {
+          prefix             = prefix.prefix
+          from_prefix_length = try(prefix.from_prefix_length, null)
+          to_prefix_length   = try(prefix.to_prefix_length, null)
+          destinations = [for dest in try(prefix.destinations, []) : {
+            description = try(dest.description, "")
+            tenant      = dest.tenant
+            vrf         = dest.vrf
           }]
         }]
         leaked_external_prefixes = [for prefix in try(vrf.leaked_external_prefixes, []) : {
@@ -163,6 +175,7 @@ module "aci_vrf" {
   pim_ssm_group_range_multicast_route_map  = each.value.pim_ssm_group_range_multicast_route_map
   pim_inter_vrf_policies                   = each.value.pim_inter_vrf_policies
   pim_igmp_ssm_translate_policies          = each.value.pim_igmp_ssm_translate_policies
+  leaked_internal_subnets                  = each.value.leaked_internal_subnets
   leaked_internal_prefixes                 = each.value.leaked_internal_prefixes
   leaked_external_prefixes                 = each.value.leaked_external_prefixes
   route_summarization_policies             = each.value.route_summarization_policies
