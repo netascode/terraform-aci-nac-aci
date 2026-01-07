@@ -67,6 +67,7 @@ module "aci_useg_endpoint_group" {
     name                 = "VMW1"
     netflow              = false
     deployment_immediacy = "immediate"
+    port_binding         = "dynamic"
   }]
   static_leafs = [{
     node_id = 102

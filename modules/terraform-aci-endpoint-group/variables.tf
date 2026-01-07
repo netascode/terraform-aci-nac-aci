@@ -281,7 +281,7 @@ variable "subnets" {
 }
 
 variable "vmware_vmm_domains" {
-  description = "List of VMware VMM domains. Default value `u_segmentation`: `false`. Default value `netflow`: `false`. Choices `deployment_immediacy`: `immediate`, `lazy`. Default value `deployment_immediacy`: `lazy`. Choices `resolution_immediacy`: `immediate`, `lazy`, `pre-provision`. Default value `resolution_immediacy`: `immediate`. Default value `allow_promiscuous`: `false`. Default value `forged_transmits`: `false`. Default value `mac_changes`: `false`."
+  description = "List of VMware VMM domains. Default value `u_segmentation`: `false`. Default value `netflow`: `false`. Choices `deployment_immediacy`: `immediate`, `lazy`. Default value `deployment_immediacy`: `lazy`. Choices `resolution_immediacy`: `immediate`, `lazy`, `pre-provision`. Default value `resolution_immediacy`: `immediate`. Choices `port_binding`: `dynamic`, `ephemeral`, `static`, `default`. Default value `port_binding`: `default`. Default value `allow_promiscuous`: `false`. Default value `forged_transmits`: `false`. Default value `mac_changes`: `false`."
   type = list(object({
     name                 = string
     u_segmentation       = optional(bool, false)
@@ -292,6 +292,7 @@ variable "vmware_vmm_domains" {
     netflow              = optional(bool, false)
     deployment_immediacy = optional(string, "lazy")
     resolution_immediacy = optional(string, "immediate")
+    port_binding         = optional(string, "default")
     allow_promiscuous    = optional(bool, false)
     forged_transmits     = optional(bool, false)
     mac_changes          = optional(bool, false)
@@ -342,6 +343,13 @@ variable "vmware_vmm_domains" {
       for dom in var.vmware_vmm_domains : dom.resolution_immediacy == null || try(contains(["immediate", "lazy", "pre-provision"], dom.resolution_immediacy), false)
     ])
     error_message = "`resolution_immediacy`: Allowed values are `immediate`, `lazy` or `pre-provision`."
+  }
+
+  validation {
+    condition = alltrue([
+      for dom in var.vmware_vmm_domains : dom.port_binding == null || try(contains(["dynamic", "ephemeral", "static", "default"], dom.port_binding), false)
+    ])
+    error_message = "`port_binding`: Allowed values are `dynamic`, `ephemeral`, `static` or `default`."
   }
 
   validation {
