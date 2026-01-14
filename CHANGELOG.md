@@ -1,3 +1,6 @@
+## training example
+- Added first example
+
 ## 1.2.0
 
 ### New Features
