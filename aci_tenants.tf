@@ -380,6 +380,7 @@ locals {
             netflow              = try(vmm.netflow, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.netflow)
             deployment_immediacy = try(vmm.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.deployment_immediacy)
             resolution_immediacy = try(vmm.resolution_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.resolution_immediacy)
+            port_binding         = try(vmm.port_binding, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.port_binding)
             allow_promiscuous    = try(vmm.allow_promiscuous, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.allow_promiscuous) == "accept" ? true : false
             forged_transmits     = try(vmm.forged_transmits, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.forged_transmits) == "accept" ? true : false
             mac_changes          = try(vmm.mac_changes, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.mac_changes) == "accept" ? true : false
@@ -629,6 +630,7 @@ locals {
           vmware_vmm_domains = [for vmm in try(useg_epg.vmware_vmm_domains, []) : {
             name                 = "${vmm.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.name_suffix}"
             deployment_immediacy = try(vmm.deployment_immediacy, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.vmware_vmm_domains.deployment_immediacy)
+            port_binding         = try(vmm.port_binding, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.vmware_vmm_domains.port_binding)
             netflow              = try(vmm.netflow, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.vmware_vmm_domains.netflow)
             elag                 = try(vmm.elag, "")
             active_uplinks_order = try(vmm.active_uplinks_order, "")

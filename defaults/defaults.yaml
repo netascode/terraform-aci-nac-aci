@@ -1202,6 +1202,7 @@ defaults:
             netflow: false
             deployment_immediacy: lazy
             resolution_immediacy: pre-provision
+            port_binding: default
             allow_promiscuous: reject
             forged_transmits: reject
             mac_changes: reject
@@ -1250,6 +1251,7 @@ defaults:
           vmware_vmm_domains:
             name_suffix: ""
             deployment_immediacy: immediate
+            port_binding: default
             netflow: false
           useg_attributes:
             match_type: any
