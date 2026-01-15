@@ -1224,9 +1224,6 @@ defaults:
             name_suffix: ""
             ip: "0.0.0.0"
             module: 1
-          static_aaeps:
-              deployment_immediacy: lazy
-              mode: regular
           subnets:
             primary_ip: false
             public: false
@@ -1241,6 +1238,9 @@ defaults:
               name_suffix: ""
               start_ip: 0.0.0.0
               end_ip: 0.0.0.0
+          static_aaeps:
+            deployment_immediacy: lazy
+            mode: regular
         useg_endpoint_groups:
           name_suffix: ""
           flood_in_encap: false
