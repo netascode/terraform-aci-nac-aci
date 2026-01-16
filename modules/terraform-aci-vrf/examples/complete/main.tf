@@ -96,6 +96,7 @@ module "aci_vrf" {
       description = "Leak to VRF2"
       tenant      = "ABC"
       vrf         = "VRF2"
+      public      = true
     }]
   }]
   leaked_external_prefixes = [{

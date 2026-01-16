@@ -23,6 +23,7 @@ locals {
           prefix      = prefix.prefix
           tenant      = dest.tenant
           vrf         = dest.vrf
+          public      = dest.public
           description = dest.description
         }
       }
@@ -539,6 +540,7 @@ resource "aci_rest_managed" "leakTo_internal_prefix" {
     tenantName = each.value.tenant
     ctxName    = each.value.vrf
     descr      = each.value.description
+    scope      = each.value.public == null ? "inherit" : (each.value.public == true ? "public" : "private")
   }
 }
 

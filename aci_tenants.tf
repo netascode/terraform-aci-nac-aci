@@ -95,6 +95,7 @@ locals {
             description = try(dest.description, "")
             tenant      = dest.tenant
             vrf         = dest.vrf
+            public      = try(dest.public, null)
           }]
         }]
         leaked_external_prefixes = [for prefix in try(vrf.leaked_external_prefixes, []) : {

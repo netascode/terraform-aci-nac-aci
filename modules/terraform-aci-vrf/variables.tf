@@ -562,6 +562,7 @@ variable "leaked_internal_prefixes" {
       description = optional(string, "")
       tenant      = string
       vrf         = string
+      public      = optional(bool)
     })), [])
   }))
   default = []
