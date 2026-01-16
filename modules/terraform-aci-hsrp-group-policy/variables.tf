@@ -57,14 +57,14 @@ variable "hold_interval" {
   }
 }
 
-variable "key" {
+variable "auth_key" {
   description = "Authentication key for HSRP packets. Used for MD5 authentication."
   type        = string
   default     = ""
   sensitive   = true
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,127}$", var.key)) || var.key == ""
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,127}$", var.auth_key)) || var.auth_key == ""
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 127."
   }
 }
@@ -91,13 +91,13 @@ variable "preempt_delay_reload" {
   }
 }
 
-variable "preempt_delay_sync" {
+variable "preempt_delay_max" {
   description = "Preempt synchronization delay in seconds. Delay for IP redundancy clients to be ready."
   type        = number
   default     = 0
 
   validation {
-    condition     = var.preempt_delay_sync >= 0 && var.preempt_delay_sync <= 3600
+    condition     = var.preempt_delay_max >= 0 && var.preempt_delay_max <= 3600
     error_message = "Allowed values are between 0 and 3600 seconds."
   }
 }
@@ -124,13 +124,13 @@ variable "timeout" {
   }
 }
 
-variable "hsrp_type" {
+variable "auth_type" {
   description = "HSRP version type. Options: simple (HSRPv1) or md5 (HSRPv2 with MD5 authentication)."
   type        = string
   default     = "simple"
 
   validation {
-    condition     = contains(["simple", "md5"], var.hsrp_type)
+    condition     = contains(["simple", "md5"], var.auth_type)
     error_message = "Allowed values are `simple` or `md5`."
   }
 }

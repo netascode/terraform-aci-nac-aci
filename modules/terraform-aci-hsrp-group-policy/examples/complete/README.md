@@ -23,11 +23,11 @@ module "aci_hsrp_group_policy" {
   hello_interval       = 3000
   hold_interval        = 10000
   priority             = 110
-  hsrp_type            = "md5"
-  key                  = "SecureKey123"
+  auth_type            = "md5"
+  auth_key             = "SecureKey123"
   preempt_delay_min    = 60
   preempt_delay_reload = 300
-  preempt_delay_sync   = 60
+  preempt_delay_max    = 60
   timeout              = 90
 }
 ```

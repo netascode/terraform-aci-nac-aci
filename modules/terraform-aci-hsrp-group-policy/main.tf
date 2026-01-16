@@ -7,13 +7,13 @@ resource "aci_rest_managed" "hsrpGroupPol" {
     ctrl               = var.preempt ? "preempt" : ""
     helloIntvl         = var.hello_interval
     holdIntvl          = var.hold_interval
-    key                = var.key
+    key                = var.auth_key
     preemptDelayMin    = var.preempt_delay_min
     preemptDelayReload = var.preempt_delay_reload
-    preemptDelaySync   = var.preempt_delay_sync
+    preemptDelaySync   = var.preempt_delay_max
     prio               = var.priority
     timeout            = var.timeout
-    type               = var.hsrp_type
+    type               = var.auth_type
   }
 
   lifecycle {

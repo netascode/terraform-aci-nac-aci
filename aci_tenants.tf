@@ -2830,11 +2830,11 @@ locals {
         hello_interval       = try(policy.hello_interval, local.defaults.apic.tenants.policies.hsrp_group_policies.hello_interval)
         hold_interval        = try(policy.hold_interval, local.defaults.apic.tenants.policies.hsrp_group_policies.hold_interval)
         priority             = try(policy.priority, local.defaults.apic.tenants.policies.hsrp_group_policies.priority)
-        hsrp_type            = try(policy.hsrp_type, local.defaults.apic.tenants.policies.hsrp_group_policies.hsrp_type)
-        auth_key             = try(policy.key, local.defaults.apic.tenants.policies.hsrp_group_policies.key)
+        auth_type            = try(policy.auth_type, local.defaults.apic.tenants.policies.hsrp_group_policies.auth_type)
+        auth_key             = try(policy.key, "")
         preempt_delay_min    = try(policy.preempt_delay_min, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt_delay_min)
         preempt_delay_reload = try(policy.preempt_delay_reload, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt_delay_reload)
-        preempt_delay_sync   = try(policy.preempt_delay_sync, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt_delay_sync)
+        preempt_delay_max    = try(policy.preempt_delay_max, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt_delay_max)
         timeout              = try(policy.timeout, local.defaults.apic.tenants.policies.hsrp_group_policies.timeout)
       }
     ]
@@ -2852,11 +2852,11 @@ module "aci_hsrp_group_policy" {
   hello_interval       = each.value.hello_interval
   hold_interval        = each.value.hold_interval
   priority             = each.value.priority
-  hsrp_type            = each.value.hsrp_type
-  key                  = each.value.auth_key
+  auth_type            = each.value.auth_type
+  auth_key             = each.value.auth_key
   preempt_delay_min    = each.value.preempt_delay_min
   preempt_delay_reload = each.value.preempt_delay_reload
-  preempt_delay_sync   = each.value.preempt_delay_sync
+  preempt_delay_max    = each.value.preempt_delay_max
   timeout              = each.value.timeout
 
   depends_on = [

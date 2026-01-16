@@ -20,11 +20,11 @@ module "aci_hsrp_group_policy" {
   hello_interval       = 3000
   hold_interval        = 10000
   priority             = 110
-  hsrp_type            = "md5"
-  key                  = "SecureKey123"
+  auth_type            = "md5"
+  auth_key             = "SecureKey123"
   preempt_delay_min    = 60
   preempt_delay_reload = 300
-  preempt_delay_sync   = 60
+  preempt_delay_max    = 60
   timeout              = 90
 }
 ```
@@ -52,13 +52,13 @@ module "aci_hsrp_group_policy" {
 | <a name="input_preempt"></a> [preempt](#input\_preempt) | Enable preemption. Allows a higher-priority HSRP router to become the active router. | `bool` | `false` | no |
 | <a name="input_hello_interval"></a> [hello\_interval](#input\_hello\_interval) | Hello interval in milliseconds. Time between hello packets sent by HSRP. | `number` | `3000` | no |
 | <a name="input_hold_interval"></a> [hold\_interval](#input\_hold\_interval) | Hold interval in milliseconds. Time before declaring active router down. | `number` | `10000` | no |
-| <a name="input_key"></a> [key](#input\_key) | Authentication key for HSRP packets. Used for MD5 authentication. | `string` | `""` | no |
+| <a name="input_auth_key"></a> [auth\_key](#input\_auth\_key) | Authentication key for HSRP packets. Used for MD5 authentication. | `string` | `""` | no |
 | <a name="input_preempt_delay_min"></a> [preempt\_delay\_min](#input\_preempt\_delay\_min) | Preempt minimum delay in seconds. Minimum time to wait before preempting. | `number` | `0` | no |
 | <a name="input_preempt_delay_reload"></a> [preempt\_delay\_reload](#input\_preempt\_delay\_reload) | Preempt reload delay in seconds. Delay after reload before preempting. | `number` | `0` | no |
-| <a name="input_preempt_delay_sync"></a> [preempt\_delay\_sync](#input\_preempt\_delay\_sync) | Preempt synchronization delay in seconds. Delay for IP redundancy clients to be ready. | `number` | `0` | no |
+| <a name="input_preempt_delay_max"></a> [preempt\_delay\_max](#input\_preempt\_delay\_max) | Preempt synchronization delay in seconds. Delay for IP redundancy clients to be ready. | `number` | `0` | no |
 | <a name="input_priority"></a> [priority](#input\_priority) | HSRP priority. Higher value is preferred for active router selection. | `number` | `100` | no |
 | <a name="input_timeout"></a> [timeout](#input\_timeout) | Timeout in seconds for HSRP session. | `number` | `0` | no |
-| <a name="input_hsrp_type"></a> [hsrp\_type](#input\_hsrp\_type) | HSRP version type. Options: simple (HSRPv1) or md5 (HSRPv2 with MD5 authentication). | `string` | `"simple"` | no |
+| <a name="input_auth_type"></a> [auth\_type](#input\_auth\_type) | HSRP version type. Options: simple (HSRPv1) or md5 (HSRPv2 with MD5 authentication). | `string` | `"simple"` | no |
 
 ## Outputs
 
