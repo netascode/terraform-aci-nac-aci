@@ -380,6 +380,7 @@ locals {
             netflow              = try(vmm.netflow, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.netflow)
             deployment_immediacy = try(vmm.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.deployment_immediacy)
             resolution_immediacy = try(vmm.resolution_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.resolution_immediacy)
+            port_binding         = try(vmm.port_binding, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.port_binding)
             allow_promiscuous    = try(vmm.allow_promiscuous, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.allow_promiscuous) == "accept" ? true : false
             forged_transmits     = try(vmm.forged_transmits, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.forged_transmits) == "accept" ? true : false
             mac_changes          = try(vmm.mac_changes, local.defaults.apic.tenants.application_profiles.endpoint_groups.vmware_vmm_domains.mac_changes) == "accept" ? true : false
@@ -439,6 +440,13 @@ locals {
             module         = try(se.module, 1)
             vlan           = try(se.vlan, null)
             additional_ips = try(se.additional_ips, [])
+          }]
+          static_aaeps = [for sa in try(epg.static_aaeps, []) : {
+            name                 = "${sa.name}${local.defaults.apic.access_policies.aaeps.name_suffix}"
+            encap                = sa.encap
+            primary_encap        = try(sa.primary_encap, null)
+            mode                 = try(sa.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_aaeps.mode)
+            deployment_immediacy = try(sa.deployment_immediacy, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_aaeps.deployment_immediacy)
           }]
           l4l7_virtual_ips = [for vip in try(epg.l4l7_virtual_ips, []) : {
             ip          = vip.ip
@@ -526,6 +534,13 @@ module "aci_endpoint_group" {
     module         = se.module
     vlan           = se.vlan
     additional_ips = se.additional_ips
+  }]
+  static_aaeps = [for sa in try(each.value.static_aaeps, []) : {
+    name                 = sa.name
+    encap                = sa.encap
+    primary_encap        = sa.primary_encap
+    mode                 = sa.mode
+    deployment_immediacy = sa.deployment_immediacy
   }]
   l4l7_virtual_ips   = each.value.l4l7_virtual_ips
   l4l7_address_pools = each.value.l4l7_address_pools
@@ -615,6 +630,7 @@ locals {
           vmware_vmm_domains = [for vmm in try(useg_epg.vmware_vmm_domains, []) : {
             name                 = "${vmm.name}${local.defaults.apic.fabric_policies.vmware_vmm_domains.name_suffix}"
             deployment_immediacy = try(vmm.deployment_immediacy, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.vmware_vmm_domains.deployment_immediacy)
+            port_binding         = try(vmm.port_binding, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.vmware_vmm_domains.port_binding)
             netflow              = try(vmm.netflow, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.vmware_vmm_domains.netflow)
             elag                 = try(vmm.elag, "")
             active_uplinks_order = try(vmm.active_uplinks_order, "")
@@ -2762,6 +2778,86 @@ module "aci_bfd_interface_policy" {
   echo_rx_interval          = each.value.echo_rx_interval
   min_rx_interval           = each.value.min_rx_interval
   min_tx_interval           = each.value.min_tx_interval
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
+  hsrp_interface_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.hsrp_interface_policies, []) : {
+        key          = format("%s/%s", tenant.name, policy.name)
+        tenant       = tenant.name
+        name         = "${policy.name}${local.defaults.apic.tenants.policies.hsrp_interface_policies.name_suffix}"
+        description  = try(policy.description, "")
+        bfd_enable   = try(policy.bfd_enable, local.defaults.apic.tenants.policies.hsrp_interface_policies.bfd_enable)
+        use_bia      = try(policy.use_bia, local.defaults.apic.tenants.policies.hsrp_interface_policies.use_bia)
+        delay        = try(policy.delay, local.defaults.apic.tenants.policies.hsrp_interface_policies.delay)
+        reload_delay = try(policy.reload_delay, local.defaults.apic.tenants.policies.hsrp_interface_policies.reload_delay)
+      }
+    ]
+  ])
+}
+
+module "aci_hsrp_interface_policy" {
+  source = "./modules/terraform-aci-hsrp-interface-policy"
+
+  for_each     = { for pol in local.hsrp_interface_policies : pol.key => pol if local.modules.aci_hsrp_interface_policy && var.manage_tenants }
+  tenant       = each.value.tenant
+  name         = each.value.name
+  description  = each.value.description
+  bfd_enable   = each.value.bfd_enable
+  use_bia      = each.value.use_bia
+  delay        = each.value.delay
+  reload_delay = each.value.reload_delay
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
+  hsrp_group_policies = flatten([
+    for tenant in local.tenants : [
+      for policy in try(tenant.policies.hsrp_group_policies, []) : {
+        key                  = format("%s/%s", tenant.name, policy.name)
+        tenant               = tenant.name
+        name                 = "${policy.name}${local.defaults.apic.tenants.policies.hsrp_group_policies.name_suffix}"
+        description          = try(policy.description, "")
+        preempt              = try(policy.preempt, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt)
+        hello_interval       = try(policy.hello_interval, local.defaults.apic.tenants.policies.hsrp_group_policies.hello_interval)
+        hold_interval        = try(policy.hold_interval, local.defaults.apic.tenants.policies.hsrp_group_policies.hold_interval)
+        priority             = try(policy.priority, local.defaults.apic.tenants.policies.hsrp_group_policies.priority)
+        auth_type            = try(policy.auth_type, local.defaults.apic.tenants.policies.hsrp_group_policies.auth_type)
+        auth_key             = try(policy.key, "")
+        preempt_delay_min    = try(policy.preempt_delay_min, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt_delay_min)
+        preempt_delay_reload = try(policy.preempt_delay_reload, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt_delay_reload)
+        preempt_delay_max    = try(policy.preempt_delay_max, local.defaults.apic.tenants.policies.hsrp_group_policies.preempt_delay_max)
+        timeout              = try(policy.timeout, local.defaults.apic.tenants.policies.hsrp_group_policies.timeout)
+      }
+    ]
+  ])
+}
+
+module "aci_hsrp_group_policy" {
+  source = "./modules/terraform-aci-hsrp-group-policy"
+
+  for_each             = { for pol in local.hsrp_group_policies : pol.key => pol if local.modules.aci_hsrp_group_policy && var.manage_tenants }
+  tenant               = each.value.tenant
+  name                 = each.value.name
+  description          = each.value.description
+  preempt              = each.value.preempt
+  hello_interval       = each.value.hello_interval
+  hold_interval        = each.value.hold_interval
+  priority             = each.value.priority
+  auth_type            = each.value.auth_type
+  auth_key             = each.value.auth_key
+  preempt_delay_min    = each.value.preempt_delay_min
+  preempt_delay_reload = each.value.preempt_delay_reload
+  preempt_delay_max    = each.value.preempt_delay_max
+  timeout              = each.value.timeout
 
   depends_on = [
     module.aci_tenant,
