@@ -39,6 +39,11 @@ locals {
         bgp_ipv6_import_route_target            = try(vrf.bgp.ipv6_import_route_target, [])
         bgp_ipv6_export_route_target            = try(vrf.bgp.ipv6_export_route_target, [])
         dns_labels                              = try(vrf.dns_labels, [])
+        snmp_context_name                       = try(vrf.snmp_context.name, null) != null ? "${vrf.snmp_context.name}${local.defaults.apic.tenants.vrfs.snmp_context.name_suffix}" : null
+        snmp_context_community_profiles = [for comm_profile in try(vrf.snmp_context.community_profiles, []) : {
+          name        = "${comm_profile.name}${local.defaults.apic.tenants.vrfs.snmp_context.community_profiles.name_suffix}"
+          description = try(comm_profile.description, null) != null ? comm_profile.description : ""
+        }]
         pim_enabled                             = try(vrf.pim, null) != null ? true : false
         pim_mtu                                 = try(vrf.pim.mtu, local.defaults.apic.tenants.vrfs.pim.mtu)
         pim_fast_convergence                    = try(vrf.pim.fast_convergence, local.defaults.apic.tenants.vrfs.pim.fast_convergence)
@@ -120,6 +125,8 @@ module "aci_vrf" {
   annotation                               = each.value.annotation
   alias                                    = each.value.alias
   description                              = each.value.description
+  snmp_context_name                        = each.value.snmp_context_name
+  snmp_context_community_profiles          = each.value.snmp_context_community_profiles
   enforcement_direction                    = each.value.enforcement_direction
   enforcement_preference                   = each.value.enforcement_preference
   data_plane_learning                      = each.value.data_plane_learning

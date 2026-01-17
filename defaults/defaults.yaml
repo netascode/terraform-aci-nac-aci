@@ -904,6 +904,10 @@ defaults:
           name_suffix: ""
           nodes:
             pod: 1
+        snmp_context:
+          name_suffix: ""
+          community_profiles:
+            name_suffix: ""
       bridge_domains:
         name_suffix: ""
         ndo_managed: false
