@@ -34,12 +34,22 @@ module "aci_vrf" {
   contract_consumers                     = ["CON1"]
   contract_providers                     = ["CON1"]
   contract_imported_consumers            = ["I_CON1"]
-  pim_enabled                            = true
-  pim_mtu                                = 9200
-  pim_fast_convergence                   = true
-  pim_strict_rfc                         = true
-  pim_max_multicast_entries              = 1000
-  pim_reserved_multicast_entries         = "undefined"
+  snmp_context_name                      = "SNMP-CTX"
+  snmp_context_community_profiles = [
+    {
+      name        = "Community-Profile1"
+      description = "Community Profile 1 Description"
+    },
+    {
+      name = "Community-Profile2"
+    }
+  ]
+  pim_enabled                    = true
+  pim_mtu                        = 9200
+  pim_fast_convergence           = true
+  pim_strict_rfc                 = true
+  pim_max_multicast_entries      = 1000
+  pim_reserved_multicast_entries = "undefined"
   pim_static_rps = [
     {
       ip                  = "1.1.1.1"
@@ -47,7 +57,7 @@ module "aci_vrf" {
     },
     {
       ip = "1.1.1.2"
-    },
+    }
   ]
   pim_fabric_rps = [
     {
@@ -143,6 +153,8 @@ module "aci_vrf" {
 | <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | `null` | no |
 | <a name="input_alias"></a> [alias](#input\_alias) | VRF alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | VRF description. | `string` | `""` | no |
+| <a name="input_snmp_context_name"></a> [snmp\_context\_name](#input\_snmp\_context\_name) | VRF SNMP Context name. | `string` | `""` | no |
+| <a name="input_snmp_context_community_profiles"></a> [snmp\_context\_community\_profiles](#input\_snmp\_context\_community\_profiles) | VRF SNMP Context Community Profiles. | <pre>list(object({<br/>    name        = string<br/>    description = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_enforcement_direction"></a> [enforcement\_direction](#input\_enforcement\_direction) | VRF enforcement direction. Choices: `ingress`, `egress`. | `string` | `null` | no |
 | <a name="input_enforcement_preference"></a> [enforcement\_preference](#input\_enforcement\_preference) | VRF enforcement preference. Choices: `enforced`, `unenforced`. | `string` | `"enforced"` | no |
 | <a name="input_data_plane_learning"></a> [data\_plane\_learning](#input\_data\_plane\_learning) | VRF data plane learning. | `bool` | `true` | no |
@@ -254,6 +266,8 @@ module "aci_vrf" {
 | [aci_rest_managed.rtdmcRsFilterToRtMapPol_pim_inter_vrf](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtdmcRsFilterToRtMapPol_ssm_range](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtdmcRsFilterToRtMapPol_static_rp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.snmpCommunityP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.snmpCtxP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vzAny](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vzRsAnyToCons](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vzRsAnyToConsIf](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
