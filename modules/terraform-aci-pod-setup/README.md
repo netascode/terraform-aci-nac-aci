@@ -35,18 +35,6 @@ module "aci_pod_setup" {
       remote_pool = "10.191.202.0/24"
     }
   ]
-  resiliency_groups = [
-    {
-      name            = "RG1"
-      description     = "Resiliency Group 1"
-      remote_pool_ids = [1, 2]
-    },
-    {
-      name            = "RG2"
-      description     = "Resiliency Group 2"
-      remote_pool_ids = [2, 3]
-    }
-  ]
 }
 ```
 
@@ -71,7 +59,7 @@ module "aci_pod_setup" {
 | <a name="input_tep_pool"></a> [tep\_pool](#input\_tep\_pool) | TEP pool. | `string` | n/a | yes |
 | <a name="input_external_tep_pools"></a> [external\_tep\_pools](#input\_external\_tep\_pools) | List of external TEP Pools | <pre>list(object({<br/>    prefix                 = string<br/>    reserved_address_count = number<br/>  }))</pre> | `[]` | no |
 | <a name="input_remote_pools"></a> [remote\_pools](#input\_remote\_pools) | List of Remote Pools | <pre>list(object({<br/>    id          = number<br/>    remote_pool = string<br/>  }))</pre> | `[]` | no |
-| <a name="input_resiliency_groups"></a> [resiliency\_groups](#input\_resiliency\_groups) | Remote Leaf Resiliency Group | <pre>list(object({<br/>    name        = string<br/>    description = optional(string)<br/>    pools = list(object({<br/>      pool_id = string<br/>    }))<br/>  }))</pre> | `[]` | no |
+| <a name="input_resiliency_groups"></a> [resiliency\_groups](#input\_resiliency\_groups) | Remote Leaf Resiliency Group | <pre>list(object({<br/>    name            = string<br/>    description     = optional(string)<br/>    remote_pool_ids = list(number)<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
