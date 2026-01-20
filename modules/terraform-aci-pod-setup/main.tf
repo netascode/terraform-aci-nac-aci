@@ -50,10 +50,10 @@ resource "aci_rest_managed" "fabricRlGroupP" {
 resource "aci_rest_managed" "fabricRsRlGroupToExtSetup" {
   for_each = merge([
     for rg in var.resiliency_groups : {
-      for pool in rg.pools :
-      "${rg.name}-${pool.pool_id}" => {
+      for pool_id in rg.remote_pool_ids :
+      "${rg.name}-${pool_id}" => {
         rg_name = rg.name
-        pool_id = pool.pool_id
+        pool_id = pool_id
       }
     }
   ]...)

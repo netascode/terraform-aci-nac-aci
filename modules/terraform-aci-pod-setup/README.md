@@ -35,6 +35,18 @@ module "aci_pod_setup" {
       remote_pool = "10.191.202.0/24"
     }
   ]
+  resiliency_groups = [
+    {
+      name            = "RG1"
+      description     = "Resiliency Group 1"
+      remote_pool_ids = [1, 2]
+    },
+    {
+      name            = "RG2"
+      description     = "Resiliency Group 2"
+      remote_pool_ids = [2, 3]
+    }
+  ]
 }
 ```
 
