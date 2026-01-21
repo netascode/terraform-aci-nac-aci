@@ -521,6 +521,7 @@ resource "aci_rest_managed" "leakTo_internal_subnet" {
 }
 
 # leakInternalPrefix - Internal Prefixes (leaked_internal_prefixes) - APIC 5.2+
+# Note: leakInternalPrefix does NOT support 'scope' attribute (unlike leakInternalSubnet)
 resource "aci_rest_managed" "leakInternalPrefix" {
   for_each   = { for prefix in var.leaked_internal_prefixes : prefix.prefix => prefix }
   dn         = "${aci_rest_managed.leakRoutes[0].dn}/leakintprefix-[${each.value.prefix}]"

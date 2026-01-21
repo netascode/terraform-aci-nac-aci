@@ -104,6 +104,7 @@ module "aci_vrf" {
   # Internal Prefixes (leakInternalPrefix) - APIC 5.2+, flexible prefix matching
   leaked_internal_prefixes = [{
     prefix             = "10.0.0.0/8"
+    public             = true
     from_prefix_length = 16
     to_prefix_length   = 24
     destinations = [{

@@ -553,7 +553,7 @@ variable "leaked_internal_subnets" {
 }
 
 variable "leaked_internal_prefixes" {
-  description = "List of leaked internal prefixes (leakInternalPrefix - APIC 5.2+). Supports flexible prefix matching with from_prefix_length and to_prefix_length."
+  description = "List of leaked internal prefixes (leakInternalPrefix - APIC 5.2+). Supports flexible prefix matching with from_prefix_length and to_prefix_length. Note: unlike leakInternalSubnet, leakInternalPrefix does not support scope at prefix level."
   type = list(object({
     prefix             = string
     from_prefix_length = optional(number)

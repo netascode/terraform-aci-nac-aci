@@ -887,7 +887,13 @@ defaults:
         # EPG/BD Subnets (leakInternalSubnet)
         leaked_internal_subnets:
           public: false
-        # Internal Prefixes (leakInternalPrefix) - APIC 5.2+ - no defaults needed
+          destinations:
+            public: false
+        # Internal Prefixes (leakInternalPrefix) - APIC 5.2+
+        # Note: leakInternalPrefix does NOT support 'scope' at prefix level (only destinations)
+        leaked_internal_prefixes:
+          destinations:
+            public: false
         pim:
           mtu: 1500
           bsr_forward_updates: false

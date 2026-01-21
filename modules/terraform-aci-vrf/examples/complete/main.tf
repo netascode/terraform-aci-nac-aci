@@ -88,6 +88,7 @@ module "aci_vrf" {
     }]
   }]
   # Internal Prefixes (leakInternalPrefix) - APIC 5.2+, flexible prefix matching
+  # Note: leakInternalPrefix does NOT support 'scope' at prefix level (only at destination level via 'public')
   leaked_internal_prefixes = [{
     prefix             = "10.0.0.0/8"
     from_prefix_length = 16

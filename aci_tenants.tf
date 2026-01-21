@@ -87,6 +87,7 @@ locals {
           }]
         }]
         # Internal Prefixes (leakInternalPrefix) - APIC 5.2+
+        # Note: leakInternalPrefix does NOT support 'scope' at prefix level (only at destination level)
         leaked_internal_prefixes = [for prefix in try(vrf.leaked_internal_prefixes, []) : {
           prefix             = prefix.prefix
           from_prefix_length = try(prefix.from_prefix_length, null)
