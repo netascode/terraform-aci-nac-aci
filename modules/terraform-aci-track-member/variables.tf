@@ -53,3 +53,9 @@ variable "ip_sla_policy" {
   description = "IP SLA Policy of a track member"
   type        = string
 }
+
+variable "ip_sla_policy_tenant" {
+  description = "Tenant name used in reference for ip_sla_policy resolved automatically."
+  type        = string
+  default     = ""
+}

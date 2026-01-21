@@ -13,7 +13,7 @@ resource "aci_rest_managed" "fvRsIpslaMonPol" {
   dn         = "${aci_rest_managed.fvTrackMember.dn}/rsIpslaMonPol"
   class_name = "fvRsIpslaMonPol"
   content = {
-    tDn = "uni/tn-${var.tenant}/ipslaMonitoringPol-${var.ip_sla_policy}"
+    tDn = "uni/tn-${var.ip_sla_policy_tenant}/ipslaMonitoringPol-${var.ip_sla_policy}"
   }
 }
 
