@@ -135,6 +135,13 @@ variable "ip_sla_policy" {
   }
 }
 
+variable "ip_sla_policy_tenant" {
+  description = "Tenant name used in reference for ip_sla_policy resolved automatically."
+  type        = string
+  default     = ""
+}
+
+
 variable "redirect_backup_policy" {
   description = "Redirect Backup Policy Name."
   type        = string
