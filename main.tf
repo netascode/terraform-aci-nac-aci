@@ -16,13 +16,13 @@ locals {
 
   tenants = [for tenant in try(local.apic.tenants, []) : tenant if length(var.managed_tenants) == 0 || contains(var.managed_tenants, tenant.name)]
 
-  # Helper to get all policies per tenant used for shared references
+  # Helper to get all policies per managed tenant and common tenant
   tenant_shared_policies = var.manage_tenants ? {
     for tenant in try(local.apic.tenants, []) : tenant.name => {
       ip_sla_policies = [
         for policy in try(tenant.policies.ip_sla_policies, []) : policy.name
       ]
-    } if length(var.managed_tenants) == 0 || contains(var.managed_tenants, tenant.name) || tenant.name == "common" || length(try(tenant.policies.ip_sla_policies, [])) > 0
+    } if length(var.managed_tenants) == 0 || contains(var.managed_tenants, tenant.name) || tenant.name == "common"
   } : {}
 
   interface_types = flatten([
