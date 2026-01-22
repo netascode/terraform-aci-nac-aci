@@ -162,6 +162,8 @@ modules:
   aci_spanning_tree_policy: true
   aci_sr_mpls_global_configuration: true
   aci_storm_control_policy: true
+  aci_port_security_policy: true
+  aci_priority_flow_control_policy: true
   aci_switch_configuration: true
   aci_syslog_policy: true
   aci_system_global_gipo: true
