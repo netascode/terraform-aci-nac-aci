@@ -14,7 +14,7 @@ locals {
       }
     ]
   ])
-  # Destinations for leaked_internal_prefixes (leakInternalPrefix - APIC 5.2+)
+  # Destinations for leaked_internal_prefixes (leakInternalPrefix)
   internal_prefix_destinations = flatten([
     for prefix in var.leaked_internal_prefixes : [
       for dest in coalesce(prefix.destinations, []) : {
@@ -520,16 +520,17 @@ resource "aci_rest_managed" "leakTo_internal_subnet" {
   }
 }
 
-# leakInternalPrefix - Internal Prefixes (leaked_internal_prefixes) - APIC 5.2+
-# Note: leakInternalPrefix does NOT support 'scope' attribute (unlike leakInternalSubnet)
+# leakInternalPrefix - Internal Prefixes (leaked_internal_prefixes)
+# Prefix-level scope requires APIC 6.1+
 resource "aci_rest_managed" "leakInternalPrefix" {
   for_each   = { for prefix in var.leaked_internal_prefixes : prefix.prefix => prefix }
   dn         = "${aci_rest_managed.leakRoutes[0].dn}/leakintprefix-[${each.value.prefix}]"
   class_name = "leakInternalPrefix"
   content = {
-    ip = each.value.prefix
-    le = each.value.to_prefix_length
-    ge = each.value.from_prefix_length
+    ip    = each.value.prefix
+    scope = each.value.public == true ? "public" : "private"
+    ge    = each.value.from_prefix_length != null ? each.value.from_prefix_length : "unspecified"
+    le    = each.value.to_prefix_length != null ? each.value.to_prefix_length : "unspecified"
   }
 }
 

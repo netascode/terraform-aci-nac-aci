@@ -75,7 +75,6 @@ locals {
           group_prefix   = pol.group_prefix
           source_address = pol.source_address
         }]
-        # EPG/BD Subnets (leakInternalSubnet)
         leaked_internal_subnets = [for prefix in try(vrf.leaked_internal_subnets, []) : {
           prefix = prefix.prefix
           public = try(prefix.public, local.defaults.apic.tenants.vrfs.leaked_internal_subnets.public)
@@ -86,10 +85,9 @@ locals {
             public      = try(dest.public, null)
           }]
         }]
-        # Internal Prefixes (leakInternalPrefix) - APIC 5.2+
-        # Note: leakInternalPrefix does NOT support 'scope' at prefix level (only at destination level)
         leaked_internal_prefixes = [for prefix in try(vrf.leaked_internal_prefixes, []) : {
           prefix             = prefix.prefix
+          public             = try(prefix.public, local.defaults.apic.tenants.vrfs.leaked_internal_prefixes.public)
           from_prefix_length = try(prefix.from_prefix_length, null)
           to_prefix_length   = try(prefix.to_prefix_length, null)
           destinations = [for dest in try(prefix.destinations, []) : {

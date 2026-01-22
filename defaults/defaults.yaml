@@ -884,14 +884,12 @@ defaults:
         data_plane_learning: true
         enforcement_direction: ingress
         enforcement_preference: enforced
-        # EPG/BD Subnets (leakInternalSubnet)
         leaked_internal_subnets:
           public: false
           destinations:
             public: false
-        # Internal Prefixes (leakInternalPrefix) - APIC 5.2+
-        # Note: leakInternalPrefix does NOT support 'scope' at prefix level (only destinations)
         leaked_internal_prefixes:
+          public: false
           destinations:
             public: false
         pim:
