@@ -385,7 +385,6 @@ defaults:
       monitoring:
         snmp_traps:
           name_suffix: ""
-          destination_group_suffix: ""
           destinations:
             port: 162
             version: v2c
@@ -393,11 +392,6 @@ defaults:
             mgmt_epg: inb
         syslogs:
           name_suffix: ""
-          audit: true
-          events: true
-          faults: true
-          session: false
-          minimum_severity: warnings
           format: aci
           show_millisecond: false
           show_timezone: false
@@ -406,7 +400,6 @@ defaults:
           local_severity: information
           console_admin_state: true
           console_severity: alerts
-          destination_group_suffix: ""
           destinations:
             port: 514
             facility: local7
@@ -422,7 +415,6 @@ defaults:
               target_severity: "inherit"
           snmp_traps:
             name_suffix: ""
-            destination_group_suffix: ""
           syslogs:
             name_suffix: ""
             audit: true
@@ -430,15 +422,6 @@ defaults:
             faults: true
             session: false
             minimum_severity: warnings
-            format: aci
-            show_millisecond: false
-            show_timezone: false
-            admin_state: true
-            local_admin_state: true
-            local_severity: information
-            console_admin_state: true
-            console_severity: alerts
-            destination_group_suffix: ""
       span:
         destination_groups:
           name_suffix: ""

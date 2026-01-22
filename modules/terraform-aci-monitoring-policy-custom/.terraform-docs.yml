@@ -3,9 +3,9 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Terraform ACI User-Defined Monitoring Policy Module
+  # Terraform ACI Custom Monitoring Policy Module
 
-  Manages ACI User-Defined Monitoring Policy
+  Manages ACI Custom Monitoring Policy
 
   Location in GUI:
   `Fabric` » `Fabric Policies` » `Policies` » `Monitoring`

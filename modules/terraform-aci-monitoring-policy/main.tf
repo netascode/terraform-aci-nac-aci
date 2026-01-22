@@ -1,18 +1,18 @@
 resource "aci_rest_managed" "snmpSrc" {
-  for_each   = toset(var.snmp_trap_policies)
-  dn         = "uni/fabric/moncommon/snmpsrc-${each.value}"
+  for_each   = { for s in var.snmp_trap_policies : s.name => s }
+  dn         = "uni/fabric/moncommon/snmpsrc-${each.value.name}"
   class_name = "snmpSrc"
   content = {
-    name = each.value
+    name = each.value.name
   }
 }
 
 resource "aci_rest_managed" "snmpRsDestGroup" {
-  for_each   = toset(var.snmp_trap_policies)
-  dn         = "${aci_rest_managed.snmpSrc[each.value].dn}/rsdestGroup"
+  for_each   = { for s in var.snmp_trap_policies : s.name => s if s.destination_group != "" }
+  dn         = "${aci_rest_managed.snmpSrc[each.value.name].dn}/rsdestGroup"
   class_name = "snmpRsDestGroup"
   content = {
-    tDn = "uni/fabric/snmpgroup-${each.value}"
+    tDn = "uni/fabric/snmpgroup-${each.value.destination_group}"
   }
 }
 
@@ -28,10 +28,10 @@ resource "aci_rest_managed" "syslogSrc" {
 }
 
 resource "aci_rest_managed" "syslogRsDestGroup" {
-  for_each   = { for s in var.syslog_policies : s.name => s }
+  for_each   = { for s in var.syslog_policies : s.name => s if s.destination_group != "" }
   dn         = "${aci_rest_managed.syslogSrc[each.value.name].dn}/rsdestGroup"
   class_name = "syslogRsDestGroup"
   content = {
-    tDn = "uni/fabric/slgroup-${each.value.name}"
+    tDn = "uni/fabric/slgroup-${each.value.destination_group}"
   }
 }

@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI User-Defined Monitoring Policy Module
+# Terraform ACI Custom Monitoring Policy Module
 
-Manages ACI User-Defined Monitoring Policy
+Manages ACI Custom Monitoring Policy
 
 Location in GUI:
 `Fabric` » `Fabric Policies` » `Policies` » `Monitoring`
@@ -9,9 +9,9 @@ Location in GUI:
 ## Examples
 
 ```hcl
-module "aci_monitoring_policy_user_defined" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-monitoring-policy-user-defined"
-  version = "> 1.0.1"
+module "aci_monitoring_policy_custom" {
+  source  = "netascode/nac-aci/aci/modules/terraform-aci-monitoring-policy-custom"
+  version = "> 1.2.0"
 
   name = "MON1"
   snmp_trap_policies = [{
@@ -67,7 +67,7 @@ module "aci_monitoring_policy_user_defined" {
 | Name | Description |
 |------|-------------|
 | <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of Fabric `monFabricPol` object. |
-| <a name="output_name"></a> [name](#output\_name) | User-Defined Fabric Monitoring Policy name. |
+| <a name="output_name"></a> [name](#output\_name) | Custom Fabric Monitoring Policy name. |
 
 ## Resources
 

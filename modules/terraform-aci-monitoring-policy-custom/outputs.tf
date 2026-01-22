@@ -5,5 +5,5 @@ output "dn" {
 
 output "name" {
   value       = aci_rest_managed.monFabricPol.content.name
-  description = "User-Defined Fabric Monitoring Policy name."
+  description = "Custom Fabric Monitoring Policy name."
 }

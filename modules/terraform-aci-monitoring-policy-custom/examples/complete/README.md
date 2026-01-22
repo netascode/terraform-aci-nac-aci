@@ -1,6 +1,20 @@
-module "aci_monitoring_policy_user_defined" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-monitoring-policy-user-defined"
-  version = "> 1.0.1"
+<!-- BEGIN_TF_DOCS -->
+# Custom Monitoring Policy Example
+
+To run this example you need to execute:
+
+```bash
+$ terraform init
+$ terraform plan
+$ terraform apply
+```
+
+Note that this example will create resources. Resources can be destroyed with `terraform destroy`.
+
+```hcl
+module "aci_monitoring_policy_custom" {
+  source  = "netascode/nac-aci/aci/modules/terraform-aci-monitoring-policy-custom"
+  version = "> 1.2.0"
 
   name = "MON1"
   snmp_trap_policies = [{
@@ -26,3 +40,5 @@ module "aci_monitoring_policy_user_defined" {
     }]
   }]
 }
+```
+<!-- END_TF_DOCS -->

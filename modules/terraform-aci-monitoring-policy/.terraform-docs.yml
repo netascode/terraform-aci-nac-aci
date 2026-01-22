@@ -3,7 +3,7 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Terraform ACI Monitoring Policy Module
+  # Terraform ACI Common Monitoring Policy Module
 
   Manages ACI Monitoring Policy
 
