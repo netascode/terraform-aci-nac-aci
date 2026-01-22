@@ -44,6 +44,7 @@ module "aci_endpoint_group" {
     netflow              = false
     deployment_immediacy = "lazy"
     resolution_immediacy = "lazy"
+    port_binding         = "dynamic"
     allow_promiscuous    = true
     forged_transmits     = true
     mac_changes          = true

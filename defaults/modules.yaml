@@ -9,6 +9,7 @@ modules:
   aci_access_leaf_interface_selector: true
   aci_access_leaf_switch_policy_group: true
   aci_access_leaf_switch_profile: true
+  aci_access_monitoring_policy: true
   aci_access_span_destination_group: true
   aci_access_span_filter_group: true
   aci_access_span_source_group: true
@@ -29,7 +30,6 @@ modules:
   aci_bgp_peer_prefix_policy: true
   aci_bgp_policy: true
   aci_bgp_route_summarization_policy: true
-  aci_ospf_route_summarization_policy: true
   aci_bgp_timer_policy: true
   aci_bridge_domain: true
   aci_ca_certificate: true
@@ -37,22 +37,22 @@ modules:
   aci_config_export: true
   aci_config_passphrase: true
   aci_contract: true
+  aci_control_plane_mtu: true
   aci_coop_policy: true
-  aci_date_time_format: true
   aci_data_plane_policing_policy: true
+  aci_date_time_format: true
   aci_date_time_policy: true
   aci_device_selection_policy: true
   aci_dhcp_option_policy: true
   aci_dhcp_relay_policy: true
   aci_dns_policy: true
-  aci_endpoint_group: true
-  aci_useg_endpoint_group: true
-  aci_endpoint_loop_protection: true
-  aci_endpoint_security_group: true
-  aci_endpoint_retention_policy: true
-  aci_endpoint_mac_tag_policy: true
-  aci_endpoint_ip_tag_policy: true
   aci_eigrp_interface_policy: true
+  aci_endpoint_group: true
+  aci_endpoint_ip_tag_policy: true
+  aci_endpoint_loop_protection: true
+  aci_endpoint_mac_tag_policy: true
+  aci_endpoint_retention_policy: true
+  aci_endpoint_security_group: true
   aci_error_disabled_recovery: true
   aci_external_connectivity_policy: true
   aci_external_endpoint_group: true
@@ -60,11 +60,12 @@ modules:
   aci_fabric_isis_bfd: true
   aci_fabric_isis_policy: true
   aci_fabric_l2_mtu: true
+  aci_fabric_leaf_interface_policy_group: true
   aci_fabric_leaf_interface_profile: true
   aci_fabric_leaf_interface_selector: true
   aci_fabric_leaf_switch_policy_group: true
-  aci_fabric_leaf_interface_policy_group: true
   aci_fabric_leaf_switch_profile: true
+  aci_fabric_link_level_policy: true
   aci_fabric_pod_policy_group: true
   aci_fabric_pod_profile: true
   aci_fabric_scheduler: true
@@ -75,12 +76,13 @@ modules:
   aci_fabric_spine_switch_policy_group: true
   aci_fabric_spine_switch_profile: true
   aci_fabric_wide_settings: true
-  aci_fabric_link_level_policy: true
   aci_filter: true
   aci_firmware_group: true
   aci_forwarding_scale_policy: true
   aci_geolocation: true
   aci_health_score_evaluation_policy: true
+  aci_hsrp_group_policy: true
+  aci_hsrp_interface_policy: true
   aci_igmp_interface_policy: true
   aci_igmp_snooping_policy: true
   aci_imported_contract: true
@@ -106,8 +108,8 @@ modules:
   aci_lldp_policy: true
   aci_login_domain: true
   aci_macsec_interfaces_policy: true
-  aci_macsec_parameters_policy: true
   aci_macsec_keychain_policies: true
+  aci_macsec_parameters_policy: true
   aci_maintenance_group: true
   aci_management_access_policy: true
   aci_match_rule: true
@@ -122,16 +124,18 @@ modules:
   aci_nd_interface_policy: true
   aci_nd_ra_prefix_policy: true
   aci_netflow_exporter: true
-  aci_netflow_vmm_exporter: true
-  aci_netflow_record: true
   aci_netflow_monitor: true
+  aci_netflow_record: true
+  aci_netflow_vmm_exporter: true
   aci_node_control_policy: true
   aci_node_registration: true
+  aci_nutanix_vmm_domain: true
   aci_oob_contract: true
   aci_oob_endpoint_group: true
   aci_oob_external_management_instance: true
   aci_oob_node_address: true
   aci_ospf_interface_policy: true
+  aci_ospf_route_summarization_policy: true
   aci_ospf_timer_policy: true
   aci_physical_domain: true
   aci_pim_policy: true
@@ -169,15 +173,16 @@ modules:
   aci_system_performance: true
   aci_tacacs: true
   aci_tenant: true
+  aci_tenant_netflow_exporter: true
+  aci_tenant_netflow_monitor: true
+  aci_tenant_netflow_record: true
+  aci_tenant_monitoring_policy: true
   aci_tenant_span_destination_group: true
   aci_tenant_span_source_group: true
-  aci_tenant_netflow_exporter: true
-  aci_tenant_netflow_record: true
-  aci_tenant_netflow_monitor: true
-  aci_tenant_monitoring_policy: true
   aci_track_list: true
   aci_track_member: true
   aci_trust_control_policy: true
+  aci_useg_endpoint_group: true
   aci_user: true
   aci_vlan_pool: true
   aci_vmware_vmm_domain: true
@@ -186,5 +191,3 @@ modules:
   aci_vrf: true
   aci_vspan_destination_group: true
   aci_vspan_session: true
-  aci_control_plane_mtu: true
-  aci_nutanix_vmm_domain: true

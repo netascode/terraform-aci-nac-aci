@@ -281,7 +281,7 @@ variable "subnets" {
 }
 
 variable "vmware_vmm_domains" {
-  description = "List of VMware VMM domains. Default value `u_segmentation`: `false`. Default value `netflow`: `false`. Choices `deployment_immediacy`: `immediate`, `lazy`. Default value `deployment_immediacy`: `lazy`. Choices `resolution_immediacy`: `immediate`, `lazy`, `pre-provision`. Default value `resolution_immediacy`: `immediate`. Default value `allow_promiscuous`: `false`. Default value `forged_transmits`: `false`. Default value `mac_changes`: `false`."
+  description = "List of VMware VMM domains. Default value `u_segmentation`: `false`. Default value `netflow`: `false`. Choices `deployment_immediacy`: `immediate`, `lazy`. Default value `deployment_immediacy`: `lazy`. Choices `resolution_immediacy`: `immediate`, `lazy`, `pre-provision`. Default value `resolution_immediacy`: `immediate`. Choices `port_binding`: `dynamic`, `ephemeral`, `static`, `default`. Default value `port_binding`: `default`. Default value `allow_promiscuous`: `false`. Default value `forged_transmits`: `false`. Default value `mac_changes`: `false`."
   type = list(object({
     name                 = string
     u_segmentation       = optional(bool, false)
@@ -292,6 +292,7 @@ variable "vmware_vmm_domains" {
     netflow              = optional(bool, false)
     deployment_immediacy = optional(string, "lazy")
     resolution_immediacy = optional(string, "immediate")
+    port_binding         = optional(string, "default")
     allow_promiscuous    = optional(bool, false)
     forged_transmits     = optional(bool, false)
     mac_changes          = optional(bool, false)
@@ -342,6 +343,13 @@ variable "vmware_vmm_domains" {
       for dom in var.vmware_vmm_domains : dom.resolution_immediacy == null || try(contains(["immediate", "lazy", "pre-provision"], dom.resolution_immediacy), false)
     ])
     error_message = "`resolution_immediacy`: Allowed values are `immediate`, `lazy` or `pre-provision`."
+  }
+
+  validation {
+    condition = alltrue([
+      for dom in var.vmware_vmm_domains : dom.port_binding == null || try(contains(["dynamic", "ephemeral", "static", "default"], dom.port_binding), false)
+    ])
+    error_message = "`port_binding`: Allowed values are `dynamic`, `ephemeral`, `static` or `default`."
   }
 
   validation {
@@ -680,6 +688,53 @@ variable "static_endpoints" {
       for se in var.static_endpoints : se.channel == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", se.channel))
     ])
     error_message = "`channel`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "static_aaeps" {
+  description = "List of static aaeps. Allowed values `encap`: `1` - `4096`. Allowed values `primary_encap`: `1` - `4096`. Choices `deployment_immediacy`: `immediate`, `lazy`. Default value `deployment_immediacy`: `lazy`. Choices `mode`: `regular`, `native`, `untagged`. Default value `mode`: `regular`"
+  type = list(object({
+    name                 = string
+    encap                = number
+    primary_encap        = optional(number)
+    deployment_immediacy = optional(string, "lazy")
+    mode                 = optional(string, "regular")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for sa in var.static_aaeps : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", sa.name))
+    ])
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for sa in var.static_aaeps : (sa.encap >= 1 && sa.encap <= 4096)
+    ])
+    error_message = "`vlan`: Minimum value: `1`. Maximum value: `4096`."
+  }
+
+  validation {
+    condition = alltrue([
+      for sa in var.static_aaeps : sa.primary_encap == null || try(sa.primary_encap >= 1 && sa.primary_encap <= 4096, false)
+    ])
+    error_message = "`primary_encap`: Minimum value: `1`. Maximum value: `4096`."
+  }
+
+  validation {
+    condition = alltrue([
+      for sa in var.static_aaeps : sa.deployment_immediacy == null || try(contains(["immediate", "lazy"], sa.deployment_immediacy), false)
+    ])
+    error_message = "`deployment_immediacy`: Allowed values are `immediate` or `lazy`."
+  }
+
+  validation {
+    condition = alltrue([
+      for sa in var.static_aaeps : sa.mode == null || try(contains(["regular", "native", "untagged"], sa.mode), false)
+    ])
+    error_message = "`mode`: Allowed values are `regular`, `native` or `untagged`."
   }
 }
 

@@ -32,6 +32,15 @@ resource "aci_rest_managed" "infraPortBlk" {
   }
 }
 
+resource "aci_rest_managed" "infraRsAccBndlSubgrp" {
+  for_each   = { for block in var.port_blocks : block.name => block if block.port_channel_member_policy != null }
+  dn         = "${aci_rest_managed.infraPortBlk[each.key].dn}/rsaccBndlSubgrp"
+  class_name = "infraRsAccBndlSubgrp"
+  content = {
+    tDn = "uni/infra/funcprof/accbundle-${var.policy_group}/accsubbndl-${each.value.port_channel_member_policy}"
+  }
+}
+
 resource "aci_rest_managed" "infraSubPortBlk" {
   for_each   = { for block in var.sub_port_blocks : block.name => block }
   dn         = "${aci_rest_managed.infraHPortS.dn}/subportblk-${each.value.name}"
@@ -45,5 +54,14 @@ resource "aci_rest_managed" "infraSubPortBlk" {
     toPort      = each.value.to_port != null ? each.value.to_port : each.value.from_port
     fromSubPort = each.value.from_sub_port
     toSubPort   = each.value.to_sub_port != null ? each.value.to_sub_port : each.value.from_sub_port
+  }
+}
+
+resource "aci_rest_managed" "infraRsSubPortAccBndlSubgrp" {
+  for_each   = { for block in var.sub_port_blocks : block.name => block if block.port_channel_member_policy != null }
+  dn         = "${aci_rest_managed.infraSubPortBlk[each.key].dn}/rssubPortAccBndlSubgrp"
+  class_name = "infraRsSubPortAccBndlSubgrp"
+  content = {
+    tDn = "uni/infra/funcprof/accbundle-${var.policy_group}/accsubbndl-${each.value.port_channel_member_policy}"
   }
 }
