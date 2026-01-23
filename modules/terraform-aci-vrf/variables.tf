@@ -550,8 +550,9 @@ variable "pim_igmp_ssm_translate_policies" {
   default = []
 
 }
-variable "leaked_internal_prefixes" {
-  description = "List of leaked internal prefixes. Default value `public`: false."
+
+variable "leaked_internal_subnets" {
+  description = "List of leaked internal subnets (EPG/BD Subnets - leakInternalSubnet). Default value `public`: false."
   type = list(object({
     prefix = string
     public = optional(bool, false)
@@ -563,6 +564,58 @@ variable "leaked_internal_prefixes" {
     })), [])
   }))
   default = []
+
+  validation {
+    condition = alltrue(flatten([
+      for p in var.leaked_internal_subnets : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", d.description))]
+    ]))
+    error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for p in var.leaked_internal_subnets : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", d.tenant))]
+    ]))
+    error_message = "`tenant`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for p in var.leaked_internal_subnets : [for d in coalesce(p.destinations, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", d.vrf))]
+    ]))
+    error_message = "`vrf`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "leaked_internal_prefixes" {
+  description = "List of leaked internal prefixes (leakInternalPrefix). Prefix-level `public` (scope) requires APIC 6.1+. Default value `public`: false."
+  type = list(object({
+    prefix             = string
+    public             = optional(bool, false)
+    from_prefix_length = optional(number)
+    to_prefix_length   = optional(number)
+    destinations = optional(list(object({
+      description = optional(string, "")
+      tenant      = string
+      vrf         = string
+      public      = optional(bool)
+    })), [])
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for p in var.leaked_internal_prefixes : p.from_prefix_length == null || try(p.from_prefix_length >= 0 && p.from_prefix_length <= 128, false)
+    ])
+    error_message = "Allowed values `from_prefix_length`: 0-128."
+  }
+
+  validation {
+    condition = alltrue([
+      for p in var.leaked_internal_prefixes : p.to_prefix_length == null || try(p.to_prefix_length >= 0 && p.to_prefix_length <= 128, false)
+    ])
+    error_message = "Allowed values `to_prefix_length`: 0-128."
+  }
 
   validation {
     condition = alltrue(flatten([

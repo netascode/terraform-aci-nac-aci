@@ -86,9 +86,23 @@ module "aci_vrf" {
       source_address = "4.4.4.4"
     }
   ]
-  leaked_internal_prefixes = [{
-    prefix = "1.1.1.0/24"
+  # EPG/BD Subnets (leakInternalSubnet)
+  leaked_internal_subnets = [{
+    prefix = "10.1.0.0/16"
     public = true
+    destinations = [{
+      description = "Leak to VRF2"
+      tenant      = "ABC"
+      vrf         = "VRF2"
+      public      = false
+    }]
+  }]
+  # Internal Prefixes (leakInternalPrefix) - prefix-level scope requires APIC 6.1+
+  leaked_internal_prefixes = [{
+    prefix             = "10.0.0.0/8"
+    public             = true
+    from_prefix_length = 16
+    to_prefix_length   = 24
     destinations = [{
       description = "Leak to VRF2"
       tenant      = "ABC"
