@@ -1,0 +1,55 @@
+<!-- BEGIN_TF_DOCS -->
+# Terraform ACI Priority Flow Control Policy Module
+
+Manages ACI Priority Flow Control (PFC) Interface Policy
+
+Location in GUI:
+`Fabric` » `Access Policies` » `Policies` » `Interface` » `Priority Flow Control`
+
+## Examples
+
+```hcl
+module "aci_priority_flow_control_policy" {
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-priority-flow-control-policy"
+  version = ">= 0.8.0"
+
+  name        = "PFC_ON"
+  description = "PFC enabled"
+  admin_state = "on"
+}
+```
+
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_name"></a> [name](#input\_name) | Priority flow control policy name. | `string` | n/a | yes |
+| <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
+| <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | Admin state. Choices: `on`, `off`, `auto`. | `string` | `"auto"` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `qosPfcIfPol` object. |
+| <a name="output_name"></a> [name](#output\_name) | Priority flow control policy name. |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aci_rest_managed.qosPfcIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+<!-- END_TF_DOCS -->

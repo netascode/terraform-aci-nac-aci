@@ -635,6 +635,13 @@ defaults:
           rate_pps: unspecified
           burst_rate: "100.000000"
           burst_pps: unspecified
+        port_security_policies:
+          name_suffix: ""
+          maximum: 0
+          timeout: 60
+        priority_flow_control_policies:
+          name_suffix: ""
+          admin_state: auto
         spanning_tree_policies:
           name_suffix: ""
           bpdu_guard: false
