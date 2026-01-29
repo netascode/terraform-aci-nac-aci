@@ -1033,7 +1033,6 @@ module "aci_l3out" {
     module.aci_ospf_interface_policy,
     module.aci_eigrp_interface_policy,
     module.aci_bfd_interface_policy,
-    module.aci_set_rule,
     module.aci_match_rule,
   ]
 }
@@ -2750,6 +2749,7 @@ module "aci_set_rule" {
 
   depends_on = [
     module.aci_tenant,
+    module.aci_external_endpoint_group,
   ]
 }
 
