@@ -225,3 +225,26 @@ variable "contract_imported_consumers" {
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
+
+variable "contract_masters" {
+  description = "List of contract masters. A contract master is an external EPG from which this EPG inherits contracts."
+  type = list(object({
+    l3out                   = optional(string)
+    external_endpoint_group = string
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for m in var.contract_masters : m.l3out == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", m.l3out))
+    ])
+    error_message = "`l3out`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for m in var.contract_masters : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", m.external_endpoint_group))
+    ])
+    error_message = "`external_endpoint_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
