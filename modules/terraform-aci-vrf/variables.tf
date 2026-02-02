@@ -51,6 +51,41 @@ variable "description" {
   }
 }
 
+variable "snmp_context_name" {
+  description = "VRF SNMP Context name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = var.snmp_context_name == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.snmp_context_name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "snmp_context_community_profiles" {
+  description = "VRF SNMP Context Community Profiles."
+  type = list(object({
+    name        = string
+    description = optional(string, "")
+  }))
+
+  validation {
+    condition = alltrue([
+      for comm_profile in var.snmp_context_community_profiles : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", comm_profile.name))
+    ])
+    error_message = "`name` Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for comm_profile in var.snmp_context_community_profiles : can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", comm_profile.description))
+    ])
+    error_message = "`description` Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  default = []
+}
+
 variable "enforcement_direction" {
   description = "VRF enforcement direction. Choices: `ingress`, `egress`."
   type        = string

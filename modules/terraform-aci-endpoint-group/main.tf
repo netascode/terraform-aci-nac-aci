@@ -512,6 +512,15 @@ resource "aci_rest_managed" "fvRsStCEpToPathEp_channel" {
   }
 }
 
+locals {
+  port_binding_map = {
+    "dynamic"   = "dynamicBinding"
+    "ephemeral" = "ephemeral"
+    "static"    = "staticBinding"
+    "default"   = "none"
+  }
+}
+
 resource "aci_rest_managed" "fvRsDomAtt_vmm" {
   for_each   = { for vmm_vwm in var.vmware_vmm_domains : vmm_vwm.name => vmm_vwm }
   dn         = "${aci_rest_managed.fvAEPg.dn}/rsdomAtt-[uni/vmmp-VMware/dom-${each.value.name}]"
@@ -526,8 +535,25 @@ resource "aci_rest_managed" "fvRsDomAtt_vmm" {
     netflowPref   = each.value.netflow == true ? "enabled" : "disabled"
     instrImedcy   = each.value.deployment_immediacy
     resImedcy     = each.value.resolution_immediacy
+    bindingType   = lookup(local.port_binding_map, each.value.port_binding, "none")
     switchingMode = "native"
     customEpgName = each.value.custom_epg_name
+  }
+}
+
+resource "aci_rest_managed" "fvRsAepAtt" {
+  for_each   = { for sa in var.static_aaeps : sa.name => sa }
+  dn         = "${aci_rest_managed.fvAEPg.dn}/rsaepAtt-${each.value.name}"
+  class_name = "fvRsAepAtt"
+  content = {
+    tnInfraAttEntityPName = each.value.name
+    encap                 = "vlan-${each.value.encap}"
+    primaryEncap          = each.value.primary_encap != null ? "vlan-${each.value.primary_encap}" : "unknown"
+    mode                  = each.value.mode
+    instrImedcy           = each.value.deployment_immediacy
+  }
+  lifecycle {
+    ignore_changes = [annotation]
   }
 }
 

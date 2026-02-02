@@ -55,6 +55,24 @@ resource "aci_rest_managed" "fvCtx" {
   }
 }
 
+resource "aci_rest_managed" "snmpCtxP" {
+  dn         = "${aci_rest_managed.fvCtx.dn}/snmpctx"
+  class_name = "snmpCtxP"
+  content = {
+    "name" = var.snmp_context_name
+  }
+}
+
+resource "aci_rest_managed" "snmpCommunityP" {
+  for_each   = { for comm_profile in var.snmp_context_community_profiles : comm_profile.name => comm_profile }
+  dn         = "${aci_rest_managed.snmpCtxP.dn}/community-${each.value.name}"
+  class_name = "snmpCommunityP"
+  content = {
+    "name"  = each.value.name
+    "descr" = each.value.description
+  }
+}
+
 resource "aci_rest_managed" "vzAny" {
   dn         = "${aci_rest_managed.fvCtx.dn}/any"
   class_name = "vzAny"

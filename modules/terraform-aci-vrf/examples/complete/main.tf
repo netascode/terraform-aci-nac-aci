@@ -23,12 +23,22 @@ module "aci_vrf" {
   contract_consumers                     = ["CON1"]
   contract_providers                     = ["CON1"]
   contract_imported_consumers            = ["I_CON1"]
-  pim_enabled                            = true
-  pim_mtu                                = 9200
-  pim_fast_convergence                   = true
-  pim_strict_rfc                         = true
-  pim_max_multicast_entries              = 1000
-  pim_reserved_multicast_entries         = "undefined"
+  snmp_context_name                      = "SNMP-CTX"
+  snmp_context_community_profiles = [
+    {
+      name        = "Community-Profile1"
+      description = "Community Profile 1 Description"
+    },
+    {
+      name = "Community-Profile2"
+    }
+  ]
+  pim_enabled                    = true
+  pim_mtu                        = 9200
+  pim_fast_convergence           = true
+  pim_strict_rfc                 = true
+  pim_max_multicast_entries      = 1000
+  pim_reserved_multicast_entries = "undefined"
   pim_static_rps = [
     {
       ip                  = "1.1.1.1"
@@ -36,7 +46,7 @@ module "aci_vrf" {
     },
     {
       ip = "1.1.1.2"
-    },
+    }
   ]
   pim_fabric_rps = [
     {
