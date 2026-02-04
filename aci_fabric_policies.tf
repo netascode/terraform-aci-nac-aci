@@ -981,19 +981,60 @@ module "aci_syslog_policy" {
   }]
 }
 
-module "aci_monitoring_policy" {
+locals {
+  monitoring_policies = flatten([
+    for policy in try(local.fabric_policies.monitoring.policies, []) : {
+      name        = policy.name == "common" ? policy.name : "${policy.name}${local.defaults.apic.fabric_policies.monitoring.policies.name_suffix}"
+      description = try(policy.description, "")
+      snmp_trap_policies = [for snmp_policy in try(policy.snmp_traps, []) : {
+        name              = "${snmp_policy.name}${local.defaults.apic.fabric_policies.monitoring.policies.snmp_traps.name_suffix}"
+        destination_group = try("${snmp_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}", "")
+      }]
+      syslog_policies = [for syslog_policy in try(policy.syslogs, []) : {
+        name              = "${syslog_policy.name}${local.defaults.apic.fabric_policies.monitoring.policies.syslogs.name_suffix}"
+        audit             = try(syslog_policy.audit, local.defaults.apic.fabric_policies.monitoring.policies.syslogs.audit)
+        events            = try(syslog_policy.events, local.defaults.apic.fabric_policies.monitoring.policies.syslogs.events)
+        faults            = try(syslog_policy.faults, local.defaults.apic.fabric_policies.monitoring.policies.syslogs.faults)
+        session           = try(syslog_policy.session, local.defaults.apic.fabric_policies.monitoring.policies.syslogs.session)
+        minimum_severity  = try(syslog_policy.minimum_severity, local.defaults.apic.fabric_policies.monitoring.policies.syslogs.minimum_severity)
+        destination_group = try("${syslog_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}", "")
+      }]
+      fault_severity_policies = [for policy in try(policy.fault_severity_policies, []) : {
+        class = policy.class
+        faults = [for fault in try(policy.faults, []) : {
+          fault_id         = fault.fault_id
+          initial_severity = try(fault.initial_severity, local.defaults.apic.fabric_policies.monitoring.policies.fault_severity_policies.faults.initial_severity)
+          target_severity  = try(fault.target_severity, local.defaults.apic.fabric_policies.monitoring.policies.fault_severity_policies.faults.target_severity)
+          description      = try(fault.description, "")
+        }]
+      }]
+    }
+  ])
+}
+module "aci_monitoring_policy_common" {
   source = "./modules/terraform-aci-monitoring-policy"
 
-  count              = local.modules.aci_monitoring_policy == true && var.manage_fabric_policies ? 1 : 0
-  snmp_trap_policies = [for policy in try(local.fabric_policies.monitoring.snmp_traps, []) : "${policy.name}${local.defaults.apic.fabric_policies.monitoring.snmp_traps.name_suffix}"]
-  syslog_policies = [for policy in try(local.fabric_policies.monitoring.syslogs, []) : {
-    name             = "${policy.name}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}"
-    audit            = try(policy.audit, local.defaults.apic.fabric_policies.monitoring.syslogs.audit)
-    events           = try(policy.events, local.defaults.apic.fabric_policies.monitoring.syslogs.events)
-    faults           = try(policy.faults, local.defaults.apic.fabric_policies.monitoring.syslogs.faults)
-    session          = try(policy.session, local.defaults.apic.fabric_policies.monitoring.syslogs.session)
-    minimum_severity = try(policy.minimum_severity, local.defaults.apic.fabric_policies.monitoring.syslogs.minimum_severity)
-  }]
+  for_each = { for pol in local.monitoring_policies : pol.name => pol if pol.name == "common" && local.modules.aci_monitoring_policy_common && var.manage_fabric_policies }
+
+  snmp_trap_policies = each.value.snmp_trap_policies
+  syslog_policies    = each.value.syslog_policies
+
+  depends_on = [
+    module.aci_snmp_trap_policy,
+    module.aci_syslog_policy,
+  ]
+}
+
+module "aci_monitoring_policy_custom" {
+  source = "./modules/terraform-aci-monitoring-policy-custom"
+
+  for_each = { for pol in local.monitoring_policies : pol.name => pol if pol.name != "common" && local.modules.aci_monitoring_policy_custom && var.manage_fabric_policies }
+
+  name                    = each.value.name
+  description             = each.value.description
+  snmp_trap_policies      = each.value.snmp_trap_policies
+  syslog_policies         = each.value.syslog_policies
+  fault_severity_policies = each.value.fault_severity_policies
 
   depends_on = [
     module.aci_snmp_trap_policy,
