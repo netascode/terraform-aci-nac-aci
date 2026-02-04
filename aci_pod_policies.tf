@@ -12,4 +12,9 @@ module "aci_pod_setup" {
     id          = pool.id
     remote_pool = pool.remote_pool
   }]
+  resiliency_groups = [for rg in try(each.value.resiliency_groups, []) : {
+    name            = rg.name
+    description     = try(rg.description, null)
+    remote_pool_ids = try(rg.remote_pool_ids, [])
+  }]
 }
