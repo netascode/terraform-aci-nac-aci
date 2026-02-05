@@ -4,7 +4,7 @@ resource "aci_rest_managed" "l2PortSecurityPol" {
   content = {
     name    = var.name
     descr   = var.description
-    maximum = var.maximum
+    maximum = var.maximum_endpoints
     timeout = var.timeout
   }
 }

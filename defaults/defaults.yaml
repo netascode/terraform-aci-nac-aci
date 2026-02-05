@@ -611,11 +611,12 @@ defaults:
           rate: normal
         port_security_policies:
           name_suffix: ""
-          maximum: 0
+          maximum_endpoints: 0
           timeout: 60
         priority_flow_control_policies:
           name_suffix: ""
-          admin_state: auto
+          admin_state: true
+          auto_state: true
         l2_policies:
           name_suffix: ""
           vlan_scope: global

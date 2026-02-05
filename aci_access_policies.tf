@@ -474,11 +474,11 @@ module "aci_storm_control_policy" {
 module "aci_port_security_policy" {
   source = "./modules/terraform-aci-port-security-policy"
 
-  for_each    = { for ps in try(local.access_policies.interface_policies.port_security_policies, []) : ps.name => ps if local.modules.aci_port_security_policy && var.manage_access_policies }
-  name        = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.port_security_policies.name_suffix}"
-  description = try(each.value.description, "")
-  maximum     = try(each.value.maximum, local.defaults.apic.access_policies.interface_policies.port_security_policies.maximum)
-  timeout     = try(each.value.timeout, local.defaults.apic.access_policies.interface_policies.port_security_policies.timeout)
+  for_each          = { for ps in try(local.access_policies.interface_policies.port_security_policies, []) : ps.name => ps if local.modules.aci_port_security_policy && var.manage_access_policies }
+  name              = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.port_security_policies.name_suffix}"
+  description       = try(each.value.description, "")
+  maximum_endpoints = try(each.value.maximum_endpoints, local.defaults.apic.access_policies.interface_policies.port_security_policies.maximum_endpoints)
+  timeout           = try(each.value.timeout, local.defaults.apic.access_policies.interface_policies.port_security_policies.timeout)
 }
 
 module "aci_priority_flow_control_policy" {
@@ -488,6 +488,7 @@ module "aci_priority_flow_control_policy" {
   name        = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.priority_flow_control_policies.name_suffix}"
   description = try(each.value.description, "")
   admin_state = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.priority_flow_control_policies.admin_state)
+  auto_state  = try(each.value.auto_state, local.defaults.apic.access_policies.interface_policies.priority_flow_control_policies.auto_state)
 }
 
 module "aci_access_leaf_interface_policy_group" {

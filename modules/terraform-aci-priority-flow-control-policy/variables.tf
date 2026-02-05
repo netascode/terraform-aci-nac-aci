@@ -20,12 +20,13 @@ variable "description" {
 }
 
 variable "admin_state" {
-  description = "Admin state. Choices: `on`, `off`, `auto`."
-  type        = string
-  default     = "auto"
+  description = "Admin state. When `auto_state` is false, this determines the state: true = on, false = off."
+  type        = bool
+  default     = true
+}
 
-  validation {
-    condition     = contains(["on", "off", "auto"], var.admin_state)
-    error_message = "Allowed values are `on`, `off` or `auto`."
-  }
+variable "auto_state" {
+  description = "Auto state. When true, PFC is set to auto mode. When false, `admin_state` determines on/off."
+  type        = bool
+  default     = true
 }

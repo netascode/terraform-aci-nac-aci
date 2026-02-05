@@ -4,5 +4,6 @@ module "aci_priority_flow_control_policy" {
 
   name        = "PFC_ON"
   description = "PFC enabled"
-  admin_state = "on"
+  admin_state = true
+  auto_state  = false
 }

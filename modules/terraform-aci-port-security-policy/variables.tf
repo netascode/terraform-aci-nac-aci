@@ -19,13 +19,13 @@ variable "description" {
   }
 }
 
-variable "maximum" {
+variable "maximum_endpoints" {
   description = "Maximum number of endpoints. A value of 0 means unlimited."
   type        = number
   default     = 0
 
   validation {
-    condition     = var.maximum >= 0 && var.maximum <= 12000
+    condition     = var.maximum_endpoints >= 0 && var.maximum_endpoints <= 12000
     error_message = "Minimum value: 0, Maximum value: 12000."
   }
 }

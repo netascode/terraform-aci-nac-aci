@@ -4,6 +4,6 @@ resource "aci_rest_managed" "qosPfcIfPol" {
   content = {
     name    = var.name
     descr   = var.description
-    adminSt = var.admin_state
+    adminSt = var.auto_state ? "auto" : (var.admin_state ? "on" : "off")
   }
 }

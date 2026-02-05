@@ -13,10 +13,10 @@ module "aci_port_security_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-port-security-policy"
   version = ">= 0.8.0"
 
-  name        = "PORT_SEC_10"
-  description = "Port security with max 10 endpoints"
-  maximum     = 10
-  timeout     = 300
+  name              = "PORT_SEC_10"
+  description       = "Port security with max 10 endpoints"
+  maximum_endpoints = 10
+  timeout           = 300
 }
 ```
 
@@ -39,7 +39,7 @@ module "aci_port_security_policy" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Port security policy name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
-| <a name="input_maximum"></a> [maximum](#input\_maximum) | Maximum number of endpoints. A value of 0 means unlimited. | `number` | `0` | no |
+| <a name="input_maximum_endpoints"></a> [maximum\_endpoints](#input\_maximum\_endpoints) | Maximum number of endpoints. A value of 0 means unlimited. | `number` | `0` | no |
 | <a name="input_timeout"></a> [timeout](#input\_timeout) | Port security timeout in seconds. | `number` | `60` | no |
 
 ## Outputs

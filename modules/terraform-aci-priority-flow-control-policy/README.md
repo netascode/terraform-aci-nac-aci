@@ -15,7 +15,8 @@ module "aci_priority_flow_control_policy" {
 
   name        = "PFC_ON"
   description = "PFC enabled"
-  admin_state = "on"
+  admin_state = true
+  auto_state  = false
 }
 ```
 
@@ -38,7 +39,8 @@ module "aci_priority_flow_control_policy" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Priority flow control policy name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
-| <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | Admin state. Choices: `on`, `off`, `auto`. | `string` | `"auto"` | no |
+| <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | Admin state. When `auto_state` is false, this determines the state: true = on, false = off. | `bool` | `true` | no |
+| <a name="input_auto_state"></a> [auto\_state](#input\_auto\_state) | Auto state. When true, PFC is set to auto mode. When false, `admin_state` determines on/off. | `bool` | `true` | no |
 
 ## Outputs
 
