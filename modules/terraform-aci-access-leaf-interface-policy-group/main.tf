@@ -99,6 +99,24 @@ resource "aci_rest_managed" "infraRsStormctrlIfPol" {
   }
 }
 
+resource "aci_rest_managed" "infraRsL2PortSecurityPol" {
+  count      = var.type != "breakout" && var.port_security_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraAccGrp.dn}/rsl2PortSecurityPol"
+  class_name = "infraRsL2PortSecurityPol"
+  content = {
+    tnL2PortSecurityPolName = var.port_security_policy
+  }
+}
+
+resource "aci_rest_managed" "infraRsQosPfcIfPol" {
+  count      = var.type != "breakout" && var.priority_flow_control_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraAccGrp.dn}/rsqosPfcIfPol"
+  class_name = "infraRsQosPfcIfPol"
+  content = {
+    tnQosPfcIfPolName = var.priority_flow_control_policy
+  }
+}
+
 resource "aci_rest_managed" "infraRsLacpPol" {
   count      = (var.type == "vpc" || var.type == "pc") && var.port_channel_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rslacpPol"
