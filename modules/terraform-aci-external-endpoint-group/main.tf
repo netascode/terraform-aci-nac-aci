@@ -52,6 +52,15 @@ resource "aci_rest_managed" "fvRsConsIf" {
   }
 }
 
+resource "aci_rest_managed" "fvRsSecInherited" {
+  for_each   = { for m in var.contract_masters : "${coalesce(m.l3out, var.l3out)}-${m.external_endpoint_group}" => m }
+  dn         = "${aci_rest_managed.l3extInstP.dn}/rssecInherited-[uni/tn-${var.tenant}/out-${coalesce(each.value.l3out, var.l3out)}/instP-${each.value.external_endpoint_group}]"
+  class_name = "fvRsSecInherited"
+  content = {
+    tDn = "uni/tn-${var.tenant}/out-${coalesce(each.value.l3out, var.l3out)}/instP-${each.value.external_endpoint_group}"
+  }
+}
+
 resource "aci_rest_managed" "l3extRsInstPToProfile" {
   for_each   = { for rcp in var.route_control_profiles : rcp.name => rcp }
   dn         = "${aci_rest_managed.l3extInstP.dn}/rsinstPToProfile-[${each.value.name}]-${each.value.direction}"
