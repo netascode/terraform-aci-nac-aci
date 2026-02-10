@@ -26,7 +26,7 @@ content: |-
   - `interface_policies`: Configurations applied at the interface level (e.g., assigning interface policy groups to physical ports)
   - `tenants`: Configurations applied at the tenant level (e.g., VRFs and Bridge Domains)
 
-  The full data model documentation is available here: https://netascode.cisco.com/data_model/overview
+  The full data model documentation is available here: https://netascode.cisco.com/docs/data_models/apic/overview/ 
 
   ## Examples
 
