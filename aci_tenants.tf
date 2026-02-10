@@ -229,6 +229,7 @@ locals {
         igmp_snooping_policy       = try("${bd.igmp_snooping_policy}${local.defaults.apic.tenants.policies.igmp_snooping_policies.name_suffix}", "")
         nd_interface_policy        = try("${bd.nd_interface_policy}${local.defaults.apic.tenants.policies.nd_interface_policies.name_suffix}", "")
         endpoint_retention_policy  = try("${bd.endpoint_retention_policy}${local.defaults.apic.tenants.policies.endpoint_retention_policies.name_suffix}", "")
+        legacy_mode_vlan           = try(bd.legacy_mode_vlan, null)
         subnets = [for subnet in try(bd.subnets, []) : {
           ip                    = subnet.ip
           description           = try(subnet.description, "")
@@ -288,6 +289,7 @@ module "aci_bridge_domain" {
   igmp_snooping_policy       = each.value.igmp_snooping_policy
   nd_interface_policy        = each.value.nd_interface_policy
   endpoint_retention_policy  = each.value.endpoint_retention_policy
+  legacy_mode_vlan           = each.value.legacy_mode_vlan
   subnets                    = each.value.subnets
   l3outs                     = each.value.l3outs
   dhcp_labels                = each.value.dhcp_labels

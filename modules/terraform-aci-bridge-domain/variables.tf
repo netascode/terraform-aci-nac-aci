@@ -336,3 +336,14 @@ variable "netflow_monitor_policies" {
     error_message = "`ip_filter_type`: Allowed values: `ipv4`, `ipv6`, `ce`, `unspecified`"
   }
 }
+
+variable "legacy_mode_vlan" {
+  description = "Legacy Mode VLAN. Allowed values `vlan`: `1` - `4094`."
+  type        = number
+  default     = null
+
+  validation {
+    condition     = var.legacy_mode_vlan == null || try(var.legacy_mode_vlan >= 1 && var.legacy_mode_vlan <= 4094, false)
+    error_message = "Allowed values: `1` - `4094`."
+  }
+}

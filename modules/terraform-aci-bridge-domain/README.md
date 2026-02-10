@@ -34,6 +34,7 @@ module "aci_bridge_domain" {
   vrf                        = "VRF1"
   nd_interface_policy        = "ND_INTF_POL1"
   endpoint_retention_policy  = "ERP1"
+  legacy_mode_vlan           = 135
   subnets = [{
     description        = "Subnet Description"
     ip                 = "1.1.1.1/24"
@@ -110,6 +111,7 @@ module "aci_bridge_domain" {
 | <a name="input_dhcp_labels"></a> [dhcp\_labels](#input\_dhcp\_labels) | List of DHCP labels | <pre>list(object({<br/>    dhcp_relay_policy  = string<br/>    dhcp_option_policy = optional(string)<br/>    scope              = optional(string, "tenant")<br/>  }))</pre> | `[]` | no |
 | <a name="input_endpoint_retention_policy"></a> [endpoint\_retention\_policy](#input\_endpoint\_retention\_policy) | Endpoint Retention Policy. | `string` | `""` | no |
 | <a name="input_netflow_monitor_policies"></a> [netflow\_monitor\_policies](#input\_netflow\_monitor\_policies) | List of Netflow Monitor policies | <pre>list(object({<br/>    name           = string<br/>    ip_filter_type = optional(string, "ipv4")<br/>  }))</pre> | `[]` | no |
+| <a name="input_legacy_mode_vlan"></a> [legacy\_mode\_vlan](#input\_legacy\_mode\_vlan) | Legacy Mode VLAN. Allowed values `vlan`: `1` - `4094`. | `number` | `null` | no |
 
 ## Outputs
 
@@ -124,6 +126,7 @@ module "aci_bridge_domain" {
 |------|------|
 | [aci_rest_managed.dhcpLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.dhcpRsDhcpOptionPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvAccP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvBD](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBDToNdP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBDToNetflowMonitorPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
