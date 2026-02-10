@@ -31,7 +31,7 @@ resource "aci_rest_managed" "snmpSrc" {
 }
 
 resource "aci_rest_managed" "snmpRsDestGroup" {
-  for_each   = { for s in var.snmp_trap_policies : s.name => s if s.destination_group != null }
+  for_each   = { for s in var.snmp_trap_policies : s.name => s if s.destination_group != "" }
   dn         = "${aci_rest_managed.snmpSrc[each.value.name].dn}/rsdestGroup"
   class_name = "snmpRsDestGroup"
   content = {
@@ -51,7 +51,7 @@ resource "aci_rest_managed" "syslogSrc" {
 }
 
 resource "aci_rest_managed" "syslogRsDestGroup" {
-  for_each   = { for s in var.syslog_policies : s.name => s if s.destination_group != null }
+  for_each   = { for s in var.syslog_policies : s.name => s if s.destination_group != "" }
   dn         = "${aci_rest_managed.syslogSrc[each.value.name].dn}/rsdestGroup"
   class_name = "syslogRsDestGroup"
   content = {
