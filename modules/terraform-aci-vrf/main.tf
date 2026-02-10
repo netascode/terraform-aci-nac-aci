@@ -1,5 +1,21 @@
 locals {
-  internal_destinations = flatten([
+  # Destinations for leaked_internal_subnets (leakInternalSubnet)
+  internal_subnet_destinations = flatten([
+    for prefix in var.leaked_internal_subnets : [
+      for dest in coalesce(prefix.destinations, []) : {
+        key = "${prefix.prefix}/${dest.tenant}-${dest.vrf}"
+        value = {
+          prefix      = prefix.prefix
+          tenant      = dest.tenant
+          vrf         = dest.vrf
+          public      = dest.public
+          description = dest.description
+        }
+      }
+    ]
+  ])
+  # Destinations for leaked_internal_prefixes (leakInternalPrefix)
+  internal_prefix_destinations = flatten([
     for prefix in var.leaked_internal_prefixes : [
       for dest in coalesce(prefix.destinations, []) : {
         key = "${prefix.prefix}/${dest.tenant}-${dest.vrf}"
@@ -494,13 +510,14 @@ resource "aci_rest_managed" "igmpSSMXlateP" {
 }
 
 resource "aci_rest_managed" "leakRoutes" {
-  count      = length(var.leaked_internal_prefixes) > 0 || length(var.leaked_external_prefixes) > 0 ? 1 : 0
+  count      = length(var.leaked_internal_subnets) > 0 || length(var.leaked_internal_prefixes) > 0 || length(var.leaked_external_prefixes) > 0 ? 1 : 0
   dn         = "${aci_rest_managed.fvCtx.dn}/leakroutes"
   class_name = "leakRoutes"
 }
 
+# leakInternalSubnet - EPG/BD Subnets (leaked_internal_subnets)
 resource "aci_rest_managed" "leakInternalSubnet" {
-  for_each   = { for prefix in var.leaked_internal_prefixes : prefix.prefix => prefix }
+  for_each   = { for prefix in var.leaked_internal_subnets : prefix.prefix => prefix }
   dn         = "${aci_rest_managed.leakRoutes[0].dn}/leakintsubnet-[${each.value.prefix}]"
   class_name = "leakInternalSubnet"
   content = {
@@ -509,9 +526,35 @@ resource "aci_rest_managed" "leakInternalSubnet" {
   }
 }
 
-resource "aci_rest_managed" "leakTo_internal" {
-  for_each   = { for dest in local.internal_destinations : dest.key => dest.value }
+resource "aci_rest_managed" "leakTo_internal_subnet" {
+  for_each   = { for dest in local.internal_subnet_destinations : dest.key => dest.value }
   dn         = "${aci_rest_managed.leakInternalSubnet[each.value.prefix].dn}/to-[${each.value.tenant}]-[${each.value.vrf}]"
+  class_name = "leakTo"
+  content = {
+    tenantName = each.value.tenant
+    ctxName    = each.value.vrf
+    descr      = each.value.description
+    scope      = each.value.public == null ? "inherit" : (each.value.public == true ? "public" : "private")
+  }
+}
+
+# leakInternalPrefix - Internal Prefixes (leaked_internal_prefixes)
+# Prefix-level scope requires APIC 6.1+
+resource "aci_rest_managed" "leakInternalPrefix" {
+  for_each   = { for prefix in var.leaked_internal_prefixes : prefix.prefix => prefix }
+  dn         = "${aci_rest_managed.leakRoutes[0].dn}/leakintprefix-[${each.value.prefix}]"
+  class_name = "leakInternalPrefix"
+  content = {
+    ip    = each.value.prefix
+    scope = each.value.public == true ? "public" : "private"
+    ge    = each.value.from_prefix_length != null ? each.value.from_prefix_length : "unspecified"
+    le    = each.value.to_prefix_length != null ? each.value.to_prefix_length : "unspecified"
+  }
+}
+
+resource "aci_rest_managed" "leakTo_internal_prefix" {
+  for_each   = { for dest in local.internal_prefix_destinations : dest.key => dest.value }
+  dn         = "${aci_rest_managed.leakInternalPrefix[each.value.prefix].dn}/to-[${each.value.tenant}]-[${each.value.vrf}]"
   class_name = "leakTo"
   content = {
     tenantName = each.value.tenant

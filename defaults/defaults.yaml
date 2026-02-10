@@ -884,8 +884,14 @@ defaults:
         data_plane_learning: true
         enforcement_direction: ingress
         enforcement_preference: enforced
+        leaked_internal_subnets:
+          public: false
+          destinations:
+            public: false
         leaked_internal_prefixes:
           public: false
+          destinations:
+            public: false
         pim:
           mtu: 1500
           bsr_forward_updates: false
