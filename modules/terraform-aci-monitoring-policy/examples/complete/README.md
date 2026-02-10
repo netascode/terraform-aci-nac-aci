@@ -14,16 +14,20 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_monitoring_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-monitoring-policy"
-  version = ">= 0.8.0"
+  version = ">= 1.3.0"
 
-  snmp_trap_policies = ["SNMP1"]
+  snmp_trap_policies = [{
+    name              = "SNMP1"
+    destination_group = "SNMP1"
+  }]
   syslog_policies = [{
-    name             = "SYSLOG1"
-    audit            = false
-    events           = false
-    faults           = false
-    session          = true
-    minimum_severity = "alerts"
+    name              = "SYSLOG1"
+    audit             = false
+    events            = false
+    faults            = false
+    session           = true
+    minimum_severity  = "alerts"
+    destination_group = "SYSLOG1"
   }]
 }
 ```
