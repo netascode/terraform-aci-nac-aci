@@ -86,7 +86,7 @@ locals {
           destinations = [for dest in try(prefix.destinations, []) : {
             description = try(dest.description, "")
             tenant      = dest.tenant
-            vrf         = dest.vrf
+            vrf         = "${dest.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}"
             public      = try(dest.public, null)
           }]
         }]
@@ -98,7 +98,7 @@ locals {
           destinations = [for dest in try(prefix.destinations, []) : {
             description = try(dest.description, "")
             tenant      = dest.tenant
-            vrf         = dest.vrf
+            vrf         = "${dest.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}"
             public      = try(dest.public, null)
           }]
         }]
@@ -109,7 +109,7 @@ locals {
           destinations = [for dest in try(prefix.destinations, []) : {
             description = try(dest.description, "")
             tenant      = dest.tenant
-            vrf         = dest.vrf
+            vrf         = "${dest.vrf}${local.defaults.apic.tenants.vrfs.name_suffix}"
           }]
         }]
         route_summarization_policies = [for pol in try(vrf.route_summarization_policies, []) : {
