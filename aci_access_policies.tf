@@ -490,6 +490,7 @@ module "aci_access_leaf_interface_policy_group" {
   l2_policy                          = try("${each.value.l2_policy}${local.defaults.apic.access_policies.interface_policies.l2_policies.name_suffix}", "")
   storm_control_policy               = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")
   port_channel_policy                = try("${each.value.port_channel_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix}", "")
+  port_channel_member_name           = try(each.value.port_channel_member_name, "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}")
   port_channel_member_policy         = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
   netflow_monitor_policies = [for monitor in try(each.value.netflow_monitor_policies, []) : {
     name           = "${monitor.name}${local.defaults.apic.access_policies.interface_policies.netflow_monitors.name_suffix}"
