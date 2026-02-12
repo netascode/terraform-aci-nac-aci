@@ -134,11 +134,15 @@ module "aci_access_leaf_switch_policy_group" {
   forwarding_scale_policy = try("${each.value.forwarding_scale_policy}${local.defaults.apic.access_policies.switch_policies.forwarding_scale_policies.name_suffix}", "")
   bfd_ipv4_policy         = try("${each.value.bfd_ipv4_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix}", "")
   bfd_ipv6_policy         = try("${each.value.bfd_ipv6_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix}", "")
+  cdp_policy              = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
+  lldp_policy             = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
 
   depends_on = [
     module.aci_forwarding_scale_policy,
     module.aci_bfd_ipv4_policy,
     module.aci_bfd_ipv6_policy,
+    module.aci_cdp_policy,
+    module.aci_lldp_policy,
   ]
 }
 
@@ -147,14 +151,16 @@ module "aci_access_spine_switch_policy_group" {
 
   for_each        = { for pg in try(local.access_policies.spine_switch_policy_groups, []) : pg.name => pg if local.modules.aci_access_spine_switch_policy_group && var.manage_access_policies }
   name            = "${each.value.name}${local.defaults.apic.access_policies.spine_switch_policy_groups.name_suffix}"
-  lldp_policy     = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
   bfd_ipv4_policy = try("${each.value.bfd_ipv4_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv4_policies.name_suffix}", "")
   bfd_ipv6_policy = try("${each.value.bfd_ipv6_policy}${local.defaults.apic.access_policies.switch_policies.bfd_ipv6_policies.name_suffix}", "")
+  cdp_policy      = try("${each.value.cdp_policy}${local.defaults.apic.access_policies.interface_policies.cdp_policies.name_suffix}", "")
+  lldp_policy     = try("${each.value.lldp_policy}${local.defaults.apic.access_policies.interface_policies.lldp_policies.name_suffix}", "")
 
   depends_on = [
-    module.aci_lldp_policy,
     module.aci_bfd_ipv4_policy,
     module.aci_bfd_ipv6_policy,
+    module.aci_cdp_policy,
+    module.aci_lldp_policy,
   ]
 }
 

@@ -6,14 +6,6 @@ resource "aci_rest_managed" "infraSpineAccNodePGrp" {
   }
 }
 
-resource "aci_rest_managed" "infraRsSpinePGrpToLldpIfPol" {
-  count      = var.lldp_policy != "" ? 1 : 0
-  dn         = "${aci_rest_managed.infraSpineAccNodePGrp.dn}/rsspinePGrpToLldpIfPol"
-  class_name = "infraRsSpinePGrpToLldpIfPol"
-  content = {
-    tnLldpIfPolName = var.lldp_policy
-  }
-}
 
 resource "aci_rest_managed" "infraRsBfdIpv4InstPol" {
   count      = var.bfd_ipv4_policy != "" ? 1 : 0
@@ -32,3 +24,22 @@ resource "aci_rest_managed" "infraRsBfdIpv6InstPol" {
     tnBfdIpv6InstPolName = var.bfd_ipv6_policy
   }
 }
+
+resource "aci_rest_managed" "infraRsSpinePGrpToCdpIfPol" {
+  count      = var.cdp_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraSpineAccNodePGrp.dn}/rsspinePGrpToCdpIfPol"
+  class_name = "infraRsSpinePGrpToCdpIfPol"
+  content = {
+    tnLldpIfPolName = var.cdp_policy
+  }
+}
+
+resource "aci_rest_managed" "infraRsSpinePGrpToLldpIfPol" {
+  count      = var.lldp_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraSpineAccNodePGrp.dn}/rsspinePGrpToLldpIfPol"
+  class_name = "infraRsSpinePGrpToLldpIfPol"
+  content = {
+    tnLldpIfPolName = var.lldp_policy
+  }
+}
+
