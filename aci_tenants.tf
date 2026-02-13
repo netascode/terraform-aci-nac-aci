@@ -3500,7 +3500,6 @@ locals {
         concrete_devices = [for cdev in try(device.concrete_devices, []) : {
           name         = "${cdev.name}${local.defaults.apic.tenants.services.l4l7_devices.concrete_devices.name_suffix}"
           alias        = try(cdev.alias, null)
-          description  = try(cdev.description, null)
           vcenter_name = try(cdev.vcenter_name, null)
           vm_name      = try(cdev.vm_name, null)
           interfaces = [for int in try(cdev.interfaces, []) : {
@@ -3554,7 +3553,6 @@ module "aci_l4l7_device" {
   concrete_devices = [for cdev in try(each.value.concrete_devices, []) : {
     name         = cdev.name
     alias        = cdev.alias
-    description  = cdev.description
     vcenter_name = cdev.vcenter_name
     vm_name      = cdev.vm_name
     interfaces = [for int in try(cdev.interfaces, []) : {
