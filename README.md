@@ -304,7 +304,9 @@ Additional example repositories:
 | <a name="module_aci_pod_setup"></a> [aci\_pod\_setup](#module\_aci\_pod\_setup) | ./modules/terraform-aci-pod-setup | n/a |
 | <a name="module_aci_port_channel_member_policy"></a> [aci\_port\_channel\_member\_policy](#module\_aci\_port\_channel\_member\_policy) | ./modules/terraform-aci-port-channel-member-policy | n/a |
 | <a name="module_aci_port_channel_policy"></a> [aci\_port\_channel\_policy](#module\_aci\_port\_channel\_policy) | ./modules/terraform-aci-port-channel-policy | n/a |
+| <a name="module_aci_port_security_policy"></a> [aci\_port\_security\_policy](#module\_aci\_port\_security\_policy) | ./modules/terraform-aci-port-security-policy | n/a |
 | <a name="module_aci_port_tracking"></a> [aci\_port\_tracking](#module\_aci\_port\_tracking) | ./modules/terraform-aci-port-tracking | n/a |
+| <a name="module_aci_priority_flow_control_policy"></a> [aci\_priority\_flow\_control\_policy](#module\_aci\_priority\_flow\_control\_policy) | ./modules/terraform-aci-priority-flow-control-policy | n/a |
 | <a name="module_aci_psu_policy"></a> [aci\_psu\_policy](#module\_aci\_psu\_policy) | ./modules/terraform-aci-psu-policy | n/a |
 | <a name="module_aci_ptp"></a> [aci\_ptp](#module\_aci\_ptp) | ./modules/terraform-aci-ptp | n/a |
 | <a name="module_aci_ptp_profile"></a> [aci\_ptp\_profile](#module\_aci\_ptp\_profile) | ./modules/terraform-aci-ptp-profile | n/a |
