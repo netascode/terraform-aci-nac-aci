@@ -49,7 +49,7 @@ resource "aci_rest_managed" "l3extLNodeP" {
   dn         = "uni/tn-${var.tenant}/out-${var.l3out}/lnodep-${var.name}"
   class_name = "l3extLNodeP"
   content = {
-    name = var.name
+    name  = var.name
     descr = var.description
   }
 }

@@ -1256,6 +1256,8 @@ defaults:
         name_suffix: ""
         node_profiles:
           name_suffix: ""
+          nodes:
+            router_id_as_loopback: false
           interface_profiles:
             name_suffix: ""
             interfaces:
@@ -1264,9 +1266,6 @@ defaults:
               mac: 00:22:BD:F8:19:FF
               mtu: inherit
               bgp_peers:
-                allow_self_as: false
-                send_community: false
-                send_ext_community: false
                 bfd: false
                 unicast_address_family: true
                 admin_state: true
@@ -1392,15 +1391,25 @@ defaults:
           bandwidth: 0
           delay: 0
           delay_unit: tens-of-micro
-        border_gateway_policy_set:
+        border_gateway_set_policy:
           name_suffix: ""
         remote_vxlan_fabrics:
           name_suffix: ""
-          admin_state: true
-          allow_self_as: false
-          disable_peer_as_check: false
-          as_propagate: none
-          ttl: 2
+          remote_evpn_peers:
+            admin_state: true
+            allow_self_as: false
+            disable_peer_as_check: false
+            as_propagate: none
+            ttl: 2
+        vxlan_custom_qos_policies:
+          name_suffix: ""
+          ingress_rules:
+            priority: unspecified
+            dscp_target: unspecified
+            cos_target: unspecified
+          egress_rules:
+            cos_target: unspecified
+            dscp_target: unspecified
         ospf_timer_policies:
           name_suffix: ""
           reference_bandwidth: 40000
@@ -1615,15 +1624,6 @@ defaults:
             version: 2
             enforce_version: false
         mpls_custom_qos_policies:
-          name_suffix: ""
-          ingress_rules:
-            priority: unspecified
-            dscp_target: unspecified
-            cos_target: unspecified
-          egress_rules:
-            cos_target: unspecified
-            exp_target: unspecified
-        vxlan_custom_qos_policies:
           name_suffix: ""
           ingress_rules:
             priority: unspecified

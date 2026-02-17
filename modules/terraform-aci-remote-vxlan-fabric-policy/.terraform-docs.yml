@@ -3,12 +3,12 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Terraform ACI L3out Node Profile Module
+  # Terraform ACI Remote VXLAN Fabric Policy Module
 
   Description
 
   Location in GUI:
-  `Tenants` » `XXX` » `Networking` » `L3outs` » `XXX` » `Logical Node Profiles`
+  `Tenants` » `infra` » `Policies` » `VXLAN Gateway` » `Remote VXLAN Fabrics`
 
   ## Examples
 

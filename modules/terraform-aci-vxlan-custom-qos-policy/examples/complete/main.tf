@@ -1,6 +1,6 @@
 module "aci_vxlan_custom_qos_policy" {
   source  = "netascode/nac-aci/aci/modules/terraform-aci-vxlan-custom-qos-policy"
-  version = ">= 0.8.0"
+  version = "> 1.2.0"
 
   name        = "vxlan_QOS_POL"
   description = "Custom vxlan QoS Policy"

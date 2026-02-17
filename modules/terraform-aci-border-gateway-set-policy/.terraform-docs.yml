@@ -3,12 +3,12 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Terraform ACI Storm Control Policy Module
+  # Terraform ACI Border Gateway Set PolicyModule
 
-  Manages ACI Storm Control Policy
+  Manages ACI Border Gateway Set Policy
 
   Location in GUI:
-  `Fabric` » `Access Policies` » `Policies` » `Interface` » `Storm Control`
+  `Tenants` » `infra` » `Policies` » `VXLAN Gateway` » `Border Gateway Sets`
 
   ## Examples
 

@@ -41,7 +41,7 @@ module "aci_l3out" {
   default_route_leak_policy_context_scope = false
   default_route_leak_policy_outside_scope = false
   vxlan_enabled                           = false
-  bgw_pol_set                             = "Border Gateway Set Name"
+  border_gateway_set                      = "Border Gateway Set Name"
   redistribution_route_maps = [{
     source    = "direct"
     route_map = "RRM"
@@ -93,6 +93,8 @@ module "aci_l3out" {
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_routed_domain"></a> [routed\_domain](#input\_routed\_domain) | Routed domain name. | `string` | n/a | yes |
 | <a name="input_vrf"></a> [vrf](#input\_vrf) | VRF name. | `string` | n/a | yes |
+| <a name="input_vxlan_enabled"></a> [vxlan\_enabled](#input\_vxlan\_enabled) | Enable VXLAN Infra L3OUT. | `bool` | `false` | no |
+| <a name="input_border_gateway_set"></a> [border\_gateway\_set](#input\_border\_gateway\_set) | Border Gateways Set name. | `string` | `""` | no |
 | <a name="input_ospf"></a> [ospf](#input\_ospf) | Enable OSPF routing. | `bool` | `false` | no |
 | <a name="input_bgp"></a> [bgp](#input\_bgp) | Enable BGP routing. | `bool` | `false` | no |
 | <a name="input_eigrp"></a> [eigrp](#input\_eigrp) | Enable EIGRP routing. | `bool` | `false` | no |
@@ -128,8 +130,7 @@ module "aci_l3out" {
 | <a name="input_multipod"></a> [multipod](#input\_multipod) | Multipod L3out flag. | `bool` | `true` | no |
 | <a name="input_sr_mpls"></a> [sr\_mpls](#input\_sr\_mpls) | SR MPLS L3out flag. | `bool` | `false` | no |
 | <a name="input_sr_mpls_infra_l3outs"></a> [sr\_mpls\_infra\_l3outs](#input\_sr\_mpls\_infra\_l3outs) | SR MPLS Infra L3Outs. | <pre>list(object({<br/>    name                     = string<br/>    outbound_route_map       = optional(string, "")<br/>    inbound_route_map        = optional(string, "")<br/>    external_endpoint_groups = optional(list(string), [])<br/>  }))</pre> | `[]` | no |
-| <a name="input_vxlan_enabled"></a> [vxlan_enabled](#input_vxlan_enabled) | Enable VXLAN for L3out. | `bool` | `false` | no |
-| <a name="input_bgw_pol_set"></a> [bgw_pol_set](#input_bgw_pol_set) | Border Gateway Policy Set name. | `string` | `""` | no |
+
 ## Outputs
 
 | Name | Description |
@@ -156,6 +157,7 @@ module "aci_l3out" {
 | [aci_rest_managed.l3extRsLblToInstP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsLblToProfile_export](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsLblToProfile_import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extRsProvBgwSet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsRedistributePol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.mplsExtP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.mplsRsLabelPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
@@ -176,4 +178,5 @@ module "aci_l3out" {
 | [aci_rest_managed.rtctrlScope](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlScope_export](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlScope_import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vxlanExtP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

@@ -21,14 +21,16 @@ variable "name" {
 variable "vxlan_enabled" {
   description = "VXLAN Stretch Enabled."
   type        = bool
+  default     = false
 }
 
-variable "bgw_pol_set" {
+variable "border_gateway_set" {
   description = "Border Gateway Policy Set name."
   type        = string
+  default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgw_pol_set))
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.border_gateway_set))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
@@ -36,6 +38,7 @@ variable "bgw_pol_set" {
 variable "normalized_vni" {
   description = "Normalized PC Tag."
   type        = number
+  default     = null
 
   validation {
     condition     = var.normalized_vni == null || (var.normalized_vni >= 0 && var.normalized_vni <= 16777215)

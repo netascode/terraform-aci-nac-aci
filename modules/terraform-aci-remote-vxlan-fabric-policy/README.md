@@ -14,7 +14,7 @@ module "aci_remote_vxlan_fabric_policy" {
 
   tenant      = "infra"
   name        = "REMOTE_VXLAN_POLICY"
-  bgw_pol_set = "BGW1"
+  border_gateway_set = "BGW1"
   remote_evpn_peers = [
     {
       ip                        = "10.1.1.1"
@@ -52,7 +52,7 @@ module "aci_remote_vxlan_fabric_policy" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Node profile name. | `string` | n/a | yes |
-| <a name="input_bgw_pol_set"></a> [bgw\_pol\_set](#input\_bgw\_pol\_set) | Border Gateway Set. | `string` | n/a | yes |
+| <a name="input_border_gateway_set"></a> [bgw\_pol\_set](#input\_bgw\_pol\_set) | Border Gateway Set. | `string` | n/a | yes |
 | <a name="input_remote_evpn_peers"></a> [remote\_evpn\_peers](#input\_remote\_evpn\_peers) | List of Remote EVPN peers with `ip`, `description`, `remote_as` (0-4294967295), `admin_state`, `allow_self_as`, `disable_peer_as_check`, `password`, `ttl` (1-255), `peer_prefix_policy`, `as_propagate` (none/no-prepend/replace-as/dual-as), `local_as` (0-4294967295). | <pre>list(object({
   ip                        = string
   description               = optional(string)

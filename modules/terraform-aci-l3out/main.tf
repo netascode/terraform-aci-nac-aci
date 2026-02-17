@@ -323,21 +323,21 @@ resource "aci_rest_managed" "mplsExtP" {
 
 resource "aci_rest_managed" "vxlanExtP" {
   count      = var.tenant == "infra" && var.vxlan_enabled == true ? 1 : 0
-  depends_on = [aci_rest_managed.l3extRsEctx]
   dn         = "${aci_rest_managed.l3extOut.dn}/vxlanextp"
-  
   class_name = "vxlanExtP"
+
+  depends_on = [aci_rest_managed.l3extRsEctx]
 }
 
 resource "aci_rest_managed" "l3extRsProvBgwSet" {
   count      = var.tenant == "infra" && var.vxlan_enabled == true ? 1 : 0
-  depends_on = [aci_rest_managed.vxlanExtP]
   dn         = "${aci_rest_managed.l3extOut.dn}/rsProvBgwSet"
   class_name = "l3extRsProvBgwSet"
   content = {
-    tDn: "uni/tn-infra/vxlanbgwset-${var.bgw_pol_set}"
+    tDn : "uni/tn-infra/vxlanbgwset-${var.border_gateway_set}"
   }
-  
+
+  depends_on = [aci_rest_managed.vxlanExtP]
 }
 
 resource "aci_rest_managed" "mplsRsLabelPol" {

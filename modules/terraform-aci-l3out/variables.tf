@@ -75,19 +75,15 @@ variable "vxlan_enabled" {
   description = "Enable VXLAN Infra L3OUT."
   type        = bool
   default     = false
-  validation {
-    condition     = !var.vxlan_enabled || var.tenant == "infra"
-    error_message = "When VXLAN is enabled, the tenant must be 'infra'."
-  }
 }
 
-variable "bgw_pol_set" {
+variable "border_gateway_set" {
   description = "Border Gateways Set name."
   type        = string
-  default = ""
+  default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgw_pol_set))
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.border_gateway_set))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

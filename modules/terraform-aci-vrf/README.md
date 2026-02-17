@@ -35,10 +35,9 @@ module "aci_vrf" {
   contract_providers                     = ["CON1"]
   contract_imported_consumers            = ["I_CON1"]
   vxlan_enabled                          = false
-  bgw_pol_set                            = "GorderGatewayPolicySet"
-  import_route_map                       = "RM-Import"
-  export_route_map                       = "RM-Export"
-  normalized_vni
+  border_gateway_set                     = "GorderGatewayPolicySet"
+  vxlan_import_route_map                 = "RM-Import"
+  vxlan_export_route_map                 = "RM-Export"
   pim_enabled                            = true
   pim_mtu                                = 9200
   pim_fast_convergence                   = true
@@ -194,11 +193,11 @@ module "aci_vrf" {
 | <a name="input_leaked_external_prefixes"></a> [leaked\_external\_prefixes](#input\_leaked\_external\_prefixes) | List of leaked external prefixes. | <pre>list(object({<br/>    prefix             = string<br/>    from_prefix_length = optional(number)<br/>    to_prefix_length   = optional(number)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_route_summarization_policies"></a> [route\_summarization\_policies](#input\_route\_summarization\_policies) | List of route summarization policies. | <pre>list(object({<br/>    name = string<br/>    nodes = optional(list(object({<br/>      id  = number<br/>      pod = optional(number, 1)<br/>    })), [])<br/>    subnets = optional(list(object({<br/>      prefix                         = string<br/>      bgp_route_summarization_policy = optional(string, null)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_endpoint_retention_policy"></a> [endpoint\_retention\_policy](#input\_endpoint\_retention\_policy) | Endpoint Retention Policy. | `string` | `""` | no |
-| <a name="input_vxlan_enabled"></a> [vxlan_enabled](#input_vxlan_enabled) | VXLAN Stretch Enabled. | `bool` | n/a | yes |
-| <a name="input_bgw_pol_set"></a> [bgw_pol_set](#input_bgw_pol_set) | Border Gateway Policy Set name. | `string` | n/a | yes |
-| <a name="input_normalized_vni"></a> [normalized_vni](#input_normalized_vni) | Normalized PC Tag. | `number` | n/a | yes |
-| <a name="input_import_route_map"></a> [import_route_map](#input_import_route_map) | Import Route Map For VXLAN VRF Stretch. | `string` | `""` | no |
-| <a name="input_export_route_map"></a> [export_route_map](#input_export_route_map) | Export Route Map For VXLAN VRF Stretch. | `string` | `""` | no |
+| <a name="input_vxlan_enabled"></a> [vxlan\_enabled](#input\_vxlan\_enabled) | VXLAN Stretch Enabled. | `bool` | n/a | yes |
+| <a name="input_border_gateway_set"></a> [border\_gateway\_set](#input\_border\_gateway\_set) | Border Gateway Policy Set name. | `string` | n/a | yes |
+| <a name="input_normalized_vni"></a> [normalized\_vni](#input\_normalized\_vni) | Normalized PC Tag. | `number` | n/a | yes |
+| <a name="input_vxlan_import_route_map"></a> [vxlan\_import\_route\_map](#input\_vxlan\_import\_route\_map) | Import Route Map For VXLAN VRF Stretch. | `string` | `""` | no |
+| <a name="input_vxlan_export_route_map"></a> [vxlan\_export\_route\_map](#input\_vxlan\_export\_route\_map) | Export Route Map For VXLAN VRF Stretch. | `string` | `""` | no |
 
 ## Outputs
 
@@ -231,6 +230,13 @@ module "aci_vrf" {
 | [aci_rest_managed.fvRtSummSubnet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.igmpCtxP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.igmpSSMXlateP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extConsBgwSet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extInstP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extOut](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extRsEctx](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extRsVxGwToRtProfile-export](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extRsVxGwToRtProfile-import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.l3extVxGwFabrics](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.leakExternalPrefix](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.leakInternalSubnet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.leakRoutes](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
@@ -264,6 +270,7 @@ module "aci_vrf" {
 | [aci_rest_managed.rtdmcRsFilterToRtMapPol_pim_inter_vrf](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtdmcRsFilterToRtMapPol_ssm_range](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtdmcRsFilterToRtMapPol_static_rp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vxlanExtP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vzAny](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vzRsAnyToCons](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vzRsAnyToConsIf](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

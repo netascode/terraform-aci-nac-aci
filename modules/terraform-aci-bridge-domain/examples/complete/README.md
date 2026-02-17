@@ -37,7 +37,7 @@ module "aci_bridge_domain" {
   vrf                        = "VRF1"
   vxlan_enabled              = false
   normalized_vni             = 2
-  bgw_pol_set                = "Border_Gateway_Policy_Set"
+  border_gateway_set         = "border_gateway_set_policy"
   nd_interface_policy        = "ND_INTF_POL1"
   endpoint_retention_policy  = "ERP1"
   subnets = [{

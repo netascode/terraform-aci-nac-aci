@@ -3,7 +3,7 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # L3out Node Profile Example
+  # Remote VXLAN Fabric Policy Example
 
   To run this example you need to execute:
 

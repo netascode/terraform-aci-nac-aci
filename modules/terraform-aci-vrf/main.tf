@@ -596,12 +596,12 @@ resource "aci_rest_managed" "l3extRsEctx" {
   content = {
     tnFvCtxName = var.name
   }
+  depends_on = [aci_rest_managed.vxlanExtP]
 }
 
 resource "aci_rest_managed" "l3extVxGwFabrics" {
   count      = var.vxlan_enabled ? 1 : 0
   dn         = "${aci_rest_managed.l3extOut[0].dn}/vxgwfabrics"
-  depends_on = [ aci_rest_managed.vxlanExtP ]
   class_name = "l3extVxGwFabrics"
   content = {
     remoteVni = var.normalized_vni
@@ -610,24 +610,29 @@ resource "aci_rest_managed" "l3extVxGwFabrics" {
 
 resource "aci_rest_managed" "l3extConsBgwSet" {
   count      = var.vxlan_enabled ? 1 : 0
-  dn         = "${aci_rest_managed.l3extVxGwFabrics[0].dn}/consbgwset-${var.bgw_pol_set}"
-  depends_on = [ aci_rest_managed.l3extVxGwFabrics ]
+  dn         = "${aci_rest_managed.l3extVxGwFabrics[0].dn}/consbgwset-${var.border_gateway_set}"
   class_name = "l3extConsBgwSet"
   content = {
-    name = var.bgw_pol_set
+    name = var.border_gateway_set
   }
 }
 
 resource "aci_rest_managed" "l3extRsVxGwToRtProfile-import" {
-  count      = var.import_route_map != "" ? 1 : 0
-  dn         = "uni/tn-${var.tenant}/out-vxlan_vrf_${var.tenant}_${var.name}/vxgwfabrics/rsvxGwToRtProfile-[uni/tn-${var.tenant}/prof-${var.import_route_map}]-import"
-  depends_on = [ aci_rest_managed.l3extVxGwFabrics ]
+  count      = var.vxlan_import_route_map != "" ? 1 : 0
+  dn         = "${aci_rest_managed.l3extVxGwFabrics[0].dn}/rsvxGwToRtProfile-[uni/tn-${var.tenant}/prof-${var.vxlan_import_route_map}]-import"
   class_name = "l3extRsVxGwToRtProfile"
+  content = {
+    direction = "import"
+    tDn       = "uni/tn-${var.tenant}/prof-${var.vxlan_import_route_map}"
+  }
 }
 
 resource "aci_rest_managed" "l3extRsVxGwToRtProfile-export" {
-  count      = var.export_route_map != "" ? 1 : 0
-  dn         = "uni/tn-${var.tenant}/out-vxlan_vrf_${var.tenant}_${var.name}/vxgwfabrics/rsvxGwToRtProfile-[uni/tn-${var.tenant}/prof-${var.export_route_map}]-export"
-  depends_on = [ aci_rest_managed.l3extVxGwFabrics ]
+  count      = var.vxlan_export_route_map != "" ? 1 : 0
+  dn         = "${aci_rest_managed.l3extVxGwFabrics[0].dn}/rsvxGwToRtProfile-[uni/tn-${var.tenant}/prof-${var.vxlan_export_route_map}]-export"
   class_name = "l3extRsVxGwToRtProfile"
+  content = {
+    direction = "export"
+    tDn       = "uni/tn-${var.tenant}/prof-${var.vxlan_export_route_map}"
+  }
 }

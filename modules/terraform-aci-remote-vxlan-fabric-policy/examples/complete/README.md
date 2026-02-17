@@ -17,7 +17,7 @@ module "aci_remote_vxlan_fabric_policy" {
 
   tenant      = "infra"
   name        = "REMOTE_VXLAN_POLICY"
-  bgw_pol_set = "BGW1"
+  border_gateway_set = "BGW1"
   remote_evpn_peers = [
     {
       ip                        = "10.1.1.1"

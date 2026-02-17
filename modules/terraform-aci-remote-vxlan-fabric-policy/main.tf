@@ -7,8 +7,11 @@ resource "aci_rest_managed" "vxlanRemoteFabric" {
 }
 
 resource "aci_rest_managed" "vxlanRsRemoteFabricToBgwSet" {
-  dn         = "${aci_rest_managed.vxlanRemoteFabric.dn}/rsremoteFabricToBgwSet-[uni/tn-infra/vxlanbgwset-${var.bgw_pol_set}]"
+  dn         = "${aci_rest_managed.vxlanRemoteFabric.dn}/rsremoteFabricToBgwSet-[uni/tn-infra/vxlanbgwset-${var.border_gateway_set}]"
   class_name = "vxlanRsRemoteFabricToBgwSet"
+  content = {
+    tDn = "uni/tn-infra/vxlanbgwset-${var.border_gateway_set}"
+  }
 }
 
 resource "aci_rest_managed" "bgpInfraPeerP" {
@@ -31,7 +34,7 @@ resource "aci_rest_managed" "bgpInfraPeerP" {
   }
 }
 
-resource "aci_rest_managed" "bgpAsP-bgpInfraPeerP" {
+resource "aci_rest_managed" "bgpAsP" {
   for_each   = { for peer in var.remote_evpn_peers : peer.ip => peer }
   dn         = "${aci_rest_managed.bgpInfraPeerP[each.key].dn}/as"
   class_name = "bgpAsP"
@@ -40,7 +43,7 @@ resource "aci_rest_managed" "bgpAsP-bgpInfraPeerP" {
   }
 }
 
-resource "aci_rest_managed" "bgpLocalAsnP-bgpInfraPeerP" {
+resource "aci_rest_managed" "bgpLocalAsnP" {
   for_each   = { for peer in var.remote_evpn_peers : peer.ip => peer if peer.local_as != null }
   dn         = "${aci_rest_managed.bgpInfraPeerP[each.key].dn}/localasn"
   class_name = "bgpLocalAsnP"
@@ -50,7 +53,7 @@ resource "aci_rest_managed" "bgpLocalAsnP-bgpInfraPeerP" {
   }
 }
 
-resource "aci_rest_managed" "bgpRsPeerPfxPol-bgpInfraPeerP" {
+resource "aci_rest_managed" "bgpRsPeerPfxPol" {
   for_each   = { for peer in var.remote_evpn_peers : peer.ip => peer if peer.peer_prefix_policy != null }
   dn         = "${aci_rest_managed.bgpInfraPeerP[each.key].dn}/rspeerPfxPol"
   class_name = "bgpRsPeerPfxPol"

@@ -2,9 +2,8 @@ resource "aci_rest_managed" "qosVxlanCustomPol" {
   dn         = "uni/tn-infra/qosvxlancustom-${var.name}"
   class_name = "qosVxlanCustomPol"
   content = {
-    name      = var.name
-    nameAlias = var.alias
-    descr     = var.description
+    name  = var.name
+    descr = var.description
   }
 }
 
@@ -28,7 +27,7 @@ resource "aci_rest_managed" "qosVxlanEgressRule" {
   content = {
     from      = each.value.dscp_from
     to        = each.value.dscp_to
-    target    = each.value.dscp_overlay_target
+    target    = each.value.dscp_target
     targetCos = each.value.cos_target
   }
 }

@@ -661,12 +661,12 @@ variable "vxlan_enabled" {
   type        = bool
 }
 
-variable "bgw_pol_set" {
+variable "border_gateway_set" {
   description = "Border Gateway Policy Set name."
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgw_pol_set))
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.border_gateway_set))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
@@ -681,24 +681,24 @@ variable "normalized_vni" {
   }
 }
 
-variable "import_route_map" {
+variable "vxlan_import_route_map" {
   description = "Import Route Map For VXLAN VRF Stretch."
   type        = string
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.import_route_map))
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.vxlan_import_route_map))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 
-variable "export_route_map" {
+variable "vxlan_export_route_map" {
   description = "Export Route Map For VXLAN VRF Stretch."
   type        = string
   default     = ""
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.export_route_map))
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.vxlan_export_route_map))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

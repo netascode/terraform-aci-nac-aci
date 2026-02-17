@@ -1,15 +1,5 @@
-variable "tenant" {
-  description = "Tenant name."
-  type        = string
-
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.tenant))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
-  }
-}
-
 variable "name" {
-  description = "Node profile name."
+  description = "Remote Vxlan Fabric name."
   type        = string
 
   validation {
@@ -21,17 +11,17 @@ variable "name" {
 variable "remote_evpn_peers" {
   description = "List of Remote EVPN peers."
   type = list(object({
-    ip                               = string
-    description                      = optional(string)
-    remote_as                        = string
-    admin_state                      = optional(bool, true)
-    allow_self_as                    = optional(bool, false)
-    disable_peer_as_check            = optional(bool, false)
-    password                         = optional(string)
-    ttl                              = optional(number)
-    peer_prefix_policy               = optional(string)
-    as_propagate                     = optional(string)
-    local_as                         = optional(number)
+    ip                    = string
+    description           = optional(string)
+    remote_as             = string
+    admin_state           = optional(bool, true)
+    allow_self_as         = optional(bool, false)
+    disable_peer_as_check = optional(bool, false)
+    password              = optional(string)
+    ttl                   = optional(number)
+    peer_prefix_policy    = optional(string)
+    as_propagate          = optional(string)
+    local_as              = optional(number)
   }))
   default = []
 
@@ -73,12 +63,12 @@ variable "remote_evpn_peers" {
 }
 
 
-variable "bgw_pol_set" {
-  description = "Border Gateway Set"
+variable "border_gateway_set" {
+  description = "Border Gateway Set policy name"
   type        = string
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bgw_pol_set))
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.border_gateway_set))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

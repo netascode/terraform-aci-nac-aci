@@ -3,9 +3,9 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  # Terraform ACI VXLAN Custom QoS Policy
+  # Terraform ACI VXLAN Custom QoS Policy Module
 
-  VXLAN Custom QoS Policy
+  Description
 
   Location in GUI:
   `Tenants` » `infra` » `Policies` » `Protocol` » `VXLAN Custom QoS Policy`

@@ -32,9 +32,9 @@ module "aci_bridge_domain" {
   unknown_ipv4_multicast     = "opt-flood"
   unknown_ipv6_multicast     = "opt-flood"
   vrf                        = "VRF1"
-  vxlan_stretch              = true
+  vxlan_enabled              = false
   normalized_vni             = 2
-  bgw_pol_set                = "Border_Gateway_Policy_Set"
+  border_gateway_set         = "border_gateway_set_policy"
   nd_interface_policy        = "ND_INTF_POL1"
   endpoint_retention_policy  = "ERP1"
   subnets = [{
@@ -79,10 +79,14 @@ module "aci_bridge_domain" {
 | <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
 
 ## Inputs
+
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Bridge domain name. | `string` | n/a | yes |
+| <a name="input_vxlan_enabled"></a> [vxlan\_enabled](#input\_vxlan\_enabled) | VXLAN Stretch Enabled. | `bool` | `false` | no |
+| <a name="input_border_gateway_set"></a> [border\_gateway\_set](#input\_border\_gateway\_set) | Border Gateway Policy Set name. | `string` | `""` | no |
+| <a name="input_normalized_vni"></a> [normalized\_vni](#input\_normalized\_vni) | Normalized PC Tag. | `number` | `null` | no |
 | <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | `null` | no |
 | <a name="input_alias"></a> [alias](#input\_alias) | Alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
@@ -112,9 +116,7 @@ module "aci_bridge_domain" {
 | <a name="input_dhcp_labels"></a> [dhcp\_labels](#input\_dhcp\_labels) | List of DHCP labels | <pre>list(object({<br/>    dhcp_relay_policy  = string<br/>    dhcp_option_policy = optional(string)<br/>    scope              = optional(string, "tenant")<br/>  }))</pre> | `[]` | no |
 | <a name="input_endpoint_retention_policy"></a> [endpoint\_retention\_policy](#input\_endpoint\_retention\_policy) | Endpoint Retention Policy. | `string` | `""` | no |
 | <a name="input_netflow_monitor_policies"></a> [netflow\_monitor\_policies](#input\_netflow\_monitor\_policies) | List of Netflow Monitor policies | <pre>list(object({<br/>    name           = string<br/>    ip_filter_type = optional(string, "ipv4")<br/>  }))</pre> | `[]` | no |
-| <a name="input_vxlan_stretch"></a> [vxlan\_stretch](#input\_vxlan\_stretch) | VXLAN stretch flag. | `bool` | `false` | no |
-| <a name="input_normalized_vni"></a> [normalized\_vni](#input\_normalized\_vni) | Normalized VNI. Only applicable when vxlan_stretch is enabled. | `number` | `null` | no |
-| <a name="input_bgw_pol_set"></a> [bgw\_pol\_set](#input\_bgw\_pol\_set) | Border Gateway Policy Set. Only applicable when vxlan_stretch is enabled. | `string` | `""` | no |
+
 ## Outputs
 
 | Name | Description |
@@ -129,6 +131,7 @@ module "aci_bridge_domain" {
 | [aci_rest_managed.dhcpLbl](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.dhcpRsDhcpOptionPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvBD](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvConsBgwSet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBDToNdP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBDToNetflowMonitorPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBDToOut](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
@@ -137,6 +140,7 @@ module "aci_bridge_domain" {
 | [aci_rest_managed.fvRsIgmpsn](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsNdPfxPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvSubnet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvVxGwFabrics](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.igmpIfP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.igmpRsIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimBDDestFilterPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

@@ -1,8 +1,8 @@
-module "aci_storm_control_policy" {
-  source  = "netascode/nac-aci/aci/modules/terraform-aci-border-gateway-policy-set"
-  version = ">= 0.8.0"
+module "aci_border_gateway_set_policy" {
+  source  = "netascode/nac-aci/aci/modules/terraform-aci-border-gateway-set-policy"
+  version = "> 1.2.0"
 
-  name  = "BGW1"
+  name    = "BGW1"
   site_id = 100
   external_data_plane_ips = [
     {

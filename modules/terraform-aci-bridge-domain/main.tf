@@ -224,6 +224,9 @@ resource "aci_rest_managed" "fvVxGwFabrics" {
 
 resource "aci_rest_managed" "fvConsBgwSet" {
   count      = var.vxlan_enabled ? 1 : 0
-  dn         = "${aci_rest_managed.fvVxGwFabrics[0].dn}/consbgwset-${var.bgw_pol_set}"
+  dn         = "${aci_rest_managed.fvVxGwFabrics[0].dn}/consbgwset-${var.border_gateway_set}"
   class_name = "fvConsBgwSet"
+  content = {
+    name = var.border_gateway_set
+  }
 }
