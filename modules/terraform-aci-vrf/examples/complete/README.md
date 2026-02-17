@@ -57,12 +57,6 @@ module "aci_vrf" {
       name = "Community-Profile2"
     }
   ]
-  pim_enabled                    = true
-  pim_mtu                        = 9200
-  pim_fast_convergence           = true
-  pim_strict_rfc                 = true
-  pim_max_multicast_entries      = 1000
-  pim_reserved_multicast_entries = "undefined"
   pim_static_rps = [
     {
       ip                  = "1.1.1.1"
