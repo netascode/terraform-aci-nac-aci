@@ -77,6 +77,22 @@ module "aci_endpoint_security_group" {
       description = "foo"
     }
   ]
+  ip_external_subnet_selectors = [
+    {
+      ip = "1.1.1.0/24"
+    },
+    {
+      ip = "1.1.2.0/24"
+    },
+    {
+      ip = "1.1.3.0/24"
+    },
+    {
+      ip          = "1.1.4.0/24"
+      description = "foo"
+      shared      = true
+    }
+  ]
 }
 ```
 
@@ -115,6 +131,7 @@ module "aci_endpoint_security_group" {
 | <a name="input_tag_selectors"></a> [tag\_selectors](#input\_tag\_selectors) | List of tag selectors.  Choices `operator`: `contains`, `equals`, `regex`. Default value `operator`: `equals`. | <pre>list(object({<br/>    key         = string<br/>    operator    = optional(string, "equals")<br/>    value       = string<br/>    description = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_epg_selectors"></a> [epg\_selectors](#input\_epg\_selectors) | List of EPG selectors. | <pre>list(object({<br/>    tenant              = string<br/>    application_profile = string<br/>    endpoint_group      = string<br/>    description         = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_ip_subnet_selectors"></a> [ip\_subnet\_selectors](#input\_ip\_subnet\_selectors) | List of IP subnet selectors. | <pre>list(object({<br/>    value       = string<br/>    description = optional(string, "")<br/>  }))</pre> | `[]` | no |
+| <a name="input_ip_external_subnet_selectors"></a> [ip\_external\_subnet\_selectors](#input\_ip\_external\_subnet\_selectors) | List of IP subnet selectors. | <pre>list(object({<br/>    ip          = string<br/>    description = optional(string, "")<br/>    shared      = optional(bool, false)<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -134,6 +151,7 @@ module "aci_endpoint_security_group" {
 | [aci_rest_managed.fvEPgSelector](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvESg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRemoteSGT](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvExternalSubnetSelector](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCons](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsConsIf](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsIntraEpg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

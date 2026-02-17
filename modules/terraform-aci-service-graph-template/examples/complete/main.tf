@@ -14,6 +14,7 @@ module "aci_service_graph_template" {
   device_function         = "GoThrough"
   device_copy             = false
   device_managed          = false
+  device_adjacency_type   = "L2"
   consumer_direct_connect = false
   provider_direct_connect = true
 }

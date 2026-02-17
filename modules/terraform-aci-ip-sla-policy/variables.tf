@@ -79,7 +79,7 @@ variable "http_method" {
   default     = null
 
   validation {
-    condition     = var.http_method == null || contains(["get"], var.http_method)
+    condition     = var.http_method == null ? true : contains(["get"], var.http_method)
     error_message = "Valid values are `get`."
   }
 }
@@ -90,7 +90,7 @@ variable "http_version" {
   default     = null
 
   validation {
-    condition     = var.http_version == null || contains(["HTTP10", "HTTP11"], var.http_version)
+    condition     = var.http_version == null ? true : contains(["HTTP10", "HTTP11"], var.http_version)
     error_message = "Valid values are `HTTP10` or `HTTP11`."
   }
 }

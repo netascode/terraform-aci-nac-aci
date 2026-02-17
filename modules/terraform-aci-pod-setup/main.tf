@@ -32,3 +32,35 @@ resource "aci_rest_managed" "fabricExtSetupP" {
     aci_rest_managed.fabricExtRoutablePodSubnet
   ]
 }
+
+resource "aci_rest_managed" "fabricRlGroupP" {
+  for_each   = { for rg in var.resiliency_groups : rg.name => rg }
+  dn         = "${aci_rest_managed.fabricSetupP.dn}/rlgroupp-${each.value.name}"
+  class_name = "fabricRlGroupP"
+  content = {
+    name  = each.value.name
+    descr = try(each.value.description, "")
+  }
+
+  depends_on = [
+    aci_rest_managed.fabricExtSetupP
+  ]
+}
+
+resource "aci_rest_managed" "fabricRsRlGroupToExtSetup" {
+  for_each = merge([
+    for rg in var.resiliency_groups : {
+      for pool_id in rg.remote_pool_ids :
+      "${rg.name}-${pool_id}" => {
+        rg_name = rg.name
+        pool_id = pool_id
+      }
+    }
+  ]...)
+
+  dn         = "${aci_rest_managed.fabricRlGroupP[each.value.rg_name].dn}/rsrlGroupToExtSetup-[uni/controller/setuppol/setupp-${var.pod_id}/extsetupp-${each.value.pool_id}]"
+  class_name = "fabricRsRlGroupToExtSetup"
+  content = {
+    tDn = "uni/controller/setuppol/setupp-${var.pod_id}/extsetupp-${each.value.pool_id}"
+  }
+}

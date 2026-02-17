@@ -884,8 +884,19 @@ defaults:
         data_plane_learning: true
         enforcement_direction: ingress
         enforcement_preference: enforced
+        leaked_internal_subnets:
+          public: false
+          destinations:
+            public: false
         leaked_internal_prefixes:
           public: false
+          from_prefix_length: unspecified
+          to_prefix_length: unspecified
+          destinations:
+            public: false
+        leaked_external_prefixes:
+          from_prefix_length: unspecified
+          to_prefix_length: unspecified
         pim:
           mtu: 1500
           bsr_forward_updates: false
@@ -904,6 +915,10 @@ defaults:
           name_suffix: ""
           nodes:
             pod: 1
+        snmp_context:
+          name_suffix: ""
+          community_profiles:
+            name_suffix: ""
       bridge_domains:
         name_suffix: ""
         ndo_managed: false
@@ -975,6 +990,20 @@ defaults:
           multicast_address_family: true
           admin_state: true
           as_propagate: none
+        bgp_infra_peers:
+          name_suffix: ""
+          peer_type: wan
+          allow_self_as: false
+          disable_peer_as_check: false
+          send_community: false
+          send_ext_community: false
+          next_hop_self: false
+          as_override: false
+          ttl: 2
+          bfd: false
+          admin_state: true
+          as_propagate: none
+          source_interface_type: l3out-loopback
         redistribution_route_maps:
           source: static
         dhcp_labels:
@@ -1000,6 +1029,9 @@ defaults:
             multipod_direct: false
             autostate: false
             floating_svi: false
+            forged_transmit: false
+            mac_change: false
+            promiscous_mode: false
             ip: 0.0.0.0
             mac: 00:22:BD:F8:19:FF
             mtu: inherit
@@ -1051,6 +1083,20 @@ defaults:
             multicast_address_family: true
             admin_state: true
             as_propagate: none
+          bgp_infra_peers:
+            name_suffix: ""
+            peer_type: wan
+            allow_self_as: false
+            disable_peer_as_check: false
+            send_community: false
+            send_ext_community: false
+            next_hop_self: false
+            as_override: false
+            ttl: 2
+            bfd: false
+            admin_state: true
+            as_propagate: none
+            source_interface_type: l3out-loopback
           nodes:
             pod: 1
             router_id_as_loopback: true
@@ -1077,6 +1123,9 @@ defaults:
               svi: false
               autostate: false
               floating_svi: false
+              forged_transmit: false
+              mac_change: false
+              promiscous_mode: false
               multipod_direct: false
               ip: 0.0.0.0
               mac: 00:22:BD:F8:19:FF
@@ -1168,6 +1217,7 @@ defaults:
             netflow: false
             deployment_immediacy: lazy
             resolution_immediacy: pre-provision
+            port_binding: default
             allow_promiscuous: reject
             forged_transmits: reject
             mac_changes: reject
@@ -1204,6 +1254,9 @@ defaults:
               name_suffix: ""
               start_ip: 0.0.0.0
               end_ip: 0.0.0.0
+          static_aaeps:
+            deployment_immediacy: lazy
+            mode: regular
         useg_endpoint_groups:
           name_suffix: ""
           flood_in_encap: false
@@ -1213,6 +1266,7 @@ defaults:
           vmware_vmm_domains:
             name_suffix: ""
             deployment_immediacy: immediate
+            port_binding: default
             netflow: false
           useg_attributes:
             match_type: any
@@ -1242,6 +1296,8 @@ defaults:
           preferred_group: false
           tag_selectors:
             operator: equals
+          ip_external_subnet_selectors:
+            shared: false
       inb_endpoint_groups:
         name_suffix: ""
         subnets:
@@ -1357,6 +1413,7 @@ defaults:
           name_suffix: ""
           ethertype: ip
           protocol: tcp
+          match_only_fragments: false
           source_from_port: unspecified
           destination_from_port: unspecified
           stateful: false
@@ -1469,6 +1526,23 @@ defaults:
           name_suffix: ""
           options:
             name_suffix: ""
+        hsrp_interface_policies:
+          name_suffix: ""
+          bfd_enable: false
+          use_bia: false
+          delay: 0
+          reload_delay: 0
+        hsrp_group_policies:
+          name_suffix: ""
+          preempt: false
+          hello_interval: 3000
+          hold_interval: 10000
+          priority: 100
+          auth_type: simple
+          preempt_delay_min: 0
+          preempt_delay_reload: 0
+          preempt_delay_max: 0
+          timeout: 0
         data_plane_policing_policies:
           name_suffix: ""
           admin_state: false
@@ -1752,6 +1826,8 @@ defaults:
             direct_connect: false
           provider:
             direct_connect: false
+          device:
+            adjacency_type: "L3"
         device_selection_policies:
           consumer:
             l3_destination: true

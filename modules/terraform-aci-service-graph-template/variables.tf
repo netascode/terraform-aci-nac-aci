@@ -129,6 +129,17 @@ variable "device_node_name" {
   }
 }
 
+variable "device_adjacency_type" {
+  description = "L4L7 device adjacency type. Choices: `L2`, `L3`. Default is `L3`."
+  type        = string
+  default     = "L3"
+
+  validation {
+    condition     = contains(["L2", "L3"], var.device_adjacency_type)
+    error_message = "Allowed values are `L2` or `L3`."
+  }
+}
+
 variable "consumer_direct_connect" {
   description = "Direct connect on consumer connection."
   type        = bool

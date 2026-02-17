@@ -22,7 +22,7 @@ There are six configuration sections which can be selectively enabled or disable
 - `interface_policies`: Configurations applied at the interface level (e.g., assigning interface policy groups to physical ports)
 - `tenants`: Configurations applied at the tenant level (e.g., VRFs and Bridge Domains)
 
-The full data model documentation is available here: https://netascode.cisco.com/data_model/overview
+The full data model documentation is available here: https://netascode.cisco.com/docs/data_models/apic/overview/ 
 
 ## Examples
 
@@ -88,7 +88,7 @@ Additional example repositories:
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
 | <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.17.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.3.0 |
-| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.0.2 |
+| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.0.2, < 2.0.0 |
 
 ## Inputs
 
@@ -239,6 +239,8 @@ Additional example repositories:
 | <a name="module_aci_forwarding_scale_policy"></a> [aci\_forwarding\_scale\_policy](#module\_aci\_forwarding\_scale\_policy) | ./modules/terraform-aci-forwarding-scale-policy | n/a |
 | <a name="module_aci_geolocation"></a> [aci\_geolocation](#module\_aci\_geolocation) | ./modules/terraform-aci-geolocation | n/a |
 | <a name="module_aci_health_score_evaluation_policy"></a> [aci\_health\_score\_evaluation\_policy](#module\_aci\_health\_score\_evaluation\_policy) | ./modules/terraform-aci-health-score-evaluation-policy | n/a |
+| <a name="module_aci_hsrp_group_policy"></a> [aci\_hsrp\_group\_policy](#module\_aci\_hsrp\_group\_policy) | ./modules/terraform-aci-hsrp-group-policy | n/a |
+| <a name="module_aci_hsrp_interface_policy"></a> [aci\_hsrp\_interface\_policy](#module\_aci\_hsrp\_interface\_policy) | ./modules/terraform-aci-hsrp-interface-policy | n/a |
 | <a name="module_aci_igmp_interface_policy"></a> [aci\_igmp\_interface\_policy](#module\_aci\_igmp\_interface\_policy) | ./modules/terraform-aci-igmp-interface-policy | n/a |
 | <a name="module_aci_igmp_snooping_policy"></a> [aci\_igmp\_snooping\_policy](#module\_aci\_igmp\_snooping\_policy) | ./modules/terraform-aci-igmp-snooping-policy | n/a |
 | <a name="module_aci_imported_contract"></a> [aci\_imported\_contract](#module\_aci\_imported\_contract) | ./modules/terraform-aci-imported-contract | n/a |

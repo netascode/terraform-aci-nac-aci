@@ -44,6 +44,22 @@ module "aci_vrf" {
   pim_strict_rfc                         = true
   pim_max_multicast_entries              = 1000
   pim_reserved_multicast_entries         = "undefined"
+  snmp_context_name                      = "SNMP-CTX"
+  snmp_context_community_profiles = [
+    {
+      name        = "Community-Profile1"
+      description = "Community Profile 1 Description"
+    },
+    {
+      name = "Community-Profile2"
+    }
+  ]
+  pim_enabled                    = true
+  pim_mtu                        = 9200
+  pim_fast_convergence           = true
+  pim_strict_rfc                 = true
+  pim_max_multicast_entries      = 1000
+  pim_reserved_multicast_entries = "undefined"
   pim_static_rps = [
     {
       ip                  = "1.1.1.1"
@@ -51,7 +67,7 @@ module "aci_vrf" {
     },
     {
       ip = "1.1.1.2"
-    },
+    }
   ]
   pim_fabric_rps = [
     {
@@ -91,9 +107,23 @@ module "aci_vrf" {
       source_address = "4.4.4.4"
     }
   ]
-  leaked_internal_prefixes = [{
-    prefix = "1.1.1.0/24"
+  # EPG/BD Subnets (leakInternalSubnet)
+  leaked_internal_subnets = [{
+    prefix = "10.1.0.0/16"
     public = true
+    destinations = [{
+      description = "Leak to VRF2"
+      tenant      = "ABC"
+      vrf         = "VRF2"
+      public      = false
+    }]
+  }]
+  # Internal Prefixes (leakInternalPrefix) - prefix-level scope requires APIC 6.1+
+  leaked_internal_prefixes = [{
+    prefix             = "10.0.0.0/8"
+    public             = true
+    from_prefix_length = 16
+    to_prefix_length   = 24
     destinations = [{
       description = "Leak to VRF2"
       tenant      = "ABC"
@@ -147,6 +177,8 @@ module "aci_vrf" {
 | <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | `null` | no |
 | <a name="input_alias"></a> [alias](#input\_alias) | VRF alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | VRF description. | `string` | `""` | no |
+| <a name="input_snmp_context_name"></a> [snmp\_context\_name](#input\_snmp\_context\_name) | VRF SNMP Context name. | `string` | `""` | no |
+| <a name="input_snmp_context_community_profiles"></a> [snmp\_context\_community\_profiles](#input\_snmp\_context\_community\_profiles) | VRF SNMP Context Community Profiles. | <pre>list(object({<br/>    name        = string<br/>    description = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_enforcement_direction"></a> [enforcement\_direction](#input\_enforcement\_direction) | VRF enforcement direction. Choices: `ingress`, `egress`. | `string` | `null` | no |
 | <a name="input_enforcement_preference"></a> [enforcement\_preference](#input\_enforcement\_preference) | VRF enforcement preference. Choices: `enforced`, `unenforced`. | `string` | `"enforced"` | no |
 | <a name="input_data_plane_learning"></a> [data\_plane\_learning](#input\_data\_plane\_learning) | VRF data plane learning. | `bool` | `true` | no |
@@ -189,7 +221,8 @@ module "aci_vrf" {
 | <a name="input_pim_ssm_group_range_multicast_route_map"></a> [pim\_ssm\_group\_range\_multicast\_route\_map](#input\_pim\_ssm\_group\_range\_multicast\_route\_map) | VRF PIM SSM group range multicast route map. | `string` | `""` | no |
 | <a name="input_pim_inter_vrf_policies"></a> [pim\_inter\_vrf\_policies](#input\_pim\_inter\_vrf\_policies) | VRF PIM inter-VRF policies. | <pre>list(object({<br/>    tenant              = string<br/>    vrf                 = string<br/>    multicast_route_map = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_pim_igmp_ssm_translate_policies"></a> [pim\_igmp\_ssm\_translate\_policies](#input\_pim\_igmp\_ssm\_translate\_policies) | VRF IGMP SSM tranlate policies. | <pre>list(object({<br/>    group_prefix   = string<br/>    source_address = string<br/>  }))</pre> | `[]` | no |
-| <a name="input_leaked_internal_prefixes"></a> [leaked\_internal\_prefixes](#input\_leaked\_internal\_prefixes) | List of leaked internal prefixes. Default value `public`: false. | <pre>list(object({<br/>    prefix = string<br/>    public = optional(bool, false)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>      public      = optional(bool)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
+| <a name="input_leaked_internal_subnets"></a> [leaked\_internal\_subnets](#input\_leaked\_internal\_subnets) | List of leaked internal subnets (EPG/BD Subnets - leakInternalSubnet). Default value `public`: false. | <pre>list(object({<br/>    prefix = string<br/>    public = optional(bool, false)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>      public      = optional(bool)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
+| <a name="input_leaked_internal_prefixes"></a> [leaked\_internal\_prefixes](#input\_leaked\_internal\_prefixes) | List of leaked internal prefixes (leakInternalPrefix). Prefix-level `public` (scope) requires APIC 6.1+. Default value `public`: false. | <pre>list(object({<br/>    prefix             = string<br/>    public             = optional(bool, false)<br/>    from_prefix_length = optional(number)<br/>    to_prefix_length   = optional(number)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>      public      = optional(bool)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_leaked_external_prefixes"></a> [leaked\_external\_prefixes](#input\_leaked\_external\_prefixes) | List of leaked external prefixes. | <pre>list(object({<br/>    prefix             = string<br/>    from_prefix_length = optional(number)<br/>    to_prefix_length   = optional(number)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_route_summarization_policies"></a> [route\_summarization\_policies](#input\_route\_summarization\_policies) | List of route summarization policies. | <pre>list(object({<br/>    name = string<br/>    nodes = optional(list(object({<br/>      id  = number<br/>      pod = optional(number, 1)<br/>    })), [])<br/>    subnets = optional(list(object({<br/>      prefix                         = string<br/>      bgp_route_summarization_policy = optional(string, null)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_endpoint_retention_policy"></a> [endpoint\_retention\_policy](#input\_endpoint\_retention\_policy) | Endpoint Retention Policy. | `string` | `""` | no |
@@ -238,10 +271,12 @@ module "aci_vrf" {
 | [aci_rest_managed.l3extRsVxGwToRtProfile-import](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extVxGwFabrics](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.leakExternalPrefix](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.leakInternalPrefix](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.leakInternalSubnet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.leakRoutes](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.leakTo_external](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.leakTo_internal](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.leakTo_internal_prefix](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.leakTo_internal_subnet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimASMPatPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimAutoRPPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimBSRFilterPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
@@ -271,6 +306,8 @@ module "aci_vrf" {
 | [aci_rest_managed.rtdmcRsFilterToRtMapPol_ssm_range](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtdmcRsFilterToRtMapPol_static_rp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vxlanExtP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.snmpCommunityP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.snmpCtxP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vzAny](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vzRsAnyToCons](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vzRsAnyToConsIf](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

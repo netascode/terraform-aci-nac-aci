@@ -66,4 +66,20 @@ module "aci_endpoint_security_group" {
       description = "foo"
     }
   ]
+  ip_external_subnet_selectors = [
+    {
+      ip = "1.1.1.0/24"
+    },
+    {
+      ip = "1.1.2.0/24"
+    },
+    {
+      ip = "1.1.3.0/24"
+    },
+    {
+      ip          = "1.1.4.0/24"
+      description = "foo"
+      shared      = true
+    }
+  ]
 }

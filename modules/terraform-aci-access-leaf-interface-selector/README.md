@@ -18,17 +18,19 @@ module "aci_access_leaf_interface_selector" {
   policy_group_type = "access"
   policy_group      = "ACC1"
   port_blocks = [{
-    name        = "PB1"
-    description = "My Description"
-    from_port   = 1
-    to_port     = 2
+    name                       = "PB1"
+    description                = "My Description"
+    from_port                  = 1
+    to_port                    = 2
+    port_channel_member_policy = "FAST_LACP"
   }]
   sub_port_blocks = [{
-    name          = "SPB1"
-    description   = "My Description"
-    from_port     = 1
-    from_sub_port = 1
-    to_sub_port   = 2
+    name                       = "SPB1"
+    description                = "My Description"
+    from_port                  = 1
+    from_sub_port              = 1
+    to_sub_port                = 2
+    port_channel_member_policy = "FAST_LACP"
   }]
 }
 ```
@@ -57,8 +59,8 @@ module "aci_access_leaf_interface_selector" {
 | <a name="input_fex_interface_profile"></a> [fex\_interface\_profile](#input\_fex\_interface\_profile) | FEX interface profile name. | `string` | `""` | no |
 | <a name="input_policy_group_type"></a> [policy\_group\_type](#input\_policy\_group\_type) | Interface policy group type. Choices: `access`, `pc`, `vpc`, `breakout`. | `string` | `"access"` | no |
 | <a name="input_policy_group"></a> [policy\_group](#input\_policy\_group) | Interface policy group name. | `string` | `""` | no |
-| <a name="input_port_blocks"></a> [port\_blocks](#input\_port\_blocks) | List of port blocks. Allowed values `from_module`, `to_module`: 1-9. Default value `from_module`, `to_module`: 1. Allowed values `from_port`, `to_port`: 1-127. Default value `to_port`: `from_port`. | <pre>list(object({<br/>    name        = string<br/>    description = optional(string, "")<br/>    from_module = optional(number, 1)<br/>    to_module   = optional(number)<br/>    from_port   = number<br/>    to_port     = optional(number)<br/>  }))</pre> | `[]` | no |
-| <a name="input_sub_port_blocks"></a> [sub\_port\_blocks](#input\_sub\_port\_blocks) | List of sub port blocks. Allowed values `from_module`, `to_module`: 1-9. Default value `from_module`, `to_module`: 1. Allowed values `from_port`, `to_port`: 1-127. Default value `to_port`: `from_port`. Allowed values `from_sub_port`, `to_sub_port`: 1-16. Default value `to_sub_port`: `from_sub_port`. | <pre>list(object({<br/>    name          = string<br/>    description   = optional(string, "")<br/>    from_module   = optional(number, 1)<br/>    to_module     = optional(number)<br/>    from_port     = number<br/>    to_port       = optional(number)<br/>    from_sub_port = number<br/>    to_sub_port   = optional(number)<br/>  }))</pre> | `[]` | no |
+| <a name="input_port_blocks"></a> [port\_blocks](#input\_port\_blocks) | List of port blocks. Allowed values `from_module`, `to_module`: 1-9. Default value `from_module`, `to_module`: 1. Allowed values `from_port`, `to_port`: 1-127. Default value `to_port`: `from_port`. | <pre>list(object({<br/>    name                       = string<br/>    description                = optional(string, "")<br/>    from_module                = optional(number, 1)<br/>    to_module                  = optional(number)<br/>    from_port                  = number<br/>    to_port                    = optional(number)<br/>    port_channel_member_policy = optional(string, null)<br/>  }))</pre> | `[]` | no |
+| <a name="input_sub_port_blocks"></a> [sub\_port\_blocks](#input\_sub\_port\_blocks) | List of sub port blocks. Allowed values `from_module`, `to_module`: 1-9. Default value `from_module`, `to_module`: 1. Allowed values `from_port`, `to_port`: 1-127. Default value `to_port`: `from_port`. Allowed values `from_sub_port`, `to_sub_port`: 1-16. Default value `to_sub_port`: `from_sub_port`. | <pre>list(object({<br/>    name                       = string<br/>    description                = optional(string, "")<br/>    from_module                = optional(number, 1)<br/>    to_module                  = optional(number)<br/>    from_port                  = number<br/>    to_port                    = optional(number)<br/>    from_sub_port              = number<br/>    to_sub_port                = optional(number)<br/>    port_channel_member_policy = optional(string, null)<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -74,5 +76,7 @@ module "aci_access_leaf_interface_selector" {
 | [aci_rest_managed.infraHPortS](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraPortBlk](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsAccBaseGrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraRsAccBndlSubgrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraRsSubPortAccBndlSubgrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraSubPortBlk](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

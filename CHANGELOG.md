@@ -1,3 +1,44 @@
+## 1.2.0
+
+### New Features
+
+- Add support for new types of forwarding scale policies: `high-policy`, `high-ipv4-ep`, `mcast-heavy` and `max-lpm`
+- Add support for configuring `subnets` under inband endpoint groups
+- Add support for control plane MTU configuration
+- Add support to not set VRF enforcement direction when VRF is managed by NDO
+- Add access monitoring policy support
+- Add fabric MacSec policies support
+- Add data plane policing feature support
+- Add BFD multihop policy support for L3out node profiles
+- Add support for HTTP type IP SLA policy
+- Add tenant Netflow policy support
+- Add support for configuring `deployment_immediacy` under endpoint security groups
+- Add support for configuring `ip_external_subnet_selectors` under endpoint security groups
+- Add support for IPV6 subnet selectors in endpoint security groups
+- Add support for VMware VMM trunk port groups
+- Add Nutanix VMM integration support
+- Add OSPF route summarization policy support with custom policy names
+- Add support for static routes with empty next hop, pointing to Null0 interface
+- Add leaf interface profile `description` attribute
+- Add fabric pod policy group `description` attribute
+- Add support for configuring VM attributes in usegEPG
+- Add support for ACI version 6.1
+- Add support for configuring node-level BGP peers in the `infra` tenant
+- Add support for using system-generated breakout policy groups under interface selectors even if they are not managed by Terraform
+
+### Bug Fixes
+
+- Correct BD `virtual_mac` default value handling
+- Fix maintenance group `scheduler` deployment
+- Fix missing `pod_id` for interface shutdown module
+- Fix MacOS handling of null values
+- Fix `ssh_keys` validation for OpenTofu
+- Fix dependency between inband node addressing and inband endpoint group
+- Fix default values handling for service graph templates
+- Fix SR MPLS L3out name validation missing `:`
+- Fix L3out name to use name suffix in various places if suffix is provided
+
+
 ## 1.1.0
 
 - Add support for DCBXP version under LLDP interface policy

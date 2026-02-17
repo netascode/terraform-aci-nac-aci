@@ -25,6 +25,7 @@ module "aci_service_graph_template" {
   device_function         = "GoThrough"
   device_copy             = false
   device_managed          = false
+  device_adjacency_type   = "L2"
   consumer_direct_connect = false
   provider_direct_connect = true
 }
@@ -61,6 +62,7 @@ module "aci_service_graph_template" {
 | <a name="input_device_copy"></a> [device\_copy](#input\_device\_copy) | L4L7 device copy function. | `bool` | `false` | no |
 | <a name="input_device_managed"></a> [device\_managed](#input\_device\_managed) | L4L7 managed device. | `bool` | `false` | no |
 | <a name="input_device_node_name"></a> [device\_node\_name](#input\_device\_node\_name) | L4L7 device function node name. | `string` | `"N1"` | no |
+| <a name="input_device_adjacency_type"></a> [device\_adjacency\_type](#input\_device\_adjacency\_type) | L4L7 device adjacency type. Choices: `L2`, `L3`. Default is `L3`. | `string` | `"L3"` | no |
 | <a name="input_consumer_direct_connect"></a> [consumer\_direct\_connect](#input\_consumer\_direct\_connect) | Direct connect on consumer connection. | `bool` | `false` | no |
 | <a name="input_provider_direct_connect"></a> [provider\_direct\_connect](#input\_provider\_direct\_connect) | Direct connect on provider connection. | `bool` | `false` | no |
 
