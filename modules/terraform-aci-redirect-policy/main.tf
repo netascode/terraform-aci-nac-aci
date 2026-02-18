@@ -23,7 +23,7 @@ resource "aci_rest_managed" "vnsRsIPSLAMonitoringPol" {
   dn         = "${aci_rest_managed.vnsSvcRedirectPol.dn}/rsIPSLAMonitoringPol"
   class_name = "vnsRsIPSLAMonitoringPol"
   content = {
-    "tDn" = "uni/tn-${var.tenant}/ipslaMonitoringPol-${var.ip_sla_policy}"
+    "tDn" = "uni/tn-${var.ip_sla_policy_tenant}/ipslaMonitoringPol-${var.ip_sla_policy}"
   }
 }
 
