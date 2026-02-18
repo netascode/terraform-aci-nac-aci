@@ -203,6 +203,15 @@ resource "aci_rest_managed" "fvRsBdToEpRet" {
   }
 }
 
+resource "aci_rest_managed" "fvAccP" {
+  count      = var.legacy_mode_vlan != null ? 1 : 0
+  dn         = "${aci_rest_managed.fvBD.dn}/accp"
+  class_name = "fvAccP"
+  content = {
+    encap = "vlan-${var.legacy_mode_vlan}"
+  }
+}
+
 resource "aci_rest_managed" "fvRsBDToNetflowMonitorPol" {
   for_each   = { for policy in var.netflow_monitor_policies : "${policy.name}-${policy.ip_filter_type}" => policy }
   dn         = "${aci_rest_managed.fvBD.dn}/rsBDToNetflowMonitorPol-[${each.value.name}]-${each.value.ip_filter_type}"
