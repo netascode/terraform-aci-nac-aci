@@ -1,0 +1,34 @@
+version: '>= 0.14.0'
+
+formatter: markdown table
+
+content: |-
+  # Terraform ACI Port Security Policy Module
+
+  Manages ACI Port Security Policy
+
+  Location in GUI:
+  `Fabric` » `Access Policies` » `Policies` » `Interface` » `Port Security`
+
+  ## Examples
+
+  ```hcl
+  {{ include "./examples/complete/main.tf" }}
+  ```
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: replace
+
+sort:
+  enabled: false

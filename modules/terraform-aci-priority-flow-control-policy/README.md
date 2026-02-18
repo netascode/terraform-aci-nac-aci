@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI Priority Flow Control Policy Module
+# Terraform ACI Priority Flow Control Policy
 
-Manages ACI Priority Flow Control (PFC) Interface Policy
+Manages ACI Priority Flow Control Policy
 
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Interface` » `Priority Flow Control`
@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_priority_flow_control_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-priority-flow-control-policy"
-  version = ">= 0.8.0"
+  version = "> 1.2.0"
 
   name        = "PFC_ON"
   description = "PFC enabled"
@@ -25,13 +25,13 @@ module "aci_priority_flow_control_policy" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.17.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.17.0 |
 
 ## Inputs
 
