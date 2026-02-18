@@ -43,6 +43,8 @@ module "aci_l3out" {
   default_route_leak_policy_criteria      = "in-addition"
   default_route_leak_policy_context_scope = false
   default_route_leak_policy_outside_scope = false
+  vxlan_enabled                           = false
+  border_gateway_set                      = "Border Gateway Set Name"
   redistribution_route_maps = [{
     source    = "direct"
     route_map = "RRM"

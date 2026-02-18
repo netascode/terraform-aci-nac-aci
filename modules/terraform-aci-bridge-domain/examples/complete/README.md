@@ -35,6 +35,9 @@ module "aci_bridge_domain" {
   unknown_ipv4_multicast     = "opt-flood"
   unknown_ipv6_multicast     = "opt-flood"
   vrf                        = "VRF1"
+  vxlan_enabled              = false
+  normalized_vni             = 2
+  border_gateway_set         = "border_gateway_set_policy"
   nd_interface_policy        = "ND_INTF_POL1"
   endpoint_retention_policy  = "ERP1"
   legacy_mode_vlan           = 135

@@ -1316,6 +1316,31 @@ defaults:
         name: default
       ext_mgmt_instances:
         name_suffix: ""
+      vxlan_l3outs:
+        name_suffix: ""
+        node_profiles:
+          name_suffix: ""
+          nodes:
+            router_id_as_loopback: false
+          interface_profiles:
+            name_suffix: ""
+            interfaces:
+              pod_id: 1
+              module: 1
+              mac: 00:22:BD:F8:19:FF
+              mtu: inherit
+              bgp_peers:
+                bfd: false
+                unicast_address_family: true
+                admin_state: true
+                as_propagate: none
+        external_endpoint_groups:
+            name_suffix: ""
+            preferred_group: false
+            subnets:
+              route_leaking: false
+              security: false
+              aggregate_shared_route_control: false
       sr_mpls_l3outs:
         name_suffix: ""
         transport_data_plane: sr_mpls
@@ -1431,6 +1456,25 @@ defaults:
           bandwidth: 0
           delay: 0
           delay_unit: tens-of-micro
+        border_gateway_set_policy:
+          name_suffix: ""
+        remote_vxlan_fabrics:
+          name_suffix: ""
+          remote_evpn_peers:
+            admin_state: true
+            allow_self_as: false
+            disable_peer_as_check: false
+            as_propagate: none
+            ttl: 2
+        vxlan_custom_qos_policies:
+          name_suffix: ""
+          ingress_rules:
+            priority: unspecified
+            dscp_target: unspecified
+            cos_target: unspecified
+          egress_rules:
+            cos_target: unspecified
+            dscp_target: unspecified
         ospf_timer_policies:
           name_suffix: ""
           reference_bandwidth: 40000

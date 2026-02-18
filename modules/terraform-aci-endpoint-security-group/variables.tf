@@ -39,6 +39,17 @@ variable "description" {
   }
 }
 
+variable "normalized_pctag" {
+  description = "Normalized PC Tag."
+  type        = number
+  default     = null
+
+  validation {
+    condition     = var.normalized_pctag == null || (var.normalized_pctag >= 16 && var.normalized_pctag <= 65535)
+    error_message = "Valid range: 16-65535."
+  }
+}
+
 variable "vrf" {
   description = "VRF name."
   type        = string

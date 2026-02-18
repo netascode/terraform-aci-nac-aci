@@ -743,3 +743,50 @@ variable "endpoint_retention_policy" {
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
+
+variable "vxlan_enabled" {
+  description = "VXLAN Stretch Enabled."
+  type        = bool
+}
+
+variable "border_gateway_set" {
+  description = "Border Gateway Policy Set name."
+  type        = string
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.border_gateway_set))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "normalized_vni" {
+  description = "Normalized PC Tag."
+  type        = number
+
+  validation {
+    condition     = var.normalized_vni == null || (var.normalized_vni >= 0 && var.normalized_vni <= 16777215)
+    error_message = "Valid range: 16-65535."
+  }
+}
+
+variable "vxlan_import_route_map" {
+  description = "Import Route Map For VXLAN VRF Stretch."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.vxlan_import_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "vxlan_export_route_map" {
+  description = "Export Route Map For VXLAN VRF Stretch."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.vxlan_export_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}

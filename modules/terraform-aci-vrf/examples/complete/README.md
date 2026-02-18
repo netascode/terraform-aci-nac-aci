@@ -37,6 +37,16 @@ module "aci_vrf" {
   contract_consumers                     = ["CON1"]
   contract_providers                     = ["CON1"]
   contract_imported_consumers            = ["I_CON1"]
+  vxlan_enabled                          = false
+  border_gateway_set                     = "GorderGatewayPolicySet"
+  vxlan_import_route_map                 = "RM-Import"
+  vxlan_export_route_map                 = "RM-Export"
+  pim_enabled                            = true
+  pim_mtu                                = 9200
+  pim_fast_convergence                   = true
+  pim_strict_rfc                         = true
+  pim_max_multicast_entries              = 1000
+  pim_reserved_multicast_entries         = "undefined"
   snmp_context_name                      = "SNMP-CTX"
   snmp_context_community_profiles = [
     {
@@ -47,12 +57,6 @@ module "aci_vrf" {
       name = "Community-Profile2"
     }
   ]
-  pim_enabled                    = true
-  pim_mtu                        = 9200
-  pim_fast_convergence           = true
-  pim_strict_rfc                 = true
-  pim_max_multicast_entries      = 1000
-  pim_reserved_multicast_entries = "undefined"
   pim_static_rps = [
     {
       ip                  = "1.1.1.1"

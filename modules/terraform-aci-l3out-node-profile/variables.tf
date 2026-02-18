@@ -18,6 +18,17 @@ variable "l3out" {
   }
 }
 
+variable "description" {
+  description = "Description."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+}
+
 variable "name" {
   description = "Node profile name."
   type        = string
@@ -214,6 +225,12 @@ variable "sr_mpls" {
   default     = false
 }
 
+variable "vxlan_enabled" {
+  description = "VXLAN L3out flag."
+  type        = bool
+  default     = false
+}
+
 variable "bgp_infra_peers" {
   description = "List of BGP peers for Infra L3out. Allowed values `remote_as`: 0-4294967295. Default value `allow_self_as`: false. Default value `disable_peer_as_check`: false. Default value `bfd`: false. Default value `ttl`: 2. Default value `admin_state`: true. Allowed values `local_as`: 0-4294967295. Choices `as_propagate`: `none`, `no-prepend`, `replace-as`, `dual-as`. Default value `as_propagate`: `none`. Choices `peer_type`: `sr-mpls`, `wan`, `mdp-wan` or `intersite`"
   type = list(object({
@@ -291,6 +308,17 @@ variable "bgp_infra_peers" {
       for b in var.bgp_infra_peers : (b.data_plane_address == null && b.source_interface_type != "routable-loopback") || b.data_plane_address != null
     ])
     error_message = "`data_plane_address`: Must be set if `source_interface_type` is `routable-loopback`."
+  }
+}
+
+variable "vxlan_custom_qos_policy" {
+  description = "VXLAN Customer QoS Policy"
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.vxlan_custom_qos_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
 

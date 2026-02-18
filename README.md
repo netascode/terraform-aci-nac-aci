@@ -362,4 +362,11 @@ Additional example repositories:
 | <a name="module_aci_vrf"></a> [aci\_vrf](#module\_aci\_vrf) | ./modules/terraform-aci-vrf | n/a |
 | <a name="module_aci_vspan_destination_group"></a> [aci\_vspan\_destination\_group](#module\_aci\_vspan\_destination\_group) | ./modules/terraform-aci-vspan-destination-group | n/a |
 | <a name="module_aci_vspan_session"></a> [aci\_vspan\_session](#module\_aci\_vspan\_session) | ./modules/terraform-aci-vspan-session | n/a |
+| <a name="module_aci_vxlan_custom_qos_policy"></a> [aci\_vxlan\_custom\_qos\_policy](#module\_aci\_vxlan\_custom\_qos\_policy) | ./modules/terraform-aci-vxlan-custom-qos-policy | n/a |
+| <a name="module_aci_vxlan_external_endpoint_group"></a> [aci\_vxlan\_external\_endpoint\_group](#module\_aci\_vxlan\_external\_endpoint\_group) | ./modules/terraform-aci-external-endpoint-group | n/a |
+| <a name="module_aci_vxlan_l3out"></a> [aci\_vxlan\_l3out](#module\_aci\_vxlan\_l3out) | ./modules/terraform-aci-l3out | n/a |
+| <a name="module_aci_vxlan_l3out_interface_profile_manual"></a> [aci\_vxlan\_l3out\_interface\_profile\_manual](#module\_aci\_vxlan\_l3out\_interface\_profile\_manual) | ./modules/terraform-aci-l3out-interface-profile | n/a |
+| <a name="module_aci_vxlan_node_profiles_manual"></a> [aci\_vxlan\_node\_profiles\_manual](#module\_aci\_vxlan\_node\_profiles\_manual) | ./modules/terraform-aci-l3out-node-profile | n/a |
+| <a name="module_border_gateway_set_policy"></a> [border\_gateway\_set\_policy](#module\_border\_gateway\_set\_policy) | ./modules/terraform-aci-border-gateway-set-policy | n/a |
+| <a name="module_remote_vxlan_fabrics"></a> [remote\_vxlan\_fabrics](#module\_remote\_vxlan\_fabrics) | ./modules/terraform-aci-remote-vxlan-fabric-policy | n/a |
 <!-- END_TF_DOCS -->

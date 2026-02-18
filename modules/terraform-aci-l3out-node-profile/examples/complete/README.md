@@ -23,6 +23,7 @@ module "aci_l3out_node_profile" {
   bgp_as_path_policy = "BGP_AS_PATH-1"
   multipod           = true
   remote_leaf        = false
+  vxlan_enabled      = false
   nodes = [{
     node_id               = 201
     pod_id                = 2
