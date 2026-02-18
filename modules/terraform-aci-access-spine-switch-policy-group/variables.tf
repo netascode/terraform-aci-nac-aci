@@ -8,17 +8,6 @@ variable "name" {
   }
 }
 
-variable "lldp_policy" {
-  description = "LLDP policy name."
-  type        = string
-  default     = ""
-
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.lldp_policy))
-    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
-  }
-}
-
 variable "bfd_ipv4_policy" {
   description = "BFD IPv4 policy name."
   type        = string
@@ -37,6 +26,28 @@ variable "bfd_ipv6_policy" {
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.bfd_ipv6_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "cdp_policy" {
+  description = "CDP Policy Name"
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.cdp_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "lldp_policy" {
+  description = "LLDP Policy Name"
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.lldp_policy))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }

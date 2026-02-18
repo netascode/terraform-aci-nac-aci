@@ -32,3 +32,21 @@ resource "aci_rest_managed" "infraRsBfdIpv6InstPol" {
     tnBfdIpv6InstPolName = var.bfd_ipv6_policy
   }
 }
+
+resource "aci_rest_managed" "infraRsLeafPGrpToCdpIfPol" {
+  count      = var.cdp_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraAccNodePGrp.dn}/rsleafPGrpToCdpIfPol"
+  class_name = "infraRsLeafPGrpToCdpIfPol"
+  content = {
+    tnCdpIfPolName = var.cdp_policy
+  }
+}
+
+resource "aci_rest_managed" "infraRsLeafPGrpToLldpIfPol" {
+  count      = var.lldp_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraAccNodePGrp.dn}/rsleafPGrpToLldpIfPol"
+  class_name = "infraRsLeafPGrpToLldpIfPol"
+  content = {
+    tnLldpIfPolName = var.lldp_policy
+  }
+}

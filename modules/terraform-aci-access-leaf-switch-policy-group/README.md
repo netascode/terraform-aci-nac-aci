@@ -41,6 +41,8 @@ module "aci_access_leaf_switch_policy_group" {
 | <a name="input_forwarding_scale_policy"></a> [forwarding\_scale\_policy](#input\_forwarding\_scale\_policy) | Forwarding scale policy name. | `string` | `""` | no |
 | <a name="input_bfd_ipv4_policy"></a> [bfd\_ipv4\_policy](#input\_bfd\_ipv4\_policy) | BFD IPv4 policy name. | `string` | `""` | no |
 | <a name="input_bfd_ipv6_policy"></a> [bfd\_ipv6\_policy](#input\_bfd\_ipv6\_policy) | BFD IPv6 policy name. | `string` | `""` | no |
+| <a name="input_cdp_policy"></a> [cdp\_policy](#input\_cdp\_policy) | CDP Policy Name. | `string` | `""` | no |
+| <a name="input_lldp_policy"></a> [lldp\_policy](#input\_lldp\__policy) | LLDP Policy Name. | `string` | `""` | no |
 
 ## Outputs
 
@@ -56,5 +58,7 @@ module "aci_access_leaf_switch_policy_group" {
 | [aci_rest_managed.infraAccNodePGrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsBfdIpv4InstPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsBfdIpv6InstPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraRsLeafPGrpToCdpIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraRsLeafPGrpToLldpIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsTopoctrlFwdScaleProfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->
