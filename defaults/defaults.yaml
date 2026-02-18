@@ -392,11 +392,6 @@ defaults:
             mgmt_epg: inb
         syslogs:
           name_suffix: ""
-          audit: true
-          events: true
-          faults: true
-          session: false
-          minimum_severity: warnings
           format: aci
           show_millisecond: false
           show_timezone: false
@@ -411,6 +406,22 @@ defaults:
             severity: warnings
             admin_state: true
             mgmt_epg: inb
+        policies:
+          name_suffix: ""
+          fault_severity_policies:
+            name_suffix: ""
+            faults:
+              initial_severity: "inherit"
+              target_severity: "inherit"
+          snmp_traps:
+            name_suffix: ""
+          syslogs:
+            name_suffix: ""
+            audit: true
+            events: true
+            faults: true
+            session: false
+            minimum_severity: warnings
       span:
         destination_groups:
           name_suffix: ""

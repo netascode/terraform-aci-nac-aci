@@ -600,6 +600,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-monitoring-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-monitoring-policy-custom"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-monitoring-policy-custom/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-mpls-custom-qos-policy"]
       - id: terraform-docs-system
         args:

@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# Terraform ACI Monitoring Policy Module
+# Terraform ACI Common Monitoring Policy Module
 
 Manages ACI Monitoring Policy
 
@@ -10,17 +10,21 @@ Location in GUI:
 
 ```hcl
 module "aci_monitoring_policy" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-monitoring-policy"
-  version = ">= 0.8.0"
+  source  = "netascode/nac-aci/aci/modules/terraform-aci-monitoring-policy"
+  version = "> 1.2.0"
 
-  snmp_trap_policies = ["SNMP1"]
+  snmp_trap_policies = [{
+    name              = "SNMP1"
+    destination_group = "DST1"
+  }]
   syslog_policies = [{
-    name             = "SYSLOG1"
-    audit            = false
-    events           = false
-    faults           = false
-    session          = true
-    minimum_severity = "alerts"
+    name              = "SYSLOG1"
+    audit             = false
+    events            = false
+    faults            = false
+    session           = true
+    minimum_severity  = "alerts"
+    destination_group = "DST1"
   }]
 }
 ```
@@ -42,8 +46,8 @@ module "aci_monitoring_policy" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_snmp_trap_policies"></a> [snmp\_trap\_policies](#input\_snmp\_trap\_policies) | List of SNMP trap policy names. | `list(string)` | `[]` | no |
-| <a name="input_syslog_policies"></a> [syslog\_policies](#input\_syslog\_policies) | List of syslog policies. Default value `audit`: true. Default value `events`: true. Default value `faults`: true. Default value `session`: false. Default value `minimum_severity`: `warnings`. | <pre>list(object({<br/>    name             = string<br/>    audit            = optional(bool, true)<br/>    events           = optional(bool, true)<br/>    faults           = optional(bool, true)<br/>    session          = optional(bool, false)<br/>    minimum_severity = optional(string, "warnings")<br/>  }))</pre> | `[]` | no |
+| <a name="input_snmp_trap_policies"></a> [snmp\_trap\_policies](#input\_snmp\_trap\_policies) | List of SNMP trap policy names. | <pre>list(object({<br/>    name              = string<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
+| <a name="input_syslog_policies"></a> [syslog\_policies](#input\_syslog\_policies) | List of syslog policies. Default value `audit`: true. Default value `events`: true. Default value `faults`: true. Default value `session`: false. Default value `minimum_severity`: `warnings`. | <pre>list(object({<br/>    name              = string<br/>    audit             = optional(bool, true)<br/>    events            = optional(bool, true)<br/>    faults            = optional(bool, true)<br/>    session           = optional(bool, false)<br/>    minimum_severity  = optional(string, "warnings")<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
