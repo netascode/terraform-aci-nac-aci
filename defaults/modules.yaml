@@ -140,7 +140,9 @@ modules:
   aci_pod_setup: true
   aci_port_channel_member_policy: true
   aci_port_channel_policy: true
+  aci_port_security_policy: true
   aci_port_tracking: true
+  aci_priority_flow_control_policy: true
   aci_psu_policy: true
   aci_ptp: true
   aci_ptp_profile: true

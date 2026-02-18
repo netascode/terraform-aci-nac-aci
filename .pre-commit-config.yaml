@@ -699,9 +699,17 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-port-channel-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-port-security-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-port-security-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-port-tracking"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-port-tracking/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-priority-flow-control-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-priority-flow-control-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-control-plane-mtu"]
       - id: terraform-docs-system

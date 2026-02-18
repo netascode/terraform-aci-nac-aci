@@ -152,6 +152,28 @@ variable "storm_control_policy" {
   }
 }
 
+variable "port_security_policy" {
+  description = "Port security policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.port_security_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "priority_flow_control_policy" {
+  description = "Priority flow control policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.priority_flow_control_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "port_channel_policy" {
   description = "Port channel policy name."
   type        = string

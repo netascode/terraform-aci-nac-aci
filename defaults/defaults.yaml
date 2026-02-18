@@ -609,6 +609,14 @@ defaults:
           name_suffix: ""
           priority: 32768
           rate: normal
+        port_security_policies:
+          name_suffix: ""
+          maximum_endpoints: 0
+          timeout: 60
+        priority_flow_control_policies:
+          name_suffix: ""
+          admin_state: true
+          auto_state: true
         l2_policies:
           name_suffix: ""
           vlan_scope: global
