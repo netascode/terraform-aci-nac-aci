@@ -185,6 +185,17 @@ variable "port_channel_policy" {
   }
 }
 
+variable "port_channel_member_name" {
+  description = "Port channel member name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.port_channel_member_name))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "port_channel_member_policy" {
   description = "Port channel member policy name."
   type        = string

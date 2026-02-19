@@ -14,6 +14,7 @@ module "aci_access_leaf_interface_policy_group" {
   l2_policy                  = "PORT-LOCAL"
   storm_control_policy       = "10P"
   port_channel_policy        = "LACP"
+  port_channel_member_name   = "PG-Member"
   port_channel_member_policy = "FAST"
   aaep                       = "AAEP1"
 }
