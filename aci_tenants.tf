@@ -2104,7 +2104,8 @@ locals {
           for ip in try(np.interface_profiles, []) : {
             key          = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
             tenant       = tenant.name
-            l3out        = "${l3out.name}${local.defaults.apic.tenants.vxlan_l3outs.name_suffix}"
+            l3out        = "${l3out.name}${local.defaults.apic.tenants.vxlan_l3outs.name_suffix}"+
+            description  = try(ip.description, "")
             node_profile = "${np.name}${local.defaults.apic.tenants.vxlan_l3outs.node_profiles.name_suffix}"
             name         = "${ip.name}${local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.name_suffix}"
             bfd_policy   = try("${ip.bfd_policy}${local.defaults.apic.tenants.policies.bfd_interface_policies.name_suffix}", "")
@@ -2131,6 +2132,8 @@ locals {
                 local_as           = try(peer.local_as, null)
                 as_propagate       = try(peer.as_propagate, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.as_propagate)
                 peer_prefix_policy = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
+                multicast_address_family = false
+                unicast_address_family = true
               }]
             }]
           }
@@ -2148,6 +2151,7 @@ module "aci_vxlan_l3out_interface_profile_manual" {
   l3out        = each.value.l3out
   node_profile = each.value.node_profile
   name         = each.value.name
+  description  = each.value.description
   bfd_policy   = each.value.bfd_policy
   interfaces = [for int in try(each.value.interfaces, []) : {
     ip_a = int.ip_a
@@ -2182,7 +2186,7 @@ locals {
         key    = format("%s/%s/%s", tenant.name, l3out.name, l3out.name)
         tenant = tenant.name
         l3out  = "${l3out.name}${local.defaults.apic.tenants.vxlan_l3outs.name_suffix}"
-        name   = "${l3out.name}${local.defaults.apic.tenants.vxlan_l3outs.external_endpoint_groups.name_suffix}"
+        name   = "${l3out.name}${defaults.apic.tenants.vxlan_l3outs.name_suffix}"
       }
     ]
   ])

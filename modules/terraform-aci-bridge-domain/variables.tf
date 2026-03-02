@@ -41,8 +41,8 @@ variable "normalized_vni" {
   default     = null
 
   validation {
-    condition     = var.normalized_vni == null || (var.normalized_vni >= 0 && var.normalized_vni <= 16777215)
-    error_message = "Valid range: 16-65535."
+    condition     = var.normalized_vni == null || (var.normalized_vni >= 1 && var.normalized_vni <= 16777215)
+    error_message = "Valid range: 1-16777215."
   }
 }
 

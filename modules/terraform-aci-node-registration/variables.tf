@@ -57,7 +57,7 @@ variable "type" {
 
   validation {
     condition     = contains(["remote-leaf-wan", "virtual", "tier-2-leaf", "border-gateway", "unspecified"], var.type)
-    error_message = "Allowed values: `remote-leaf-wan`, `virtual`, `tier-2-leaf` or `unspecified`."
+    error_message = "Allowed values: `remote-leaf-wan`, `virtual`, `tier-2-leaf`, `border-gateway` or `unspecified`."
   }
 }
 
