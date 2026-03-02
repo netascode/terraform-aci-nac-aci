@@ -2104,7 +2104,7 @@ locals {
           for ip in try(np.interface_profiles, []) : {
             key          = format("%s/%s/%s/%s", tenant.name, l3out.name, np.name, ip.name)
             tenant       = tenant.name
-            l3out        = "${l3out.name}${local.defaults.apic.tenants.vxlan_l3outs.name_suffix}"+
+            l3out        = "${l3out.name}${local.defaults.apic.tenants.vxlan_l3outs.name_suffix}"
             description  = try(ip.description, "")
             node_profile = "${np.name}${local.defaults.apic.tenants.vxlan_l3outs.node_profiles.name_suffix}"
             name         = "${ip.name}${local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.name_suffix}"
