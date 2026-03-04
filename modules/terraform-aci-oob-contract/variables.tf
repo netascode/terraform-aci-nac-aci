@@ -49,6 +49,7 @@ variable "subjects" {
     description = optional(string, "")
     filters = list(object({
       filter = string
+      action = optional(string, "permit")
     }))
   }))
   default = []
@@ -80,6 +81,13 @@ variable "subjects" {
       for s in var.subjects : [for f in coalesce(s.filters, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", f.filter))]
     ]))
     error_message = "`filter`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for s in var.subjects : [for f in coalesce(s.filters, []) : f.action == null || try(contains(["permit", "deny"], f.action), false)]
+    ]))
+    error_message = "`action`: Allowed values are `permit` or `deny`."
   }
 }
 

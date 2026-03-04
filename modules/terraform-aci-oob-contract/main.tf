@@ -6,6 +6,7 @@ locals {
         id     = "${subj.name}-${flt.filter}"
         subj   = subj.name
         filter = flt.filter
+        action = flt.action
       }
     ]
   ])
@@ -38,7 +39,7 @@ resource "aci_rest_managed" "vzRsSubjFiltAtt" {
   dn         = "${aci_rest_managed.vzSubj[each.value.subj].dn}/rssubjFiltAtt-${each.value.filter}"
   class_name = "vzRsSubjFiltAtt"
   content = {
-    action         = "permit"
+    action         = each.value.action
     tnVzFilterName = each.value.filter
   }
 }

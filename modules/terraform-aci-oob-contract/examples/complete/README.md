@@ -26,6 +26,7 @@ module "aci_oob_contract" {
     description = "Subject Description"
     filters = [{
       filter = "FILTER1"
+      action = "deny"
     }]
   }]
 }

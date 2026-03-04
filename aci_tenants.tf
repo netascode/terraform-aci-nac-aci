@@ -2105,6 +2105,7 @@ locals {
           description = try(subject.description, "")
           filters = [for filter in try(subject.filters, []) : {
             filter = "${filter.filter}${local.defaults.apic.tenants.filters.name_suffix}"
+            action = try(filter.action, local.defaults.apic.tenants.oob_contracts.subjects.filters.action)
           }]
         }]
       }
