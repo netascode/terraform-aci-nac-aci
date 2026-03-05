@@ -2104,8 +2104,11 @@ locals {
           alias       = try(subject.alias, "")
           description = try(subject.description, "")
           filters = [for filter in try(subject.filters, []) : {
-            filter = "${filter.filter}${local.defaults.apic.tenants.filters.name_suffix}"
-            action = try(filter.action, local.defaults.apic.tenants.oob_contracts.subjects.filters.action)
+            filter   = "${filter.filter}${local.defaults.apic.tenants.filters.name_suffix}"
+            action   = try(filter.action, local.defaults.apic.tenants.oob_contracts.subjects.filters.action)
+            priority = try(filter.priority, local.defaults.apic.tenants.oob_contracts.subjects.filters.priority)
+            log      = try(filter.log, local.defaults.apic.tenants.oob_contracts.subjects.filters.log)
+            no_stats = try(filter.no_stats, local.defaults.apic.tenants.oob_contracts.subjects.filters.no_stats)
           }]
         }]
       }

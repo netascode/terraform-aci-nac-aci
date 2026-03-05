@@ -25,8 +25,11 @@ module "aci_oob_contract" {
     alias       = "SUB1-ALIAS"
     description = "Subject Description"
     filters = [{
-      filter = "FILTER1"
-      action = "deny"
+      filter   = "FILTER1"
+      action   = "deny"
+      priority = "level1"
+      log      = true
+      no_stats = true
     }]
   }]
 }
