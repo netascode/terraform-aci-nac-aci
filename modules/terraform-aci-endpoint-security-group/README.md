@@ -10,7 +10,7 @@ Location in GUI:
 
 ```hcl
 module "aci_endpoint_security_group" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-endpoint-security-group"
+  source  = "netascode/nac-aci/aci/modules/terraform-aci-endpoint-security-group"
   version = ">= 0.8.0"
 
   name                        = "ESG1"
@@ -26,6 +26,7 @@ module "aci_endpoint_security_group" {
   contract_providers          = ["CON1"]
   contract_imported_consumers = ["IMPORTED-CON1"]
   contract_intra_esgs         = ["CON1"]
+  normalized_pctag            = 23
   esg_contract_masters = [
     {
       tenant                  = "TF"
@@ -116,6 +117,7 @@ module "aci_endpoint_security_group" {
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
 | <a name="input_application_profile"></a> [application\_profile](#input\_application\_profile) | Application profile name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
+| <a name="input_normalized_pctag"></a> [normalized\_pctag](#input\_normalized\_pctag) | Normalized PC Tag. | `number` | `null` | no |
 | <a name="input_vrf"></a> [vrf](#input\_vrf) | VRF name. | `string` | n/a | yes |
 | <a name="input_shutdown"></a> [shutdown](#input\_shutdown) | Shutdown. | `bool` | `false` | no |
 | <a name="input_deployment_immediacy"></a> [deployment\_immediacy](#input\_deployment\_immediacy) | Deployment Immediacy | `string` | `null` | no |
@@ -149,6 +151,7 @@ module "aci_endpoint_security_group" {
 | [aci_rest_managed.fvEPgSelector](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvESg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvExternalSubnetSelector](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRemoteSGT](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCons](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsConsIf](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsIntraEpg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

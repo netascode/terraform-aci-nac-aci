@@ -206,6 +206,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-bridge-domain/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-border-gateway-set-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-border-gateway-set-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-ca-certificate"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-ca-certificate/examples/complete"]
@@ -762,6 +766,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-remote-location/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-remote-vxlan-fabric-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-remote-vxlan-fabric-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-rogue-endpoint-control"]
       - id: terraform-docs-system
         args:
@@ -912,6 +920,10 @@ repos:
         args: ["./modules/terraform-aci-vspan-session"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-vspan-session/examples/complete"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vxlan-custom-qos-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-vxlan-custom-qos-policy/examples/complete"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-nutanix-vmm-domain"]
       - id: terraform-docs-system

@@ -31,6 +31,7 @@ modules:
   aci_bgp_policy: true
   aci_bgp_route_summarization_policy: true
   aci_bgp_timer_policy: true
+  aci_border_gateway_set_policy: true
   aci_bridge_domain: true
   aci_ca_certificate: true
   aci_cdp_policy: true
@@ -154,6 +155,7 @@ modules:
   aci_redirect_health_group: true
   aci_redirect_policy: true
   aci_remote_location: true
+  aci_remote_vxlan_fabrics: true
   aci_rogue_endpoint_control: true
   aci_route_control_route_map: true
   aci_route_tag_policy: true
@@ -165,7 +167,11 @@ modules:
   aci_snmp_policy: true
   aci_snmp_trap_policy: true
   aci_spanning_tree_policy: true
+  aci_sr_mpls_external_endpoint_group: true
   aci_sr_mpls_global_configuration: true
+  aci_sr_mpls_l3out: true
+  aci_sr_mpls_l3out_interface_profile: true
+  aci_sr_mpls_l3out_node_profile: true
   aci_storm_control_policy: true
   aci_switch_configuration: true
   aci_syslog_policy: true
@@ -191,3 +197,7 @@ modules:
   aci_vrf: true
   aci_vspan_destination_group: true
   aci_vspan_session: true
+  aci_vxlan_custom_qos_policy: true
+  aci_vxlan_l3out: true
+  aci_vxlan_l3out_node_profile: true
+  aci_vxlan_l3out_interface_profile: true
