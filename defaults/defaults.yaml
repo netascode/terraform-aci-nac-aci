@@ -1344,6 +1344,24 @@ defaults:
             route_leaking: false
             security: false
             aggregate_shared_route_control: false
+      vxlan_l3outs:
+        name_suffix: ""
+        node_profiles:
+          name_suffix: ""
+          nodes:
+            router_id_as_loopback: false
+          interface_profiles:
+            name_suffix: ""
+            interfaces:
+              pod_id: 1
+              module: 1
+              mac: 00:22:BD:F8:19:FF
+              mtu: inherit
+              bgp_peers:
+                bfd: false
+                unicast_address_family: true
+                admin_state: true
+                as_propagate: none
       contracts:
         name_suffix: ""
         scope: context

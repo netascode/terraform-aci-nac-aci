@@ -1808,7 +1808,7 @@ locals {
 module "aci_sr_mpls_l3out" {
   source = "./modules/terraform-aci-l3out"
 
-  for_each             = { for l3out in local.sr_mpls_l3outs : l3out.key => l3out if try(local.modules.aci_sr_mpls_l3out, true) && var.manage_tenants }
+  for_each             = { for l3out in local.sr_mpls_l3outs : l3out.key => l3out if local.modules.aci_sr_mpls_l3out && var.manage_tenants }
   tenant               = each.value.tenant
   name                 = each.value.name
   alias                = each.value.alias
@@ -1870,7 +1870,7 @@ locals {
 module "aci_sr_mpls_l3out_node_profile_manual" {
   source = "./modules/terraform-aci-l3out-node-profile"
 
-  for_each                 = { for np in local.sr_mpls_node_profiles_manual : np.key => np if try(local.modules.aci_sr_mpls_l3out_node_profile, true) && var.manage_tenants }
+  for_each                 = { for np in local.sr_mpls_node_profiles_manual : np.key => np if local.modules.aci_sr_mpls_l3out_node_profile && var.manage_tenants }
   tenant                   = each.value.tenant
   l3out                    = each.value.l3out
   name                     = each.value.name
@@ -1938,7 +1938,7 @@ locals {
 module "aci_sr_mpls_l3out_interface_profile_manual" {
   source = "./modules/terraform-aci-l3out-interface-profile"
 
-  for_each             = { for ip in local.sr_mpls_interface_profiles_manual : ip.key => ip if try(local.modules.aci_sr_mpls_l3out_interface_profile, true) && var.manage_tenants }
+  for_each             = { for ip in local.sr_mpls_interface_profiles_manual : ip.key => ip if local.modules.aci_sr_mpls_l3out_interface_profile && var.manage_tenants }
   tenant               = each.value.tenant
   l3out                = each.value.l3out
   sr_mpls              = each.value.sr_mpls
@@ -1999,7 +1999,7 @@ locals {
 module "aci_sr_mpls_external_endpoint_group" {
   source = "./modules/terraform-aci-external-endpoint-group"
 
-  for_each                    = { for epg in local.sr_mpls_external_endpoint_groups : epg.key => epg if try(local.modules.sr_mpls_aci_external_endpoint_group, true) && var.manage_tenants }
+  for_each                    = { for epg in local.sr_mpls_external_endpoint_groups : epg.key => epg if local.modules.aci_sr_mpls_external_endpoint_group && var.manage_tenants }
   tenant                      = each.value.tenant
   l3out                       = each.value.l3out
   name                        = each.value.name
@@ -2030,16 +2030,18 @@ locals {
         description        = try(l3out.description, "")
         vrf                = "overlay-1"
         vxlan_enabled      = true
-        border_gateway_set = try(l3out.border_gateway_set_policy, "")
+        border_gateway_set = try("${l3out.border_gateway_set_policy}${local.defaults.apic.tenants.vxlan_l3outs.node_profiles.name_suffix}", "")
       }
-    ]
+    ] if tenant.name == "infra"
   ])
 }
+
+
 
 module "aci_vxlan_l3out" {
   source = "./modules/terraform-aci-l3out"
 
-  for_each           = { for l3out in local.vxlan_l3outs : l3out.key => l3out if try(local.modules.aci_vxlan_l3out, true) && var.manage_tenants }
+  for_each           = { for l3out in local.vxlan_l3outs : l3out.key => l3out if local.modules.aci_vxlan_l3out && var.manage_tenants }
   tenant             = each.value.tenant
   name               = each.value.name
   alias              = each.value.alias
@@ -2053,6 +2055,7 @@ module "aci_vxlan_l3out" {
     module.border_gateway_set_policy
   ]
 }
+
 locals {
   vxlan_node_profiles_manual = flatten([
     for tenant in local.tenants : [
@@ -2070,8 +2073,7 @@ locals {
             pod_id                = try(node.pod_id, [for node_ in local.node_policies.nodes : node_.pod if node_.id == node.node_id][0], local.defaults.apic.tenants.l3outs.node_profiles.nodes.pod)
             router_id             = try(node.router_id, null)
             router_id_as_loopback = false
-            # for standard L3OUT the loopback is a list. In the VXLAN Case however we can only have 1 per node. So here I convert from string to list
-            loopbacks = try(node.loopback, null) != null ? [node.loopback] : []
+            loopbacks             = try(node.loopback, null) != null ? [node.loopback] : []
           }]
         }
       ]
@@ -2082,7 +2084,7 @@ locals {
 module "aci_vxlan_node_profiles_manual" {
   source = "./modules/terraform-aci-l3out-node-profile"
 
-  for_each                = { for np in local.vxlan_node_profiles_manual : np.key => np if try(local.modules.aci_vxlan_l3out_node_profile, true) && var.manage_tenants }
+  for_each                = { for np in local.vxlan_node_profiles_manual : np.key => np if local.modules.aci_vxlan_l3out_node_profile && var.manage_tenants }
   tenant                  = each.value.tenant
   l3out                   = each.value.l3out
   name                    = each.value.name
@@ -2123,17 +2125,17 @@ locals {
               channel     = try("${int.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", null)
               ip          = try(int.ip, null)
               bgp_peers = [for peer in try(int.bgp_peers, []) : {
-                ip                 = peer.ip
-                remote_as          = peer.remote_as
-                description        = try(peer.description, "")
-                password           = try(peer.password, null)
-                bfd                = try(peer.bfd, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.bfd)
-                admin_state        = try(peer.admin_state, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.admin_state)
-                local_as           = try(peer.local_as, null)
-                as_propagate       = try(peer.as_propagate, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.as_propagate)
-                peer_prefix_policy = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
+                ip                       = peer.ip
+                remote_as                = peer.remote_as
+                description              = try(peer.description, "")
+                password                 = try(peer.password, null)
+                bfd                      = try(peer.bfd, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.bfd)
+                admin_state              = try(peer.admin_state, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.admin_state)
+                local_as                 = try(peer.local_as, null)
+                as_propagate             = try(peer.as_propagate, local.defaults.apic.tenants.vxlan_l3outs.node_profiles.interface_profiles.interfaces.bgp_peers.as_propagate)
+                peer_prefix_policy       = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
                 multicast_address_family = false
-                unicast_address_family = true
+                unicast_address_family   = true
               }]
             }]
           }
@@ -2146,7 +2148,7 @@ locals {
 module "aci_vxlan_l3out_interface_profile_manual" {
   source = "./modules/terraform-aci-l3out-interface-profile"
 
-  for_each     = { for ip in local.vxlan_interface_profiles_manual : ip.key => ip if try(local.modules.aci_vxlan_l3out_interface_profile, true) && var.manage_tenants }
+  for_each     = { for ip in local.vxlan_interface_profiles_manual : ip.key => ip if local.modules.aci_vxlan_l3out_interface_profile && var.manage_tenants }
   tenant       = each.value.tenant
   l3out        = each.value.l3out
   node_profile = each.value.node_profile
@@ -2154,9 +2156,8 @@ module "aci_vxlan_l3out_interface_profile_manual" {
   description  = each.value.description
   bfd_policy   = each.value.bfd_policy
   interfaces = [for int in try(each.value.interfaces, []) : {
-    ip_a = int.ip_a
-    vlan = int.vlan
-    # SVI is not supported for VXLAN L3OUT interfaces
+    ip_a        = int.ip_a
+    vlan        = int.vlan
     svi         = false
     description = int.description
     type        = int.type
@@ -2178,35 +2179,6 @@ module "aci_vxlan_l3out_interface_profile_manual" {
 }
 
 locals {
-  # This is a hidden object in APIC that the user can't configure.
-  # hardcode the name to the l3out name and creates it by default.
-  vxlan_external_endpoint_groups = flatten([
-    for tenant in local.tenants : [
-      for l3out in try(tenant.vxlan_l3outs, []) : {
-        key    = format("%s/%s/%s", tenant.name, l3out.name, l3out.name)
-        tenant = tenant.name
-        l3out  = "${l3out.name}${local.defaults.apic.tenants.vxlan_l3outs.name_suffix}"
-        name   = "${l3out.name}${defaults.apic.tenants.vxlan_l3outs.name_suffix}"
-      }
-    ]
-  ])
-}
-
-module "aci_vxlan_external_endpoint_group" {
-  source = "./modules/terraform-aci-external-endpoint-group"
-
-  for_each = { for epg in local.vxlan_external_endpoint_groups : epg.key => epg if try(local.modules.vxlan_aci_external_endpoint_group, true) && var.manage_tenants }
-  tenant   = each.value.tenant
-  l3out    = each.value.l3out
-  name     = each.value.name
-
-  depends_on = [
-    module.aci_tenant,
-    module.aci_vxlan_l3out,
-  ]
-}
-
-locals {
   border_gateway_set_policies = flatten([
     for tenant in local.tenants : [
       {
@@ -2221,7 +2193,6 @@ locals {
           }
         ]
       }
-      # This is supported only in Infra Tenant.
     ] if tenant.name == "infra" && try(tenant.policies.border_gateway_set_policy, null) != null
   ])
 }
@@ -2229,7 +2200,7 @@ locals {
 module "border_gateway_set_policy" {
   source = "./modules/terraform-aci-border-gateway-set-policy"
 
-  for_each                = { for policy in local.border_gateway_set_policies : policy.key => policy if try(local.modules.border_gateway_set_policy, true) && var.manage_tenants }
+  for_each                = { for policy in local.border_gateway_set_policies : policy.key => policy if local.modules.aci_border_gateway_set_policy && var.manage_tenants }
   name                    = each.value.name
   vxlan_site_id           = each.value.vxlan_site_id
   external_data_plane_ips = each.value.external_data_plane_ips
@@ -2262,14 +2233,13 @@ locals {
           }
         ]
       }
-      # This is supported only in Infra Tenant.
     ] if tenant.name == "infra" && try(tenant.policies.remote_vxlan_fabrics, null) != null
   ])
 }
 
 module "remote_vxlan_fabrics" {
   source             = "./modules/terraform-aci-remote-vxlan-fabric-policy"
-  for_each           = { for policy in local.remote_vxlan_fabrics : policy.key => policy if try(local.modules.remote_vxlan_fabrics, true) && var.manage_tenants }
+  for_each           = { for policy in local.remote_vxlan_fabrics : policy.key => policy if local.modules.aci_remote_vxlan_fabrics && var.manage_tenants }
   name               = each.value.name
   remote_evpn_peers  = each.value.remote_evpn_peers
   border_gateway_set = each.value.border_gateway_set
@@ -3354,7 +3324,7 @@ locals {
 module "aci_vxlan_custom_qos_policy" {
   source = "./modules/terraform-aci-vxlan-custom-qos-policy"
 
-  for_each      = { for pol in local.vxlan_custom_qos_policies : pol.key => pol if try(local.modules.aci_vxlan_custom_qos_policy, true) && var.manage_tenants }
+  for_each      = { for pol in local.vxlan_custom_qos_policies : pol.key => pol if local.modules.aci_vxlan_custom_qos_policy && var.manage_tenants }
   name          = each.value.name
   description   = each.value.description
   ingress_rules = each.value.ingress_rules

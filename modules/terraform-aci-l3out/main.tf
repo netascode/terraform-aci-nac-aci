@@ -415,3 +415,12 @@ resource "aci_rest_managed" "l3extInstP_sr_mpls" {
     name = "${var.name}_mplsInstP"
   }
 }
+
+resource "aci_rest_managed" "l3extInstP_vxlan" {
+  count      = var.vxlan_enabled == true && var.tenant == "infra" ? 1 : 0
+  dn         = "${aci_rest_managed.l3extOut.dn}/instP-${var.name}_vxlanInstP"
+  class_name = "l3extInstP"
+  content = {
+    name = "${var.name}_vxlanInstP"
+  }
+}

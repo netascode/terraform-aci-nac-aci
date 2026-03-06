@@ -118,7 +118,7 @@ Additional example repositories:
 
 | Name | Version |
 |------|---------|
-| <a name="provider_local"></a> [local](#provider\_local) | >= 2.3.0 |
+| <a name="provider_local"></a> [local](#provider\_local) | 2.6.2 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Resources
@@ -361,7 +361,6 @@ Additional example repositories:
 | <a name="module_aci_vspan_destination_group"></a> [aci\_vspan\_destination\_group](#module\_aci\_vspan\_destination\_group) | ./modules/terraform-aci-vspan-destination-group | n/a |
 | <a name="module_aci_vspan_session"></a> [aci\_vspan\_session](#module\_aci\_vspan\_session) | ./modules/terraform-aci-vspan-session | n/a |
 | <a name="module_aci_vxlan_custom_qos_policy"></a> [aci\_vxlan\_custom\_qos\_policy](#module\_aci\_vxlan\_custom\_qos\_policy) | ./modules/terraform-aci-vxlan-custom-qos-policy | n/a |
-| <a name="module_aci_vxlan_external_endpoint_group"></a> [aci\_vxlan\_external\_endpoint\_group](#module\_aci\_vxlan\_external\_endpoint\_group) | ./modules/terraform-aci-external-endpoint-group | n/a |
 | <a name="module_aci_vxlan_l3out"></a> [aci\_vxlan\_l3out](#module\_aci\_vxlan\_l3out) | ./modules/terraform-aci-l3out | n/a |
 | <a name="module_aci_vxlan_l3out_interface_profile_manual"></a> [aci\_vxlan\_l3out\_interface\_profile\_manual](#module\_aci\_vxlan\_l3out\_interface\_profile\_manual) | ./modules/terraform-aci-l3out-interface-profile | n/a |
 | <a name="module_aci_vxlan_node_profiles_manual"></a> [aci\_vxlan\_node\_profiles\_manual](#module\_aci\_vxlan\_node\_profiles\_manual) | ./modules/terraform-aci-l3out-node-profile | n/a |

@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# vxlan Custom QoS Policy
+# VXLAN Custom QoS Policy Example
 
 To run this example you need to execute:
 
@@ -13,10 +13,10 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ```hcl
 module "aci_vxlan_custom_qos_policy" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-vxlan-custom-qos-policy"
-  version = ">= 0.8.0"
+  source  = "netascode/nac-aci/aci/modules/terraform-aci-vxlan-custom-qos-policy"
+  version = "> 1.2.0"
 
-  name        = "VXLAN_QOS_POL"
+  name        = "vxlan_QOS_POL"
   description = "Custom vxlan QoS Policy"
   ingress_rules = [
     {

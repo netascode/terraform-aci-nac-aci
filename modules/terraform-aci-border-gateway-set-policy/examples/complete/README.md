@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# Border Gateway Policy Set Example
+# Border Gateway Set Policy Example
 
 To run this example you need to execute:
 
@@ -12,11 +12,11 @@ $ terraform apply
 Note that this example will create resources. Resources can be destroyed with `terraform destroy`.
 
 ```hcl
-module "aci_storm_control_policy" {
+module "aci_border_gateway_set_policy" {
   source  = "netascode/nac-aci/aci/modules/terraform-aci-border-gateway-set-policy"
-  version = ">= 0.8.0"
+  version = "> 1.2.0"
 
-  name  = "BGW1"
+  name    = "BGW1"
   site_id = 100
   external_data_plane_ips = [
     {
