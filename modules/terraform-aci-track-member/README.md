@@ -47,6 +47,7 @@ module "aci_track_member" {
 | <a name="input_scope_type"></a> [scope\_type](#input\_scope\_type) | Type of scope of track member. Allowed value: `l3out`, `bd`. | `string` | n/a | yes |
 | <a name="input_scope"></a> [scope](#input\_scope) | Scope of track member. | `string` | n/a | yes |
 | <a name="input_ip_sla_policy"></a> [ip\_sla\_policy](#input\_ip\_sla\_policy) | IP SLA Policy of a track member | `string` | n/a | yes |
+| <a name="input_ip_sla_policy_tenant"></a> [ip\_sla\_policy\_tenant](#input\_ip\_sla\_policy\_tenant) | Tenant name used in reference for ip\_sla\_policy resolved automatically. | `string` | `""` | no |
 
 ## Outputs
 

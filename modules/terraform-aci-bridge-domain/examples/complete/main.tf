@@ -26,6 +26,7 @@ module "aci_bridge_domain" {
   border_gateway_set         = "border_gateway_set_policy"
   nd_interface_policy        = "ND_INTF_POL1"
   endpoint_retention_policy  = "ERP1"
+  legacy_mode_vlan           = 135
   subnets = [{
     description        = "Subnet Description"
     ip                 = "1.1.1.1/24"

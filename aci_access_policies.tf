@@ -471,6 +471,26 @@ module "aci_storm_control_policy" {
   configuration_type         = try(each.value.rate, each.value.rate_pps, each.value.burst_pps, each.value.burst_rate, false) == false ? "separate" : "all"
 }
 
+module "aci_port_security_policy" {
+  source = "./modules/terraform-aci-port-security-policy"
+
+  for_each          = { for ps in try(local.access_policies.interface_policies.port_security_policies, []) : ps.name => ps if local.modules.aci_port_security_policy && var.manage_access_policies }
+  name              = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.port_security_policies.name_suffix}"
+  description       = try(each.value.description, "")
+  maximum_endpoints = try(each.value.maximum_endpoints, local.defaults.apic.access_policies.interface_policies.port_security_policies.maximum_endpoints)
+  timeout           = try(each.value.timeout, local.defaults.apic.access_policies.interface_policies.port_security_policies.timeout)
+}
+
+module "aci_priority_flow_control_policy" {
+  source = "./modules/terraform-aci-priority-flow-control-policy"
+
+  for_each    = { for pfc in try(local.access_policies.interface_policies.priority_flow_control_policies, []) : pfc.name => pfc if local.modules.aci_priority_flow_control_policy && var.manage_access_policies }
+  name        = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.priority_flow_control_policies.name_suffix}"
+  description = try(each.value.description, "")
+  admin_state = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.priority_flow_control_policies.admin_state)
+  auto_state  = try(each.value.auto_state, local.defaults.apic.access_policies.interface_policies.priority_flow_control_policies.auto_state)
+}
+
 module "aci_access_leaf_interface_policy_group" {
   source = "./modules/terraform-aci-access-leaf-interface-policy-group"
 
@@ -489,6 +509,8 @@ module "aci_access_leaf_interface_policy_group" {
   mcp_policy                         = try("${each.value.mcp_policy}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}", "")
   l2_policy                          = try("${each.value.l2_policy}${local.defaults.apic.access_policies.interface_policies.l2_policies.name_suffix}", "")
   storm_control_policy               = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")
+  port_security_policy               = try("${each.value.port_security_policy}${local.defaults.apic.access_policies.interface_policies.port_security_policies.name_suffix}", "")
+  priority_flow_control_policy       = try("${each.value.priority_flow_control_policy}${local.defaults.apic.access_policies.interface_policies.priority_flow_control_policies.name_suffix}", "")
   port_channel_policy                = try("${each.value.port_channel_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix}", "")
   port_channel_member_policy         = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
   netflow_monitor_policies = [for monitor in try(each.value.netflow_monitor_policies, []) : {
@@ -507,6 +529,8 @@ module "aci_access_leaf_interface_policy_group" {
     module.aci_l2_policy,
     module.aci_macsec_interfaces_policy,
     module.aci_storm_control_policy,
+    module.aci_port_security_policy,
+    module.aci_priority_flow_control_policy,
     module.aci_port_channel_policy,
     module.aci_port_channel_member_policy,
     module.aci_netflow_monitor,
