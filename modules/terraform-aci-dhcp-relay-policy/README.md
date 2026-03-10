@@ -24,10 +24,8 @@ module "aci_dhcp_relay_policy" {
     endpoint_group      = "EPG1"
   }]
 }
-```
 
-```hcl
-module "aci_dhcp_relay_policy_external" {
+module "aci_dhcp_relay_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-dhcp-relay-policy"
   version = ">= 0.8.0"
 
