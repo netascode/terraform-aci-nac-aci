@@ -42,13 +42,17 @@ variable "scope" {
 }
 
 variable "subjects" {
-  description = "List of subjects."
+  description = "List of subjects. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Choices `priority`: `default`, `level1`, `level2`, `level3`. Default value `priority`: `default`. Default value `log`: `false`. Default value `no_stats`: `false`."
   type = list(object({
     name        = string
     alias       = optional(string, "")
     description = optional(string, "")
     filters = list(object({
-      filter = string
+      filter   = string
+      action   = optional(string, "permit")
+      priority = optional(string, "default")
+      log      = optional(bool, false)
+      no_stats = optional(bool, false)
     }))
   }))
   default = []
@@ -80,6 +84,20 @@ variable "subjects" {
       for s in var.subjects : [for f in coalesce(s.filters, []) : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", f.filter))]
     ]))
     error_message = "`filter`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for s in var.subjects : [for f in coalesce(s.filters, []) : f.action == null || try(contains(["permit", "deny"], f.action), false)]
+    ]))
+    error_message = "`action`: Allowed values are `permit` or `deny`."
+  }
+
+  validation {
+    condition = alltrue(flatten([
+      for s in var.subjects : [for f in coalesce(s.filters, []) : f.priority == null || try(contains(["default", "level1", "level2", "level3"], f.priority), false)]
+    ]))
+    error_message = "`priority`: Allowed values are `default`, `level1`, `level2` or `level3`."
   }
 }
 

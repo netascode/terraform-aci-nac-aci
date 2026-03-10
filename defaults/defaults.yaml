@@ -1390,6 +1390,11 @@ defaults:
         scope: context
         subjects:
           name_suffix: ""
+          filters:
+            action: permit
+            priority: default
+            log: false
+            no_stats: false
       filters:
         name_suffix: ""
         entries:
