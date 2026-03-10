@@ -279,7 +279,8 @@ Additional example repositories:
 | <a name="module_aci_match_rule"></a> [aci\_match\_rule](#module\_aci\_match\_rule) | ./modules/terraform-aci-match-rule | n/a |
 | <a name="module_aci_mcp"></a> [aci\_mcp](#module\_aci\_mcp) | ./modules/terraform-aci-mcp | n/a |
 | <a name="module_aci_mcp_policy"></a> [aci\_mcp\_policy](#module\_aci\_mcp\_policy) | ./modules/terraform-aci-mcp-policy | n/a |
-| <a name="module_aci_monitoring_policy"></a> [aci\_monitoring\_policy](#module\_aci\_monitoring\_policy) | ./modules/terraform-aci-monitoring-policy | n/a |
+| <a name="module_aci_monitoring_policy_common"></a> [aci\_monitoring\_policy\_common](#module\_aci\_monitoring\_policy\_common) | ./modules/terraform-aci-monitoring-policy | n/a |
+| <a name="module_aci_monitoring_policy_custom"></a> [aci\_monitoring\_policy\_custom](#module\_aci\_monitoring\_policy\_custom) | ./modules/terraform-aci-monitoring-policy-custom | n/a |
 | <a name="module_aci_mpls_custom_qos_policy"></a> [aci\_mpls\_custom\_qos\_policy](#module\_aci\_mpls\_custom\_qos\_policy) | ./modules/terraform-aci-mpls-custom-qos-policy | n/a |
 | <a name="module_aci_mst_policy"></a> [aci\_mst\_policy](#module\_aci\_mst\_policy) | ./modules/terraform-aci-mst-policy | n/a |
 | <a name="module_aci_multicast_route_map"></a> [aci\_multicast\_route\_map](#module\_aci\_multicast\_route\_map) | ./modules/terraform-aci-multicast-route-map | n/a |
