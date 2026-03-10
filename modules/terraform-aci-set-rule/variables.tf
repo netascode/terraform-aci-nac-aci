@@ -129,7 +129,7 @@ variable "preference" {
   default     = null
 
   validation {
-    condition     = coalesce(var.preference, 0) >= 0 && coalesce(var.preference, 65535) <= 65535
+    condition     = coalesce(var.preference, 0) >= 0 && coalesce(var.preference, 4294967295) <= 4294967295
     error_message = "Minimum value: `0`. Maximum value: `4294967295`."
   }
 }
@@ -140,7 +140,7 @@ variable "metric" {
   default     = null
 
   validation {
-    condition     = coalesce(var.metric, 0) >= 0 && coalesce(var.metric, 65535) <= 65535
+    condition     = coalesce(var.metric, 0) >= 0 && coalesce(var.metric, 4294967295) <= 4294967295
     error_message = "Minimum value: `0`. Maximum value: `4294967295`."
   }
 }
