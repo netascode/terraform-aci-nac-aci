@@ -25,6 +25,7 @@ module "aci_access_leaf_interface_policy_group" {
   l2_policy                  = "PORT-LOCAL"
   storm_control_policy       = "10P"
   port_channel_policy        = "LACP"
+  port_channel_member_name   = "PG-Member"
   port_channel_member_policy = "FAST"
   aaep                       = "AAEP1"
 }
@@ -64,6 +65,7 @@ module "aci_access_leaf_interface_policy_group" {
 | <a name="input_port_security_policy"></a> [port\_security\_policy](#input\_port\_security\_policy) | Port security policy name. | `string` | `""` | no |
 | <a name="input_priority_flow_control_policy"></a> [priority\_flow\_control\_policy](#input\_priority\_flow\_control\_policy) | Priority flow control policy name. | `string` | `""` | no |
 | <a name="input_port_channel_policy"></a> [port\_channel\_policy](#input\_port\_channel\_policy) | Port channel policy name. | `string` | `""` | no |
+| <a name="input_port_channel_member_name"></a> [port\_channel\_member\_name](#input\_port\_channel\_member\_name) | Port channel member name. | `string` | `""` | no |
 | <a name="input_port_channel_member_policy"></a> [port\_channel\_member\_policy](#input\_port\_channel\_member\_policy) | Port channel member policy name. | `string` | `""` | no |
 | <a name="input_aaep"></a> [aaep](#input\_aaep) | Attachable access entity profile name. | `string` | `""` | no |
 | <a name="input_netflow_monitor_policies"></a> [netflow\_monitor\_policies](#input\_netflow\_monitor\_policies) | List of Netflow Monitor policies. Choices `ip_filter_type`: `ipv4, `ipv6`, `ce`, `unspecified`.` | <pre>list(object({<br/>    name           = string<br/>    ip_filter_type = optional(string, "ipv4")<br/>  }))</pre> | `[]` | no |
