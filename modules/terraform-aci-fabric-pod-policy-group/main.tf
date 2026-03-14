@@ -38,3 +38,11 @@ resource "aci_rest_managed" "fabricRsMacsecPol" {
     tnMacsecFabIfPolName = var.macsec_policy
   }
 }
+
+resource "aci_rest_managed" "fabricRsPodPGrpBGPRRP" {
+  dn         = "${aci_rest_managed.fabricPodPGrp.dn}/rspodPGrpBGPRRP"
+  class_name = "fabricRsPodPGrpBGPRRP"
+  content = {
+    tnBgpInstPolName = var.bgp_route_reflector_policy
+  }
+}
