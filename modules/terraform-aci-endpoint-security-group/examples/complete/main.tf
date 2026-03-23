@@ -1,5 +1,5 @@
 module "aci_endpoint_security_group" {
-  source  = "netascode/nac-aci/aci//modules/terraform-aci-endpoint-security-group"
+  source  = "netascode/nac-aci/aci/modules/terraform-aci-endpoint-security-group"
   version = ">= 0.8.0"
 
   name                        = "ESG1"
@@ -15,6 +15,7 @@ module "aci_endpoint_security_group" {
   contract_providers          = ["CON1"]
   contract_imported_consumers = ["IMPORTED-CON1"]
   contract_intra_esgs         = ["CON1"]
+  normalized_pctag            = 23
   esg_contract_masters = [
     {
       tenant                  = "TF"

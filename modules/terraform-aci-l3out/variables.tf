@@ -71,6 +71,23 @@ variable "vrf" {
   }
 }
 
+variable "vxlan_enabled" {
+  description = "Enable VXLAN Infra L3OUT."
+  type        = bool
+  default     = false
+}
+
+variable "border_gateway_set" {
+  description = "Border Gateways Set name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.border_gateway_set))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "ospf" {
   description = "Enable OSPF routing."
   type        = bool

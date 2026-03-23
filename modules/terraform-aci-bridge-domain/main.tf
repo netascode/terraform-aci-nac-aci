@@ -221,3 +221,21 @@ resource "aci_rest_managed" "fvRsBDToNetflowMonitorPol" {
     fltType                 = each.value.ip_filter_type
   }
 }
+
+resource "aci_rest_managed" "fvVxGwFabrics" {
+  count      = var.vxlan_enabled ? 1 : 0
+  dn         = "${aci_rest_managed.fvBD.dn}/vxgwfabrics"
+  class_name = "fvVxGwFabrics"
+  content = {
+    remoteVni = var.normalized_vni
+  }
+}
+
+resource "aci_rest_managed" "fvConsBgwSet" {
+  count      = var.vxlan_enabled ? 1 : 0
+  dn         = "${aci_rest_managed.fvVxGwFabrics[0].dn}/consbgwset-${var.border_gateway_set}"
+  class_name = "fvConsBgwSet"
+  content = {
+    name = var.border_gateway_set
+  }
+}
