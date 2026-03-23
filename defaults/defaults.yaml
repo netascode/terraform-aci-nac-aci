@@ -1465,25 +1465,6 @@ defaults:
           bandwidth: 0
           delay: 0
           delay_unit: tens-of-micro
-        border_gateway_set_policy:
-          name_suffix: ""
-        remote_vxlan_fabrics:
-          name_suffix: ""
-          remote_evpn_peers:
-            admin_state: true
-            allow_self_as: false
-            disable_peer_as_check: false
-            as_propagate: none
-            ttl: 2
-        vxlan_custom_qos_policies:
-          name_suffix: ""
-          ingress_rules:
-            priority: unspecified
-            dscp_target: unspecified
-            cos_target: unspecified
-          egress_rules:
-            cos_target: unspecified
-            dscp_target: unspecified
         ospf_timer_policies:
           name_suffix: ""
           reference_bandwidth: 40000
@@ -1790,6 +1771,25 @@ defaults:
           name_suffix: ""
         netflow_records:
           name_suffix: ""
+        border_gateway_set_policy:
+          name_suffix: ""
+        remote_vxlan_fabrics:
+          name_suffix: ""
+          remote_evpn_peers:
+            admin_state: true
+            allow_self_as: false
+            disable_peer_as_check: false
+            as_propagate: none
+            ttl: 2
+        vxlan_custom_qos_policies:
+          name_suffix: ""
+          ingress_rules:
+            priority: unspecified
+            dscp_target: unspecified
+            cos_target: unspecified
+          egress_rules:
+            cos_target: unspecified
+            dscp_target: unspecified
       services:
         l4l7_devices:
           name_suffix: ""
