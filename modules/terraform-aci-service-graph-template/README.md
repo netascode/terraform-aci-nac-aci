@@ -9,6 +9,7 @@ Location in GUI:
 ## Examples
 
 ```hcl
+# Legacy single-device mode example
 module "aci_service_graph_template" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-service-graph-template"
   version = ">= 0.8.0"
@@ -28,6 +29,68 @@ module "aci_service_graph_template" {
   device_adjacency_type   = "L2"
   consumer_direct_connect = false
   provider_direct_connect = true
+}
+
+# Multi-device mode example with explicit devices and connections
+module "aci_service_graph_template_multi" {
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-service-graph-template"
+  version = ">= 0.8.0"
+
+  tenant              = "ABC"
+  name                = "SGT_MULTI"
+  description         = "Multi-device service graph template"
+  template_type       = "FW_ROUTED"
+  redirect            = true
+  share_encapsulation = false
+
+  devices = [
+    {
+      name          = "FW1"
+      node_name     = "FIREWALL"
+      template_type = "FW_ROUTED"
+      function      = "GoTo"
+      copy_device   = false
+      managed       = false
+    },
+    {
+      name        = "LB1"
+      node_name   = "LOADBALANCER"
+      tenant      = "DEF"
+      copy_device = false
+      managed     = false
+    },
+    {
+      name        = "TAP1"
+      node_name   = "COPY_DEVICE"
+      copy_device = true
+      managed     = false
+    }
+  ]
+
+  connections = [
+    {
+      consumer_node  = "EPG-Consumer"
+      provider_node  = "FW1"
+      copy_node      = "TAP1"
+      adjacency_type = "L3"
+      unicast_route  = true
+      direct_connect = false
+    },
+    {
+      consumer_node  = "FW1"
+      provider_node  = "LB1"
+      adjacency_type = "L2"
+      unicast_route  = false
+      direct_connect = false
+    },
+    {
+      consumer_node  = "LB1"
+      provider_node  = "EPG-Provider"
+      adjacency_type = "L3"
+      unicast_route  = true
+      direct_connect = true
+    }
+  ]
 }
 ```
 
@@ -56,7 +119,7 @@ module "aci_service_graph_template" {
 | <a name="input_template_type"></a> [template\_type](#input\_template\_type) | Template type. Choices: `FW_TRANS`, `FW_ROUTED`, `ADC_ONE_ARM`, `ADC_TWO_ARM`, `OTHER`, `CLOUD_NATIVE_LB`, `CLOUD_VENDOR_LB`, `CLOUD_NATIVE_FW`, `CLOUD_VENDOR_FW`. | `string` | `"OTHER"` | no |
 | <a name="input_redirect"></a> [redirect](#input\_redirect) | Redirect. | `bool` | `false` | no |
 | <a name="input_share_encapsulation"></a> [share\_encapsulation](#input\_share\_encapsulation) | Share encapsulation. | `bool` | `false` | no |
-| <a name="input_device_name"></a> [device\_name](#input\_device\_name) | L4L7 device name. | `string` | n/a | yes |
+| <a name="input_device_name"></a> [device\_name](#input\_device\_name) | L4L7 device name. Required for legacy single-device mode, not used when `devices` is specified. | `string` | `""` | no |
 | <a name="input_device_tenant"></a> [device\_tenant](#input\_device\_tenant) | L4L7 device tenant name. | `string` | `""` | no |
 | <a name="input_device_function"></a> [device\_function](#input\_device\_function) | L4L7 device function. Choices: `None`, `GoTo`, `GoThrough`, `L2`, `L1`. | `string` | `"GoTo"` | no |
 | <a name="input_device_copy"></a> [device\_copy](#input\_device\_copy) | L4L7 device copy function. | `bool` | `false` | no |
@@ -65,6 +128,8 @@ module "aci_service_graph_template" {
 | <a name="input_device_adjacency_type"></a> [device\_adjacency\_type](#input\_device\_adjacency\_type) | L4L7 device adjacency type. Choices: `L2`, `L3`. Default is `L3`. | `string` | `"L3"` | no |
 | <a name="input_consumer_direct_connect"></a> [consumer\_direct\_connect](#input\_consumer\_direct\_connect) | Direct connect on consumer connection. | `bool` | `false` | no |
 | <a name="input_provider_direct_connect"></a> [provider\_direct\_connect](#input\_provider\_direct\_connect) | Direct connect on provider connection. | `bool` | `false` | no |
+| <a name="input_devices"></a> [devices](#input\_devices) | List of devices for multi-device service graph. When specified, legacy device variables are ignored. | <pre>list(object({<br/>    name          = string<br/>    tenant        = optional(string)<br/>    node_name     = optional(string)<br/>    template_type = optional(string)<br/>    function      = optional(string)<br/>    copy_device   = optional(bool)<br/>    managed       = optional(bool)<br/>  }))</pre> | `[]` | no |
+| <a name="input_connections"></a> [connections](#input\_connections) | List of connections for multi-device service graph. | <pre>list(object({<br/>    consumer_node  = string<br/>    provider_node  = string<br/>    copy_node      = optional(string)<br/>    adjacency_type = optional(string)<br/>    unicast_route  = optional(bool)<br/>    direct_connect = optional(bool)<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -79,11 +144,16 @@ module "aci_service_graph_template" {
 |------|------|
 | [aci_rest_managed.vnsAbsConnection_Consumer](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsAbsConnection_Provider](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vnsAbsConnection_multi](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsAbsFuncConn_Consumer](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vnsAbsFuncConn_Consumer_multi](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsAbsFuncConn_Copy](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vnsAbsFuncConn_Copy_multi](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsAbsFuncConn_Provider](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vnsAbsFuncConn_Provider_multi](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsAbsGraph](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsAbsNode](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vnsAbsNode_multi](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsAbsTermConn_T1](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsAbsTermConn_T2](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsAbsTermNodeCon](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
@@ -97,7 +167,11 @@ module "aci_service_graph_template" {
 | [aci_rest_managed.vnsRsAbsConnectionConns_ConT1CP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsRsAbsConnectionConns_ConT2](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsRsAbsConnectionConns_ConT2CP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vnsRsAbsConnectionConns_Consumer_multi](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsRsAbsConnectionConns_NodeN1Consumer](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsRsAbsConnectionConns_NodeN1Provider](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vnsRsAbsConnectionConns_Provider_multi](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vnsRsAbsCopyConnection_multi](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.vnsRsNodeToLDev](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.vnsRsNodeToLDev_multi](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

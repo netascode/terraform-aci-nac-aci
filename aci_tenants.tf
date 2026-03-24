@@ -4049,24 +4049,49 @@ locals {
   service_graph_templates = flatten([
     for tenant in local.tenants : [
       for sgt in try(tenant.services.service_graph_templates, []) : {
-        key                     = format("%s/%s", tenant.name, sgt.name)
-        tenant                  = tenant.name
-        name                    = "${sgt.name}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
-        annotation              = try(sgt.ndo_managed, local.defaults.apic.tenants.services.service_graph_templates.ndo_managed) ? "orchestrator:msc-shadow:no" : null
-        description             = try(sgt.description, "")
-        alias                   = try(sgt.alias, "")
-        template_type           = try(sgt.template_type, local.defaults.apic.tenants.services.service_graph_templates.template_type)
-        redirect                = try(sgt.redirect, local.defaults.apic.tenants.services.service_graph_templates.redirect)
-        share_encapsulation     = try(sgt.share_encapsulation, local.defaults.apic.tenants.services.service_graph_templates.share_encapsulation)
-        device_name             = "${sgt.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
+        key                 = format("%s/%s", tenant.name, sgt.name)
+        tenant              = tenant.name
+        name                = "${sgt.name}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
+        annotation          = try(sgt.ndo_managed, local.defaults.apic.tenants.services.service_graph_templates.ndo_managed) ? "orchestrator:msc-shadow:no" : null
+        description         = try(sgt.description, "")
+        alias               = try(sgt.alias, "")
+        template_type       = try(sgt.template_type, local.defaults.apic.tenants.services.service_graph_templates.template_type)
+        redirect            = try(sgt.redirect, local.defaults.apic.tenants.services.service_graph_templates.redirect)
+        share_encapsulation = try(sgt.share_encapsulation, local.defaults.apic.tenants.services.service_graph_templates.share_encapsulation)
+        # Legacy single-device mode fields (only used when sgt.device is defined and sgt.devices is not)
+        device_name             = try("${sgt.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}", "")
         device_tenant           = try(sgt.device.tenant, tenant.name)
-        device_function         = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.function, local.defaults.apic.tenants.services.l4l7_devices.function) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : local.defaults.apic.tenants.services.l4l7_devices.function
-        device_copy             = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.copy_device, local.defaults.apic.tenants.services.l4l7_devices.copy_device) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : local.defaults.apic.tenants.services.l4l7_devices.copy_device
-        device_managed          = length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.managed, local.defaults.apic.tenants.services.l4l7_devices.managed) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : local.defaults.apic.tenants.services.l4l7_devices.managed
-        device_node_name        = (length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.copy_device, local.defaults.apic.tenants.services.l4l7_devices.copy_device) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : false) == true ? try(sgt.device.node_name, "CP1") : try(sgt.device.node_name, "N1")
+        device_function         = try(sgt.device, null) != null && length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.function, local.defaults.apic.tenants.services.l4l7_devices.function) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : local.defaults.apic.tenants.services.l4l7_devices.function
+        device_copy             = try(sgt.device, null) != null && length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.copy_device, local.defaults.apic.tenants.services.l4l7_devices.copy_device) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : local.defaults.apic.tenants.services.l4l7_devices.copy_device
+        device_managed          = try(sgt.device, null) != null && length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.managed, local.defaults.apic.tenants.services.l4l7_devices.managed) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : local.defaults.apic.tenants.services.l4l7_devices.managed
+        device_node_name        = try(sgt.device, null) != null ? ((try(sgt.device, null) != null && length([for d in local.l4l7_devices : d if d.tenant == try(sgt.device.tenant, tenant.name)]) > 0 ? [for device in local.l4l7_devices : try(device.copy_device, local.defaults.apic.tenants.services.l4l7_devices.copy_device) if device.name == sgt.device.name && (device.tenant == try(sgt.device.tenant, tenant.name))][0] : false) == true ? try(sgt.device.node_name, "CP1") : try(sgt.device.node_name, "N1")) : "N1"
         device_adjacency_type   = try(sgt.device.adjacency_type, local.defaults.apic.tenants.services.service_graph_templates.device.adjacency_type)
         consumer_direct_connect = try(sgt.consumer.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.consumer.direct_connect)
         provider_direct_connect = try(sgt.provider.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.provider.direct_connect)
+        # Multi-device mode Devices
+        devices = try(sgt.devices, null) != null ? [
+          for device in sgt.devices : {
+            name          = "${device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
+            tenant        = try(device.tenant, tenant.name)
+            node_name     = try(device.node_name, null)
+            template_type = try(device.template_type, null)
+            # Look up Device properties from l4l7_devices
+            function    = length([for d in local.l4l7_devices : d if d.name == device.name && d.tenant == try(device.tenant, tenant.name)]) > 0 ? [for d in local.l4l7_devices : try(d.function, local.defaults.apic.tenants.services.l4l7_devices.function) if d.name == device.name && d.tenant == try(device.tenant, tenant.name)][0] : local.defaults.apic.tenants.services.l4l7_devices.function
+            copy_device = length([for d in local.l4l7_devices : d if d.name == device.name && d.tenant == try(device.tenant, tenant.name)]) > 0 ? [for d in local.l4l7_devices : try(d.copy_device, local.defaults.apic.tenants.services.l4l7_devices.copy_device) if d.name == device.name && d.tenant == try(device.tenant, tenant.name)][0] : local.defaults.apic.tenants.services.l4l7_devices.copy_device
+            managed     = length([for d in local.l4l7_devices : d if d.name == device.name && d.tenant == try(device.tenant, tenant.name)]) > 0 ? [for d in local.l4l7_devices : try(d.managed, local.defaults.apic.tenants.services.l4l7_devices.managed) if d.name == device.name && d.tenant == try(device.tenant, tenant.name)][0] : local.defaults.apic.tenants.services.l4l7_devices.managed
+          }
+        ] : []
+        # Multi-device mode Connections
+        connections = try(sgt.connections, null) != null ? [
+          for conn in sgt.connections : {
+            consumer_node  = conn.consumer_node
+            provider_node  = conn.provider_node
+            copy_node      = try(conn.copy_node, null)
+            adjacency_type = try(conn.adjacency_type, local.defaults.apic.tenants.services.service_graph_templates.connections.adjacency_type)
+            unicast_route  = try(conn.unicast_route, local.defaults.apic.tenants.services.service_graph_templates.connections.unicast_route)
+            direct_connect = try(conn.direct_connect, local.defaults.apic.tenants.services.service_graph_templates.connections.direct_connect)
+          }
+        ] : []
       }
     ]
   ])
@@ -4093,6 +4118,8 @@ module "aci_service_graph_template" {
   device_adjacency_type   = each.value.device_adjacency_type
   consumer_direct_connect = each.value.consumer_direct_connect
   provider_direct_connect = each.value.provider_direct_connect
+  devices                 = each.value.devices
+  connections             = each.value.connections
 
   depends_on = [
     module.aci_tenant,
