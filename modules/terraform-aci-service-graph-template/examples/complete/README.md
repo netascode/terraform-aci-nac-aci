@@ -37,7 +37,7 @@ module "aci_service_graph_template" {
 # Multi-device mode example with explicit devices and connections
 module "aci_service_graph_template_multi" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-service-graph-template"
-  version = ">= 0.8.0"
+  version = "> 1.2.0"
 
   tenant              = "ABC"
   name                = "SGT_MULTI"

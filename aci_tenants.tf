@@ -4074,7 +4074,7 @@ locals {
             name          = "${device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
             tenant        = try(device.tenant, tenant.name)
             node_name     = try(device.node_name, null)
-            template_type = try(device.template_type, null)
+            template_type = try(device.template_type, sgt.template_type, local.defaults.apic.tenants.services.service_graph_templates.devices.template_type)
             # Look up Device properties from l4l7_devices
             function    = length([for d in local.l4l7_devices : d if d.name == device.name && d.tenant == try(device.tenant, tenant.name)]) > 0 ? [for d in local.l4l7_devices : try(d.function, local.defaults.apic.tenants.services.l4l7_devices.function) if d.name == device.name && d.tenant == try(device.tenant, tenant.name)][0] : local.defaults.apic.tenants.services.l4l7_devices.function
             copy_device = length([for d in local.l4l7_devices : d if d.name == device.name && d.tenant == try(device.tenant, tenant.name)]) > 0 ? [for d in local.l4l7_devices : try(d.copy_device, local.defaults.apic.tenants.services.l4l7_devices.copy_device) if d.name == device.name && d.tenant == try(device.tenant, tenant.name)][0] : local.defaults.apic.tenants.services.l4l7_devices.copy_device

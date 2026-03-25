@@ -2,31 +2,44 @@ locals {
   multi_device_mode = length(var.devices) > 0
 
   devices_map = {
-    for idx, device in var.devices : device.name => {
+    for idx, device in var.devices : coalesce(device.node_name, device.name) => {
       index         = idx
       name          = device.name
       tenant        = coalesce(device.tenant, var.tenant)
       node_name     = coalesce(device.node_name, device.name)
-      template_type = coalesce(device.template_type, var.template_type)
-      function      = coalesce(device.function, "GoTo")
-      copy_device   = coalesce(device.copy_device, false)
-      managed       = coalesce(device.managed, false)
+      template_type = device.template_type
+      function      = device.function
+      copy_device   = device.copy_device
+      managed       = device.managed
     }
   }
 
   connections_map = {
     for idx, conn in var.connections : "C${idx + 1}" => {
-      index                  = idx
-      name                   = "C${idx + 1}"
-      consumer_node          = conn.consumer_node
-      provider_node          = conn.provider_node
-      copy_node              = conn.copy_node
-      adjacency_type         = coalesce(conn.adjacency_type, "L2")
-      unicast_route          = coalesce(conn.unicast_route, true)
-      direct_connect         = coalesce(conn.direct_connect, false)
-      resolved_consumer_node = conn.consumer_node == "EPG-Consumer" ? "EPG-Consumer" : try(local.devices_map[conn.consumer_node].node_name, conn.consumer_node)
-      resolved_provider_node = conn.provider_node == "EPG-Provider" ? "EPG-Provider" : try(local.devices_map[conn.provider_node].node_name, conn.provider_node)
-      resolved_copy_node     = conn.copy_node != null ? try(local.devices_map[conn.copy_node].node_name, conn.copy_node) : null
+      index          = idx
+      name           = "C${idx + 1}"
+      consumer_node  = conn.consumer_node
+      provider_node  = conn.provider_node
+      copy_node      = conn.copy_node
+      adjacency_type = coalesce(conn.adjacency_type, "L2")
+      unicast_route  = coalesce(conn.unicast_route, true)
+      direct_connect = coalesce(conn.direct_connect, false)
+      # Resolve node references: first try devices_map (keyed by node_name), then search by device name
+      resolved_consumer_node = conn.consumer_node == "EPG-Consumer" ? "EPG-Consumer" : try(
+        local.devices_map[conn.consumer_node].node_name,
+        [for d in var.devices : coalesce(d.node_name, d.name) if d.name == conn.consumer_node][0],
+        conn.consumer_node
+      )
+      resolved_provider_node = conn.provider_node == "EPG-Provider" ? "EPG-Provider" : try(
+        local.devices_map[conn.provider_node].node_name,
+        [for d in var.devices : coalesce(d.node_name, d.name) if d.name == conn.provider_node][0],
+        conn.provider_node
+      )
+      resolved_copy_node = conn.copy_node != null ? try(
+        local.devices_map[conn.copy_node].node_name,
+        [for d in var.devices : coalesce(d.node_name, d.name) if d.name == conn.copy_node][0],
+        conn.copy_node
+      ) : null
     }
   }
 }
