@@ -1682,6 +1682,10 @@ locals {
             l3out                   = try("${master.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}", null)
             external_endpoint_group = "${master.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}"
           }], [])
+          tag_annotations = [for tag in try(epg.tag_annotations, []) : {
+            key   = tag.key
+            value = tag.value
+          }]
           route_control_profiles = [for rcp in try(epg.route_control_profiles, []) : {
             name      = rcp.name
             direction = try(rcp.direction, local.defaults.apic.tenants.l3outs.external_endpoint_groups.route_control_profiles.direction)
@@ -1732,6 +1736,7 @@ module "aci_external_endpoint_group" {
   contract_providers          = each.value.contract_providers
   contract_imported_consumers = each.value.contract_imported_consumers
   contract_masters            = each.value.contract_masters
+  tag_annotations             = each.value.tag_annotations
   route_control_profiles      = each.value.route_control_profiles
   subnets                     = each.value.subnets
 

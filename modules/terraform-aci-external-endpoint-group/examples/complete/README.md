@@ -26,6 +26,16 @@ module "aci_external_endpoint_group" {
   contract_consumers          = ["CON1"]
   contract_providers          = ["CON1"]
   contract_imported_consumers = ["IMPORTED-CON1"]
+  tag_annotations = [
+    {
+      key   = "env"
+      value = "production"
+    },
+    {
+      key   = "tier"
+      value = "dmz"
+    }
+  ]
   route_control_profiles = [{
     name      = "RCP1"
     direction = "export"

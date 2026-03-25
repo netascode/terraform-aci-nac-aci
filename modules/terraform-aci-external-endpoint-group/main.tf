@@ -117,3 +117,13 @@ resource "aci_rest_managed" "l3extRsSubnetToRtSumm" {
     )
   }
 }
+
+resource "aci_rest_managed" "tag_annotations" {
+  for_each   = { for tag in var.tag_annotations : tag.key => tag }
+  dn         = "${aci_rest_managed.l3extInstP.dn}/annotationKey-[${each.key}]"
+  class_name = "tagAnnotation"
+  content = {
+    key   = each.value.key
+    value = each.value.value
+  }
+}

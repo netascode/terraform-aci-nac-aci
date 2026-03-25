@@ -248,3 +248,26 @@ variable "contract_masters" {
     error_message = "`external_endpoint_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
+
+variable "tag_annotations" {
+  description = "List of tag annotations (key-value pairs). Each key must be unique within the list."
+  type = list(object({
+    key   = optional(string, "")
+    value = optional(string, "")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for tag in var.tag_annotations : (
+        (tag.key == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", tag.key))) && (tag.value == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", tag.value)))
+      )
+    ])
+    error_message = "`tag_annotations`: `key` and `value` allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition     = length(distinct([for tag in var.tag_annotations : tag.key])) == length(var.tag_annotations)
+    error_message = "`tag_annotations.key` values must be unique within the list."
+  }
+}
