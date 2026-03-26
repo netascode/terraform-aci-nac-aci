@@ -75,8 +75,9 @@ variable "share_encapsulation" {
 }
 
 variable "device_name" {
-  description = "L4L7 device name."
+  description = "L4L7 device name. Required for legacy single-device mode, not used when `devices` is specified."
   type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.device_name))
@@ -150,4 +151,66 @@ variable "provider_direct_connect" {
   description = "Direct connect on provider connection."
   type        = bool
   default     = false
+}
+
+variable "devices" {
+  description = "List of devices for multi-device service graph. When specified, legacy device variables are ignored."
+  type = list(object({
+    name          = string
+    tenant        = optional(string)
+    node_name     = optional(string)
+    template_type = optional(string)
+    function      = optional(string)
+    copy_device   = optional(bool)
+    managed       = optional(bool)
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for device in var.devices : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", device.name))
+    ])
+    error_message = "Device name must match: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. 1-64 characters."
+  }
+
+  validation {
+    condition = alltrue([
+      for device in var.devices : device.node_name == null || can(regex("^[a-zA-Z0-9_.:-]{1,64}$", device.node_name))
+    ])
+    error_message = "Device node_name must match: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. 1-64 characters."
+  }
+
+  validation {
+    condition = alltrue([
+      for device in var.devices : device.template_type == null || contains(["FW_TRANS", "FW_ROUTED", "ADC_ONE_ARM", "ADC_TWO_ARM", "OTHER", "CLOUD_NATIVE_LB", "CLOUD_VENDOR_LB", "CLOUD_NATIVE_FW", "CLOUD_VENDOR_FW"], device.template_type)
+    ])
+    error_message = "Device template_type must be one of: `FW_TRANS`, `FW_ROUTED`, `ADC_ONE_ARM`, `ADC_TWO_ARM`, `OTHER`, `CLOUD_NATIVE_LB`, `CLOUD_VENDOR_LB`, `CLOUD_NATIVE_FW`, `CLOUD_VENDOR_FW`."
+  }
+
+  validation {
+    condition = alltrue([
+      for device in var.devices : device.function == null || contains(["None", "GoTo", "GoThrough", "L2", "L1"], device.function)
+    ])
+    error_message = "Device function must be one of: `None`, `GoTo`, `GoThrough`, `L2`, `L1`."
+  }
+}
+
+variable "connections" {
+  description = "List of connections for multi-device service graph."
+  type = list(object({
+    consumer_node  = string
+    provider_node  = string
+    copy_node      = optional(string)
+    adjacency_type = optional(string)
+    unicast_route  = optional(bool)
+    direct_connect = optional(bool)
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for conn in var.connections : conn.adjacency_type == null || contains(["L2", "L3"], conn.adjacency_type)
+    ])
+    error_message = "Connection adjacency_type must be one of: `L2`, `L3`."
+  }
 }
