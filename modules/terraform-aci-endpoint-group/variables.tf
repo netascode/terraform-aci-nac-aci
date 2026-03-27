@@ -130,6 +130,24 @@ variable "tags" {
   }
 }
 
+variable "tag_annotations" {
+  description = "List of Tag Annotations"
+  type = list(object({
+    key   = optional(string, "")
+    value = optional(string, "")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for tag_annotation in var.tag_annotations : (
+        (tag_annotation.key == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", tag_annotation.key))) && (tag_annotation.value == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", tag_annotation.value)))
+      )
+    ])
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "trust_control_policy" {
   description = "EPG Trust Control Policy Name."
   type        = string
