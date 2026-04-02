@@ -230,6 +230,16 @@ resource "aci_rest_managed" "tagInst" {
   }
 }
 
+resource "aci_rest_managed" "tagAnnotation" {
+  for_each   = { for i, tag in var.tag_annotations : (tag.key != "" ? tag.key : "annotation-${i}") => tag }
+  dn         = "${aci_rest_managed.fvAEPg.dn}/annotationKey-[${each.value.key}]"
+  class_name = "tagAnnotation"
+  content = {
+    key   = each.value.key
+    value = coalesce(each.value.value, "")
+  }
+}
+
 resource "aci_rest_managed" "fvRsTrustCtrl" {
   count      = var.trust_control_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.fvAEPg.dn}/rstrustCtrl"

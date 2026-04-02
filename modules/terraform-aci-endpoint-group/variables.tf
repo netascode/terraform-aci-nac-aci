@@ -130,6 +130,23 @@ variable "tags" {
   }
 }
 
+variable "tag_annotations" {
+  description = "List of tagAnnotations"
+  type = list(object({
+    key   = string
+    value = optional(string, "")
+  }))
+  default = []
+
+  validation {
+    condition = length(var.tag_annotations) == 0 ? true : (
+      alltrue([for ta in var.tag_annotations : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", trimspace(ta.key)))]) &&
+      alltrue([for ta in var.tag_annotations : length(coalesce(ta.value, "")) <= 2048])
+    )
+    error_message = "tag_annotations: key must match [a-zA-Z0-9_.:-]{1,64}; value length must be <= 2048."
+  }
+}
+
 variable "trust_control_policy" {
   description = "EPG Trust Control Policy Name."
   type        = string
