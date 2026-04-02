@@ -230,13 +230,13 @@ resource "aci_rest_managed" "tagInst" {
   }
 }
 
-resource "aci_rest_managed" "tag_annotations" {
+resource "aci_rest_managed" "tagAnnotation" {
   for_each   = { for i, tag in var.tag_annotations : (tag.key != "" ? tag.key : "annotation-${i}") => tag }
   dn         = "${aci_rest_managed.fvAEPg.dn}/annotationKey-[${each.value.key}]"
   class_name = "tagAnnotation"
   content = {
     key   = each.value.key
-    value = each.value.value
+    value = coalesce(each.value.value, "")
   }
 }
 
