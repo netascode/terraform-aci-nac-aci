@@ -250,24 +250,33 @@ variable "contract_masters" {
 }
 
 variable "tag_annotations" {
-  description = "List of tag annotations (key-value pairs). Each key must be unique within the list."
+  description = "List of tagAnnotation children (key required, value optional). Each key must be unique within the list."
   type = list(object({
-    key   = optional(string, "")
-    value = optional(string, "")
+    key   = string
+    value = optional(string)
   }))
   default = []
 
   validation {
     condition = alltrue([
+      for tag in var.tag_annotations :
+      length(tag.key) >= 1 && length(tag.key) <= 64 && length(regexall("[^-a-zA-Z0-9_.:]", tag.key)) == 0
+    ])
+    error_message = "`tag_annotations[].key` must be 1-64 characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-` (tagAnnotation key)."
+  }
+
+  validation {
+    condition = alltrue([
       for tag in var.tag_annotations : (
-        (tag.key == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", tag.key))) && (tag.value == null || can(regex("^[a-zA-Z0-9_.:-]{0,64}$", tag.value)))
+        length(tag.value == null ? "" : tag.value) <= 64
+        && length(regexall("[^-a-zA-Z0-9_.:]", tag.value == null ? "" : tag.value)) == 0
       )
     ])
-    error_message = "`tag_annotations`: `key` and `value` allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    error_message = "`tag_annotations[].value` must be 0-64 characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-` (empty string allowed)."
   }
 
   validation {
     condition     = length(distinct([for tag in var.tag_annotations : tag.key])) == length(var.tag_annotations)
-    error_message = "`tag_annotations.key` values must be unique within the list."
+    error_message = "`tag_annotations[].key` values must be unique within the list."
   }
 }

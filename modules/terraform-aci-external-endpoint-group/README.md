@@ -116,7 +116,7 @@ module "aci_external_endpoint_group" {
 | <a name="input_contract_providers"></a> [contract\_providers](#input\_contract\_providers) | List of contract providers. | `list(string)` | `[]` | no |
 | <a name="input_contract_imported_consumers"></a> [contract\_imported\_consumers](#input\_contract\_imported\_consumers) | List of imported contract consumers. | `list(string)` | `[]` | no |
 | <a name="input_contract_masters"></a> [contract\_masters](#input\_contract\_masters) | List of contract masters. A contract master is an external EPG from which this EPG inherits contracts. | <pre>list(object({<br/>    l3out                   = optional(string)<br/>    external_endpoint_group = string<br/>  }))</pre> | `[]` | no |
-| <a name="input_tag_annotations"></a> [tag\_annotations](#input\_tag\_annotations) | List of tag annotations (key-value pairs). Each key must be unique within the list. | <pre>list(object({<br/>    key   = optional(string, "")<br/>    value = optional(string, "")<br/>  }))</pre> | `[]` | no |
+| <a name="input_tag_annotations"></a> [tag\_annotations](#input\_tag\_annotations) | List of tagAnnotation children (key required, value optional). Each key must be unique within the list. | <pre>list(object({<br/>    key   = string<br/>    value = optional(string)<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -124,6 +124,7 @@ module "aci_external_endpoint_group" {
 |------|-------------|
 | <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `l3extInstP` object. |
 | <a name="output_name"></a> [name](#output\_name) | External endpoint group name. |
+| <a name="output_tag_annotation_ids"></a> [tag\_annotation\_ids](#output\_tag\_annotation\_ids) | Map of tagAnnotation `key` to managed object id (DN) for each child under `l3extInstP`. |
 
 ## Resources
 
@@ -138,5 +139,5 @@ module "aci_external_endpoint_group" {
 | [aci_rest_managed.l3extRsSubnetToProfile](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extRsSubnetToRtSumm](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.l3extSubnet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.tag_annotations](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.tagAnnotation](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

@@ -1683,8 +1683,8 @@ locals {
             external_endpoint_group = "${master.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}"
           }], [])
           tag_annotations = [for tag in try(epg.tag_annotations, []) : {
-            key   = tag.key
-            value = tag.value
+            key   = tostring(tag.key)
+            value = try("${tag.value}", "")
           }]
           route_control_profiles = [for rcp in try(epg.route_control_profiles, []) : {
             name      = rcp.name
@@ -1977,6 +1977,10 @@ locals {
           contract_consumers          = try([for contract in epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_providers          = try([for contract in epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
+          tag_annotations = [for tag in try(epg.tag_annotations, []) : {
+            key   = tostring(tag.key)
+            value = try("${tag.value}", "")
+          }]
           subnets = [for subnet in try(epg.subnets, []) : {
             name                           = try(subnet.name, "")
             prefix                         = subnet.prefix
@@ -2003,6 +2007,7 @@ module "aci_sr_mpls_external_endpoint_group" {
   contract_consumers          = each.value.contract_consumers
   contract_providers          = each.value.contract_providers
   contract_imported_consumers = each.value.contract_imported_consumers
+  tag_annotations             = each.value.tag_annotations
   subnets                     = each.value.subnets
 
   depends_on = [

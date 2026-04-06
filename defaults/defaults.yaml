@@ -1179,7 +1179,6 @@ defaults:
           preferred_group: false
           qos_class: unspecified
           target_dscp: unspecified
-          tag_annotations: []
           route_control_profiles:
             name_suffix: ""
             direction: import
@@ -1360,7 +1359,6 @@ defaults:
         external_endpoint_groups:
           name_suffix: ""
           preferred_group: false
-          tag_annotations: []
           subnets:
             route_leaking: false
             security: false
