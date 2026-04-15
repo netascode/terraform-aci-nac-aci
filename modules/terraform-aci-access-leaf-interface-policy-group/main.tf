@@ -10,7 +10,7 @@ resource "aci_rest_managed" "infraAccGrp" {
 }
 
 resource "aci_rest_managed" "infraRsHIfPol" {
-  count      = var.type != "breakout" && var.link_level_policy != "" ? 1 : 0
+  count = var.type != "breakout" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rshIfPol"
   class_name = "infraRsHIfPol"
   content = {
