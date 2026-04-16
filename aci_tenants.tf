@@ -1079,6 +1079,7 @@ locals {
           tenant                    = tenant.name
           l3out                     = "${l3out.name}${local.defaults.apic.tenants.l3outs.name_suffix}"
           name                      = "${np.name}${local.defaults.apic.tenants.l3outs.node_profiles.name_suffix}"
+          description               = try(np.description, "")
           multipod                  = try(l3out.multipod, local.defaults.apic.tenants.l3outs.multipod)
           remote_leaf               = try(l3out.remote_leaf, local.defaults.apic.tenants.l3outs.remote_leaf)
           bgp_protocol_profile_name = try(np.bgp.name, "")
@@ -1179,6 +1180,7 @@ module "aci_l3out_node_profile_manual" {
   tenant                    = each.value.tenant
   l3out                     = each.value.l3out
   name                      = each.value.name
+  description               = each.value.description
   multipod                  = each.value.multipod
   remote_leaf               = each.value.remote_leaf
   bgp_protocol_profile_name = each.value.bgp_protocol_profile_name
