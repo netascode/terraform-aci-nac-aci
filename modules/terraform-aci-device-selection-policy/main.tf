@@ -12,7 +12,7 @@ resource "aci_rest_managed" "vnsRsLDevCtxToLDev" {
   dn         = "${aci_rest_managed.vnsLDevCtx.dn}/rsLDevCtxToLDev"
   class_name = "vnsRsLDevCtxToLDev"
   content = {
-    tDn = "uni/tn-${var.sgt_device_tenant != "" ? var.sgt_device_tenant : var.tenant}/lDevVip-${var.sgt_device_name}"
+    tDn = "uni/tn-${var.tenant}/${var.sgt_device_tenant != var.tenant ? "lDevIf-[uni/tn-${var.sgt_device_tenant}/lDevVip-${var.sgt_device_name}]" : "lDevVip-${var.sgt_device_name}"}"
   }
 }
 
@@ -60,7 +60,7 @@ resource "aci_rest_managed" "vnsRsLIfCtxToLIf_consumer" {
   dn         = "${aci_rest_managed.vnsLIfCtx_consumer[0].dn}/rsLIfCtxToLIf"
   class_name = "vnsRsLIfCtxToLIf"
   content = {
-    tDn = "uni/tn-${var.sgt_device_tenant != "" ? var.sgt_device_tenant : var.tenant}/lDevVip-${var.sgt_device_name}/lIf-${var.consumer_logical_interface}"
+    tDn = "uni/tn-${var.tenant}/${var.sgt_device_tenant != var.tenant ? "lDevIf-[uni/tn-${var.sgt_device_tenant}/lDevVip-${var.sgt_device_name}]/lDevIfLIf-${var.provider_logical_interface}" : "lDevVip-${var.sgt_device_name}/lIf-${var.provider_logical_interface}"}"
   }
 }
 
@@ -126,7 +126,7 @@ resource "aci_rest_managed" "vnsRsLIfCtxToLIf_provider" {
   dn         = "${aci_rest_managed.vnsLIfCtx_provider[0].dn}/rsLIfCtxToLIf"
   class_name = "vnsRsLIfCtxToLIf"
   content = {
-    tDn = "uni/tn-${var.sgt_device_tenant != "" ? var.sgt_device_tenant : var.tenant}/lDevVip-${var.sgt_device_name}/lIf-${var.provider_logical_interface}"
+    tDn = "uni/tn-${var.tenant}/${var.sgt_device_tenant != var.tenant ? "lDevIf-[uni/tn-${var.sgt_device_tenant}/lDevVip-${var.sgt_device_name}]/lDevIfLIf-${var.provider_logical_interface}" : "lDevVip-${var.sgt_device_name}/lIf-${var.provider_logical_interface}"}"
   }
 }
 
@@ -164,7 +164,7 @@ resource "aci_rest_managed" "vnsRsLIfCtxToLIf_copy" {
   dn         = "${aci_rest_managed.vnsLIfCtx_copy[0].dn}/rsLIfCtxToLIf"
   class_name = "vnsRsLIfCtxToLIf"
   content = {
-    tDn = "uni/tn-${var.sgt_device_tenant != "" ? var.sgt_device_tenant : var.tenant}/lDevVip-${var.sgt_device_name}/lIf-${var.copy_logical_interface}"
+    tDn = "uni/tn-${var.sgt_device_tenant != var.tenant ? var.sgt_device_tenant : var.tenant}/lDevVip-${var.sgt_device_name}/lIf-${var.copy_logical_interface}"
   }
 }
 

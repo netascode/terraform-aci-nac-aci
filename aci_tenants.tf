@@ -4133,12 +4133,20 @@ locals {
   device_selection_policies = flatten([
     for tenant in local.tenants : [
       for dsp in try(tenant.services.device_selection_policies, []) : {
-        key                                                     = format("%s/%s-%s", tenant.name, dsp.contract, dsp.service_graph_template)
-        tenant                                                  = tenant.name
-        contract                                                = "${dsp.contract}${local.defaults.apic.tenants.contracts.name_suffix}"
-        service_graph_template                                  = "${dsp.service_graph_template}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
-        sgt_device_tenant                                       = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : try(sg_template.device.tenant, tenant.name) if sg_template.name == dsp.service_graph_template][0] : tenant.name
-        sgt_device_name                                         = try("${dsp.device_name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}", length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : "${sg_template.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}" if sg_template.name == dsp.service_graph_template][0] : "")
+        key                    = format("%s/%s-%s", tenant.name, dsp.contract, dsp.service_graph_template)
+        tenant                 = tenant.name
+        contract               = "${dsp.contract}${local.defaults.apic.tenants.contracts.name_suffix}"
+        service_graph_template = "${dsp.service_graph_template}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
+        sgt_device_tenant = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : (
+          length(try(sg_template.devices, [])) > 0 ?
+          [for dev in sg_template.devices : try(dev.tenant, tenant.name) if sg_template.name == dsp.service_graph_template][0] :
+          try(sg_template.device.tenant, tenant.name)
+        ) if sg_template.name == dsp.service_graph_template][0] : tenant.name
+        sgt_device_name = try("${dsp.device_name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}", length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : (
+          length(try(sg_template.devices, [])) > 0 ?
+          [for dev in sg_template.devices : "${dev.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}" if sg_template.name == dsp.service_graph_template][0] :
+          "${sg_template.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
+        ) if sg_template.name == dsp.service_graph_template][0] : "")
         node_name                                               = try(dsp.node_name, "N1")
         consumer_l3_destination                                 = try(dsp.consumer.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination)
         consumer_permit_logging                                 = try(dsp.consumer.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.consumer.permit_logging)
