@@ -99,6 +99,7 @@ defaults:
       l2_port_mtu: 9000
       pod_policy_groups:
         name_suffix: ""
+        bgp_route_reflector_policy: default
       pod_profiles:
         name_suffix: ""
         selectors:

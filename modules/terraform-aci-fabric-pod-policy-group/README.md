@@ -18,7 +18,7 @@ module "aci_fabric_pod_policy_group" {
   date_time_policy           = "DATE1"
   management_access_policy   = "MAP1"
   macsec_policy              = "MACSEC1"
-  bgp_route_reflector_policy = "BGPRRP1"
+  bgp_route_reflector_policy = "default"
 }
 ```
 
@@ -45,7 +45,7 @@ module "aci_fabric_pod_policy_group" {
 | <a name="input_management_access_policy"></a> [management\_access\_policy](#input\_management\_access\_policy) | Management access policy name. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | Pod policy description | `string` | `""` | no |
 | <a name="input_macsec_policy"></a> [macsec\_policy](#input\_macsec\_policy) | Pod MACsec Policy. | `string` | `""` | no |
-| <a name="input_bgp_route_reflector_policy"></a> [bgp\_route\_reflector\_policy](#input\_bgp\_route\_reflector\_policy) | BGP Route Reflector Policy. | `string` | `""` | no |
+| <a name="input_bgp_route_reflector_policy"></a> [bgp\_route\_reflector\_policy](#input\_bgp\_route\_reflector\_policy) | BGP Route Reflector Policy. | `string` | `"default"` | no |
 
 ## Outputs
 
@@ -61,7 +61,7 @@ module "aci_fabric_pod_policy_group" {
 | [aci_rest_managed.fabricPodPGrp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fabricRsCommPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fabricRsMacsecPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fabricRsPodPGrpBGPRRP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fabricRsSnmpPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fabricRsTimePol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
-| [aci_rest_managed.fabricRsPodPGrpBGPRRP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->
