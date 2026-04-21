@@ -329,6 +329,7 @@ module "aci_link_level_policy" {
   link_delay_interval    = try(each.value.link_delay_interval, null)
   link_debounce_interval = try(each.value.link_debounce_interval, local.defaults.apic.access_policies.interface_policies.link_level_policies.link_debounce_interval)
   auto                   = try(each.value.auto, local.defaults.apic.access_policies.interface_policies.link_level_policies.auto)
+  auto_enforce           = try(each.value.auto_enforce, local.defaults.apic.access_policies.interface_policies.link_level_policies.auto_enforce, false)
   fec_mode               = try(each.value.fec_mode, local.defaults.apic.access_policies.interface_policies.link_level_policies.fec_mode)
   physical_media_type    = try(each.value.physical_media_type, null)
 }
