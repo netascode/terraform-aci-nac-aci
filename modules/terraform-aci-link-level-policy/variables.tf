@@ -42,14 +42,15 @@ variable "speed" {
 }
 
 variable "auto" {
-  description = "Auto negotiation. Choices: `on`, `off`, `on-enforce`. Backwards compatible with `true` (= `on`) and `false` (= `off`)."
-  type        = string
-  default     = "on"
+  description = "Enable auto-negotiation."
+  type        = bool
+  default     = true
+}
 
-  validation {
-    condition     = contains(["on", "off", "on-enforce", "true", "false"], var.auto)
-    error_message = "Allowed values: `on`, `off`, `on-enforce`, `true` or `false`."
-  }
+variable "auto_enforce" {
+  description = "Enforce auto-negotiation."
+  type        = bool
+  default     = false
 }
 
 variable "fec_mode" {
