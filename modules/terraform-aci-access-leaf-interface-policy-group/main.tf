@@ -28,6 +28,9 @@ resource "aci_rest_managed" "infraRsCdpIfPol" {
   content = {
     tnCdpIfPolName = var.cdp_policy
   }
+  content_on_destroy = {
+    tnCdpIfPolName = ""
+  }
 }
 
 resource "aci_rest_managed" "infraRsLldpIfPol" {
@@ -36,6 +39,9 @@ resource "aci_rest_managed" "infraRsLldpIfPol" {
   class_name = "infraRsLldpIfPol"
   content = {
     tnLldpIfPolName = var.lldp_policy
+  }
+  content_on_destroy = {
+    tnLldpIfPolName = ""
   }
 }
 
@@ -46,6 +52,9 @@ resource "aci_rest_managed" "infraRsQosEgressDppIfPol" {
   content = {
     tnQosDppPolName = var.egress_data_plane_policing_policy
   }
+  content_on_destroy = {
+    tnQosDppPolName = ""
+  }
 }
 
 resource "aci_rest_managed" "infraRsQosIngressDppIfPol" {
@@ -54,6 +63,9 @@ resource "aci_rest_managed" "infraRsQosIngressDppIfPol" {
   class_name = "infraRsQosIngressDppIfPol"
   content = {
     tnQosDppPolName = var.ingress_data_plane_policing_policy
+  }
+  content_on_destroy = {
+    tnQosDppPolName = ""
   }
 }
 
@@ -64,6 +76,9 @@ resource "aci_rest_managed" "infraRsMacsecIfPol" {
   content = {
     tnMacsecIfPolName = var.macsec_interface_policy
   }
+  content_on_destroy = {
+    tnMacsecIfPolName = ""
+  }
 }
 
 resource "aci_rest_managed" "infraRsStpIfPol" {
@@ -72,6 +87,9 @@ resource "aci_rest_managed" "infraRsStpIfPol" {
   class_name = "infraRsStpIfPol"
   content = {
     tnStpIfPolName = var.spanning_tree_policy
+  }
+  content_on_destroy = {
+    tnStpIfPolName = ""
   }
 }
 
@@ -82,6 +100,9 @@ resource "aci_rest_managed" "infraRsMcpIfPol" {
   content = {
     tnMcpIfPolName = var.mcp_policy
   }
+  content_on_destroy = {
+    tnMcpIfPolName = ""
+  }
 }
 
 resource "aci_rest_managed" "infraRsL2IfPol" {
@@ -91,6 +112,9 @@ resource "aci_rest_managed" "infraRsL2IfPol" {
   content = {
     tnL2IfPolName = var.l2_policy
   }
+  content_on_destroy = {
+    tnL2IfPolName = ""
+  }
 }
 
 resource "aci_rest_managed" "infraRsStormctrlIfPol" {
@@ -99,6 +123,9 @@ resource "aci_rest_managed" "infraRsStormctrlIfPol" {
   class_name = "infraRsStormctrlIfPol"
   content = {
     tnStormctrlIfPolName = var.storm_control_policy
+  }
+  content_on_destroy = {
+    tnStormctrlIfPolName = ""
   }
 }
 
@@ -126,6 +153,9 @@ resource "aci_rest_managed" "infraRsLacpPol" {
   class_name = "infraRsLacpPol"
   content = {
     tnLacpLagPolName = var.port_channel_policy
+  }
+  content_on_destroy = {
+    tnLacpLagPolName = ""
   }
 }
 
