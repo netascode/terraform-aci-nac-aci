@@ -44,7 +44,7 @@ module "aci_port_channel_policy" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | Port channel policy name. | `string` | n/a | yes |
-| <a name="input_mode"></a> [mode](#input\_mode) | Mode. Choices: `off`, `active`, `passive`, `mac-pin`, `mac-pin-nicload`. | `string` | n/a | yes |
+| <a name="input_mode"></a> [mode](#input\_mode) | Mode. Choices: `off`, `active`, `passive`, `mac-pin`, `mac-pin-nicload`, `explicit-failover`. | `string` | n/a | yes |
 | <a name="input_min_links"></a> [min\_links](#input\_min\_links) | Minimum links. Minimum value: 1. Maximum value: 16. | `number` | `1` | no |
 | <a name="input_max_links"></a> [max\_links](#input\_max\_links) | Maximum links. Minimum value: 1. Maximum value: 16. | `number` | `16` | no |
 | <a name="input_suspend_individual"></a> [suspend\_individual](#input\_suspend\_individual) | Suspend individual. | `bool` | `true` | no |
