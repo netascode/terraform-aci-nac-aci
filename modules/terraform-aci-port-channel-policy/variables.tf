@@ -9,12 +9,12 @@ variable "name" {
 }
 
 variable "mode" {
-  description = "Mode. Choices: `off`, `active`, `passive`, `mac-pin`, `mac-pin-nicload`."
+  description = "Mode. Choices: `off`, `active`, `passive`, `mac-pin`, `mac-pin-nicload`, `explicit-failover`."
   type        = string
 
   validation {
-    condition     = contains(["off", "active", "passive", "mac-pin", "mac-pin-nicload"], var.mode)
-    error_message = "Allowed values are `off`, `active`, `passive`, `mac-pin` or `mac-pin-nicload`."
+    condition     = contains(["off", "active", "passive", "mac-pin", "mac-pin-nicload", "explicit-failover"], var.mode)
+    error_message = "Allowed values are `off`, `active`, `passive`, `mac-pin`, `mac-pin-nicload` or `explicit-failover`."
   }
 }
 
