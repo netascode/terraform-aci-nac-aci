@@ -95,7 +95,7 @@ module "aci_external_endpoint_group" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | 2.0.0 |
 
 ## Inputs
 
@@ -116,7 +116,7 @@ module "aci_external_endpoint_group" {
 | <a name="input_contract_providers"></a> [contract\_providers](#input\_contract\_providers) | List of contract providers. | `list(string)` | `[]` | no |
 | <a name="input_contract_imported_consumers"></a> [contract\_imported\_consumers](#input\_contract\_imported\_consumers) | List of imported contract consumers. | `list(string)` | `[]` | no |
 | <a name="input_contract_masters"></a> [contract\_masters](#input\_contract\_masters) | List of contract masters. A contract master is an external EPG from which this EPG inherits contracts. | <pre>list(object({<br/>    l3out                   = optional(string)<br/>    external_endpoint_group = string<br/>  }))</pre> | `[]` | no |
-| <a name="input_tag_annotations"></a> [tag\_annotations](#input\_tag\_annotations) | List of tagAnnotation children (key required, value optional). Each key must be unique within the list. | <pre>list(object({<br/>    key   = string<br/>    value = optional(string, "")<br/>  }))</pre> | `[]` | no |
+| <a name="input_tag_annotations"></a> [tag\_annotations](#input\_tag\_annotations) | List of tagAnnotation children (key and value strings; callers should pass "" when NAC omits value). Each key must be unique within the list. | <pre>list(object({<br/>    key   = string<br/>    value = string<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
