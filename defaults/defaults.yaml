@@ -144,8 +144,8 @@ defaults:
             aes192_ctr: true
             aes256_ctr: true
             aes256_gcm: true
-            chacha: true
-            hmac_sha1: true
+            chacha: false
+            hmac_sha1: false
             hmac_sha2_256: true
             hmac_sha2_512: true
             curve25519_sha256: true
