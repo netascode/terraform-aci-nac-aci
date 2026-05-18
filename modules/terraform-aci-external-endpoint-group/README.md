@@ -85,7 +85,7 @@ module "aci_external_endpoint_group" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | 2.19.0 |
 
 ## Inputs
 
