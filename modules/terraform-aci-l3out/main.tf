@@ -319,6 +319,8 @@ resource "aci_rest_managed" "mplsExtP" {
   count      = var.tenant == "infra" && var.sr_mpls == true ? 1 : 0
   dn         = "${aci_rest_managed.l3extOut.dn}/mplsextp"
   class_name = "mplsExtP"
+
+  depends_on = [aci_rest_managed.l3extRsEctx]
 }
 
 resource "aci_rest_managed" "vxlanExtP" {
