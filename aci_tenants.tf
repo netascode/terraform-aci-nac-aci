@@ -1682,10 +1682,7 @@ locals {
             l3out                   = try("${master.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}", null)
             external_endpoint_group = "${master.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}"
           }], [])
-          tag_annotations = [for tag in try(epg.tag_annotations, []) : {
-            key   = tostring(tag.key)
-            value = try(tostring(tag.value), "")
-          }]
+          tag_annotations             = [for tag in try(epg.tag_annotations, []) : { key = tag.key, value = tag.value }]
           route_control_profiles = [for rcp in try(epg.route_control_profiles, []) : {
             name      = rcp.name
             direction = try(rcp.direction, local.defaults.apic.tenants.l3outs.external_endpoint_groups.route_control_profiles.direction)
@@ -1977,10 +1974,7 @@ locals {
           contract_consumers          = try([for contract in epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_providers          = try([for contract in epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_imported_consumers = try([for contract in epg.contracts.imported_consumers : "${contract}${local.defaults.apic.tenants.imported_contracts.name_suffix}"], [])
-          tag_annotations = [for tag in try(epg.tag_annotations, []) : {
-            key   = tostring(tag.key)
-            value = try(tostring(tag.value), "")
-          }]
+          tag_annotations             = [for tag in try(epg.tag_annotations, []) : { key = tag.key, value = tag.value }]
           subnets = [for subnet in try(epg.subnets, []) : {
             name                           = try(subnet.name, "")
             prefix                         = subnet.prefix

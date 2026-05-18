@@ -250,7 +250,7 @@ variable "contract_masters" {
 }
 
 variable "tag_annotations" {
-  description = "List of tagAnnotation children (key and value strings; callers should pass \"\" when NAC omits value). Each key must be unique within the list."
+  description = "List of tagAnnotation children on l3extInstP (key and value required). Each key must be unique within the list."
   type = list(object({
     key   = string
     value = string
@@ -259,16 +259,16 @@ variable "tag_annotations" {
 
   validation {
     condition = length(var.tag_annotations) == 0 ? true : alltrue([
-      for ta in var.tag_annotations : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", trimspace(ta.key)))
+      for ta in var.tag_annotations : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", ta.key))
     ])
-    error_message = "tag_annotations: key must match [a-zA-Z0-9_.:-]{1,64}."
+    error_message = "`key`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = length(var.tag_annotations) == 0 ? true : alltrue([
-      for ta in var.tag_annotations : length(ta.value) <= 2048
+      for ta in var.tag_annotations : ta.value != "" && length(ta.value) <= 2048
     ])
-    error_message = "tag_annotations: value length must be <= 2048."
+    error_message = "`value`: Must not be empty. Maximum characters: 2048."
   }
 
   validation {
