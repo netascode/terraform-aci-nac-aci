@@ -210,7 +210,7 @@ variable "https_tlsv1" {
 variable "https_tlsv1_1" {
   description = "HTTPS TLS v1.1."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "https_tlsv1_2" {

@@ -143,20 +143,20 @@ defaults:
             aes128_gcm: true
             aes192_ctr: true
             aes256_ctr: true
-            aes256_gcm: false
+            aes256_gcm: true
             chacha: true
             hmac_sha1: true
             hmac_sha2_256: true
             hmac_sha2_512: true
-            curve25519_sha256: false
-            curve25519_sha256_libssh: false
+            curve25519_sha256: true
+            curve25519_sha256_libssh: true
             dh1_sha1: false
             dh14_sha1: false
-            dh14_sha256: false
-            dh16_sha512: false
-            ecdh_sha2_nistp256: false
-            ecdh_sha2_nistp384: false
-            ecdh_sha2_nistp521: false
+            dh14_sha256: true
+            dh16_sha512: true
+            ecdh_sha2_nistp256: true
+            ecdh_sha2_nistp384: true
+            ecdh_sha2_nistp521: true
           https:
             admin_state: true
             client_cert_auth_state: false
@@ -164,7 +164,7 @@ defaults:
             port: 443
             key_ring: default
             tlsv1: false
-            tlsv1_1: true
+            tlsv1_1: false
             tlsv1_2: true
             tlsv1_3: false
           http:

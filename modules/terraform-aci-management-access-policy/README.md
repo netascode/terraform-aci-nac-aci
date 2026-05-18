@@ -101,7 +101,7 @@ module "aci_management_access_policy" {
 | <a name="input_https_port"></a> [https\_port](#input\_https\_port) | HTTPS port. | `number` | `443` | no |
 | <a name="input_https_dh"></a> [https\_dh](#input\_https\_dh) | HTTPS Diffie-Hellman group. Choices: `1024`, `2048`, `4096` or `none`. | `string` | `"none"` | no |
 | <a name="input_https_tlsv1"></a> [https\_tlsv1](#input\_https\_tlsv1) | HTTPS TLS v1. | `bool` | `false` | no |
-| <a name="input_https_tlsv1_1"></a> [https\_tlsv1\_1](#input\_https\_tlsv1\_1) | HTTPS TLS v1.1. | `bool` | `true` | no |
+| <a name="input_https_tlsv1_1"></a> [https\_tlsv1\_1](#input\_https\_tlsv1\_1) | HTTPS TLS v1.1. | `bool` | `false` | no |
 | <a name="input_https_tlsv1_2"></a> [https\_tlsv1\_2](#input\_https\_tlsv1\_2) | HTTPS TLS v1.2. | `bool` | `true` | no |
 | <a name="input_https_tlsv1_3"></a> [https\_tlsv1\_3](#input\_https\_tlsv1\_3) | HTTPS TLS v1.3. | `bool` | `false` | no |
 | <a name="input_https_keyring"></a> [https\_keyring](#input\_https\_keyring) | HTTPS keyring name. | `string` | `""` | no |
