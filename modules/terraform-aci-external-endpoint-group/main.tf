@@ -119,10 +119,7 @@ resource "aci_rest_managed" "l3extRsSubnetToRtSumm" {
 }
 
 resource "aci_rest_managed" "tagAnnotation" {
-  for_each = { for tag in var.tag_annotations : tag.key => tag }
-  depends_on = [
-    aci_rest_managed.l3extInstP,
-  ]
+  for_each   = { for tag in var.tag_annotations : tag.key => tag }
   dn         = "${aci_rest_managed.l3extInstP.dn}/annotationKey-[${each.key}]"
   class_name = "tagAnnotation"
   content = {
