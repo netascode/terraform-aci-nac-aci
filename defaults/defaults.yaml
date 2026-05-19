@@ -311,14 +311,12 @@ defaults:
           protocol: pap
           monitoring: false
           port: 49
-          retries: 1
           timeout: 5
           mgmt_epg: inb
         radius_providers:
           protocol: pap
           monitoring: false
           port: 1812
-          retries: 1
           timeout: 5
           mgmt_epg: inb
         login_domains:
@@ -346,7 +344,6 @@ defaults:
             monitoring_username: default
             server_monitoring: false
             port: 389
-            retries: 1
             ssl_validation_level: strict
             timeout: 30
             mgmt_epg: inb
