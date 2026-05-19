@@ -8,7 +8,7 @@ variable "ldap_providers" {
     base_dn              = optional(string, "")
     password             = optional(string)
     timeout              = optional(number, 30)
-    retries              = optional(number, 1)
+    retries              = optional(number, null)
     enable_ssl           = optional(bool, false)
     filter               = optional(string, "sAMAccountName=$userid")
     attribute            = optional(string, "CiscoAVPair")
@@ -51,7 +51,7 @@ variable "ldap_providers" {
 
   validation {
     condition = alltrue([
-      for p in var.ldap_providers : (p.retries >= 0 && p.retries <= 5)
+      for p in var.ldap_providers : p.retries == null || (p.retries >= 0 && p.retries <= 5)
     ])
     error_message = "Minimum value: 0, Maximum value: 5."
   }
