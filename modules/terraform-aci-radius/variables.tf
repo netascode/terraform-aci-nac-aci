@@ -75,10 +75,10 @@ variable "port" {
 variable "retries" {
   description = "Retries. Minimum value: 0, Maximum value: 5."
   type        = number
-  default     = 1
+  default     = null
 
   validation {
-    condition     = var.retries >= 0 && var.retries <= 5
+    condition     = var.retries == null || (var.retries >= 0 && var.retries <= 5)
     error_message = "Minimum value: 0, Maximum value: 5."
   }
 }

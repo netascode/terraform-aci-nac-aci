@@ -53,7 +53,7 @@ module "aci_tacacs" {
 | <a name="input_monitoring_password"></a> [monitoring\_password](#input\_monitoring\_password) | Monitoring password. | `string` | `null` | no |
 | <a name="input_key"></a> [key](#input\_key) | Key. | `string` | `null` | no |
 | <a name="input_port"></a> [port](#input\_port) | Port. Minimum value: 0, Maximum value: 65535. | `number` | `49` | no |
-| <a name="input_retries"></a> [retries](#input\_retries) | Retries. Minimum value: 0, Maximum value: 5. | `number` | `1` | no |
+| <a name="input_retries"></a> [retries](#input\_retries) | Retries. Minimum value: 0, Maximum value: 5. | `number` | `null` | no |
 | <a name="input_timeout"></a> [timeout](#input\_timeout) | Timeout. Minimum value: 0, Maximum value: 60. | `number` | `5` | no |
 | <a name="input_mgmt_epg_type"></a> [mgmt\_epg\_type](#input\_mgmt\_epg\_type) | Management EPG type. Choices: `inb`, `oob`. | `string` | `"inb"` | no |
 | <a name="input_mgmt_epg_name"></a> [mgmt\_epg\_name](#input\_mgmt\_epg\_name) | Management EPG name. | `string` | `""` | no |
