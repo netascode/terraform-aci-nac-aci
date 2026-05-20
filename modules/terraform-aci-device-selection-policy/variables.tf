@@ -40,8 +40,9 @@ variable "sgt_device_tenant" {
 }
 
 variable "sgt_device_name" {
-  description = "Device name."
+  description = "Device name. Required for legacy single-device mode, not used when `devices` is specified."
   type        = string
+  default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.sgt_device_name))
@@ -428,5 +429,88 @@ variable "copy_service_epg_policy_tenant" {
   validation {
     condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.copy_service_epg_policy_tenant))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "devices" {
+  description = "List of devices for multi-device device selection policy. When specified, legacy single-device variables (device_name, node_name, consumer, provider, copy_service at root level) are ignored."
+  type = list(object({
+    name      = string
+    tenant    = optional(string)
+    node_name = optional(string)
+    consumer = optional(object({
+      l3_destination    = optional(bool)
+      permit_logging    = optional(bool)
+      logical_interface = string
+      redirect_policy = optional(object({
+        name   = string
+        tenant = optional(string)
+      }))
+      bridge_domain = optional(object({
+        name   = string
+        tenant = optional(string)
+      }))
+      external_endpoint_group = optional(object({
+        tenant = optional(string)
+        l3out  = string
+        name   = string
+        redistribute = optional(object({
+          bgp       = optional(bool)
+          ospf      = optional(bool)
+          connected = optional(bool)
+          static    = optional(bool)
+        }))
+      }))
+      service_epg_policy = optional(string)
+      custom_qos_policy  = optional(string)
+    }))
+    provider = optional(object({
+      l3_destination    = optional(bool)
+      permit_logging    = optional(bool)
+      logical_interface = string
+      redirect_policy = optional(object({
+        name   = string
+        tenant = optional(string)
+      }))
+      bridge_domain = optional(object({
+        name   = string
+        tenant = optional(string)
+      }))
+      external_endpoint_group = optional(object({
+        tenant = optional(string)
+        l3out  = string
+        name   = string
+        redistribute = optional(object({
+          bgp       = optional(bool)
+          ospf      = optional(bool)
+          connected = optional(bool)
+          static    = optional(bool)
+        }))
+      }))
+      service_epg_policy = optional(string)
+      custom_qos_policy  = optional(string)
+    }))
+    copy_service = optional(object({
+      l3_destination     = optional(bool)
+      permit_logging     = optional(bool)
+      logical_interface  = string
+      service_epg_policy = optional(string)
+      custom_qos_policy  = optional(string)
+    }))
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for device in var.devices : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", device.name))
+    ])
+    error_message = "Device name must match: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. 1-64 characters."
+  }
+
+  validation {
+    condition = alltrue([
+      for device in var.devices : device.node_name == null || can(regex("^[a-zA-Z0-9_.:-]{1,64}$", device.node_name))
+    ])
+    error_message = "Device node_name must match: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. 1-64 characters."
   }
 }

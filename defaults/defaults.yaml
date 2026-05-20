@@ -1874,3 +1874,25 @@ defaults:
           copy_service:
             l3_destination: true
             permit_logging: false
+          devices:
+            consumer:
+              l3_destination: true
+              permit_logging: false
+              external_endpoint_group:
+                redistribute:
+                  bgp: false
+                  ospf: false
+                  connected: false
+                  static: false
+            provider:
+              l3_destination: true
+              permit_logging: false
+              external_endpoint_group:
+                redistribute:
+                  bgp: false
+                  ospf: false
+                  connected: false
+                  static: false
+            copy_service:
+              l3_destination: true
+              permit_logging: false
