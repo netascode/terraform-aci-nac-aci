@@ -4137,6 +4137,8 @@ locals {
         tenant                 = tenant.name
         contract               = "${dsp.contract}${local.defaults.apic.tenants.contracts.name_suffix}"
         service_graph_template = "${dsp.service_graph_template}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
+        # Determine if legacy mode: device_name, node_name, consumer, provider or copy_service defined at root level
+        legacy_mode = try(dsp.device_name, null) != null || try(dsp.node_name, null) != null || try(dsp.consumer, null) != null || try(dsp.provider, null) != null || try(dsp.copy_service, null) != null
         sgt_device_tenant = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : (
           length(try(sg_template.devices, [])) > 0 ?
           [for dev in sg_template.devices : try(dev.tenant, tenant.name) if sg_template.name == dsp.service_graph_template][0] :
@@ -4188,6 +4190,76 @@ locals {
         copy_custom_qos_policy                                  = try("${dsp.copy_service.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
         copy_service_epg_policy                                 = try("${dsp.copy_service.service_epg_policy}${local.defaults.apic.tenants.services.service_epg_policies.name_suffix}", "")
         copy_service_epg_policy_tenant                          = tenant.name
+        # Multi-device mode: build devices list with name suffixes applied
+        # Device tenant is determined by looking up the device name in imported_l4l7_devices
+        # (per schema, device_selection_policies.devices does not have a tenant field;
+        # the tenant info comes from services.imported_l4l7_devices.tenant)
+        devices = try(dsp.device_name, null) != null || try(dsp.node_name, null) != null || try(dsp.consumer, null) != null || try(dsp.provider, null) != null || try(dsp.copy_service, null) != null ? [] : [
+          for device in try(dsp.devices, []) : {
+            name      = "${device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
+            tenant    = length([for imp in try(tenant.services.imported_l4l7_devices, []) : imp.tenant if imp.name == device.name]) > 0 ? [for imp in try(tenant.services.imported_l4l7_devices, []) : imp.tenant if imp.name == device.name][0] : null
+            node_name = try(device.node_name, null)
+            consumer = try(device.consumer, null) != null ? {
+              l3_destination    = try(device.consumer.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.devices.consumer.l3_destination)
+              permit_logging    = try(device.consumer.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.devices.consumer.permit_logging)
+              logical_interface = "${device.consumer.logical_interface}${local.defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix}"
+              redirect_policy = try(device.consumer.redirect_policy, null) != null ? {
+                name   = "${device.consumer.redirect_policy.name}${local.defaults.apic.tenants.services.redirect_policies.name_suffix}"
+                tenant = try(device.consumer.redirect_policy.tenant, null)
+              } : null
+              bridge_domain = try(device.consumer.bridge_domain, null) != null ? {
+                name   = "${device.consumer.bridge_domain.name}${local.defaults.apic.tenants.bridge_domains.name_suffix}"
+                tenant = try(device.consumer.bridge_domain.tenant, null)
+              } : null
+              external_endpoint_group = try(device.consumer.external_endpoint_group, null) != null ? {
+                tenant = try(device.consumer.external_endpoint_group.tenant, null)
+                l3out  = "${device.consumer.external_endpoint_group.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}"
+                name   = "${device.consumer.external_endpoint_group.name}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}"
+                redistribute = try(device.consumer.external_endpoint_group.redistribute, null) != null ? {
+                  bgp       = try(device.consumer.external_endpoint_group.redistribute.bgp, local.defaults.apic.tenants.services.device_selection_policies.devices.consumer.external_endpoint_group.redistribute.bgp)
+                  ospf      = try(device.consumer.external_endpoint_group.redistribute.ospf, local.defaults.apic.tenants.services.device_selection_policies.devices.consumer.external_endpoint_group.redistribute.ospf)
+                  connected = try(device.consumer.external_endpoint_group.redistribute.connected, local.defaults.apic.tenants.services.device_selection_policies.devices.consumer.external_endpoint_group.redistribute.connected)
+                  static    = try(device.consumer.external_endpoint_group.redistribute.static, local.defaults.apic.tenants.services.device_selection_policies.devices.consumer.external_endpoint_group.redistribute.static)
+                } : null
+              } : null
+              service_epg_policy = try("${device.consumer.service_epg_policy}${local.defaults.apic.tenants.services.service_epg_policies.name_suffix}", null)
+              custom_qos_policy  = try("${device.consumer.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", null)
+            } : null
+            provider = try(device.provider, null) != null ? {
+              l3_destination    = try(device.provider.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.devices.provider.l3_destination)
+              permit_logging    = try(device.provider.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.devices.provider.permit_logging)
+              logical_interface = "${device.provider.logical_interface}${local.defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix}"
+              redirect_policy = try(device.provider.redirect_policy, null) != null ? {
+                name   = "${device.provider.redirect_policy.name}${local.defaults.apic.tenants.services.redirect_policies.name_suffix}"
+                tenant = try(device.provider.redirect_policy.tenant, null)
+              } : null
+              bridge_domain = try(device.provider.bridge_domain, null) != null ? {
+                name   = "${device.provider.bridge_domain.name}${local.defaults.apic.tenants.bridge_domains.name_suffix}"
+                tenant = try(device.provider.bridge_domain.tenant, null)
+              } : null
+              external_endpoint_group = try(device.provider.external_endpoint_group, null) != null ? {
+                tenant = try(device.provider.external_endpoint_group.tenant, null)
+                l3out  = "${device.provider.external_endpoint_group.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}"
+                name   = "${device.provider.external_endpoint_group.name}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}"
+                redistribute = try(device.provider.external_endpoint_group.redistribute, null) != null ? {
+                  bgp       = try(device.provider.external_endpoint_group.redistribute.bgp, local.defaults.apic.tenants.services.device_selection_policies.devices.provider.external_endpoint_group.redistribute.bgp)
+                  ospf      = try(device.provider.external_endpoint_group.redistribute.ospf, local.defaults.apic.tenants.services.device_selection_policies.devices.provider.external_endpoint_group.redistribute.ospf)
+                  connected = try(device.provider.external_endpoint_group.redistribute.connected, local.defaults.apic.tenants.services.device_selection_policies.devices.provider.external_endpoint_group.redistribute.connected)
+                  static    = try(device.provider.external_endpoint_group.redistribute.static, local.defaults.apic.tenants.services.device_selection_policies.devices.provider.external_endpoint_group.redistribute.static)
+                } : null
+              } : null
+              service_epg_policy = try("${device.provider.service_epg_policy}${local.defaults.apic.tenants.services.service_epg_policies.name_suffix}", null)
+              custom_qos_policy  = try("${device.provider.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", null)
+            } : null
+            copy_service = try(device.copy_service, null) != null ? {
+              l3_destination     = try(device.copy_service.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.devices.copy_service.l3_destination)
+              permit_logging     = try(device.copy_service.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.devices.copy_service.permit_logging)
+              logical_interface  = "${device.copy_service.logical_interface}${local.defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix}"
+              service_epg_policy = try("${device.copy_service.service_epg_policy}${local.defaults.apic.tenants.services.service_epg_policies.name_suffix}", null)
+              custom_qos_policy  = try("${device.copy_service.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", null)
+            } : null
+          }
+        ]
       }
     ]
   ])
@@ -4243,6 +4315,7 @@ module "aci_device_selection_policy" {
   copy_custom_qos_policy                                  = each.value.copy_custom_qos_policy
   copy_service_epg_policy                                 = each.value.copy_service_epg_policy
   copy_service_epg_policy_tenant                          = each.value.copy_service_epg_policy_tenant
+  devices                                                 = each.value.devices
 
   depends_on = [
     module.aci_tenant,
