@@ -625,6 +625,11 @@ defaults:
           reflective_relay: false
         mcp_policies:
           name_suffix: ""
+          per_vlan_mcp: true
+          strict_mode: false
+          max_vlans: 256
+          grace_period: 3
+          grace_period_msec: 0
         storm_control_policies:
           name_suffix: ""
           broadcast_burst_pps: unspecified
