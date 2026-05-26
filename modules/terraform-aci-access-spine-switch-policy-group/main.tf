@@ -14,6 +14,9 @@ resource "aci_rest_managed" "infraRsBfdIpv4InstPol" {
   content = {
     tnBfdIpv4InstPolName = var.bfd_ipv4_policy
   }
+  content_on_destroy = {
+    tnBfdIpv4InstPolName = ""
+  }
 }
 
 resource "aci_rest_managed" "infraRsBfdIpv6InstPol" {
@@ -22,6 +25,9 @@ resource "aci_rest_managed" "infraRsBfdIpv6InstPol" {
   class_name = "infraRsSpineBfdIpv6InstPol"
   content = {
     tnBfdIpv6InstPolName = var.bfd_ipv6_policy
+  }
+  content_on_destroy = {
+    tnBfdIpv6InstPolName = ""
   }
 }
 
@@ -32,6 +38,9 @@ resource "aci_rest_managed" "infraRsSpinePGrpToCdpIfPol" {
   content = {
     tnCdpIfPolName = var.cdp_policy
   }
+  content_on_destroy = {
+    tnCdpIfPolName = ""
+  }
 }
 
 resource "aci_rest_managed" "infraRsSpinePGrpToLldpIfPol" {
@@ -40,6 +49,9 @@ resource "aci_rest_managed" "infraRsSpinePGrpToLldpIfPol" {
   class_name = "infraRsSpinePGrpToLldpIfPol"
   content = {
     tnLldpIfPolName = var.lldp_policy
+  }
+  content_on_destroy = {
+    tnLldpIfPolName = ""
   }
 }
 
