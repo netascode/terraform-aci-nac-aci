@@ -7,5 +7,6 @@ module "aci_link_level_policy" {
   link_delay_ms    = 10
   link_debounce_ms = 110
   auto             = true
+  auto_enforce     = false
   fec_mode         = "disable-fec"
 }

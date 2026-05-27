@@ -604,6 +604,7 @@ defaults:
           link_delay_interval: 0
           link_debounce_interval: 100
           auto: true
+          auto_enforce: false
           fec_mode: inherit
         port_channel_policies:
           name_suffix: ""

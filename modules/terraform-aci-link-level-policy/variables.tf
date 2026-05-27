@@ -42,9 +42,15 @@ variable "speed" {
 }
 
 variable "auto" {
-  description = "Auto negotiation."
+  description = "Enable auto-negotiation."
   type        = bool
   default     = true
+}
+
+variable "auto_enforce" {
+  description = "Enforce auto-negotiation."
+  type        = bool
+  default     = false
 }
 
 variable "fec_mode" {
