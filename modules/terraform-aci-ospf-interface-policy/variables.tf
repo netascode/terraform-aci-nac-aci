@@ -63,13 +63,13 @@ variable "hello_interval" {
 }
 
 variable "network_type" {
-  description = "Network type. Choices: `bcast`, `p2p`."
+  description = "Network type. Choices: `bcast`, `p2p`, `unspecified`."
   type        = string
   default     = "bcast"
 
   validation {
-    condition     = contains(["bcast", "p2p"], var.network_type)
-    error_message = "Allowed values are `bcast` or `p2p`."
+    condition     = contains(["bcast", "p2p", "unspecified"], var.network_type)
+    error_message = "Allowed values are `bcast`, `p2p`, or `unspecified`."
   }
 }
 
