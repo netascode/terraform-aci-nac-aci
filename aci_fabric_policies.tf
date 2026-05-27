@@ -1179,7 +1179,7 @@ module "aci_fex_interface_shutdown" {
 module "aci_smart_licensing" {
   source = "./modules/terraform-aci-smart-licensing"
 
-  count              = local.modules.aci_smart_licensing == true && try(local.fabric_policies.smart_licensing.registration_token, "") != "" && var.manage_fabric_policies ? 1 : 0
+  count              = local.modules.aci_smart_licensing == true && (try(local.fabric_policies.smart_licensing.registration_token, "") != "" || try(local.fabric_policies.smart_licensing.url, "") != "" || try(local.fabric_policies.smart_licensing.mode, local.defaults.apic.fabric_policies.smart_licensing.mode) == "offline") && var.manage_fabric_policies ? 1 : 0
   mode               = try(local.fabric_policies.smart_licensing.mode, local.defaults.apic.fabric_policies.smart_licensing.mode)
   registration_token = try(local.fabric_policies.smart_licensing.registration_token, "")
   url                = try(local.fabric_policies.smart_licensing.url, null)
