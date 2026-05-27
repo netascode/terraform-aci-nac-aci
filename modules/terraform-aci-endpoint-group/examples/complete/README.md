@@ -41,6 +41,10 @@ module "aci_endpoint_group" {
     "tag1",
     "tag2"
   ]
+  tag_annotations = [
+    { key = "env", value = "production" },
+    { key = "tier", value = "app" },
+  ]
   subnets = [{
     description        = "Subnet Description"
     ip                 = "1.1.1.1/24"
