@@ -13,6 +13,9 @@ resource "aci_rest_managed" "infraRsHIfPol" {
   content = {
     tnFabricHIfPolName = var.link_level_policy
   }
+  content_on_destroy = {
+    tnFabricHIfPolName = ""
+  }
 }
 
 resource "aci_rest_managed" "infraRsCdpIfPol" {
@@ -22,6 +25,9 @@ resource "aci_rest_managed" "infraRsCdpIfPol" {
   content = {
     tnCdpIfPolName = var.cdp_policy
   }
+  content_on_destroy = {
+    tnCdpIfPolName = ""
+  }
 }
 
 resource "aci_rest_managed" "infraRsMacsecIfPol" {
@@ -30,6 +36,9 @@ resource "aci_rest_managed" "infraRsMacsecIfPol" {
   class_name = "infraRsMacsecIfPol"
   content = {
     tnMacsecIfPolName = var.macsec_interface_policy
+  }
+  content_on_destroy = {
+    tnMacsecIfPolName = ""
   }
 }
 
