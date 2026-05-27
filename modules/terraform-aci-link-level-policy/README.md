@@ -18,6 +18,7 @@ module "aci_link_level_policy" {
   link_delay_ms    = 10
   link_debounce_ms = 110
   auto             = true
+  auto_enforce     = false
   fec_mode         = "disable-fec"
 }
 ```
@@ -43,7 +44,8 @@ module "aci_link_level_policy" {
 | <a name="input_link_delay_interval"></a> [link\_delay\_interval](#input\_link\_delay\_interval) | Link delay. | `number` | `null` | no |
 | <a name="input_link_debounce_interval"></a> [link\_debounce\_interval](#input\_link\_debounce\_interval) | Link debounce. Default value is set to 100ms | `number` | `100` | no |
 | <a name="input_speed"></a> [speed](#input\_speed) | Interface speed. Choices: `inherit`, `auto`, `100M`, `1G`, `10G`, `25G`, `40G`, `100G`, `400G`. | `string` | `"inherit"` | no |
-| <a name="input_auto"></a> [auto](#input\_auto) | Auto negotiation. | `bool` | `true` | no |
+| <a name="input_auto"></a> [auto](#input\_auto) | Enable auto-negotiation. | `bool` | `true` | no |
+| <a name="input_auto_enforce"></a> [auto\_enforce](#input\_auto\_enforce) | Enforce auto-negotiation. | `bool` | `false` | no |
 | <a name="input_fec_mode"></a> [fec\_mode](#input\_fec\_mode) | Forward error correction (FEC) mode. Choices: `inherit`, `cl91-rs-fec`, `cl74-fc-fec`, `ieee-rs-fec`, `cons16-rs-fec`, `disable-fec`, `auto-fec`. | `string` | `"inherit"` | no |
 | <a name="input_physical_media_type"></a> [physical\_media\_type](#input\_physical\_media\_type) | Physical Media Type. Choices: `auto`, `sfp-10g-tx`. | `string` | `null` | no |
 

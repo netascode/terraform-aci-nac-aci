@@ -6,7 +6,7 @@ resource "aci_rest_managed" "fabricHIfPol" {
     speed            = var.speed
     dfeDelayMs       = var.link_delay_interval
     linkDebounce     = var.link_debounce_interval
-    autoNeg          = var.auto ? (var.auto_enforce ? "on-enforce" : "on") : "off"
+    autoNeg          = var.auto_enforce ? "on-enforce" : var.auto ? "on" : "off"
     fecMode          = var.fec_mode
     portPhyMediaType = try(var.physical_media_type, null) != null ? var.physical_media_type : null
   }
