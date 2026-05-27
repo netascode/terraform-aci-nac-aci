@@ -53,7 +53,7 @@ module "aci_ospf_interface_policy" {
 | <a name="input_cost"></a> [cost](#input\_cost) | Interface cost. Allowed values are `unspecified` or a number between 0 and 65535. | `string` | `"unspecified"` | no |
 | <a name="input_dead_interval"></a> [dead\_interval](#input\_dead\_interval) | Dead interval. Minimum value: `1`. Maximum value: `65535`. | `number` | `40` | no |
 | <a name="input_hello_interval"></a> [hello\_interval](#input\_hello\_interval) | Hello interval. Minimum value: `1`. Maximum value: `65535`. | `number` | `10` | no |
-| <a name="input_network_type"></a> [network\_type](#input\_network\_type) | Network type. Choices: `bcast`, `p2p`. | `string` | `"bcast"` | no |
+| <a name="input_network_type"></a> [network\_type](#input\_network\_type) | Network type. Choices: `bcast`, `p2p`, `unspecified`. | `string` | `"bcast"` | no |
 | <a name="input_priority"></a> [priority](#input\_priority) | Priority. Minimum value: `0`. Maximum value: `255`. | `number` | `1` | no |
 | <a name="input_lsa_retransmit_interval"></a> [lsa\_retransmit\_interval](#input\_lsa\_retransmit\_interval) | LSA retransmit interval. Minimum value: `1`. Maximum value: `65535`. | `number` | `5` | no |
 | <a name="input_lsa_transmit_delay"></a> [lsa\_transmit\_delay](#input\_lsa\_transmit\_delay) | LSA transmit delay. Minimum value: `1`. Maximum value: `450`. | `number` | `1` | no |
