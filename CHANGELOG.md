@@ -1,3 +1,55 @@
+## 2.0.0
+
+### New Features
+
+- BREAKING CHANGE: Move old `leaked_internal_prefixes` (class leakInternalSubnet) to `leaked_internal_subnets` and add support for new `leaked_internal_prefixes` (class leakInternalPrefix) in a VRF leaking configuration
+- BREAKING CHANGE: Add support for configuring custom monitoring policy. Previous configuration needs to be moved to explicit `common` monitoring policy
+- BREAKING CHANGE: Update default values for various management access policy attributes (`aes256_gcm`, `curve25519_sha256`, `curve25519_sha256_libssh`,`dh14_sha256`, `dh16_sha512`, `ecdh_sha2_nistp256`, `ecdh_sha2_nistp384`, `ecdh_sha2_nistp521`, `tlsv1_1`, `chacha`, `hmac_sha1`)
+- BREAKING CHANGE: Remove default values for `retries` attribute under LDAP, RADIUS and TACACS configuration. This attribute is deprecated in ACI 6.2. For pre-6.2 versions these values need to be explicitely configured
+- Terraform only: BREAKING CHANGE: Fix L4L7 logical interface unique ID. Resource key will change that will result in resource recreation.
+- Terraform only: BREAKING CHANGE: Fix DHCP relay policy to support duplicate provider IPs. Resource key will change that will result in resource recreation.
+- Add support for port channel member policy in port selectors
+- Add support for filter `match_only_fragments` attribute
+- Add support for DVS version 8.0 and future versions
+- Add support for security attributes `forged_transmit`, `mac_change` and `promiscous_mode` for floating SVI in L3Out
+- Add support for static AAEP configuration under EPG
+- Add support for HSRP interface profile and group policies
+- Add support for specifying `port_binding` type in EPG VMM Domain Association
+- Add support to configure `adjacency_type` for a service graph template device
+- Add support for VRF SNMP context and community profiles
+- Add support for remote leaf resiliency groups
+- Add support for priority flow control and port security interface policies
+- Add support for using IP SLA policy from common tenant
+- Add support for configuring `legacy_mode_vlan` under bridge domain
+- Add support for L3Out contract masters configuration
+- Add support for `port_channel_member_name` configuration under leaf interface policy group
+- Add support for OOB contract filter `action`, `priority`, `log` and `no_stats` configuration
+- Add support for configuring fault severity policies under fabric monitoring policy
+- Add support for ACI border gateway
+- Add support for multi-device service graph and device selection policy
+- Add support to attach BGP route reflector policy in pod policy group
+- Add support to attach CDP and LLDP policy in spine policy group
+- Add support for `description` under L3Out node profile
+- Add support for `mod1536`, `mod3072` and `mod4096` modulus attribute in key ring configuration
+- Add support for ACI version 6.2
+- Add support for `explicit-failover` mode in port channel policy
+- Add support for `auto_enforce` attribute in a link level policy that would enforce autonegotation
+- Add support for `unspecified` OSPF network type
+- Add dependency between VRF and SR MPLS L3Out configuration
+- Add support for removing ACI undeletable objects (`content_on_destroy`) from state management (all policies under leaf/spine interface policy groups, that previously were not possible to be removed)
+
+### Bug Fixes
+
+- Fix filter `no_stats` directive configuration
+- Fix imported device in multi-node scenario
+- Fix null value for access spine selector policy group
+- Fix password class attribute order that was failing in ACI 6.1
+- Change L3Out set rule and external EPG configuration order
+- Remove nonexistent description attribute under L4L7 device
+- Fix incorrect max value validation for set rules `metric` attribute
+- Fix VRF name suffix support in a VRF leaking configuration
+- Fix ESG IP external subnet selector to support IPv6
+
 ## 1.2.0
 
 ### New Features
