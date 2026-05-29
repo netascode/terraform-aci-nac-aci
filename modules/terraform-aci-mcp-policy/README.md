@@ -13,8 +13,13 @@ module "aci_mcp_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-mcp-policy"
   version = ">= 0.8.0"
 
-  name        = "MCP-OFF"
-  admin_state = false
+  name              = "MCP-STRICT"
+  admin_state       = true
+  per_vlan_mcp      = true
+  strict_mode       = true
+  max_vlans         = 256
+  grace_period      = 5
+  grace_period_msec = 500
 }
 ```
 
@@ -37,6 +42,11 @@ module "aci_mcp_policy" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | MCP policy name. | `string` | n/a | yes |
 | <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | Admin state. | `bool` | `true` | no |
+| <a name="input_per_vlan_mcp"></a> [per\_vlan\_mcp](#input\_per\_vlan\_mcp) | Per-VLAN MCP PDU transmission (`mcpPduPerVlan`). | `bool` | `true` | no |
+| <a name="input_strict_mode"></a> [strict\_mode](#input\_strict\_mode) | MCP strict mode (`mcpMode`). When `true`, `max_vlans` is capped at 256. | `bool` | `false` | no |
+| <a name="input_max_vlans"></a> [max\_vlans](#input\_max\_vlans) | Max VLAN counter for per-VLAN PDU bursts. Minimum value: 1. Maximum value: 2000. | `number` | `256` | no |
+| <a name="input_grace_period"></a> [grace\_period](#input\_grace\_period) | MCP strict-mode grace period in seconds. Minimum value: 0. Maximum value: 300. | `number` | `3` | no |
+| <a name="input_grace_period_msec"></a> [grace\_period\_msec](#input\_grace\_period\_msec) | MCP strict-mode grace period in milliseconds. Minimum value: 0. Maximum value: 999. | `number` | `0` | no |
 
 ## Outputs
 
