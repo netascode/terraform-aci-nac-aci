@@ -21,13 +21,13 @@ variable "per_vlan_mcp" {
 }
 
 variable "strict_mode" {
-  description = "MCP strict mode (`mcpMode`). When `true`, `max_vlans` is capped at 256."
+  description = "MCP strict mode (`mcpMode`). When `true`, emits `mcpMode=on` and strict-mode timers (requires APIC >= 5.2)."
   type        = bool
   default     = false
 }
 
 variable "max_vlans" {
-  description = "Max VLAN counter for per-VLAN PDU bursts. Minimum value: 1. Maximum value: 2000."
+  description = "Max VLAN counter for per-VLAN PDU bursts. When `strict_mode` is `true`, the effective value is capped at 256. Minimum value: 1. Maximum value: 2000."
   type        = number
   default     = 256
 
@@ -55,6 +55,39 @@ variable "grace_period_msec" {
 
   validation {
     condition     = var.grace_period_msec >= 0 && var.grace_period_msec <= 999
+    error_message = "Minimum value: 0. Maximum value: 999."
+  }
+}
+
+variable "strict_init_delay_time" {
+  description = "MCP strict-mode initial delay in seconds. Minimum value: 0. Maximum value: 1800."
+  type        = number
+  default     = 0
+
+  validation {
+    condition     = var.strict_init_delay_time >= 0 && var.strict_init_delay_time <= 1800
+    error_message = "Minimum value: 0. Maximum value: 1800."
+  }
+}
+
+variable "strict_tx_freq" {
+  description = "MCP strict-mode transmit frequency in seconds. Minimum value: 0. Maximum value: 300."
+  type        = number
+  default     = 0
+
+  validation {
+    condition     = var.strict_tx_freq >= 0 && var.strict_tx_freq <= 300
+    error_message = "Minimum value: 0. Maximum value: 300."
+  }
+}
+
+variable "strict_tx_freq_msec" {
+  description = "MCP strict-mode transmit frequency in milliseconds. Minimum value: 0. Maximum value: 999."
+  type        = number
+  default     = 500
+
+  validation {
+    condition     = var.strict_tx_freq_msec >= 0 && var.strict_tx_freq_msec <= 999
     error_message = "Minimum value: 0. Maximum value: 999."
   }
 }

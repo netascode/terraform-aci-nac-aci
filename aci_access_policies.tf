@@ -435,14 +435,17 @@ module "aci_spanning_tree_policy" {
 module "aci_mcp_policy" {
   source = "./modules/terraform-aci-mcp-policy"
 
-  for_each          = { for mcp in try(local.access_policies.interface_policies.mcp_policies, []) : mcp.name => mcp if local.modules.aci_mcp_policy && var.manage_access_policies }
-  name              = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}"
-  admin_state       = each.value.admin_state
-  per_vlan_mcp      = try(each.value.per_vlan_mcp, local.defaults.apic.access_policies.interface_policies.mcp_policies.per_vlan_mcp)
-  strict_mode       = try(each.value.strict_mode, local.defaults.apic.access_policies.interface_policies.mcp_policies.strict_mode)
-  max_vlans         = try(each.value.max_vlans, local.defaults.apic.access_policies.interface_policies.mcp_policies.max_vlans)
-  grace_period      = try(each.value.grace_period, local.defaults.apic.access_policies.interface_policies.mcp_policies.grace_period)
-  grace_period_msec = try(each.value.grace_period_msec, local.defaults.apic.access_policies.interface_policies.mcp_policies.grace_period_msec)
+  for_each               = { for mcp in try(local.access_policies.interface_policies.mcp_policies, []) : mcp.name => mcp if local.modules.aci_mcp_policy && var.manage_access_policies }
+  name                   = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}"
+  admin_state            = each.value.admin_state
+  per_vlan_mcp           = try(each.value.per_vlan_mcp, local.defaults.apic.access_policies.interface_policies.mcp_policies.per_vlan_mcp)
+  strict_mode            = try(each.value.strict_mode, local.defaults.apic.access_policies.interface_policies.mcp_policies.strict_mode)
+  max_vlans              = try(each.value.max_vlans, local.defaults.apic.access_policies.interface_policies.mcp_policies.max_vlans)
+  grace_period           = try(each.value.grace_period, local.defaults.apic.access_policies.interface_policies.mcp_policies.grace_period)
+  grace_period_msec      = try(each.value.grace_period_msec, local.defaults.apic.access_policies.interface_policies.mcp_policies.grace_period_msec)
+  strict_init_delay_time = try(each.value.strict_init_delay_time, local.defaults.apic.access_policies.interface_policies.mcp_policies.strict_init_delay_time)
+  strict_tx_freq         = try(each.value.strict_tx_freq, local.defaults.apic.access_policies.interface_policies.mcp_policies.strict_tx_freq)
+  strict_tx_freq_msec    = try(each.value.strict_tx_freq_msec, local.defaults.apic.access_policies.interface_policies.mcp_policies.strict_tx_freq_msec)
 }
 
 module "aci_l2_policy" {
