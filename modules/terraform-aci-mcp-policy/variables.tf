@@ -59,35 +59,35 @@ variable "grace_period_msec" {
   }
 }
 
-variable "strict_init_delay_time" {
+variable "initial_delay" {
   description = "MCP strict-mode initial delay in seconds. Minimum value: 0. Maximum value: 1800."
   type        = number
   default     = 0
 
   validation {
-    condition     = var.strict_init_delay_time >= 0 && var.strict_init_delay_time <= 1800
+    condition     = var.initial_delay >= 0 && var.initial_delay <= 1800
     error_message = "Minimum value: 0. Maximum value: 1800."
   }
 }
 
-variable "strict_tx_freq" {
+variable "frequency_sec" {
   description = "MCP strict-mode transmit frequency in seconds. Minimum value: 0. Maximum value: 300."
   type        = number
   default     = 0
 
   validation {
-    condition     = var.strict_tx_freq >= 0 && var.strict_tx_freq <= 300
+    condition     = var.frequency_sec >= 0 && var.frequency_sec <= 300
     error_message = "Minimum value: 0. Maximum value: 300."
   }
 }
 
-variable "strict_tx_freq_msec" {
+variable "frequency_msec" {
   description = "MCP strict-mode transmit frequency in milliseconds. Minimum value: 0. Maximum value: 999."
   type        = number
   default     = 500
 
   validation {
-    condition     = var.strict_tx_freq_msec >= 0 && var.strict_tx_freq_msec <= 999
+    condition     = var.frequency_msec >= 0 && var.frequency_msec <= 999
     error_message = "Minimum value: 0. Maximum value: 999."
   }
 }

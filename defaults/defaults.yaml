@@ -630,9 +630,9 @@ defaults:
           max_vlans: 256
           grace_period: 3
           grace_period_msec: 0
-          strict_init_delay_time: 0
-          strict_tx_freq: 0
-          strict_tx_freq_msec: 500
+          initial_delay: 0
+          frequency_sec: 0
+          frequency_msec: 500
         storm_control_policies:
           name_suffix: ""
           broadcast_burst_pps: unspecified

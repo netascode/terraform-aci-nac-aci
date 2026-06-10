@@ -11,8 +11,8 @@ resource "aci_rest_managed" "mcpIfPol" {
     mcpMode             = var.strict_mode ? "on" : null
     gracePeriod         = var.strict_mode ? var.grace_period : null
     gracePeriodMsec     = var.strict_mode ? var.grace_period_msec : null
-    strictInitDelayTime = var.strict_mode ? var.strict_init_delay_time : null
-    strictTxFreq        = var.strict_mode ? var.strict_tx_freq : null
-    strictTxFreqMsec    = var.strict_mode ? var.strict_tx_freq_msec : null
+    strictInitDelayTime = var.strict_mode ? var.initial_delay : null
+    strictTxFreq        = var.strict_mode ? var.frequency_sec : null
+    strictTxFreqMsec    = var.strict_mode ? var.frequency_msec : null
   }
 }
