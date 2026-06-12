@@ -493,6 +493,24 @@ resource "aci_rest_managed" "rtdmcRsFilterToRtMapPol_pim_inter_vrf" {
   }
 }
 
+resource "aci_rest_managed" "pimCSWPol" {
+  count      = var.pim_enabled == true && length(var.pim_config_stripe_winner_policies) > 0 ? 1 : 0
+  dn         = "${aci_rest_managed.pimCtxP[0].dn}/cswpol"
+  class_name = "pimCSWPol"
+}
+
+resource "aci_rest_managed" "pimCSWEntry" {
+  for_each   = { for pol in var.pim_config_stripe_winner_policies : "${pol.source_address}-${pol.group_prefix}" => pol if var.pim_enabled == true }
+  dn         = "${aci_rest_managed.pimCSWPol[0].dn}/src-[${each.value.source_address}]-grp-[${each.value.group_prefix}]"
+  class_name = "pimCSWEntry"
+  content = {
+    src                = each.value.source_address
+    grp                = each.value.group_prefix
+    podId              = each.value.pod
+    excludeRemoteLeafs = each.value.exclude_remote_leafs == true ? "yes" : "no"
+  }
+}
+
 resource "aci_rest_managed" "igmpCtxP" {
   count      = var.pim_enabled == true && length(var.pim_igmp_ssm_translate_policies) != 0 ? 1 : 0
   dn         = "${aci_rest_managed.fvCtx.dn}/igmpctxp"

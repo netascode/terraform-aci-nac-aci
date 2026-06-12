@@ -101,6 +101,17 @@ module "aci_vrf" {
       source_address = "4.4.4.4"
     }
   ]
+  pim_config_stripe_winner_policies = [
+    {
+      source_address       = "1.0.0.0/8"
+      group_prefix         = "224.1.0.0/24"
+      pod                  = 1
+      exclude_remote_leafs = true
+    },
+    {
+      group_prefix = "224.2.0.0/24"
+    }
+  ]
   # EPG/BD Subnets (leakInternalSubnet)
   leaked_internal_subnets = [{
     prefix = "10.1.0.0/16"
@@ -215,6 +226,7 @@ module "aci_vrf" {
 | <a name="input_pim_ssm_group_range_multicast_route_map"></a> [pim\_ssm\_group\_range\_multicast\_route\_map](#input\_pim\_ssm\_group\_range\_multicast\_route\_map) | VRF PIM SSM group range multicast route map. | `string` | `""` | no |
 | <a name="input_pim_inter_vrf_policies"></a> [pim\_inter\_vrf\_policies](#input\_pim\_inter\_vrf\_policies) | VRF PIM inter-VRF policies. | <pre>list(object({<br/>    tenant              = string<br/>    vrf                 = string<br/>    multicast_route_map = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_pim_igmp_ssm_translate_policies"></a> [pim\_igmp\_ssm\_translate\_policies](#input\_pim\_igmp\_ssm\_translate\_policies) | VRF IGMP SSM tranlate policies. | <pre>list(object({<br/>    group_prefix   = string<br/>    source_address = string<br/>  }))</pre> | `[]` | no |
+| <a name="input_pim_config_stripe_winner_policies"></a> [pim\_config\_stripe\_winner\_policies](#input\_pim\_config\_stripe\_winner\_policies) | VRF PIM Config Stripe Winner policies. | <pre>list(object({<br/>    source_address       = optional(string, "0.0.0.0/0")<br/>    group_prefix         = string<br/>    pod                  = optional(number, 1)<br/>    exclude_remote_leafs = optional(bool, false)<br/>  }))</pre> | `[]` | no |
 | <a name="input_leaked_internal_subnets"></a> [leaked\_internal\_subnets](#input\_leaked\_internal\_subnets) | List of leaked internal subnets (EPG/BD Subnets - leakInternalSubnet). Default value `public`: false. | <pre>list(object({<br/>    prefix = string<br/>    public = optional(bool, false)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>      public      = optional(bool)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_leaked_internal_prefixes"></a> [leaked\_internal\_prefixes](#input\_leaked\_internal\_prefixes) | List of leaked internal prefixes (leakInternalPrefix). Prefix-level `public` (scope) requires APIC 6.1+. Default value `public`: false. | <pre>list(object({<br/>    prefix             = string<br/>    public             = optional(bool, false)<br/>    from_prefix_length = optional(number)<br/>    to_prefix_length   = optional(number)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>      public      = optional(bool)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_leaked_external_prefixes"></a> [leaked\_external\_prefixes](#input\_leaked\_external\_prefixes) | List of leaked external prefixes. | <pre>list(object({<br/>    prefix             = string<br/>    from_prefix_length = optional(number)<br/>    to_prefix_length   = optional(number)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>    })), [])<br/>  }))</pre> | `[]` | no |
@@ -275,6 +287,8 @@ module "aci_vrf" {
 | [aci_rest_managed.pimAutoRPPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimBSRFilterPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimBSRPPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.pimCSWEntry](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.pimCSWPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimCtxP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimFabricRPPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimInterVRFEntryPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
