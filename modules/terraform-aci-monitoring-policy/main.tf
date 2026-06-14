@@ -35,3 +35,24 @@ resource "aci_rest_managed" "syslogRsDestGroup" {
     tDn = "uni/fabric/slgroup-${each.value.destination_group}"
   }
 }
+
+resource "aci_rest_managed" "tacacsSrc" {
+  for_each   = { for s in var.tacacs_policies : s.name => s }
+  dn         = "uni/fabric/moncommon/tacacssrc-${each.value.name}"
+  class_name = "tacacsSrc"
+  content = {
+    name   = each.value.name
+    descr  = each.value.description
+    incl   = join(",", concat(each.value.audit == true ? ["audit"] : [], each.value.events == true ? ["events"] : [], each.value.faults == true ? ["faults"] : [], each.value.session == true ? ["session"] : []))
+    minSev = each.value.minimum_severity
+  }
+}
+
+resource "aci_rest_managed" "tacacsRsDestGroup" {
+  for_each   = { for s in var.tacacs_policies : s.name => s if s.destination_group != "" }
+  dn         = "${aci_rest_managed.tacacsSrc[each.value.name].dn}/rsdestGroup"
+  class_name = "tacacsRsDestGroup"
+  content = {
+    tDn = "uni/fabric/tacacsgroup-${each.value.destination_group}"
+  }
+}

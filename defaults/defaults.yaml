@@ -404,6 +404,13 @@ defaults:
             severity: warnings
             admin_state: true
             mgmt_epg: inb
+        tacacs:
+          name_suffix: ""
+          destinations:
+            port: 49
+            auth_protocol: pap
+            populate_cmd_args: false
+            mgmt_epg: oob
         policies:
           name_suffix: ""
           fault_severity_policies:
@@ -420,6 +427,13 @@ defaults:
             faults: true
             session: false
             minimum_severity: warnings
+          tacacs:
+            name_suffix: ""
+            audit: true
+            events: false
+            faults: false
+            session: false
+            minimum_severity: info
       span:
         destination_groups:
           name_suffix: ""

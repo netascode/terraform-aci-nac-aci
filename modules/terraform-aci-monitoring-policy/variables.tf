@@ -49,3 +49,39 @@ variable "syslog_policies" {
   }
 }
 
+variable "tacacs_policies" {
+  description = "List of TACACS monitoring policies. Default value `audit`: true. Default value `events`: false. Default value `faults`: false. Default value `session`: false. Default value `minimum_severity`: `info`."
+  type = list(object({
+    name              = string
+    description       = optional(string, "")
+    audit             = optional(bool, true)
+    events            = optional(bool, false)
+    faults            = optional(bool, false)
+    session           = optional(bool, false)
+    minimum_severity  = optional(string, "info")
+    destination_group = optional(string, "")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for tacacs in var.tacacs_policies : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", tacacs.name))
+    ])
+    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for tacacs in var.tacacs_policies : tacacs.description == "" || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$", tacacs.description))
+    ])
+    error_message = "Allowed characters `description`: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  validation {
+    condition = alltrue([
+      for tacacs in var.tacacs_policies : contains(["cleared", "critical", "info", "major", "minor", "warning"], tacacs.minimum_severity)
+    ])
+    error_message = "`minimum_severity`: Allowed values are `cleared`, `critical`, `info`, `major`, `minor` or `warning`."
+  }
+}
+
