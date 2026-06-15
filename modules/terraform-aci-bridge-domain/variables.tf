@@ -149,6 +149,12 @@ variable "l3_multicast" {
   default     = false
 }
 
+variable "l3_multicast_ipv6" {
+  description = "L3 multicast IPv6."
+  type        = bool
+  default     = false
+}
+
 variable "pim_source_filter" {
   description = "PIM source filter."
   type        = string

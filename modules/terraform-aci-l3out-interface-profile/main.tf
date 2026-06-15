@@ -249,6 +249,21 @@ resource "aci_rest_managed" "pimRsIfPol" {
   }
 }
 
+resource "aci_rest_managed" "pimIPV6IfP" {
+  count      = var.pimv6_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.l3extLIfP.dn}/pimipv6ifp"
+  class_name = "pimIPV6IfP"
+}
+
+resource "aci_rest_managed" "pimIPV6RsIfPol" {
+  count      = var.pimv6_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.pimIPV6IfP[0].dn}/rsV6IfPol"
+  class_name = "pimRsV6IfPol"
+  content = {
+    tDn = "uni/tn-${var.tenant}/pimifpol-${var.pimv6_policy}"
+  }
+}
+
 resource "aci_rest_managed" "igmpIfP" {
   count      = var.igmp_interface_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.l3extLIfP.dn}/igmpIfP"

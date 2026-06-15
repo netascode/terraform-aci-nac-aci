@@ -510,6 +510,119 @@ resource "aci_rest_managed" "igmpSSMXlateP" {
   }
 }
 
+resource "aci_rest_managed" "pimIPV6CtxP" {
+  count      = var.pimv6_enabled == true ? 1 : 0
+  dn         = "${aci_rest_managed.fvCtx.dn}/pimipv6ctxp"
+  class_name = "pimIPV6CtxP"
+  content = {
+    mtu  = var.pimv6_mtu
+    ctrl = join(",", concat(var.pimv6_fast_convergence == true ? ["fast-conv"] : [], var.pimv6_strict_rfc == true ? ["strict-rfc-compliant"] : []))
+  }
+}
+
+resource "aci_rest_managed" "pimv6_pimResPol" {
+  count      = var.pimv6_enabled == true ? 1 : 0
+  dn         = "${aci_rest_managed.pimIPV6CtxP[0].dn}/res"
+  class_name = "pimResPol"
+  content = {
+    max  = var.pimv6_max_multicast_entries
+    rsvd = var.pimv6_reserved_multicast_entries
+  }
+
+  dynamic "child" {
+    for_each = var.pimv6_resource_policy_multicast_route_map != "" ? [0] : []
+    content {
+      rn         = "rsfilterToRtMapPol"
+      class_name = "rtdmcRsFilterToRtMapPol"
+      content = {
+        tDn = "uni/tn-${var.tenant}/rtmap-${var.pimv6_resource_policy_multicast_route_map}"
+      }
+    }
+  }
+}
+
+resource "aci_rest_managed" "pimv6_pimStaticRPPol" {
+  count      = var.pimv6_enabled == true && length(var.pimv6_static_rps) > 0 ? 1 : 0
+  dn         = "${aci_rest_managed.pimIPV6CtxP[0].dn}/staticrp"
+  class_name = "pimStaticRPPol"
+}
+
+resource "aci_rest_managed" "pimv6_pimStaticRPEntryPol" {
+  for_each   = { for rp in var.pimv6_static_rps : rp.ip => rp if var.pimv6_enabled == true }
+  dn         = "${aci_rest_managed.pimv6_pimStaticRPPol[0].dn}/staticrpent-[${each.value.ip}]"
+  class_name = "pimStaticRPEntryPol"
+  content = {
+    rpIp = each.value.ip
+  }
+}
+
+resource "aci_rest_managed" "pimv6_pimRPGrpRangePol" {
+  for_each   = { for rp in var.pimv6_static_rps : rp.ip => rp if var.pimv6_enabled == true }
+  dn         = "${aci_rest_managed.pimv6_pimStaticRPEntryPol[each.value.ip].dn}/rpgrprange"
+  class_name = "pimRPGrpRangePol"
+}
+
+resource "aci_rest_managed" "pimv6_rtdmcRsFilterToRtMapPol_static_rp" {
+  for_each   = { for rp in var.pimv6_static_rps : rp.ip => rp if var.pimv6_enabled == true && rp.multicast_route_map != "" }
+  dn         = "${aci_rest_managed.pimv6_pimRPGrpRangePol[each.value.ip].dn}/rsfilterToRtMapPol"
+  class_name = "rtdmcRsFilterToRtMapPol"
+  content = {
+    tDn = "uni/tn-${var.tenant}/rtmap-${each.value.multicast_route_map}"
+  }
+}
+
+resource "aci_rest_managed" "pimv6_pimASMPatPol" {
+  count      = var.pimv6_enabled == true ? 1 : 0
+  dn         = "${aci_rest_managed.pimIPV6CtxP[0].dn}/asmpat"
+  class_name = "pimASMPatPol"
+  content = {
+    ctrl = ""
+  }
+}
+
+resource "aci_rest_managed" "pimv6_pimRegTrPol" {
+  count      = var.pimv6_enabled == true ? 1 : 0
+  dn         = "${aci_rest_managed.pimv6_pimASMPatPol[0].dn}/regtr"
+  class_name = "pimRegTrPol"
+  content = {
+    maxRate = var.pimv6_asm_traffic_registry_max_rate
+    srcIp   = var.pimv6_asm_traffic_registry_source_ip
+  }
+}
+
+resource "aci_rest_managed" "pimv6_pimSGRangeExpPol" {
+  count      = var.pimv6_enabled == true ? 1 : 0
+  dn         = "${aci_rest_managed.pimv6_pimASMPatPol[0].dn}/sgrangeexp"
+  class_name = "pimSGRangeExpPol"
+  content = {
+    sgExpItvl = var.pimv6_asm_sg_expiry
+  }
+}
+
+resource "aci_rest_managed" "pimv6_rtdmcRsFilterToRtMapPol_sg_expiry" {
+  count      = var.pimv6_enabled == true && var.pimv6_asm_sg_expiry_multicast_route_map != "" ? 1 : 0
+  dn         = "${aci_rest_managed.pimv6_pimSGRangeExpPol[0].dn}/rsfilterToRtMapPol"
+  class_name = "rtdmcRsFilterToRtMapPol"
+  content = {
+    tDn = "uni/tn-${var.tenant}/rtmap-${var.pimv6_asm_sg_expiry_multicast_route_map}"
+  }
+}
+
+resource "aci_rest_managed" "pimv6_pimSharedRangePol" {
+  count      = var.pimv6_enabled == true && var.pimv6_asm_shared_range_multicast_route_map != "" ? 1 : 0
+  dn         = "${aci_rest_managed.pimv6_pimASMPatPol[0].dn}/sharedrange"
+  class_name = "pimSharedRangePol"
+}
+
+resource "aci_rest_managed" "pimv6_rtdmcRsFilterToRtMapPol_shared_range" {
+  count      = var.pimv6_enabled == true && var.pimv6_asm_shared_range_multicast_route_map != "" ? 1 : 0
+  dn         = "${aci_rest_managed.pimv6_pimSharedRangePol[0].dn}/rsfilterToRtMapPol"
+  class_name = "rtdmcRsFilterToRtMapPol"
+  content = {
+    tDn = "uni/tn-${var.tenant}/rtmap-${var.pimv6_asm_shared_range_multicast_route_map}"
+  }
+}
+
 resource "aci_rest_managed" "leakRoutes" {
   count      = length(var.leaked_internal_subnets) > 0 || length(var.leaked_internal_prefixes) > 0 || length(var.leaked_external_prefixes) > 0 ? 1 : 0
   dn         = "${aci_rest_managed.fvCtx.dn}/leakroutes"

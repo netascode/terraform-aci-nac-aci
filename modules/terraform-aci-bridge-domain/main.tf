@@ -26,6 +26,7 @@ resource "aci_rest_managed" "fvBD" {
     epMoveDetectMode      = var.ep_move_detection == true ? "garp" : ""
     vmac                  = var.virtual_mac
     mcastAllow            = var.l3_multicast == true ? "yes" : "no"
+    ipv6McastAllow        = var.l3_multicast_ipv6 == true ? "yes" : "no"
     multiDstPktAct        = var.multi_destination_flooding
     type                  = "regular"
     unicastRoute          = var.unicast_routing == true ? "yes" : "no"

@@ -25,6 +25,7 @@ module "aci_bridge_domain" {
   ep_move_detection          = true
   virtual_mac                = "22:22:22:22:22:22"
   l3_multicast               = true
+  l3_multicast_ipv6          = true
   multicast_arp_drop         = true
   multi_destination_flooding = "drop"
   unicast_routing            = false
@@ -101,6 +102,7 @@ module "aci_bridge_domain" {
 | <a name="input_multicast_arp_drop"></a> [multicast\_arp\_drop](#input\_multicast\_arp\_drop) | Drop ARP with Multicast SMAC. | `bool` | `null` | no |
 | <a name="input_virtual_mac"></a> [virtual\_mac](#input\_virtual\_mac) | Virtual MAC address. Format: `12:34:56:78:9A:BC`. | `string` | `"not-applicable"` | no |
 | <a name="input_l3_multicast"></a> [l3\_multicast](#input\_l3\_multicast) | L3 multicast. | `bool` | `false` | no |
+| <a name="input_l3_multicast_ipv6"></a> [l3\_multicast\_ipv6](#input\_l3\_multicast\_ipv6) | L3 multicast IPv6. | `bool` | `false` | no |
 | <a name="input_pim_source_filter"></a> [pim\_source\_filter](#input\_pim\_source\_filter) | PIM source filter. | `string` | `""` | no |
 | <a name="input_pim_destination_filter"></a> [pim\_destination\_filter](#input\_pim\_destination\_filter) | PIM destination filter. | `string` | `""` | no |
 | <a name="input_multi_destination_flooding"></a> [multi\_destination\_flooding](#input\_multi\_destination\_flooding) | Multi destination flooding. Choices: `bd-flood`, `encap-flood`, `drop`. | `string` | `"bd-flood"` | no |

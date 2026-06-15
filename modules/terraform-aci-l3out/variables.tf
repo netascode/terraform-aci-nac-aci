@@ -174,6 +174,12 @@ variable "l3_multicast_ipv4" {
   default     = false
 }
 
+variable "l3_multicast_ipv6" {
+  description = "L3 IPv6 Multicast."
+  type        = bool
+  default     = false
+}
+
 variable "target_dscp" {
   description = "Target DSCP. Choices: `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS3`, `AF31`, `AF32`, `AF33`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6`, `CS7`, `unspecified` or a number between `0` and `63`."
   type        = string

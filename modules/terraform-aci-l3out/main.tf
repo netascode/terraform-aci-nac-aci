@@ -256,11 +256,11 @@ resource "aci_rest_managed" "rtctrlRsCtxPToSubjP_export" {
 }
 
 resource "aci_rest_managed" "pimExtP" {
-  count      = var.l3_multicast_ipv4 == true ? 1 : 0
+  count      = var.l3_multicast_ipv4 == true || var.l3_multicast_ipv6 == true ? 1 : 0
   dn         = "${aci_rest_managed.l3extOut.dn}/pimextp"
   class_name = "pimExtP"
   content = {
-    enabledAf = "ipv4-mcast"
+    enabledAf = join(",", concat(var.l3_multicast_ipv4 == true ? ["ipv4-mcast"] : [], var.l3_multicast_ipv6 == true ? ["ipv6-mcast"] : []))
     name      = "pim"
   }
 }

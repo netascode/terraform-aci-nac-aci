@@ -928,6 +928,15 @@ defaults:
           asm_sg_expiry: default-timeout
           asm_traffic_registry_max_rate: 65535
           asm_traffic_registry_source_ip: "0.0.0.0"
+        pimv6:
+          mtu: 1500
+          fast_convergence: false
+          strict_rfc: false
+          max_multicast_entries: unlimited
+          reserved_multicast_entries: undefined
+          asm_sg_expiry: default-timeout
+          asm_traffic_registry_max_rate: 65535
+          asm_traffic_registry_source_ip: "::"
         preferred_group: false
         route_summarization_policies:
           name_suffix: ""
@@ -954,6 +963,7 @@ defaults:
         unicast_routing: true
         advertise_host_routes: false
         l3_multicast: false
+        l3_multicast_ipv6: false
         multicast_arp_drop: false
         dhcp_labels:
           scope: tenant
@@ -1215,6 +1225,7 @@ defaults:
           context_scope: false
           outside_scope: true
         l3_multicast_ipv4: false
+        l3_multicast_ipv6: false
         multipod: true
         remote_leaf: false
       application_profiles:
