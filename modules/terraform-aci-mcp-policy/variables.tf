@@ -21,9 +21,9 @@ variable "per_vlan_mcp" {
 }
 
 variable "strict_mode" {
-  description = "MCP strict mode (`mcpMode`). When `true`, emits `mcpMode=on` and strict-mode timers (requires APIC >= 5.2)."
+  description = "MCP strict mode (`mcpMode`). When `true`, emits `mcpMode=on` and strict-mode timers. When `false`, emits `mcpMode=off`. When `null`, omits strict-mode attributes (APIC < 5.2)."
   type        = bool
-  default     = false
+  default     = null
 }
 
 variable "max_vlans" {
@@ -43,7 +43,7 @@ variable "grace_period" {
   default     = 3
 
   validation {
-    condition     = var.grace_period >= 0 && var.grace_period <= 300
+    condition     = var.grace_period == null || (var.grace_period >= 0 && var.grace_period <= 300)
     error_message = "Minimum value: 0. Maximum value: 300."
   }
 }
@@ -54,7 +54,7 @@ variable "grace_period_msec" {
   default     = 0
 
   validation {
-    condition     = var.grace_period_msec >= 0 && var.grace_period_msec <= 999
+    condition     = var.grace_period_msec == null || (var.grace_period_msec >= 0 && var.grace_period_msec <= 999)
     error_message = "Minimum value: 0. Maximum value: 999."
   }
 }
@@ -65,7 +65,7 @@ variable "initial_delay" {
   default     = 0
 
   validation {
-    condition     = var.initial_delay >= 0 && var.initial_delay <= 1800
+    condition     = var.initial_delay == null || (var.initial_delay >= 0 && var.initial_delay <= 1800)
     error_message = "Minimum value: 0. Maximum value: 1800."
   }
 }
@@ -76,7 +76,7 @@ variable "frequency_sec" {
   default     = 0
 
   validation {
-    condition     = var.frequency_sec >= 0 && var.frequency_sec <= 300
+    condition     = var.frequency_sec == null || (var.frequency_sec >= 0 && var.frequency_sec <= 300)
     error_message = "Minimum value: 0. Maximum value: 300."
   }
 }
@@ -87,7 +87,7 @@ variable "frequency_msec" {
   default     = 500
 
   validation {
-    condition     = var.frequency_msec >= 0 && var.frequency_msec <= 999
+    condition     = var.frequency_msec == null || (var.frequency_msec >= 0 && var.frequency_msec <= 999)
     error_message = "Minimum value: 0. Maximum value: 999."
   }
 }

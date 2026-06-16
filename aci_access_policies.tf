@@ -439,13 +439,13 @@ module "aci_mcp_policy" {
   name              = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}"
   admin_state       = each.value.admin_state
   per_vlan_mcp      = try(each.value.per_vlan_mcp, local.defaults.apic.access_policies.interface_policies.mcp_policies.per_vlan_mcp)
-  strict_mode       = try(each.value.strict_mode, local.defaults.apic.access_policies.interface_policies.mcp_policies.strict_mode)
+  strict_mode       = try(each.value.strict_mode, null)
   max_vlans         = try(each.value.max_vlans, local.defaults.apic.access_policies.interface_policies.mcp_policies.max_vlans)
-  grace_period      = try(each.value.grace_period, local.defaults.apic.access_policies.interface_policies.mcp_policies.grace_period)
-  grace_period_msec = try(each.value.grace_period_msec, local.defaults.apic.access_policies.interface_policies.mcp_policies.grace_period_msec)
-  initial_delay     = try(each.value.initial_delay, local.defaults.apic.access_policies.interface_policies.mcp_policies.initial_delay)
-  frequency_sec     = try(each.value.frequency_sec, local.defaults.apic.access_policies.interface_policies.mcp_policies.frequency_sec)
-  frequency_msec    = try(each.value.frequency_msec, local.defaults.apic.access_policies.interface_policies.mcp_policies.frequency_msec)
+  grace_period      = try(each.value.strict_mode, local.defaults.apic.access_policies.interface_policies.mcp_policies.strict_mode) ? try(each.value.grace_period, local.defaults.apic.access_policies.interface_policies.mcp_policies.grace_period) : null
+  grace_period_msec = try(each.value.strict_mode, local.defaults.apic.access_policies.interface_policies.mcp_policies.strict_mode) ? try(each.value.grace_period_msec, local.defaults.apic.access_policies.interface_policies.mcp_policies.grace_period_msec) : null
+  initial_delay     = try(each.value.strict_mode, local.defaults.apic.access_policies.interface_policies.mcp_policies.strict_mode) ? try(each.value.initial_delay, local.defaults.apic.access_policies.interface_policies.mcp_policies.initial_delay) : null
+  frequency_sec     = try(each.value.strict_mode, local.defaults.apic.access_policies.interface_policies.mcp_policies.strict_mode) ? try(each.value.frequency_sec, local.defaults.apic.access_policies.interface_policies.mcp_policies.frequency_sec) : null
+  frequency_msec    = try(each.value.strict_mode, local.defaults.apic.access_policies.interface_policies.mcp_policies.strict_mode) ? try(each.value.frequency_msec, local.defaults.apic.access_policies.interface_policies.mcp_policies.frequency_msec) : null
 }
 
 module "aci_l2_policy" {
