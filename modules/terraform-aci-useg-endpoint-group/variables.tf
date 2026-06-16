@@ -113,6 +113,34 @@ variable "tags" {
   }
 }
 
+variable "tag_annotations" {
+  description = "List of tagAnnotation children on uSeg fvAEPg (key and value required). Each key must be unique within the list."
+  type = list(object({
+    key   = string
+    value = string
+  }))
+  default = []
+
+  validation {
+    condition = length(var.tag_annotations) == 0 ? true : alltrue([
+      for ta in var.tag_annotations : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", ta.key))
+    ])
+    error_message = "`key`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = length(var.tag_annotations) == 0 ? true : alltrue([
+      for ta in var.tag_annotations : ta.value != "" && length(ta.value) <= 2048
+    ])
+    error_message = "`value`: Must not be empty. Maximum characters: 2048."
+  }
+
+  validation {
+    condition     = length(distinct([for tag in var.tag_annotations : tag.key])) == length(var.tag_annotations)
+    error_message = "`tag_annotations[].key` values must be unique within the list."
+  }
+}
+
 variable "trust_control_policy" {
   description = "EPG Trust Control Policy Name."
   type        = string
