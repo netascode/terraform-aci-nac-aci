@@ -222,7 +222,7 @@ module "aci_vrf" {
 | <a name="input_endpoint_retention_policy"></a> [endpoint\_retention\_policy](#input\_endpoint\_retention\_policy) | Endpoint Retention Policy. | `string` | `""` | no |
 | <a name="input_vxlan_enabled"></a> [vxlan\_enabled](#input\_vxlan\_enabled) | VXLAN Stretch Enabled. | `bool` | n/a | yes |
 | <a name="input_border_gateway_set"></a> [border\_gateway\_set](#input\_border\_gateway\_set) | Border Gateway Policy Set name. | `string` | n/a | yes |
-| <a name="input_normalized_vni"></a> [normalized\_vni](#input\_normalized\_vni) | Normalized PC Tag. | `number` | n/a | yes |
+| <a name="input_normalized_vni"></a> [normalized\_vni](#input\_normalized\_vni) | Normalized PC Tag. | `number` | `null` | no |
 | <a name="input_vxlan_import_route_map"></a> [vxlan\_import\_route\_map](#input\_vxlan\_import\_route\_map) | Import Route Map For VXLAN VRF Stretch. | `string` | `""` | no |
 | <a name="input_vxlan_export_route_map"></a> [vxlan\_export\_route\_map](#input\_vxlan\_export\_route\_map) | Export Route Map For VXLAN VRF Stretch. | `string` | `""` | no |
 

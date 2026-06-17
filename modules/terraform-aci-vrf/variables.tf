@@ -762,9 +762,10 @@ variable "border_gateway_set" {
 variable "normalized_vni" {
   description = "Normalized PC Tag."
   type        = number
+  default     = null
 
   validation {
-    condition     = var.normalized_vni == null || (var.normalized_vni >= 1 && var.normalized_vni <= 16777215)
+    condition     = var.normalized_vni == null || try(var.normalized_vni >= 1 && var.normalized_vni <= 16777215, false)
     error_message = "Valid range: 1-16777215."
   }
 }
