@@ -52,7 +52,7 @@ module "aci_aaep" {
   routed_domains      = [for dom in try(each.value.routed_domains, []) : "${dom}${local.defaults.apic.access_policies.routed_domains.name_suffix}"]
   vmware_vmm_domains  = try(each.value.vmware_vmm_domains, [])
   nutanix_vmm_domains = try(each.value.nutanix_vmm_domains, [])
-  endpoint_groups     = [for epg in try(each.value.endpoint_groups, []) : {
+  endpoint_groups = [for epg in try(each.value.endpoint_groups, []) : {
     tenant               = epg.tenant
     application_profile  = epg.application_profile
     endpoint_group       = epg.endpoint_group
