@@ -90,6 +90,17 @@ module "aci_vrf" {
       source_address = "4.4.4.4"
     }
   ]
+  pim_config_stripe_winner_policies = [
+    {
+      source_address       = "1.0.0.0/8"
+      group_prefix         = "224.1.0.0/24"
+      pod                  = 1
+      exclude_remote_leafs = true
+    },
+    {
+      group_prefix = "224.2.0.0/24"
+    }
+  ]
   # EPG/BD Subnets (leakInternalSubnet)
   leaked_internal_subnets = [{
     prefix = "10.1.0.0/16"

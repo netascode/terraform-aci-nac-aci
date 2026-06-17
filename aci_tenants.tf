@@ -80,6 +80,12 @@ locals {
           group_prefix   = pol.group_prefix
           source_address = pol.source_address
         }]
+        pim_config_stripe_winner_policies = [for pol in try(vrf.pim.config_stripe_winner_policies, []) : {
+          source_address       = try(pol.source_address, local.defaults.apic.tenants.vrfs.pim.config_stripe_winner_policies.source_address)
+          group_prefix         = pol.group_prefix
+          pod                  = try(pol.pod, local.defaults.apic.tenants.vrfs.pim.config_stripe_winner_policies.pod)
+          exclude_remote_leafs = try(pol.exclude_remote_leafs, local.defaults.apic.tenants.vrfs.pim.config_stripe_winner_policies.exclude_remote_leafs)
+        }]
         leaked_internal_subnets = [for prefix in try(vrf.leaked_internal_subnets, []) : {
           prefix = prefix.prefix
           public = try(prefix.public, local.defaults.apic.tenants.vrfs.leaked_internal_subnets.public)
@@ -187,6 +193,7 @@ module "aci_vrf" {
   pim_ssm_group_range_multicast_route_map  = each.value.pim_ssm_group_range_multicast_route_map
   pim_inter_vrf_policies                   = each.value.pim_inter_vrf_policies
   pim_igmp_ssm_translate_policies          = each.value.pim_igmp_ssm_translate_policies
+  pim_config_stripe_winner_policies        = each.value.pim_config_stripe_winner_policies
   leaked_internal_subnets                  = each.value.leaked_internal_subnets
   leaked_internal_prefixes                 = each.value.leaked_internal_prefixes
   leaked_external_prefixes                 = each.value.leaked_external_prefixes

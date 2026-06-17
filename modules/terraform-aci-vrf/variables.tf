@@ -551,6 +551,25 @@ variable "pim_igmp_ssm_translate_policies" {
 
 }
 
+variable "pim_config_stripe_winner_policies" {
+  description = "VRF PIM Config Stripe Winner policies."
+  type = list(object({
+    source_address       = optional(string, "0.0.0.0/0")
+    group_prefix         = string
+    pod                  = optional(number, 1)
+    exclude_remote_leafs = optional(bool, false)
+  }))
+
+  validation {
+    condition = alltrue([
+      for pol in var.pim_config_stripe_winner_policies : pol.pod >= 1 && pol.pod <= 255
+    ])
+    error_message = "`pod`: Allowed values: `1`-`255`."
+  }
+
+  default = []
+}
+
 variable "leaked_internal_subnets" {
   description = "List of leaked internal subnets (EPG/BD Subnets - leakInternalSubnet). Default value `public`: false."
   type = list(object({
