@@ -840,6 +840,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-syslog-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tacacs-monitoring-destination"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-tacacs-monitoring-destination/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-system-global-gipo"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-system-global-gipo/examples/complete"]

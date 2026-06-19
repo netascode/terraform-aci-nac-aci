@@ -65,14 +65,14 @@ variable "tacacs_policies" {
 
   validation {
     condition = alltrue([
-      for tacacs in var.tacacs_policies : can(regex("^[a-zA-Z0-9_.:-]{1,64}$", tacacs.name))
+      for tacacs in var.tacacs_policies : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", tacacs.name))
     ])
     error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 
   validation {
     condition = alltrue([
-      for tacacs in var.tacacs_policies : tacacs.description == "" || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{1,128}$", tacacs.description))
+      for tacacs in var.tacacs_policies : can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", tacacs.description))
     ])
     error_message = "Allowed characters `description`: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
   }
