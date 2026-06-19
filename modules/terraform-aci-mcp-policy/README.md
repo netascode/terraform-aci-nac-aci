@@ -31,7 +31,7 @@ module "aci_mcp_policy" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | 2.19.0 |
 
 ## Providers
 
