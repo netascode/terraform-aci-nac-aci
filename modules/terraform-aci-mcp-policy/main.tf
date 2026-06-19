@@ -6,7 +6,7 @@ resource "aci_rest_managed" "mcpIfPol" {
     adminSt             = var.admin_state == true ? "enabled" : "disabled"
     mcpPduPerVlan       = var.per_vlan_mcp == true ? "on" : "off"
     maxPduPerVlanLimit  = var.max_vlans
-    mcpMode             = var.strict_mode == null ? null : (var.strict_mode ? "on" : "off")
+    mcpMode             = var.strict_mode == true ? "on" : "off"
     gracePeriod         = var.grace_period
     gracePeriodMsec     = var.grace_period_msec
     strictInitDelayTime = var.initial_delay

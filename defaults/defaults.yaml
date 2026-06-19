@@ -625,6 +625,7 @@ defaults:
           reflective_relay: false
         mcp_policies:
           name_suffix: ""
+          admin_state: false
           per_vlan_mcp: true
           strict_mode: false
           max_vlans: 256
