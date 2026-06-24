@@ -984,26 +984,19 @@ module "aci_syslog_policy" {
   }]
 }
 
-module "aci_tacacs_monitoring_destination" {
-  source = "./modules/terraform-aci-tacacs-monitoring-destination"
-
-  for_each    = { for tacacs in try(local.fabric_policies.monitoring.tacacs, []) : tacacs.name => tacacs if local.modules.aci_tacacs_monitoring_destination && var.manage_fabric_policies }
-  name        = "${each.value.name}${local.defaults.apic.fabric_policies.monitoring.tacacs.name_suffix}"
-  description = try(each.value.description, "")
-  destinations = [for dest in try(each.value.destinations, []) : {
-    name              = try(dest.name, "")
-    host              = dest.host
-    port              = try(dest.port, local.defaults.apic.fabric_policies.monitoring.tacacs.destinations.port)
-    auth_protocol     = try(dest.auth_protocol, local.defaults.apic.fabric_policies.monitoring.tacacs.destinations.auth_protocol)
-    populate_cmd_args = try(dest.populate_cmd_args, null)
-    key               = try(dest.key, null)
-    description       = try(dest.description, "")
-    mgmt_epg_type     = try(dest.mgmt_epg, local.defaults.apic.fabric_policies.monitoring.tacacs.destinations.mgmt_epg)
-    mgmt_epg_name     = try(dest.mgmt_epg, local.defaults.apic.fabric_policies.monitoring.tacacs.destinations.mgmt_epg) == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
-  }]
-}
-
 locals {
+  tacacs_monitoring_destinations = [for tacacs in try(local.fabric_policies.monitoring.tacacs, []) : {
+    name        = "${tacacs.name}${local.defaults.apic.fabric_policies.monitoring.tacacs.name_suffix}"
+    description = try(tacacs.description, "")
+    destinations = [for dest in try(tacacs.destinations, []) : {
+      hostname_ip   = dest.hostname_ip
+      port          = try(dest.port, local.defaults.apic.fabric_policies.monitoring.tacacs.destinations.port)
+      protocol      = try(dest.protocol, local.defaults.apic.fabric_policies.monitoring.tacacs.destinations.protocol)
+      key           = try(dest.key, null)
+      mgmt_epg_type = try(dest.mgmt_epg, local.defaults.apic.fabric_policies.monitoring.tacacs.destinations.mgmt_epg)
+      mgmt_epg_name = try(dest.mgmt_epg, local.defaults.apic.fabric_policies.monitoring.tacacs.destinations.mgmt_epg) == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
+    }]
+  }]
   monitoring_policies = flatten([
     for policy in try(local.fabric_policies.monitoring.policies, []) : {
       name        = policy.name == "common" ? policy.name : "${policy.name}${local.defaults.apic.fabric_policies.monitoring.policies.name_suffix}"
@@ -1023,12 +1016,7 @@ locals {
       }]
       tacacs_policies = [for tacacs_policy in try(policy.tacacs, []) : {
         name              = "${tacacs_policy.name}${local.defaults.apic.fabric_policies.monitoring.policies.tacacs.name_suffix}"
-        description       = try(tacacs_policy.description, "")
         audit             = try(tacacs_policy.audit, local.defaults.apic.fabric_policies.monitoring.policies.tacacs.audit)
-        events            = try(tacacs_policy.events, local.defaults.apic.fabric_policies.monitoring.policies.tacacs.events)
-        faults            = try(tacacs_policy.faults, local.defaults.apic.fabric_policies.monitoring.policies.tacacs.faults)
-        session           = try(tacacs_policy.session, local.defaults.apic.fabric_policies.monitoring.policies.tacacs.session)
-        minimum_severity  = try(tacacs_policy.minimum_severity, local.defaults.apic.fabric_policies.monitoring.policies.tacacs.minimum_severity)
         destination_group = try("${tacacs_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.tacacs.name_suffix}", "")
       }]
       fault_severity_policies = [for policy in try(policy.fault_severity_policies, []) : {
@@ -1043,6 +1031,16 @@ locals {
     }
   ])
 }
+
+module "aci_tacacs_monitoring_destination" {
+  source = "./modules/terraform-aci-tacacs-monitoring-destination"
+
+  for_each     = { for tacacs in local.tacacs_monitoring_destinations : tacacs.name => tacacs if local.modules.aci_tacacs_monitoring_destination && var.manage_fabric_policies }
+  name         = each.value.name
+  description  = each.value.description
+  destinations = each.value.destinations
+}
+
 module "aci_monitoring_policy_common" {
   source = "./modules/terraform-aci-monitoring-policy"
 

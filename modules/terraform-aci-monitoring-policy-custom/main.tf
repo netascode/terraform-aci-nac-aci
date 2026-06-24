@@ -64,10 +64,8 @@ resource "aci_rest_managed" "tacacsSrc" {
   dn         = "${aci_rest_managed.monFabricPol.dn}/tacacssrc-${each.value.name}"
   class_name = "tacacsSrc"
   content = {
-    name   = each.value.name
-    descr  = each.value.description
-    incl   = join(",", concat(each.value.audit == true ? ["audit"] : [], each.value.events == true ? ["events"] : [], each.value.faults == true ? ["faults"] : [], each.value.session == true ? ["session"] : []))
-    minSev = each.value.minimum_severity
+    name        = each.value.name
+    switchAudit = each.value.audit == true ? "enabled" : "disabled"
   }
 }
 

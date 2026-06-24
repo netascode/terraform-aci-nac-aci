@@ -408,8 +408,7 @@ defaults:
           name_suffix: ""
           destinations:
             port: 49
-            auth_protocol: pap
-            populate_cmd_args: false
+            protocol: pap
             mgmt_epg: oob
         policies:
           name_suffix: ""
@@ -430,10 +429,6 @@ defaults:
           tacacs:
             name_suffix: ""
             audit: true
-            events: false
-            faults: false
-            session: false
-            minimum_severity: info
       span:
         destination_groups:
           name_suffix: ""

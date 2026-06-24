@@ -16,22 +16,18 @@ module "aci_tacacs_monitoring_destination" {
   name        = "TACACS_MON1"
   description = "My Description"
   destinations = [{
-    name          = "DEST1"
-    host          = "1.1.1.1"
+    hostname_ip   = "1.1.1.1"
     port          = 49
-    auth_protocol = "pap"
+    protocol      = "pap"
     key           = "cisco123"
-    description   = "Primary TACACS Destination"
     mgmt_epg_type = "oob"
     mgmt_epg_name = "OOB1"
     }, {
-    name              = "DEST2"
-    host              = "2.2.2.2"
-    port              = 49
-    auth_protocol     = "chap"
-    populate_cmd_args = true
-    mgmt_epg_type     = "inb"
-    mgmt_epg_name     = "INB1"
+    hostname_ip   = "2.2.2.2"
+    port          = 49
+    protocol      = "chap"
+    mgmt_epg_type = "inb"
+    mgmt_epg_name = "INB1"
   }]
 }
 ```
@@ -40,14 +36,14 @@ module "aci_tacacs_monitoring_destination" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.19.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.19.0 |
 
 ## Inputs
 
@@ -55,7 +51,7 @@ module "aci_tacacs_monitoring_destination" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | TACACS monitoring destination group name. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
-| <a name="input_destinations"></a> [destinations](#input\_destinations) | List of TACACS destinations. Allowed values `port`: 1-65535. Default value `port`: 49. Choices `auth_protocol`: `pap`, `chap`, `mschap`. Default value `auth_protocol`: `pap`. Set `populate_cmd_args` only on APIC 6.0(1)+; omit for APIC 5.2. Choices `mgmt_epg_type`: `inb`, `oob`. Default value `mgmt_epg_type`: `oob`. | <pre>list(object({<br/>    name              = optional(string, "")<br/>    host              = string<br/>    port              = optional(number, 49)<br/>    auth_protocol     = optional(string, "pap")<br/>    populate_cmd_args = optional(bool)<br/>    key               = optional(string)<br/>    description       = optional(string, "")<br/>    mgmt_epg_type     = optional(string, "oob")<br/>    mgmt_epg_name     = optional(string)<br/>  }))</pre> | `[]` | no |
+| <a name="input_destinations"></a> [destinations](#input\_destinations) | List of TACACS destinations. Allowed values `port`: 1-65535. Default value `port`: 49. Choices `protocol`: `pap`, `chap`, `mschap`. Default value `protocol`: `pap`. Choices `mgmt_epg_type`: `inb`, `oob`. Default value `mgmt_epg_type`: `oob`. | <pre>list(object({<br/>    hostname_ip   = string<br/>    port          = optional(number, 49)<br/>    protocol      = optional(string, "pap")<br/>    key           = optional(string)<br/>    mgmt_epg_type = optional(string, "oob")<br/>    mgmt_epg_name = optional(string)<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 

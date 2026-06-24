@@ -20,32 +20,22 @@ variable "description" {
 }
 
 variable "destinations" {
-  description = "List of TACACS destinations. Allowed values `port`: 1-65535. Default value `port`: 49. Choices `auth_protocol`: `pap`, `chap`, `mschap`. Default value `auth_protocol`: `pap`. Set `populate_cmd_args` only on APIC 6.0(1)+; omit for APIC 5.2. Choices `mgmt_epg_type`: `inb`, `oob`. Default value `mgmt_epg_type`: `oob`."
+  description = "List of TACACS destinations. Allowed values `port`: 1-65535. Default value `port`: 49. Choices `protocol`: `pap`, `chap`, `mschap`. Default value `protocol`: `pap`. Choices `mgmt_epg_type`: `inb`, `oob`. Default value `mgmt_epg_type`: `oob`."
   type = list(object({
-    name              = optional(string, "")
-    host              = string
-    port              = optional(number, 49)
-    auth_protocol     = optional(string, "pap")
-    populate_cmd_args = optional(bool)
-    key               = optional(string)
-    description       = optional(string, "")
-    mgmt_epg_type     = optional(string, "oob")
-    mgmt_epg_name     = optional(string)
+    hostname_ip   = string
+    port          = optional(number, 49)
+    protocol      = optional(string, "pap")
+    key           = optional(string)
+    mgmt_epg_type = optional(string, "oob")
+    mgmt_epg_name = optional(string)
   }))
   default = []
 
   validation {
     condition = alltrue([
-      for d in var.destinations : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", d.name))
+      for d in var.destinations : can(regex("^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$", d.hostname_ip))
     ])
-    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
-  }
-
-  validation {
-    condition = alltrue([
-      for d in var.destinations : can(regex("^[a-zA-Z0-9:][a-zA-Z0-9.:-]{0,254}$", d.host))
-    ])
-    error_message = "Allowed characters `host`: `a`-`z`, `A`-`Z`, `0`-`9`, `.`, `:`, `-`. Maximum characters: 254."
+    error_message = "Allowed characters `hostname_ip`: `a`-`z`, `A`-`Z`, `0`-`9`, `.`, `:`, `-`. Maximum characters: 254."
   }
 
   validation {
@@ -57,9 +47,9 @@ variable "destinations" {
 
   validation {
     condition = alltrue([
-      for d in var.destinations : try(contains(["pap", "chap", "mschap"], d.auth_protocol), false)
+      for d in var.destinations : try(contains(["pap", "chap", "mschap"], d.protocol), false)
     ])
-    error_message = "`auth_protocol`: Allowed values are `pap`, `chap` or `mschap`."
+    error_message = "`protocol`: Allowed values are `pap`, `chap` or `mschap`."
   }
 
   validation {
