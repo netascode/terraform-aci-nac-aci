@@ -928,6 +928,10 @@ defaults:
           asm_sg_expiry: default-timeout
           asm_traffic_registry_max_rate: 65535
           asm_traffic_registry_source_ip: "0.0.0.0"
+          config_stripe_winner_policies:
+            source_address: "0.0.0.0/0"
+            pod: 1
+            exclude_remote_leafs: false
         pimv6:
           mtu: 1500
           fast_convergence: false

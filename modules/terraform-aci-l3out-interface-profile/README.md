@@ -27,7 +27,7 @@ module "aci_l3out_interface_profile" {
   ospf_authentication_type    = "md5"
   ospf_interface_policy       = "OSPF1"
   pim_policy                  = "PIM1"
-  pimv6_policy                = "PIM1"
+  pimv6_policy                = "PIM1v6"
   igmp_interface_policy       = "IIP"
   nd_interface_policy         = "NDIP-SUPPRESS_RA"
   qos_class                   = "level2"
@@ -118,7 +118,7 @@ module "aci_l3out_interface_profile" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | 2.20.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.15.0 |
 
 ## Inputs
 

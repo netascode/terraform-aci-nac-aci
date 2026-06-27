@@ -80,6 +80,12 @@ locals {
           group_prefix   = pol.group_prefix
           source_address = pol.source_address
         }]
+        pim_config_stripe_winner_policies = [for pol in try(vrf.pim.config_stripe_winner_policies, []) : {
+          source_address       = try(pol.source_address, local.defaults.apic.tenants.vrfs.pim.config_stripe_winner_policies.source_address)
+          group_prefix         = pol.group_prefix
+          pod                  = try(pol.pod, local.defaults.apic.tenants.vrfs.pim.config_stripe_winner_policies.pod)
+          exclude_remote_leafs = try(pol.exclude_remote_leafs, local.defaults.apic.tenants.vrfs.pim.config_stripe_winner_policies.exclude_remote_leafs)
+        }]
         pimv6_enabled                             = try(vrf.pimv6, null) != null ? true : false
         pimv6_mtu                                 = try(vrf.pimv6.mtu, local.defaults.apic.tenants.vrfs.pimv6.mtu)
         pimv6_fast_convergence                    = try(vrf.pimv6.fast_convergence, local.defaults.apic.tenants.vrfs.pimv6.fast_convergence)
@@ -203,6 +209,7 @@ module "aci_vrf" {
   pim_ssm_group_range_multicast_route_map    = each.value.pim_ssm_group_range_multicast_route_map
   pim_inter_vrf_policies                     = each.value.pim_inter_vrf_policies
   pim_igmp_ssm_translate_policies            = each.value.pim_igmp_ssm_translate_policies
+  pim_config_stripe_winner_policies          = each.value.pim_config_stripe_winner_policies
   pimv6_enabled                              = each.value.pimv6_enabled
   pimv6_mtu                                  = each.value.pimv6_mtu
   pimv6_fast_convergence                     = each.value.pimv6_fast_convergence
@@ -403,6 +410,7 @@ locals {
           bridge_domain               = try("${epg.bridge_domain}${local.defaults.apic.tenants.bridge_domains.name_suffix}", "")
           data_plane_policing_policy  = try("${epg.data_plane_policing_policy}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}", "")
           tags                        = try(epg.tags, [])
+          tag_annotations             = [for tag in try(epg.tag_annotations, []) : { key = tag.key, value = tag.value }]
           trust_control_policy        = try("${epg.trust_control_policy}${local.defaults.apic.tenants.policies.trust_control_policies.name_suffix}", "")
           contract_consumers          = try([for contract in epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_providers          = try([for contract in epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
@@ -552,6 +560,7 @@ module "aci_endpoint_group" {
   bridge_domain               = each.value.bridge_domain
   data_plane_policing_policy  = each.value.data_plane_policing_policy
   tags                        = each.value.tags
+  tag_annotations             = each.value.tag_annotations
   trust_control_policy        = each.value.trust_control_policy
   contract_consumers          = each.value.contract_consumers
   contract_providers          = each.value.contract_providers
@@ -643,6 +652,7 @@ locals {
           custom_qos_policy           = try("${useg_epg.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
           bridge_domain               = try("${useg_epg.bridge_domain}${local.defaults.apic.tenants.bridge_domains.name_suffix}", "")
           tags                        = try(useg_epg.tags, [])
+          tag_annotations             = [for tag in try(useg_epg.tag_annotations, []) : { key = tag.key, value = tag.value }]
           trust_control_policy        = try("${useg_epg.trust_control_policy}${local.defaults.apic.tenants.policies.trust_control_policies.name_suffix}", "")
           contract_consumers          = try([for contract in useg_epg.contracts.consumers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
           contract_providers          = try([for contract in useg_epg.contracts.providers : "${contract}${local.defaults.apic.tenants.contracts.name_suffix}"], [])
@@ -736,6 +746,7 @@ module "aci_useg_endpoint_group" {
   custom_qos_policy           = each.value.custom_qos_policy
   bridge_domain               = each.value.bridge_domain
   tags                        = each.value.tags
+  tag_annotations             = each.value.tag_annotations
   trust_control_policy        = each.value.trust_control_policy
   contract_consumers          = each.value.contract_consumers
   contract_providers          = each.value.contract_providers
@@ -1739,6 +1750,7 @@ locals {
             l3out                   = try("${master.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}", null)
             external_endpoint_group = "${master.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}"
           }], [])
+          tag_annotations = [for tag in try(epg.tag_annotations, []) : { key = tag.key, value = tag.value }]
           route_control_profiles = [for rcp in try(epg.route_control_profiles, []) : {
             name      = rcp.name
             direction = try(rcp.direction, local.defaults.apic.tenants.l3outs.external_endpoint_groups.route_control_profiles.direction)
@@ -1789,6 +1801,7 @@ module "aci_external_endpoint_group" {
   contract_providers          = each.value.contract_providers
   contract_imported_consumers = each.value.contract_imported_consumers
   contract_masters            = each.value.contract_masters
+  tag_annotations             = each.value.tag_annotations
   route_control_profiles      = each.value.route_control_profiles
   subnets                     = each.value.subnets
 

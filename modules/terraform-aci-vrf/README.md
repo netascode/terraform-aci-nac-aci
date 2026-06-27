@@ -101,6 +101,17 @@ module "aci_vrf" {
       source_address = "4.4.4.4"
     }
   ]
+  pim_config_stripe_winner_policies = [
+    {
+      source_address       = "1.0.0.0/8"
+      group_prefix         = "224.1.0.0/24"
+      pod                  = 1
+      exclude_remote_leafs = true
+    },
+    {
+      group_prefix = "224.2.0.0/24"
+    }
+  ]
   pimv6_enabled                             = true
   pimv6_mtu                                 = 9000
   pimv6_fast_convergence                    = true
@@ -237,6 +248,7 @@ module "aci_vrf" {
 | <a name="input_pim_ssm_group_range_multicast_route_map"></a> [pim\_ssm\_group\_range\_multicast\_route\_map](#input\_pim\_ssm\_group\_range\_multicast\_route\_map) | VRF PIM SSM group range multicast route map. | `string` | `""` | no |
 | <a name="input_pim_inter_vrf_policies"></a> [pim\_inter\_vrf\_policies](#input\_pim\_inter\_vrf\_policies) | VRF PIM inter-VRF policies. | <pre>list(object({<br/>    tenant              = string<br/>    vrf                 = string<br/>    multicast_route_map = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_pim_igmp_ssm_translate_policies"></a> [pim\_igmp\_ssm\_translate\_policies](#input\_pim\_igmp\_ssm\_translate\_policies) | VRF IGMP SSM tranlate policies. | <pre>list(object({<br/>    group_prefix   = string<br/>    source_address = string<br/>  }))</pre> | `[]` | no |
+| <a name="input_pim_config_stripe_winner_policies"></a> [pim\_config\_stripe\_winner\_policies](#input\_pim\_config\_stripe\_winner\_policies) | VRF PIM Config Stripe Winner policies. | <pre>list(object({<br/>    source_address       = optional(string, "0.0.0.0/0")<br/>    group_prefix         = string<br/>    pod                  = optional(number, 1)<br/>    exclude_remote_leafs = optional(bool, false)<br/>  }))</pre> | `[]` | no |
 | <a name="input_pimv6_enabled"></a> [pimv6\_enabled](#input\_pimv6\_enabled) | Enable PIMv6. Default value: `false`. | `bool` | `false` | no |
 | <a name="input_pimv6_mtu"></a> [pimv6\_mtu](#input\_pimv6\_mtu) | VRF PIMv6 MTU. Allowed values `1`-`9300`. Default value `1500` | `number` | `1500` | no |
 | <a name="input_pimv6_fast_convergence"></a> [pimv6\_fast\_convergence](#input\_pimv6\_fast\_convergence) | VRF PIMv6 fast convergence. Default value: `false`. | `bool` | `false` | no |
@@ -257,7 +269,7 @@ module "aci_vrf" {
 | <a name="input_endpoint_retention_policy"></a> [endpoint\_retention\_policy](#input\_endpoint\_retention\_policy) | Endpoint Retention Policy. | `string` | `""` | no |
 | <a name="input_vxlan_enabled"></a> [vxlan\_enabled](#input\_vxlan\_enabled) | VXLAN Stretch Enabled. | `bool` | n/a | yes |
 | <a name="input_border_gateway_set"></a> [border\_gateway\_set](#input\_border\_gateway\_set) | Border Gateway Policy Set name. | `string` | n/a | yes |
-| <a name="input_normalized_vni"></a> [normalized\_vni](#input\_normalized\_vni) | Normalized PC Tag. | `number` | n/a | yes |
+| <a name="input_normalized_vni"></a> [normalized\_vni](#input\_normalized\_vni) | Normalized PC Tag. | `number` | `null` | no |
 | <a name="input_vxlan_import_route_map"></a> [vxlan\_import\_route\_map](#input\_vxlan\_import\_route\_map) | Import Route Map For VXLAN VRF Stretch. | `string` | `""` | no |
 | <a name="input_vxlan_export_route_map"></a> [vxlan\_export\_route\_map](#input\_vxlan\_export\_route\_map) | Export Route Map For VXLAN VRF Stretch. | `string` | `""` | no |
 
@@ -310,6 +322,8 @@ module "aci_vrf" {
 | [aci_rest_managed.pimAutoRPPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimBSRFilterPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimBSRPPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.pimCSWEntry](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.pimCSWPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimCtxP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimFabricRPPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimIPV6CtxP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

@@ -52,7 +52,16 @@ module "aci_aaep" {
   routed_domains      = [for dom in try(each.value.routed_domains, []) : "${dom}${local.defaults.apic.access_policies.routed_domains.name_suffix}"]
   vmware_vmm_domains  = try(each.value.vmware_vmm_domains, [])
   nutanix_vmm_domains = try(each.value.nutanix_vmm_domains, [])
-  endpoint_groups     = try(each.value.endpoint_groups, [])
+  endpoint_groups = [for epg in try(each.value.endpoint_groups, []) : {
+    tenant               = epg.tenant
+    application_profile  = epg.application_profile
+    endpoint_group       = epg.endpoint_group
+    vlan                 = try(epg.vlan, null)
+    primary_vlan         = try(epg.primary_vlan, null)
+    secondary_vlan       = try(epg.secondary_vlan, null)
+    mode                 = try(epg.mode, local.defaults.apic.access_policies.aaeps.endpoint_groups.mode)
+    deployment_immediacy = try(epg.deployment_immediacy, local.defaults.apic.access_policies.aaeps.endpoint_groups.deployment_immediacy)
+  }]
 
   depends_on = [
     module.aci_physical_domain,

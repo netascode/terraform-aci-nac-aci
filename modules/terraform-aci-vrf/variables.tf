@@ -496,7 +496,6 @@ variable "pim_asm_traffic_registry_source_ip" {
   }
 }
 
-
 variable "pim_ssm_group_range_multicast_route_map" {
   description = "VRF PIM SSM group range multicast route map."
   type        = string
@@ -551,6 +550,24 @@ variable "pim_igmp_ssm_translate_policies" {
 
 }
 
+variable "pim_config_stripe_winner_policies" {
+  description = "VRF PIM Config Stripe Winner policies."
+  type = list(object({
+    source_address       = optional(string, "0.0.0.0/0")
+    group_prefix         = string
+    pod                  = optional(number, 1)
+    exclude_remote_leafs = optional(bool, false)
+  }))
+
+  validation {
+    condition = alltrue([
+      for pol in var.pim_config_stripe_winner_policies : pol.pod >= 1 && pol.pod <= 255
+    ])
+    error_message = "`pod`: Allowed values: `1`-`255`."
+  }
+
+  default = []
+}
 variable "pimv6_enabled" {
   description = "Enable PIMv6. Default value: `false`."
   type        = bool
@@ -895,9 +912,10 @@ variable "border_gateway_set" {
 variable "normalized_vni" {
   description = "Normalized PC Tag."
   type        = number
+  default     = null
 
   validation {
-    condition     = var.normalized_vni == null || (var.normalized_vni >= 1 && var.normalized_vni <= 16777215)
+    condition     = var.normalized_vni == null || try(var.normalized_vni >= 1 && var.normalized_vni <= 16777215, false)
     error_message = "Valid range: 1-16777215."
   }
 }
