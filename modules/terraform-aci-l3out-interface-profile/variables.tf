@@ -209,6 +209,7 @@ variable "interfaces" {
     ip                   = optional(string)
     svi                  = optional(bool, false)
     autostate            = optional(bool, false)
+    ipv6_dad             = optional(bool, true)
     floating_svi         = optional(bool, false)
     vlan                 = optional(number)
     mac                  = optional(string, "00:22:BD:F8:19:FF")
