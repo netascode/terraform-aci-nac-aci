@@ -997,6 +997,18 @@ locals {
       mgmt_epg_name = try(dest.mgmt_epg, local.defaults.apic.fabric_policies.monitoring.tacacs.destinations.mgmt_epg) == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
     }]
   }]
+}
+
+module "aci_tacacs_monitoring_destination" {
+  source = "./modules/terraform-aci-tacacs-monitoring-destination"
+
+  for_each     = { for tacacs in local.tacacs_monitoring_destinations : tacacs.name => tacacs if local.modules.aci_tacacs_monitoring_destination && var.manage_fabric_policies }
+  name         = each.value.name
+  description  = each.value.description
+  destinations = each.value.destinations
+}
+
+locals {
   monitoring_policies = flatten([
     for policy in try(local.fabric_policies.monitoring.policies, []) : {
       name        = policy.name == "common" ? policy.name : "${policy.name}${local.defaults.apic.fabric_policies.monitoring.policies.name_suffix}"
@@ -1030,15 +1042,6 @@ locals {
       }]
     }
   ])
-}
-
-module "aci_tacacs_monitoring_destination" {
-  source = "./modules/terraform-aci-tacacs-monitoring-destination"
-
-  for_each     = { for tacacs in local.tacacs_monitoring_destinations : tacacs.name => tacacs if local.modules.aci_tacacs_monitoring_destination && var.manage_fabric_policies }
-  name         = each.value.name
-  description  = each.value.description
-  destinations = each.value.destinations
 }
 
 module "aci_monitoring_policy_common" {

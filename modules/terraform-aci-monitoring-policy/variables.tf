@@ -50,10 +50,10 @@ variable "syslog_policies" {
 }
 
 variable "tacacs_policies" {
-  description = "List of TACACS monitoring policies. Default value `audit`: true."
+  description = "List of TACACS monitoring policies. Default value `audit`: false."
   type = list(object({
     name              = string
-    audit             = optional(bool, true)
+    audit             = optional(bool, false)
     destination_group = optional(string, "")
   }))
   default = []

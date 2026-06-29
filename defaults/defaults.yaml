@@ -428,7 +428,7 @@ defaults:
             minimum_severity: warnings
           tacacs:
             name_suffix: ""
-            audit: true
+            audit: false
       span:
         destination_groups:
           name_suffix: ""
