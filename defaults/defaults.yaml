@@ -1050,6 +1050,7 @@ defaults:
             svi: false
             multipod_direct: false
             autostate: false
+            ipv6_dad: true
             floating_svi: false
             forged_transmit: false
             mac_change: false
@@ -1144,6 +1145,7 @@ defaults:
               module: 1
               svi: false
               autostate: false
+              ipv6_dad: true
               floating_svi: false
               forged_transmit: false
               mac_change: false
