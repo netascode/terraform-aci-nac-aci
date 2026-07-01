@@ -496,7 +496,6 @@ variable "pim_asm_traffic_registry_source_ip" {
   }
 }
 
-
 variable "pim_ssm_group_range_multicast_route_map" {
   description = "VRF PIM SSM group range multicast route map."
   type        = string
@@ -568,6 +567,138 @@ variable "pim_config_stripe_winner_policies" {
   }
 
   default = []
+}
+variable "pimv6_enabled" {
+  description = "Enable PIMv6. Default value: `false`."
+  type        = bool
+  default     = false
+}
+
+variable "pimv6_mtu" {
+  description = "VRF PIMv6 MTU. Allowed values `1`-`9300`. Default value `1500`"
+  type        = number
+  default     = 1500
+
+  validation {
+    condition     = var.pimv6_mtu >= 1 && var.pimv6_mtu <= 9300
+    error_message = "Allowed values `1`-`9300`."
+  }
+}
+
+variable "pimv6_fast_convergence" {
+  description = "VRF PIMv6 fast convergence. Default value: `false`."
+  type        = bool
+  default     = false
+}
+
+variable "pimv6_strict_rfc" {
+  description = "VRF PIMv6 Strict RFC compliant. Default value: `false`."
+  type        = bool
+  default     = false
+}
+
+variable "pimv6_max_multicast_entries" {
+  description = "VRF PIMv6 maximum number of multicast entries. Allowed valued between `1`-`4294967295` or `unlimited`. Default value `unlimited."
+  type        = string
+  default     = "unlimited"
+
+  validation {
+    condition     = var.pimv6_max_multicast_entries == "unlimited" || try(tonumber(var.pimv6_max_multicast_entries) >= 1 && tonumber(var.pimv6_max_multicast_entries) <= 4294967295, false)
+    error_message = "Allowed valued between `1`-`4294967295` or `unlimited`. Default value `unlimited."
+  }
+}
+
+variable "pimv6_reserved_multicast_entries" {
+  description = "VRF PIMv6 maximum number of multicast entries. Allowed valued between `0`-`4294967295`. Default value `undefined`"
+  type        = string
+  default     = "undefined"
+
+  validation {
+    condition     = var.pimv6_reserved_multicast_entries == "undefined" || try(tonumber(var.pimv6_reserved_multicast_entries) >= 0 && tonumber(var.pimv6_reserved_multicast_entries) <= 4294967295, false)
+    error_message = "Allowed valued between `0`-`4294967295`."
+  }
+}
+
+variable "pimv6_resource_policy_multicast_route_map" {
+  description = "VRF PIMv6 resource policy multicast route map."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.pimv6_resource_policy_multicast_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "pimv6_static_rps" {
+  description = "VRF PIMv6 static RPs."
+  type = list(object({
+    ip                  = string
+    multicast_route_map = optional(string, "")
+  }))
+
+  validation {
+    condition = alltrue([
+      for rp in var.pimv6_static_rps : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", rp.multicast_route_map))
+    ])
+    error_message = "`multicast_route_map` Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+  default = []
+}
+
+variable "pimv6_asm_shared_range_multicast_route_map" {
+  description = "VRF PIMv6 ASM shared range multicast route map."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.pimv6_asm_shared_range_multicast_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "pimv6_asm_sg_expiry" {
+  description = "VRF PIMv6 ASM SG expiry timeout. Allowed values 180-604801 or `default-timeout`. Default value `default-timeout`"
+  type        = string
+  default     = "default-timeout"
+
+  validation {
+    condition     = var.pimv6_asm_sg_expiry == "default-timeout" || try(tonumber(var.pimv6_asm_sg_expiry) >= 180 && tonumber(var.pimv6_asm_sg_expiry) <= 604801, false)
+    error_message = "Allowed values between 180-604801 or `default-timeout`."
+  }
+}
+
+variable "pimv6_asm_sg_expiry_multicast_route_map" {
+  description = "VRF PIMv6 SG expiry multicast route map."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.pimv6_asm_sg_expiry_multicast_route_map))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "pimv6_asm_traffic_registry_max_rate" {
+  description = "VRF PIMv6 ASM traffic registry max rate. Allowed values bewtween `1`-`65535`. Default value `65535`"
+  type        = number
+  default     = 65535
+
+  validation {
+    condition     = var.pimv6_asm_traffic_registry_max_rate >= 1 && var.pimv6_asm_traffic_registry_max_rate <= 65535
+    error_message = "Allowed values bewtween `1`-`65535`."
+  }
+}
+
+variable "pimv6_asm_traffic_registry_source_ip" {
+  description = "VRF PIMv6 ASM traffic registry source IP (IPv6)."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.pimv6_asm_traffic_registry_source_ip))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
 }
 
 variable "leaked_internal_subnets" {

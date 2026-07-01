@@ -29,6 +29,7 @@ module "aci_l3out" {
   ospf_area_control_summary               = true
   ospf_area_control_suppress_fa           = false
   l3_multicast_ipv4                       = true
+  l3_multicast_ipv6                       = true
   target_dscp                             = "CS0"
   import_route_control_enforcement        = true
   export_route_control_enforcement        = true
@@ -106,6 +107,7 @@ module "aci_l3out" {
 | <a name="input_ospf_area_control_suppress_fa"></a> [ospf\_area\_control\_suppress\_fa](#input\_ospf\_area\_control\_suppress\_fa) | Suppress forwarding address in translated LSA. | `bool` | `false` | no |
 | <a name="input_eigrp_asn"></a> [eigrp\_asn](#input\_eigrp\_asn) | EIGRP Autonomous System Number area cost. Minimum value: 1. Maximum value: 65535. | `number` | `1` | no |
 | <a name="input_l3_multicast_ipv4"></a> [l3\_multicast\_ipv4](#input\_l3\_multicast\_ipv4) | L3 IPv4 Multicast. | `bool` | `false` | no |
+| <a name="input_l3_multicast_ipv6"></a> [l3\_multicast\_ipv6](#input\_l3\_multicast\_ipv6) | L3 IPv6 Multicast. | `bool` | `false` | no |
 | <a name="input_target_dscp"></a> [target\_dscp](#input\_target\_dscp) | Target DSCP. Choices: `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS3`, `AF31`, `AF32`, `AF33`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6`, `CS7`, `unspecified` or a number between `0` and `63`. | `string` | `"unspecified"` | no |
 | <a name="input_import_route_control_enforcement"></a> [import\_route\_control\_enforcement](#input\_import\_route\_control\_enforcement) | L3 Import Route-Control Enforcement. | `bool` | `false` | no |
 | <a name="input_export_route_control_enforcement"></a> [export\_route\_control\_enforcement](#input\_export\_route\_control\_enforcement) | L3 Export Route-Control Enforcement. | `bool` | `true` | no |

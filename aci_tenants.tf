@@ -86,6 +86,22 @@ locals {
           pod                  = try(pol.pod, local.defaults.apic.tenants.vrfs.pim.config_stripe_winner_policies.pod)
           exclude_remote_leafs = try(pol.exclude_remote_leafs, local.defaults.apic.tenants.vrfs.pim.config_stripe_winner_policies.exclude_remote_leafs)
         }]
+        pimv6_enabled                             = try(vrf.pimv6, null) != null ? true : false
+        pimv6_mtu                                 = try(vrf.pimv6.mtu, local.defaults.apic.tenants.vrfs.pimv6.mtu)
+        pimv6_fast_convergence                    = try(vrf.pimv6.fast_convergence, local.defaults.apic.tenants.vrfs.pimv6.fast_convergence)
+        pimv6_strict_rfc                          = try(vrf.pimv6.strict_rfc, local.defaults.apic.tenants.vrfs.pimv6.strict_rfc)
+        pimv6_max_multicast_entries               = try(vrf.pimv6.max_multicast_entries, local.defaults.apic.tenants.vrfs.pimv6.max_multicast_entries)
+        pimv6_reserved_multicast_entries          = try(vrf.pimv6.reserved_multicast_entries, local.defaults.apic.tenants.vrfs.pimv6.reserved_multicast_entries)
+        pimv6_resource_policy_multicast_route_map = try(vrf.pimv6.resource_policy_multicast_route_map, null) != null ? "${vrf.pimv6.resource_policy_multicast_route_map}${local.defaults.apic.tenants.policies.multicast_route_maps.name_suffix}" : ""
+        pimv6_static_rps = [for rp in try(vrf.pimv6.static_rps, []) : {
+          ip                  = rp.ip
+          multicast_route_map = try(rp.multicast_route_map, null) != null ? "${rp.multicast_route_map}${local.defaults.apic.tenants.policies.multicast_route_maps.name_suffix}" : ""
+        }]
+        pimv6_asm_shared_range_multicast_route_map = try(vrf.pimv6.asm_shared_range_multicast_route_map, null) != null ? "${vrf.pimv6.asm_shared_range_multicast_route_map}${local.defaults.apic.tenants.policies.multicast_route_maps.name_suffix}" : ""
+        pimv6_asm_sg_expiry                        = try(vrf.pimv6.asm_sg_expiry, local.defaults.apic.tenants.vrfs.pimv6.asm_sg_expiry)
+        pimv6_asm_sg_expiry_multicast_route_map    = try(vrf.pimv6.asm_sg_expiry_multicast_route_map, null) != null ? "${vrf.pimv6.asm_sg_expiry_multicast_route_map}${local.defaults.apic.tenants.policies.multicast_route_maps.name_suffix}" : ""
+        pimv6_asm_traffic_registry_max_rate        = try(vrf.pimv6.asm_traffic_registry_max_rate, local.defaults.apic.tenants.vrfs.pimv6.asm_traffic_registry_max_rate)
+        pimv6_asm_traffic_registry_source_ip       = try(vrf.pimv6.asm_traffic_registry_source_ip, local.defaults.apic.tenants.vrfs.pimv6.asm_traffic_registry_source_ip)
         leaked_internal_subnets = [for prefix in try(vrf.leaked_internal_subnets, []) : {
           prefix = prefix.prefix
           public = try(prefix.public, local.defaults.apic.tenants.vrfs.leaked_internal_subnets.public)
@@ -142,67 +158,80 @@ locals {
 module "aci_vrf" {
   source = "./modules/terraform-aci-vrf"
 
-  for_each                                 = { for vrf in local.vrfs : vrf.key => vrf if local.modules.aci_vrf && var.manage_tenants }
-  tenant                                   = each.value.tenant
-  name                                     = each.value.name
-  annotation                               = each.value.annotation
-  alias                                    = each.value.alias
-  description                              = each.value.description
-  snmp_context_name                        = each.value.snmp_context_name
-  snmp_context_community_profiles          = each.value.snmp_context_community_profiles
-  enforcement_direction                    = each.value.enforcement_direction
-  enforcement_preference                   = each.value.enforcement_preference
-  data_plane_learning                      = each.value.data_plane_learning
-  contract_consumers                       = each.value.contract_consumers
-  contract_providers                       = each.value.contract_providers
-  contract_imported_consumers              = each.value.contract_imported_consumers
-  preferred_group                          = each.value.preferred_group
-  transit_route_tag_policy                 = each.value.transit_route_tag_policy
-  endpoint_retention_policy                = each.value.endpoint_retention_policy
-  ospf_timer_policy                        = each.value.ospf_timer_policy
-  ospf_ipv4_address_family_context_policy  = each.value.ospf_ipv4_address_family_context_policy
-  ospf_ipv6_address_family_context_policy  = each.value.ospf_ipv6_address_family_context_policy
-  bgp_timer_policy                         = each.value.bgp_timer_policy
-  bgp_ipv4_address_family_context_policy   = each.value.bgp_ipv4_address_family_context_policy
-  bgp_ipv6_address_family_context_policy   = each.value.bgp_ipv6_address_family_context_policy
-  bgp_ipv4_import_route_target             = each.value.bgp_ipv4_import_route_target
-  bgp_ipv4_export_route_target             = each.value.bgp_ipv4_export_route_target
-  bgp_ipv6_import_route_target             = each.value.bgp_ipv6_import_route_target
-  bgp_ipv6_export_route_target             = each.value.bgp_ipv6_export_route_target
-  dns_labels                               = each.value.dns_labels
-  pim_enabled                              = each.value.pim_enabled
-  pim_mtu                                  = each.value.pim_mtu
-  pim_fast_convergence                     = each.value.pim_fast_convergence
-  pim_strict_rfc                           = each.value.pim_strict_rfc
-  pim_max_multicast_entries                = each.value.pim_max_multicast_entries
-  pim_reserved_multicast_entries           = each.value.pim_reserved_multicast_entries
-  pim_resource_policy_multicast_route_map  = each.value.pim_resource_policy_multicast_route_map
-  pim_static_rps                           = each.value.pim_static_rps
-  pim_fabric_rps                           = each.value.pim_fabric_rps
-  pim_bsr_listen_updates                   = each.value.pim_bsr_listen_updates
-  pim_bsr_forward_updates                  = each.value.pim_bsr_forward_updates
-  pim_bsr_filter_multicast_route_map       = each.value.pim_bsr_filter_multicast_route_map
-  pim_auto_rp_listen_updates               = each.value.pim_auto_rp_listen_updates
-  pim_auto_rp_forward_updates              = each.value.pim_auto_rp_forward_updates
-  pim_auto_rp_filter_multicast_route_map   = each.value.pim_auto_rp_filter_multicast_route_map
-  pim_asm_shared_range_multicast_route_map = each.value.pim_asm_shared_range_multicast_route_map
-  pim_asm_sg_expiry                        = each.value.pim_asm_sg_expiry
-  pim_asm_sg_expiry_multicast_route_map    = each.value.pim_asm_sg_expiry_multicast_route_map
-  pim_asm_traffic_registry_max_rate        = each.value.pim_asm_traffic_registry_max_rate
-  pim_asm_traffic_registry_source_ip       = each.value.pim_asm_traffic_registry_source_ip
-  pim_ssm_group_range_multicast_route_map  = each.value.pim_ssm_group_range_multicast_route_map
-  pim_inter_vrf_policies                   = each.value.pim_inter_vrf_policies
-  pim_igmp_ssm_translate_policies          = each.value.pim_igmp_ssm_translate_policies
-  pim_config_stripe_winner_policies        = each.value.pim_config_stripe_winner_policies
-  leaked_internal_subnets                  = each.value.leaked_internal_subnets
-  leaked_internal_prefixes                 = each.value.leaked_internal_prefixes
-  leaked_external_prefixes                 = each.value.leaked_external_prefixes
-  route_summarization_policies             = each.value.route_summarization_policies
-  vxlan_enabled                            = each.value.vxlan_enabled
-  border_gateway_set                       = each.value.border_gateway_set
-  normalized_vni                           = each.value.normalized_vni
-  vxlan_import_route_map                   = each.value.vxlan_import_route_map
-  vxlan_export_route_map                   = each.value.vxlan_export_route_map
+  for_each                                   = { for vrf in local.vrfs : vrf.key => vrf if local.modules.aci_vrf && var.manage_tenants }
+  tenant                                     = each.value.tenant
+  name                                       = each.value.name
+  annotation                                 = each.value.annotation
+  alias                                      = each.value.alias
+  description                                = each.value.description
+  snmp_context_name                          = each.value.snmp_context_name
+  snmp_context_community_profiles            = each.value.snmp_context_community_profiles
+  enforcement_direction                      = each.value.enforcement_direction
+  enforcement_preference                     = each.value.enforcement_preference
+  data_plane_learning                        = each.value.data_plane_learning
+  contract_consumers                         = each.value.contract_consumers
+  contract_providers                         = each.value.contract_providers
+  contract_imported_consumers                = each.value.contract_imported_consumers
+  preferred_group                            = each.value.preferred_group
+  transit_route_tag_policy                   = each.value.transit_route_tag_policy
+  endpoint_retention_policy                  = each.value.endpoint_retention_policy
+  ospf_timer_policy                          = each.value.ospf_timer_policy
+  ospf_ipv4_address_family_context_policy    = each.value.ospf_ipv4_address_family_context_policy
+  ospf_ipv6_address_family_context_policy    = each.value.ospf_ipv6_address_family_context_policy
+  bgp_timer_policy                           = each.value.bgp_timer_policy
+  bgp_ipv4_address_family_context_policy     = each.value.bgp_ipv4_address_family_context_policy
+  bgp_ipv6_address_family_context_policy     = each.value.bgp_ipv6_address_family_context_policy
+  bgp_ipv4_import_route_target               = each.value.bgp_ipv4_import_route_target
+  bgp_ipv4_export_route_target               = each.value.bgp_ipv4_export_route_target
+  bgp_ipv6_import_route_target               = each.value.bgp_ipv6_import_route_target
+  bgp_ipv6_export_route_target               = each.value.bgp_ipv6_export_route_target
+  dns_labels                                 = each.value.dns_labels
+  pim_enabled                                = each.value.pim_enabled
+  pim_mtu                                    = each.value.pim_mtu
+  pim_fast_convergence                       = each.value.pim_fast_convergence
+  pim_strict_rfc                             = each.value.pim_strict_rfc
+  pim_max_multicast_entries                  = each.value.pim_max_multicast_entries
+  pim_reserved_multicast_entries             = each.value.pim_reserved_multicast_entries
+  pim_resource_policy_multicast_route_map    = each.value.pim_resource_policy_multicast_route_map
+  pim_static_rps                             = each.value.pim_static_rps
+  pim_fabric_rps                             = each.value.pim_fabric_rps
+  pim_bsr_listen_updates                     = each.value.pim_bsr_listen_updates
+  pim_bsr_forward_updates                    = each.value.pim_bsr_forward_updates
+  pim_bsr_filter_multicast_route_map         = each.value.pim_bsr_filter_multicast_route_map
+  pim_auto_rp_listen_updates                 = each.value.pim_auto_rp_listen_updates
+  pim_auto_rp_forward_updates                = each.value.pim_auto_rp_forward_updates
+  pim_auto_rp_filter_multicast_route_map     = each.value.pim_auto_rp_filter_multicast_route_map
+  pim_asm_shared_range_multicast_route_map   = each.value.pim_asm_shared_range_multicast_route_map
+  pim_asm_sg_expiry                          = each.value.pim_asm_sg_expiry
+  pim_asm_sg_expiry_multicast_route_map      = each.value.pim_asm_sg_expiry_multicast_route_map
+  pim_asm_traffic_registry_max_rate          = each.value.pim_asm_traffic_registry_max_rate
+  pim_asm_traffic_registry_source_ip         = each.value.pim_asm_traffic_registry_source_ip
+  pim_ssm_group_range_multicast_route_map    = each.value.pim_ssm_group_range_multicast_route_map
+  pim_inter_vrf_policies                     = each.value.pim_inter_vrf_policies
+  pim_igmp_ssm_translate_policies            = each.value.pim_igmp_ssm_translate_policies
+  pim_config_stripe_winner_policies          = each.value.pim_config_stripe_winner_policies
+  pimv6_enabled                              = each.value.pimv6_enabled
+  pimv6_mtu                                  = each.value.pimv6_mtu
+  pimv6_fast_convergence                     = each.value.pimv6_fast_convergence
+  pimv6_strict_rfc                           = each.value.pimv6_strict_rfc
+  pimv6_max_multicast_entries                = each.value.pimv6_max_multicast_entries
+  pimv6_reserved_multicast_entries           = each.value.pimv6_reserved_multicast_entries
+  pimv6_resource_policy_multicast_route_map  = each.value.pimv6_resource_policy_multicast_route_map
+  pimv6_static_rps                           = each.value.pimv6_static_rps
+  pimv6_asm_shared_range_multicast_route_map = each.value.pimv6_asm_shared_range_multicast_route_map
+  pimv6_asm_sg_expiry                        = each.value.pimv6_asm_sg_expiry
+  pimv6_asm_sg_expiry_multicast_route_map    = each.value.pimv6_asm_sg_expiry_multicast_route_map
+  pimv6_asm_traffic_registry_max_rate        = each.value.pimv6_asm_traffic_registry_max_rate
+  pimv6_asm_traffic_registry_source_ip       = each.value.pimv6_asm_traffic_registry_source_ip
+  leaked_internal_subnets                    = each.value.leaked_internal_subnets
+  leaked_internal_prefixes                   = each.value.leaked_internal_prefixes
+  leaked_external_prefixes                   = each.value.leaked_external_prefixes
+  route_summarization_policies               = each.value.route_summarization_policies
+  vxlan_enabled                              = each.value.vxlan_enabled
+  border_gateway_set                         = each.value.border_gateway_set
+  normalized_vni                             = each.value.normalized_vni
+  vxlan_import_route_map                     = each.value.vxlan_import_route_map
+  vxlan_export_route_map                     = each.value.vxlan_export_route_map
   depends_on = [
     module.aci_tenant,
     module.aci_contract,
@@ -233,6 +262,7 @@ locals {
         clear_remote_mac_entries   = try(bd.clear_remote_mac_entries, local.defaults.apic.tenants.bridge_domains.clear_remote_mac_entries)
         multicast_arp_drop         = try(bd.multicast_arp_drop, null)
         l3_multicast               = try(bd.l3_multicast, local.defaults.apic.tenants.bridge_domains.l3_multicast)
+        l3_multicast_ipv6          = try(bd.l3_multicast_ipv6, local.defaults.apic.tenants.bridge_domains.l3_multicast_ipv6)
         pim_source_filter          = try(bd.pim_source_filter, "")
         pim_destination_filter     = try(bd.pim_destination_filter, "")
         multi_destination_flooding = try(bd.multi_destination_flooding, local.defaults.apic.tenants.bridge_domains.multi_destination_flooding)
@@ -296,6 +326,7 @@ module "aci_bridge_domain" {
   clear_remote_mac_entries   = each.value.clear_remote_mac_entries
   multicast_arp_drop         = each.value.multicast_arp_drop
   l3_multicast               = each.value.l3_multicast
+  l3_multicast_ipv6          = each.value.l3_multicast_ipv6
   pim_source_filter          = each.value.pim_source_filter
   pim_destination_filter     = each.value.pim_destination_filter
   multi_destination_flooding = each.value.multi_destination_flooding
@@ -969,6 +1000,7 @@ locals {
         eigrp                                   = try(l3out.eigrp, null) != null ? true : false
         eigrp_asn                               = try(l3out.eigrp, null) != null ? l3out.eigrp.asn : 1
         l3_multicast_ipv4                       = try(l3out.l3_multicast_ipv4, local.defaults.apic.tenants.l3outs.l3_multicast_ipv4)
+        l3_multicast_ipv6                       = try(l3out.l3_multicast_ipv6, local.defaults.apic.tenants.l3outs.l3_multicast_ipv6)
         target_dscp                             = try(l3out.target_dscp, local.defaults.apic.tenants.l3outs.target_dscp)
         import_route_control_enforcement        = try(l3out.import_route_control_enforcement, local.defaults.apic.tenants.l3outs.import_route_control_enforcement)
         export_route_control_enforcement        = try(l3out.export_route_control_enforcement, local.defaults.apic.tenants.l3outs.export_route_control_enforcement)
@@ -1049,6 +1081,7 @@ module "aci_l3out" {
   eigrp                                   = each.value.eigrp
   eigrp_asn                               = each.value.eigrp_asn
   l3_multicast_ipv4                       = each.value.l3_multicast_ipv4
+  l3_multicast_ipv6                       = each.value.l3_multicast_ipv6
   target_dscp                             = each.value.target_dscp
   import_route_control_enforcement        = each.value.import_route_control_enforcement
   export_route_control_enforcement        = each.value.export_route_control_enforcement
@@ -1363,6 +1396,7 @@ locals {
             eigrp_interface_policy             = try(ip.eigrp.interface_policy, "")
             eigrp_keychain_policy              = try(ip.eigrp.keychain_policy, "")
             pim_policy                         = try("${ip.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
+            pimv6_policy                       = try("${l3out.pimv6_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
             igmp_interface_policy              = try("${ip.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
             nd_interface_policy                = try("${ip.nd_interface_policy}${local.defaults.apic.tenants.policies.nd_interface_policies.name_suffix}", "")
             qos_class                          = try(ip.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
@@ -1473,6 +1507,7 @@ module "aci_l3out_interface_profile_manual" {
   eigrp_interface_policy             = each.value.eigrp_interface_policy
   eigrp_keychain_policy              = each.value.eigrp_keychain_policy
   pim_policy                         = each.value.pim_policy
+  pimv6_policy                       = each.value.pimv6_policy
   igmp_interface_policy              = each.value.igmp_interface_policy
   nd_interface_policy                = each.value.nd_interface_policy
   qos_class                          = each.value.qos_class
@@ -1538,6 +1573,7 @@ locals {
         eigrp_interface_profile_name       = try(l3out.eigrp.interface_profile_name, l3out.name)
         eigrp_interface_policy             = try(l3out.eigrp.interface_policy, "")
         pim_policy                         = try("${l3out.pim_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
+        pimv6_policy                       = try("${l3out.pimv6_policy}${local.defaults.apic.tenants.policies.pim_policies.name_suffix}", "")
         igmp_interface_policy              = try("${l3out.igmp_interface_policy}${local.defaults.apic.tenants.policies.igmp_interface_policies.name_suffix}", "")
         nd_interface_policy                = try("${l3out.nd_interface_policy}${local.defaults.apic.tenants.policies.nd_interface_policies.name_suffix}", "")
         qos_class                          = try(l3out.qos_class, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.qos_class)
@@ -1646,6 +1682,7 @@ module "aci_l3out_interface_profile_auto" {
   eigrp_interface_profile_name       = each.value.eigrp_interface_profile_name
   eigrp_interface_policy             = each.value.eigrp_interface_policy
   pim_policy                         = each.value.pim_policy
+  pimv6_policy                       = each.value.pimv6_policy
   igmp_interface_policy              = each.value.igmp_interface_policy
   nd_interface_policy                = each.value.nd_interface_policy
   qos_class                          = each.value.qos_class

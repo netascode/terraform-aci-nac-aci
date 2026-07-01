@@ -26,6 +26,8 @@ module "aci_l3out_interface_profile" {
   ospf_authentication_key_id  = 2
   ospf_authentication_type    = "md5"
   ospf_interface_policy       = "OSPF1"
+  pim_policy                  = "PIM1"
+  pimv6_policy                = "PIM1v6"
   igmp_interface_policy       = "IIP"
   nd_interface_policy         = "NDIP-SUPPRESS_RA"
   qos_class                   = "level2"
@@ -137,6 +139,7 @@ module "aci_l3out_interface_profile" {
 | <a name="input_eigrp_keychain_policy"></a> [eigrp\_keychain\_policy](#input\_eigrp\_keychain\_policy) | EIGRP keychain policy name. | `string` | `""` | no |
 | <a name="input_eigrp_interface_policy"></a> [eigrp\_interface\_policy](#input\_eigrp\_interface\_policy) | EIGRP interface policy name. | `string` | `""` | no |
 | <a name="input_pim_policy"></a> [pim\_policy](#input\_pim\_policy) | PIM policy name. | `string` | `""` | no |
+| <a name="input_pimv6_policy"></a> [pimv6\_policy](#input\_pimv6\_policy) | PIMv6 policy name. | `string` | `""` | no |
 | <a name="input_igmp_interface_policy"></a> [igmp\_interface\_policy](#input\_igmp\_interface\_policy) | IGMP interface policy name. | `string` | `""` | no |
 | <a name="input_nd_interface_policy"></a> [nd\_interface\_policy](#input\_nd\_interface\_policy) | ND interface policy. | `string` | `""` | no |
 | <a name="input_qos_class"></a> [qos\_class](#input\_qos\_class) | QoS class. Choices: `level1`, `level2`, `level3`, `level4`, `level5`, `level6`, `unspecified`. | `string` | `"unspecified"` | no |
@@ -209,6 +212,8 @@ module "aci_l3out_interface_profile" {
 | [aci_rest_managed.mplsRsIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.ospfIfP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.ospfRsIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.pimIPV6IfP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.pimIPV6RsIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimIfP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.pimRsIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

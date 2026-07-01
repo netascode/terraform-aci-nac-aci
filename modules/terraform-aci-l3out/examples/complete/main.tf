@@ -18,6 +18,7 @@ module "aci_l3out" {
   ospf_area_control_summary               = true
   ospf_area_control_suppress_fa           = false
   l3_multicast_ipv4                       = true
+  l3_multicast_ipv6                       = true
   target_dscp                             = "CS0"
   import_route_control_enforcement        = true
   export_route_control_enforcement        = true

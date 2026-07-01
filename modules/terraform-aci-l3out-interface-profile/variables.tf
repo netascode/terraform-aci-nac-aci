@@ -155,6 +155,17 @@ variable "pim_policy" {
   }
 }
 
+variable "pimv6_policy" {
+  description = "PIMv6 policy name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.pimv6_policy))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
 variable "igmp_interface_policy" {
   description = "IGMP interface policy name."
   type        = string

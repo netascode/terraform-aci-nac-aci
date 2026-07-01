@@ -115,6 +115,28 @@ module "aci_vrf" {
       group_prefix = "224.2.0.0/24"
     }
   ]
+  pimv6_enabled                             = true
+  pimv6_mtu                                 = 9000
+  pimv6_fast_convergence                    = true
+  pimv6_strict_rfc                          = true
+  pimv6_max_multicast_entries               = 11
+  pimv6_reserved_multicast_entries          = "9"
+  pimv6_resource_policy_multicast_route_map = "MCAST_RM7"
+  pimv6_static_rps = [
+    {
+      ip                  = "2001::1"
+      multicast_route_map = ""
+    },
+    {
+      ip                  = "2002::1"
+      multicast_route_map = "MCAST_RM8"
+    }
+  ]
+  pimv6_asm_shared_range_multicast_route_map = "MCAST_RM9"
+  pimv6_asm_sg_expiry                        = 201
+  pimv6_asm_sg_expiry_multicast_route_map    = "MCAST_RM10"
+  pimv6_asm_traffic_registry_max_rate        = 101
+  pimv6_asm_traffic_registry_source_ip       = "2001::3"
   # EPG/BD Subnets (leakInternalSubnet)
   leaked_internal_subnets = [{
     prefix = "10.1.0.0/16"

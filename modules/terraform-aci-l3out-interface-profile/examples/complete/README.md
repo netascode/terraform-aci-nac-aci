@@ -29,6 +29,8 @@ module "aci_l3out_interface_profile" {
   ospf_authentication_key_id  = 2
   ospf_authentication_type    = "md5"
   ospf_interface_policy       = "OSPF1"
+  pim_policy                  = "PIM1"
+  pimv6_policy                = "PIM1v6"
   igmp_interface_policy       = "IIP"
   nd_interface_policy         = "NDIP-SUPPRESS_RA"
   qos_class                   = "level2"
