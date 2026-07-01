@@ -60,6 +60,7 @@ module "aci_monitoring_policy_custom" {
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
 | <a name="input_snmp_trap_policies"></a> [snmp\_trap\_policies](#input\_snmp\_trap\_policies) | List of SNMP trap policies. | <pre>list(object({<br/>    name              = string<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_syslog_policies"></a> [syslog\_policies](#input\_syslog\_policies) | List of syslog policies. Default value `audit`: true. Default value `events`: true. Default value `faults`: true. Default value `session`: false. Default value `minimum_severity`: `warnings`. | <pre>list(object({<br/>    name              = string<br/>    audit             = optional(bool, true)<br/>    events            = optional(bool, true)<br/>    faults            = optional(bool, true)<br/>    session           = optional(bool, false)<br/>    minimum_severity  = optional(string, "warnings")<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
+| <a name="input_tacacs_policies"></a> [tacacs\_policies](#input\_tacacs\_policies) | List of TACACS monitoring policies. Default value `audit`: false. | <pre>list(object({<br/>    name              = string<br/>    audit             = optional(bool, false)<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_fault_severity_policies"></a> [fault\_severity\_policies](#input\_fault\_severity\_policies) | List of Fault Severity Assignment Policies. | <pre>list(object({<br/>    class = string<br/>    faults = list(object({<br/>      fault_id         = string<br/>      initial_severity = optional(string, "inherit")<br/>      target_severity  = optional(string, "inherit")<br/>      description      = optional(string, "")<br/>    }))<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
@@ -80,4 +81,6 @@ module "aci_monitoring_policy_custom" {
 | [aci_rest_managed.snmpSrc](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.syslogRsDestGroup](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.syslogSrc](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.tacacsRsDestGroup](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.tacacsSrc](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->
