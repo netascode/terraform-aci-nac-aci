@@ -75,8 +75,8 @@ variable "template" {
   default     = "aes67"
 
   validation {
-    condition     = can(contains(["aes67", "smpte", "telecom"], var.template))
-    error_message = "Allowed values: `aes67`, `smpte` or `telecom`."
+    condition     = can(contains(["aes67", "default", "smpte", "telecom"], var.template))
+    error_message = "Allowed values: `aes67`, `default`, `smpte` or `telecom`."
   }
 }
 
