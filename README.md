@@ -223,6 +223,7 @@ Additional example repositories:
 | <a name="module_aci_fabric_scheduler"></a> [aci\_fabric\_scheduler](#module\_aci\_fabric\_scheduler) | ./modules/terraform-aci-fabric-scheduler | n/a |
 | <a name="module_aci_fabric_span_destination_group"></a> [aci\_fabric\_span\_destination\_group](#module\_aci\_fabric\_span\_destination\_group) | ./modules/terraform-aci-fabric-span-destination-group | n/a |
 | <a name="module_aci_fabric_span_source_group"></a> [aci\_fabric\_span\_source\_group](#module\_aci\_fabric\_span\_source\_group) | ./modules/terraform-aci-fabric-span-source-group | n/a |
+| <a name="module_aci_fabric_spine_interface_policy_group"></a> [aci\_fabric\_spine\_interface\_policy\_group](#module\_aci\_fabric\_spine\_interface\_policy\_group) | ./modules/terraform-aci-fabric-spine-interface-policy-group | n/a |
 | <a name="module_aci_fabric_spine_interface_profile_auto"></a> [aci\_fabric\_spine\_interface\_profile\_auto](#module\_aci\_fabric\_spine\_interface\_profile\_auto) | ./modules/terraform-aci-fabric-spine-interface-profile | n/a |
 | <a name="module_aci_fabric_spine_interface_profile_manual"></a> [aci\_fabric\_spine\_interface\_profile\_manual](#module\_aci\_fabric\_spine\_interface\_profile\_manual) | ./modules/terraform-aci-fabric-spine-interface-profile | n/a |
 | <a name="module_aci_fabric_spine_interface_selector_auto"></a> [aci\_fabric\_spine\_interface\_selector\_auto](#module\_aci\_fabric\_spine\_interface\_selector\_auto) | ./modules/terraform-aci-fabric-spine-interface-selector | n/a |

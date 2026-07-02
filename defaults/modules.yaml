@@ -72,6 +72,7 @@ modules:
   aci_fabric_scheduler: true
   aci_fabric_span_destination_group: true
   aci_fabric_span_source_group: true
+  aci_fabric_spine_interface_policy_group: true
   aci_fabric_spine_interface_profile: true
   aci_fabric_spine_interface_selector: true
   aci_fabric_spine_switch_policy_group: true

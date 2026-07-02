@@ -404,6 +404,13 @@ repos:
         args:
           ["./modules/terraform-aci-fabric-span-source-group/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-fabric-spine-interface-policy-group"]
+      - id: terraform-docs-system
+        args:
+          [
+            "./modules/terraform-aci-fabric-spine-interface-policy-group/examples/complete",
+          ]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-fabric-spine-interface-profile"]
       - id: terraform-docs-system
         args:
