@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_fabric_spine_interface_policy_group" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-spine-interface-policy-group"
-  version = ">= 1.0.2"
+  version = "> 2.0.0"
 
   name              = "SPINES"
   description       = "All Spines"

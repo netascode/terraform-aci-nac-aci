@@ -1,6 +1,6 @@
 module "aci_fabric_spine_interface_policy_group" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-fabric-spine-interface-policy-group"
-  version = ">= 2.0.0"
+  version = "> 2.0.0"
 
   name              = "SPINES"
   description       = "All Spines"
