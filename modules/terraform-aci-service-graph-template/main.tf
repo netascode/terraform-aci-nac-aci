@@ -366,11 +366,11 @@ resource "aci_rest_managed" "vnsRsAbsCopyConnection_multi" {
 
 resource "aci_rest_managed" "vnsRsAbsConnectionConns_Consumer_multi" {
   for_each   = local.multi_device_mode ? local.connections_map : {}
-  dn         = each.value.consumer_node == "EPG-Consumer" ? "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsTermConn_T1.dn}]" : "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_consumer_node}/AbsFConn-consumer]"
+  dn         = each.value.consumer_node == "EPG-Consumer" ? "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsTermConn_T2.dn}]" : "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_consumer_node}/AbsFConn-consumer]"
   class_name = "vnsRsAbsConnectionConns"
   annotation = var.annotation
   content = {
-    tDn = each.value.consumer_node == "EPG-Consumer" ? aci_rest_managed.vnsAbsTermConn_T1.dn : "${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_consumer_node}/AbsFConn-consumer"
+    tDn = each.value.consumer_node == "EPG-Consumer" ? aci_rest_managed.vnsAbsTermConn_T2.dn : "${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_consumer_node}/AbsFConn-consumer"
   }
   depends_on = [
     aci_rest_managed.vnsRsAbsCopyConnection_multi
@@ -379,11 +379,11 @@ resource "aci_rest_managed" "vnsRsAbsConnectionConns_Consumer_multi" {
 
 resource "aci_rest_managed" "vnsRsAbsConnectionConns_Provider_multi" {
   for_each   = local.multi_device_mode ? local.connections_map : {}
-  dn         = each.value.provider_node == "EPG-Provider" ? "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsTermConn_T2.dn}]" : "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_provider_node}/AbsFConn-provider]"
+  dn         = each.value.provider_node == "EPG-Provider" ? "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsTermConn_T1.dn}]" : "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_provider_node}/AbsFConn-provider]"
   class_name = "vnsRsAbsConnectionConns"
   annotation = var.annotation
   content = {
-    tDn = each.value.provider_node == "EPG-Provider" ? aci_rest_managed.vnsAbsTermConn_T2.dn : "${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_provider_node}/AbsFConn-provider"
+    tDn = each.value.provider_node == "EPG-Provider" ? aci_rest_managed.vnsAbsTermConn_T1.dn : "${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_provider_node}/AbsFConn-provider"
   }
   depends_on = [
     aci_rest_managed.vnsRsAbsCopyConnection_multi
