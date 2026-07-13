@@ -25,12 +25,13 @@ module "aci_service_graph_template_multi" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-service-graph-template"
   version = "> 1.2.0"
 
-  tenant              = "ABC"
-  name                = "SGT_MULTI"
-  description         = "Multi-device service graph template"
-  template_type       = "FW_ROUTED"
-  redirect            = true
-  share_encapsulation = false
+  tenant               = "ABC"
+  name                 = "SGT_MULTI"
+  description          = "Multi-device service graph template"
+  filter_between_nodes = "filters-from-contract"
+  template_type        = "FW_ROUTED"
+  redirect             = true
+  share_encapsulation  = false
 
   devices = [
     {

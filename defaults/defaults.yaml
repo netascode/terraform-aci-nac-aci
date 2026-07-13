@@ -1850,6 +1850,7 @@ defaults:
         service_graph_templates:
           name_suffix: ""
           ndo_managed: false
+          filter_between_nodes: allow-all
           template_type: FW_ROUTED
           redirect: false
           share_encapsulation: false
