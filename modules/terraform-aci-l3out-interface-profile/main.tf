@@ -9,6 +9,7 @@ locals {
         type                     = int.type
         vlan                     = int.vlan
         autostate                = int.autostate ? "enabled" : "disabled"
+        ipv6_dad                 = int.ipv6_dad ? "enabled" : "disabled"
         mac                      = int.mac
         mode                     = int.mode
         mtu                      = int.mtu
@@ -74,6 +75,7 @@ locals {
         floating_key = "${int.node_id}/${int.vlan}"
         ip           = int.ip
         autostate    = int.autostate ? "enabled" : "disabled"
+        ipv6_dad     = int.ipv6_dad ? "enabled" : "disabled"
         description  = int.description
         vlan         = int.vlan
         mac          = int.mac
@@ -307,7 +309,7 @@ resource "aci_rest_managed" "l3extRsPathL3OutAtt" {
     ifInstT          = each.value.vlan != null ? (each.value.svi == "yes" ? "ext-svi" : "sub-interface") : "l3-port"
     autostate        = each.value.autostate
     encap            = each.value.vlan != null ? "vlan-${each.value.vlan}" : null
-    ipv6Dad          = "enabled"
+    ipv6Dad          = each.value.ipv6_dad
     llAddr           = each.value.lladdr
     mac              = each.value.mac
     mode             = each.value.mode
@@ -410,7 +412,7 @@ resource "aci_rest_managed" "l3extVirtualLIfP" {
     descr      = each.value.description
     ifInstT    = "ext-svi"
     encap      = "vlan-${each.value.vlan}"
-    ipv6Dad    = "enabled"
+    ipv6Dad    = each.value.ipv6_dad
     llAddr     = each.value.lladdr
     mac        = each.value.mac
     mode       = each.value.mode

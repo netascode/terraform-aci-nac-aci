@@ -1417,6 +1417,7 @@ locals {
               ip                   = try(int.ip, "")
               svi                  = try(int.svi, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.svi)
               autostate            = try(int.autostate, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.autostate)
+              ipv6_dad             = try(int.ipv6_dad, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.ipv6_dad)
               floating_svi         = try(int.floating_svi, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.floating_svi)
               vlan                 = try(int.vlan, null)
               description          = try(int.description, "")
@@ -1521,6 +1522,7 @@ module "aci_l3out_interface_profile_manual" {
     svi                      = int.svi
     floating_svi             = int.floating_svi
     autostate                = int.autostate
+    ipv6_dad                 = int.ipv6_dad
     vlan                     = int.vlan
     description              = int.description
     type                     = int.type
@@ -1595,6 +1597,7 @@ locals {
             ip                   = try(int.ip, "")
             svi                  = try(int.svi, local.defaults.apic.tenants.l3outs.nodes.interfaces.svi)
             autostate            = try(int.autostate, local.defaults.apic.tenants.l3outs.nodes.interfaces.autostate)
+            ipv6_dad             = try(int.ipv6_dad, local.defaults.apic.tenants.l3outs.nodes.interfaces.ipv6_dad)
             floating_svi         = try(int.floating_svi, local.defaults.apic.tenants.l3outs.node_profiles.interface_profiles.interfaces.floating_svi)
             vlan                 = try(int.vlan, null)
             description          = try(int.description, "")
@@ -1695,6 +1698,7 @@ module "aci_l3out_interface_profile_auto" {
     ip                       = int.ip
     svi                      = int.svi
     autostate                = int.autostate
+    ipv6_dad                 = int.ipv6_dad
     floating_svi             = int.floating_svi
     vlan                     = int.vlan
     description              = int.description
