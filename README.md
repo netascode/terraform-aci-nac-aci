@@ -344,6 +344,7 @@ Additional example repositories:
 | <a name="module_aci_system_global_gipo"></a> [aci\_system\_global\_gipo](#module\_aci\_system\_global\_gipo) | ./modules/terraform-aci-system-global-gipo | n/a |
 | <a name="module_aci_system_performance"></a> [aci\_system\_performance](#module\_aci\_system\_performance) | ./modules/terraform-aci-system-performance | n/a |
 | <a name="module_aci_tacacs"></a> [aci\_tacacs](#module\_aci\_tacacs) | ./modules/terraform-aci-tacacs | n/a |
+| <a name="module_aci_tacacs_monitoring_destination"></a> [aci\_tacacs\_monitoring\_destination](#module\_aci\_tacacs\_monitoring\_destination) | ./modules/terraform-aci-tacacs-monitoring-destination | n/a |
 | <a name="module_aci_tenant"></a> [aci\_tenant](#module\_aci\_tenant) | ./modules/terraform-aci-tenant | n/a |
 | <a name="module_aci_tenant_data_plane_policing_policy"></a> [aci\_tenant\_data\_plane\_policing\_policy](#module\_aci\_tenant\_data\_plane\_policing\_policy) | ./modules/terraform-aci-data-plane-policing-policy | n/a |
 | <a name="module_aci_tenant_monitoring_policy"></a> [aci\_tenant\_monitoring\_policy](#module\_aci\_tenant\_monitoring\_policy) | ./modules/terraform-aci-tenant-monitoring-policy | n/a |

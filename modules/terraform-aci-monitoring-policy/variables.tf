@@ -49,3 +49,27 @@ variable "syslog_policies" {
   }
 }
 
+variable "tacacs_policies" {
+  description = "List of TACACS monitoring policies. Default value `audit`: false."
+  type = list(object({
+    name              = string
+    audit             = optional(bool, false)
+    destination_group = optional(string, "")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for tacacs in var.tacacs_policies : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", tacacs.name))
+    ])
+    error_message = "Allowed characters `name`: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for tacacs in var.tacacs_policies : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", tacacs.destination_group))
+    ])
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+

@@ -180,6 +180,7 @@ modules:
   aci_system_global_gipo: true
   aci_system_performance: true
   aci_tacacs: true
+  aci_tacacs_monitoring_destination: true
   aci_tenant: true
   aci_tenant_netflow_exporter: true
   aci_tenant_netflow_monitor: true

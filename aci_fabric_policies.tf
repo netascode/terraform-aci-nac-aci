@@ -1000,6 +1000,30 @@ module "aci_syslog_policy" {
 }
 
 locals {
+  tacacs_monitoring_destinations = [for tacacs in try(local.fabric_policies.monitoring.tacacs, []) : {
+    name        = "${tacacs.name}${local.defaults.apic.fabric_policies.monitoring.tacacs.name_suffix}"
+    description = try(tacacs.description, "")
+    destinations = [for dest in try(tacacs.destinations, []) : {
+      hostname_ip   = dest.hostname_ip
+      port          = try(dest.port, local.defaults.apic.fabric_policies.monitoring.tacacs.destinations.port)
+      protocol      = try(dest.protocol, local.defaults.apic.fabric_policies.monitoring.tacacs.destinations.protocol)
+      key           = try(dest.key, null)
+      mgmt_epg_type = try(dest.mgmt_epg, local.defaults.apic.fabric_policies.monitoring.tacacs.destinations.mgmt_epg)
+      mgmt_epg_name = try(dest.mgmt_epg, local.defaults.apic.fabric_policies.monitoring.tacacs.destinations.mgmt_epg) == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
+    }]
+  }]
+}
+
+module "aci_tacacs_monitoring_destination" {
+  source = "./modules/terraform-aci-tacacs-monitoring-destination"
+
+  for_each     = { for tacacs in local.tacacs_monitoring_destinations : tacacs.name => tacacs if local.modules.aci_tacacs_monitoring_destination && var.manage_fabric_policies }
+  name         = each.value.name
+  description  = each.value.description
+  destinations = each.value.destinations
+}
+
+locals {
   monitoring_policies = flatten([
     for policy in try(local.fabric_policies.monitoring.policies, []) : {
       name        = policy.name == "common" ? policy.name : "${policy.name}${local.defaults.apic.fabric_policies.monitoring.policies.name_suffix}"
@@ -1017,6 +1041,11 @@ locals {
         minimum_severity  = try(syslog_policy.minimum_severity, local.defaults.apic.fabric_policies.monitoring.policies.syslogs.minimum_severity)
         destination_group = try("${syslog_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.syslogs.name_suffix}", "")
       }]
+      tacacs_policies = [for tacacs_policy in try(policy.tacacs, []) : {
+        name              = "${tacacs_policy.name}${local.defaults.apic.fabric_policies.monitoring.policies.tacacs.name_suffix}"
+        audit             = try(tacacs_policy.audit, local.defaults.apic.fabric_policies.monitoring.policies.tacacs.audit)
+        destination_group = try("${tacacs_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.tacacs.name_suffix}", "")
+      }]
       fault_severity_policies = [for policy in try(policy.fault_severity_policies, []) : {
         class = policy.class
         faults = [for fault in try(policy.faults, []) : {
@@ -1029,6 +1058,7 @@ locals {
     }
   ])
 }
+
 module "aci_monitoring_policy_common" {
   source = "./modules/terraform-aci-monitoring-policy"
 
@@ -1036,10 +1066,12 @@ module "aci_monitoring_policy_common" {
 
   snmp_trap_policies = each.value.snmp_trap_policies
   syslog_policies    = each.value.syslog_policies
+  tacacs_policies    = each.value.tacacs_policies
 
   depends_on = [
     module.aci_snmp_trap_policy,
     module.aci_syslog_policy,
+    module.aci_tacacs_monitoring_destination,
   ]
 }
 
@@ -1052,11 +1084,13 @@ module "aci_monitoring_policy_custom" {
   description             = each.value.description
   snmp_trap_policies      = each.value.snmp_trap_policies
   syslog_policies         = each.value.syslog_policies
+  tacacs_policies         = each.value.tacacs_policies
   fault_severity_policies = each.value.fault_severity_policies
 
   depends_on = [
     module.aci_snmp_trap_policy,
     module.aci_syslog_policy,
+    module.aci_tacacs_monitoring_destination,
   ]
 }
 
