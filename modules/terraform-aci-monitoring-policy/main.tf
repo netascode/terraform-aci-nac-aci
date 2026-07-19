@@ -37,7 +37,16 @@ resource "aci_rest_managed" "syslogRsDestGroup" {
 }
 
 resource "aci_rest_managed" "tacacsSrc" {
-  for_each   = { for s in var.tacacs_policies : s.name => s }
+  for_each   = { for s in var.tacacs_policies : s.name => s if !s.audit_defined }
+  dn         = "uni/fabric/moncommon/tacacssrc-${each.value.name}"
+  class_name = "tacacsSrc"
+  content = {
+    name = each.value.name
+  }
+}
+
+resource "aci_rest_managed" "tacacsSrc_audit" {
+  for_each   = { for s in var.tacacs_policies : s.name => s if s.audit_defined }
   dn         = "uni/fabric/moncommon/tacacssrc-${each.value.name}"
   class_name = "tacacsSrc"
   content = {
@@ -47,8 +56,17 @@ resource "aci_rest_managed" "tacacsSrc" {
 }
 
 resource "aci_rest_managed" "tacacsRsDestGroup" {
-  for_each   = { for s in var.tacacs_policies : s.name => s if s.destination_group != "" }
+  for_each   = { for s in var.tacacs_policies : s.name => s if s.destination_group != "" && !s.audit_defined }
   dn         = "${aci_rest_managed.tacacsSrc[each.value.name].dn}/rsdestGroup"
+  class_name = "tacacsRsDestGroup"
+  content = {
+    tDn = "uni/fabric/tacacsgroup-${each.value.destination_group}"
+  }
+}
+
+resource "aci_rest_managed" "tacacsRsDestGroup_audit" {
+  for_each   = { for s in var.tacacs_policies : s.name => s if s.destination_group != "" && s.audit_defined }
+  dn         = "${aci_rest_managed.tacacsSrc_audit[each.value.name].dn}/rsdestGroup"
   class_name = "tacacsRsDestGroup"
   content = {
     tDn = "uni/fabric/tacacsgroup-${each.value.destination_group}"

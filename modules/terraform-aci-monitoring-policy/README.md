@@ -33,14 +33,14 @@ module "aci_monitoring_policy" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.19.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.19.0 |
 
 ## Inputs
 
@@ -48,7 +48,7 @@ module "aci_monitoring_policy" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_snmp_trap_policies"></a> [snmp\_trap\_policies](#input\_snmp\_trap\_policies) | List of SNMP trap policy names. | <pre>list(object({<br/>    name              = string<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_syslog_policies"></a> [syslog\_policies](#input\_syslog\_policies) | List of syslog policies. Default value `audit`: true. Default value `events`: true. Default value `faults`: true. Default value `session`: false. Default value `minimum_severity`: `warnings`. | <pre>list(object({<br/>    name              = string<br/>    audit             = optional(bool, true)<br/>    events            = optional(bool, true)<br/>    faults            = optional(bool, true)<br/>    session           = optional(bool, false)<br/>    minimum_severity  = optional(string, "warnings")<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
-| <a name="input_tacacs_policies"></a> [tacacs\_policies](#input\_tacacs\_policies) | List of TACACS monitoring policies. Default value `audit`: false. | <pre>list(object({<br/>    name              = string<br/>    audit             = optional(bool, false)<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
+| <a name="input_tacacs_policies"></a> [tacacs\_policies](#input\_tacacs\_policies) | List of TACACS monitoring policies. Set `audit` only on APIC 6.0+ (`switchAudit` on `tacacsSrc`); omit `audit` on APIC 5.2. Default value `audit`: false when set. | <pre>list(object({<br/>    name              = string<br/>    audit_defined     = optional(bool, false)<br/>    audit             = optional(bool, false)<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -63,5 +63,7 @@ No outputs.
 | [aci_rest_managed.syslogRsDestGroup](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.syslogSrc](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.tacacsRsDestGroup](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.tacacsRsDestGroup_audit](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.tacacsSrc](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.tacacsSrc_audit](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

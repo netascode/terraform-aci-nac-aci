@@ -1043,6 +1043,7 @@ locals {
       }]
       tacacs_policies = [for tacacs_policy in try(policy.tacacs, []) : {
         name              = "${tacacs_policy.name}${local.defaults.apic.fabric_policies.monitoring.policies.tacacs.name_suffix}"
+        audit_defined     = contains(keys(tacacs_policy), "audit")
         audit             = try(tacacs_policy.audit, local.defaults.apic.fabric_policies.monitoring.policies.tacacs.audit)
         destination_group = try("${tacacs_policy.destination_group}${local.defaults.apic.fabric_policies.monitoring.tacacs.name_suffix}", "")
       }]
