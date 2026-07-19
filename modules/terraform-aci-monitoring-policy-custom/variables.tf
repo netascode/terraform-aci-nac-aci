@@ -78,9 +78,10 @@ variable "syslog_policies" {
 }
 
 variable "tacacs_policies" {
-  description = "List of TACACS monitoring policies. Default value `audit`: false."
+  description = "List of TACACS monitoring policies. Set `audit` only on APIC 6.0+ (`switchAudit` on `tacacsSrc`); omit `audit` on APIC 5.2. Default value `audit`: false when set."
   type = list(object({
     name              = string
+    audit_defined     = optional(bool, false)
     audit             = optional(bool, false)
     destination_group = optional(string, "")
   }))
