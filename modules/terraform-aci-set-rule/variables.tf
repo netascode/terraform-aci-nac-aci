@@ -206,6 +206,13 @@ variable "set_as_paths" {
     ]]))
     error_message = "`order` minimum value: `0`. Maximum value: `31`."
   }
+
+  validation {
+    condition = alltrue([
+      for c in var.set_as_paths : length([for a in c.asns : try(a.order, 0)]) == length(distinct([for a in c.asns : try(a.order, 0)]))
+    ])
+    error_message = "`asns.order` must be unique within `set_as_paths` (entries without an explicit `order` default to `0`)."
+  }
 }
 
 variable "next_hop_propagation" {

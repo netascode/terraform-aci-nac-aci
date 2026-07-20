@@ -54,14 +54,14 @@ module "aci_set_rule" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.19.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.19.0 |
 
 ## Inputs
 
