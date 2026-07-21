@@ -445,9 +445,17 @@ module "aci_spanning_tree_policy" {
 module "aci_mcp_policy" {
   source = "./modules/terraform-aci-mcp-policy"
 
-  for_each    = { for mcp in try(local.access_policies.interface_policies.mcp_policies, []) : mcp.name => mcp if local.modules.aci_mcp_policy && var.manage_access_policies }
-  name        = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}"
-  admin_state = each.value.admin_state
+  for_each          = { for mcp in try(local.access_policies.interface_policies.mcp_policies, []) : mcp.name => mcp if local.modules.aci_mcp_policy && var.manage_access_policies }
+  name              = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}"
+  admin_state       = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.mcp_policies.admin_state)
+  per_vlan_mcp      = try(each.value.per_vlan_mcp, local.defaults.apic.access_policies.interface_policies.mcp_policies.per_vlan_mcp)
+  strict_mode       = try(each.value.strict_mode, local.defaults.apic.access_policies.interface_policies.mcp_policies.strict_mode)
+  max_vlans         = try(each.value.max_vlans, local.defaults.apic.access_policies.interface_policies.mcp_policies.max_vlans)
+  grace_period      = try(each.value.grace_period, local.defaults.apic.access_policies.interface_policies.mcp_policies.grace_period)
+  grace_period_msec = try(each.value.grace_period_msec, local.defaults.apic.access_policies.interface_policies.mcp_policies.grace_period_msec)
+  initial_delay     = try(each.value.initial_delay, local.defaults.apic.access_policies.interface_policies.mcp_policies.initial_delay)
+  frequency_sec     = try(each.value.frequency_sec, local.defaults.apic.access_policies.interface_policies.mcp_policies.frequency_sec)
+  frequency_msec    = try(each.value.frequency_msec, local.defaults.apic.access_policies.interface_policies.mcp_policies.frequency_msec)
 }
 
 module "aci_l2_policy" {
