@@ -81,7 +81,7 @@ variable "tacacs_policies" {
   description = "List of TACACS monitoring policies. Default value `audit`: false."
   type = list(object({
     name              = string
-    audit             = optional(bool, false)
+    audit             = optional(bool, null)
     destination_group = optional(string, "")
   }))
   default = []
