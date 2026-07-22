@@ -25,7 +25,7 @@ variable "syslog_policies" {
   description = "List of syslog policies. Default value `audit`: true. Default value `events`: true. Default value `faults`: true. Default value `session`: false. Default value `minimum_severity`: `warnings`."
   type = list(object({
     name              = string
-    audit             = optional(bool, true)
+    audit             = optional(bool, null)
     events            = optional(bool, true)
     faults            = optional(bool, true)
     session           = optional(bool, false)
