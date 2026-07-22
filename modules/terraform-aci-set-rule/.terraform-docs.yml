@@ -1,5 +1,8 @@
 version: '>= 0.14.0'
 
+settings:
+  lockfile: false
+
 formatter: markdown table
 
 content: |-
