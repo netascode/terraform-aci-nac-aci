@@ -4105,15 +4105,16 @@ locals {
   service_graph_templates = flatten([
     for tenant in local.tenants : [
       for sgt in try(tenant.services.service_graph_templates, []) : {
-        key                 = format("%s/%s", tenant.name, sgt.name)
-        tenant              = tenant.name
-        name                = "${sgt.name}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
-        annotation          = try(sgt.ndo_managed, local.defaults.apic.tenants.services.service_graph_templates.ndo_managed) ? "orchestrator:msc-shadow:no" : null
-        description         = try(sgt.description, "")
-        alias               = try(sgt.alias, "")
-        template_type       = try(sgt.template_type, local.defaults.apic.tenants.services.service_graph_templates.template_type)
-        redirect            = try(sgt.redirect, local.defaults.apic.tenants.services.service_graph_templates.redirect)
-        share_encapsulation = try(sgt.share_encapsulation, local.defaults.apic.tenants.services.service_graph_templates.share_encapsulation)
+        key                  = format("%s/%s", tenant.name, sgt.name)
+        tenant               = tenant.name
+        name                 = "${sgt.name}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
+        annotation           = try(sgt.ndo_managed, local.defaults.apic.tenants.services.service_graph_templates.ndo_managed) ? "orchestrator:msc-shadow:no" : null
+        description          = try(sgt.description, "")
+        alias                = try(sgt.alias, "")
+        filter_between_nodes = try(sgt.filter_between_nodes, local.defaults.apic.tenants.services.service_graph_templates.filter_between_nodes)
+        template_type        = try(sgt.template_type, local.defaults.apic.tenants.services.service_graph_templates.template_type)
+        redirect             = try(sgt.redirect, local.defaults.apic.tenants.services.service_graph_templates.redirect)
+        share_encapsulation  = try(sgt.share_encapsulation, local.defaults.apic.tenants.services.service_graph_templates.share_encapsulation)
         # Legacy single-device mode fields (only used when sgt.device is defined and sgt.devices is not)
         device_name             = try("${sgt.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}", "")
         device_tenant           = try(sgt.device.tenant, tenant.name)
@@ -4162,6 +4163,7 @@ module "aci_service_graph_template" {
   annotation              = each.value.annotation
   description             = each.value.description
   alias                   = each.value.alias
+  filter_between_nodes    = each.value.filter_between_nodes
   template_type           = each.value.template_type
   redirect                = each.value.redirect
   share_encapsulation     = each.value.share_encapsulation

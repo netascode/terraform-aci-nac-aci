@@ -49,11 +49,12 @@ resource "aci_rest_managed" "vnsAbsGraph" {
   class_name = "vnsAbsGraph"
   annotation = var.annotation
   content = {
-    name           = var.name
-    descr          = var.description
-    nameAlias      = var.alias
-    type           = "legacy"
-    uiTemplateType = "UNSPECIFIED"
+    name               = var.name
+    descr              = var.description
+    nameAlias          = var.alias
+    filterBetweenNodes = var.filter_between_nodes
+    type               = "legacy"
+    uiTemplateType     = "UNSPECIFIED"
   }
 }
 

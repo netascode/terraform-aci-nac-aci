@@ -36,12 +36,13 @@ module "aci_service_graph_template_multi" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-service-graph-template"
   version = "> 1.2.0"
 
-  tenant              = "ABC"
-  name                = "SGT_MULTI"
-  description         = "Multi-device service graph template"
-  template_type       = "FW_ROUTED"
-  redirect            = true
-  share_encapsulation = false
+  tenant               = "ABC"
+  name                 = "SGT_MULTI"
+  description          = "Multi-device service graph template"
+  filter_between_nodes = "filters-from-contract"
+  template_type        = "FW_ROUTED"
+  redirect             = true
+  share_encapsulation  = false
 
   devices = [
     {
@@ -116,6 +117,7 @@ module "aci_service_graph_template_multi" {
 | <a name="input_annotation"></a> [annotation](#input\_annotation) | Annotation value. | `string` | `null` | no |
 | <a name="input_alias"></a> [alias](#input\_alias) | Alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description. | `string` | `""` | no |
+| <a name="input_filter_between_nodes"></a> [filter\_between\_nodes](#input\_filter\_between\_nodes) | Filter between nodes. Choices: `allow-all`, `filters-from-contract`. | `string` | `"allow-all"` | no |
 | <a name="input_template_type"></a> [template\_type](#input\_template\_type) | Template type. Choices: `FW_TRANS`, `FW_ROUTED`, `ADC_ONE_ARM`, `ADC_TWO_ARM`, `OTHER`, `CLOUD_NATIVE_LB`, `CLOUD_VENDOR_LB`, `CLOUD_NATIVE_FW`, `CLOUD_VENDOR_FW`. | `string` | `"OTHER"` | no |
 | <a name="input_redirect"></a> [redirect](#input\_redirect) | Redirect. | `bool` | `false` | no |
 | <a name="input_share_encapsulation"></a> [share\_encapsulation](#input\_share\_encapsulation) | Share encapsulation. | `bool` | `false` | no |

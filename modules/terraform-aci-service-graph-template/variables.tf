@@ -51,6 +51,17 @@ variable "description" {
   }
 }
 
+variable "filter_between_nodes" {
+  description = "Filter between nodes. Choices: `allow-all`, `filters-from-contract`."
+  type        = string
+  default     = "allow-all"
+
+  validation {
+    condition     = contains(["allow-all", "filters-from-contract"], var.filter_between_nodes)
+    error_message = "Allowed values are `allow-all`, `filters-from-contract`."
+  }
+}
+
 variable "template_type" {
   description = "Template type. Choices: `FW_TRANS`, `FW_ROUTED`, `ADC_ONE_ARM`, `ADC_TWO_ARM`, `OTHER`, `CLOUD_NATIVE_LB`, `CLOUD_VENDOR_LB`, `CLOUD_NATIVE_FW`, `CLOUD_VENDOR_FW`."
   type        = string
