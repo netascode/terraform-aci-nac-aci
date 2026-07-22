@@ -65,7 +65,7 @@ resource "aci_rest_managed" "tacacsSrc" {
   class_name = "tacacsSrc"
   content = {
     name        = each.value.name
-    switchAudit = each.value.audit == true ? "enabled" : "disabled"
+    switchAudit = each.value.audit == true ? "enabled" : null
   }
 }
 
