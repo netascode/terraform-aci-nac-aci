@@ -1,12 +1,13 @@
 module "aci_tenant" {
   source = "./modules/terraform-aci-tenant"
 
-  for_each         = { for tenant in local.tenants : tenant.name => tenant if try(tenant.managed, local.defaults.apic.tenants.managed, true) && local.modules.aci_tenant && var.manage_tenants }
-  name             = each.value.name
-  annotation       = try(each.value.ndo_managed, local.defaults.apic.tenants.ndo_managed) ? "orchestrator:msc" : null
-  alias            = try(each.value.alias, "")
-  description      = try(each.value.description, "")
-  security_domains = try(each.value.security_domains, [])
+  for_each          = { for tenant in local.tenants : tenant.name => tenant if try(tenant.managed, local.defaults.apic.tenants.managed, true) && local.modules.aci_tenant && var.manage_tenants }
+  name              = each.value.name
+  annotation        = try(each.value.ndo_managed, local.defaults.apic.tenants.ndo_managed) ? "orchestrator:msc" : null
+  alias             = try(each.value.alias, "")
+  description       = try(each.value.description, "")
+  security_domains  = try(each.value.security_domains, [])
+  monitoring_policy = try("${each.value.monitoring_policy}${local.defaults.apic.tenants.policies.monitoring.policies.name_suffix}", "")
 }
 
 locals {
@@ -28,6 +29,7 @@ locals {
         preferred_group                         = try(vrf.preferred_group, local.defaults.apic.tenants.vrfs.preferred_group)
         transit_route_tag_policy                = try(vrf.transit_route_tag_policy, null) != null ? "${vrf.transit_route_tag_policy}${local.defaults.apic.tenants.policies.route_tag_policies.name_suffix}" : ""
         endpoint_retention_policy               = try("${vrf.endpoint_retention_policy}${local.defaults.apic.tenants.policies.endpoint_retention_policies.name_suffix}", "")
+        monitoring_policy                       = try("${vrf.monitoring_policy}${local.defaults.apic.tenants.policies.monitoring.policies.name_suffix}", "")
         ospf_timer_policy                       = try("${vrf.ospf.timer_policy}${local.defaults.apic.tenants.policies.ospf_timer_policies.name_suffix}", "")
         ospf_ipv4_address_family_context_policy = try("${vrf.ospf.ipv4_address_family_context_policy}${local.defaults.apic.tenants.policies.ospf_timer_policies.name_suffix}", "")
         ospf_ipv6_address_family_context_policy = try("${vrf.ospf.ipv6_address_family_context_policy}${local.defaults.apic.tenants.policies.ospf_timer_policies.name_suffix}", "")
@@ -175,6 +177,7 @@ module "aci_vrf" {
   preferred_group                            = each.value.preferred_group
   transit_route_tag_policy                   = each.value.transit_route_tag_policy
   endpoint_retention_policy                  = each.value.endpoint_retention_policy
+  monitoring_policy                          = each.value.monitoring_policy
   ospf_timer_policy                          = each.value.ospf_timer_policy
   ospf_ipv4_address_family_context_policy    = each.value.ospf_ipv4_address_family_context_policy
   ospf_ipv6_address_family_context_policy    = each.value.ospf_ipv6_address_family_context_policy
@@ -362,12 +365,13 @@ locals {
   application_profiles = flatten([
     for tenant in local.tenants : [
       for ap in try(tenant.application_profiles, []) : {
-        key         = format("%s/%s", tenant.name, ap.name)
-        tenant      = tenant.name
-        name        = "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}"
-        annotation  = try(ap.ndo_managed, local.defaults.apic.tenants.application_profiles.ndo_managed) ? "orchestrator:msc-shadow:no" : null
-        alias       = try(ap.alias, "")
-        description = try(ap.description, "")
+        key               = format("%s/%s", tenant.name, ap.name)
+        tenant            = tenant.name
+        name              = "${ap.name}${local.defaults.apic.tenants.application_profiles.name_suffix}"
+        annotation        = try(ap.ndo_managed, local.defaults.apic.tenants.application_profiles.ndo_managed) ? "orchestrator:msc-shadow:no" : null
+        alias             = try(ap.alias, "")
+        description       = try(ap.description, "")
+        monitoring_policy = try("${ap.monitoring_policy}${local.defaults.apic.tenants.policies.monitoring.policies.name_suffix}", "")
       } if try(ap.managed, local.defaults.apic.tenants.application_profiles.managed, true)
     ]
   ])
@@ -376,12 +380,13 @@ locals {
 module "aci_application_profile" {
   source = "./modules/terraform-aci-application-profile"
 
-  for_each    = { for ap in local.application_profiles : ap.key => ap if local.modules.aci_application_profile && var.manage_tenants }
-  tenant      = each.value.tenant
-  name        = each.value.name
-  annotation  = each.value.annotation
-  alias       = each.value.alias
-  description = each.value.description
+  for_each          = { for ap in local.application_profiles : ap.key => ap if local.modules.aci_application_profile && var.manage_tenants }
+  tenant            = each.value.tenant
+  name              = each.value.name
+  annotation        = each.value.annotation
+  alias             = each.value.alias
+  description       = each.value.description
+  monitoring_policy = each.value.monitoring_policy
 
   depends_on = [
     module.aci_tenant
@@ -409,6 +414,7 @@ locals {
           custom_qos_policy           = try("${epg.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
           bridge_domain               = try("${epg.bridge_domain}${local.defaults.apic.tenants.bridge_domains.name_suffix}", "")
           data_plane_policing_policy  = try("${epg.data_plane_policing_policy}${local.defaults.apic.tenants.policies.data_plane_policing_policies.name_suffix}", "")
+          monitoring_policy           = try("${epg.monitoring_policy}${local.defaults.apic.tenants.policies.monitoring.policies.name_suffix}", "")
           tags                        = try(epg.tags, [])
           tag_annotations             = [for tag in try(epg.tag_annotations, []) : { key = tag.key, value = tag.value }]
           trust_control_policy        = try("${epg.trust_control_policy}${local.defaults.apic.tenants.policies.trust_control_policies.name_suffix}", "")
@@ -559,6 +565,7 @@ module "aci_endpoint_group" {
   custom_qos_policy           = each.value.custom_qos_policy
   bridge_domain               = each.value.bridge_domain
   data_plane_policing_policy  = each.value.data_plane_policing_policy
+  monitoring_policy           = each.value.monitoring_policy
   tags                        = each.value.tags
   tag_annotations             = each.value.tag_annotations
   trust_control_policy        = each.value.trust_control_policy
@@ -650,6 +657,7 @@ locals {
           preferred_group             = try(useg_epg.preferred_group, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.preferred_group)
           qos_class                   = try(useg_epg.qos_class, local.defaults.apic.tenants.application_profiles.useg_endpoint_groups.qos_class)
           custom_qos_policy           = try("${useg_epg.custom_qos_policy}${local.defaults.apic.tenants.policies.custom_qos.name_suffix}", "")
+          monitoring_policy           = try("${useg_epg.monitoring_policy}${local.defaults.apic.tenants.policies.monitoring.policies.name_suffix}", "")
           bridge_domain               = try("${useg_epg.bridge_domain}${local.defaults.apic.tenants.bridge_domains.name_suffix}", "")
           tags                        = try(useg_epg.tags, [])
           tag_annotations             = [for tag in try(useg_epg.tag_annotations, []) : { key = tag.key, value = tag.value }]
@@ -744,6 +752,7 @@ module "aci_useg_endpoint_group" {
   preferred_group             = each.value.preferred_group
   qos_class                   = each.value.qos_class
   custom_qos_policy           = each.value.custom_qos_policy
+  monitoring_policy           = each.value.monitoring_policy
   bridge_domain               = each.value.bridge_domain
   tags                        = each.value.tags
   tag_annotations             = each.value.tag_annotations
