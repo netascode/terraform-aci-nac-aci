@@ -773,6 +773,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-redirect-policy/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-remote-leaf-pod-redundancy-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-remote-leaf-pod-redundancy-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-remote-location"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-remote-location/examples/complete"]

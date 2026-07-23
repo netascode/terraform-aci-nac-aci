@@ -319,6 +319,7 @@ Additional example repositories:
 | <a name="module_aci_redirect_backup_policy"></a> [aci\_redirect\_backup\_policy](#module\_aci\_redirect\_backup\_policy) | ./modules/terraform-aci-redirect-backup-policy | n/a |
 | <a name="module_aci_redirect_health_group"></a> [aci\_redirect\_health\_group](#module\_aci\_redirect\_health\_group) | ./modules/terraform-aci-redirect-health-group | n/a |
 | <a name="module_aci_redirect_policy"></a> [aci\_redirect\_policy](#module\_aci\_redirect\_policy) | ./modules/terraform-aci-redirect-policy | n/a |
+| <a name="module_aci_remote_leaf_pod_redundancy_policy"></a> [aci\_remote\_leaf\_pod\_redundancy\_policy](#module\_aci\_remote\_leaf\_pod\_redundancy\_policy) | ./modules/terraform-aci-remote-leaf-pod-redundancy-policy | n/a |
 | <a name="module_aci_remote_location"></a> [aci\_remote\_location](#module\_aci\_remote\_location) | ./modules/terraform-aci-remote-location | n/a |
 | <a name="module_aci_rogue_endpoint_control"></a> [aci\_rogue\_endpoint\_control](#module\_aci\_rogue\_endpoint\_control) | ./modules/terraform-aci-rogue-endpoint-control | n/a |
 | <a name="module_aci_route_control_route_map"></a> [aci\_route\_control\_route\_map](#module\_aci\_route\_control\_route\_map) | ./modules/terraform-aci-route-control-route-map | n/a |
