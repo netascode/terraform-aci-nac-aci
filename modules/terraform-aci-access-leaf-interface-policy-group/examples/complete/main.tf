@@ -13,6 +13,7 @@ module "aci_access_leaf_interface_policy_group" {
   mcp_policy                 = "MCP-ON"
   l2_policy                  = "PORT-LOCAL"
   storm_control_policy       = "10P"
+  monitoring_policy          = "MONITOR-POL1"
   port_channel_policy        = "LACP"
   port_channel_member_name   = "PG-Member"
   port_channel_member_policy = "FAST"
