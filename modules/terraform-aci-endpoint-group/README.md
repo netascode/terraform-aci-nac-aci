@@ -169,6 +169,7 @@ module "aci_endpoint_group" {
 | <a name="input_l4l7_virtual_ips"></a> [l4l7\_virtual\_ips](#input\_l4l7\_virtual\_ips) | List of EPG L4/L7 Virtual IPs. | <pre>list(object({<br/>    ip          = string<br/>    description = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_l4l7_address_pools"></a> [l4l7\_address\_pools](#input\_l4l7\_address\_pools) | List of EPG L4/L7 Address Pools. | <pre>list(object({<br/>    name            = string<br/>    gateway_address = string<br/>    from            = optional(string, "")<br/>    to              = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_data_plane_policing_policy"></a> [data\_plane\_policing\_policy](#input\_data\_plane\_policing\_policy) | Data Plane Policing Policy to apply to EPG. | `string` | `""` | no |
+| <a name="input_monitoring_policy"></a> [monitoring\_policy](#input\_monitoring\_policy) | Monitoring Policy. | `string` | `""` | no |
 | <a name="input_bulk_static_ports"></a> [bulk\_static\_ports](#input\_bulk\_static\_ports) | Use bulk resource to configure static ports. | `bool` | `false` | no |
 
 ## Outputs
@@ -189,6 +190,7 @@ module "aci_endpoint_group" {
 | [aci_rest_managed.fvEpAnycast](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvEpNlb](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvEpReachability](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsAEPgMonPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsAddrMgmtPool](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsAepAtt](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBd](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

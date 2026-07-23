@@ -267,6 +267,7 @@ module "aci_vrf" {
 | <a name="input_leaked_external_prefixes"></a> [leaked\_external\_prefixes](#input\_leaked\_external\_prefixes) | List of leaked external prefixes. | <pre>list(object({<br/>    prefix             = string<br/>    from_prefix_length = optional(number)<br/>    to_prefix_length   = optional(number)<br/>    destinations = optional(list(object({<br/>      description = optional(string, "")<br/>      tenant      = string<br/>      vrf         = string<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_route_summarization_policies"></a> [route\_summarization\_policies](#input\_route\_summarization\_policies) | List of route summarization policies. | <pre>list(object({<br/>    name = string<br/>    nodes = optional(list(object({<br/>      id  = number<br/>      pod = optional(number, 1)<br/>    })), [])<br/>    subnets = optional(list(object({<br/>      prefix                         = string<br/>      bgp_route_summarization_policy = optional(string, null)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_endpoint_retention_policy"></a> [endpoint\_retention\_policy](#input\_endpoint\_retention\_policy) | Endpoint Retention Policy. | `string` | `""` | no |
+| <a name="input_monitoring_policy"></a> [monitoring\_policy](#input\_monitoring\_policy) | Monitoring Policy. | `string` | `""` | no |
 | <a name="input_vxlan_enabled"></a> [vxlan\_enabled](#input\_vxlan\_enabled) | VXLAN Stretch Enabled. | `bool` | n/a | yes |
 | <a name="input_border_gateway_set"></a> [border\_gateway\_set](#input\_border\_gateway\_set) | Border Gateway Policy Set name. | `string` | n/a | yes |
 | <a name="input_normalized_vni"></a> [normalized\_vni](#input\_normalized\_vni) | Normalized PC Tag. | `number` | `null` | no |
@@ -294,6 +295,7 @@ module "aci_vrf" {
 | [aci_rest_managed.fvCtx](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvCtxRtSummPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBgpCtxPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsCtxMonPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToBgpCtxAfPol_ipv4](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToBgpCtxAfPol_ipv6](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCtxToEpRet](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
