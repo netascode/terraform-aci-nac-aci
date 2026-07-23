@@ -61,6 +61,9 @@ defaults:
         delay: 120
         min_links: 0
         include_apic: false
+      remote_leaf_pod_redundancy_policy:
+        enable_remote_leaf_policy: false
+        enable_preemption: false
       ptp:
         admin_state: false
         global_domain: 0
