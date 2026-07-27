@@ -48,6 +48,15 @@ resource "aci_rest_managed" "fvRsCustQosPol" {
   }
 }
 
+resource "aci_rest_managed" "fvRsAEPgMonPol" {
+  count      = var.monitoring_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvAEPg.dn}/rsAEPgMonPol"
+  class_name = "fvRsAEPgMonPol"
+  content = {
+    tnMonEPGPolName = var.monitoring_policy
+  }
+}
+
 resource "aci_rest_managed" "fvCrtrn" {
   dn         = "${aci_rest_managed.fvAEPg.dn}/crtrn"
   class_name = "fvCrtrn"

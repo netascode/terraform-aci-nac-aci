@@ -764,6 +764,15 @@ resource "aci_rest_managed" "fvRsCtxToEpRet" {
   }
 }
 
+resource "aci_rest_managed" "fvRsCtxMonPol" {
+  count      = var.monitoring_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvCtx.dn}/rsCtxMonPol"
+  class_name = "fvRsCtxMonPol"
+  content = {
+    tnMonEPGPolName = var.monitoring_policy
+  }
+}
+
 resource "aci_rest_managed" "l3extOut" {
   count      = var.vxlan_enabled ? 1 : 0
   dn         = "uni/tn-${var.tenant}/out-vxlan_vrf_${var.tenant}_${var.name}"

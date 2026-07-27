@@ -123,6 +123,7 @@ module "aci_useg_endpoint_group" {
 | <a name="input_preferred_group"></a> [preferred\_group](#input\_preferred\_group) | Preferred group membership. | `bool` | `false` | no |
 | <a name="input_qos_class"></a> [qos\_class](#input\_qos\_class) | QoS class. | `string` | `"unspecified"` | no |
 | <a name="input_custom_qos_policy"></a> [custom\_qos\_policy](#input\_custom\_qos\_policy) | Custom QoS policy name. | `string` | `""` | no |
+| <a name="input_monitoring_policy"></a> [monitoring\_policy](#input\_monitoring\_policy) | Monitoring Policy. | `string` | `""` | no |
 | <a name="input_bridge_domain"></a> [bridge\_domain](#input\_bridge\_domain) | Bridge domain name. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | List of EPG tags. | `list(string)` | `[]` | no |
 | <a name="input_tag_annotations"></a> [tag\_annotations](#input\_tag\_annotations) | List of tagAnnotation children on uSeg fvAEPg (key and value required). Each key must be unique within the list. | <pre>list(object({<br/>    key   = string<br/>    value = string<br/>  }))</pre> | `[]` | no |
@@ -162,6 +163,7 @@ module "aci_useg_endpoint_group" {
 | [aci_rest_managed.fvEpReachability](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvIpAttr](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvMacAttr](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvRsAEPgMonPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsBd](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCons](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsConsIf](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

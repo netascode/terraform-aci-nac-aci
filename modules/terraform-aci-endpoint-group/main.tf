@@ -149,6 +149,15 @@ resource "aci_rest_managed" "fvRsCustQosPol" {
   }
 }
 
+resource "aci_rest_managed" "fvRsAEPgMonPol" {
+  count      = var.monitoring_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.fvAEPg.dn}/rsAEPgMonPol"
+  class_name = "fvRsAEPgMonPol"
+  content = {
+    tnMonEPGPolName = var.monitoring_policy
+  }
+}
+
 resource "aci_rest_managed" "fvSubnet" {
   for_each   = { for subnet in var.subnets : subnet.ip => subnet }
   dn         = "${aci_rest_managed.fvAEPg.dn}/subnet-[${each.value.ip}]"
