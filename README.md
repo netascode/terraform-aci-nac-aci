@@ -309,6 +309,7 @@ Additional example repositories:
 | <a name="module_aci_port_security_policy"></a> [aci\_port\_security\_policy](#module\_aci\_port\_security\_policy) | ./modules/terraform-aci-port-security-policy | n/a |
 | <a name="module_aci_port_tracking"></a> [aci\_port\_tracking](#module\_aci\_port\_tracking) | ./modules/terraform-aci-port-tracking | n/a |
 | <a name="module_aci_priority_flow_control_policy"></a> [aci\_priority\_flow\_control\_policy](#module\_aci\_priority\_flow\_control\_policy) | ./modules/terraform-aci-priority-flow-control-policy | n/a |
+| <a name="module_aci_proxy_policy"></a> [aci\_proxy\_policy](#module\_aci\_proxy\_policy) | ./modules/terraform-aci-proxy-policy | n/a |
 | <a name="module_aci_psu_policy"></a> [aci\_psu\_policy](#module\_aci\_psu\_policy) | ./modules/terraform-aci-psu-policy | n/a |
 | <a name="module_aci_ptp"></a> [aci\_ptp](#module\_aci\_ptp) | ./modules/terraform-aci-ptp | n/a |
 | <a name="module_aci_ptp_profile"></a> [aci\_ptp\_profile](#module\_aci\_ptp\_profile) | ./modules/terraform-aci-ptp-profile | n/a |
