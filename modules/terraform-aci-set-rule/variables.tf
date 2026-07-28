@@ -209,9 +209,9 @@ variable "set_as_paths" {
 
   validation {
     condition = alltrue([
-      for c in var.set_as_paths : length([for a in c.asns : try(a.order, 0)]) == length(distinct([for a in c.asns : try(a.order, 0)]))
+      for c in var.set_as_paths : length([for a in try(c.asns, []) : a.order]) == length(distinct([for a in try(c.asns, []) : a.order]))
     ])
-    error_message = "`asns.order` must be unique within `set_as_paths` (entries without an explicit `order` default to `0`)."
+    error_message = "`asns.order` must be unique within a `set_as_paths` entry (entries without an explicit `order` default to `0`)."
   }
 }
 

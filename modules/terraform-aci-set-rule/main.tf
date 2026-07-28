@@ -109,7 +109,7 @@ resource "aci_rest_managed" "rtctrlSetASPath" {
   class_name = "rtctrlSetASPath"
   content = {
     "criteria" = each.value.criteria
-    "lastnum"  = each.value.criteria == "prepend-last-as" ? each.value.count : 0
+    "lastnum"  = each.value.count
     "type"     = "as-path"
   }
 }
@@ -118,10 +118,10 @@ locals {
   set_as_paths_prepend = flatten([
     for as_path in var.set_as_paths : [
       for asn in try(as_path.asns, []) : {
-        key = "${as_path.criteria}/${try(asn.order, 0)}"
+        key = "${as_path.criteria}/${asn.order}"
         value = {
           asn      = asn.asn_number
-          order    = try(asn.order, 0)
+          order    = asn.order
           criteria = as_path.criteria
         }
       }
