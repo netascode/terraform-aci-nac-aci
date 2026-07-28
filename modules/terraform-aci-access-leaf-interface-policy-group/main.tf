@@ -147,6 +147,18 @@ resource "aci_rest_managed" "infraRsQosPfcIfPol" {
   }
 }
 
+resource "aci_rest_managed" "infraRsMonIfInfraPol" {
+  count      = var.type != "breakout" && var.monitoring_policy != "" ? 1 : 0
+  dn         = "${aci_rest_managed.infraAccGrp.dn}/rsmonIfInfraPol"
+  class_name = "infraRsMonIfInfraPol"
+  content = {
+    tnMonInfraPolName = var.monitoring_policy
+  }
+  content_on_destroy = {
+    tnMonInfraPolName = ""
+  }
+}
+
 resource "aci_rest_managed" "infraRsLacpPol" {
   count      = (var.type == "vpc" || var.type == "pc") && var.port_channel_policy != "" ? 1 : 0
   dn         = "${aci_rest_managed.infraAccGrp.dn}/rslacpPol"

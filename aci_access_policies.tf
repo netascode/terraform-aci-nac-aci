@@ -527,6 +527,7 @@ module "aci_access_leaf_interface_policy_group" {
   storm_control_policy               = try("${each.value.storm_control_policy}${local.defaults.apic.access_policies.interface_policies.storm_control_policies.name_suffix}", "")
   port_security_policy               = try("${each.value.port_security_policy}${local.defaults.apic.access_policies.interface_policies.port_security_policies.name_suffix}", "")
   priority_flow_control_policy       = try("${each.value.priority_flow_control_policy}${local.defaults.apic.access_policies.interface_policies.priority_flow_control_policies.name_suffix}", "")
+  monitoring_policy                  = try("${each.value.monitoring_policy}${local.defaults.apic.access_policies.monitoring.policies.name_suffix}", "")
   port_channel_policy                = try("${each.value.port_channel_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_policies.name_suffix}", "")
   port_channel_member_name           = try(each.value.port_channel_member_name, "${each.value.name}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}")
   port_channel_member_policy         = try("${each.value.port_channel_member_policy}${local.defaults.apic.access_policies.interface_policies.port_channel_member_policies.name_suffix}", "")
@@ -548,6 +549,7 @@ module "aci_access_leaf_interface_policy_group" {
     module.aci_storm_control_policy,
     module.aci_port_security_policy,
     module.aci_priority_flow_control_policy,
+    module.aci_access_monitoring_policy,
     module.aci_port_channel_policy,
     module.aci_port_channel_member_policy,
     module.aci_netflow_monitor,

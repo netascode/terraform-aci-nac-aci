@@ -24,6 +24,7 @@ module "aci_access_leaf_interface_policy_group" {
   mcp_policy                 = "MCP-ON"
   l2_policy                  = "PORT-LOCAL"
   storm_control_policy       = "10P"
+  monitoring_policy          = "MONITOR-POL1"
   port_channel_policy        = "LACP"
   port_channel_member_name   = "PG-Member"
   port_channel_member_policy = "FAST"
@@ -35,14 +36,14 @@ module "aci_access_leaf_interface_policy_group" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.19.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.19.0 |
 
 ## Inputs
 
@@ -64,6 +65,7 @@ module "aci_access_leaf_interface_policy_group" {
 | <a name="input_storm_control_policy"></a> [storm\_control\_policy](#input\_storm\_control\_policy) | Storm control policy name. | `string` | `""` | no |
 | <a name="input_port_security_policy"></a> [port\_security\_policy](#input\_port\_security\_policy) | Port security policy name. | `string` | `""` | no |
 | <a name="input_priority_flow_control_policy"></a> [priority\_flow\_control\_policy](#input\_priority\_flow\_control\_policy) | Priority flow control policy name. | `string` | `""` | no |
+| <a name="input_monitoring_policy"></a> [monitoring\_policy](#input\_monitoring\_policy) | Monitoring policy name. | `string` | `""` | no |
 | <a name="input_port_channel_policy"></a> [port\_channel\_policy](#input\_port\_channel\_policy) | Port channel policy name. | `string` | `""` | no |
 | <a name="input_port_channel_member_name"></a> [port\_channel\_member\_name](#input\_port\_channel\_member\_name) | Port channel member name. | `string` | `""` | no |
 | <a name="input_port_channel_member_policy"></a> [port\_channel\_member\_policy](#input\_port\_channel\_member\_policy) | Port channel member policy name. | `string` | `""` | no |
@@ -93,6 +95,7 @@ module "aci_access_leaf_interface_policy_group" {
 | [aci_rest_managed.infraRsLldpIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsMacsecIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsMcpIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraRsMonIfInfraPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsNetflowMonitorPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsQosEgressDppIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.infraRsQosIngressDppIfPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
