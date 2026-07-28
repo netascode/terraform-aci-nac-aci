@@ -58,6 +58,16 @@ resource "aci_rest_managed" "commRsKeyRing" {
   }
 }
 
+resource "aci_rest_managed" "commCipher" {
+  for_each   = { for c in var.https_ssl_ciphers : c.id => c }
+  dn         = "${aci_rest_managed.commHttps.dn}/cph-${each.value.id}"
+  class_name = "commCipher"
+  content = {
+    id    = each.value.id
+    state = each.value.state ? "enabled" : "disabled"
+  }
+}
+
 resource "aci_rest_managed" "commHttp" {
   dn         = "${aci_rest_managed.commPol.dn}/http"
   class_name = "commHttp"
