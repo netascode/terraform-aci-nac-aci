@@ -213,4 +213,30 @@ variable "connections" {
     ])
     error_message = "Connection adjacency_type must be one of: `L2`, `L3`."
   }
+
+  validation {
+    condition     = length(var.connections) <= 10
+    error_message = "A service graph supports at most 10 connections (module walks the chain via an unrolled loop of depth 10)."
+  }
+
+  validation {
+    condition = length(var.connections) == 0 || length([
+      for conn in var.connections : conn if conn.consumer_node == "EPG-Consumer"
+    ]) == 1
+    error_message = "connections must include exactly one entry with `consumer_node: EPG-Consumer` (the chain start)."
+  }
+
+  validation {
+    condition = length(var.connections) == 0 || length([
+      for conn in var.connections : conn if conn.provider_node == "EPG-Provider"
+    ]) == 1
+    error_message = "connections must include exactly one entry with `provider_node: EPG-Provider` (the chain end)."
+  }
+
+  validation {
+    condition = length(distinct([
+      for conn in var.connections : conn.consumer_node
+    ])) == length(var.connections)
+    error_message = "Each `consumer_node` value must be unique across connections (service graph chain is linear; a node cannot appear as the consumer side of more than one connection)."
+  }
 }
