@@ -676,7 +676,7 @@ module "aci_vmware_vmm_domain" {
   delimiter                   = try(each.value.delimiter, local.defaults.apic.fabric_policies.vmware_vmm_domains.delimiter)
   tag_collection              = try(each.value.tag_collection, local.defaults.apic.fabric_policies.vmware_vmm_domains.tag_collection)
   vlan_pool                   = "${each.value.vlan_pool}${local.defaults.apic.access_policies.vlan_pools.name_suffix}"
-  allocation                  = try(each.value.allocation, local.defaults.apic.fabric_policies.vmware_vmm_domains.allocation)
+  allocation                  = try(each.value.allocation, try([for vp in try(local.access_policies.vlan_pools, []) : try(vp.allocation, local.defaults.apic.access_policies.vlan_pools.allocation) if vp.name == each.value.vlan_pool][0], local.defaults.apic.fabric_policies.vmware_vmm_domains.allocation))
   vswitch_cdp_policy          = try(each.value.vswitch.cdp_policy, "")
   vswitch_lldp_policy         = try(each.value.vswitch.lldp_policy, "")
   vswitch_port_channel_policy = try(each.value.vswitch.port_channel_policy, "")
@@ -1436,7 +1436,7 @@ module "aci_nutanix_vmm_domain" {
   name                = "${each.value.name}${local.defaults.apic.fabric_policies.nutanix_vmm_domains.name_suffix}"
   access_mode         = try(each.value.access_mode, local.defaults.apic.fabric_policies.nutanix_vmm_domains.access_mode)
   vlan_pool           = try("${each.value.vlan_pool}${local.defaults.apic.access_policies.vlan_pools.name_suffix}", null)
-  allocation          = try(each.value.allocation, local.defaults.apic.fabric_policies.nutanix_vmm_domains.allocation)
+  allocation          = try(each.value.allocation, try([for vp in try(local.access_policies.vlan_pools, []) : try(vp.allocation, local.defaults.apic.access_policies.vlan_pools.allocation) if vp.name == each.value.vlan_pool][0], local.defaults.apic.fabric_policies.nutanix_vmm_domains.allocation))
   custom_vswitch_name = try(each.value.custom_vswitch_name, "")
   security_domains    = try(each.value.security_domains, [])
   credential_policies = [for cp in try(each.value.credential_policies, []) : {
