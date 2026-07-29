@@ -14,8 +14,34 @@ locals {
     }
   }
 
+  # Lookup: each connection keyed by its consumer_node. Used to walk the chain
+  # starting from "EPG-Consumer" and following provider_node → next connection.
+  conn_by_consumer = { for conn in var.connections : conn.consumer_node => conn }
+
+  # Chain walk (unrolled, max 10 steps — service graphs practically never exceed this).
+  # Each step retrieves the connection whose consumer_node matches the previous
+  # step's provider_node. `try` returns null when the chain terminates naturally
+  # (last connection's provider_node is "EPG-Provider", which has no consumer_node key).
+  _walk_1  = try(local.conn_by_consumer["EPG-Consumer"], null)
+  _walk_2  = local._walk_1 == null ? null : try(local.conn_by_consumer[local._walk_1.provider_node], null)
+  _walk_3  = local._walk_2 == null ? null : try(local.conn_by_consumer[local._walk_2.provider_node], null)
+  _walk_4  = local._walk_3 == null ? null : try(local.conn_by_consumer[local._walk_3.provider_node], null)
+  _walk_5  = local._walk_4 == null ? null : try(local.conn_by_consumer[local._walk_4.provider_node], null)
+  _walk_6  = local._walk_5 == null ? null : try(local.conn_by_consumer[local._walk_5.provider_node], null)
+  _walk_7  = local._walk_6 == null ? null : try(local.conn_by_consumer[local._walk_6.provider_node], null)
+  _walk_8  = local._walk_7 == null ? null : try(local.conn_by_consumer[local._walk_7.provider_node], null)
+  _walk_9  = local._walk_8 == null ? null : try(local.conn_by_consumer[local._walk_8.provider_node], null)
+  _walk_10 = local._walk_9 == null ? null : try(local.conn_by_consumer[local._walk_9.provider_node], null)
+
+  chain_ordered = [
+    for c in [
+      local._walk_1, local._walk_2, local._walk_3, local._walk_4, local._walk_5,
+      local._walk_6, local._walk_7, local._walk_8, local._walk_9, local._walk_10,
+    ] : c if c != null
+  ]
+
   connections_map = {
-    for idx, conn in var.connections : "C${idx + 1}" => {
+    for idx, conn in local.chain_ordered : "C${idx + 1}" => {
       index          = idx
       name           = "C${idx + 1}"
       consumer_node  = conn.consumer_node
@@ -367,11 +393,11 @@ resource "aci_rest_managed" "vnsRsAbsCopyConnection_multi" {
 
 resource "aci_rest_managed" "vnsRsAbsConnectionConns_Consumer_multi" {
   for_each   = local.multi_device_mode ? local.connections_map : {}
-  dn         = each.value.consumer_node == "EPG-Consumer" ? "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsTermConn_T1.dn}]" : "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_consumer_node}/AbsFConn-consumer]"
+  dn         = each.value.consumer_node == "EPG-Consumer" ? "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsTermConn_T1.dn}]" : "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_consumer_node}/AbsFConn-provider]"
   class_name = "vnsRsAbsConnectionConns"
   annotation = var.annotation
   content = {
-    tDn = each.value.consumer_node == "EPG-Consumer" ? aci_rest_managed.vnsAbsTermConn_T1.dn : "${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_consumer_node}/AbsFConn-consumer"
+    tDn = each.value.consumer_node == "EPG-Consumer" ? aci_rest_managed.vnsAbsTermConn_T1.dn : "${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_consumer_node}/AbsFConn-provider"
   }
   depends_on = [
     aci_rest_managed.vnsRsAbsCopyConnection_multi
@@ -380,11 +406,11 @@ resource "aci_rest_managed" "vnsRsAbsConnectionConns_Consumer_multi" {
 
 resource "aci_rest_managed" "vnsRsAbsConnectionConns_Provider_multi" {
   for_each   = local.multi_device_mode ? local.connections_map : {}
-  dn         = each.value.provider_node == "EPG-Provider" ? "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsTermConn_T2.dn}]" : "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_provider_node}/AbsFConn-provider]"
+  dn         = each.value.provider_node == "EPG-Provider" ? "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsTermConn_T2.dn}]" : "${aci_rest_managed.vnsAbsConnection_multi[each.key].dn}/rsabsConnectionConns-[${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_provider_node}/AbsFConn-consumer]"
   class_name = "vnsRsAbsConnectionConns"
   annotation = var.annotation
   content = {
-    tDn = each.value.provider_node == "EPG-Provider" ? aci_rest_managed.vnsAbsTermConn_T2.dn : "${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_provider_node}/AbsFConn-provider"
+    tDn = each.value.provider_node == "EPG-Provider" ? aci_rest_managed.vnsAbsTermConn_T2.dn : "${aci_rest_managed.vnsAbsGraph.dn}/AbsNode-${each.value.resolved_provider_node}/AbsFConn-consumer"
   }
   depends_on = [
     aci_rest_managed.vnsRsAbsCopyConnection_multi
