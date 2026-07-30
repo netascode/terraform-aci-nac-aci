@@ -15,24 +15,24 @@ variable "admin_state" {
 }
 
 variable "per_vlan_mcp" {
-  description = "Per-VLAN MCP PDU transmission (`mcpPduPerVlan`)."
+  description = "Per-VLAN MCP PDU transmission (`mcpPduPerVlan`). Only emitted when set."
   type        = bool
-  default     = true
+  default     = null
 }
 
 variable "strict_mode" {
-  description = "MCP strict mode (`mcpMode`). When `true`, emits `mcpMode=on`. When `false`, emits `mcpMode=off`."
+  description = "MCP strict mode (`mcpMode`). When `true`, emits `mcpMode=on`. When `false`, emits `mcpMode=off`. Only emitted when set."
   type        = bool
-  default     = false
+  default     = null
 }
 
 variable "max_vlans" {
-  description = "Max VLAN counter for per-VLAN PDU bursts. When `strict_mode` is `true`, the effective value is capped at 256. Minimum value: 1. Maximum value: 2000."
+  description = "Max VLAN counter for per-VLAN PDU bursts. Minimum value: 1. Maximum value: 2000."
   type        = number
   default     = 256
 
   validation {
-    condition     = var.max_vlans >= 1 && var.max_vlans <= 2000
+    condition     = var.max_vlans == null || (var.max_vlans >= 1 && var.max_vlans <= 2000)
     error_message = "Minimum value: 1. Maximum value: 2000."
   }
 }
@@ -43,7 +43,7 @@ variable "grace_period" {
   default     = 3
 
   validation {
-    condition     = var.grace_period >= 0 && var.grace_period <= 300
+    condition     = var.grace_period == null || (var.grace_period >= 0 && var.grace_period <= 300)
     error_message = "Minimum value: 0. Maximum value: 300."
   }
 }
@@ -54,7 +54,7 @@ variable "grace_period_msec" {
   default     = 0
 
   validation {
-    condition     = var.grace_period_msec >= 0 && var.grace_period_msec <= 999
+    condition     = var.grace_period_msec == null || (var.grace_period_msec >= 0 && var.grace_period_msec <= 999)
     error_message = "Minimum value: 0. Maximum value: 999."
   }
 }
@@ -65,7 +65,7 @@ variable "initial_delay" {
   default     = 0
 
   validation {
-    condition     = var.initial_delay >= 0 && var.initial_delay <= 1800
+    condition     = var.initial_delay == null || (var.initial_delay >= 0 && var.initial_delay <= 1800)
     error_message = "Minimum value: 0. Maximum value: 1800."
   }
 }
@@ -76,7 +76,7 @@ variable "frequency_sec" {
   default     = 0
 
   validation {
-    condition     = var.frequency_sec >= 0 && var.frequency_sec <= 300
+    condition     = var.frequency_sec == null || (var.frequency_sec >= 0 && var.frequency_sec <= 300)
     error_message = "Minimum value: 0. Maximum value: 300."
   }
 }
@@ -87,7 +87,7 @@ variable "frequency_msec" {
   default     = 500
 
   validation {
-    condition     = var.frequency_msec >= 0 && var.frequency_msec <= 999
+    condition     = var.frequency_msec == null || (var.frequency_msec >= 0 && var.frequency_msec <= 999)
     error_message = "Minimum value: 0. Maximum value: 999."
   }
 }
