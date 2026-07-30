@@ -4198,18 +4198,22 @@ locals {
   device_selection_policies = flatten([
     for tenant in local.tenants : [
       for dsp in try(tenant.services.device_selection_policies, []) : {
-        key                    = format("%s/%s-%s", tenant.name, dsp.contract, dsp.service_graph_template)
-        tenant                 = tenant.name
-        contract               = "${dsp.contract}${local.defaults.apic.tenants.contracts.name_suffix}"
-        service_graph_template = "${dsp.service_graph_template}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
+        key    = format("%s/%s-%s", tenant.name, dsp.contract, dsp.service_graph_template)
+        tenant = tenant.name
+        # "any" is a reserved keyword (wildcard) - it does not reference a real
+        # contract/service graph template, so the name_suffix must not be appended.
+        contract               = dsp.contract == "any" ? "any" : "${dsp.contract}${local.defaults.apic.tenants.contracts.name_suffix}"
+        service_graph_template = dsp.service_graph_template == "any" ? "any" : "${dsp.service_graph_template}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
         # Determine if legacy mode: device_name, node_name, consumer, provider or copy_service defined at root level
         legacy_mode = try(dsp.device_name, null) != null || try(dsp.node_name, null) != null || try(dsp.consumer, null) != null || try(dsp.provider, null) != null || try(dsp.copy_service, null) != null
-        sgt_device_tenant = length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : (
+        # When service_graph_template is "any" there is no template to resolve the legacy
+        # single-device reference against, so these fall back to safe defaults.
+        sgt_device_tenant = dsp.service_graph_template == "any" ? tenant.name : (length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : (
           length(try(sg_template.devices, [])) > 0 ?
           [for dev in sg_template.devices : try(dev.tenant, tenant.name) if sg_template.name == dsp.service_graph_template][0] :
           try(sg_template.device.tenant, tenant.name)
-        ) if sg_template.name == dsp.service_graph_template][0] : tenant.name
-        sgt_device_name = try("${dsp.device_name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}", length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : (
+        ) if sg_template.name == dsp.service_graph_template][0] : tenant.name)
+        sgt_device_name = dsp.service_graph_template == "any" ? "" : try("${dsp.device_name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}", length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : (
           length(try(sg_template.devices, [])) > 0 ?
           [for dev in sg_template.devices : "${dev.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}" if sg_template.name == dsp.service_graph_template][0] :
           "${sg_template.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
