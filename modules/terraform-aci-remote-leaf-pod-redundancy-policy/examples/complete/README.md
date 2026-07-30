@@ -17,7 +17,7 @@ module "aci_remote_leaf_pod_redundancy_policy" {
   version = ">= 0.8.0"
 
   enable_remote_leaf_policy = true
-  enable_preemption         = true
+  preemption                = true
 }
 ```
 <!-- END_TF_DOCS -->

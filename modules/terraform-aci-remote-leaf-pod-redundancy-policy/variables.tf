@@ -4,7 +4,7 @@ variable "enable_remote_leaf_policy" {
   default     = false
 }
 
-variable "enable_preemption" {
+variable "preemption" {
   description = "Enable Pod Redundancy Preemption."
   type        = bool
   default     = false

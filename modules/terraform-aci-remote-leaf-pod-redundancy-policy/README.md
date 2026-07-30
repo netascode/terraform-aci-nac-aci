@@ -14,7 +14,7 @@ module "aci_remote_leaf_pod_redundancy_policy" {
   version = ">= 0.8.0"
 
   enable_remote_leaf_policy = true
-  enable_preemption         = true
+  preemption                = true
 }
 ```
 
@@ -36,7 +36,7 @@ module "aci_remote_leaf_pod_redundancy_policy" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_enable_remote_leaf_policy"></a> [enable\_remote\_leaf\_policy](#input\_enable\_remote\_leaf\_policy) | Enable Remote Leaf Pod Redundancy Policy. | `bool` | `false` | no |
-| <a name="input_enable_preemption"></a> [enable\_preemption](#input\_enable\_preemption) | Enable Pod Redundancy Preemption. | `bool` | `false` | no |
+| <a name="input_preemption"></a> [preemption](#input\_preemption) | Enable Pod Redundancy Preemption. | `bool` | `false` | no |
 
 ## Outputs
 

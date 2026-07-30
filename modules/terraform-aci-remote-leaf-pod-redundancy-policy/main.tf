@@ -4,6 +4,6 @@ resource "aci_rest_managed" "infraRlPodRedPol" {
   content = {
     name                   = "default"
     enableRlPodRedPol      = var.enable_remote_leaf_policy == true ? "yes" : "no"
-    enablePodRedPreemption = var.enable_preemption == true ? "yes" : "no"
+    enablePodRedPreemption = var.preemption == true ? "yes" : "no"
   }
 }
