@@ -112,6 +112,7 @@ Additional example repositories:
 | Name | Description |
 |------|-------------|
 | <a name="output_default_values"></a> [default\_values](#output\_default\_values) | All default values. |
+| <a name="output_defaults_yaml"></a> [defaults\_yaml](#output\_defaults\_yaml) | All default values in YAML string (same content as `write_default_values_file`). |
 | <a name="output_model"></a> [model](#output\_model) | Full model. |
 
 ## Providers
