@@ -237,7 +237,7 @@ module "aci_snmp_policy" {
     mgmt_epg_name = client.mgmt_epg == "oob" ? try(local.node_policies.oob_endpoint_group, local.defaults.apic.node_policies.oob_endpoint_group) : try(local.node_policies.inb_endpoint_group, local.defaults.apic.node_policies.inb_endpoint_group)
     entries = [for entry in try(client.entries, []) : {
       ip   = entry.ip
-      name = entry.name
+      name = try(entry.name, "")
     }]
   }]
 }
