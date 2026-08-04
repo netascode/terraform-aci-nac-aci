@@ -11,7 +11,7 @@ Location in GUI:
 ```hcl
 module "aci_remote_leaf_pod_redundancy_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-remote-leaf-pod-redundancy-policy"
-  version = ">= 0.8.0"
+  version = "> 2.0.0"
 
   enable_policy = true
   preemption    = true
@@ -22,7 +22,7 @@ module "aci_remote_leaf_pod_redundancy_policy" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
 | <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
 
 ## Providers
