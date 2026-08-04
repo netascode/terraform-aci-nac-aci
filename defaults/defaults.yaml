@@ -62,7 +62,7 @@ defaults:
         min_links: 0
         include_apic: false
       remote_leaf_pod_redundancy_policy:
-        enable_remote_leaf_policy: false
+        enable_policy: false
         preemption: false
       ptp:
         admin_state: false

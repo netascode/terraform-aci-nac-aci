@@ -13,8 +13,8 @@ module "aci_remote_leaf_pod_redundancy_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-remote-leaf-pod-redundancy-policy"
   version = ">= 0.8.0"
 
-  enable_remote_leaf_policy = true
-  preemption                = true
+  enable_policy = true
+  preemption    = true
 }
 ```
 
@@ -35,7 +35,7 @@ module "aci_remote_leaf_pod_redundancy_policy" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_enable_remote_leaf_policy"></a> [enable\_remote\_leaf\_policy](#input\_enable\_remote\_leaf\_policy) | Enable Remote Leaf Pod Redundancy Policy. | `bool` | `false` | no |
+| <a name="input_enable_policy"></a> [enable\_policy](#input\_enable\_policy) | Enable Remote Leaf Pod Redundancy Policy. | `bool` | `false` | no |
 | <a name="input_preemption"></a> [preemption](#input\_preemption) | Enable Pod Redundancy Preemption. | `bool` | `false` | no |
 
 ## Outputs

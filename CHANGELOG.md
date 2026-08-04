@@ -2,7 +2,7 @@
 
 ### New Features
 
-- Add support for Remote Leaf Pod Redundancy Policy (`remote_leaf_pod_redundancy_policy` with `enable_remote_leaf_policy` and `preemption`)
+- Add support for Remote Leaf Pod Redundancy Policy (`remote_leaf_pod_redundancy_policy` with `enable_policy` and `preemption`)
 - BREAKING CHANGE: Move old `leaked_internal_prefixes` (class leakInternalSubnet) to `leaked_internal_subnets` and add support for new `leaked_internal_prefixes` (class leakInternalPrefix) in a VRF leaking configuration
 - BREAKING CHANGE: Add support for configuring custom monitoring policy. Previous configuration needs to be moved to explicit `common` monitoring policy
 - BREAKING CHANGE: Update default values for various management access policy attributes (`aes256_gcm`, `curve25519_sha256`, `curve25519_sha256_libssh`,`dh14_sha256`, `dh16_sha512`, `ecdh_sha2_nistp256`, `ecdh_sha2_nistp384`, `ecdh_sha2_nistp521`, `tlsv1_1`, `chacha`, `hmac_sha1`)

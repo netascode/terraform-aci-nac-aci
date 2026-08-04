@@ -1,4 +1,4 @@
-variable "enable_remote_leaf_policy" {
+variable "enable_policy" {
   description = "Enable Remote Leaf Pod Redundancy Policy."
   type        = bool
   default     = false
