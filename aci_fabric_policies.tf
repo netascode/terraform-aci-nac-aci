@@ -1251,6 +1251,19 @@ module "aci_health_score_evaluation_policy" {
   ignore_acked_faults = try(local.fabric_policies.ignore_acked_faults, local.defaults.apic.fabric_policies.ignore_acked_faults)
 }
 
+module "aci_proxy_policy" {
+  source = "./modules/terraform-aci-proxy-policy"
+
+  count          = local.modules.aci_proxy_policy == true && try(local.fabric_policies.proxy_policy, null) != null && var.manage_fabric_policies ? 1 : 0
+  http_url       = try(local.fabric_policies.proxy_policy.http.url, "")
+  http_username  = try(local.fabric_policies.proxy_policy.http.username, "")
+  http_password  = try(local.fabric_policies.proxy_policy.http.password, "")
+  https_url      = try(local.fabric_policies.proxy_policy.https.url, "")
+  https_username = try(local.fabric_policies.proxy_policy.https.username, "")
+  https_password = try(local.fabric_policies.proxy_policy.https.password, "")
+  ignore_hosts   = try(local.fabric_policies.proxy_policy.ignore_hosts, [])
+}
+
 module "aci_fabric_span_destination_group" {
   source = "./modules/terraform-aci-fabric-span-destination-group"
 
