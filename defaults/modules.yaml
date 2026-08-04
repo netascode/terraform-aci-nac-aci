@@ -156,6 +156,7 @@ modules:
   aci_redirect_backup_policy: true
   aci_redirect_health_group: true
   aci_redirect_policy: true
+  aci_remote_leaf_pod_redundancy_policy: true
   aci_remote_location: true
   aci_remote_vxlan_fabrics: true
   aci_rogue_endpoint_control: true

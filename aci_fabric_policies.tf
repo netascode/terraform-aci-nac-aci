@@ -70,6 +70,14 @@ module "aci_port_tracking" {
   include_apic = try(local.fabric_policies.port_tracking.include_apic, null)
 }
 
+module "aci_remote_leaf_pod_redundancy_policy" {
+  source = "./modules/terraform-aci-remote-leaf-pod-redundancy-policy"
+
+  count         = local.modules.aci_remote_leaf_pod_redundancy_policy == true && var.manage_fabric_policies ? 1 : 0
+  enable_policy = try(local.fabric_policies.remote_leaf_pod_redundancy_policy.enable_policy, local.defaults.apic.fabric_policies.remote_leaf_pod_redundancy_policy.enable_policy)
+  preemption    = try(local.fabric_policies.remote_leaf_pod_redundancy_policy.preemption, local.defaults.apic.fabric_policies.remote_leaf_pod_redundancy_policy.preemption)
+}
+
 module "aci_ptp" {
   source = "./modules/terraform-aci-ptp"
 
