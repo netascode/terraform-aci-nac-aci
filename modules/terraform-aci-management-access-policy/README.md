@@ -58,9 +58,9 @@ module "aci_management_access_policy" {
       state = true
     }
   ]
-  http_admin_state             = true
-  http_port                    = 2080
-  http_allow_origins           = "http://127.0.0.1:8000"
+  http_admin_state   = true
+  http_port          = 2080
+  http_allow_origins = "http://127.0.0.1:8000"
 }
 ```
 
@@ -68,14 +68,14 @@ module "aci_management_access_policy" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.19.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | 2.20.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | 2.19.0 |
 
 ## Inputs
 

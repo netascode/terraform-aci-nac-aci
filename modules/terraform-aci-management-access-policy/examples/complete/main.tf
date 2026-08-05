@@ -47,7 +47,7 @@ module "aci_management_access_policy" {
       state = true
     }
   ]
-  http_admin_state             = true
-  http_port                    = 2080
-  http_allow_origins           = "http://127.0.0.1:8000"
+  http_admin_state   = true
+  http_port          = 2080
+  http_allow_origins = "http://127.0.0.1:8000"
 }
