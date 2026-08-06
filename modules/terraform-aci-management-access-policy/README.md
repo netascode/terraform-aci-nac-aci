@@ -48,9 +48,19 @@ module "aci_management_access_policy" {
   https_tlsv1_3                = false
   https_keyring                = "KR1"
   https_allow_origins          = "http://127.0.0.1:8000"
-  http_admin_state             = true
-  http_port                    = 2080
-  http_allow_origins           = "http://127.0.0.1:8000"
+  https_ssl_ciphers = [
+    {
+      id    = "RC4"
+      state = false
+    },
+    {
+      id    = "DHE-RSA-AES128-SHA"
+      state = true
+    }
+  ]
+  http_admin_state   = true
+  http_port          = 2080
+  http_allow_origins = "http://127.0.0.1:8000"
 }
 ```
 
@@ -58,14 +68,14 @@ module "aci_management_access_policy" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.19.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.19.0 |
 
 ## Inputs
 
@@ -106,6 +116,7 @@ module "aci_management_access_policy" {
 | <a name="input_https_tlsv1_3"></a> [https\_tlsv1\_3](#input\_https\_tlsv1\_3) | HTTPS TLS v1.3. | `bool` | `false` | no |
 | <a name="input_https_keyring"></a> [https\_keyring](#input\_https\_keyring) | HTTPS keyring name. | `string` | `""` | no |
 | <a name="input_https_allow_origins"></a> [https\_allow\_origins](#input\_https\_allow\_origins) | HTTPS allow origins. | `string` | `""` | no |
+| <a name="input_https_ssl_ciphers"></a> [https\_ssl\_ciphers](#input\_https\_ssl\_ciphers) | HTTPS SSL cipher configuration. A list of ciphers with their state (`true` = enabled, `false` = disabled). | <pre>list(object({<br/>    id    = string<br/>    state = optional(bool, true)<br/>  }))</pre> | `[]` | no |
 | <a name="input_http_admin_state"></a> [http\_admin\_state](#input\_http\_admin\_state) | HTTP admin state. | `bool` | `false` | no |
 | <a name="input_http_port"></a> [http\_port](#input\_http\_port) | HTTP port. | `number` | `80` | no |
 | <a name="input_http_allow_origins"></a> [http\_allow\_origins](#input\_http\_allow\_origins) | HTTP allow origins. | `string` | `""` | no |
@@ -121,6 +132,7 @@ module "aci_management_access_policy" {
 
 | Name | Type |
 |------|------|
+| [aci_rest_managed.commCipher](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.commHttp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.commHttps](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.commPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

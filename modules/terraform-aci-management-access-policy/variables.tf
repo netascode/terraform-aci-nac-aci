@@ -247,6 +247,20 @@ variable "https_allow_origins" {
   }
 }
 
+variable "https_ssl_ciphers" {
+  description = "HTTPS SSL cipher configuration. A list of ciphers with their state (`true` = enabled, `false` = disabled)."
+  type = list(object({
+    id    = string
+    state = optional(bool, true)
+  }))
+  default = []
+
+  validation {
+    condition     = alltrue([for c in var.https_ssl_ciphers : can(regex("^[a-zA-Z0-9][a-zA-Z0-9_+-]{0,255}$", c.id))])
+    error_message = "`id` allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `+`, `-`. Must start with a letter or digit. Maximum characters: 256."
+  }
+}
+
 variable "http_admin_state" {
   description = "HTTP admin state."
   type        = bool

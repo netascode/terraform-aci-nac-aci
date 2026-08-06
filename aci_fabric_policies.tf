@@ -1141,6 +1141,7 @@ module "aci_management_access_policy" {
   https_tlsv1_3                = try(each.value.https.tlsv1_3, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.tlsv1_3)
   https_keyring                = try(each.value.https.key_ring, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.key_ring)
   https_allow_origins          = try(each.value.https.allow_origins, "")
+  https_ssl_ciphers            = try(each.value.https.ssl_ciphers, [])
   http_admin_state             = try(each.value.http.admin_state, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.http.admin_state)
   http_port                    = try(each.value.http.port, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.http.port)
   http_allow_origins           = try(each.value.http.allow_origins, "")
