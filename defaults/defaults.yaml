@@ -144,7 +144,7 @@ defaults:
             aes192_ctr: true
             aes256_ctr: true
             aes256_gcm: true
-            chacha: false
+            chacha: true
             hmac_sha1: false
             hmac_sha2_256: true
             hmac_sha2_512: true
@@ -168,7 +168,11 @@ defaults:
             tlsv1_2: true
             tlsv1_3: false
             ssl_ciphers:
-              state: true
+              ecdhe_rsa_aes256_gcm_sha384: true
+              ecdhe_rsa_chacha20_poly1305: true
+              ecdhe_rsa_aes128_gcm_sha256: true
+              ecdhe_rsa_aes256_sha384: true
+              ecdhe_rsa_aes128_sha256: true
           http:
             admin_state: false
             port: 80

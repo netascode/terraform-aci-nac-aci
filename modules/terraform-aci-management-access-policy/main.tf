@@ -1,5 +1,12 @@
 locals {
   ssh_kexalgos = join(",", concat(var.ssh_curve25519_sha256 == true ? ["curve25519-sha256"] : [], var.ssh_curve25519_sha256_libssh == true ? ["curve25519-sha256@libssh.org"] : [], var.ssh_dh1_sha1 == true ? ["diffie-hellman-group1-sha1"] : [], var.ssh_dh14_sha1 == true ? ["diffie-hellman-group14-sha1"] : [], var.ssh_dh14_sha256 == true ? ["diffie-hellman-group14-sha256"] : [], var.ssh_dh16_sha512 == true ? ["diffie-hellman-group16-sha512"] : [], var.ssh_ecdh_sha2_nistp256 == true ? ["ecdh-sha2-nistp256"] : [], var.ssh_ecdh_sha2_nistp384 == true ? ["ecdh-sha2-nistp384"] : [], var.ssh_ecdh_sha2_nistp521 == true ? ["ecdh-sha2-nistp521"] : []))
+  https_ssl_ciphers = {
+    "ECDHE-RSA-AES256-GCM-SHA384" = var.https_ssl_cipher_ecdhe_rsa_aes256_gcm_sha384
+    "ECDHE-RSA-CHACHA20-POLY1305" = var.https_ssl_cipher_ecdhe_rsa_chacha20_poly1305
+    "ECDHE-RSA-AES128-GCM-SHA256" = var.https_ssl_cipher_ecdhe_rsa_aes128_gcm_sha256
+    "ECDHE-RSA-AES256-SHA384"     = var.https_ssl_cipher_ecdhe_rsa_aes256_sha384
+    "ECDHE-RSA-AES128-SHA256"     = var.https_ssl_cipher_ecdhe_rsa_aes128_sha256
+  }
 }
 
 resource "aci_rest_managed" "commPol" {
@@ -59,12 +66,12 @@ resource "aci_rest_managed" "commRsKeyRing" {
 }
 
 resource "aci_rest_managed" "commCipher" {
-  for_each   = { for c in var.https_ssl_ciphers : c.id => c }
-  dn         = "${aci_rest_managed.commHttps.dn}/cph-${each.value.id}"
+  for_each   = local.https_ssl_ciphers
+  dn         = "${aci_rest_managed.commHttps.dn}/cph-${each.key}"
   class_name = "commCipher"
   content = {
-    id    = each.value.id
-    state = each.value.state ? "enabled" : "disabled"
+    id    = each.key
+    state = each.value ? "enabled" : "disabled"
   }
 }
 
