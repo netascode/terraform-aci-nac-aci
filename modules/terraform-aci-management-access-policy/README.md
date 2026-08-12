@@ -67,7 +67,7 @@ module "aci_management_access_policy" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | 2.20.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.19.0 |
 
 ## Inputs
 
