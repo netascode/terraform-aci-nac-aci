@@ -47,12 +47,12 @@ module "aci_mcp_policy" {
 | <a name="input_admin_state"></a> [admin\_state](#input\_admin\_state) | Admin state. | `bool` | `true` | no |
 | <a name="input_per_vlan_mcp"></a> [per\_vlan\_mcp](#input\_per\_vlan\_mcp) | Per-VLAN MCP PDU transmission (`mcpPduPerVlan`). Only emitted when set. | `bool` | `null` | no |
 | <a name="input_strict_mode"></a> [strict\_mode](#input\_strict\_mode) | MCP strict mode (`mcpMode`). When `true`, emits `mcpMode=on`. When `false`, emits `mcpMode=off`. Only emitted when set. | `bool` | `null` | no |
-| <a name="input_max_vlans"></a> [max\_vlans](#input\_max\_vlans) | Max VLAN counter for per-VLAN PDU bursts. Minimum value: 1. Maximum value: 2000. | `number` | `256` | no |
-| <a name="input_grace_period"></a> [grace\_period](#input\_grace\_period) | MCP strict-mode grace period in seconds. Minimum value: 0. Maximum value: 300. | `number` | `3` | no |
-| <a name="input_grace_period_msec"></a> [grace\_period\_msec](#input\_grace\_period\_msec) | MCP strict-mode grace period in milliseconds. Minimum value: 0. Maximum value: 999. | `number` | `0` | no |
-| <a name="input_initial_delay"></a> [initial\_delay](#input\_initial\_delay) | MCP strict-mode initial delay in seconds. Minimum value: 0. Maximum value: 1800. | `number` | `0` | no |
-| <a name="input_frequency_sec"></a> [frequency\_sec](#input\_frequency\_sec) | MCP strict-mode transmit frequency in seconds. Minimum value: 0. Maximum value: 300. | `number` | `0` | no |
-| <a name="input_frequency_msec"></a> [frequency\_msec](#input\_frequency\_msec) | MCP strict-mode transmit frequency in milliseconds. Minimum value: 0. Maximum value: 999. | `number` | `500` | no |
+| <a name="input_max_vlans"></a> [max\_vlans](#input\_max\_vlans) | Max VLAN counter for per-VLAN PDU bursts. Minimum value: 1. Maximum value: 2000. Only emitted when set. | `number` | `null` | no |
+| <a name="input_grace_period"></a> [grace\_period](#input\_grace\_period) | MCP strict-mode grace period in seconds. Minimum value: 0. Maximum value: 300. Only emitted when set. | `number` | `null` | no |
+| <a name="input_grace_period_msec"></a> [grace\_period\_msec](#input\_grace\_period\_msec) | MCP strict-mode grace period in milliseconds. Minimum value: 0. Maximum value: 999. Only emitted when set. | `number` | `null` | no |
+| <a name="input_initial_delay"></a> [initial\_delay](#input\_initial\_delay) | MCP strict-mode initial delay in seconds. Minimum value: 0. Maximum value: 1800. Only emitted when set. | `number` | `null` | no |
+| <a name="input_frequency_sec"></a> [frequency\_sec](#input\_frequency\_sec) | MCP strict-mode transmit frequency in seconds. Minimum value: 0. Maximum value: 300. Only emitted when set. | `number` | `null` | no |
+| <a name="input_frequency_msec"></a> [frequency\_msec](#input\_frequency\_msec) | MCP strict-mode transmit frequency in milliseconds. Minimum value: 0. Maximum value: 999. Only emitted when set. | `number` | `null` | no |
 
 ## Outputs
 

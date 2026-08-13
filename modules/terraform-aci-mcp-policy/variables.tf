@@ -27,9 +27,9 @@ variable "strict_mode" {
 }
 
 variable "max_vlans" {
-  description = "Max VLAN counter for per-VLAN PDU bursts. Minimum value: 1. Maximum value: 2000."
+  description = "Max VLAN counter for per-VLAN PDU bursts. Minimum value: 1. Maximum value: 2000. Only emitted when set."
   type        = number
-  default     = 256
+  default     = null
 
   validation {
     condition     = var.max_vlans == null || (var.max_vlans >= 1 && var.max_vlans <= 2000)
@@ -38,9 +38,9 @@ variable "max_vlans" {
 }
 
 variable "grace_period" {
-  description = "MCP strict-mode grace period in seconds. Minimum value: 0. Maximum value: 300."
+  description = "MCP strict-mode grace period in seconds. Minimum value: 0. Maximum value: 300. Only emitted when set."
   type        = number
-  default     = 3
+  default     = null
 
   validation {
     condition     = var.grace_period == null || (var.grace_period >= 0 && var.grace_period <= 300)
@@ -49,9 +49,9 @@ variable "grace_period" {
 }
 
 variable "grace_period_msec" {
-  description = "MCP strict-mode grace period in milliseconds. Minimum value: 0. Maximum value: 999."
+  description = "MCP strict-mode grace period in milliseconds. Minimum value: 0. Maximum value: 999. Only emitted when set."
   type        = number
-  default     = 0
+  default     = null
 
   validation {
     condition     = var.grace_period_msec == null || (var.grace_period_msec >= 0 && var.grace_period_msec <= 999)
@@ -60,9 +60,9 @@ variable "grace_period_msec" {
 }
 
 variable "initial_delay" {
-  description = "MCP strict-mode initial delay in seconds. Minimum value: 0. Maximum value: 1800."
+  description = "MCP strict-mode initial delay in seconds. Minimum value: 0. Maximum value: 1800. Only emitted when set."
   type        = number
-  default     = 0
+  default     = null
 
   validation {
     condition     = var.initial_delay == null || (var.initial_delay >= 0 && var.initial_delay <= 1800)
@@ -71,9 +71,9 @@ variable "initial_delay" {
 }
 
 variable "frequency_sec" {
-  description = "MCP strict-mode transmit frequency in seconds. Minimum value: 0. Maximum value: 300."
+  description = "MCP strict-mode transmit frequency in seconds. Minimum value: 0. Maximum value: 300. Only emitted when set."
   type        = number
-  default     = 0
+  default     = null
 
   validation {
     condition     = var.frequency_sec == null || (var.frequency_sec >= 0 && var.frequency_sec <= 300)
@@ -82,9 +82,9 @@ variable "frequency_sec" {
 }
 
 variable "frequency_msec" {
-  description = "MCP strict-mode transmit frequency in milliseconds. Minimum value: 0. Maximum value: 999."
+  description = "MCP strict-mode transmit frequency in milliseconds. Minimum value: 0. Maximum value: 999. Only emitted when set."
   type        = number
-  default     = 500
+  default     = null
 
   validation {
     condition     = var.frequency_msec == null || (var.frequency_msec >= 0 && var.frequency_msec <= 999)
