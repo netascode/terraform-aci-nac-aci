@@ -1,6 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
 # Terraform ACI MCP Policy Module
-#test
 
 Manages ACI MCP Policy
 
