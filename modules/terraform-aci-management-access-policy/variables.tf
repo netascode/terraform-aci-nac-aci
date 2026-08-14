@@ -86,7 +86,7 @@ variable "ssh_aes256_ctr" {
 variable "ssh_aes256_gcm" {
   description = "aes256-gcm cipher."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "ssh_chacha" {
@@ -245,6 +245,24 @@ variable "https_allow_origins" {
     condition     = can(regex("^[a-zA-Z0-9-_:/.,]{0,256}$", var.https_allow_origins))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `,` `:`, `-` `/`. Maximum characters: 256."
   }
+}
+
+variable "https_ssl_cipher_ecdhe_rsa_aes256_gcm_sha384" {
+  description = "ECDHE-RSA-AES256-GCM-SHA384 SSL cipher."
+  type        = bool
+  default     = true
+}
+
+variable "https_ssl_cipher_ecdhe_rsa_chacha20_poly1305" {
+  description = "ECDHE-RSA-CHACHA20-POLY1305 SSL cipher."
+  type        = bool
+  default     = true
+}
+
+variable "https_ssl_cipher_ecdhe_rsa_aes128_gcm_sha256" {
+  description = "ECDHE-RSA-AES128-GCM-SHA256 SSL cipher."
+  type        = bool
+  default     = true
 }
 
 variable "http_admin_state" {
