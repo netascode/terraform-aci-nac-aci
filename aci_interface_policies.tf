@@ -338,6 +338,44 @@ module "aci_spine_interface_configuration" {
 }
 
 locals {
+  new_spine_subinterface_configuration = flatten([
+    for node in local.nodes : [
+      for interface in try(node.interfaces, []) : [
+        for subinterface in try(interface.sub_ports, []) : {
+          key          = format("%s/%s/%s/%s", node.id, try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module), interface.port, subinterface.port)
+          node_id      = node.id
+          module       = try(interface.module, local.defaults.apic.interface_policies.nodes.interfaces.module)
+          port         = interface.port
+          sub_port     = subinterface.port
+          policy_group = try("${subinterface.policy_group}${local.defaults.apic.access_policies.spine_interface_policy_groups.name_suffix}", "system-ports-default")
+          description  = try(subinterface.description, "")
+          shutdown     = try(subinterface.shutdown, local.defaults.apic.interface_policies.nodes.interfaces.sub_ports.shutdown)
+          role         = node.role
+        }
+      ] if !try(interface.fabric, local.defaults.apic.interface_policies.nodes.interfaces.fabric)
+    ] if node.role == "spine" && try(local.apic.new_interface_configuration, local.defaults.apic.new_interface_configuration) == true
+  ])
+}
+
+module "aci_spine_interface_configuration_sub" {
+  source = "./modules/terraform-aci-interface-configuration"
+
+  for_each     = { for int in local.new_spine_subinterface_configuration : int.key => int if local.modules.aci_interface_configuration && var.manage_interface_policies }
+  node_id      = each.value.node_id
+  module       = each.value.module
+  port         = each.value.port
+  sub_port     = each.value.sub_port
+  policy_group = each.value.policy_group
+  description  = each.value.description
+  shutdown     = each.value.shutdown
+  role         = each.value.role
+
+  depends_on = [
+    module.aci_spine_interface_configuration
+  ]
+}
+
+locals {
   new_leaf_fabric_interface_configuration = flatten([
     for node in local.nodes : [
       for interface in try(node.interfaces, []) : {
