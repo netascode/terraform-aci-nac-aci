@@ -1136,8 +1136,6 @@ module "aci_management_access_policy" {
   https_ssl_cipher_ecdhe_rsa_aes256_gcm_sha384 = try(each.value.https.ssl_ciphers.ecdhe_rsa_aes256_gcm_sha384, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.ssl_ciphers.ecdhe_rsa_aes256_gcm_sha384)
   https_ssl_cipher_ecdhe_rsa_chacha20_poly1305 = try(each.value.https.ssl_ciphers.ecdhe_rsa_chacha20_poly1305, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.ssl_ciphers.ecdhe_rsa_chacha20_poly1305)
   https_ssl_cipher_ecdhe_rsa_aes128_gcm_sha256 = try(each.value.https.ssl_ciphers.ecdhe_rsa_aes128_gcm_sha256, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.ssl_ciphers.ecdhe_rsa_aes128_gcm_sha256)
-  https_ssl_cipher_ecdhe_rsa_aes256_sha384     = try(each.value.https.ssl_ciphers.ecdhe_rsa_aes256_sha384, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.ssl_ciphers.ecdhe_rsa_aes256_sha384)
-  https_ssl_cipher_ecdhe_rsa_aes128_sha256     = try(each.value.https.ssl_ciphers.ecdhe_rsa_aes128_sha256, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.https.ssl_ciphers.ecdhe_rsa_aes128_sha256)
   http_admin_state                             = try(each.value.http.admin_state, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.http.admin_state)
   http_port                                    = try(each.value.http.port, local.defaults.apic.fabric_policies.pod_policies.management_access_policies.http.port)
   http_allow_origins                           = try(each.value.http.allow_origins, "")

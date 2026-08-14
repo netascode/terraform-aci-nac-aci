@@ -171,8 +171,6 @@ defaults:
               ecdhe_rsa_aes256_gcm_sha384: true
               ecdhe_rsa_chacha20_poly1305: true
               ecdhe_rsa_aes128_gcm_sha256: true
-              ecdhe_rsa_aes256_sha384: true
-              ecdhe_rsa_aes128_sha256: true
           http:
             admin_state: false
             port: 80

@@ -265,18 +265,6 @@ variable "https_ssl_cipher_ecdhe_rsa_aes128_gcm_sha256" {
   default     = true
 }
 
-variable "https_ssl_cipher_ecdhe_rsa_aes256_sha384" {
-  description = "ECDHE-RSA-AES256-SHA384 SSL cipher."
-  type        = bool
-  default     = true
-}
-
-variable "https_ssl_cipher_ecdhe_rsa_aes128_sha256" {
-  description = "ECDHE-RSA-AES128-SHA256 SSL cipher."
-  type        = bool
-  default     = true
-}
-
 variable "http_admin_state" {
   description = "HTTP admin state."
   type        = bool
