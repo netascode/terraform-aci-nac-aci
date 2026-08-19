@@ -25,6 +25,8 @@ module "aci_snmp_policy" {
     entries = [{
       ip   = "10.1.1.1"
       name = "NMS1"
+      }, {
+      ip = "10.1.1.2"
     }]
   }]
 }
