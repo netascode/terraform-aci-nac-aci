@@ -445,9 +445,17 @@ module "aci_spanning_tree_policy" {
 module "aci_mcp_policy" {
   source = "./modules/terraform-aci-mcp-policy"
 
-  for_each    = { for mcp in try(local.access_policies.interface_policies.mcp_policies, []) : mcp.name => mcp if local.modules.aci_mcp_policy && var.manage_access_policies }
-  name        = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}"
-  admin_state = each.value.admin_state
+  for_each          = { for mcp in try(local.access_policies.interface_policies.mcp_policies, []) : mcp.name => mcp if local.modules.aci_mcp_policy && var.manage_access_policies }
+  name              = "${each.value.name}${local.defaults.apic.access_policies.interface_policies.mcp_policies.name_suffix}"
+  admin_state       = try(each.value.admin_state, local.defaults.apic.access_policies.interface_policies.mcp_policies.admin_state)
+  per_vlan_mcp      = try(each.value.per_vlan_mcp, null)
+  strict_mode       = try(each.value.strict_mode, null)
+  max_vlans         = try(each.value.max_vlans, try(each.value.per_vlan_mcp, false) ? local.defaults.apic.access_policies.interface_policies.mcp_policies.max_vlans : null)
+  grace_period      = try(each.value.grace_period, try(each.value.strict_mode, false) ? local.defaults.apic.access_policies.interface_policies.mcp_policies.grace_period : null)
+  grace_period_msec = try(each.value.grace_period_msec, try(each.value.strict_mode, false) ? local.defaults.apic.access_policies.interface_policies.mcp_policies.grace_period_msec : null)
+  initial_delay     = try(each.value.initial_delay, try(each.value.strict_mode, false) ? local.defaults.apic.access_policies.interface_policies.mcp_policies.initial_delay : null)
+  frequency_sec     = try(each.value.frequency_sec, try(each.value.strict_mode, false) ? local.defaults.apic.access_policies.interface_policies.mcp_policies.frequency_sec : null)
+  frequency_msec    = try(each.value.frequency_msec, try(each.value.strict_mode, false) ? local.defaults.apic.access_policies.interface_policies.mcp_policies.frequency_msec : null)
 }
 
 module "aci_l2_policy" {
