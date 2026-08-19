@@ -334,7 +334,9 @@ Additional example repositories:
 | <a name="module_aci_snmp_trap_policy"></a> [aci\_snmp\_trap\_policy](#module\_aci\_snmp\_trap\_policy) | ./modules/terraform-aci-snmp-trap-policy | n/a |
 | <a name="module_aci_spanning_tree_policy"></a> [aci\_spanning\_tree\_policy](#module\_aci\_spanning\_tree\_policy) | ./modules/terraform-aci-spanning-tree-policy | n/a |
 | <a name="module_aci_spine_fabric_interface_configuration"></a> [aci\_spine\_fabric\_interface\_configuration](#module\_aci\_spine\_fabric\_interface\_configuration) | ./modules/terraform-aci-fabric-interface-configuration | n/a |
+| <a name="module_aci_spine_fabric_interface_configuration_sub"></a> [aci\_spine\_fabric\_interface\_configuration\_sub](#module\_aci\_spine\_fabric\_interface\_configuration\_sub) | ./modules/terraform-aci-fabric-interface-configuration | n/a |
 | <a name="module_aci_spine_interface_configuration"></a> [aci\_spine\_interface\_configuration](#module\_aci\_spine\_interface\_configuration) | ./modules/terraform-aci-interface-configuration | n/a |
+| <a name="module_aci_spine_interface_configuration_sub"></a> [aci\_spine\_interface\_configuration\_sub](#module\_aci\_spine\_interface\_configuration\_sub) | ./modules/terraform-aci-interface-configuration | n/a |
 | <a name="module_aci_sr_mpls_external_endpoint_group"></a> [aci\_sr\_mpls\_external\_endpoint\_group](#module\_aci\_sr\_mpls\_external\_endpoint\_group) | ./modules/terraform-aci-external-endpoint-group | n/a |
 | <a name="module_aci_sr_mpls_global_configuration"></a> [aci\_sr\_mpls\_global\_configuration](#module\_aci\_sr\_mpls\_global\_configuration) | ./modules/terraform-aci-sr-mpls-global-configuration | n/a |
 | <a name="module_aci_sr_mpls_l3out"></a> [aci\_sr\_mpls\_l3out](#module\_aci\_sr\_mpls\_l3out) | ./modules/terraform-aci-l3out | n/a |
