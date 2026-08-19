@@ -273,9 +273,9 @@ variable "logical_interfaces" {
 
   validation {
     condition = alltrue([
-      for l in var.logical_interfaces : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", l.name))
+      for l in var.logical_interfaces : can(regex("^[a-zA-Z0-9_.:-]{0,16}$", l.name))
     ])
-    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+    error_message = "`name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 16."
   }
 
   validation {
