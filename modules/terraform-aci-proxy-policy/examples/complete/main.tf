@@ -1,0 +1,15 @@
+module "aci_proxy_policy" {
+  source  = "netascode/nac-aci/aci//modules/terraform-aci-proxy-policy"
+  version = ">= 2.1.0"
+
+  http_url       = "http://172.16.8.1:8080"
+  http_username  = "user_http"
+  http_password  = "Cisco!234"
+  https_url      = "https://172.16.8.1:8443"
+  https_username = "user_https"
+  https_password = "Cisco!234"
+  ignore_hosts = [
+    "192.168.8.1",
+    "hostname-1"
+  ]
+}

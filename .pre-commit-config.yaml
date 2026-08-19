@@ -820,6 +820,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-smart-licensing/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-proxy-policy"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-proxy-policy/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-snmp-policy"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-snmp-policy/examples/complete"]
