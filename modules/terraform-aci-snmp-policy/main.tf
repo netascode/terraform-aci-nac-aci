@@ -2,7 +2,7 @@ locals {
   entries = flatten([
     for client in var.clients : [
       for entry in coalesce(client.entries, []) : {
-        key = "${client.name}/${entry.name}"
+        key = "${client.name}/${entry.ip}"
         value = {
           client = client.name
           ip     = entry.ip
