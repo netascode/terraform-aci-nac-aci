@@ -988,7 +988,6 @@ defaults:
         advertise_host_routes: false
         l3_multicast: false
         l3_multicast_ipv6: false
-        multicast_arp_drop: false
         dhcp_labels:
           scope: tenant
         netflow_monitor_policies:
