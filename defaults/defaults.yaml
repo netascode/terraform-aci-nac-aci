@@ -76,7 +76,7 @@ defaults:
       ignore_acked_faults: false
       use_infra_gipo: false
       fabric_isis_redistribute_metric: 60
-      fabric_isis_bfd: true
+      fabric_isis_bfd: false
       fabric_bgp_rr:
         pod_id: 1
       fabric_bgp_ext_rr:
