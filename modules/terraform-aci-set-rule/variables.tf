@@ -252,3 +252,41 @@ variable "external_endpoint_group_tenant" {
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
   }
 }
+
+// ESG Support
+variable "endpoint_security_group" {
+  description = "Endpoint Security group name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.endpoint_security_group))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+  validation {
+    condition     = !(var.external_endpoint_group != "" && var.endpoint_security_group != "")
+    error_message = "Cannot specify both external_endpoint_group and endpoint_security_group. Only one can be configured."
+  }
+}
+
+variable "endpoint_security_group_app" {
+  description = "Endpoint security group app name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.endpoint_security_group_app))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}
+
+variable "endpoint_security_group_tenant" {
+  description = "Endpoint security group tenant name."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_.:-]{0,64}$", var.endpoint_security_group_tenant))
+    error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+}

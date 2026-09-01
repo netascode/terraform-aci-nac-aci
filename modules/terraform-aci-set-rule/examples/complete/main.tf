@@ -36,4 +36,8 @@ module "aci_set_rule" {
   ]
   next_hop_propagation = true
   multipath            = true
+
+  endpoint_security_group        = "ESG1"
+  endpoint_security_group_app    = "AP1"
+  endpoint_security_group_tenant = "ABC"
 }
