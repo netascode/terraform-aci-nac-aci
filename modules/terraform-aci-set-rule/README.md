@@ -47,6 +47,10 @@ module "aci_set_rule" {
   ]
   next_hop_propagation = true
   multipath            = true
+
+  endpoint_security_group        = "ESG1"
+  endpoint_security_group_app    = "AP1"
+  endpoint_security_group_tenant = "ABC"
 }
 ```
 
@@ -90,6 +94,9 @@ module "aci_set_rule" {
 | <a name="input_external_endpoint_group"></a> [external\_endpoint\_group](#input\_external\_endpoint\_group) | External endpoint group name. | `string` | `""` | no |
 | <a name="input_external_endpoint_group_l3out"></a> [external\_endpoint\_group\_l3out](#input\_external\_endpoint\_group\_l3out) | External endpoint group l3out name. | `string` | `""` | no |
 | <a name="input_external_endpoint_group_tenant"></a> [external\_endpoint\_group\_tenant](#input\_external\_endpoint\_group\_tenant) | External endpoint group tenant name. | `string` | `""` | no |
+| <a name="input_endpoint_security_group"></a> [endpoint\_security\_group](#input\_endpoint\_security\_group) | Endpoint Security group name. | `string` | `""` | no |
+| <a name="input_endpoint_security_group_app"></a> [endpoint\_security\_group\_app](#input\_endpoint\_security\_group\_app) | Endpoint security group app name. | `string` | `""` | no |
+| <a name="input_endpoint_security_group_tenant"></a> [endpoint\_security\_group\_tenant](#input\_endpoint\_security\_group\_tenant) | Endpoint security group tenant name. | `string` | `""` | no |
 
 ## Outputs
 
@@ -103,6 +110,7 @@ module "aci_set_rule" {
 | Name | Type |
 |------|------|
 | [aci_rest_managed.rtctrlAttrP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.rtctrlRsSetPolicyTagToESg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlRsSetPolicyTagToInstP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlSetASPath](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.rtctrlSetASPathASN](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
