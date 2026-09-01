@@ -161,7 +161,7 @@ resource "aci_rest_managed" "rtctrlSetRedistMultipath" {
 }
 
 resource "aci_rest_managed" "rtctrlSetPolicyTag" {
-  count      = var.external_endpoint_group != "" && var.external_endpoint_group_l3out != "" ? 1 : 0
+  count      = var.external_endpoint_group != "" && var.external_endpoint_group_l3out != "" || var.endpoint_security_group != "" && var.endpoint_security_group_app != "" ? 1 : 0
   dn         = "${aci_rest_managed.rtctrlAttrP.dn}/sptag"
   class_name = "rtctrlSetPolicyTag"
   content = {
@@ -175,5 +175,14 @@ resource "aci_rest_managed" "rtctrlRsSetPolicyTagToInstP" {
   class_name = "rtctrlRsSetPolicyTagToInstP"
   content = {
     "tDn" = "uni/tn-${try(var.external_endpoint_group_tenant, var.tenant)}/out-${var.external_endpoint_group_l3out}/instP-${var.external_endpoint_group}"
+  }
+}
+
+resource "aci_rest_managed" "rtctrlRsSetPolicyTagToESg" {
+  count      = var.endpoint_security_group != "" && var.endpoint_security_group_app != "" ? 1 : 0
+  dn         = "${aci_rest_managed.rtctrlSetPolicyTag[0].dn}/rssetPolicyTagToESg"
+  class_name = "rtctrlRsSetPolicyTagToESg"
+  content = {
+    "tDn" = "uni/tn-${try(var.endpoint_security_group_tenant, var.tenant)}/ap-${var.endpoint_security_group_app}/esg-${var.endpoint_security_group}"
   }
 }
