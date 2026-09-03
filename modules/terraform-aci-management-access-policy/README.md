@@ -13,44 +13,46 @@ module "aci_management_access_policy" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-management-access-policy"
   version = ">= 0.8.0"
 
-  name                         = "MAP1"
-  description                  = "My Description"
-  telnet_admin_state           = true
-  telnet_port                  = 2023
-  ssh_admin_state              = true
-  ssh_password_auth            = true
-  ssh_port                     = 2022
-  ssh_aes128_ctr               = false
-  ssh_aes128_gcm               = false
-  ssh_aes192_ctr               = false
-  ssh_aes256_ctr               = false
-  ssh_aes256_gcm               = false
-  ssh_chacha                   = false
-  ssh_hmac_sha1                = false
-  ssh_hmac_sha2_256            = false
-  ssh_hmac_sha2_512            = false
-  ssh_curve25519_sha256        = false
-  ssh_curve25519_sha256_libssh = false
-  ssh_dh1_sha1                 = false
-  ssh_dh14_sha1                = false
-  ssh_dh14_sha256              = false
-  ssh_dh16_sha512              = false
-  ssh_ecdh_sha2_nistp256       = false
-  ssh_ecdh_sha2_nistp384       = false
-  ssh_ecdh_sha2_nistp521       = false
-  https_admin_state            = true
-  https_client_cert_auth_state = false
-  https_port                   = 2443
-  https_dh                     = 2048
-  https_tlsv1                  = true
-  https_tlsv1_1                = true
-  https_tlsv1_2                = false
-  https_tlsv1_3                = false
-  https_keyring                = "KR1"
-  https_allow_origins          = "http://127.0.0.1:8000"
-  http_admin_state             = true
-  http_port                    = 2080
-  http_allow_origins           = "http://127.0.0.1:8000"
+  name                                         = "MAP1"
+  description                                  = "My Description"
+  telnet_admin_state                           = true
+  telnet_port                                  = 2023
+  ssh_admin_state                              = true
+  ssh_password_auth                            = true
+  ssh_port                                     = 2022
+  ssh_aes128_ctr                               = false
+  ssh_aes128_gcm                               = false
+  ssh_aes192_ctr                               = false
+  ssh_aes256_ctr                               = false
+  ssh_aes256_gcm                               = false
+  ssh_chacha                                   = false
+  ssh_hmac_sha1                                = false
+  ssh_hmac_sha2_256                            = false
+  ssh_hmac_sha2_512                            = false
+  ssh_curve25519_sha256                        = false
+  ssh_curve25519_sha256_libssh                 = false
+  ssh_dh1_sha1                                 = false
+  ssh_dh14_sha1                                = false
+  ssh_dh14_sha256                              = false
+  ssh_dh16_sha512                              = false
+  ssh_ecdh_sha2_nistp256                       = false
+  ssh_ecdh_sha2_nistp384                       = false
+  ssh_ecdh_sha2_nistp521                       = false
+  https_admin_state                            = true
+  https_client_cert_auth_state                 = false
+  https_port                                   = 2443
+  https_dh                                     = 2048
+  https_tlsv1                                  = true
+  https_tlsv1_1                                = true
+  https_tlsv1_2                                = false
+  https_tlsv1_3                                = false
+  https_keyring                                = "KR1"
+  https_allow_origins                          = "http://127.0.0.1:8000"
+  https_ssl_cipher_ecdhe_rsa_chacha20_poly1305 = false
+  https_ssl_cipher_ecdhe_rsa_aes128_gcm_sha256 = false
+  http_admin_state                             = true
+  http_port                                    = 2080
+  http_allow_origins                           = "http://127.0.0.1:8000"
 }
 ```
 
@@ -58,14 +60,14 @@ module "aci_management_access_policy" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.19.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.19.0 |
 
 ## Inputs
 
@@ -82,7 +84,7 @@ module "aci_management_access_policy" {
 | <a name="input_ssh_aes128_gcm"></a> [ssh\_aes128\_gcm](#input\_ssh\_aes128\_gcm) | aes128-gcm cipher. | `bool` | `true` | no |
 | <a name="input_ssh_aes192_ctr"></a> [ssh\_aes192\_ctr](#input\_ssh\_aes192\_ctr) | aes192-ctr cipher. | `bool` | `true` | no |
 | <a name="input_ssh_aes256_ctr"></a> [ssh\_aes256\_ctr](#input\_ssh\_aes256\_ctr) | aes256-ctr cipher. | `bool` | `true` | no |
-| <a name="input_ssh_aes256_gcm"></a> [ssh\_aes256\_gcm](#input\_ssh\_aes256\_gcm) | aes256-gcm cipher. | `bool` | `false` | no |
+| <a name="input_ssh_aes256_gcm"></a> [ssh\_aes256\_gcm](#input\_ssh\_aes256\_gcm) | aes256-gcm cipher. | `bool` | `true` | no |
 | <a name="input_ssh_chacha"></a> [ssh\_chacha](#input\_ssh\_chacha) | chacha cipher. | `bool` | `true` | no |
 | <a name="input_ssh_hmac_sha1"></a> [ssh\_hmac\_sha1](#input\_ssh\_hmac\_sha1) | hmac-sha1 message authentication code. | `bool` | `true` | no |
 | <a name="input_ssh_hmac_sha2_256"></a> [ssh\_hmac\_sha2\_256](#input\_ssh\_hmac\_sha2\_256) | hmac-sha2-256 message authentication code. | `bool` | `true` | no |
@@ -106,6 +108,19 @@ module "aci_management_access_policy" {
 | <a name="input_https_tlsv1_3"></a> [https\_tlsv1\_3](#input\_https\_tlsv1\_3) | HTTPS TLS v1.3. | `bool` | `false` | no |
 | <a name="input_https_keyring"></a> [https\_keyring](#input\_https\_keyring) | HTTPS keyring name. | `string` | `""` | no |
 | <a name="input_https_allow_origins"></a> [https\_allow\_origins](#input\_https\_allow\_origins) | HTTPS allow origins. | `string` | `""` | no |
+| <a name="input_https_ssl_cipher_ecdhe_ecdsa_aes128_ccm"></a> [https\_ssl\_cipher\_ecdhe\_ecdsa\_aes128\_ccm](#input\_https\_ssl\_cipher\_ecdhe\_ecdsa\_aes128\_ccm) | ECDHE-ECDSA-AES128-CCM SSL cipher. | `bool` | `true` | no |
+| <a name="input_https_ssl_cipher_ecdhe_ecdsa_aes128_gcm_sha256"></a> [https\_ssl\_cipher\_ecdhe\_ecdsa\_aes128\_gcm\_sha256](#input\_https\_ssl\_cipher\_ecdhe\_ecdsa\_aes128\_gcm\_sha256) | ECDHE-ECDSA-AES128-GCM-SHA256 SSL cipher. | `bool` | `true` | no |
+| <a name="input_https_ssl_cipher_ecdhe_ecdsa_aes256_ccm"></a> [https\_ssl\_cipher\_ecdhe\_ecdsa\_aes256\_ccm](#input\_https\_ssl\_cipher\_ecdhe\_ecdsa\_aes256\_ccm) | ECDHE-ECDSA-AES256-CCM SSL cipher. | `bool` | `true` | no |
+| <a name="input_https_ssl_cipher_ecdhe_ecdsa_aes256_gcm_sha384"></a> [https\_ssl\_cipher\_ecdhe\_ecdsa\_aes256\_gcm\_sha384](#input\_https\_ssl\_cipher\_ecdhe\_ecdsa\_aes256\_gcm\_sha384) | ECDHE-ECDSA-AES256-GCM-SHA384 SSL cipher. | `bool` | `true` | no |
+| <a name="input_https_ssl_cipher_ecdhe_ecdsa_chacha20_poly1305"></a> [https\_ssl\_cipher\_ecdhe\_ecdsa\_chacha20\_poly1305](#input\_https\_ssl\_cipher\_ecdhe\_ecdsa\_chacha20\_poly1305) | ECDHE-ECDSA-CHACHA20-POLY1305 SSL cipher. | `bool` | `true` | no |
+| <a name="input_https_ssl_cipher_ecdhe_rsa_aes128_gcm_sha256"></a> [https\_ssl\_cipher\_ecdhe\_rsa\_aes128\_gcm\_sha256](#input\_https\_ssl\_cipher\_ecdhe\_rsa\_aes128\_gcm\_sha256) | ECDHE-RSA-AES128-GCM-SHA256 SSL cipher. | `bool` | `true` | no |
+| <a name="input_https_ssl_cipher_ecdhe_rsa_aes128_sha256"></a> [https\_ssl\_cipher\_ecdhe\_rsa\_aes128\_sha256](#input\_https\_ssl\_cipher\_ecdhe\_rsa\_aes128\_sha256) | ECDHE-RSA-AES128-SHA256 SSL cipher. | `bool` | `false` | no |
+| <a name="input_https_ssl_cipher_ecdhe_rsa_aes256_gcm_sha384"></a> [https\_ssl\_cipher\_ecdhe\_rsa\_aes256\_gcm\_sha384](#input\_https\_ssl\_cipher\_ecdhe\_rsa\_aes256\_gcm\_sha384) | ECDHE-RSA-AES256-GCM-SHA384 SSL cipher. | `bool` | `true` | no |
+| <a name="input_https_ssl_cipher_ecdhe_rsa_aes256_sha384"></a> [https\_ssl\_cipher\_ecdhe\_rsa\_aes256\_sha384](#input\_https\_ssl\_cipher\_ecdhe\_rsa\_aes256\_sha384) | ECDHE-RSA-AES256-SHA384 SSL cipher. | `bool` | `false` | no |
+| <a name="input_https_ssl_cipher_ecdhe_rsa_chacha20_poly1305"></a> [https\_ssl\_cipher\_ecdhe\_rsa\_chacha20\_poly1305](#input\_https\_ssl\_cipher\_ecdhe\_rsa\_chacha20\_poly1305) | ECDHE-RSA-CHACHA20-POLY1305 SSL cipher. | `bool` | `true` | no |
+| <a name="input_https_ssl_cipher_tls_aes_128_gcm_sha256"></a> [https\_ssl\_cipher\_tls\_aes\_128\_gcm\_sha256](#input\_https\_ssl\_cipher\_tls\_aes\_128\_gcm\_sha256) | TLS\_AES\_128\_GCM\_SHA256 SSL cipher. | `bool` | `true` | no |
+| <a name="input_https_ssl_cipher_tls_aes_256_gcm_sha384"></a> [https\_ssl\_cipher\_tls\_aes\_256\_gcm\_sha384](#input\_https\_ssl\_cipher\_tls\_aes\_256\_gcm\_sha384) | TLS\_AES\_256\_GCM\_SHA384 SSL cipher. | `bool` | `true` | no |
+| <a name="input_https_ssl_cipher_tls_chacha20_poly1305_sha256"></a> [https\_ssl\_cipher\_tls\_chacha20\_poly1305\_sha256](#input\_https\_ssl\_cipher\_tls\_chacha20\_poly1305\_sha256) | TLS\_CHACHA20\_POLY1305\_SHA256 SSL cipher. | `bool` | `true` | no |
 | <a name="input_http_admin_state"></a> [http\_admin\_state](#input\_http\_admin\_state) | HTTP admin state. | `bool` | `false` | no |
 | <a name="input_http_port"></a> [http\_port](#input\_http\_port) | HTTP port. | `number` | `80` | no |
 | <a name="input_http_allow_origins"></a> [http\_allow\_origins](#input\_http\_allow\_origins) | HTTP allow origins. | `string` | `""` | no |
@@ -121,6 +136,7 @@ module "aci_management_access_policy" {
 
 | Name | Type |
 |------|------|
+| [aci_rest_managed.commCipher](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.commHttp](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.commHttps](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.commPol](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
