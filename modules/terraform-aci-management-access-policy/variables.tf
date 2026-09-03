@@ -247,10 +247,58 @@ variable "https_allow_origins" {
   }
 }
 
+variable "https_ssl_cipher_ecdhe_ecdsa_aes128_ccm" {
+  description = "ECDHE-ECDSA-AES128-CCM SSL cipher."
+  type        = bool
+  default     = true
+}
+
+variable "https_ssl_cipher_ecdhe_ecdsa_aes128_gcm_sha256" {
+  description = "ECDHE-ECDSA-AES128-GCM-SHA256 SSL cipher."
+  type        = bool
+  default     = true
+}
+
+variable "https_ssl_cipher_ecdhe_ecdsa_aes256_ccm" {
+  description = "ECDHE-ECDSA-AES256-CCM SSL cipher."
+  type        = bool
+  default     = true
+}
+
+variable "https_ssl_cipher_ecdhe_ecdsa_aes256_gcm_sha384" {
+  description = "ECDHE-ECDSA-AES256-GCM-SHA384 SSL cipher."
+  type        = bool
+  default     = true
+}
+
+variable "https_ssl_cipher_ecdhe_ecdsa_chacha20_poly1305" {
+  description = "ECDHE-ECDSA-CHACHA20-POLY1305 SSL cipher."
+  type        = bool
+  default     = true
+}
+
+variable "https_ssl_cipher_ecdhe_rsa_aes128_gcm_sha256" {
+  description = "ECDHE-RSA-AES128-GCM-SHA256 SSL cipher."
+  type        = bool
+  default     = true
+}
+
+variable "https_ssl_cipher_ecdhe_rsa_aes128_sha256" {
+  description = "ECDHE-RSA-AES128-SHA256 SSL cipher."
+  type        = bool
+  default     = false
+}
+
 variable "https_ssl_cipher_ecdhe_rsa_aes256_gcm_sha384" {
   description = "ECDHE-RSA-AES256-GCM-SHA384 SSL cipher."
   type        = bool
   default     = true
+}
+
+variable "https_ssl_cipher_ecdhe_rsa_aes256_sha384" {
+  description = "ECDHE-RSA-AES256-SHA384 SSL cipher."
+  type        = bool
+  default     = false
 }
 
 variable "https_ssl_cipher_ecdhe_rsa_chacha20_poly1305" {
@@ -259,8 +307,20 @@ variable "https_ssl_cipher_ecdhe_rsa_chacha20_poly1305" {
   default     = true
 }
 
-variable "https_ssl_cipher_ecdhe_rsa_aes128_gcm_sha256" {
-  description = "ECDHE-RSA-AES128-GCM-SHA256 SSL cipher."
+variable "https_ssl_cipher_tls_aes_128_gcm_sha256" {
+  description = "TLS_AES_128_GCM_SHA256 SSL cipher."
+  type        = bool
+  default     = true
+}
+
+variable "https_ssl_cipher_tls_aes_256_gcm_sha384" {
+  description = "TLS_AES_256_GCM_SHA384 SSL cipher."
+  type        = bool
+  default     = true
+}
+
+variable "https_ssl_cipher_tls_chacha20_poly1305_sha256" {
+  description = "TLS_CHACHA20_POLY1305_SHA256 SSL cipher."
   type        = bool
   default     = true
 }
