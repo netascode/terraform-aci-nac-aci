@@ -9,6 +9,14 @@ resource "aci_rest_managed" "fvESg" {
     prefGrMemb  = var.preferred_group == true ? "include" : "exclude"
     shutdown    = var.shutdown == true ? "yes" : "no"
   }
+
+  child {
+    class_name = "fvRsScope"
+    rn         = "rsscope"
+    content = {
+      tnFvCtxName = var.vrf
+    }
+  }
 }
 
 resource "aci_rest_managed" "fvRsScope" {
