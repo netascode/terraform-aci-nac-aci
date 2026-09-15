@@ -246,6 +246,39 @@ module "aci_vrf" {
 }
 
 locals {
+  ip_address_pools = flatten([
+    for tenant in local.tenants : [
+      for pool in try(tenant.ip_address_pools, []) : {
+        key                     = format("%s/%s", tenant.name, pool.name)
+        name                    = "${pool.name}${local.defaults.apic.tenants.ip_address_pools.name_suffix}"
+        description             = try(pool.description, "")
+        gateway_address         = pool.gateway_address
+        skip_gateway_validation = try(pool.skip_gateway_validation, local.defaults.apic.tenants.ip_address_pools.skip_gateway_validation)
+        address_ranges = [for range in try(pool.address_ranges, []) : {
+          from = range.from
+          to   = range.to
+        }]
+      }
+    ] if tenant.name == "mgmt"
+  ])
+}
+
+module "aci_ip_address_pool" {
+  source = "./modules/terraform-aci-ip-address-pool"
+
+  for_each                = { for pool in local.ip_address_pools : pool.key => pool if local.modules.aci_ip_address_pool && var.manage_tenants }
+  name                    = each.value.name
+  description             = each.value.description
+  gateway_address         = each.value.gateway_address
+  skip_gateway_validation = each.value.skip_gateway_validation
+  address_ranges          = each.value.address_ranges
+
+  depends_on = [
+    module.aci_tenant,
+  ]
+}
+
+locals {
   bridge_domains = flatten([
     for tenant in local.tenants : [
       for bd in try(tenant.bridge_domains, []) : {
