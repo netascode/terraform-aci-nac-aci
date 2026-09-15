@@ -96,6 +96,7 @@ modules:
   aci_interface_configuration: true
   aci_interface_shutdown: true
   aci_interface_type: true
+  aci_ip_address_pool: true
   aci_ip_aging: true
   aci_ip_sla_policy: true
   aci_keyring: true
