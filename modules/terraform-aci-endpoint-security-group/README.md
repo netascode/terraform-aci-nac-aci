@@ -1,4 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
+<!-- BEGIN_TF_DOCS -->
 # Terraform ACI Endpoint Security Group Module
 
 Description
@@ -94,6 +95,28 @@ module "aci_endpoint_security_group" {
     }
   ]
 }
+
+# Service Graph (Service EPG) selectors cannot be combined with any other
+# selector type on the same ESG, so this is modeled as a separate ESG.
+module "aci_endpoint_security_group_service_graph" {
+  source  = "netascode/nac-aci/aci/modules/terraform-aci-endpoint-security-group"
+  version = ">= 0.8.0"
+
+  name                = "ESG2"
+  description         = "ESG with Service EPG selector"
+  tenant              = "ABC"
+  application_profile = "AP1"
+  vrf                 = "VRF1"
+  service_epg_selectors = [
+    {
+      tenant                 = "ABC"
+      contract               = "CON1"
+      service_graph_template = "SGT1"
+      node_name              = "N1"
+      connector              = "consumer"
+    }
+  ]
+}
 ```
 
 ## Requirements
@@ -130,6 +153,7 @@ module "aci_endpoint_security_group" {
 | <a name="input_esg_contract_masters"></a> [esg\_contract\_masters](#input\_esg\_contract\_masters) | List of ESG contract masters. | <pre>list(object({<br/>    tenant                  = string<br/>    application_profile     = string<br/>    endpoint_security_group = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_tag_selectors"></a> [tag\_selectors](#input\_tag\_selectors) | List of tag selectors.  Choices `operator`: `contains`, `equals`, `regex`. Default value `operator`: `equals`. | <pre>list(object({<br/>    key         = string<br/>    operator    = optional(string, "equals")<br/>    value       = string<br/>    description = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_epg_selectors"></a> [epg\_selectors](#input\_epg\_selectors) | List of EPG selectors. | <pre>list(object({<br/>    tenant              = string<br/>    application_profile = string<br/>    endpoint_group      = string<br/>    description         = optional(string, "")<br/>  }))</pre> | `[]` | no |
+| <a name="input_service_epg_selectors"></a> [service\_epg\_selectors](#input\_service\_epg\_selectors) | List of Service Graph (Service EPG) selectors. An ESG cannot combine these with any other selector type. | <pre>list(object({<br/>    tenant                 = string<br/>    contract               = string<br/>    service_graph_template = string<br/>    node_name              = string<br/>    connector              = string # consumer, provider, or copy<br/>    description            = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_ip_subnet_selectors"></a> [ip\_subnet\_selectors](#input\_ip\_subnet\_selectors) | List of IP subnet selectors. | <pre>list(object({<br/>    value       = string<br/>    description = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_ip_external_subnet_selectors"></a> [ip\_external\_subnet\_selectors](#input\_ip\_external\_subnet\_selectors) | List of IP subnet selectors. | <pre>list(object({<br/>    ip          = string<br/>    description = optional(string, "")<br/>    shared      = optional(bool, false)<br/>  }))</pre> | `[]` | no |
 
@@ -151,6 +175,7 @@ module "aci_endpoint_security_group" {
 | [aci_rest_managed.fvEPgSelector](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvESg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvExternalSubnetSelector](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvLIfCtxSelector](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRemoteSGT](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsCons](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRsConsIf](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

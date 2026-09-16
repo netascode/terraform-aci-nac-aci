@@ -834,6 +834,14 @@ locals {
             description = try(sel.description, "")
             shared      = try(sel.shared, local.defaults.apic.tenants.application_profiles.endpoint_security_groups.ip_external_subnet_selectors.shared)
           }]
+          service_epg_selectors = [for sel in try(esg.service_epg_selectors, []) : {
+            tenant                 = tenant.name
+            contract               = sel.contract == "any" ? "any" : "${sel.contract}${local.defaults.apic.tenants.contracts.name_suffix}"
+            service_graph_template = sel.service_graph_template == "any" ? "any" : "${sel.service_graph_template}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
+            node_name              = sel.node_name
+            connector              = sel.connector
+            description            = try(sel.description, "")
+          }]
         }
       ]
     ]
@@ -863,6 +871,7 @@ module "aci_endpoint_security_group" {
   epg_selectors                = each.value.epg_selectors
   ip_subnet_selectors          = each.value.ip_subnet_selectors
   ip_external_subnet_selectors = each.value.ip_external_subnet_selectors
+  service_epg_selectors        = each.value.service_epg_selectors
 
   depends_on = [
     module.aci_tenant,
@@ -870,6 +879,7 @@ module "aci_endpoint_security_group" {
     module.aci_vrf,
     module.aci_contract,
     module.aci_endpoint_group,
+    module.aci_device_selection_policy,
   ]
 }
 
