@@ -518,6 +518,10 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-interface-type/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ip-address-pool"]
+      - id: terraform-docs-system
+        args: ["./modules/terraform-aci-ip-address-pool/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-ip-aging"]
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-ip-aging/examples/complete"]
