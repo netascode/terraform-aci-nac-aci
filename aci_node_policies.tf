@@ -38,6 +38,17 @@ module "aci_vpc_group" {
   ]
 }
 
+module "aci_managed_node_connectivity_group" {
+  source = "./modules/terraform-aci-managed-node-connectivity-group"
+
+  for_each            = { for grp in try(local.node_policies.managed_node_connectivity_groups, []) : grp.name => grp if local.modules.aci_managed_node_connectivity_group && var.manage_node_policies }
+  name                = "${each.value.name}${local.defaults.apic.node_policies.managed_node_connectivity_groups.name_suffix}"
+  oob_mgmt_epg        = try("${each.value.oob_addresses.oob_mgmt_epg}${local.defaults.apic.tenants.oob_endpoint_groups.name_suffix}", "")
+  oob_ip_address_pool = try(each.value.oob_addresses.oob_ip_address_pool, "")
+  inb_mgmt_epg        = try("${each.value.inb_addresses.inb_mgmt_epg}${local.defaults.apic.tenants.inb_endpoint_groups.name_suffix}", "")
+  inb_ip_address_pool = try(each.value.inb_addresses.inb_ip_address_pool, "")
+}
+
 module "aci_node_registration" {
   source = "./modules/terraform-aci-node-registration"
 

@@ -113,6 +113,7 @@ modules:
   aci_macsec_keychain_policies: true
   aci_macsec_parameters_policy: true
   aci_maintenance_group: true
+  aci_managed_node_connectivity_group: true
   aci_management_access_policy: true
   aci_match_rule: true
   aci_mcp: true
