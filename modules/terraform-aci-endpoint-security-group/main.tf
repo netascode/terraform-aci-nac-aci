@@ -131,7 +131,7 @@ resource "aci_rest_managed" "fvEPgSelector" {
 }
 
 resource "aci_rest_managed" "fvLIfCtxSelector" {
-  for_each   = { for sel in var.service_epg_selectors : "uni/tn-${sel.tenant}/ldevCtx-c-${sel.contract}-g-${sel.service_graph_template}-n-${sel.node_name}/lIfCtx-c-${sel.connector}" => sel }
+  for_each   = { for ses in var.service_epg_selectors : "uni/tn-${ses.tenant}/ldevCtx-c-${ses.contract}-g-${ses.service_graph_template}-n-${ses.node_name}/lIfCtx-c-${ses.connector}" => ses }
   dn         = "${aci_rest_managed.fvESg.dn}/lifctxselector-[${each.key}]"
   class_name = "fvLIfCtxSelector"
   content = {

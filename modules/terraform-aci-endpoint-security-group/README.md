@@ -1,5 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-<!-- BEGIN_TF_DOCS -->
 # Terraform ACI Endpoint Security Group Module
 
 Description
