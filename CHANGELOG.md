@@ -1,3 +1,43 @@
+## 2.1.0
+
+### New Features
+
+- Add support for ESG association in Set Rules
+- Add support for `shutdown` attribute under EPG
+- Add support for spine fabric sub-interface configuration
+- Add support for `any` keyword in device selection policies, to define a DSP that is not attached to a specific service graph template
+- Add support for per-VLAN MCP (Miscabling Protocol) interface
+- Add support for Fabric Proxy Server configuration
+- Add support for Remote Leaf Pod Redundancy policy
+- Add support for configuring custom monitoring policy under interface policy groups, tenant, application profile, EPG, uSeg EPG and VRF
+- Add support for `filter_between_nodes` attribute in service graph templates
+- Add support for TACACS monitoring destination configuration in fabric monitoring policy
+- Add support for IPv6 DAD configuration under L3out interface profiles
+- Add support for spine fabric interface policy group configuration
+- Add support for `default` PTP profile template
+- Add support for PIMv6
+- Add support for PIM Config Stripe Winner policy
+- Add support for `tag_annotations` under EPG and uSeg EPG
+- Add support for `tag_annotations` under external EPG
+- Add support to configure `infinite` value for `restart_time` attribute in BGP peer prefix policy
+
+### Bug Fixes
+
+- Change default value for `fabric_isis_bfd` attribute to `false`
+- Fix `snmp_policy_client_entry` `name` attribute to be optional, falling back to `ip` when not set
+- Fix name and alias validation length and disallow `:` character for tenant, VRF, bridge domain, application profile and EPG
+- Fix VMware and Nutanix VMM domain `allocation` fallback values
+- BREAKING CHANGE: Fix service graph template multi-node connection ordering and connector assignment. This will result in resource recreation for the connections created using new `devices` keyword that were not following the correct configuration.
+- Remove TACACS and syslog monitoring policy default `audit` attribute forcing an explicit value, causing failures on ACI 5.2
+- Fix VSPAN session source `direction` to be optional
+- Fix maximum length validation for BGP protocol profile name under L3out node profile
+- Remove stale default value for `multicast_arp_drop` attribute
+- Remove nonexistent `service_graph` attribute from out-of-band contract subject schema
+- Fix L4L7 logical interface `name` maximum length
+- Fix AAEP `endpoint_groups` `mode` and `deployment_immediacy` default value resolution
+- Fix VRF `normalized_vni` variable validation failing on non-numeric input
+- Fix conditional creation of remote location and scheduler references under config export policy. Unused resources will be removed from the config
+
 ## 2.0.0
 
 ### New Features
