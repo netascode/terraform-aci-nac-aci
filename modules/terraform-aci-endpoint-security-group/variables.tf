@@ -255,7 +255,7 @@ variable "service_epg_selectors" {
     tenant                 = string
     contract               = string
     service_graph_template = string
-    node_name              = string
+    node_name              = optional(string, "N1")
     connector              = string # consumer, provider, or copy
     description            = optional(string, "")
   }))
