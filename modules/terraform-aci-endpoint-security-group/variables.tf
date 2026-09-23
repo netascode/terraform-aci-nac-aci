@@ -249,6 +249,61 @@ variable "epg_selectors" {
   }
 }
 
+variable "service_epg_selectors" {
+  description = "List of Service Graph (Service EPG) selectors. An ESG cannot combine these with any other selector type."
+  type = list(object({
+    tenant                 = string
+    contract               = string
+    service_graph_template = string
+    node_name              = optional(string, "N1")
+    connector              = string # consumer, provider, or copy
+    description            = optional(string, "")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for ses in var.service_epg_selectors : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", ses.tenant))
+    ])
+    error_message = "`tenant`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for ses in var.service_epg_selectors : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", ses.contract))
+    ])
+    error_message = "`contract`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for ses in var.service_epg_selectors : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", ses.service_graph_template))
+    ])
+    error_message = "`service_graph_template`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for ses in var.service_epg_selectors : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", ses.node_name))
+    ])
+    error_message = "`node_name`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for ses in var.service_epg_selectors : contains(["consumer", "provider", "copy"], ses.connector)
+    ])
+    error_message = "`connector`: Allowed values: `consumer`, `provider`, `copy`."
+  }
+
+  validation {
+    condition = alltrue([
+      for ses in var.service_epg_selectors : ses.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", ses.description))
+    ])
+    error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+}
+
 variable "ip_subnet_selectors" {
   description = "List of IP subnet selectors."
   type = list(object({
