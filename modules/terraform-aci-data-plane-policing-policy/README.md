@@ -17,7 +17,7 @@ module "aci_data_plane_policing_policy" {
   name                 = "dpp-pol1"
   admin_state          = true
   type                 = "1R2C"
-  mode                 = "bits"
+  mode                 = "bit"
   sharing_mode         = "dedicated"
   peak_rate            = "10"
   peak_rate_unit       = "giga"
