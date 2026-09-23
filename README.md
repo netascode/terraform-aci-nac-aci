@@ -276,6 +276,7 @@ Additional example repositories:
 | <a name="module_aci_macsec_keychain_policies"></a> [aci\_macsec\_keychain\_policies](#module\_aci\_macsec\_keychain\_policies) | ./modules/terraform-aci-macsec-keychain-policies | n/a |
 | <a name="module_aci_macsec_parameters_policy"></a> [aci\_macsec\_parameters\_policy](#module\_aci\_macsec\_parameters\_policy) | ./modules/terraform-aci-macsec-parameters-policy | n/a |
 | <a name="module_aci_maintenance_group"></a> [aci\_maintenance\_group](#module\_aci\_maintenance\_group) | ./modules/terraform-aci-maintenance-group | n/a |
+| <a name="module_aci_managed_node_connectivity_group"></a> [aci\_managed\_node\_connectivity\_group](#module\_aci\_managed\_node\_connectivity\_group) | ./modules/terraform-aci-managed-node-connectivity-group | n/a |
 | <a name="module_aci_management_access_policy"></a> [aci\_management\_access\_policy](#module\_aci\_management\_access\_policy) | ./modules/terraform-aci-management-access-policy | n/a |
 | <a name="module_aci_match_rule"></a> [aci\_match\_rule](#module\_aci\_match\_rule) | ./modules/terraform-aci-match-rule | n/a |
 | <a name="module_aci_mcp"></a> [aci\_mcp](#module\_aci\_mcp) | ./modules/terraform-aci-mcp | n/a |

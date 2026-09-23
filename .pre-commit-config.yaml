@@ -590,6 +590,11 @@ repos:
       - id: terraform-docs-system
         args: ["./modules/terraform-aci-maintenance-group/examples/complete"]
       - id: terraform-docs-system
+        args: ["./modules/terraform-aci-managed-node-connectivity-group"]
+      - id: terraform-docs-system
+        args:
+          ["./modules/terraform-aci-managed-node-connectivity-group/examples/complete"]
+      - id: terraform-docs-system
         args: ["./modules/terraform-aci-management-access-policy"]
       - id: terraform-docs-system
         args:
