@@ -838,9 +838,16 @@ locals {
             tenant                 = tenant.name
             contract               = sel.contract == "any" ? "any" : "${sel.contract}${local.defaults.apic.tenants.contracts.name_suffix}"
             service_graph_template = sel.service_graph_template == "any" ? "any" : "${sel.service_graph_template}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
-            node_name              = try(sel.node_name, "N1")
-            connector              = sel.connector
-            description            = try(sel.description, "")
+            # Node name is derived from the referenced service graph template unless set explicitly.
+            # A multi-node template requires an explicit node_name.
+            node_name = try(sel.node_name, one([
+              for device in flatten([
+                for sgt in try(tenant.services.service_graph_templates, []) : try(sgt.devices, [sgt.device], [])
+                if sgt.name == sel.service_graph_template
+              ]) : try(device.node_name, device.name)
+            ]))
+            connector   = sel.connector
+            description = try(sel.description, "")
           }]
         }
       ]
