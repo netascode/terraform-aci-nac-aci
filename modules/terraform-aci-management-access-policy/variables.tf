@@ -259,6 +259,12 @@ variable "https_ssl_cipher_ecdhe_ecdsa_aes128_gcm_sha256" {
   default     = null
 }
 
+variable "https_ssl_cipher_ecdhe_ecdsa_aes128_sha256" {
+  description = "ECDHE-ECDSA-AES128-SHA256 SSL cipher. Unset means the cipher is not managed."
+  type        = bool
+  default     = null
+}
+
 variable "https_ssl_cipher_ecdhe_ecdsa_aes256_ccm" {
   description = "ECDHE-ECDSA-AES256-CCM SSL cipher. Unset means the cipher is not managed."
   type        = bool
@@ -267,6 +273,12 @@ variable "https_ssl_cipher_ecdhe_ecdsa_aes256_ccm" {
 
 variable "https_ssl_cipher_ecdhe_ecdsa_aes256_gcm_sha384" {
   description = "ECDHE-ECDSA-AES256-GCM-SHA384 SSL cipher. Unset means the cipher is not managed."
+  type        = bool
+  default     = null
+}
+
+variable "https_ssl_cipher_ecdhe_ecdsa_aes256_sha384" {
+  description = "ECDHE-ECDSA-AES256-SHA384 SSL cipher. Unset means the cipher is not managed."
   type        = bool
   default     = null
 }
@@ -283,8 +295,20 @@ variable "https_ssl_cipher_ecdhe_rsa_aes128_gcm_sha256" {
   default     = null
 }
 
+variable "https_ssl_cipher_ecdhe_rsa_aes128_sha256" {
+  description = "ECDHE-RSA-AES128-SHA256 SSL cipher. Unset means the cipher is not managed."
+  type        = bool
+  default     = null
+}
+
 variable "https_ssl_cipher_ecdhe_rsa_aes256_gcm_sha384" {
   description = "ECDHE-RSA-AES256-GCM-SHA384 SSL cipher. Unset means the cipher is not managed."
+  type        = bool
+  default     = null
+}
+
+variable "https_ssl_cipher_ecdhe_rsa_aes256_sha384" {
+  description = "ECDHE-RSA-AES256-SHA384 SSL cipher. Unset means the cipher is not managed."
   type        = bool
   default     = null
 }

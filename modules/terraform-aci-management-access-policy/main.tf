@@ -5,11 +5,15 @@ locals {
   https_ssl_ciphers = { for k, v in {
     "ECDHE-ECDSA-AES128-CCM"        = var.https_ssl_cipher_ecdhe_ecdsa_aes128_ccm
     "ECDHE-ECDSA-AES128-GCM-SHA256" = var.https_ssl_cipher_ecdhe_ecdsa_aes128_gcm_sha256
+    "ECDHE-ECDSA-AES128-SHA256"     = var.https_ssl_cipher_ecdhe_ecdsa_aes128_sha256
     "ECDHE-ECDSA-AES256-CCM"        = var.https_ssl_cipher_ecdhe_ecdsa_aes256_ccm
     "ECDHE-ECDSA-AES256-GCM-SHA384" = var.https_ssl_cipher_ecdhe_ecdsa_aes256_gcm_sha384
+    "ECDHE-ECDSA-AES256-SHA384"     = var.https_ssl_cipher_ecdhe_ecdsa_aes256_sha384
     "ECDHE-ECDSA-CHACHA20-POLY1305" = var.https_ssl_cipher_ecdhe_ecdsa_chacha20_poly1305
     "ECDHE-RSA-AES128-GCM-SHA256"   = var.https_ssl_cipher_ecdhe_rsa_aes128_gcm_sha256
+    "ECDHE-RSA-AES128-SHA256"       = var.https_ssl_cipher_ecdhe_rsa_aes128_sha256
     "ECDHE-RSA-AES256-GCM-SHA384"   = var.https_ssl_cipher_ecdhe_rsa_aes256_gcm_sha384
+    "ECDHE-RSA-AES256-SHA384"       = var.https_ssl_cipher_ecdhe_rsa_aes256_sha384
     "ECDHE-RSA-CHACHA20-POLY1305"   = var.https_ssl_cipher_ecdhe_rsa_chacha20_poly1305
     "TLS_AES_128_GCM_SHA256"        = var.https_ssl_cipher_tls_aes_128_gcm_sha256
     "TLS_AES_256_GCM_SHA384"        = var.https_ssl_cipher_tls_aes_256_gcm_sha384
