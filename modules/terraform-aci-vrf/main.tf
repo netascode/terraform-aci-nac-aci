@@ -676,24 +676,28 @@ resource "aci_rest_managed" "leakInternalPrefix" {
   for_each   = { for prefix in var.leaked_internal_prefixes : prefix.prefix => prefix }
   dn         = "${aci_rest_managed.leakRoutes[0].dn}/leakintprefix-[${each.value.prefix}]"
   class_name = "leakInternalPrefix"
-  content = {
-    ip    = each.value.prefix
-    scope = each.value.public == true ? "public" : "private"
-    ge    = each.value.from_prefix_length != null ? each.value.from_prefix_length : "unspecified"
-    le    = each.value.to_prefix_length != null ? each.value.to_prefix_length : "unspecified"
-  }
+  content = merge(
+    {
+      ip = each.value.prefix
+      ge = each.value.from_prefix_length != null ? each.value.from_prefix_length : "unspecified"
+      le = each.value.to_prefix_length != null ? each.value.to_prefix_length : "unspecified"
+    },
+    each.value.public != null ? { scope = each.value.public ? "public" : "private" } : {}
+  )
 }
 
 resource "aci_rest_managed" "leakTo_internal_prefix" {
   for_each   = { for dest in local.internal_prefix_destinations : dest.key => dest.value }
   dn         = "${aci_rest_managed.leakInternalPrefix[each.value.prefix].dn}/to-[${each.value.tenant}]-[${each.value.vrf}]"
   class_name = "leakTo"
-  content = {
-    tenantName = each.value.tenant
-    ctxName    = each.value.vrf
-    descr      = each.value.description
-    scope      = each.value.public == null ? "inherit" : (each.value.public == true ? "public" : "private")
-  }
+  content = merge(
+    {
+      tenantName = each.value.tenant
+      ctxName    = each.value.vrf
+      descr      = each.value.description
+    },
+    each.value.public != null ? { scope = each.value.public ? "public" : "private" } : {}
+  )
 }
 
 resource "aci_rest_managed" "leakExternalPrefix" {

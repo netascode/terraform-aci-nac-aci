@@ -738,10 +738,10 @@ variable "leaked_internal_subnets" {
 }
 
 variable "leaked_internal_prefixes" {
-  description = "List of leaked internal prefixes (leakInternalPrefix). Prefix-level `public` (scope) requires APIC 6.1+. Default value `public`: false."
+  description = "List of leaked internal prefixes (leakInternalPrefix). Prefix-level `public` (scope) requires APIC 6.1+. If `public` is not set, the `scope` attribute is not configured."
   type = list(object({
     prefix             = string
-    public             = optional(bool, false)
+    public             = optional(bool)
     from_prefix_length = optional(number)
     to_prefix_length   = optional(number)
     destinations = optional(list(object({
