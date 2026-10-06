@@ -116,7 +116,7 @@ locals {
         }]
         leaked_internal_prefixes = [for prefix in try(vrf.leaked_internal_prefixes, []) : {
           prefix             = prefix.prefix
-          public             = try(prefix.public, local.defaults.apic.tenants.vrfs.leaked_internal_prefixes.public)
+          public             = try(prefix.public, null)
           from_prefix_length = try(prefix.from_prefix_length, null)
           to_prefix_length   = try(prefix.to_prefix_length, null)
           destinations = [for dest in try(prefix.destinations, []) : {

@@ -927,11 +927,8 @@ defaults:
           destinations:
             public: false
         leaked_internal_prefixes:
-          public: false
           from_prefix_length: unspecified
           to_prefix_length: unspecified
-          destinations:
-            public: false
         leaked_external_prefixes:
           from_prefix_length: unspecified
           to_prefix_length: unspecified
