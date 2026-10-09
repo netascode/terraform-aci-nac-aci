@@ -4,7 +4,7 @@
 Manages ACI IP Address Pool
 
 Location in GUI:
-`Tenants` » `mgmt` » `IP Address Pools`
+`Tenants` » `mgmt`/`common` » `IP Address Pools`
 
 ## Examples
 
