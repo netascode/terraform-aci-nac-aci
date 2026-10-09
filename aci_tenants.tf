@@ -481,7 +481,7 @@ locals {
             dhcp_server_address_override = try(vmm.ipam.dhcp_server_address_override, local.defaults.apic.tenants.application_profiles.endpoint_groups.nutanix_vmm_domains.ipam.dhcp_server_address_override)
             dhcp_address_pool            = try(vmm.ipam.dhcp_address_pool, "")
           }]
-          static_ports = [for sp in try(epg.static_ports, []) : {
+          static_ports = flatten([for sp in try(epg.static_ports, []) : [for port in try(sp.port_range, [try(sp.port, null)]) : {
             node_id = try(sp.node_id, [for pg in local.leaf_interface_policy_group_mapping : pg.node_ids if pg.name == sp.channel][0][0], null)
             # set node2_id to "vpc" if channel IPG is vPC, otherwise "null"
             description          = try(sp.description, "")
@@ -490,7 +490,7 @@ locals {
             fex2_id              = try(sp.fex2_id, null)
             pod_id               = try(sp.pod_id, null)
             channel              = try("${sp.channel}${local.defaults.apic.access_policies.leaf_interface_policy_groups.name_suffix}", null)
-            port                 = try(sp.port, null)
+            port                 = port
             sub_port             = try(sp.sub_port, null)
             module               = try(sp.module, null)
             vlan                 = try(sp.vlan, null)
@@ -500,7 +500,7 @@ locals {
             ptp_source_ip        = try(sp.ptp.source_ip, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.ptp.source_ip)
             ptp_mode             = try(sp.ptp.mode, local.defaults.apic.tenants.application_profiles.endpoint_groups.static_ports.ptp.mode)
             ptp_profile          = try(sp.ptp.profile, null)
-          }]
+          }]])
           static_leafs = [for sl in try(epg.static_leafs, []) : {
             pod_id               = try(sl.pod_id, null)
             node_id              = try(sl.node_id, null)
