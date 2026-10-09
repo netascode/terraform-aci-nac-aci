@@ -1002,6 +1002,7 @@ defaults:
           no_default_gateway: false
       l3outs:
         name_suffix: ""
+        managed: true
         ndo_managed: false
         target_dscp: unspecified
         qos_class: unspecified

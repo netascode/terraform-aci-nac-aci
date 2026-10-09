@@ -1064,7 +1064,7 @@ locals {
           ]
           }
         ]
-      }
+      } if try(l3out.managed, local.defaults.apic.tenants.l3outs.managed, true)
     ]
   ])
 }
