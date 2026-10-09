@@ -9,7 +9,7 @@ variable "name" {
 }
 
 variable "selectors" {
-  description = "List of selectors. ALlowed values `type`: `all`, `range`. Default value `type`: `range`. Allowed values `from`: 1-255. Allowed values `to`: 1-255."
+  description = "List of selectors. ALlowed values `type`: `all`, `range`. Default value `type`: `range`. Allowed values `from`: 0-255. Allowed values `to`: 0-255."
   type = list(object({
     name         = string
     policy_group = optional(string)
@@ -52,15 +52,15 @@ variable "selectors" {
 
   validation {
     condition = alltrue(flatten([
-      for s in var.selectors : [for pb in coalesce(s.pod_blocks, []) : (pb.from >= 1 && pb.from <= 255)]
+      for s in var.selectors : [for pb in coalesce(s.pod_blocks, []) : (pb.from >= 0 && pb.from <= 255)]
     ]))
-    error_message = "`from`: Minimum value: 1. Maximum value: 255."
+    error_message = "`from`: Minimum value: 0. Maximum value: 255."
   }
 
   validation {
     condition = alltrue(flatten([
-      for s in var.selectors : [for pb in coalesce(s.pod_blocks, []) : (pb.to == null || try(pb.to >= 1 && pb.to <= 255, false))]
+      for s in var.selectors : [for pb in coalesce(s.pod_blocks, []) : (pb.to == null || try(pb.to >= 0 && pb.to <= 255, false))]
     ]))
-    error_message = "`to`: Minimum value: 1. Maximum value: 255."
+    error_message = "`to`: Minimum value: 0. Maximum value: 255."
   }
 }
