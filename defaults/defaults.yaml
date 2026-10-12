@@ -1363,6 +1363,9 @@ defaults:
         name: default
       ext_mgmt_instances:
         name_suffix: ""
+      ip_address_pools:
+        name_suffix: ""
+        skip_gateway_validation: false
       sr_mpls_l3outs:
         name_suffix: ""
         transport_data_plane: sr_mpls

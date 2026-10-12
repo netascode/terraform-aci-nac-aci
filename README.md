@@ -253,6 +253,7 @@ Additional example repositories:
 | <a name="module_aci_interface_configuration_fex"></a> [aci\_interface\_configuration\_fex](#module\_aci\_interface\_configuration\_fex) | ./modules/terraform-aci-interface-configuration | n/a |
 | <a name="module_aci_interface_shutdown"></a> [aci\_interface\_shutdown](#module\_aci\_interface\_shutdown) | ./modules/terraform-aci-interface-shutdown | n/a |
 | <a name="module_aci_interface_type"></a> [aci\_interface\_type](#module\_aci\_interface\_type) | ./modules/terraform-aci-interface-type | n/a |
+| <a name="module_aci_ip_address_pool"></a> [aci\_ip\_address\_pool](#module\_aci\_ip\_address\_pool) | ./modules/terraform-aci-ip-address-pool | n/a |
 | <a name="module_aci_ip_aging"></a> [aci\_ip\_aging](#module\_aci\_ip\_aging) | ./modules/terraform-aci-ip-aging | n/a |
 | <a name="module_aci_ip_sla_policy"></a> [aci\_ip\_sla\_policy](#module\_aci\_ip\_sla\_policy) | ./modules/terraform-aci-ip-sla-policy | n/a |
 | <a name="module_aci_keyring"></a> [aci\_keyring](#module\_aci\_keyring) | ./modules/terraform-aci-keyring | n/a |
