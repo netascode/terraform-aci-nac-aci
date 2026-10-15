@@ -1099,7 +1099,7 @@ locals {
           ]
           }
         ]
-      }
+      } if try(l3out.managed, local.defaults.apic.tenants.l3outs.managed, true)
     ]
   ])
 }
@@ -1258,7 +1258,7 @@ locals {
             peer_prefix_policy    = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
           } if tenant.name == "infra"]
         }
-      ]
+      ] if try(l3out.managed, local.defaults.apic.tenants.l3outs.managed, true)
     ]
   ])
 }
@@ -1386,7 +1386,7 @@ locals {
           data_plane_address    = try(peer.peer_type, local.defaults.apic.tenants.l3outs.bgp_infra_peers.peer_type) == "wan" && try(peer.source_interface_type, local.defaults.apic.tenants.l3outs.bgp_infra_peers.source_interface_type) == "routable-loopback" ? try(peer.data_plane_address, null) : null
           peer_prefix_policy    = try("${peer.peer_prefix_policy}${local.defaults.apic.tenants.policies.bgp_peer_prefix_policies.name_suffix}", null)
         } if tenant.name == "infra"]
-      } if length(try(l3out.nodes, [])) != 0
+      } if length(try(l3out.nodes, [])) != 0 && try(l3out.managed, local.defaults.apic.tenants.l3outs.managed, true)
     ]
   ])
 }
@@ -1528,7 +1528,7 @@ locals {
             }]
           }
         ]
-      ]
+      ] if try(l3out.managed, local.defaults.apic.tenants.l3outs.managed, true)
     ]
   ])
 }
@@ -1707,7 +1707,7 @@ locals {
             micro_bfd_start_timer    = try(int.micro_bfd.start_timer, null)
           }
         ]])
-      } if length(try(l3out.nodes, [])) != 0
+      } if length(try(l3out.nodes, [])) != 0 && try(l3out.managed, local.defaults.apic.tenants.l3outs.managed, true)
     ]
   ])
 }
