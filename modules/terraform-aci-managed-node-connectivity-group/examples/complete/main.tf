@@ -1,6 +1,6 @@
 module "aci_managed_node_connectivity_group" {
   source  = "netascode/nac-aci/aci//modules/terraform-aci-managed-node-connectivity-group"
-  version = "> 2.0.0"
+  version = "> 2.1.0"
 
   name                = "MGMT-CONN-GRP1"
   oob_mgmt_epg        = "OOB1"
