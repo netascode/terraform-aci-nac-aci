@@ -896,6 +896,8 @@ defaults:
         scheduler: default
       vpc_groups:
         mode: explicit
+      managed_node_connectivity_groups:
+        name_suffix: ""
       nodes:
         pod: 1
         set_role: false
