@@ -838,14 +838,19 @@ locals {
             tenant                 = tenant.name
             contract               = sel.contract == "any" ? "any" : "${sel.contract}${local.defaults.apic.tenants.contracts.name_suffix}"
             service_graph_template = sel.service_graph_template == "any" ? "any" : "${sel.service_graph_template}${local.defaults.apic.tenants.services.service_graph_templates.name_suffix}"
-            # Node name is derived from the referenced service graph template unless set explicitly.
-            # A multi-node template requires an explicit node_name.
-            node_name = try(sel.node_name, one([
-              for device in flatten([
-                for sgt in try(tenant.services.service_graph_templates, []) : try(sgt.devices, [sgt.device], [])
-                if sgt.name == sel.service_graph_template
-              ]) : try(device.node_name, device.name)
-            ]))
+            # Node name is derived from the referenced service graph template unless set explicitly,
+            # matching the function node names the template creates: legacy `device` -> node_name or CP1 (copy) / N1,
+            # `devices` -> node_name or device name. A multi-node template requires an explicit node_name.
+            node_name = try(sel.node_name, sel.service_graph_template == "any" ? "any" : one(flatten([
+              for sgt in try(tenant.services.service_graph_templates, []) : (
+                try(sgt.device, null) != null
+                ? [try(sgt.device.node_name, try([
+                  for d in try([for t in local.tenants : t if t.name == try(sgt.device.tenant, tenant.name)][0].services.l4l7_devices, []) :
+                  try(d.copy_device, local.defaults.apic.tenants.services.l4l7_devices.copy_device) if d.name == sgt.device.name
+                ][0], local.defaults.apic.tenants.services.l4l7_devices.copy_device) ? "CP1" : "N1")]
+                : [for device in try(sgt.devices, []) : try(device.node_name, device.name)]
+              ) if sgt.name == sel.service_graph_template
+            ])))
             connector   = sel.connector
             description = try(sel.description, "")
           }]
