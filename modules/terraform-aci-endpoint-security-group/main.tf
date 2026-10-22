@@ -17,6 +17,13 @@ resource "aci_rest_managed" "fvESg" {
       tnFvCtxName = var.vrf
     }
   }
+
+  lifecycle {
+    precondition {
+      condition     = length(var.service_epg_selectors) == 0 || (length(var.tag_selectors) == 0 && length(var.epg_selectors) == 0 && length(var.ip_subnet_selectors) == 0 && length(var.ip_external_subnet_selectors) == 0)
+      error_message = "An ESG cannot combine `service_epg_selectors` with `tag_selectors`, `epg_selectors`, `ip_subnet_selectors`, or `ip_external_subnet_selectors`."
+    }
+  }
 }
 
 resource "aci_rest_managed" "fvRsScope" {
@@ -120,6 +127,20 @@ resource "aci_rest_managed" "fvEPgSelector" {
   depends_on = [
     aci_rest_managed.fvRsScope,
     aci_rest_managed.fvRsProv,
+  ]
+}
+
+resource "aci_rest_managed" "fvLIfCtxSelector" {
+  for_each   = { for ses in var.service_epg_selectors : "uni/tn-${ses.tenant}/ldevCtx-c-${ses.contract}-g-${ses.service_graph_template}-n-${ses.node_name}/lIfCtx-c-${ses.connector}" => ses }
+  dn         = "${aci_rest_managed.fvESg.dn}/lifctxselector-[${each.key}]"
+  class_name = "fvLIfCtxSelector"
+  content = {
+    descr         = each.value.description
+    matchLIfCtxDn = each.key
+  }
+
+  depends_on = [
+    aci_rest_managed.fvRsScope,
   ]
 }
 
