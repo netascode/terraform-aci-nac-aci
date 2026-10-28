@@ -65,6 +65,14 @@ module "aci_endpoint_security_group" {
       endpoint_group      = "EPG1"
     }
   ]
+  external_endpoint_group_selectors = [
+    {
+      tenant                  = "TF"
+      l3out                   = "L3OUT1"
+      external_endpoint_group = "EEPG1"
+      description             = "External EPG Selector 1"
+    }
+  ]
   ip_subnet_selectors = [
     {
       value = "1.1.1.0/24"

@@ -123,6 +123,21 @@ resource "aci_rest_managed" "fvEPgSelector" {
   ]
 }
 
+resource "aci_rest_managed" "fvEPgSelector_external" {
+  for_each   = { for eepgs in var.external_endpoint_group_selectors : "uni/tn-${eepgs.tenant}/out-${eepgs.l3out}/instP-${eepgs.external_endpoint_group}" => eepgs }
+  dn         = "${aci_rest_managed.fvESg.dn}/epgselector-[${each.key}]"
+  class_name = "fvEPgSelector"
+  content = {
+    descr      = each.value.description
+    matchEpgDn = each.key
+  }
+
+  depends_on = [
+    aci_rest_managed.fvRsScope,
+    aci_rest_managed.fvRsProv,
+  ]
+}
+
 resource "aci_rest_managed" "fvEPSelector" {
   for_each   = { for iss in var.ip_subnet_selectors : "ip=='${iss.value}'" => iss }
   dn         = "${aci_rest_managed.fvESg.dn}/epselector-[${each.key}]"

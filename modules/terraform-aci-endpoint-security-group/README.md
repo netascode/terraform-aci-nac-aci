@@ -62,6 +62,14 @@ module "aci_endpoint_security_group" {
       endpoint_group      = "EPG1"
     }
   ]
+  external_endpoint_group_selectors = [
+    {
+      tenant                  = "TF"
+      l3out                   = "L3OUT1"
+      external_endpoint_group = "EEPG1"
+      description             = "External EPG Selector 1"
+    }
+  ]
   ip_subnet_selectors = [
     {
       value = "1.1.1.0/24"
@@ -130,6 +138,7 @@ module "aci_endpoint_security_group" {
 | <a name="input_esg_contract_masters"></a> [esg\_contract\_masters](#input\_esg\_contract\_masters) | List of ESG contract masters. | <pre>list(object({<br/>    tenant                  = string<br/>    application_profile     = string<br/>    endpoint_security_group = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_tag_selectors"></a> [tag\_selectors](#input\_tag\_selectors) | List of tag selectors.  Choices `operator`: `contains`, `equals`, `regex`. Default value `operator`: `equals`. | <pre>list(object({<br/>    key         = string<br/>    operator    = optional(string, "equals")<br/>    value       = string<br/>    description = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_epg_selectors"></a> [epg\_selectors](#input\_epg\_selectors) | List of EPG selectors. | <pre>list(object({<br/>    tenant              = string<br/>    application_profile = string<br/>    endpoint_group      = string<br/>    description         = optional(string, "")<br/>  }))</pre> | `[]` | no |
+| <a name="input_external_endpoint_group_selectors"></a> [external\_endpoint\_group\_selectors](#input\_external\_endpoint\_group\_selectors) | List of External EPG selectors. Requires APIC 6.1(4) or later. | <pre>list(object({<br/>    tenant                  = string<br/>    l3out                   = string<br/>    external_endpoint_group = string<br/>    description             = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_ip_subnet_selectors"></a> [ip\_subnet\_selectors](#input\_ip\_subnet\_selectors) | List of IP subnet selectors. | <pre>list(object({<br/>    value       = string<br/>    description = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_ip_external_subnet_selectors"></a> [ip\_external\_subnet\_selectors](#input\_ip\_external\_subnet\_selectors) | List of IP subnet selectors. | <pre>list(object({<br/>    ip          = string<br/>    description = optional(string, "")<br/>    shared      = optional(bool, false)<br/>  }))</pre> | `[]` | no |
 
@@ -149,6 +158,7 @@ module "aci_endpoint_security_group" {
 |------|------|
 | [aci_rest_managed.fvEPSelector](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvEPgSelector](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.fvEPgSelector_external](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvESg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvExternalSubnetSelector](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 | [aci_rest_managed.fvRemoteSGT](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |

@@ -860,6 +860,12 @@ locals {
             endpoint_group      = "${sel.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}"
             description         = try(sel.description, "")
           }]
+          external_endpoint_group_selectors = [for sel in try(esg.external_endpoint_group_selectors, []) : {
+            tenant                  = tenant.name
+            l3out                   = "${sel.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}"
+            external_endpoint_group = "${sel.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}"
+            description             = try(sel.description, "")
+          }]
           ip_subnet_selectors = [for sel in try(esg.ip_subnet_selectors, []) : {
             value       = sel.value
             description = try(sel.description, "")
@@ -878,26 +884,27 @@ locals {
 module "aci_endpoint_security_group" {
   source = "./modules/terraform-aci-endpoint-security-group"
 
-  for_each                     = { for esg in local.endpoint_security_groups : esg.key => esg if local.modules.aci_endpoint_security_group && var.manage_tenants }
-  tenant                       = each.value.tenant
-  application_profile          = each.value.application_profile
-  name                         = each.value.name
-  description                  = each.value.description
-  vrf                          = each.value.vrf
-  normalized_pctag             = each.value.normalized_pctag
-  shutdown                     = each.value.shutdown
-  deployment_immediacy         = each.value.deployment_immediacy
-  intra_esg_isolation          = each.value.intra_esg_isolation
-  preferred_group              = each.value.preferred_group
-  contract_consumers           = each.value.contract_consumers
-  contract_providers           = each.value.contract_providers
-  contract_imported_consumers  = each.value.contract_imported_consumers
-  contract_intra_esgs          = each.value.contract_intra_esgs
-  esg_contract_masters         = each.value.esg_contract_masters
-  tag_selectors                = each.value.tag_selectors
-  epg_selectors                = each.value.epg_selectors
-  ip_subnet_selectors          = each.value.ip_subnet_selectors
-  ip_external_subnet_selectors = each.value.ip_external_subnet_selectors
+  for_each                          = { for esg in local.endpoint_security_groups : esg.key => esg if local.modules.aci_endpoint_security_group && var.manage_tenants }
+  tenant                            = each.value.tenant
+  application_profile               = each.value.application_profile
+  name                              = each.value.name
+  description                       = each.value.description
+  vrf                               = each.value.vrf
+  normalized_pctag                  = each.value.normalized_pctag
+  shutdown                          = each.value.shutdown
+  deployment_immediacy              = each.value.deployment_immediacy
+  intra_esg_isolation               = each.value.intra_esg_isolation
+  preferred_group                   = each.value.preferred_group
+  contract_consumers                = each.value.contract_consumers
+  contract_providers                = each.value.contract_providers
+  contract_imported_consumers       = each.value.contract_imported_consumers
+  contract_intra_esgs               = each.value.contract_intra_esgs
+  esg_contract_masters              = each.value.esg_contract_masters
+  tag_selectors                     = each.value.tag_selectors
+  epg_selectors                     = each.value.epg_selectors
+  external_endpoint_group_selectors = each.value.external_endpoint_group_selectors
+  ip_subnet_selectors               = each.value.ip_subnet_selectors
+  ip_external_subnet_selectors      = each.value.ip_external_subnet_selectors
 
   depends_on = [
     module.aci_tenant,
@@ -905,6 +912,7 @@ module "aci_endpoint_security_group" {
     module.aci_vrf,
     module.aci_contract,
     module.aci_endpoint_group,
+    module.aci_external_endpoint_group,
   ]
 }
 
