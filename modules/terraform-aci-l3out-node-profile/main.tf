@@ -303,9 +303,6 @@ resource "aci_rest_managed" "bgpProtP" {
     name = var.bgp_protocol_profile_name
   }
 
-  # Policies are sent as children in the same POST as bgpProtP. A bgpProtP without
-  # bgpRsBgpNodeCtxPol is treated by APIC as tn-common/bgpCtxP-default, which conflicts
-  # with other node profiles using a custom timer policy on the same node/VRF.
   dynamic "child" {
     for_each = var.bgp_timer_policy != "" ? [1] : []
     content {
