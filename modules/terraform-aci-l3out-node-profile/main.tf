@@ -137,6 +137,10 @@ resource "aci_rest_managed" "bgpPeerP" {
   lifecycle {
     ignore_changes = [content["password"]]
   }
+
+  depends_on = [
+    aci_rest_managed.bgpProtP
+  ]
 }
 
 resource "aci_rest_managed" "bgpAsP" {
@@ -298,23 +302,30 @@ resource "aci_rest_managed" "bgpProtP" {
   content = {
     name = var.bgp_protocol_profile_name
   }
-}
 
-resource "aci_rest_managed" "bgpRsBgpNodeCtxPol" {
-  count      = var.bgp_timer_policy != "" ? 1 : 0
-  dn         = "${aci_rest_managed.bgpProtP[0].dn}/rsbgpNodeCtxPol"
-  class_name = "bgpRsBgpNodeCtxPol"
-  content = {
-    tnBgpCtxPolName = var.bgp_timer_policy
+  # Policies are sent as children in the same POST as bgpProtP. A bgpProtP without
+  # bgpRsBgpNodeCtxPol is treated by APIC as tn-common/bgpCtxP-default, which conflicts
+  # with other node profiles using a custom timer policy on the same node/VRF.
+  dynamic "child" {
+    for_each = var.bgp_timer_policy != "" ? [1] : []
+    content {
+      rn         = "rsbgpNodeCtxPol"
+      class_name = "bgpRsBgpNodeCtxPol"
+      content = {
+        tnBgpCtxPolName = var.bgp_timer_policy
+      }
+    }
   }
-}
 
-resource "aci_rest_managed" "bgpRsBestPathCtrlPol" {
-  count      = var.bgp_as_path_policy != "" ? 1 : 0
-  dn         = "${aci_rest_managed.bgpProtP[0].dn}/rsBestPathCtrlPol"
-  class_name = "bgpRsBestPathCtrlPol"
-  content = {
-    tnBgpBestPathCtrlPolName = var.bgp_as_path_policy
+  dynamic "child" {
+    for_each = var.bgp_as_path_policy != "" ? [1] : []
+    content {
+      rn         = "rsBestPathCtrlPol"
+      class_name = "bgpRsBestPathCtrlPol"
+      content = {
+        tnBgpBestPathCtrlPolName = var.bgp_as_path_policy
+      }
+    }
   }
 }
 

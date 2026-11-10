@@ -84,6 +84,7 @@ module "aci_endpoint_group" {
     primary_vlan         = 124
     pod_id               = 1
     port                 = 10
+    port_range           = [10, 11]
     sub_port             = 1
     module               = 1
     deployment_immediacy = "lazy"
