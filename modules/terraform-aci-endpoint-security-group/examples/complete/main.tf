@@ -88,7 +88,7 @@ module "aci_endpoint_security_group" {
 # selector type on the same ESG, so this is modeled as a separate ESG.
 module "aci_endpoint_security_group_service_graph" {
   source  = "netascode/nac-aci/aci/modules/terraform-aci-endpoint-security-group"
-  version = ">= 0.8.0"
+  version = ">= 2.2.0"
 
   name                = "ESG2"
   description         = "ESG with Service EPG selector"
