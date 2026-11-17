@@ -249,6 +249,45 @@ variable "epg_selectors" {
   }
 }
 
+variable "external_epg_selectors" {
+  description = "List of External EPG selectors. Requires APIC 6.1(4) or later."
+  type = list(object({
+    tenant                  = string
+    l3out                   = string
+    external_endpoint_group = string
+    description             = optional(string, "")
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for eepgs in var.external_epg_selectors : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", eepgs.tenant))
+    ])
+    error_message = "`tenant`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for eepgs in var.external_epg_selectors : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", eepgs.l3out))
+    ])
+    error_message = "`l3out`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for eepgs in var.external_epg_selectors : can(regex("^[a-zA-Z0-9_.:-]{0,64}$", eepgs.external_endpoint_group))
+    ])
+    error_message = "`external_endpoint_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for eepgs in var.external_epg_selectors : eepgs.description == null || can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", eepgs.description))
+    ])
+    error_message = "`description`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+}
+
 variable "service_epg_selectors" {
   description = "List of Service Graph (Service EPG) selectors. An ESG cannot combine these with any other selector type."
   type = list(object({

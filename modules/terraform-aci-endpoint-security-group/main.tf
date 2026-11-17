@@ -130,6 +130,21 @@ resource "aci_rest_managed" "fvEPgSelector" {
   ]
 }
 
+resource "aci_rest_managed" "fvEPgSelector_external" {
+  for_each   = { for eepgs in var.external_epg_selectors : "uni/tn-${eepgs.tenant}/out-${eepgs.l3out}/instP-${eepgs.external_endpoint_group}" => eepgs }
+  dn         = "${aci_rest_managed.fvESg.dn}/epgselector-[${each.key}]"
+  class_name = "fvEPgSelector"
+  content = {
+    descr      = each.value.description
+    matchEpgDn = each.key
+  }
+
+  depends_on = [
+    aci_rest_managed.fvRsScope,
+    aci_rest_managed.fvRsProv,
+  ]
+}
+
 resource "aci_rest_managed" "fvLIfCtxSelector" {
   for_each   = { for ses in var.service_epg_selectors : "uni/tn-${ses.tenant}/ldevCtx-c-${ses.contract}-g-${ses.service_graph_template}-n-${ses.node_name}/lIfCtx-c-${ses.connector}" => ses }
   dn         = "${aci_rest_managed.fvESg.dn}/lifctxselector-[${each.key}]"
