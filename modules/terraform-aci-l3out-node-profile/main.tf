@@ -298,6 +298,18 @@ resource "aci_rest_managed" "bgpProtP" {
   content = {
     name = var.bgp_protocol_profile_name
   }
+
+  child {
+    rn         = "rsbgpNodeCtxPol"
+    class_name = "bgpRsBgpNodeCtxPol"
+    content = {
+      tnBgpCtxPolName = var.bgp_timer_policy
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [child]
+  }
 }
 
 resource "aci_rest_managed" "bgpRsBgpNodeCtxPol" {
