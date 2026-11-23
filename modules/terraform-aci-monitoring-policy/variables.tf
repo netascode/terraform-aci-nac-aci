@@ -73,3 +73,40 @@ variable "tacacs_policies" {
   }
 }
 
+
+variable "syslog_message_policy" {
+  description = "System messages policy. `legacy_message_handling` requires APIC 6.1(2f)+ and is only configured when defined. Allowed values `legacy_message_handling`: `drop`, `monitor` or `eventrecord`."
+  type = object({
+    description             = optional(string, "")
+    legacy_message_handling = optional(string)
+    facility_filters = optional(list(object({
+      facility         = string
+      minimum_severity = string
+    })), [])
+  })
+  default = null
+
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9\\\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", try(var.syslog_message_policy.description, "")))
+    error_message = "Allowed characters `description`: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+
+  validation {
+    condition     = try(var.syslog_message_policy.legacy_message_handling, null) == null || try(contains(["drop", "monitor", "eventrecord"], var.syslog_message_policy.legacy_message_handling), false)
+    error_message = "`legacy_message_handling`: Allowed values are `drop`, `monitor` or `eventrecord`."
+  }
+
+  validation {
+    condition = alltrue([
+      for filter in try(var.syslog_message_policy.facility_filters, []) : contains(["auth", "authpriv", "cron", "daemon", "default", "ftp", "kern", "lpr", "mail", "news", "syslog", "user", "uucp", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"], filter.facility)
+    ])
+    error_message = "`facility`: Allowed values are `auth`, `authpriv`, `cron`, `daemon`, `default`, `ftp`, `kern`, `lpr`, `mail`, `news`, `syslog`, `user`, `uucp`, `local0`, `local1`, `local2`, `local3`, `local4`, `local5`, `local6` or `local7`."
+  }
+
+  validation {
+    condition = alltrue([
+      for filter in try(var.syslog_message_policy.facility_filters, []) : contains(["emergencies", "alerts", "critical", "errors", "warnings", "notifications", "information", "debugging"], filter.minimum_severity)
+    ])
+    error_message = "`minimum_severity`: Allowed values are `emergencies`, `alerts`, `critical`, `errors`, `warnings`, `notifications`, `information` or `debugging`."
+  }
+}

@@ -1063,6 +1063,14 @@ locals {
           description      = try(fault.description, "")
         }]
       }]
+      syslog_message_policy = try(policy.syslog_message_policy, null) == null ? null : {
+        description             = try(policy.syslog_message_policy.description, "")
+        legacy_message_handling = try(policy.syslog_message_policy.legacy_message_handling, null)
+        facility_filters = [for filter in try(policy.syslog_message_policy.facility_filters, []) : {
+          facility         = filter.facility
+          minimum_severity = filter.minimum_severity
+        }]
+      }
     }
   ])
 }
@@ -1072,9 +1080,10 @@ module "aci_monitoring_policy_common" {
 
   for_each = { for pol in local.monitoring_policies : pol.name => pol if pol.name == "common" && local.modules.aci_monitoring_policy_common && var.manage_fabric_policies }
 
-  snmp_trap_policies = each.value.snmp_trap_policies
-  syslog_policies    = each.value.syslog_policies
-  tacacs_policies    = each.value.tacacs_policies
+  snmp_trap_policies    = each.value.snmp_trap_policies
+  syslog_policies       = each.value.syslog_policies
+  tacacs_policies       = each.value.tacacs_policies
+  syslog_message_policy = each.value.syslog_message_policy
 
   depends_on = [
     module.aci_snmp_trap_policy,
