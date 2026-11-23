@@ -41,11 +41,12 @@ variable "role" {
 }
 
 variable "serial_number" {
-  description = "Serial number."
+  description = "Serial number. If `null`, the `serial` attribute is not set."
   type        = string
+  default     = null
 
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_.:-]{1,16}$", var.serial_number))
+    condition     = var.serial_number == null ? true : can(regex("^[a-zA-Z0-9_.:-]{1,16}$", var.serial_number))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `:`, `-`. Maximum characters: 16."
   }
 }

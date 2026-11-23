@@ -1,5 +1,5 @@
 resource "aci_rest_managed" "fabricNodeIdentP" {
-  dn         = "uni/controller/nodeidentpol/nodep-${var.serial_number}"
+  dn         = "uni/controller/nodeidentpol/nodep-${var.serial_number != null ? var.serial_number : var.node_id}"
   class_name = "fabricNodeIdentP"
   content = {
     name      = var.name

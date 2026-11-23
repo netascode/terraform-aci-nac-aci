@@ -57,7 +57,7 @@ module "aci_node_registration" {
   node_id        = each.value.id
   pod_id         = try(each.value.pod, local.defaults.apic.node_policies.nodes.pod)
   role           = try(each.value.set_role, local.defaults.apic.node_policies.nodes.set_role) ? each.value.role : null
-  serial_number  = each.value.serial_number
+  serial_number  = try(each.value.serial_number, null)
   type           = try(each.value.type, "unspecified")
   remote_pool_id = try(each.value.remote_pool_id, 0)
 
