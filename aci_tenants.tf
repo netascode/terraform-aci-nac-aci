@@ -860,6 +860,12 @@ locals {
             endpoint_group      = "${sel.endpoint_group}${local.defaults.apic.tenants.application_profiles.endpoint_groups.name_suffix}"
             description         = try(sel.description, "")
           }]
+          external_epg_selectors = [for sel in try(esg.external_epg_selectors, []) : {
+            tenant                  = tenant.name
+            l3out                   = "${sel.l3out}${local.defaults.apic.tenants.l3outs.name_suffix}"
+            external_endpoint_group = "${sel.external_endpoint_group}${local.defaults.apic.tenants.l3outs.external_endpoint_groups.name_suffix}"
+            description             = try(sel.description, "")
+          }]
           ip_subnet_selectors = [for sel in try(esg.ip_subnet_selectors, []) : {
             value       = sel.value
             description = try(sel.description, "")
@@ -909,6 +915,7 @@ module "aci_endpoint_security_group" {
   esg_contract_masters         = each.value.esg_contract_masters
   tag_selectors                = each.value.tag_selectors
   epg_selectors                = each.value.epg_selectors
+  external_epg_selectors       = each.value.external_epg_selectors
   ip_subnet_selectors          = each.value.ip_subnet_selectors
   ip_external_subnet_selectors = each.value.ip_external_subnet_selectors
   service_epg_selectors        = each.value.service_epg_selectors
@@ -920,6 +927,7 @@ module "aci_endpoint_security_group" {
     module.aci_contract,
     module.aci_endpoint_group,
     module.aci_device_selection_policy,
+    module.aci_external_endpoint_group,
   ]
 }
 
