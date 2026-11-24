@@ -28,7 +28,7 @@ module "aci_monitoring_policy" {
   }]
   syslog_message_policy = {
     description             = "System message policy"
-    legacy_message_handling = "eventrecord" # requires APIC 6.1(2f)+
+    legacy_message_handling = "event_record" # requires APIC 6.1(2f)+
     facility_filters = [{
       facility         = "local7"
       minimum_severity = "information"
@@ -57,7 +57,7 @@ module "aci_monitoring_policy" {
 | <a name="input_snmp_trap_policies"></a> [snmp\_trap\_policies](#input\_snmp\_trap\_policies) | List of SNMP trap policy names. | <pre>list(object({<br/>    name              = string<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_syslog_policies"></a> [syslog\_policies](#input\_syslog\_policies) | List of syslog policies. Default value `audit`: true. Default value `events`: true. Default value `faults`: true. Default value `session`: false. Default value `minimum_severity`: `warnings`. | <pre>list(object({<br/>    name              = string<br/>    audit             = optional(bool, null)<br/>    events            = optional(bool, true)<br/>    faults            = optional(bool, true)<br/>    session           = optional(bool, false)<br/>    minimum_severity  = optional(string, "warnings")<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
 | <a name="input_tacacs_policies"></a> [tacacs\_policies](#input\_tacacs\_policies) | List of TACACS monitoring policies. Default value `audit`: false. | <pre>list(object({<br/>    name              = string<br/>    audit             = optional(bool, false)<br/>    destination_group = optional(string, "")<br/>  }))</pre> | `[]` | no |
-| <a name="input_syslog_message_policy"></a> [syslog\_message\_policy](#input\_syslog\_message\_policy) | System messages policy. `legacy_message_handling` requires APIC 6.1(2f)+ and is only configured when defined. Allowed values `legacy_message_handling`: `drop`, `monitor` or `eventrecord`. | <pre>object({<br/>    description             = optional(string, "")<br/>    legacy_message_handling = optional(string)<br/>    facility_filters = optional(list(object({<br/>      facility         = string<br/>      minimum_severity = string<br/>    })), [])<br/>  })</pre> | `null` | no |
+| <a name="input_syslog_message_policy"></a> [syslog\_message\_policy](#input\_syslog\_message\_policy) | System messages policy. `legacy_message_handling` requires APIC 6.1(2f)+ and is only configured when defined. Allowed values `legacy_message_handling`: `drop`, `forward` or `event_record`. | <pre>object({<br/>    description             = optional(string, "")<br/>    legacy_message_handling = optional(string)<br/>    facility_filters = optional(list(object({<br/>      facility         = string<br/>      minimum_severity = string<br/>    })), [])<br/>  })</pre> | `null` | no |
 
 ## Outputs
 

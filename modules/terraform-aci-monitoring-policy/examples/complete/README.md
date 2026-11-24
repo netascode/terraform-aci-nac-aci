@@ -31,7 +31,7 @@ module "aci_monitoring_policy" {
   }]
   syslog_message_policy = {
     description             = "System message policy"
-    legacy_message_handling = "eventrecord" # requires APIC 6.1(2f)+
+    legacy_message_handling = "event_record" # requires APIC 6.1(2f)+
     facility_filters = [{
       facility         = "local7"
       minimum_severity = "information"

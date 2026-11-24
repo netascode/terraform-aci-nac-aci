@@ -75,7 +75,7 @@ variable "tacacs_policies" {
 
 
 variable "syslog_message_policy" {
-  description = "System messages policy. `legacy_message_handling` requires APIC 6.1(2f)+ and is only configured when defined. Allowed values `legacy_message_handling`: `drop`, `monitor` or `eventrecord`."
+  description = "System messages policy. `legacy_message_handling` requires APIC 6.1(2f)+ and is only configured when defined. Allowed values `legacy_message_handling`: `drop`, `forward` or `event_record`."
   type = object({
     description             = optional(string, "")
     legacy_message_handling = optional(string)
@@ -92,8 +92,8 @@ variable "syslog_message_policy" {
   }
 
   validation {
-    condition     = try(var.syslog_message_policy.legacy_message_handling, null) == null || try(contains(["drop", "monitor", "eventrecord"], var.syslog_message_policy.legacy_message_handling), false)
-    error_message = "`legacy_message_handling`: Allowed values are `drop`, `monitor` or `eventrecord`."
+    condition     = try(var.syslog_message_policy.legacy_message_handling, null) == null || try(contains(["drop", "forward", "event_record"], var.syslog_message_policy.legacy_message_handling), false)
+    error_message = "`legacy_message_handling`: Allowed values are `drop`, `forward` or `event_record`."
   }
 
   validation {

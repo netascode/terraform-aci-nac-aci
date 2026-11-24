@@ -69,7 +69,7 @@ resource "aci_rest_managed" "syslogSystemMsgP" {
   class_name = "syslogSystemMsgP"
   content = {
     descr              = var.syslog_message_policy.description
-    systemSyslogMsgHdl = var.syslog_message_policy.legacy_message_handling
+    systemSyslogMsgHdl = var.syslog_message_policy.legacy_message_handling == "forward" ? "monitor" : var.syslog_message_policy.legacy_message_handling == "event_record" ? "eventrecord" : var.syslog_message_policy.legacy_message_handling
   }
   content_on_destroy = {
     descr = ""
