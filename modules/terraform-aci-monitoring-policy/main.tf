@@ -1,3 +1,11 @@
+locals {
+  # Severity values pre-configured by the APIC on each default facility filter, restored on destroy instead of deleting the filter.
+  syslog_facility_filter_defaults = {
+    kern   = "errors"
+    daemon = "errors"
+  }
+}
+
 resource "aci_rest_managed" "snmpSrc" {
   for_each   = { for s in var.snmp_trap_policies : s.name => s }
   dn         = "uni/fabric/moncommon/snmpsrc-${each.value.name}"
@@ -52,5 +60,32 @@ resource "aci_rest_managed" "tacacsRsDestGroup" {
   class_name = "tacacsRsDestGroup"
   content = {
     tDn = "uni/fabric/tacacsgroup-${each.value.destination_group}"
+  }
+}
+
+resource "aci_rest_managed" "syslogSystemMsgP" {
+  count      = var.syslog_message_policy != null ? 1 : 0
+  dn         = "uni/fabric/moncommon/sysmsgp"
+  class_name = "syslogSystemMsgP"
+  content = {
+    descr              = var.syslog_message_policy.description
+    systemSyslogMsgHdl = var.syslog_message_policy.legacy_message_handling == "forward" ? "monitor" : var.syslog_message_policy.legacy_message_handling == "event_record" ? "eventrecord" : var.syslog_message_policy.legacy_message_handling
+  }
+  content_on_destroy = {
+    descr = ""
+  }
+}
+
+resource "aci_rest_managed" "syslogFacilityFilter" {
+  for_each   = { for filter in try(var.syslog_message_policy.facility_filters, []) : filter.facility => filter }
+  dn         = "${aci_rest_managed.syslogSystemMsgP[0].dn}/ff-${each.value.facility}"
+  class_name = "syslogFacilityFilter"
+  content = {
+    facility = each.value.facility
+    minSev   = each.value.minimum_severity
+  }
+  content_on_destroy = {
+    facility = each.value.facility
+    minSev   = lookup(local.syslog_facility_filter_defaults, each.value.facility, "alerts")
   }
 }
