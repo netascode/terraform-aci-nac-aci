@@ -35,6 +35,18 @@ resource "aci_rest_managed" "commPol" {
     name  = var.name
     descr = var.description
   }
+
+  child {
+    rn         = "https"
+    class_name = "commHttps"
+    content = {
+      sslProtocols = join(",", concat(var.https_tlsv1 == true ? ["TLSv1"] : [], var.https_tlsv1_1 == true ? ["TLSv1.1"] : [], var.https_tlsv1_2 == true ? ["TLSv1.2"] : []))
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [child]
+  }
 }
 
 resource "aci_rest_managed" "commTelnet" {
@@ -74,6 +86,18 @@ resource "aci_rest_managed" "commHttps" {
     sslProtocols              = join(",", concat(var.https_tlsv1 == true ? ["TLSv1"] : [], var.https_tlsv1_1 == true ? ["TLSv1.1"] : [], var.https_tlsv1_2 == true ? ["TLSv1.2"] : [], var.https_tlsv1_3 == true ? ["TLSv1.3"] : []))
     visoreAccess              = "enabled"
   }
+
+  dynamic "child" {
+    for_each = local.https_ssl_ciphers
+    content {
+      rn         = "cph-${child.key}"
+      class_name = "commCipher"
+      content = {
+        id    = child.key
+        state = child.value ? "enabled" : "disabled"
+      }
+    }
+  }
 }
 
 resource "aci_rest_managed" "commRsKeyRing" {
@@ -81,16 +105,6 @@ resource "aci_rest_managed" "commRsKeyRing" {
   class_name = "commRsKeyRing"
   content = {
     tnPkiKeyRingName = var.https_keyring != "" ? var.https_keyring : "default"
-  }
-}
-
-resource "aci_rest_managed" "commCipher" {
-  for_each   = local.https_ssl_ciphers
-  dn         = "${aci_rest_managed.commHttps.dn}/cph-${each.key}"
-  class_name = "commCipher"
-  content = {
-    id    = each.key
-    state = each.value ? "enabled" : "disabled"
   }
 }
 
