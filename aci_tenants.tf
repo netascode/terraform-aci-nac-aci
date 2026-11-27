@@ -4258,6 +4258,48 @@ module "aci_service_graph_template" {
 }
 
 locals {
+  # Service graph templates indexed by tenant and name, used by device selection policies
+  # to resolve the node name the same way the service graph template does.
+  dsp_service_graph_templates = {
+    for tenant in local.tenants : tenant.name => {
+      for sgt in try(tenant.services.service_graph_templates, []) : sgt.name => sgt
+    }
+  }
+}
+
+locals {
+  # Node name of the function node referenced by each device selection policy (legacy mode).
+  # Resolution order (mirrors the service graph template):
+  #   1. dsp.node_name
+  #   2. node_name of the service graph template device
+  #   3. multi-device template: device name; single-device template: "CP1" for copy devices, "N1" otherwise
+  #   4. "N1" when there is no template to resolve ("any" or template not found)
+  dsp_legacy_node_names = {
+    for item in flatten([
+      for tenant in local.tenants : [
+        for dsp in try(tenant.services.device_selection_policies, []) : [
+          for sgt in [try(local.dsp_service_graph_templates[tenant.name][dsp.service_graph_template], null)] : {
+            key = format("%s/%s-%s", tenant.name, dsp.contract, dsp.service_graph_template)
+            node_name = try(dsp.node_name, null) != null ? dsp.node_name : (
+              sgt == null ? "N1" : (
+                length(try(sgt.devices, [])) > 0 ? try(
+                  [for d in sgt.devices : coalesce(try(d.node_name, null), "${d.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}") if d.name == try(dsp.device_name, "")][0],
+                  coalesce(try(sgt.devices[0].node_name, null), "${sgt.devices[0].name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}")
+                  ) : (
+                  try(sgt.device.node_name, null) != null ? sgt.device.node_name : (
+                    try([for d in local.l4l7_devices : d.copy_device if d.tenant == try(sgt.device.tenant, tenant.name) && d.name == "${sgt.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"][0], local.defaults.apic.tenants.services.l4l7_devices.copy_device) ? "CP1" : "N1"
+                  )
+                )
+              )
+            )
+          }
+        ]
+      ]
+    ]) : item.key => item.node_name
+  }
+}
+
+locals {
   device_selection_policies = flatten([
     for tenant in local.tenants : [
       for dsp in try(tenant.services.device_selection_policies, []) : {
@@ -4271,17 +4313,22 @@ locals {
         legacy_mode = try(dsp.device_name, null) != null || try(dsp.node_name, null) != null || try(dsp.consumer, null) != null || try(dsp.provider, null) != null || try(dsp.copy_service, null) != null
         # When service_graph_template is "any" there is no template to resolve the legacy
         # single-device reference against, so these fall back to safe defaults.
-        sgt_device_tenant = dsp.service_graph_template == "any" ? tenant.name : (length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : (
-          length(try(sg_template.devices, [])) > 0 ?
-          [for dev in sg_template.devices : try(dev.tenant, tenant.name) if sg_template.name == dsp.service_graph_template][0] :
-          try(sg_template.device.tenant, tenant.name)
-        ) if sg_template.name == dsp.service_graph_template][0] : tenant.name)
-        sgt_device_name = dsp.service_graph_template == "any" ? "" : try("${dsp.device_name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}", length(try(tenant.services.service_graph_templates, [])) != 0 ? [for sg_template in try(tenant.services.service_graph_templates, []) : (
-          length(try(sg_template.devices, [])) > 0 ?
-          [for dev in sg_template.devices : "${dev.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}" if sg_template.name == dsp.service_graph_template][0] :
-          "${sg_template.device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
-        ) if sg_template.name == dsp.service_graph_template][0] : "")
-        node_name                                               = try(dsp.node_name, "N1")
+        # The device is matched by dsp.device_name when the template has several devices, otherwise the first
+        # one is used. A missing template or device falls back to the DSP tenant / an empty name.
+        sgt_device_tenant = try(
+          concat(
+            [for dev in local.dsp_service_graph_templates[tenant.name][dsp.service_graph_template].devices : try(dev.tenant, tenant.name) if dev.name == try(dsp.device_name, "")],
+            [try(local.dsp_service_graph_templates[tenant.name][dsp.service_graph_template].devices[0].tenant, tenant.name)]
+          )[0],
+          try(local.dsp_service_graph_templates[tenant.name][dsp.service_graph_template].device.tenant, tenant.name)
+        )
+        sgt_device_name = try(
+          "${dsp.device_name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}",
+          "${local.dsp_service_graph_templates[tenant.name][dsp.service_graph_template].devices[0].name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}",
+          "${local.dsp_service_graph_templates[tenant.name][dsp.service_graph_template].device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}",
+          ""
+        )
+        node_name                                               = local.dsp_legacy_node_names[format("%s/%s-%s", tenant.name, dsp.contract, dsp.service_graph_template)]
         consumer_l3_destination                                 = try(dsp.consumer.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.consumer.l3_destination)
         consumer_permit_logging                                 = try(dsp.consumer.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.consumer.permit_logging)
         consumer_logical_interface                              = try("${dsp.consumer.logical_interface}${local.defaults.apic.tenants.services.l4l7_devices.logical_interfaces.name_suffix}", "")
@@ -4328,9 +4375,19 @@ locals {
         # the tenant info comes from services.imported_l4l7_devices.tenant)
         devices = try(dsp.device_name, null) != null || try(dsp.node_name, null) != null || try(dsp.consumer, null) != null || try(dsp.provider, null) != null || try(dsp.copy_service, null) != null ? [] : [
           for device in try(dsp.devices, []) : {
-            name      = "${device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
-            tenant    = length([for imp in try(tenant.services.imported_l4l7_devices, []) : imp.tenant if imp.name == device.name]) > 0 ? [for imp in try(tenant.services.imported_l4l7_devices, []) : imp.tenant if imp.name == device.name][0] : null
-            node_name = try(device.node_name, null)
+            name   = "${device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"
+            tenant = length([for imp in try(tenant.services.imported_l4l7_devices, []) : imp.tenant if imp.name == device.name]) > 0 ? [for imp in try(tenant.services.imported_l4l7_devices, []) : imp.tenant if imp.name == device.name][0] : null
+            # Node name: DSP device node_name, then the service graph template device node_name, then "CP1"/"N1" for a
+            # single-device template. null lets the module fall back to the device name (multi-device templates).
+            node_name = try(device.node_name, null) != null ? device.node_name : try(
+              [for d in local.dsp_service_graph_templates[tenant.name][dsp.service_graph_template].devices : d.node_name if d.name == device.name && try(d.node_name, null) != null][0],
+              local.dsp_service_graph_templates[tenant.name][dsp.service_graph_template].device.name == "" ? null : (
+                try(local.dsp_service_graph_templates[tenant.name][dsp.service_graph_template].device.node_name, null) != null ? local.dsp_service_graph_templates[tenant.name][dsp.service_graph_template].device.node_name : (
+                  try([for d in local.l4l7_devices : d.copy_device if d.tenant == try(local.dsp_service_graph_templates[tenant.name][dsp.service_graph_template].device.tenant, tenant.name) && d.name == "${local.dsp_service_graph_templates[tenant.name][dsp.service_graph_template].device.name}${local.defaults.apic.tenants.services.l4l7_devices.name_suffix}"][0], local.defaults.apic.tenants.services.l4l7_devices.copy_device) ? "CP1" : "N1"
+                )
+              ),
+              null
+            )
             consumer = try(device.consumer, null) != null ? {
               l3_destination    = try(device.consumer.l3_destination, local.defaults.apic.tenants.services.device_selection_policies.devices.consumer.l3_destination)
               permit_logging    = try(device.consumer.permit_logging, local.defaults.apic.tenants.services.device_selection_policies.devices.consumer.permit_logging)
